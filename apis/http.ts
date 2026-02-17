@@ -39,11 +39,13 @@ http.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
     if (error.response?.status === 401) {
-      // Token expired or invalid
+      // Token expired or invalid — redirect to login
       if (typeof window !== "undefined") {
         const currentPath = window.location.pathname;
         if (currentPath !== "/login" && currentPath !== "/register") {
-          // Optionally redirect to login or trigger a logout action
+          // Clear stale token and redirect to login
+          document.cookie = "token=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+          window.location.href = "/login";
         }
       }
     }

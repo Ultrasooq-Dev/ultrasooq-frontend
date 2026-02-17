@@ -73,8 +73,6 @@ import { useCurrentAccount } from "@/apis/queries/auth.queries";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FaPlus } from "react-icons/fa";
-// @ts-ignore
-import { startDebugger } from "remove-child-node-error-debugger";
 import {
   Sheet,
   SheetContent,
@@ -694,8 +692,6 @@ const TrendingPage = (props0: TrendingPageProps) => {
       categoryStore.setSubSubCategoryParentName("");
     };
   }, []);
-
-  startDebugger();
 
   return (
     <>

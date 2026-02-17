@@ -32,8 +32,6 @@ import Footer from "@/components/shared/Footer";
 import FactoriesCustomizedProductCard from "@/components/modules/factoriesCart/FactoriesCustomizedProductCard";
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/context/AuthContext";
-// @ts-ignore
-import  { startDebugger }  from "remove-child-node-error-debugger";
 
 const formSchema = (t: any) => {
   return z.object({
@@ -164,8 +162,6 @@ const FactoriesCartPage = () => {
       });
     }
   };
-
-  startDebugger();
 
   return (
     <>

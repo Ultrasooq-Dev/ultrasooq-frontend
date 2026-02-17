@@ -31,8 +31,6 @@ import { useGetAllServices } from "@/apis/queries/services.queries";
 import ServiceCard from "@/components/modules/trending/ServiceCard";
 import ServiceTable from "@/components/modules/trending/ServiceTable";
 import { IoMdAdd } from "react-icons/io";
-// @ts-ignore
-import  { startDebugger }  from "remove-child-node-error-debugger";
 import ListIcon from "@/components/icons/ListIcon";
 import { withActiveUserGuard } from "@/components/shared/withRouteGuard";
 
@@ -147,8 +145,6 @@ const ManageServices = () => {
       setHaveAccessToken(false);
     }
   }, [accessToken]);
-
-  startDebugger();
 
   return (
     <>

@@ -47,8 +47,6 @@ import { useRouter } from "next/navigation";
 import { useCategory } from "@/apis/queries/category.queries";
 import { TrendingUp, ArrowRight } from "lucide-react";
 import CategorySidebar from "@/components/modules/trending/CategorySidebar";
-// @ts-ignore
-import { startDebugger } from "remove-child-node-error-debugger";
 // import { Metadata } from "next";
 
 // export const metadata: Metadata = {
@@ -392,7 +390,6 @@ function HomePage() {
     }
   }, [cartListByUser.data?.data, cartListByDeviceQuery.data?.data]);
 
-  startDebugger();
   return (
     <>
       {/* Category Sidebar */}

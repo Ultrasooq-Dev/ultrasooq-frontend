@@ -69,8 +69,6 @@ import { IBrands, ISelectOptions } from "@/utils/types/common.types";
 import { useCategoryStore } from "@/lib/categoryStore";
 // Category filtering temporarily disabled on RFQ page
 // import CategoryFilter from "@/components/modules/manageProducts/CategoryFilter";
-// @ts-ignore
-import { startDebugger } from "remove-child-node-error-debugger";
 import {
   Sheet,
   SheetContent,
@@ -410,8 +408,6 @@ const RfqPage = (props: RfqPageProps) => {
       setHaveAccessToken(false);
     }
   }, [accessToken]);
-
-  startDebugger();
 
   return (
     <>

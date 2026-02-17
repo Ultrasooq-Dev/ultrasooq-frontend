@@ -72,8 +72,6 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/context/AuthContext";
 import { Package, Building2, X, ShoppingCart, Trash2 } from "lucide-react";
-// @ts-ignore
-import { startDebugger } from "remove-child-node-error-debugger";
 import Cart from "@/components/modules/cartList/Cart";
 import CategoryFilter from "@/components/modules/manageProducts/CategoryFilter";
 import { useCurrentAccount } from "@/apis/queries/auth.queries";
@@ -1159,8 +1157,6 @@ const TrendingPage = (props0: TrendingPageProps) => {
       categoryStore.setSubSubCategoryParentName("");
     };
   }, []);
-
-  startDebugger();
 
   return (
     <>
