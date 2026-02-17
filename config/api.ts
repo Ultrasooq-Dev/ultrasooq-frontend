@@ -17,7 +17,7 @@ export const getApiUrl = () => {
     const hostname = window.location.hostname;
     // If accessed via network IP, use network IP for backend
     // If accessed via localhost, use localhost for backend
-    return `http://${hostname}:3000`;
+    return `http://${hostname}:3000/api/v1`;
   }
 
   // Server-side: default to localhost
