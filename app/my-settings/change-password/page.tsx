@@ -1,0 +1,268 @@
+"use client";
+import { useChangePassword } from "@/apis/queries/auth.queries";
+import PasswordChangeSuccessContent from "@/components/shared/PasswordChangeSuccessContent";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
+import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { deleteCookie } from "cookies-next";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { useTranslations } from "next-intl";
+import { useAuth } from "@/context/AuthContext";
+
+const formSchema = z
+  .object({
+    password: z
+      .string()
+      .trim()
+      .min(2, {
+        message: "Old Password is required",
+      })
+      .min(8, {
+        message: "Password must be longer than or equal to 8 characters",
+      }),
+    newPassword: z
+      .string()
+      .trim()
+      .min(2, {
+        message: "New Password is required",
+      })
+      .min(8, {
+        message: "Password must be longer than or equal to 8 characters",
+      }),
+    confirmPassword: z
+      .string()
+      .trim()
+      .min(2, {
+        message: "Password is required",
+      })
+      .min(8, {
+        message: "Password must be longer than or equal to 8 characters",
+      }),
+  })
+  .superRefine(({ newPassword, confirmPassword }, ctx) => {
+    if (newPassword !== confirmPassword) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Passwords do not match",
+        path: ["confirmPassword"],
+      });
+    }
+  });
+
+export default function ChangePasswordPage() {
+  const t = useTranslations();
+  const { langDir } = useAuth();
+  const router = useRouter();
+  const { toast } = useToast();
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      password: "",
+      newPassword: "",
+      confirmPassword: "",
+    },
+  });
+  const [showSuccess, setShowSuccess] = useState(false);
+  const changePassword = useChangePassword();
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const response = await changePassword.mutateAsync(values, {
+      onError: (err) => {
+        toast({
+          title: t("password_change_failed"),
+          description: err?.response?.data?.message,
+          variant: "danger",
+        });
+        form.reset();
+        deleteCookie(PUREMOON_TOKEN_KEY);
+      },
+    });
+
+    if (response?.status && response?.data) {
+      toast({
+        title: t("password_change_successful"),
+        description: response?.message,
+        variant: "success",
+      });
+      form.reset();
+      deleteCookie(PUREMOON_TOKEN_KEY);
+      setShowSuccess(true);
+      setTimeout(() => {
+        router.push("/home");
+        setShowSuccess(false);
+      }, 3000);
+    } else {
+      toast({
+        title: t("password_change_failed"),
+        description: response?.message,
+        variant: "danger",
+      });
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Header Section */}
+      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
+        <h2 className="text-2xl font-bold tracking-tight text-gray-900" dir={langDir} translate="no">
+          {t("change_password")}
+        </h2>
+        <p className="mt-1.5 text-sm text-gray-600" translate="no">
+          {t("update_your_password_to_keep_your_account_secure")}
+        </p>
+      </div>
+
+      {showSuccess ? (
+        <div className="overflow-hidden rounded-xl border border-green-200 bg-white p-8 shadow-sm">
+          <PasswordChangeSuccessContent />
+        </div>
+      ) : (
+        <>
+          {/* Form Section */}
+          <div className="overflow-hidden rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
+            <Form {...form}>
+              <form
+                className="space-y-6"
+                onSubmit={form.handleSubmit(onSubmit)}
+              >
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem dir={langDir}>
+                      <FormLabel className="text-sm font-semibold text-gray-700" translate="no">
+                        {t("old_password")}
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          placeholder="**********"
+                          className="h-12 rounded-lg border-gray-300 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-0"
+                          {...field}
+                          dir={langDir}
+                        />
+                      </FormControl>
+                      <FormMessage className="text-sm" />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="newPassword"
+                  render={({ field }) => (
+                    <FormItem dir={langDir}>
+                      <FormLabel className="text-sm font-semibold text-gray-700" translate="no">
+                        {t("new_password")}
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          placeholder="**********"
+                          className="h-12 rounded-lg border-gray-300 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-0"
+                          {...field}
+                          dir={langDir}
+                        />
+                      </FormControl>
+                      <FormMessage className="text-sm" />
+                      <p className="mt-2 text-xs text-gray-500" translate="no">
+                        {t("password_must_be_at_least_8_characters")}
+                      </p>
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="confirmPassword"
+                  render={({ field }) => (
+                    <FormItem dir={langDir}>
+                      <FormLabel className="text-sm font-semibold text-gray-700" translate="no">
+                        {t("reenter_new_password")}
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          placeholder="**********"
+                          className="h-12 rounded-lg border-gray-300 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-0"
+                          {...field}
+                          dir={langDir}
+                        />
+                      </FormControl>
+                      <FormMessage className="text-sm" />
+                    </FormItem>
+                  )}
+                />
+
+                <div className="flex items-center gap-4 pt-4">
+                  <Button
+                    disabled={changePassword.isPending}
+                    type="submit"
+                    className="h-12 flex-1 rounded-lg bg-blue-600 text-base font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 sm:flex-none sm:px-8"
+                    translate="no"
+                  >
+                    {changePassword.isPending ? (
+                      <>
+                        <Image
+                          src="/images/load.png"
+                          alt="loader-icon"
+                          width={20}
+                          height={20}
+                          className="mr-2 animate-spin"
+                        />
+                        {t("please_wait")}
+                      </>
+                    ) : (
+                      t("change_password")
+                    )}
+                  </Button>
+                </div>
+              </form>
+            </Form>
+          </div>
+
+          {/* Security Tips Section */}
+          <div className="overflow-hidden rounded-xl border border-amber-200 bg-amber-50 p-4 shadow-sm">
+            <div className="flex gap-3">
+              <svg
+                className="h-5 w-5 flex-shrink-0 text-amber-600"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <div className="flex-1">
+                <h3 className="text-sm font-medium text-amber-900" translate="no">
+                  {t("security_tips")}
+                </h3>
+                <ul className="mt-2 space-y-1 text-sm text-amber-700">
+                  <li translate="no">• {t("use_a_strong_unique_password")}</li>
+                  <li translate="no">• {t("dont_reuse_passwords_from_other_sites")}</li>
+                  <li translate="no">• {t("consider_using_a_password_manager")}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
