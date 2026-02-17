@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { sanitizeHtml } from "@/utils/sanitize";
 import {
   useProductById,
   useOneWithProductPrice,
@@ -994,10 +995,10 @@ const ProductDetailsPage = () => {
                                       dir={langDir}
                                       translate="no"
                                       dangerouslySetInnerHTML={{
-                                        __html: textContent.replace(
+                                        __html: sanitizeHtml(textContent.replace(
                                           /\n/g,
                                           "<br/>",
-                                        ),
+                                        )),
                                       }}
                                     />
                                   );
