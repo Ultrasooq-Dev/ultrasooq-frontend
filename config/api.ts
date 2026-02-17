@@ -1,7 +1,7 @@
 // API Configuration
 export const API_CONFIG = {
   BASE_URL:
-    process.env.NEXT_PUBLIC_API_URL || "https://ultrasooq-api.duckdns.org", // Backend API URL chnaged
+    process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/v1", // Backend API URL - defaults to local dev
   TIMEOUT: 10000,
 };
 
