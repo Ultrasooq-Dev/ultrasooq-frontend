@@ -16,16 +16,14 @@ const handler = NextAuth({
     error: "/login",
   },
   callbacks: {
-    async signIn({ user, account, profile }) {
+    async signIn() {
       // Allow all Google sign-ins
       return true;
     },
-    async jwt({ token, account, profile }) {
-      // Removed Google People API call for phone/DOB
+    async jwt({ token }) {
       return token;
     },
-    async session({ session, token }) {
-      // Removed phone number and date of birth from session
+    async session({ session }) {
       return session;
     },
   },
