@@ -337,6 +337,7 @@ const Footer = () => {
                 <div className="relative">
                   <ControlledTextInput
                     name="email"
+                    stableId="footer-newsletter-email"
                     placeholder={t("email_address")}
                     dir={langDir}
                     translate="no"

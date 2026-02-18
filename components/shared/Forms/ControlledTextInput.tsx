@@ -14,13 +14,15 @@ import { useAuth } from "@/context/AuthContext";
 interface ControlledTextInputProps extends InputProps {
   label?: string;
   name: string;
-  showLabel?: boolean
+  showLabel?: boolean;
+  stableId?: string;
 }
 
 const ControlledTextInput: React.FC<ControlledTextInputProps> = ({
   label,
   name,
   showLabel,
+  stableId,
   ...props
 }) => {
   const formContext = useFormContext();
@@ -34,7 +36,7 @@ const ControlledTextInput: React.FC<ControlledTextInputProps> = ({
       control={formContext.control}
       name={name}
       render={({ field }) => (
-        <FormItem className={cn(
+        <FormItem stableId={stableId} className={cn(
           "mt-2 flex w-full flex-col gap-y-1",
           props.className || ""
         )}>

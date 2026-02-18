@@ -455,7 +455,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
 
   const menuItems = getMenuItems();
 
-  // Show loading state when not on client side
+  // Don't render anything if not on client side yet
   if (!isClient) {
     return null;
   }
