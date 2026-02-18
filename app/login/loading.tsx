@@ -1,37 +1,97 @@
 export default function LoginLoading() {
   return (
-    <div className="flex min-h-[60vh] items-center justify-center animate-pulse px-4">
-      <div className="w-full max-w-md rounded-lg border border-gray-100 bg-white p-8 shadow-sm">
-        {/* Logo / Title */}
-        <div className="mb-6 flex justify-center">
-          <div className="h-10 w-32 rounded bg-gray-200" />
-        </div>
-
-        <div className="mb-6 h-7 w-24 rounded bg-gray-200" />
-
-        {/* Form Fields */}
-        <div className="space-y-4">
-          <div>
-            <div className="mb-2 h-4 w-16 rounded bg-gray-200" />
-            <div className="h-10 w-full rounded bg-gray-200" />
+    <div className="flex min-h-screen w-full animate-pulse bg-white">
+      {/* Left Panel Skeleton (Desktop Only) */}
+      <div className="hidden lg:flex lg:w-[48%] xl:w-[50%] bg-gradient-to-br from-orange-400 via-orange-300 to-amber-300">
+        <div className="flex flex-col justify-between w-full p-10 xl:p-14">
+          {/* Logo skeleton */}
+          <div className="flex items-center gap-3">
+            <div className="h-12 w-12 rounded-xl bg-white/30" />
+            <div className="h-7 w-32 rounded bg-white/30" />
           </div>
-          <div>
-            <div className="mb-2 h-4 w-20 rounded bg-gray-200" />
-            <div className="h-10 w-full rounded bg-gray-200" />
+
+          {/* Title & features skeleton */}
+          <div className="flex-1 flex flex-col justify-center py-10">
+            <div className="h-10 w-64 rounded bg-white/20 mb-3" />
+            <div className="h-10 w-48 rounded bg-white/20 mb-4" />
+            <div className="h-5 w-72 rounded bg-white/15 mb-10" />
+
+            <div className="space-y-5">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="flex items-start gap-4">
+                  <div className="h-10 w-10 rounded-lg bg-white/20 flex-shrink-0" />
+                  <div className="flex-1">
+                    <div className="h-4 w-32 rounded bg-white/20 mb-2" />
+                    <div className="h-3 w-48 rounded bg-white/15" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Stats skeleton */}
+          <div className="flex items-center gap-6">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="flex items-center gap-6">
+                <div>
+                  <div className="h-7 w-14 rounded bg-white/25 mb-1" />
+                  <div className="h-3 w-20 rounded bg-white/15" />
+                </div>
+                {i < 3 && <div className="w-px h-10 bg-white/20" />}
+              </div>
+            ))}
           </div>
         </div>
+      </div>
 
-        {/* Forgot Password */}
-        <div className="mt-3 flex justify-end">
-          <div className="h-4 w-32 rounded bg-gray-200" />
+      {/* Right Panel Skeleton */}
+      <div className="flex-1 flex flex-col min-h-screen">
+        {/* Top bar */}
+        <div className="flex items-center justify-between px-4 sm:px-8 py-4">
+          <div className="lg:hidden flex items-center gap-2">
+            <div className="h-9 w-9 rounded-lg bg-gray-200" />
+            <div className="h-5 w-24 rounded bg-gray-200" />
+          </div>
+          <div className="hidden lg:block" />
+          <div className="h-9 w-28 rounded-lg bg-gray-200" />
         </div>
 
-        {/* Submit Button */}
-        <div className="mt-6 h-12 w-full rounded bg-gray-200" />
+        {/* Form skeleton */}
+        <div className="flex-1 flex items-center justify-center px-4 sm:px-8 pb-8">
+          <div className="w-full max-w-md">
+            <div className="mb-6">
+              <div className="h-8 w-24 rounded bg-gray-200 mb-2" />
+              <div className="h-4 w-48 rounded bg-gray-200" />
+            </div>
 
-        {/* Sign Up Link */}
-        <div className="mt-4 flex justify-center">
-          <div className="h-4 w-48 rounded bg-gray-200" />
+            <div className="rounded-2xl border border-gray-100 bg-white p-6 sm:p-8">
+              <div className="space-y-4">
+                <div>
+                  <div className="mb-2 h-4 w-28 rounded bg-gray-200" />
+                  <div className="h-10 w-full rounded bg-gray-200" />
+                </div>
+                <div>
+                  <div className="mb-2 h-4 w-20 rounded bg-gray-200" />
+                  <div className="h-10 w-full rounded bg-gray-200" />
+                </div>
+              </div>
+
+              <div className="mt-4 flex justify-between">
+                <div className="h-4 w-24 rounded bg-gray-200" />
+                <div className="h-4 w-32 rounded bg-gray-200" />
+              </div>
+
+              <div className="mt-5 h-12 w-full rounded-lg bg-gray-200" />
+
+              <div className="my-5 h-px w-full bg-gray-200" />
+
+              <div className="h-11 w-full rounded-lg bg-gray-200" />
+
+              <div className="mt-5 flex justify-center">
+                <div className="h-4 w-48 rounded bg-gray-200" />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

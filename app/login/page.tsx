@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import {
@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useToast } from "@/components/ui/use-toast";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { LANGUAGES, PUREMOON_TOKEN_KEY } from "@/utils/constants";
 import { setCookie } from "cookies-next";
 import Image from "next/image";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -58,13 +58,17 @@ const formSchema = (t: any) => {
 
 export default function LoginPage() {
   const t = useTranslations();
-  const { langDir } = useAuth();
+  const { langDir, applyTranslation, selectedLocale } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
   const { data: session } = useSession();
   const { setUser, setPermissions } = useAuth();
   const [rememberMe, setRememberMe] = useState<CheckedState>(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [langDropdownOpen, setLangDropdownOpen] = useState(false);
+  const langDropdownRef = useRef<HTMLDivElement>(null);
+
+  const currentLang = LANGUAGES.find((l) => l.locale === selectedLocale) || LANGUAGES[0];
 
   const defaultValues = {
     email: "",
@@ -80,26 +84,31 @@ export default function LoginPage() {
   const login = useLogin();
   const updateCart = useUpdateUserCartByDeviceId();
 
+  // Close language dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (langDropdownRef.current && !langDropdownRef.current.contains(e.target as Node)) {
+        setLangDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const onSubmit = async (values: typeof defaultValues) => {
     const response: any = await login.mutateAsync(values);
 
     if (response?.status && response?.accessToken) {
-      // store in cookie
-      // setCookie(PUREMOON_TOKEN_KEY, response.accessToken);
       if (rememberMe) {
         setCookie(PUREMOON_TOKEN_KEY, response.accessToken, {
-          // 7 days
           expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         });
       } else {
         setCookie(PUREMOON_TOKEN_KEY, response.accessToken, {
-          // 1 days
           expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
         });
       }
 
-      // TODO: delete cart for trade role freelancer and company if logged in using device id
-      // update cart
       await updateCart.mutateAsync({ deviceId });
       setUser({
         id: response.data?.id,
@@ -171,8 +180,6 @@ export default function LoginPage() {
         });
         setCookie(PUREMOON_TOKEN_KEY, response.accessToken);
 
-        // TODO: delete cart for trade role freelancer and company if logged in using device id
-        // update cart
         await updateCart.mutateAsync({ deviceId });
         form.reset();
         localStorage.removeItem("loginType");
@@ -208,7 +215,6 @@ export default function LoginPage() {
         handleSocialLogin(session.user);
       }
     } else {
-      // Reset loading state if no session (user cancelled or error)
       setIsGoogleLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -217,32 +223,199 @@ export default function LoginPage() {
   return (
     <>
       <title dir={langDir} translate="no">{`${t("login")} | Ultrasooq`}</title>
-      <section className="relative flex min-h-screen w-full items-center justify-center bg-white px-4 py-4 sm:py-6">
-        {/* Main Content */}
-        <div className="relative z-10 mx-auto w-full max-w-md">
-          {/* Login Card */}
-          <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl">
-            {/* Decorative Header */}
-            <div className="from-dark-orange via-dark-orange h-1.5 bg-gradient-to-r to-orange-600"></div>
+      <section className="relative flex min-h-screen w-full bg-white" dir={langDir}>
+        {/* ======================= LEFT PANEL - Company Branding (Desktop Only) ======================= */}
+        <div className="hidden lg:flex lg:w-[48%] xl:w-[50%] relative overflow-hidden">
+          {/* Background gradient */}
+          <div className="absolute inset-0 bg-gradient-to-br from-orange-600 via-orange-500 to-amber-500" />
 
-            <div className="p-6 sm:p-8">
-              {/* Header Section */}
-              <div className="mb-6 text-center">
-                <div className="from-dark-orange mb-3 inline-flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br to-orange-600 shadow-md">
-                  <svg
-                    className="h-6 w-6 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                    />
-                  </svg>
+          {/* Decorative pattern overlay */}
+          <div className="absolute inset-0 opacity-10">
+            <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <pattern id="grid-pattern" width="40" height="40" patternUnits="userSpaceOnUse">
+                  <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" strokeWidth="0.5" />
+                </pattern>
+              </defs>
+              <rect width="100%" height="100%" fill="url(#grid-pattern)" />
+            </svg>
+          </div>
+
+          {/* Decorative circles */}
+          <div className="absolute -top-20 -left-20 w-72 h-72 bg-white/10 rounded-full blur-xl" />
+          <div className="absolute bottom-10 -right-16 w-80 h-80 bg-white/5 rounded-full blur-2xl" />
+          <div className="absolute top-1/2 left-1/4 w-40 h-40 bg-white/5 rounded-full blur-lg" />
+
+          {/* Content */}
+          <div className="relative z-10 flex flex-col justify-between w-full p-10 xl:p-14">
+            {/* Logo & Brand */}
+            <div>
+              <Link href="/home" className="inline-flex items-center gap-3 group">
+                <Image
+                  src="/images/logo-v2.png"
+                  alt="Ultrasooq"
+                  width={48}
+                  height={48}
+                  className="rounded-xl shadow-lg transition-transform group-hover:scale-105"
+                />
+                <span className="text-2xl xl:text-3xl font-bold text-white tracking-tight">
+                  Ultrasooq
+                </span>
+              </Link>
+            </div>
+
+            {/* Value Propositions */}
+            <div className="flex-1 flex flex-col justify-center py-10">
+              <h1 className="text-3xl xl:text-4xl font-bold text-white leading-tight mb-4">
+                {t("login") === "Login" ? "Your Global B2B" : t("login")}
+                <br />
+                <span className="text-orange-100">
+                  {t("login") === "Login" ? "Marketplace" : ""}
+                </span>
+              </h1>
+              <p className="text-orange-100 text-base xl:text-lg mb-10 max-w-md leading-relaxed">
+                Connect with verified suppliers and buyers worldwide. Trade smarter, grow faster.
+              </p>
+
+              {/* Feature Points */}
+              <div className="space-y-5">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-white font-semibold text-sm xl:text-base">Global Trade Network</h3>
+                    <p className="text-orange-100/80 text-xs xl:text-sm mt-0.5">
+                      Access thousands of verified suppliers across 190+ countries
+                    </p>
+                  </div>
                 </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-white font-semibold text-sm xl:text-base">Secure Transactions</h3>
+                    <p className="text-orange-100/80 text-xs xl:text-sm mt-0.5">
+                      Trade with confidence using our verified payment protection
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-white font-semibold text-sm xl:text-base">Grow Your Business</h3>
+                    <p className="text-orange-100/80 text-xs xl:text-sm mt-0.5">
+                      Expand your reach with powerful sourcing and selling tools
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Stats */}
+            <div className="flex items-center gap-6 xl:gap-8">
+              <div>
+                <div className="text-2xl xl:text-3xl font-bold text-white">10K+</div>
+                <div className="text-orange-100/70 text-xs xl:text-sm">Active Suppliers</div>
+              </div>
+              <div className="w-px h-10 bg-white/20" />
+              <div>
+                <div className="text-2xl xl:text-3xl font-bold text-white">190+</div>
+                <div className="text-orange-100/70 text-xs xl:text-sm">Countries</div>
+              </div>
+              <div className="w-px h-10 bg-white/20" />
+              <div>
+                <div className="text-2xl xl:text-3xl font-bold text-white">50K+</div>
+                <div className="text-orange-100/70 text-xs xl:text-sm">Products</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ======================= RIGHT PANEL - Login Form ======================= */}
+        <div className="flex-1 flex flex-col min-h-screen">
+          {/* Top Bar with Language Selector */}
+          <div className="flex items-center justify-between px-4 sm:px-8 py-4">
+            {/* Mobile Logo */}
+            <Link href="/home" className="lg:hidden inline-flex items-center gap-2">
+              <Image
+                src="/images/logo-v2.png"
+                alt="Ultrasooq"
+                width={36}
+                height={36}
+                className="rounded-lg"
+              />
+              <span className="text-lg font-bold text-gray-900">Ultrasooq</span>
+            </Link>
+            <div className="hidden lg:block" />
+
+            {/* Language Selector */}
+            <div className="relative" ref={langDropdownRef}>
+              <button
+                type="button"
+                onClick={() => setLangDropdownOpen(!langDropdownOpen)}
+                className="flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 transition-colors text-sm font-medium text-gray-700"
+              >
+                <span className="text-base">{currentLang.flag}</span>
+                <span className="hidden sm:inline">{currentLang.name}</span>
+                <svg
+                  className={`w-4 h-4 text-gray-400 transition-transform ${langDropdownOpen ? "rotate-180" : ""}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {langDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-56 max-h-72 overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-xl z-50">
+                  <div className="py-1">
+                    {LANGUAGES.map((lang) => (
+                      <button
+                        key={lang.locale}
+                        type="button"
+                        onClick={() => {
+                          applyTranslation(lang.locale);
+                          setLangDropdownOpen(false);
+                        }}
+                        className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-orange-50 ${
+                          lang.locale === selectedLocale
+                            ? "bg-orange-50 text-orange-700 font-semibold"
+                            : "text-gray-700"
+                        }`}
+                      >
+                        <span className="text-lg">{lang.flag}</span>
+                        <span>{lang.name}</span>
+                        {lang.locale === selectedLocale && (
+                          <svg className="w-4 h-4 ml-auto text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Login Form Centered */}
+          <div className="flex-1 flex items-center justify-center px-4 sm:px-8 pb-8">
+            <div className="w-full max-w-md">
+              {/* Header Section */}
+              <div className="mb-6 text-center lg:text-left">
                 <h2
                   className="mb-1 text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl"
                   dir={langDir}
@@ -251,7 +424,7 @@ export default function LoginPage() {
                   {t("login")}
                 </h2>
                 <p
-                  className="text-xs text-gray-600 sm:text-sm"
+                  className="text-sm text-gray-500"
                   dir={langDir}
                   translate="no"
                 >
@@ -259,47 +432,44 @@ export default function LoginPage() {
                 </p>
               </div>
 
-              {/* Form Section */}
-              <div className="w-full">
+              {/* Form Card */}
+              <div className="rounded-2xl border border-gray-100 bg-white p-6 sm:p-8 shadow-sm">
+                {/* Form Section */}
                 <Form {...form}>
                   <form
-                    className="space-y-3.5"
+                    className="space-y-4"
                     onSubmit={form.handleSubmit(onSubmit)}
                   >
-                    <div className="space-y-1">
-                      <FormField
-                        control={form.control}
-                        name="email"
-                        render={({ field }) => (
-                          <FormItem className="mt-2 flex w-full flex-col gap-y-1">
-                            <FormLabel dir={langDir}>{t("email_phone_id")}</FormLabel>
-                            <FormControl>
-                              <Input
-                                {...field}
-                                className="theme-form-control-s1"
-                                placeholder={t("enter_email_phone_id")}
-                                dir={langDir}
-                                onChange={(e) => {
-                                  field.onChange(e.target.value.toLowerCase());
-                                }}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem className="flex w-full flex-col gap-y-1">
+                          <FormLabel dir={langDir}>{t("email_phone_id")}</FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              className="theme-form-control-s1"
+                              placeholder={t("enter_email_phone_id")}
+                              dir={langDir}
+                              onChange={(e) => {
+                                field.onChange(e.target.value.toLowerCase());
+                              }}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                    <div className="space-y-1">
-                      <ControlledTextInput
-                        label={t("password")}
-                        name="password"
-                        placeholder="**********"
-                        type="password"
-                        dir={langDir}
-                        translate="no"
-                      />
-                    </div>
+                    <ControlledTextInput
+                      label={t("password")}
+                      name="password"
+                      placeholder="**********"
+                      type="password"
+                      dir={langDir}
+                      translate="no"
+                    />
 
                     {/* Remember Me & Forgot Password */}
                     <div className="flex items-center justify-between pt-0.5">
@@ -360,43 +530,23 @@ export default function LoginPage() {
                   </form>
                 </Form>
 
-                {/* Sign Up Link */}
-                <div className="mt-4 text-center">
-                  <span
-                    className="text-xs font-medium text-gray-600 sm:text-sm"
-                    dir={langDir}
-                    translate="no"
-                  >
-                    {t("dont_have_an_account")}{" "}
-                    <Link
-                      href="/register"
-                      className="text-dark-orange font-semibold underline-offset-2 transition-colors duration-200 hover:text-orange-700 hover:underline"
+                {/* Divider */}
+                <div className="relative my-5">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-gray-200"></div>
+                  </div>
+                  <div className="relative flex justify-center text-xs sm:text-sm">
+                    <span
+                      className="bg-white px-3 font-medium text-gray-500"
                       dir={langDir}
+                      translate="no"
                     >
-                      {t("signup")}
-                    </Link>
-                  </span>
+                      {t("or")}
+                    </span>
+                  </div>
                 </div>
-              </div>
 
-              {/* Divider */}
-              <div className="relative my-5">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-200"></div>
-                </div>
-                <div className="relative flex justify-center text-xs sm:text-sm">
-                  <span
-                    className="bg-white px-3 font-medium text-gray-500"
-                    dir={langDir}
-                    translate="no"
-                  >
-                    {t("or")}
-                  </span>
-                </div>
-              </div>
-
-              {/* Social Login Buttons */}
-              <div className="space-y-2.5">
+                {/* Social Login Buttons */}
                 <Button
                   variant="outline"
                   className="h-10 w-full rounded-lg border-2 border-gray-200 text-xs font-semibold text-gray-700 shadow-sm transition-all duration-200 hover:border-red-500 hover:bg-red-50 hover:text-red-700 hover:shadow-md sm:h-11 sm:text-sm"
@@ -433,6 +583,24 @@ export default function LoginPage() {
                     </span>
                   )}
                 </Button>
+
+                {/* Sign Up Link */}
+                <div className="mt-5 text-center">
+                  <span
+                    className="text-xs font-medium text-gray-600 sm:text-sm"
+                    dir={langDir}
+                    translate="no"
+                  >
+                    {t("dont_have_an_account")}{" "}
+                    <Link
+                      href="/register"
+                      className="text-dark-orange font-semibold underline-offset-2 transition-colors duration-200 hover:text-orange-700 hover:underline"
+                      dir={langDir}
+                    >
+                      {t("signup")}
+                    </Link>
+                  </span>
+                </div>
               </div>
             </div>
           </div>
