@@ -63,6 +63,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { IoCloseOutline } from "react-icons/io5";
 import { MdOutlineImageNotSupported } from "react-icons/md";
 import { useClickOutside } from "use-events";
+import SearchAutocomplete from "@/components/modules/search/SearchAutocomplete";
 
 type CategoryProps = {
   id: number;
@@ -210,6 +211,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
   const userStatus = accessControl.userStatus;
 
   const [searchTerm, setSearchTerm] = useState(searchParams?.get("term") || "");
+  const [showAutocomplete, setShowAutocomplete] = useState(false);
 
   const [isActive, setIsActive] = useState(false);
 
@@ -241,18 +243,26 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
     } else {
       router.replace(`/trending`); // Update URL dynamically
     }
-  }, 500);
+  }, 300);
 
   const handleSearch = (event: any) => {
     const newTerm = event.target.value;
     setSearchTerm(newTerm);
+    setShowAutocomplete(newTerm.length >= 2);
     updateURL(newTerm);
   };
 
   const handleKeyDown = (event: any) => {
     if (event.key === "Enter") {
+      setShowAutocomplete(false);
       handleSearch(event);
     }
+  };
+
+  const handleAutocompleteSelect = (term: string) => {
+    setSearchTerm(term);
+    setShowAutocomplete(false);
+    updateURL(term);
   };
 
   const memoizedInitials = useMemo(() => {
@@ -952,8 +962,12 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                 }`}
                 placeholder={t("global_search_placeholder")}
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  setShowAutocomplete(e.target.value.length >= 2);
+                }}
                 onKeyDown={handleKeyDown}
+                onFocus={() => searchTerm.length >= 2 && setShowAutocomplete(true)}
                 translate="no"
                 aria-label="Search products"
               />
@@ -972,6 +986,13 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                   d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                 />
               </svg>
+              <SearchAutocomplete
+                searchTerm={searchTerm}
+                onSelect={handleAutocompleteSelect}
+                visible={showAutocomplete}
+                onClose={() => setShowAutocomplete(false)}
+                langDir={langDir}
+              />
             </div>
             {/* Conditionally render buttons based on language - swap positions in Arabic */}
             {langDir === "rtl" ? (
@@ -1353,8 +1374,12 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                         }`}
                         placeholder={t("global_search_placeholder")}
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange={(e) => {
+                          setSearchTerm(e.target.value);
+                          setShowAutocomplete(e.target.value.length >= 2);
+                        }}
                         onKeyDown={handleKeyDown}
+                        onFocus={() => searchTerm.length >= 2 && setShowAutocomplete(true)}
                         dir={langDir}
                         translate="no"
                         aria-label="Search products"
@@ -1374,6 +1399,13 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                           d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                         />
                       </svg>
+                      <SearchAutocomplete
+                        searchTerm={searchTerm}
+                        onSelect={handleAutocompleteSelect}
+                        visible={showAutocomplete}
+                        onClose={() => setShowAutocomplete(false)}
+                        langDir={langDir}
+                      />
                     </div>
                     {/* Category button - last in Arabic */}
                     {mounted && (
@@ -1453,8 +1485,12 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                         }`}
                         placeholder={t("global_search_placeholder")}
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange={(e) => {
+                          setSearchTerm(e.target.value);
+                          setShowAutocomplete(e.target.value.length >= 2);
+                        }}
                         onKeyDown={handleKeyDown}
+                        onFocus={() => searchTerm.length >= 2 && setShowAutocomplete(true)}
                         dir={langDir}
                         translate="no"
                         aria-label="Search products"
@@ -1474,6 +1510,13 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                           d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                         />
                       </svg>
+                      <SearchAutocomplete
+                        searchTerm={searchTerm}
+                        onSelect={handleAutocompleteSelect}
+                        visible={showAutocomplete}
+                        onClose={() => setShowAutocomplete(false)}
+                        langDir={langDir}
+                      />
                     </div>
                     {/* Search button - last in English */}
                     <button

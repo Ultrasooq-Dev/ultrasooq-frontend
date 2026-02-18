@@ -192,6 +192,8 @@ export const fetchAllProducts = (payload: {
   isOwner?: string;
   userType?: string;
   related?: boolean;
+  ratingMin?: number;
+  hasDiscount?: boolean;
 }) => {
   const related = payload.related;
   delete payload?.related;
@@ -865,6 +867,40 @@ export const trackProductSearch = (payload: {
     method: "POST",
     url: `${getApiUrl()}/product/trackSearch`,
     data: payload,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+    },
+  });
+};
+
+export const fetchSearchSuggestions = (payload: {
+  term: string;
+  userId?: number;
+  deviceId?: string;
+}) => {
+  return axios({
+    method: "GET",
+    url: urlcat(`${getApiUrl()}/product/searchSuggestions`, payload),
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+    },
+  });
+};
+
+export const fetchAiSearch = (payload: {
+  q: string;
+  page?: number;
+  limit?: number;
+  userId?: number;
+  userType?: string;
+}) => {
+  return axios({
+    method: "GET",
+    url: urlcat(`${getApiUrl()}/product/search/ai`, payload),
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",

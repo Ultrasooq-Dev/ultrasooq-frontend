@@ -46,6 +46,8 @@ import {
   trackProductView,
   trackProductClick,
   trackProductSearch,
+  fetchSearchSuggestions,
+  fetchAiSearch,
 } from "../requests/product.request";
 import {
   ICreateProduct,
@@ -265,6 +267,8 @@ export const useAllProducts = (
     isOwner?: string;
     userType?: string;
     related?: boolean;
+    ratingMin?: number;
+    hasDiscount?: boolean;
   },
   enabled = true,
 ) =>
@@ -913,3 +917,34 @@ export const useTrackProductSearch = () => {
       trackProductSearch(payload),
   });
 };
+
+export const useSearchSuggestions = (
+  payload: { term: string; userId?: number; deviceId?: string },
+  enabled = true,
+) =>
+  useQuery({
+    queryKey: ["search-suggestions", payload],
+    queryFn: async () => {
+      const res = await fetchSearchSuggestions(payload);
+      return res.data;
+    },
+    enabled: enabled && !!payload.term && payload.term.length >= 2,
+  });
+
+export const useAiSearch = (
+  payload: {
+    q: string;
+    page?: number;
+    limit?: number;
+    userId?: number;
+  },
+  enabled = true,
+) =>
+  useQuery({
+    queryKey: ["ai-search", payload],
+    queryFn: async () => {
+      const res = await fetchAiSearch(payload);
+      return res.data;
+    },
+    enabled: enabled && !!payload.q && payload.q.length >= 3,
+  });

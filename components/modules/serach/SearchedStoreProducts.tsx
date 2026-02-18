@@ -16,6 +16,13 @@ type SearchedStoreProductsType = {
     cartList: any[];
     setRecordsCount: (count: number) => void;
     hideHeader?: boolean;
+    sort?: string;
+    ratingMin?: number;
+    hasDiscount?: boolean;
+    onDidYouMean?: (suggestion: string | null) => void;
+    onTotalCount?: (count: number) => void;
+    onAutoCorrection?: (correction: { from: string; to: string } | null) => void;
+    overrideProducts?: any[];
 };
 
 const SearchedStoreProducts: React.FC<SearchedStoreProductsType> = ({
@@ -23,7 +30,14 @@ const SearchedStoreProducts: React.FC<SearchedStoreProductsType> = ({
     haveAccessToken,
     cartList,
     setRecordsCount,
-    hideHeader = false
+    hideHeader = false,
+    sort = "relevance",
+    ratingMin,
+    hasDiscount,
+    onDidYouMean,
+    onTotalCount,
+    onAutoCorrection,
+    overrideProducts,
 }) => {
     const t = useTranslations();
     const { langDir } = useAuth();
@@ -35,19 +49,23 @@ const SearchedStoreProducts: React.FC<SearchedStoreProductsType> = ({
     const allProductsQuery = useAllProducts({
         page: 1,
         limit: 20,
-        sort: "desc",
+        sort,
         term: searchTerm,
         userId: me?.data?.data?.tradeRole == "BUYER"
-            ? undefined 
-            : me?.data?.data?.tradeRole == "MEMBER" 
-            ? me?.data?.data?.addedBy 
+            ? undefined
+            : me?.data?.data?.tradeRole == "MEMBER"
+            ? me?.data?.data?.addedBy
             : me?.data?.data?.id,
-        userType: me?.data?.data?.tradeRole == "BUYER" ? "BUYER" : ""
-    }, !!searchTerm);
+        userType: me?.data?.data?.tradeRole == "BUYER" ? "BUYER" : "",
+        ratingMin,
+        hasDiscount,
+    }, !!searchTerm && !overrideProducts);
+
+    const sourceData = overrideProducts || allProductsQuery?.data?.data;
 
     const memoizedProducts = useMemo(() => {
         return (
-            allProductsQuery?.data?.data?.map((item: any) => ({
+            sourceData?.map((item: any) => ({
                 id: item.id,
                 productName: item?.productName || "-",
                 productPrice: item?.productPrice || 0,
@@ -84,8 +102,8 @@ const SearchedStoreProducts: React.FC<SearchedStoreProductsType> = ({
         );
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
-        allProductsQuery?.data?.data,
-        allProductsQuery?.data?.data?.length,
+        sourceData,
+        sourceData?.length,
     ]);
 
     const handleDeleteFromWishlist = async (productId: number) => {
@@ -142,14 +160,26 @@ const SearchedStoreProducts: React.FC<SearchedStoreProductsType> = ({
         setRecordsCount(memoizedProducts.length);
     }, [allProductsQuery?.isFetched, memoizedProducts.length]);
 
-    if (allProductsQuery?.isFetched && memoizedProducts.length == 0) {
+    useEffect(() => {
+        if (allProductsQuery?.data) {
+            onDidYouMean?.(allProductsQuery.data.didYouMean || null);
+            onTotalCount?.(allProductsQuery.data.totalCount || 0);
+            onAutoCorrection?.(allProductsQuery.data.autoCorrection || null);
+        }
+    }, [allProductsQuery?.data]);
+
+    if (!overrideProducts && allProductsQuery?.isFetched && memoizedProducts.length == 0) {
+        return null;
+    }
+
+    if (overrideProducts && memoizedProducts.length == 0) {
         return null;
     }
 
     if (hideHeader) {
         return (
             <>
-                {allProductsQuery.isLoading ? (
+                {!overrideProducts && allProductsQuery.isLoading ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                         {Array.from({ length: 4 }).map((_, index: number) => (
                             <SkeletonProductCardLoader key={index} />
