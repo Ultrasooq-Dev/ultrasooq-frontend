@@ -19,7 +19,7 @@ import { CreateSubAccountDialog } from "@/components/modules/accounts/CreateSubA
 
 export default function MyAccountsPage() {
   const t = useTranslations();
-  const { langDir } = useAuth();
+  const { langDir, setUser } = useAuth();
   const { toast } = useToast();
   const router = useRouter();
   const [showCreateForm, setShowCreateForm] = useState(false);
@@ -29,13 +29,24 @@ export default function MyAccountsPage() {
 
   const handleSwitchAccount = async (userAccountId: number) => {
     try {
-      await switchAccount.mutateAsync({ userAccountId });
+      const result = await switchAccount.mutateAsync({ userAccountId });
+      // Update AuthContext user with the switched account data
+      const account = result?.data?.account;
+      if (account) {
+        setUser({
+          id: account.id,
+          firstName: (account as any).firstName || "",
+          lastName: (account as any).lastName || "",
+          tradeRole: account.tradeRole || "",
+        });
+      }
       toast({
         title: "Account Switched",
         description: "Successfully switched to the selected account",
         variant: "success",
       });
-      router.push("/home");
+      // Full page reload ensures server-side auth picks up the new token
+      window.location.href = "/home";
     } catch (error: any) {
       toast({
         title: "Switch Failed",
@@ -48,13 +59,24 @@ export default function MyAccountsPage() {
 
   const handleSwitchToMainAccount = async () => {
     try {
-      await switchAccount.mutateAsync({ userAccountId: 0 });
+      const result = await switchAccount.mutateAsync({ userAccountId: 0 });
+      // Update AuthContext user with the main account data
+      const account = result?.data?.account;
+      if (account) {
+        setUser({
+          id: account.id,
+          firstName: (account as any).firstName || "",
+          lastName: (account as any).lastName || "",
+          tradeRole: account.tradeRole || "",
+        });
+      }
       toast({
         title: "Account Switched",
         description: "Successfully switched to main account",
         variant: "success",
       });
-      router.push("/home");
+      // Full page reload ensures server-side auth picks up the new token
+      window.location.href = "/home";
     } catch (error: any) {
       toast({
         title: "Switch Failed",

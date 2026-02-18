@@ -240,19 +240,13 @@ export const useCreateAccount = () => {
 
   return useMutation<ICreateAccount, APIResponseError, ICreateAccountRequest>({
     mutationFn: (payload) => createAccount(payload).then((res) => res.data),
-    onSuccess: (data) => {
-
-      // Reset all queries to ensure complete cache clearing
-      // This ensures fresh data is fetched after account creation
-      queryClient.resetQueries();
+    onSuccess: async (data) => {
+      // Clear all cached query data so fresh data is fetched after account creation
+      queryClient.removeQueries();
 
       // Then invalidate auth-related queries specifically
-      queryClient.invalidateQueries({ queryKey: ["myAccounts"] });
-      queryClient.invalidateQueries({ queryKey: ["currentAccount"] });
-
-      // Force refetch for auth queries
-      queryClient.refetchQueries({ queryKey: ["myAccounts"] });
-      queryClient.refetchQueries({ queryKey: ["currentAccount"] });
+      await queryClient.invalidateQueries({ queryKey: ["myAccounts"] });
+      await queryClient.invalidateQueries({ queryKey: ["currentAccount"] });
     },
     onError: (error) => {
     },
@@ -264,24 +258,18 @@ export const useSwitchAccount = () => {
 
   return useMutation<ISwitchAccount, APIResponseError, ISwitchAccountRequest>({
     mutationFn: (payload) => switchAccount(payload).then((res) => res.data),
-    onSuccess: (data) => {
-      // Update the token in cookies
+    onSuccess: async (data) => {
+      // Update the token in cookies FIRST
       setCookie(PUREMOON_TOKEN_KEY, data.data.accessToken);
 
-      // Reset all queries to ensure complete cache clearing
-      // This is necessary because product queries have different payloads (different userIds)
-      // and we need to ensure all cached data is cleared when switching accounts
-      queryClient.resetQueries();
+      // Clear all cached query data so stale data from the old account is removed.
+      // Use removeQueries instead of resetQueries to avoid canceling active observers.
+      queryClient.removeQueries();
 
-      // Then invalidate auth-related queries specifically
-      queryClient.invalidateQueries({ queryKey: ["myAccounts"] });
-      queryClient.invalidateQueries({ queryKey: ["currentAccount"] });
-      queryClient.invalidateQueries({ queryKey: ["me"] });
-
-      // Force immediate refetch for auth queries
-      queryClient.refetchQueries({ queryKey: ["myAccounts"] });
-      queryClient.refetchQueries({ queryKey: ["currentAccount"] });
-      queryClient.refetchQueries({ queryKey: ["me"] });
+      // After clearing cache, invalidate auth queries so they refetch with the new token
+      await queryClient.invalidateQueries({ queryKey: ["myAccounts"] });
+      await queryClient.invalidateQueries({ queryKey: ["currentAccount"] });
+      await queryClient.invalidateQueries({ queryKey: ["me"] });
     },
   });
 };
