@@ -105,6 +105,20 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
     new Map(),
   );
 
+  // Alibaba-style: Store 2-level-deep subcategory data for the grid panel
+  const [subcategoriesForGrid, setSubcategoriesForGrid] = useState<any[]>([]);
+  const [gridLoading, setGridLoading] = useState(false);
+
+  // Level 3: hovered Level 2 subcategory and its children
+  const [hoveredLevel2Id, setHoveredLevel2Id] = useState<number | null>(null);
+  const [level3Categories, setLevel3Categories] = useState<any[]>([]);
+  const [level3Loading, setLevel3Loading] = useState(false);
+
+  // Cache for grid subcategories (keyed by main category id)
+  const gridCacheRef = useRef<Map<number, any[]>>(new Map());
+  // Cache for level 3 children (keyed by level 2 category id)
+  const level3CacheRef = useRef<Map<number, any[]>>(new Map());
+
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Calculate header height
@@ -267,8 +281,33 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
           ({ subcategories }) => subcategories.length > 0,
         );
         if (firstCategoryWithSubcategories) {
-          setSelectedMainCategory(firstCategoryWithSubcategories.category.id);
-          setSelectedLevels([firstCategoryWithSubcategories.category.id, null, null, null, null, null]);
+          const firstId = firstCategoryWithSubcategories.category.id;
+          setSelectedMainCategory(firstId);
+          setSelectedLevels([firstId, null, null, null, null, null]);
+
+          // Pre-load grid data for the first category (desktop)
+          if (typeof window !== "undefined" && window.innerWidth >= 768) {
+            const level1 = firstCategoryWithSubcategories.subcategories || [];
+            const level1WithChildren = await Promise.all(
+              level1.map(async (sub: any) => {
+                const hasChildren =
+                  (sub.children && sub.children.length > 0) ||
+                  sub.hasChildren ||
+                  (sub._originalChildren && sub._originalChildren.length > 0);
+                if (hasChildren) {
+                  try {
+                    const children = await fetchCategoryChildren(sub.id, sub._originalChildren);
+                    return { ...sub, children };
+                  } catch {
+                    return sub;
+                  }
+                }
+                return sub;
+              })
+            );
+            gridCacheRef.current.set(firstId, level1WithChildren);
+            setSubcategoriesForGrid(level1WithChildren);
+          }
         }
       }
     };
@@ -441,22 +480,104 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
     }
   };
 
-  // Handle category click (only for leaf categories)
+  // Handle category click - navigate and close sidebar
   const handleCategoryClick = (categoryId: number) => {
-    // Navigate to category page
     const url = `/trending?category=${categoryId}`;
     if (onCategorySelect) {
       onCategorySelect(categoryId);
     } else {
       router.push(url);
     }
+    onClose();
   };
 
   // Handle main category hover (level 0)
-  const handleMainCategoryHover = (categoryId: number) => {
+  const handleMainCategoryHover = async (categoryId: number) => {
     setSelectedMainCategory(categoryId);
     setSelectedLevels([categoryId, null, null, null, null, null]);
     setLoadedChildren(new Map());
+
+    // Desktop: Fetch 2-level deep subcategories for Alibaba-style grid
+    if (typeof window !== "undefined" && window.innerWidth >= 768) {
+      // Check cache first
+      if (gridCacheRef.current.has(categoryId)) {
+        setSubcategoriesForGrid(gridCacheRef.current.get(categoryId) || []);
+        return;
+      }
+
+      setGridLoading(true);
+
+      const mainCat = categoriesWithSubcategories.find(
+        (c) => c.category.id === categoryId
+      );
+      const level1 = mainCat?.subcategories || [];
+
+      // For each level 1 subcategory, fetch its level 2 children
+      const level1WithChildren = await Promise.all(
+        level1.map(async (sub: any) => {
+          const hasChildren =
+            (sub.children && sub.children.length > 0) ||
+            sub.hasChildren ||
+            (sub._originalChildren && sub._originalChildren.length > 0);
+
+          if (hasChildren) {
+            try {
+              const children = await fetchCategoryChildren(
+                sub.id,
+                sub._originalChildren
+              );
+              return { ...sub, children };
+            } catch {
+              return sub;
+            }
+          }
+          return sub;
+        })
+      );
+
+      // Cache the result
+      gridCacheRef.current.set(categoryId, level1WithChildren);
+      setSubcategoriesForGrid(level1WithChildren);
+      setGridLoading(false);
+    }
+
+    // Reset Level 3 when changing main category
+    setHoveredLevel2Id(null);
+    setLevel3Categories([]);
+  };
+
+  // Handle Level 2 subcategory hover — loads Level 3 children
+  const handleLevel2Hover = async (subcategory: any) => {
+    const hasChildren =
+      (subcategory.children && subcategory.children.length > 0) ||
+      subcategory.hasChildren ||
+      (subcategory._originalChildren && subcategory._originalChildren.length > 0);
+
+    setHoveredLevel2Id(subcategory.id);
+
+    if (!hasChildren) {
+      setLevel3Categories([]);
+      return;
+    }
+
+    // Check cache
+    if (level3CacheRef.current.has(subcategory.id)) {
+      setLevel3Categories(level3CacheRef.current.get(subcategory.id) || []);
+      return;
+    }
+
+    setLevel3Loading(true);
+    try {
+      const children = await fetchCategoryChildren(
+        subcategory.id,
+        subcategory._originalChildren
+      );
+      level3CacheRef.current.set(subcategory.id, children);
+      setLevel3Categories(children);
+    } catch {
+      setLevel3Categories([]);
+    }
+    setLevel3Loading(false);
   };
 
   // Mobile: Get current categories to display based on nav stack
@@ -1011,8 +1132,8 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
         className={cn(
           "fixed right-0 left-0 z-[100] bg-white shadow-2xl",
           "transition-all duration-500 ease-out",
-          // Mobile: full screen height, Desktop: fixed height
-          "h-[calc(100vh-var(--header-height,116px))] md:h-[400px]",
+          // Mobile: full screen height, Desktop: fixed height for 3-panel layout
+          "h-[calc(100vh-var(--header-height,116px))] md:h-[65vh] md:min-h-[350px] md:max-h-[75vh]",
           shouldShow
             ? "pointer-events-auto translate-y-0 scale-y-100 opacity-100"
             : "pointer-events-none -translate-y-8 scale-y-95 opacity-0",
@@ -1170,9 +1291,9 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
             </div>
           </div>
 
-          {/* Desktop View - Multi-column layout */}
+          {/* Desktop View - Alibaba-style 3-level mega menu */}
           <div className="hidden md:flex h-full w-full relative">
-            {/* Column 1: Main Categories (Left Sidebar) */}
+            {/* Panel 1: Main Categories (Left Sidebar) */}
             {categoriesWithSubcategoriesFiltered.length > 0 && (
               <ScrollableMainColumn>
                 <div className="py-2">
@@ -1186,12 +1307,22 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
                           className={cn(
                             "flex cursor-pointer items-center gap-x-3 px-4 py-3 transition-colors",
                             {
-                              "bg-white border-r-2 border-blue-600": isMainActive,
+                              "bg-white font-medium": isMainActive,
                               "hover:bg-gray-100": !isMainActive,
                             },
+                            langDir === "rtl"
+                              ? {
+                                  "border-l-2 border-orange-500": isMainActive,
+                                }
+                              : {
+                                  "border-r-2 border-orange-500": isMainActive,
+                                }
                           )}
                           onMouseEnter={() => {
                             handleMainCategoryHover(category.id);
+                          }}
+                          onClick={() => {
+                            handleCategoryClick(category.id);
                           }}
                         >
                           {category.icon ? (
@@ -1207,7 +1338,8 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
                           )}
                           <span
                             className={cn(
-                              "text-sm flex-1 text-left",
+                              "text-sm flex-1",
+                              langDir === "rtl" ? "text-right" : "text-left",
                               isMainActive
                                 ? "text-gray-900 font-medium"
                                 : "text-gray-700",
@@ -1215,6 +1347,22 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
                           >
                             {translate(category.name)}
                           </span>
+                          <svg
+                            className={cn(
+                              "w-4 h-4 text-gray-400 flex-shrink-0",
+                              langDir === "rtl" ? "rotate-180" : ""
+                            )}
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 5l7 7-7 7"
+                            />
+                          </svg>
                         </div>
                       );
                     },
@@ -1223,15 +1371,189 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
               </ScrollableMainColumn>
             )}
 
-            {/* Columns 2-6: Subcategories (Dynamic Columns) */}
-            <ScrollableHorizontalContainer>
-              {selectedLevels[0] && renderCategoryColumn(0, getColumnTitle(0))}
-              {selectedLevels[1] && renderCategoryColumn(1, getColumnTitle(1))}
-              {selectedLevels[2] && renderCategoryColumn(2, getColumnTitle(2))}
-              {selectedLevels[3] && renderCategoryColumn(3, getColumnTitle(3))}
-              {selectedLevels[4] && renderCategoryColumn(4, getColumnTitle(4))}
-              {selectedLevels[5] && renderCategoryColumn(5, getColumnTitle(5))}
-            </ScrollableHorizontalContainer>
+            {/* Panel 2: Level 2 Subcategories (Middle Column) */}
+            <div
+              className={cn(
+                "flex-shrink-0 h-full overflow-y-auto custom-scrollbar border-r border-gray-200 bg-white",
+                "w-[220px] lg:w-[260px]"
+              )}
+            >
+              {gridLoading ? (
+                <div className="flex items-center justify-center h-full">
+                  <div className="animate-spin rounded-full h-6 w-6 border-2 border-orange-500 border-t-transparent" />
+                </div>
+              ) : subcategoriesForGrid.length > 0 ? (
+                <div className="py-2">
+                  {subcategoriesForGrid.map((subcategory: any) => {
+                    const isActive = hoveredLevel2Id === subcategory.id;
+                    const hasChildren =
+                      (subcategory.children && subcategory.children.length > 0) ||
+                      subcategory.hasChildren ||
+                      (subcategory._originalChildren && subcategory._originalChildren.length > 0);
+
+                    return (
+                      <div
+                        key={subcategory.id}
+                        className={cn(
+                          "flex cursor-pointer items-center gap-x-3 px-4 py-2.5 transition-colors",
+                          isActive
+                            ? "bg-orange-50 text-orange-700"
+                            : "hover:bg-gray-50 text-gray-700"
+                        )}
+                        onMouseEnter={() => {
+                          handleLevel2Hover(subcategory);
+                        }}
+                        onClick={() => handleCategoryClick(subcategory.id)}
+                      >
+                        {subcategory.icon ? (
+                          <img
+                            src={subcategory.icon}
+                            alt={subcategory.name}
+                            height={18}
+                            width={18}
+                            className="object-contain flex-shrink-0"
+                          />
+                        ) : (
+                          <div className="h-[18px] w-[18px] flex-shrink-0 rounded bg-gray-200" />
+                        )}
+                        <span
+                          className={cn(
+                            "text-sm flex-1 line-clamp-1",
+                            langDir === "rtl" ? "text-right" : "text-left",
+                            isActive ? "font-medium" : ""
+                          )}
+                        >
+                          {translate(subcategory.name)}
+                        </span>
+                        {hasChildren && (
+                          <svg
+                            className={cn(
+                              "w-3.5 h-3.5 flex-shrink-0",
+                              isActive ? "text-orange-500" : "text-gray-400",
+                              langDir === "rtl" ? "rotate-180" : ""
+                            )}
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 5l7 7-7 7"
+                            />
+                          </svg>
+                        )}
+                      </div>
+                    );
+                  })}
+
+                  {/* View All link at bottom of Level 2 */}
+                  {selectedLevels[0] && (
+                    <div className="px-4 py-3 mt-1 border-t border-gray-100">
+                      <span
+                        className="text-orange-600 hover:text-orange-700 font-medium cursor-pointer text-sm"
+                        onClick={() => handleCategoryClick(selectedLevels[0]!)}
+                      >
+                        {t("view_all") || "View All"}{" "}
+                        {translate(
+                          categoriesWithSubcategoriesFiltered.find(
+                            ({ category }) => category.id === selectedLevels[0]
+                          )?.category.name || ""
+                        )}{" "}
+                        →
+                      </span>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="flex items-center justify-center h-full text-gray-400 text-sm px-4">
+                  {t("select_category") || "Hover a category"}
+                </div>
+              )}
+            </div>
+
+            {/* Panel 3: Level 3 Items (Right Expanding Panel) */}
+            {hoveredLevel2Id && (level3Categories.length > 0 || level3Loading) && (
+              <div
+                className="flex-1 h-full overflow-y-auto custom-scrollbar bg-gray-50 p-5"
+                onMouseLeave={() => {
+                  // Keep panel visible — it only changes when hovering a different Level 2 item
+                }}
+              >
+                {level3Loading ? (
+                  <div className="flex items-center justify-center h-full">
+                    <div className="animate-spin rounded-full h-6 w-6 border-2 border-orange-500 border-t-transparent" />
+                  </div>
+                ) : (
+                  <>
+                    {/* Level 3 header: the hovered Level 2 category name */}
+                    <div className="mb-4 pb-2 border-b border-gray-200">
+                      <h3
+                        className="font-semibold text-base text-gray-900 cursor-pointer hover:text-orange-600 transition-colors"
+                        onClick={() => handleCategoryClick(hoveredLevel2Id!)}
+                      >
+                        {translate(
+                          subcategoriesForGrid.find((s: any) => s.id === hoveredLevel2Id)?.name || ""
+                        )}
+                      </h3>
+                    </div>
+
+                    {/* Level 3 items in a grid */}
+                    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+                      {level3Categories.map((item: any) => (
+                        <div
+                          key={item.id}
+                          className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-white hover:shadow-sm cursor-pointer transition-all group"
+                          onClick={() => handleCategoryClick(item.id)}
+                        >
+                          {item.icon ? (
+                            <img
+                              src={item.icon}
+                              alt={item.name}
+                              height={16}
+                              width={16}
+                              className="object-contain flex-shrink-0"
+                            />
+                          ) : (
+                            <div className="h-4 w-4 flex-shrink-0 rounded bg-gray-300" />
+                          )}
+                          <span className="text-sm text-gray-600 group-hover:text-orange-600 transition-colors line-clamp-1">
+                            {translate(item.name)}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* View All for this subcategory */}
+                    <div className="mt-4 pt-3 border-t border-gray-200">
+                      <span
+                        className="text-orange-600 hover:text-orange-700 font-medium cursor-pointer text-sm"
+                        onClick={() => handleCategoryClick(hoveredLevel2Id!)}
+                      >
+                        {t("view_all") || "View All"}{" "}
+                        {translate(
+                          subcategoriesForGrid.find((s: any) => s.id === hoveredLevel2Id)?.name || ""
+                        )}{" "}
+                        →
+                      </span>
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+
+            {/* Empty state: when no Level 2 is hovered, show a subtle hint */}
+            {!hoveredLevel2Id && subcategoriesForGrid.length > 0 && (
+              <div className="flex-1 h-full flex items-center justify-center bg-gray-50 text-gray-400 text-sm">
+                <div className="text-center">
+                  <svg className="w-10 h-10 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
+                  </svg>
+                  <p>{"Hover a subcategory to explore"}</p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
