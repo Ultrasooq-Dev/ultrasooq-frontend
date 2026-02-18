@@ -33,6 +33,7 @@ import { CheckedState } from "@radix-ui/react-checkbox";
 import LoaderWithMessage from "@/components/shared/LoaderWithMessage";
 import { fetchUserPermissions } from "@/apis/requests/user.requests";
 import { useTranslations } from "next-intl";
+import { usePageSettingBySlug } from "@/apis/queries/page-settings.queries";
 
 const formSchema = (t: any) => {
   return z.object({
@@ -69,6 +70,10 @@ export default function LoginPage() {
   const langDropdownRef = useRef<HTMLDivElement>(null);
 
   const currentLang = LANGUAGES.find((l) => l.locale === selectedLocale) || LANGUAGES[0];
+
+  // Fetch login page branding settings from admin CMS
+  const { data: loginSettingsData } = usePageSettingBySlug("login");
+  const s = loginSettingsData?.data?.setting || {};
 
   const defaultValues = {
     email: "",
@@ -267,14 +272,14 @@ export default function LoginPage() {
             {/* Value Propositions */}
             <div className="flex-1 flex flex-col justify-center py-10">
               <h1 className="text-3xl xl:text-4xl font-bold text-white leading-tight mb-4">
-                {t("login") === "Login" ? "Your Global B2B" : t("login")}
+                {s.headline || "Your Global B2B"}
                 <br />
                 <span className="text-orange-100">
-                  {t("login") === "Login" ? "Marketplace" : ""}
+                  {s.headline_line2 || "Marketplace"}
                 </span>
               </h1>
               <p className="text-orange-100 text-base xl:text-lg mb-10 max-w-md leading-relaxed">
-                Connect with verified suppliers and buyers worldwide. Trade smarter, grow faster.
+                {s.subtitle || "Connect with verified suppliers and buyers worldwide. Trade smarter, grow faster."}
               </p>
 
               {/* Feature Points */}
@@ -286,9 +291,9 @@ export default function LoginPage() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="text-white font-semibold text-sm xl:text-base">Global Trade Network</h3>
+                    <h3 className="text-white font-semibold text-sm xl:text-base">{s.feature_1_title || "Global Trade Network"}</h3>
                     <p className="text-orange-100/80 text-xs xl:text-sm mt-0.5">
-                      Access thousands of verified suppliers across 190+ countries
+                      {s.feature_1_description || "Access thousands of verified suppliers across 190+ countries"}
                     </p>
                   </div>
                 </div>
@@ -300,9 +305,9 @@ export default function LoginPage() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="text-white font-semibold text-sm xl:text-base">Secure Transactions</h3>
+                    <h3 className="text-white font-semibold text-sm xl:text-base">{s.feature_2_title || "Secure Transactions"}</h3>
                     <p className="text-orange-100/80 text-xs xl:text-sm mt-0.5">
-                      Trade with confidence using our verified payment protection
+                      {s.feature_2_description || "Trade with confidence using our verified payment protection"}
                     </p>
                   </div>
                 </div>
@@ -314,9 +319,9 @@ export default function LoginPage() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="text-white font-semibold text-sm xl:text-base">Grow Your Business</h3>
+                    <h3 className="text-white font-semibold text-sm xl:text-base">{s.feature_3_title || "Grow Your Business"}</h3>
                     <p className="text-orange-100/80 text-xs xl:text-sm mt-0.5">
-                      Expand your reach with powerful sourcing and selling tools
+                      {s.feature_3_description || "Expand your reach with powerful sourcing and selling tools"}
                     </p>
                   </div>
                 </div>
@@ -326,18 +331,18 @@ export default function LoginPage() {
             {/* Bottom Stats */}
             <div className="flex items-center gap-6 xl:gap-8">
               <div>
-                <div className="text-2xl xl:text-3xl font-bold text-white">10K+</div>
-                <div className="text-orange-100/70 text-xs xl:text-sm">Active Suppliers</div>
+                <div className="text-2xl xl:text-3xl font-bold text-white">{s.stat_1_value || "10K+"}</div>
+                <div className="text-orange-100/70 text-xs xl:text-sm">{s.stat_1_label || "Active Suppliers"}</div>
               </div>
               <div className="w-px h-10 bg-white/20" />
               <div>
-                <div className="text-2xl xl:text-3xl font-bold text-white">190+</div>
-                <div className="text-orange-100/70 text-xs xl:text-sm">Countries</div>
+                <div className="text-2xl xl:text-3xl font-bold text-white">{s.stat_2_value || "190+"}</div>
+                <div className="text-orange-100/70 text-xs xl:text-sm">{s.stat_2_label || "Countries"}</div>
               </div>
               <div className="w-px h-10 bg-white/20" />
               <div>
-                <div className="text-2xl xl:text-3xl font-bold text-white">50K+</div>
-                <div className="text-orange-100/70 text-xs xl:text-sm">Products</div>
+                <div className="text-2xl xl:text-3xl font-bold text-white">{s.stat_3_value || "50K+"}</div>
+                <div className="text-orange-100/70 text-xs xl:text-sm">{s.stat_3_label || "Products"}</div>
               </div>
             </div>
           </div>

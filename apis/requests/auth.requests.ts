@@ -136,11 +136,9 @@ export const myAccounts = () => {
       "Content-Type": "application/json",
       Accept: "application/json",
       Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-      "Cache-Control": "no-cache",
-      Pragma: "no-cache",
     },
     params: {
-      _t: Date.now(), // Cache busting parameter
+      _t: Date.now(),
     },
   });
 };

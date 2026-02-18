@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   useMyAccounts,
@@ -23,6 +23,11 @@ export default function MyAccountsPage() {
   const { toast } = useToast();
   const router = useRouter();
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const { data: accountsData, isLoading, refetch, error } = useMyAccounts();
   const switchAccount = useSwitchAccount();
@@ -130,7 +135,7 @@ export default function MyAccountsPage() {
     }
   };
 
-  if (isLoading) {
+  if (!mounted || isLoading) {
     return (
       <LoaderWithMessage
         message="Loading your accounts..."
