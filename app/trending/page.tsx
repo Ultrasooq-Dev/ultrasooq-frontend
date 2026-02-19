@@ -125,7 +125,9 @@ const TrendingPage = (props0: TrendingPageProps) => {
     "products",
   );
   const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>([]);
+  const [selectedSpecFilters, setSelectedSpecFilters] = useState<Record<string, string[]>>({});
   const [isCategorySidebarOpen, setIsCategorySidebarOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const accessToken = getCookie(PUREMOON_TOKEN_KEY);
   const category = useCategoryStore();
 
@@ -220,6 +222,13 @@ const TrendingPage = (props0: TrendingPageProps) => {
   const totalCount =
     (allProductsQuery?.data?.totalCount || 0) +
     (dropshipProductsQuery?.data?.totalCount || 0);
+
+  // Dynamic spec-based filters from the API
+  const specFilters = useMemo(() => {
+    return (allProductsQuery?.data?.filters || []).filter(
+      (f: any) => f.key && f.name,
+    );
+  }, [allProductsQuery?.data?.filters]);
 
   // Get unique user IDs from products
   const uniqueUserIds = useMemo(() => {
@@ -1083,9 +1092,40 @@ const TrendingPage = (props0: TrendingPageProps) => {
     setPriceRange([]);
     setDisplayMyProducts("0");
     setSelectedCategoryIds([]);
+    setSelectedSpecFilters({});
 
     if (minPriceInputRef.current) minPriceInputRef.current.value = "";
     if (maxPriceInputRef.current) maxPriceInputRef.current.value = "";
+  };
+
+  // Spec filter handler: toggle a value for a given spec key
+  const handleSpecFilterChange = (key: string, value: string, checked: boolean) => {
+    setSelectedSpecFilters((prev) => {
+      const current = prev[key] || [];
+      if (checked) {
+        return { ...prev, [key]: [...current, value] };
+      } else {
+        const updated = current.filter((v) => v !== value);
+        if (updated.length === 0) {
+          const next = { ...prev };
+          delete next[key];
+          return next;
+        }
+        return { ...prev, [key]: updated };
+      }
+    });
+  };
+
+  // Spec range filter handler for NUMBER type filters
+  const handleSpecRangeChange = (key: string, min: string, max: string) => {
+    setSelectedSpecFilters((prev) => {
+      const next = { ...prev };
+      if (min) next[`${key}_min`] = [min];
+      else delete next[`${key}_min`];
+      if (max) next[`${key}_max`] = [max];
+      else delete next[`${key}_max`];
+      return next;
+    });
   };
 
   // Category filter handlers
@@ -1135,6 +1175,11 @@ const TrendingPage = (props0: TrendingPageProps) => {
         }
       }
     }
+  }, []);
+
+  // Mark as mounted after hydration to prevent SSR/client ID mismatch on dynamic Accordions
+  useEffect(() => {
+    setIsMounted(true);
   }, []);
 
   useEffect(() => {
@@ -1376,6 +1421,269 @@ const TrendingPage = (props0: TrendingPageProps) => {
                     </AccordionItem>
                   </Accordion>
                 </div>
+
+                {/* Dynamic Spec-Based Filters from API (rendered only after hydration) */}
+                {isMounted && specFilters.length > 0 && (
+                  <div className="mt-6 space-y-4">
+                    <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-500">
+                      {t("specifications") || "Specifications"}
+                    </h3>
+                    {specFilters.map((filter: any) => {
+                      // SELECT / MULTI_SELECT filter: show checkboxes for each option
+                      if (
+                        (filter.dataType === "SELECT" ||
+                          filter.dataType === "MULTI_SELECT") &&
+                        filter.options?.length > 0
+                      ) {
+                        return (
+                          <div key={filter.key}>
+                            <Accordion
+                              type="multiple"
+                              defaultValue={[filter.key]}
+                              className="overflow-hidden rounded-lg border border-gray-200"
+                            >
+                              <AccordionItem
+                                value={filter.key}
+                                className="border-0"
+                              >
+                                <AccordionTrigger className="bg-gray-50 px-4 py-3 font-semibold text-gray-900 hover:bg-gray-100">
+                                  <span>{filter.name}</span>
+                                </AccordionTrigger>
+                                <AccordionContent className="bg-white px-4 py-3">
+                                  <div className="max-h-48 space-y-2 overflow-y-auto">
+                                    {filter.options.map((opt: string) => (
+                                      <div
+                                        key={opt}
+                                        className="flex items-center justify-between rounded px-2 py-1 transition-colors hover:bg-gray-50"
+                                      >
+                                        <div className="flex items-center space-x-2">
+                                          <Checkbox
+                                            id={`spec-${filter.key}-${opt}`}
+                                            className="border border-gray-300 data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600"
+                                            checked={(
+                                              selectedSpecFilters[filter.key] ||
+                                              []
+                                            ).includes(opt)}
+                                            onCheckedChange={(checked) =>
+                                              handleSpecFilterChange(
+                                                filter.key,
+                                                opt,
+                                                !!checked,
+                                              )
+                                            }
+                                          />
+                                          <label
+                                            htmlFor={`spec-${filter.key}-${opt}`}
+                                            className="cursor-pointer text-sm leading-none font-medium"
+                                          >
+                                            {opt}
+                                          </label>
+                                        </div>
+                                        {filter.counts?.[opt] != null && (
+                                          <span className="text-xs text-gray-400">
+                                            ({filter.counts[opt]})
+                                          </span>
+                                        )}
+                                      </div>
+                                    ))}
+                                  </div>
+                                </AccordionContent>
+                              </AccordionItem>
+                            </Accordion>
+                          </div>
+                        );
+                      }
+
+                      // NUMBER filter: show min/max range inputs
+                      if (
+                        filter.dataType === "NUMBER" &&
+                        filter.range &&
+                        (filter.range.min > 0 || filter.range.max > 0)
+                      ) {
+                        return (
+                          <div key={filter.key}>
+                            <Accordion
+                              type="multiple"
+                              defaultValue={[filter.key]}
+                              className="overflow-hidden rounded-lg border border-gray-200"
+                            >
+                              <AccordionItem
+                                value={filter.key}
+                                className="border-0"
+                              >
+                                <AccordionTrigger className="bg-gray-50 px-4 py-3 font-semibold text-gray-900 hover:bg-gray-100">
+                                  <span>
+                                    {filter.name}
+                                    {filter.unit ? ` (${filter.unit})` : ""}
+                                  </span>
+                                </AccordionTrigger>
+                                <AccordionContent className="bg-white px-4 py-3">
+                                  <div className="flex items-center gap-2">
+                                    <Input
+                                      type="number"
+                                      placeholder={String(filter.range.min)}
+                                      className="h-9 w-full border-gray-300 text-sm"
+                                      onChange={(e) =>
+                                        handleSpecRangeChange(
+                                          filter.key,
+                                          e.target.value,
+                                          selectedSpecFilters[
+                                            `${filter.key}_max`
+                                          ]?.[0] || "",
+                                        )
+                                      }
+                                      onWheel={(e) => e.currentTarget.blur()}
+                                    />
+                                    <span className="text-gray-400">—</span>
+                                    <Input
+                                      type="number"
+                                      placeholder={String(filter.range.max)}
+                                      className="h-9 w-full border-gray-300 text-sm"
+                                      onChange={(e) =>
+                                        handleSpecRangeChange(
+                                          filter.key,
+                                          selectedSpecFilters[
+                                            `${filter.key}_min`
+                                          ]?.[0] || "",
+                                          e.target.value,
+                                        )
+                                      }
+                                      onWheel={(e) => e.currentTarget.blur()}
+                                    />
+                                  </div>
+                                  <p className="mt-1 text-xs text-gray-400">
+                                    {filter.range.min} – {filter.range.max}
+                                    {filter.unit ? ` ${filter.unit}` : ""}
+                                  </p>
+                                </AccordionContent>
+                              </AccordionItem>
+                            </Accordion>
+                          </div>
+                        );
+                      }
+
+                      // TEXT filter: show top values as checkboxes
+                      if (
+                        filter.dataType === "TEXT" &&
+                        filter.topValues?.length > 0
+                      ) {
+                        return (
+                          <div key={filter.key}>
+                            <Accordion
+                              type="multiple"
+                              defaultValue={[filter.key]}
+                              className="overflow-hidden rounded-lg border border-gray-200"
+                            >
+                              <AccordionItem
+                                value={filter.key}
+                                className="border-0"
+                              >
+                                <AccordionTrigger className="bg-gray-50 px-4 py-3 font-semibold text-gray-900 hover:bg-gray-100">
+                                  <span>{filter.name}</span>
+                                </AccordionTrigger>
+                                <AccordionContent className="bg-white px-4 py-3">
+                                  <div className="max-h-48 space-y-2 overflow-y-auto">
+                                    {filter.topValues.map((val: string) => (
+                                      <div
+                                        key={val}
+                                        className="flex items-center justify-between rounded px-2 py-1 transition-colors hover:bg-gray-50"
+                                      >
+                                        <div className="flex items-center space-x-2">
+                                          <Checkbox
+                                            id={`spec-${filter.key}-${val}`}
+                                            className="border border-gray-300 data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600"
+                                            checked={(
+                                              selectedSpecFilters[filter.key] ||
+                                              []
+                                            ).includes(val)}
+                                            onCheckedChange={(checked) =>
+                                              handleSpecFilterChange(
+                                                filter.key,
+                                                val,
+                                                !!checked,
+                                              )
+                                            }
+                                          />
+                                          <label
+                                            htmlFor={`spec-${filter.key}-${val}`}
+                                            className="cursor-pointer text-sm leading-none font-medium"
+                                          >
+                                            {val}
+                                          </label>
+                                        </div>
+                                        {filter.counts?.[val] != null && (
+                                          <span className="text-xs text-gray-400">
+                                            ({filter.counts[val]})
+                                          </span>
+                                        )}
+                                      </div>
+                                    ))}
+                                  </div>
+                                </AccordionContent>
+                              </AccordionItem>
+                            </Accordion>
+                          </div>
+                        );
+                      }
+
+                      // BOOLEAN filter
+                      if (filter.dataType === "BOOLEAN") {
+                        return (
+                          <div key={filter.key}>
+                            <Accordion
+                              type="multiple"
+                              defaultValue={[filter.key]}
+                              className="overflow-hidden rounded-lg border border-gray-200"
+                            >
+                              <AccordionItem
+                                value={filter.key}
+                                className="border-0"
+                              >
+                                <AccordionTrigger className="bg-gray-50 px-4 py-3 font-semibold text-gray-900 hover:bg-gray-100">
+                                  <span>{filter.name}</span>
+                                </AccordionTrigger>
+                                <AccordionContent className="bg-white px-4 py-3">
+                                  <div className="space-y-2">
+                                    {["true", "false"].map((val) => (
+                                      <div
+                                        key={val}
+                                        className="flex items-center space-x-2 rounded px-2 py-1 hover:bg-gray-50"
+                                      >
+                                        <Checkbox
+                                          id={`spec-${filter.key}-${val}`}
+                                          className="border border-gray-300 data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600"
+                                          checked={(
+                                            selectedSpecFilters[filter.key] ||
+                                            []
+                                          ).includes(val)}
+                                          onCheckedChange={(checked) =>
+                                            handleSpecFilterChange(
+                                              filter.key,
+                                              val,
+                                              !!checked,
+                                            )
+                                          }
+                                        />
+                                        <label
+                                          htmlFor={`spec-${filter.key}-${val}`}
+                                          className="cursor-pointer text-sm font-medium"
+                                        >
+                                          {val === "true" ? "Yes" : "No"}
+                                        </label>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </AccordionContent>
+                              </AccordionItem>
+                            </Accordion>
+                          </div>
+                        );
+                      }
+
+                      return null;
+                    })}
+                  </div>
+                )}
               </div>
             </div>
 
@@ -2035,6 +2343,112 @@ const TrendingPage = (props0: TrendingPageProps) => {
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
+
+              {/* Mobile Dynamic Spec Filters (rendered only after hydration) */}
+              {isMounted && specFilters.length > 0 && (
+                <div className="mt-4 space-y-3">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+                    {t("specifications") || "Specifications"}
+                  </p>
+                  {specFilters.map((filter: any) => {
+                    if (
+                      (filter.dataType === "SELECT" || filter.dataType === "MULTI_SELECT") &&
+                      filter.options?.length > 0
+                    ) {
+                      return (
+                        <Accordion key={filter.key} type="multiple" defaultValue={[filter.key]}>
+                          <AccordionItem value={filter.key}>
+                            <AccordionTrigger className="text-base hover:no-underline!">
+                              {filter.name}
+                            </AccordionTrigger>
+                            <AccordionContent>
+                              <div className="max-h-40 space-y-2 overflow-y-auto">
+                                {filter.options.map((opt: string) => (
+                                  <div key={opt} className="flex items-center justify-between">
+                                    <div className="flex items-center space-x-2">
+                                      <Checkbox
+                                        id={`m-spec-${filter.key}-${opt}`}
+                                        className="border border-gray-300 data-[state=checked]:bg-blue-600!"
+                                        checked={(selectedSpecFilters[filter.key] || []).includes(opt)}
+                                        onCheckedChange={(checked) => handleSpecFilterChange(filter.key, opt, !!checked)}
+                                      />
+                                      <label htmlFor={`m-spec-${filter.key}-${opt}`} className="cursor-pointer text-sm font-medium">
+                                        {opt}
+                                      </label>
+                                    </div>
+                                    {filter.counts?.[opt] != null && (
+                                      <span className="text-xs text-gray-400">({filter.counts[opt]})</span>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            </AccordionContent>
+                          </AccordionItem>
+                        </Accordion>
+                      );
+                    }
+                    if (filter.dataType === "NUMBER" && filter.range && (filter.range.min > 0 || filter.range.max > 0)) {
+                      return (
+                        <Accordion key={filter.key} type="multiple" defaultValue={[filter.key]}>
+                          <AccordionItem value={filter.key}>
+                            <AccordionTrigger className="text-base hover:no-underline!">
+                              {filter.name}{filter.unit ? ` (${filter.unit})` : ""}
+                            </AccordionTrigger>
+                            <AccordionContent>
+                              <div className="flex items-center gap-2 px-2">
+                                <Input type="number" placeholder={String(filter.range.min)} className="h-8 text-sm"
+                                  onChange={(e) => handleSpecRangeChange(filter.key, e.target.value, selectedSpecFilters[`${filter.key}_max`]?.[0] || "")}
+                                  onWheel={(e) => e.currentTarget.blur()} />
+                                <span className="text-gray-400">—</span>
+                                <Input type="number" placeholder={String(filter.range.max)} className="h-8 text-sm"
+                                  onChange={(e) => handleSpecRangeChange(filter.key, selectedSpecFilters[`${filter.key}_min`]?.[0] || "", e.target.value)}
+                                  onWheel={(e) => e.currentTarget.blur()} />
+                              </div>
+                              <p className="mt-1 px-2 text-xs text-gray-400">
+                                {filter.range.min} – {filter.range.max}{filter.unit ? ` ${filter.unit}` : ""}
+                              </p>
+                            </AccordionContent>
+                          </AccordionItem>
+                        </Accordion>
+                      );
+                    }
+                    if (filter.dataType === "TEXT" && filter.topValues?.length > 0) {
+                      return (
+                        <Accordion key={filter.key} type="multiple" defaultValue={[filter.key]}>
+                          <AccordionItem value={filter.key}>
+                            <AccordionTrigger className="text-base hover:no-underline!">
+                              {filter.name}
+                            </AccordionTrigger>
+                            <AccordionContent>
+                              <div className="max-h-40 space-y-2 overflow-y-auto">
+                                {filter.topValues.map((val: string) => (
+                                  <div key={val} className="flex items-center justify-between">
+                                    <div className="flex items-center space-x-2">
+                                      <Checkbox
+                                        id={`m-spec-${filter.key}-${val}`}
+                                        className="border border-gray-300 data-[state=checked]:bg-blue-600!"
+                                        checked={(selectedSpecFilters[filter.key] || []).includes(val)}
+                                        onCheckedChange={(checked) => handleSpecFilterChange(filter.key, val, !!checked)}
+                                      />
+                                      <label htmlFor={`m-spec-${filter.key}-${val}`} className="cursor-pointer text-sm font-medium">
+                                        {val}
+                                      </label>
+                                    </div>
+                                    {filter.counts?.[val] != null && (
+                                      <span className="text-xs text-gray-400">({filter.counts[val]})</span>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            </AccordionContent>
+                          </AccordionItem>
+                        </Accordion>
+                      );
+                    }
+                    return null;
+                  })}
+                </div>
+              )}
             </div>
           </SheetContent>
         </Sheet>
