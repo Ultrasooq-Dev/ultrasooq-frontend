@@ -5,10 +5,10 @@ const withNextIntl = createNextIntlPlugin();
 const nextConfig = withNextIntl({
   reactStrictMode: true,
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false,
   },
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
   allowedDevOrigins: ["192.168.29.205"],
   async headers() {
