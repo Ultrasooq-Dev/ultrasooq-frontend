@@ -188,6 +188,8 @@ export const useSocialLogin = () =>
       email: string;
       tradeRole: "BUYER";
       loginType: string;
+      provider: string;
+      token: string;
     }
   >({
     mutationFn: async (payload) => {
