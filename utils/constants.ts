@@ -462,7 +462,7 @@ export const CURRENCIES = [
   {
     code: "OMR",
     symbol: "OMR", // English symbol
-    symbolAr: "ريال عماني", // Arabic symbol
+    symbolAr: "ر.ع", // Arabic symbol
   },
 ];
 
