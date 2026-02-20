@@ -10,6 +10,7 @@ const nextConfig = withNextIntl({
   typescript: {
     ignoreBuildErrors: true,
   },
+  serverExternalPackages: ['isomorphic-dompurify'],
   allowedDevOrigins: ["192.168.29.205"],
   async headers() {
     return [
