@@ -3,6 +3,7 @@ const withNextIntl = createNextIntlPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = withNextIntl({
+  output: "standalone",
   reactStrictMode: true,
   eslint: {
     ignoreDuringBuilds: true,
