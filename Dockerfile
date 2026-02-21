@@ -9,17 +9,8 @@ RUN apk add --no-cache libc6-compat
 # Copy package files
 COPY package.json pnpm-lock.yaml* package-lock.json* yarn.lock* ./
 
-# Install pnpm and dependencies
-RUN npm install -g pnpm && \
-    if [ -f pnpm-lock.yaml ]; then \
-      NODE_ENV=development pnpm install --frozen-lockfile; \
-    elif [ -f package-lock.json ]; then \
-      npm ci; \
-    elif [ -f yarn.lock ]; then \
-      yarn install --frozen-lockfile; \
-    else \
-      npm install; \
-    fi
+# Install dependencies (--legacy-peer-deps needed for React 19 compatibility)
+RUN npm install --legacy-peer-deps
 
 # Copy source code
 COPY . .
