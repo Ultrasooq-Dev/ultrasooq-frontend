@@ -446,7 +446,7 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ sellerId }) => {
                       <div key={item.value} className="div-li">
                         <Checkbox
                           id={item.label}
-                          className="border border-solid border-gray-300 data-[state=checked]:bg-dark-orange!"
+                          className="border border-solid border-border data-[state=checked]:bg-dark-orange!"
                           onCheckedChange={(checked) =>
                             handleBrandChange(checked, item)
                           }
@@ -485,7 +485,7 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ sellerId }) => {
                     <div className="div-li">
                       <Checkbox
                         id="displayStoreProducts"
-                        className="border border-solid border-gray-300 data-[state=checked]:bg-dark-orange!"
+                        className="border border-solid border-border data-[state=checked]:bg-dark-orange!"
                         onCheckedChange={(checked: boolean) =>
                           setDisplayStoreProducts(checked)
                         }
@@ -505,7 +505,7 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ sellerId }) => {
                     <div className="div-li">
                       <Checkbox
                         id="displayBuyGroupProducts"
-                        className="border border-solid border-gray-300 data-[state=checked]:bg-dark-orange!"
+                        className="border border-solid border-border data-[state=checked]:bg-dark-orange!"
                         onCheckedChange={(checked: boolean) => {
                           setDisplayBuyGroupProducts(checked);
                           setDisplayExpiredProducts(
@@ -529,7 +529,7 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ sellerId }) => {
                       <div className="div-li">
                         <Checkbox
                           id="displayExpiredProducts"
-                          className="border border-solid border-gray-300 data-[state=checked]:bg-dark-orange!"
+                          className="border border-solid border-border data-[state=checked]:bg-dark-orange!"
                           onCheckedChange={(checked: boolean) =>
                             setDisplayExpiredProducts(checked)
                           }
@@ -551,7 +551,7 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ sellerId }) => {
                       <div className="div-li">
                         <Checkbox
                           id="displayHiddenProducts"
-                          className="border border-solid border-gray-300 data-[state=checked]:bg-dark-orange!"
+                          className="border border-solid border-border data-[state=checked]:bg-dark-orange!"
                           onCheckedChange={(checked: boolean) =>
                             setDisplayHiddenProducts(checked)
                           }
@@ -572,7 +572,7 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ sellerId }) => {
                     <div className="div-li">
                       <Checkbox
                         id="displayDiscountedProducts"
-                        className="border border-solid border-gray-300 data-[state=checked]:bg-dark-orange!"
+                        className="border border-solid border-border data-[state=checked]:bg-dark-orange!"
                         onCheckedChange={(checked: boolean) =>
                           setDisplayDiscountedProducts(checked)
                         }
@@ -629,7 +629,7 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ sellerId }) => {
                   <Input
                     type="text"
                     placeholder={t("search")}
-                    className="custom-form-control-s1 searchInput rounded-none bg-white"
+                    className="custom-form-control-s1 searchInput rounded-none bg-card"
                     onChange={handleDebounce}
                     dir={langDir}
                     ref={searchInputRef}
@@ -639,7 +639,7 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ sellerId }) => {
 
                 <li>
                   <Select onValueChange={(e) => setSortBy(e)}>
-                    <SelectTrigger className="custom-form-control-s1 bg-white">
+                    <SelectTrigger className="custom-form-control-s1 bg-card">
                       <SelectValue
                         placeholder={t("sort_by")}
                         dir={langDir}

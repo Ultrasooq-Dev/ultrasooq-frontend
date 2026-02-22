@@ -156,10 +156,10 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ onClose, reviewId }) => {
   return (
     <div className="w-full">
       <DialogHeader className="pb-6">
-        <DialogTitle className="text-center text-2xl font-bold text-gray-900">
+        <DialogTitle className="text-center text-2xl font-bold text-foreground">
           {reviewId ? "Edit Your Review" : "Give Your Rating & Review"}
         </DialogTitle>
-        <p className="mt-2 text-center text-sm text-gray-600">
+        <p className="mt-2 text-center text-sm text-muted-foreground">
           Share your experience with this product
         </p>
       </DialogHeader>
@@ -170,14 +170,14 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ onClose, reviewId }) => {
         >
           {/* Rating Section */}
           <div className="space-y-3">
-            <label className="text-sm font-semibold text-gray-900">
+            <label className="text-sm font-semibold text-foreground">
               Rate this product
             </label>
             <Controller
               name="rating"
               control={form.control}
               render={({ field }) => (
-                <div className="flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 p-4">
+                <div className="flex items-center gap-2 rounded-lg border border-border bg-muted p-4">
                   <Ratings
                     rating={field.value}
                     onRatingChange={(rating) => {
@@ -185,7 +185,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ onClose, reviewId }) => {
                     }}
                   />
                   {field.value > 0 && (
-                    <span className="text-sm font-medium text-gray-600">
+                    <span className="text-sm font-medium text-muted-foreground">
                       {field.value}/5
                     </span>
                   )}
@@ -196,7 +196,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ onClose, reviewId }) => {
 
           {/* Review Section */}
           <div className="space-y-4">
-            <label className="text-sm font-semibold text-gray-900">
+            <label className="text-sm font-semibold text-foreground">
               Review this product
             </label>
             

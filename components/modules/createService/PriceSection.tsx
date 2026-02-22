@@ -428,12 +428,12 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
               control={formContext.control}
               name="setUpPrice"
               render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border bg-white p-4">
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border bg-card p-4">
                   <FormControl>
                     <Checkbox
                       checked={field.value}
                       onCheckedChange={field.onChange}
-                      className="border border-solid border-gray-300 data-[state=checked]:bg-dark-orange!"
+                      className="border border-solid border-border data-[state=checked]:bg-dark-orange!"
                     />
                   </FormControl>
                   <div className="space-y-1 leading-none">
@@ -528,7 +528,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                         render={({ field }) => (
                           <select
                             {...field}
-                            className="h-[48px]! w-full rounded border border-gray-300! px-3 text-sm focus-visible:ring-0!"
+                            className="h-[48px]! w-full rounded border border-border! px-3 text-sm focus-visible:ring-0!"
                           >
                             <option value="" dir={langDir}></option>
                             <option value="FLAT" dir={langDir} translate="no">
@@ -562,7 +562,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                         render={({ field }) => (
                           <select
                             {...field}
-                            className="h-[48px]! w-full rounded border border-gray-300! px-3 text-sm focus-visible:ring-0!"
+                            className="h-[48px]! w-full rounded border border-border! px-3 text-sm focus-visible:ring-0!"
                           >
                             <option value="" dir={langDir}></option>
                             <option value="FLAT" dir={langDir} translate="no">
@@ -729,7 +729,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
             </div>
           ) : null}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2" translate="no">
+            <label className="block text-sm font-medium text-muted-foreground mb-2" translate="no">
               {t("confirm_order_type")}
             </label>
             <div className="flex items-center space-x-6">
@@ -739,9 +739,9 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                   id="auto"
                   name="orderType"
                   value="auto"
-                  className="h-4 w-4 text-primary focus:ring-primary border-gray-300"
+                  className="h-4 w-4 text-primary focus:ring-primary border-border"
                 />
-                <label htmlFor="auto" className="ml-2 text-sm text-gray-700" translate="no">
+                <label htmlFor="auto" className="ml-2 text-sm text-muted-foreground" translate="no">
                   {t("auto_confirm")}
                 </label>
               </div>
@@ -751,9 +751,9 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                   id="manual"
                   name="orderType"
                   value="manual"
-                  className="h-4 w-4 text-primary focus:ring-primary border-gray-300"
+                  className="h-4 w-4 text-primary focus:ring-primary border-border"
                 />
-                <label htmlFor="manual" className="ml-2 text-sm text-gray-700" translate="no">
+                <label htmlFor="manual" className="ml-2 text-sm text-muted-foreground" translate="no">
                   {t("manual")}
                 </label>
               </div>
@@ -830,7 +830,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                           type="number"
                           onWheel={(e) => e.currentTarget.blur()}
                           placeholder={t("service_price")}
-                          className="h-[48px]! rounded border-gray-300 pl-12 pr-10 focus-visible:ring-0!"
+                          className="h-[48px]! rounded border-border pl-12 pr-10 focus-visible:ring-0!"
                           disabled={watchIsOfferPriceRequired}
                           {...field}
                           dir={langDir}
@@ -859,7 +859,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                           type="number"
                           onWheel={(e) => e.currentTarget.blur()}
                           placeholder={t("offer_price")}
-                          className="h-[48px]! rounded border-gray-300 pl-12 pr-10 focus-visible:ring-0!"
+                          className="h-[48px]! rounded border-border pl-12 pr-10 focus-visible:ring-0!"
                           disabled={watchIsOfferPriceRequired}
                           {...field}
                           dir={langDir}
@@ -885,7 +885,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                         type="number"
                         onWheel={(e) => e.currentTarget.blur()}
                         placeholder={t("stock")}
-                        className="h-[48px]! rounded border-gray-300 focus-visible:ring-0!"
+                        className="h-[48px]! rounded border-border focus-visible:ring-0!"
                         disabled={watchIsStockRequired}
                         {...field}
                         dir={langDir}

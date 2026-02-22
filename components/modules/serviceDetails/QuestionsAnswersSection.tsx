@@ -70,7 +70,7 @@ const QuestionsAnswersSection: React.FC<QuestionsAnswersSectionProps> = ({
             <Button
               variant={sortType === "latest" ? "secondary" : "ghost"}
               onClick={() => setSortType("latest")}
-              className="block rounded-full border border-solid border-gray-300 text-sm font-medium text-gray-500"
+              className="block rounded-full border border-solid border-border text-sm font-medium text-muted-foreground"
               dir={langDir}
               translate="no"
             >
@@ -82,7 +82,7 @@ const QuestionsAnswersSection: React.FC<QuestionsAnswersSectionProps> = ({
             <Button
               variant={sortType === "oldest" ? "secondary" : "ghost"}
               onClick={() => setSortType("oldest")}
-              className="block rounded-full border border-solid border-gray-300 text-sm font-medium text-gray-500"
+              className="block rounded-full border border-solid border-border text-sm font-medium text-muted-foreground"
               dir={langDir}
               translate="no"
             >
@@ -91,7 +91,7 @@ const QuestionsAnswersSection: React.FC<QuestionsAnswersSectionProps> = ({
           </li>
         </ul>
       </div>
-      <div className="flex w-full border-t-2 border-dashed border-gray-300 py-5">
+      <div className="flex w-full border-t-2 border-dashed border-border py-5">
         <div className="w-full space-y-3">
           {!questionQuery?.data?.data?.length ? (
             <div className="w-full text-center text-sm font-bold text-dark-orange" dir={langDir} translate="no">

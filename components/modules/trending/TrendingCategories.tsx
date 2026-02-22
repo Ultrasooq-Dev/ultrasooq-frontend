@@ -33,7 +33,7 @@ const TrendingCategories = () => {
                   {category.subCategoryParentName}
                 </h3>
               ) : null}
-              <ul className="mb-2 grid grid-cols-8 gap-3 border-b border-solid border-gray-300">
+              <ul className="mb-2 grid grid-cols-8 gap-3 border-b border-solid border-border">
                 {category.subCategories.map((item: any, index: number) => (
                   <TrendingOptionCard
                     key={item?.id}

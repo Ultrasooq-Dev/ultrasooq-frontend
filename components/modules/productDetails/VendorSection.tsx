@@ -36,22 +36,22 @@ const VendorSection: React.FC<VendorSectionProps> = ({ adminId }) => {
   const vendor = vendorQuery.data?.data;
 
   return vendorQuery.isLoading ? (
-    <div className="mx-auto min-h-[240px] w-full rounded-2xl border border-gray-300 p-4">
+    <div className="mx-auto min-h-[240px] w-full rounded-2xl border border-border p-4">
       <div className="flex animate-pulse space-x-4">
-        <div className="h-[89px] w-[89px] rounded-full bg-gray-300"></div>
+        <div className="h-[89px] w-[89px] rounded-full bg-muted"></div>
         <div className="max-w-sm flex-1 space-y-6 py-1">
-          <div className="h-2 rounded bg-gray-300"></div>
+          <div className="h-2 rounded bg-muted"></div>
           <div className="space-y-3">
             <div className="grid grid-cols-3 gap-4">
-              <div className="col-span-2 h-2 rounded bg-gray-300"></div>
-              <div className="col-span-1 h-2 rounded bg-gray-300"></div>
+              <div className="col-span-2 h-2 rounded bg-muted"></div>
+              <div className="col-span-1 h-2 rounded bg-muted"></div>
             </div>
-            <div className="h-2 rounded bg-gray-300"></div>
+            <div className="h-2 rounded bg-muted"></div>
             <div className="grid grid-cols-2 gap-4">
-              <div className="col-span-1 h-2 rounded bg-gray-300"></div>
-              <div className="col-span-1 h-2 rounded bg-gray-300"></div>
+              <div className="col-span-1 h-2 rounded bg-muted"></div>
+              <div className="col-span-1 h-2 rounded bg-muted"></div>
             </div>
-            <div className="h-2 rounded bg-gray-300"></div>
+            <div className="h-2 rounded bg-muted"></div>
           </div>
         </div>
       </div>
@@ -101,7 +101,7 @@ const VendorSection: React.FC<VendorSectionProps> = ({ adminId }) => {
         
         {/* Trust Indicators for Customers */}
         <div className="vendor-trust-indicators mt-4">
-          <div className="flex items-center gap-4 text-sm text-gray-600">
+          <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-1">
               <svg className="h-4 w-4 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />

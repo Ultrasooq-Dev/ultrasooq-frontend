@@ -26,7 +26,7 @@ const SellerRfqListPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-muted">
       <div className="mx-auto w-full max-w-[1600px] px-4 py-6 lg:px-6">
         {/* Grid View of RFQ Requests */}
         <SellerChat

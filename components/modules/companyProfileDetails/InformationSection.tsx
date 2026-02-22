@@ -40,7 +40,7 @@ const InformationSection: React.FC<InformationSectionProps> = ({
   }, [userDetails?.userSocialLink?.length]);
 
   return (
-    <div className="w-full border-b-2 border-dashed border-gray-200 pb-4 sm:py-4">
+    <div className="w-full border-b-2 border-dashed border-border pb-4 sm:py-4">
       <div className="flex w-full flex-wrap items-center justify-between gap-2 pb-5 sm:gap-0">
         <h2 className="left-8 text-xl font-semibold text-color-dark sm:text-2xl" dir={langDir} translate="no">
           {t("company_information")}
@@ -76,7 +76,7 @@ const InformationSection: React.FC<InformationSectionProps> = ({
             <div className="w-full sm:w-7/12">
               <div className="flex w-full flex-wrap py-4">
                 <div className="mr-1 flex w-4/12 items-center justify-start sm:mr-0">
-                  <span className="text-sm font-normal capitalize leading-4 text-gray-500" dir={langDir} translate="no">
+                  <span className="text-sm font-normal capitalize leading-4 text-muted-foreground" dir={langDir} translate="no">
                     {t("email")}:
                   </span>
                 </div>
@@ -90,7 +90,7 @@ const InformationSection: React.FC<InformationSectionProps> = ({
             <div className="w-full sm:w-5/12">
               <div className="flex w-full flex-wrap py-4">
                 <div className="mr-1 flex w-5/12 items-center justify-start sm:mr-0">
-                  <span className="text-sm font-normal capitalize leading-4 text-gray-500" dir={langDir} translate="no">
+                  <span className="text-sm font-normal capitalize leading-4 text-muted-foreground" dir={langDir} translate="no">
                     {t("phone")}:
                   </span>
                 </div>
@@ -104,7 +104,7 @@ const InformationSection: React.FC<InformationSectionProps> = ({
             <div className="w-full sm:w-7/12">
               <div className="flex w-full flex-wrap py-4">
                 <div className="mr-1 flex w-4/12 items-center justify-start sm:mr-0">
-                  <span className="text-sm font-normal capitalize leading-4 text-gray-500" dir={langDir} translate="no">
+                  <span className="text-sm font-normal capitalize leading-4 text-muted-foreground" dir={langDir} translate="no">
                     {t("social_links")}:
                   </span>
                 </div>

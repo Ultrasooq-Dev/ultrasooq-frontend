@@ -15,7 +15,7 @@ const DownloadIconButton: React.FC<DownloadIconButtonProps> = ({
 
     return (
         <button
-            className="ml-4 p-2 text-gray-500 hover:text-gray-700"
+            className="ml-4 p-2 text-muted-foreground hover:text-muted-foreground"
             onClick={() => {
                 setSelectedAttachmentId(attachmentId);
                 handleDownloadFile(filePath)
@@ -24,7 +24,7 @@ const DownloadIconButton: React.FC<DownloadIconButtonProps> = ({
         >
             {selectedAttachmentId === attachmentId && downloadLoading ? (
                 <svg
-                    className="animate-spin h-5 w-5 text-gray-500"
+                    className="animate-spin h-5 w-5 text-muted-foreground"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"

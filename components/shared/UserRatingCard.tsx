@@ -98,7 +98,7 @@ const UserRatingCard: React.FC<UserRatingCardProps> = ({
   );
 
   return (
-    <div className="w-full rounded-2xl border border-solid border-gray-300 px-5 py-5">
+    <div className="w-full rounded-2xl border border-solid border-border px-5 py-5">
       <div className="flex w-full flex-wrap items-start justify-between">
         <div className="relative h-12 w-12 rounded-full">
           <Image
@@ -108,7 +108,7 @@ const UserRatingCard: React.FC<UserRatingCardProps> = ({
             className="rounded-full"
           />
         </div>
-        <div className="w-[calc(100%-3rem)] pl-3.5 text-sm font-normal leading-5 text-gray-500">
+        <div className="w-[calc(100%-3rem)] pl-3.5 text-sm font-normal leading-5 text-muted-foreground">
           <div className="flex w-full items-start justify-between">
             <h4 className="text-base font-semibold text-color-dark">{name}</h4>
             {isBuyer ? (
@@ -123,8 +123,8 @@ const UserRatingCard: React.FC<UserRatingCardProps> = ({
             ) : null}
           </div>
           <div className="w-full">
-            <h5 className="mb-1 text-xs font-normal text-gray-500">1 review</h5>
-            <div className="flex w-full flex-wrap items-start gap-2 text-xs leading-5 text-gray-500">
+            <h5 className="mb-1 text-xs font-normal text-muted-foreground">1 review</h5>
+            <div className="flex w-full flex-wrap items-start gap-2 text-xs leading-5 text-muted-foreground">
               <div className="flex">{calculateRatings(rating)}</div>
               <span className="ml-1">{getRelativeTime(date)}</span>
             </div>
@@ -132,7 +132,7 @@ const UserRatingCard: React.FC<UserRatingCardProps> = ({
         </div>
         <div className="w-full pt-3 ">
           <h3>{title}</h3>
-          <p className="text-sm font-normal leading-6 text-gray-500">
+          <p className="text-sm font-normal leading-6 text-muted-foreground">
             {review}
             {/* <a href="#" className="font-semibold">
               More.

@@ -431,7 +431,7 @@ const AdminProductChat: React.FC<AdminProductChatProps> = ({ productId, productD
 
   return (
     <>
-      <div className="w-full border-r border-solid border-gray-300">
+      <div className="w-full border-r border-solid border-border">
         <div className="flex w-full flex-wrap p-[20px]">
           <ProductChatHistory
             selectedChatHistory={selectedChatHistory}
@@ -443,7 +443,7 @@ const AdminProductChat: React.FC<AdminProductChatProps> = ({ productId, productD
           />
         </div>
         {productDetails && (selectedRoomId || productMessages?.length > 0) ? (
-          <div className="mt-2 flex w-full flex-wrap border-t border-solid border-gray-300 px-[15px] py-[10px]">
+          <div className="mt-2 flex w-full flex-wrap border-t border-solid border-border px-[15px] py-[10px]">
             <div className="flex w-full items-center">
               <div className="relative flex h-[32px] w-[32px] items-center">
                 <input
@@ -486,7 +486,7 @@ const AdminProductChat: React.FC<AdminProductChatProps> = ({ productId, productD
             {!isAttachmentUploading && attachments.length > 0 ? (
               <div className="mt-2 w-full flex flex-wrap gap-2">
                 {attachments.map((file: any, index: any) => (
-                  <div key={index} className="flex items-center border border-gray-300 p-2 rounded-md">
+                  <div key={index} className="flex items-center border border-border p-2 rounded-md">
                     <span className="mr-2">{file.name}</span>
                     <button onClick={() => removeFile(index)} className="text-destructive">X</button>
                   </div>

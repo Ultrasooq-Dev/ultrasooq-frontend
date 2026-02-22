@@ -52,7 +52,7 @@ const OtherItemCard: React.FC<OtherItemCardProps> = ({
           <Link href={`/my-orders/${id}`}>
             {orderProductType == 'SERVICE' ? (
               <figure>
-                <div className="image-container rounded border border-gray-300">
+                <div className="image-container rounded border border-border">
                   <Image
                     src={PlaceholderImage}
                     alt="preview-product"
@@ -67,12 +67,12 @@ const OtherItemCard: React.FC<OtherItemCardProps> = ({
                   <h4 className="mt-1">
                     {currency.symbol}{Number(offerPrice) * (orderQuantity ?? 0)}
                   </h4>
-                  <p className="text-gray-500">Quantity x {orderQuantity || 0}</p>
+                  <p className="text-muted-foreground">Quantity x {orderQuantity || 0}</p>
                 </figcaption>
               </figure>
             ) : (
               <figure>
-                <div className="image-container rounded border border-gray-300">
+                <div className="image-container rounded border border-border">
                   <Image
                     src={productImages?.[0]?.image || PlaceholderImage}
                     alt="preview-product"
@@ -88,13 +88,13 @@ const OtherItemCard: React.FC<OtherItemCardProps> = ({
                   <h4 className="mt-1">
                     {currency.symbol}{Number(offerPrice) * (orderQuantity ?? 0)}
                   </h4>
-                  <p className="text-gray-500">Quantity x {orderQuantity || 0}</p>
+                  <p className="text-muted-foreground">Quantity x {orderQuantity || 0}</p>
                   {orderProductType == 'PRODUCT' && variant ? (
                     (() => {
                       if (Array.isArray(variant)) {
                         return variant.map((obj: any, index: number) => {
                           return (
-                            <p className="text-gray-500" dir={langDir} key={index}>
+                            <p className="text-muted-foreground" dir={langDir} key={index}>
                               {obj.type}: {obj.value}
                             </p>
                           );
@@ -102,7 +102,7 @@ const OtherItemCard: React.FC<OtherItemCardProps> = ({
                       }
 
                       return (
-                        <p className="text-gray-500" dir={langDir}>
+                        <p className="text-muted-foreground" dir={langDir}>
                           {variant.type}: {variant.value}
                         </p>
                       );

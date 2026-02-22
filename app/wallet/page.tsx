@@ -43,10 +43,10 @@ const WalletPage = () => {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="max-w-md w-full bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-2">{t("access_denied")}</h2>
-          <p className="text-gray-600 mb-6">{t("please_login_to_access_wallet")}</p>
+      <div className="min-h-screen bg-muted flex items-center justify-center">
+        <div className="max-w-md w-full bg-card rounded-lg shadow-sm border border-border p-8 text-center">
+          <h2 className="text-2xl font-semibold text-foreground mb-2">{t("access_denied")}</h2>
+          <p className="text-muted-foreground mb-6">{t("please_login_to_access_wallet")}</p>
           <button 
             className="w-full bg-[#FF9900] hover:bg-[#FF8800] text-white font-medium py-2.5 px-4 rounded-md transition-colors"
             onClick={() => router.push("/login")}
@@ -60,17 +60,17 @@ const WalletPage = () => {
 
   if (walletLoading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-muted">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-            <div className="h-8 bg-gray-200 rounded w-64 mb-2 animate-pulse"></div>
-            <div className="h-5 bg-gray-200 rounded w-96 animate-pulse"></div>
+          <div className="bg-card rounded-lg shadow-sm border border-border p-6 mb-6">
+            <div className="h-8 bg-muted rounded w-64 mb-2 animate-pulse"></div>
+            <div className="h-5 bg-muted rounded w-96 animate-pulse"></div>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <div className="h-6 bg-gray-200 rounded w-32 mb-4 animate-pulse"></div>
-                <div className="h-10 bg-gray-200 rounded w-40 animate-pulse"></div>
+              <div key={i} className="bg-card rounded-lg shadow-sm border border-border p-6">
+                <div className="h-6 bg-muted rounded w-32 mb-4 animate-pulse"></div>
+                <div className="h-10 bg-muted rounded w-40 animate-pulse"></div>
               </div>
             ))}
           </div>
@@ -81,10 +81,10 @@ const WalletPage = () => {
 
   if (walletError) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="max-w-md w-full bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-2">{t("error_loading_wallet")}</h2>
-          <p className="text-gray-600 mb-6">{t("unable_to_load_wallet_data")}</p>
+      <div className="min-h-screen bg-muted flex items-center justify-center">
+        <div className="max-w-md w-full bg-card rounded-lg shadow-sm border border-border p-8 text-center">
+          <h2 className="text-2xl font-semibold text-foreground mb-2">{t("error_loading_wallet")}</h2>
+          <p className="text-muted-foreground mb-6">{t("unable_to_load_wallet_data")}</p>
           <button 
             className="w-full bg-[#FF9900] hover:bg-[#FF8800] text-white font-medium py-2.5 px-4 rounded-md transition-colors"
             onClick={() => window.location.reload()}
@@ -99,15 +99,15 @@ const WalletPage = () => {
   const availableBalance = (walletData?.data?.balance || 0) - (walletData?.data?.frozenBalance || 0);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-muted">
       {/* Header Section - Amazon Style */}
-      <div className="bg-white border-b border-gray-200">
+      <div className="bg-card border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div>
-            <h1 className="text-2xl font-semibold text-gray-900" dir={langDir} translate="no">
+            <h1 className="text-2xl font-semibold text-foreground" dir={langDir} translate="no">
               {t("my_wallet")}
             </h1>
-            <p className="text-sm text-gray-600 mt-1" dir={langDir} translate="no">
+            <p className="text-sm text-muted-foreground mt-1" dir={langDir} translate="no">
               {t("manage_your_funds_and_transactions")}
             </p>
           </div>
@@ -117,9 +117,9 @@ const WalletPage = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Balance Overview Cards - Amazon Style */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-5 hover:shadow-md transition-shadow">
+          <div className="bg-card rounded-lg shadow-sm border border-border p-5 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between mb-3">
-              <span className="text-sm font-medium text-gray-600" dir={langDir} translate="no">
+              <span className="text-sm font-medium text-muted-foreground" dir={langDir} translate="no">
                 {t("available_balance")}
               </span>
               <div className="w-10 h-10 bg-primary/5 rounded-full flex items-center justify-center">
@@ -133,9 +133,9 @@ const WalletPage = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-5 hover:shadow-md transition-shadow">
+          <div className="bg-card rounded-lg shadow-sm border border-border p-5 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between mb-3">
-              <span className="text-sm font-medium text-gray-600" dir={langDir} translate="no">
+              <span className="text-sm font-medium text-muted-foreground" dir={langDir} translate="no">
                 {t("frozen_balance")}
               </span>
               <div className="w-10 h-10 bg-warning/5 rounded-full flex items-center justify-center">
@@ -151,21 +151,21 @@ const WalletPage = () => {
         </div>
 
         {/* Wallet Actions */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+        <div className="bg-card rounded-lg shadow-sm border border-border p-6 mb-6">
           <WalletActions wallet={walletData?.data} />
         </div>
 
         {/* Main Content Area */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-card rounded-lg shadow-sm border border-border">
           {/* Tabs - Amazon Style */}
-          <div className="border-b border-gray-200">
+          <div className="border-b border-border">
             <nav className="flex -mb-px">
               <button
                 onClick={() => setActiveTab("overview")}
                 className={`py-4 px-6 text-sm font-medium border-b-2 transition-colors ${
                   activeTab === "overview"
                     ? "border-[#FF9900] text-[#FF9900]"
-                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                    : "border-transparent text-muted-foreground hover:text-muted-foreground hover:border-border"
                 }`}
                 dir={langDir}
                 translate="no"
@@ -177,7 +177,7 @@ const WalletPage = () => {
                 className={`py-4 px-6 text-sm font-medium border-b-2 transition-colors ${
                   activeTab === "transactions"
                     ? "border-[#FF9900] text-[#FF9900]"
-                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                    : "border-transparent text-muted-foreground hover:text-muted-foreground hover:border-border"
                 }`}
                 dir={langDir}
                 translate="no"
@@ -189,7 +189,7 @@ const WalletPage = () => {
                 className={`py-4 px-6 text-sm font-medium border-b-2 transition-colors ${
                   activeTab === "settings"
                     ? "border-[#FF9900] text-[#FF9900]"
-                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                    : "border-transparent text-muted-foreground hover:text-muted-foreground hover:border-border"
                 }`}
                 dir={langDir}
                 translate="no"
@@ -204,7 +204,7 @@ const WalletPage = () => {
             {activeTab === "overview" && (
               <div className="space-y-6">
                 <div>
-                  <h2 className="text-lg font-semibold text-gray-900 mb-4" dir={langDir} translate="no">
+                  <h2 className="text-lg font-semibold text-foreground mb-4" dir={langDir} translate="no">
                     {t("recent_activity")}
                   </h2>
                   <TransactionHistory

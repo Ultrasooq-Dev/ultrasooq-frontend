@@ -163,7 +163,7 @@ const DropshipProductManageCard: React.FC<DropshipProductManageCardProps> = ({
   };
 
   return (
-    <div className="mb-4 w-full rounded-lg border border-gray-200 bg-white shadow-xs">
+    <div className="mb-4 w-full rounded-lg border border-border bg-card shadow-xs">
       {/* Compact View - Always Visible */}
       <div className="flex items-center justify-between p-4">
         {/* Left Section - Product Info */}
@@ -173,7 +173,7 @@ const DropshipProductManageCard: React.FC<DropshipProductManageCardProps> = ({
             <div className="flex flex-col items-center space-y-2">
               {!hideCheckbox && (
                 <Checkbox
-                  className="border border-solid border-gray-300 data-[state=checked]:bg-dark-orange!"
+                  className="border border-solid border-border data-[state=checked]:bg-dark-orange!"
                   checked={selectedIds?.includes(id)}
                   onCheckedChange={(checked) => {
                     onSelectedId?.(checked, id);
@@ -208,7 +208,7 @@ const DropshipProductManageCard: React.FC<DropshipProductManageCardProps> = ({
               )}
               {!hideEyeIcon && (
                 <div
-                  className="cursor-pointer text-gray-500 hover:text-gray-700"
+                  className="cursor-pointer text-muted-foreground hover:text-muted-foreground"
                   onClick={() => setStatus(status === "ACTIVE" ? "INACTIVE" : "ACTIVE")}
                 >
                   {status === "ACTIVE" ? <IoIosEye size={20} /> : <IoIosEyeOff size={20} />}
@@ -218,7 +218,7 @@ const DropshipProductManageCard: React.FC<DropshipProductManageCardProps> = ({
           )}
 
           {/* Product Image */}
-          <div className="relative h-24 w-24 overflow-hidden rounded-lg border border-gray-200">
+          <div className="relative h-24 w-24 overflow-hidden rounded-lg border border-border">
             {productImage && validator.isURL(productImage) ? (
               // Check if the image is from an allowed domain (S3 bucket)
               productImage.includes('puremoon.s3.amazonaws.com') ? (
@@ -258,7 +258,7 @@ const DropshipProductManageCard: React.FC<DropshipProductManageCardProps> = ({
           {/* Product Details */}
           <div className="flex flex-col space-y-2">
             <div className="flex items-center space-x-2">
-              <h3 className="text-lg font-semibold text-gray-900">{productName || "-"}</h3>
+              <h3 className="text-lg font-semibold text-foreground">{productName || "-"}</h3>
               {/* Product Type Badges */}
               {productType === 'D' && !isDropshipped && (
                 <span className="px-2 py-1 text-xs font-medium bg-info/10 text-info rounded-full">
@@ -278,7 +278,7 @@ const DropshipProductManageCard: React.FC<DropshipProductManageCardProps> = ({
             </div>
             
             {/* Stock and Price Info */}
-            <div className="flex space-x-6 text-sm text-gray-600">
+            <div className="flex space-x-6 text-sm text-muted-foreground">
               <div className="flex items-center space-x-2">
                 <span className="font-medium">{t("stock")}:</span>
                 <span className="text-success font-semibold">
@@ -300,7 +300,7 @@ const DropshipProductManageCard: React.FC<DropshipProductManageCardProps> = ({
             </div>
 
             {/* Additional Info */}
-            <div className="flex space-x-4 text-xs text-gray-500">
+            <div className="flex space-x-4 text-xs text-muted-foreground">
               {brandName && (
                 <span>{t("brand")}: {brandName}</span>
               )}
@@ -311,7 +311,7 @@ const DropshipProductManageCard: React.FC<DropshipProductManageCardProps> = ({
 
             {/* Short Description */}
             {shortDescription && (
-              <p className="text-sm text-gray-600 line-clamp-2">{shortDescription}</p>
+              <p className="text-sm text-muted-foreground line-clamp-2">{shortDescription}</p>
             )}
 
             {/* Status Badge */}
@@ -336,7 +336,7 @@ const DropshipProductManageCard: React.FC<DropshipProductManageCardProps> = ({
               className={`p-2 rounded-lg border transition-colors ${
                 inWishlist 
                   ? "bg-destructive/5 border-destructive/20 text-destructive" 
-                  : "bg-gray-50 border-gray-200 text-gray-600 hover:bg-destructive/5 hover:border-destructive/20 hover:text-destructive"
+                  : "bg-muted border-border text-muted-foreground hover:bg-destructive/5 hover:border-destructive/20 hover:text-destructive"
               }`}
               title={inWishlist ? t("remove_from_wishlist") : t("add_to_wishlist")}
             >
@@ -363,7 +363,7 @@ const DropshipProductManageCard: React.FC<DropshipProductManageCardProps> = ({
 
               <button
                 onClick={handleEdit}
-                className="p-2 text-gray-500 hover:text-success hover:bg-success/5 rounded-lg transition-colors"
+                className="p-2 text-muted-foreground hover:text-success hover:bg-success/5 rounded-lg transition-colors"
                 title={t("edit_product")}
               >
                 <IoMdEdit size={18} />
@@ -371,7 +371,7 @@ const DropshipProductManageCard: React.FC<DropshipProductManageCardProps> = ({
 
               <button
                 onClick={handleRemove}
-                className="p-2 text-gray-500 hover:text-destructive hover:bg-destructive/5 rounded-lg transition-colors"
+                className="p-2 text-muted-foreground hover:text-destructive hover:bg-destructive/5 rounded-lg transition-colors"
                 title={t("delete_product")}
               >
                 <IoMdTrash size={18} />

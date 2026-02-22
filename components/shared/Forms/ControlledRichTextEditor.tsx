@@ -25,19 +25,19 @@ const SimpleRichTextEditor = ({
         className={`w-full min-h-[120px] p-3 border rounded-md resize-vertical focus:ring-2 focus:border-transparent ${
           isOverLimit 
             ? 'border-destructive/30 focus:ring-destructive' 
-            : 'border-gray-300 focus:ring-primary'
+            : 'border-border focus:ring-primary'
         }`}
         placeholder="Enter description..."
         {...props}
       />
       <div className="mt-2 flex justify-between items-center">
         {!readOnly && (
-          <div className="text-xs text-gray-500">
+          <div className="text-xs text-muted-foreground">
             You can use basic formatting. For advanced formatting, please use HTML tags.
           </div>
         )}
         {maxLength && (
-          <div className={`text-xs ${isOverLimit ? 'text-destructive' : 'text-gray-400'}`}>
+          <div className={`text-xs ${isOverLimit ? 'text-destructive' : 'text-muted-foreground'}`}>
             {currentLength}/{maxLength} characters
           </div>
         )}

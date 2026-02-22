@@ -52,7 +52,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ userDetails }) => {
     ]);
 
     return (
-        <div className="flex w-full flex-wrap rounded-3xl border border-solid border-gray-300 bg-white p-4 shadow-md md:p-9">
+        <div className="flex w-full flex-wrap rounded-3xl border border-solid border-border bg-card p-4 shadow-md md:p-9">
             <div className="relative mx-auto h-40 w-40 rounded-full">
                 <Avatar className="h-40 w-40">
                     <AvatarImage src={userDetails?.profilePicture} alt="image-icon" />
@@ -111,10 +111,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ userDetails }) => {
                     </ul>
                 </div>
                 <div className="mt-5 flex w-full flex-wrap items-center justify-between">
-                    <div className="my-2 text-sm font-normal leading-4 text-gray-500">
+                    <div className="my-2 text-sm font-normal leading-4 text-muted-foreground">
                         <p>
                             Member ID:&nbsp;
-                            <span className="text-base font-medium leading-4 text-gray-600">
+                            <span className="text-base font-medium leading-4 text-muted-foreground">
                                 {userDetails?.uniqueId
                                     ? `${MEMBER_UNIQUE_ID}${userDetails?.uniqueId}`
                                     : "NA"}

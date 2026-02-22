@@ -190,7 +190,7 @@ const ManageServices = () => {
                 <ul>
                   <li>
                     <Select onValueChange={(value) => setSortBy(value)}>
-                      <SelectTrigger className="custom-form-control-s1 bg-white">
+                      <SelectTrigger className="custom-form-control-s1 bg-card">
                         <SelectValue placeholder={t("sort_by")} dir={langDir} translate="no" />
                       </SelectTrigger>
                       <SelectContent>

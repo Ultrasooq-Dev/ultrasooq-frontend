@@ -281,7 +281,7 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="flex max-h-[90vh] max-w-md flex-col">
-        <DialogHeader className="shrink-0 border-b border-gray-200 pb-4">
+        <DialogHeader className="shrink-0 border-b border-border pb-4">
           <DialogTitle
             dir={langDir}
             className="text-dark-cyan text-xl font-semibold"
@@ -300,7 +300,7 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
           {(isCreatingAccount ||
             createAccount.isPending ||
             updateProfile.isPending) && (
-            <div className="absolute inset-0 z-50 flex items-center justify-center rounded-lg bg-white/80 backdrop-blur-sm">
+            <div className="absolute inset-0 z-50 flex items-center justify-center rounded-lg bg-card/80 backdrop-blur-sm">
               <div className="flex flex-col items-center gap-3">
                 <svg
                   className="h-8 w-8 animate-spin text-primary"
@@ -322,12 +322,12 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   ></path>
                 </svg>
-                <p className="text-sm font-medium text-gray-700">
+                <p className="text-sm font-medium text-muted-foreground">
                   {isCreatingAccount
                     ? t("creating_your_account")
                     : t("processing")}
                 </p>
-                <p className="text-xs text-gray-500">{t("please_wait")}</p>
+                <p className="text-xs text-muted-foreground">{t("please_wait")}</p>
               </div>
             </div>
           )}
@@ -348,7 +348,7 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
                       <Input
                         placeholder={t("enter_account_name")}
                         {...field}
-                        className="focus:border-dark-orange focus:ring-dark-orange border-gray-300"
+                        className="focus:border-dark-orange focus:ring-dark-orange border-border"
                         dir={langDir}
                       />
                     </FormControl>
@@ -376,7 +376,7 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
                         ).map((role) => (
                           <FormItem
                             key={role.value}
-                            className="flex items-center space-y-0 space-x-3 rounded-lg border border-gray-200 p-2 hover:bg-gray-50"
+                            className="flex items-center space-y-0 space-x-3 rounded-lg border border-border p-2 hover:bg-muted"
                           >
                             <FormControl>
                               <RadioGroupItem
@@ -397,7 +397,7 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
               />
 
               {/* Personal information is inherited from Master Account */}
-              <div className="space-y-3 border-t border-gray-200 pt-4">
+              <div className="space-y-3 border-t border-border pt-4">
                 <div className="rounded-lg border border-primary/20 bg-primary/5 p-3">
                   <div className="flex items-start space-x-2">
                     <div className="shrink-0">
@@ -428,11 +428,11 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
               </div>
 
               {/* Identity Card Upload - Mandatory for COMPANY and FREELANCER */}
-              <div className="space-y-3 border-t border-gray-200 pt-4">
+              <div className="space-y-3 border-t border-border pt-4">
                 <h4 className="text-dark-cyan text-sm font-medium">
                   {t("identity_card")} <span className="text-destructive">*</span>
                 </h4>
-                <p className="text-xs text-gray-600">
+                <p className="text-xs text-muted-foreground">
                   {t("identity_card_description")}
                 </p>
 
@@ -448,7 +448,7 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
-                          <div className="relative w-full overflow-hidden rounded-lg border-2 border-dashed border-gray-300">
+                          <div className="relative w-full overflow-hidden rounded-lg border-2 border-dashed border-border">
                             <div className="relative h-48 w-full">
                               {identityFrontImageFile ? (
                                 <>
@@ -543,7 +543,7 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
                           <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
-                          <div className="relative w-full overflow-hidden rounded-lg border-2 border-dashed border-gray-300">
+                          <div className="relative w-full overflow-hidden rounded-lg border-2 border-dashed border-border">
                             <div className="relative h-48 w-full">
                               {identityBackImageFile ? (
                                 <>
@@ -631,7 +631,7 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
 
               {/* Company-specific fields - show only when COMPANY is selected */}
               {form.watch("tradeRole") === "COMPANY" && (
-                <div className="space-y-3 border-t border-gray-200 pt-4">
+                <div className="space-y-3 border-t border-border pt-4">
                   <h4 className="text-dark-cyan text-sm font-medium">
                     {t("company_details")}
                   </h4>
@@ -649,7 +649,7 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
                             <Input
                               placeholder={t("enter_company_name")}
                               {...field}
-                              className="focus:border-dark-orange focus:ring-dark-orange border-gray-300 text-sm"
+                              className="focus:border-dark-orange focus:ring-dark-orange border-border text-sm"
                               dir={langDir}
                             />
                           </FormControl>
@@ -670,7 +670,7 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
                             <Input
                               placeholder={t("enter_company_address")}
                               {...field}
-                              className="focus:border-dark-orange focus:ring-dark-orange border-gray-300 text-sm"
+                              className="focus:border-dark-orange focus:ring-dark-orange border-border text-sm"
                               dir={langDir}
                             />
                           </FormControl>
@@ -691,7 +691,7 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
                             <Input
                               placeholder={t("enter_company_phone")}
                               {...field}
-                              className="focus:border-dark-orange focus:ring-dark-orange border-gray-300 text-sm"
+                              className="focus:border-dark-orange focus:ring-dark-orange border-border text-sm"
                               dir={langDir}
                             />
                           </FormControl>
@@ -712,7 +712,7 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
                             <Input
                               placeholder={t("enter_company_website")}
                               {...field}
-                              className="focus:border-dark-orange focus:ring-dark-orange border-gray-300 text-sm"
+                              className="focus:border-dark-orange focus:ring-dark-orange border-border text-sm"
                               dir={langDir}
                             />
                           </FormControl>
@@ -733,7 +733,7 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
                             <Input
                               placeholder={t("enter_company_tax_id")}
                               {...field}
-                              className="focus:border-dark-orange focus:ring-dark-orange border-gray-300 text-sm"
+                              className="focus:border-dark-orange focus:ring-dark-orange border-border text-sm"
                               dir={langDir}
                             />
                           </FormControl>
@@ -746,7 +746,7 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
               )}
 
               {/* Status Information */}
-              <div className="space-y-3 border-t border-gray-200 pt-4">
+              <div className="space-y-3 border-t border-border pt-4">
                 <div className="rounded-lg border border-warning/20 bg-warning/5 p-3">
                   <div className="flex items-start space-x-2">
                     <div className="shrink-0">
@@ -777,7 +777,7 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
           </Form>
         </div>
 
-        <div className="flex shrink-0 justify-end space-x-2 border-t border-gray-200 pt-4">
+        <div className="flex shrink-0 justify-end space-x-2 border-t border-border pt-4">
           <Button
             variant="outline"
             onClick={() => {

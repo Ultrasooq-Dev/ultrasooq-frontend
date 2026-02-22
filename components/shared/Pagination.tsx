@@ -39,7 +39,7 @@ const Pagination: React.FC<PaginationProps> = ({
           type="button"
           variant="outline"
           size="sm"
-          className="h-8 sm:h-10 px-2 sm:px-4 gap-1 sm:gap-2 bg-white border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="h-8 sm:h-10 px-2 sm:px-4 gap-1 sm:gap-2 bg-card border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={() => setPage(1)}
           disabled={page === 1}
           translate="no"
@@ -53,7 +53,7 @@ const Pagination: React.FC<PaginationProps> = ({
           type="button"
           variant="outline"
           size="sm"
-          className="h-8 w-8 sm:h-10 sm:w-10 p-0 bg-white border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="h-8 w-8 sm:h-10 sm:w-10 p-0 bg-card border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={() => setPage(page - 1)}
           disabled={page === 1}
         >
@@ -64,7 +64,7 @@ const Pagination: React.FC<PaginationProps> = ({
         <ReactPaginate
           breakLabel="..."
           breakClassName="flex items-center justify-center h-8 w-8 sm:h-10 sm:w-10"
-          breakLinkClassName="text-gray-500 font-medium text-xs sm:text-sm"
+          breakLinkClassName="text-muted-foreground font-medium text-xs sm:text-sm"
           onPageChange={handlePageClick}
           pageRangeDisplayed={2}
           marginPagesDisplayed={1}
@@ -73,7 +73,7 @@ const Pagination: React.FC<PaginationProps> = ({
           renderOnZeroPageCount={null}
           containerClassName="flex items-center gap-1 sm:gap-2"
           pageClassName="flex"
-          pageLinkClassName="flex items-center justify-center h-8 w-8 sm:h-10 sm:w-10 rounded-md sm:rounded-lg border border-gray-300 bg-white text-gray-700 font-medium text-xs sm:text-sm hover:bg-gray-50 hover:border-gray-400 transition-colors"
+          pageLinkClassName="flex items-center justify-center h-8 w-8 sm:h-10 sm:w-10 rounded-md sm:rounded-lg border border-border bg-card text-muted-foreground font-medium text-xs sm:text-sm hover:bg-muted hover:border-border transition-colors"
           activeClassName="active"
           activeLinkClassName="!bg-warning !text-white !border-warning hover:!bg-warning/90"
           previousClassName="hidden"
@@ -85,7 +85,7 @@ const Pagination: React.FC<PaginationProps> = ({
           type="button"
           variant="outline"
           size="sm"
-          className="h-8 w-8 sm:h-10 sm:w-10 p-0 bg-white border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="h-8 w-8 sm:h-10 sm:w-10 p-0 bg-card border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={() => setPage(page + 1)}
           disabled={page === pageCount}
         >
@@ -97,7 +97,7 @@ const Pagination: React.FC<PaginationProps> = ({
           type="button"
           variant="outline"
           size="sm"
-          className="h-8 sm:h-10 px-2 sm:px-4 gap-1 sm:gap-2 bg-white border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="h-8 sm:h-10 px-2 sm:px-4 gap-1 sm:gap-2 bg-card border-border hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={() => setPage(pageCount)}
           disabled={page === pageCount}
           dir={langDir}

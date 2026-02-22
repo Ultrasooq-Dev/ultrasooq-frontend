@@ -497,14 +497,14 @@ const CompleteOrderPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-muted">
       <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2" dir={langDir} translate="no">
+          <h1 className="text-3xl font-bold text-foreground mb-2" dir={langDir} translate="no">
             {t("make_payment")}
           </h1>
-          <p className="text-gray-600" dir={langDir} translate="no">
+          <p className="text-muted-foreground" dir={langDir} translate="no">
             Choose your preferred payment method to complete your order
           </p>
         </div>
@@ -512,9 +512,9 @@ const CompleteOrderPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column - Payment Options */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-              <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
-                <h2 className="text-xl font-semibold text-gray-900" dir={langDir} translate="no">
+            <div className="bg-card rounded-xl shadow-sm border border-border overflow-hidden">
+              <div className="px-6 py-4 border-b border-border bg-muted">
+                <h2 className="text-xl font-semibold text-foreground" dir={langDir} translate="no">
                   Payment Methods
                 </h2>
               </div>
@@ -530,7 +530,7 @@ const CompleteOrderPage = () => {
                 <div className={`border-2 rounded-lg p-6 transition-all duration-200 cursor-pointer ${
                   paymentType === "DIRECT" 
                     ? "border-primary bg-primary/5 shadow-md" 
-                    : "border-gray-200 hover:border-gray-300 hover:shadow-sm"
+                    : "border-border hover:border-border hover:shadow-sm"
                 }`}>
                   <div className="flex items-center space-x-4">
                     <RadioGroupItem 
@@ -544,10 +544,10 @@ const CompleteOrderPage = () => {
                         className="cursor-pointer"
                       >
                         <div>
-                          <h3 className="text-lg font-semibold text-gray-900" dir={langDir} translate="no">
+                          <h3 className="text-lg font-semibold text-foreground" dir={langDir} translate="no">
                             {t("direct_payment")}
                           </h3>
-                          <p className="text-sm text-gray-600" dir={langDir} translate="no">
+                          <p className="text-sm text-muted-foreground" dir={langDir} translate="no">
                             Pay the full amount now with your preferred payment method
                           </p>
                         </div>
@@ -559,7 +559,7 @@ const CompleteOrderPage = () => {
                 <div className={`border-2 rounded-lg p-6 transition-all duration-200 cursor-pointer ${
                   paymentType === "ADVANCE" 
                     ? "border-primary bg-primary/5 shadow-md" 
-                    : "border-gray-200 hover:border-gray-300 hover:shadow-sm"
+                    : "border-border hover:border-border hover:shadow-sm"
                 }`}>
                   <div className="flex items-center space-x-4">
                     <RadioGroupItem 
@@ -573,10 +573,10 @@ const CompleteOrderPage = () => {
                         className="cursor-pointer"
                       >
                         <div>
-                          <h3 className="text-lg font-semibold text-gray-900" dir={langDir} translate="no">
+                          <h3 className="text-lg font-semibold text-foreground" dir={langDir} translate="no">
                             {t("advance_payment")}
                           </h3>
-                          <p className="text-sm text-gray-600" dir={langDir} translate="no">
+                          <p className="text-sm text-muted-foreground" dir={langDir} translate="no">
                             Pay a partial amount now and the rest later
                           </p>
                         </div>
@@ -586,8 +586,8 @@ const CompleteOrderPage = () => {
                   
                   {paymentType == "ADVANCE" && (
                     <div className="mt-6 pl-8">
-                      <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                        <label className="block text-sm font-medium text-gray-700 mb-2" dir={langDir} translate="no">
+                      <div className="bg-muted border border-border rounded-lg p-4">
+                        <label className="block text-sm font-medium text-muted-foreground mb-2" dir={langDir} translate="no">
                           Advance Amount
                         </label>
                         <Input
@@ -597,7 +597,7 @@ const CompleteOrderPage = () => {
                           onChange={(e) => setAdvanceAmount(Number(e.target.value))}
                           className="max-w-xs"
                         />
-                        <p className="text-sm text-gray-600 mt-2" dir={langDir} translate="no">
+                        <p className="text-sm text-muted-foreground mt-2" dir={langDir} translate="no">
                           Remaining: {currency.symbol}{(orderStore.total - advanceAmount).toFixed(2)}
                         </p>
                       </div>
@@ -609,7 +609,7 @@ const CompleteOrderPage = () => {
                   <div className={`border-2 rounded-lg p-6 transition-all duration-200 cursor-pointer ${
                     paymentType === "WALLET" 
                       ? "border-primary bg-primary/5 shadow-md" 
-                      : "border-gray-200 hover:border-gray-300 hover:shadow-sm"
+                      : "border-border hover:border-border hover:shadow-sm"
                   }`}>
                     <div className="flex items-center space-x-4">
                       <RadioGroupItem 
@@ -623,10 +623,10 @@ const CompleteOrderPage = () => {
                           className="cursor-pointer"
                         >
                           <div>
-                            <h3 className="text-lg font-semibold text-gray-900" dir={langDir} translate="no">
+                            <h3 className="text-lg font-semibold text-foreground" dir={langDir} translate="no">
                               {t("pay_with_wallet")}
                             </h3>
-                            <p className="text-sm text-gray-600" dir={langDir} translate="no">
+                            <p className="text-sm text-muted-foreground" dir={langDir} translate="no">
                               Use your wallet balance ({currency.symbol}{walletData.data.balance ? Number(walletData.data.balance).toFixed(2) : "0.00"})
                             </p>
                           </div>
@@ -636,18 +636,18 @@ const CompleteOrderPage = () => {
                     
                     {paymentType == "WALLET" && (
                       <div className="mt-6 pl-8">
-                        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-3">
+                        <div className="bg-muted border border-border rounded-lg p-4 space-y-3">
                           <div className="flex justify-between items-center">
-                            <span className="text-sm text-gray-600">{t("wallet_balance")}:</span>
-                            <span className="font-semibold text-gray-900">{currency.symbol}{walletData.data.balance ? Number(walletData.data.balance).toFixed(2) : "0.00"}</span>
+                            <span className="text-sm text-muted-foreground">{t("wallet_balance")}:</span>
+                            <span className="font-semibold text-foreground">{currency.symbol}{walletData.data.balance ? Number(walletData.data.balance).toFixed(2) : "0.00"}</span>
                           </div>
                           <div className="flex justify-between items-center">
-                            <span className="text-sm text-gray-600">{t("order_total")}:</span>
-                            <span className="font-semibold text-gray-900">{currency.symbol}{orderStore.total || 0}</span>
+                            <span className="text-sm text-muted-foreground">{t("order_total")}:</span>
+                            <span className="font-semibold text-foreground">{currency.symbol}{orderStore.total || 0}</span>
                           </div>
-                          <div className="border-t border-gray-300 pt-3">
+                          <div className="border-t border-border pt-3">
                             <div className="flex justify-between items-center">
-                              <span className="text-sm font-medium text-gray-700">{t("remaining_after_payment")}:</span>
+                              <span className="text-sm font-medium text-muted-foreground">{t("remaining_after_payment")}:</span>
                               <span className={`font-semibold ${(Number(walletData.data.balance || 0) - Number(orderStore.total || 0)) < 0 ? 'text-destructive' : 'text-success'}`}>
                                 {currency.symbol}{(Number(walletData.data.balance || 0) - Number(orderStore.total || 0)).toFixed(2)}
                               </span>
@@ -663,7 +663,7 @@ const CompleteOrderPage = () => {
                 <div className={`border-2 rounded-lg p-6 transition-all duration-200 cursor-pointer ${
                   paymentType === "PAYMENTLINK" 
                     ? "border-primary bg-primary/5 shadow-md" 
-                    : "border-gray-200 hover:border-gray-300 hover:shadow-sm"
+                    : "border-border hover:border-border hover:shadow-sm"
                 }`}>
                   <div className="flex items-center space-x-4">
                     <RadioGroupItem 
@@ -677,10 +677,10 @@ const CompleteOrderPage = () => {
                         className="cursor-pointer"
                       >
                         <div>
-                          <h3 className="text-lg font-semibold text-gray-900" dir={langDir} translate="no">
+                          <h3 className="text-lg font-semibold text-foreground" dir={langDir} translate="no">
                             {t("pay_it_for_me")}
                           </h3>
-                          <p className="text-sm text-gray-600" dir={langDir} translate="no">
+                          <p className="text-sm text-muted-foreground" dir={langDir} translate="no">
                             Generate a payment link to share with someone else
                           </p>
                         </div>
@@ -690,7 +690,7 @@ const CompleteOrderPage = () => {
                   
                   {paymentLink && (
                     <div className="mt-6 pl-8">
-                      <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                      <div className="bg-muted border border-border rounded-lg p-4">
                         <div className="space-y-3">
                           <Button 
                             type="button" 
@@ -700,7 +700,7 @@ const CompleteOrderPage = () => {
                           >
                             {t("copy_payment_link")}
                           </Button>
-                          <p className="text-sm text-gray-600" dir={langDir} translate="no">
+                          <p className="text-sm text-muted-foreground" dir={langDir} translate="no">
                             {t("copy_payment_link_instruction")}
                           </p>
                         </div>
@@ -715,19 +715,19 @@ const CompleteOrderPage = () => {
           {/* Right Column - Order Summary */}
           <div className="lg:col-span-1">
             <div className="sticky top-8">
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
-                  <h2 className="text-xl font-semibold text-gray-900" dir={langDir} translate="no">
+              <div className="bg-card rounded-xl shadow-sm border border-border overflow-hidden">
+                <div className="px-6 py-4 border-b border-border bg-muted">
+                  <h2 className="text-xl font-semibold text-foreground" dir={langDir} translate="no">
                     {t("order_summary")}
                   </h2>
                 </div>
                 
                 <div className="p-6 space-y-4">
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600" dir={langDir} translate="no">
+                    <span className="text-muted-foreground" dir={langDir} translate="no">
                       {t("subtotal")}
                     </span>
-                    <span className="font-semibold text-gray-900">
+                    <span className="font-semibold text-foreground">
                       {currency.symbol}{orderStore.total || 0}
                     </span>
                   </div>
@@ -735,15 +735,15 @@ const CompleteOrderPage = () => {
                   {advanceAmount > 0 && (
                     <>
                       <div className="flex justify-between items-center">
-                        <span className="text-gray-600" dir={langDir} translate="no">
+                        <span className="text-muted-foreground" dir={langDir} translate="no">
                           {t("advance_payment")}
                         </span>
-                        <span className="font-semibold text-gray-900">
+                        <span className="font-semibold text-foreground">
                           {currency.symbol}{advanceAmount || 0}
                         </span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-gray-600" dir={langDir} translate="no">
+                        <span className="text-muted-foreground" dir={langDir} translate="no">
                           {t("shipping")}
                         </span>
                         <span className="text-success font-medium">{t("free")}</span>
@@ -753,21 +753,21 @@ const CompleteOrderPage = () => {
                   
                   {paymentType == "WALLET" && walletData?.data && (
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-600" dir={langDir} translate="no">
+                      <span className="text-muted-foreground" dir={langDir} translate="no">
                         {t("wallet_balance")}
                       </span>
-                      <span className="font-semibold text-gray-900">
+                      <span className="font-semibold text-foreground">
                         {currency.symbol}{walletData.data.balance ? Number(walletData.data.balance).toFixed(2) : "0.00"}
                       </span>
                     </div>
                   )}
                   
-                  <div className="border-t border-gray-200 pt-4">
+                  <div className="border-t border-border pt-4">
                     <div className="flex justify-between items-center">
-                      <span className="text-lg font-semibold text-gray-900" dir={langDir} translate="no">
+                      <span className="text-lg font-semibold text-foreground" dir={langDir} translate="no">
                         {t("total_amount")}
                       </span>
-                      <span className="text-xl font-bold text-gray-900">
+                      <span className="text-xl font-bold text-foreground">
                         {currency.symbol}{advanceAmount > 0 ? advanceAmount || 0 : orderStore.total || 0}
                       </span>
                     </div>

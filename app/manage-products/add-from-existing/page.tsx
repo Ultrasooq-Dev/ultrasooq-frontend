@@ -862,7 +862,7 @@ const AddFromExistingProductPage = () => {
 
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-muted">
       <div className="container mx-auto px-4 py-6">
         {/* Header */}
         <div className="mb-6">
@@ -871,11 +871,11 @@ const AddFromExistingProductPage = () => {
               <Button
                 variant="ghost"
                 onClick={() => router.back()}
-                className="p-2 hover:bg-gray-100"
+                className="p-2 hover:bg-muted"
               >
                 <ArrowLeft className="h-4 w-4 mr-2" />
               </Button>
-              <h1 className="text-3xl font-bold text-gray-900">
+              <h1 className="text-3xl font-bold text-foreground">
                 {t("add_product")}
               </h1>
             </div>
@@ -893,7 +893,7 @@ const AddFromExistingProductPage = () => {
         </div>
 
         {/* Enhanced Search Section with Tabs */}
-        <div className="bg-white rounded-lg shadow-xs p-6 mb-6">
+        <div className="bg-card rounded-lg shadow-xs p-6 mb-6">
           <Tabs defaultValue="search" className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-6">
               <TabsTrigger value="search">
@@ -914,7 +914,7 @@ const AddFromExistingProductPage = () => {
             {/* Search Tab - Existing Functionality */}
             <TabsContent value="search" className="mt-0">
           <div className="mb-4">
-            <p className="text-sm text-gray-600 mb-3" dir={langDir}>
+            <p className="text-sm text-muted-foreground mb-3" dir={langDir}>
               {t("search_existing_product_description")}
             </p>
             <div className="flex gap-2 w-full">
@@ -936,16 +936,16 @@ const AddFromExistingProductPage = () => {
               {/* Search Results - Existing */}
           {searchResults.length > 0 && (
                 <div className="space-y-3 mb-6">
-              <h4 className="font-medium text-gray-900" dir={langDir}>
+              <h4 className="font-medium text-foreground" dir={langDir}>
                 {t("product_suggestion_from_ultrasooq") || "Product suggestion from Ultrasooq"}
               </h4>
               <div className="max-h-60 overflow-y-auto space-y-2">
                 {searchResults.map((product) => (
                   <div
                     key={product.id}
-                    className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50"
+                    className="flex items-center gap-3 p-3 border border-border rounded-lg hover:bg-muted"
                   >
-                    <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
+                    <div className="w-12 h-12 bg-muted rounded-lg flex items-center justify-center">
                       {product.existingProductImages?.[0]?.image ? (
                         <Image
                           src={product.existingProductImages[0].image}
@@ -955,14 +955,14 @@ const AddFromExistingProductPage = () => {
                           className="rounded-lg object-cover"
                         />
                       ) : (
-                        <Copy className="h-6 w-6 text-gray-400" />
+                        <Copy className="h-6 w-6 text-muted-foreground" />
                       )}
                     </div>
                     <div className="flex-1">
-                      <h5 className="font-medium text-gray-900" dir={langDir}>
+                      <h5 className="font-medium text-foreground" dir={langDir}>
                         {product.productName}
                       </h5>
-                      <p className="text-xs text-gray-400" dir={langDir}>
+                      <p className="text-xs text-muted-foreground" dir={langDir}>
                         {product.category?.name} • {product.brand?.brandName}
                       </p>
                     </div>
@@ -990,7 +990,7 @@ const AddFromExistingProductPage = () => {
               
               {/* Load More with AI Button - Show below existing results */}
               {!isAIGenerating && aiProductModels.length === 0 && (
-                <div className="flex justify-center pt-4 border-t border-gray-200">
+                <div className="flex justify-center pt-4 border-t border-border">
                   <Button
                     onClick={() => handleAIGenerate(searchTerm || '', 'text')}
                     className="bg-info hover:bg-info/90 text-white"
@@ -1004,7 +1004,7 @@ const AddFromExistingProductPage = () => {
               
               {/* Show loading state if AI is generating */}
               {isAIGenerating && (
-                <div className="flex flex-col items-center gap-2 pt-4 border-t border-gray-200">
+                <div className="flex flex-col items-center gap-2 pt-4 border-t border-border">
                   <Button disabled className="bg-info text-white">
                     <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                     {t("generating") || "Generating..."}
@@ -1012,7 +1012,7 @@ const AddFromExistingProductPage = () => {
                   <Button
                     variant="outline"
                     onClick={handleSkipLoading}
-                    className="text-gray-600 hover:text-gray-900"
+                    className="text-muted-foreground hover:text-foreground"
                   >
                     {t("skip_loading") || "Skip loading"}
                   </Button>
@@ -1025,7 +1025,7 @@ const AddFromExistingProductPage = () => {
               {aiProductModels.length > 0 && aiModelSource === "text" && (
                 <div className="space-y-3 mt-6">
                   <div className="flex items-center justify-between">
-                    <h4 className="font-medium text-gray-900 flex items-center gap-2" dir={langDir}>
+                    <h4 className="font-medium text-foreground flex items-center gap-2" dir={langDir}>
                       <Sparkles className="h-5 w-5 text-info" />
                       {t("product_models_found") || "Product Models Found"}
                     </h4>
@@ -1051,15 +1051,15 @@ const AddFromExistingProductPage = () => {
                       return (
                         <div
                           key={idx}
-                          className="bg-white border border-gray-200 rounded-lg p-4 hover:border-purple-400 hover:shadow-md transition-all"
+                          className="bg-card border border-border rounded-lg p-4 hover:border-purple-400 hover:shadow-md transition-all"
                         >
                           <div className="flex items-start justify-between gap-4">
                             <div className="flex-1 min-w-0">
                               {specifications ? (
-                                <div className="text-sm text-gray-700" dir={langDir}>
-                                  <span className="font-semibold text-gray-900">{modelName}</span>
-                                  <span className="text-gray-600 mx-1">-</span>
-                                  <span className="text-gray-700">
+                                <div className="text-sm text-muted-foreground" dir={langDir}>
+                                  <span className="font-semibold text-foreground">{modelName}</span>
+                                  <span className="text-muted-foreground mx-1">-</span>
+                                  <span className="text-muted-foreground">
                                     {specifications
                                       .split('\n')
                                       .filter(line => line.trim())
@@ -1076,7 +1076,7 @@ const AddFromExistingProductPage = () => {
                                   </span>
                                 </div>
                               ) : (
-                                <h5 className="font-semibold text-gray-900" dir={langDir}>
+                                <h5 className="font-semibold text-foreground" dir={langDir}>
                                   {modelName}
                                 </h5>
                               )}
@@ -1107,13 +1107,13 @@ const AddFromExistingProductPage = () => {
               {/* No Results Found - Only show if no AI models either */}
               {shouldSearch && querySearchTerm && searchResults.length === 0 && !isSearching && aiProductModels.length === 0 && (
             <div className="text-center py-8">
-                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Search className="h-8 w-8 text-gray-400" />
+                  <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Search className="h-8 w-8 text-muted-foreground" />
                   </div>
-                  <p className="text-lg font-medium text-gray-900 mb-2" dir={langDir}>
+                  <p className="text-lg font-medium text-foreground mb-2" dir={langDir}>
                 {t("no_products_found")}
               </p>
-                  <p className="text-sm text-gray-500 mb-4" dir={langDir}>
+                  <p className="text-sm text-muted-foreground mb-4" dir={langDir}>
                     {t("no_matching_products_in_catalog") || t("try_different_search_term")}
               </p>
                   {/* Load More with AI Button - Show when no existing results */}
@@ -1136,7 +1136,7 @@ const AddFromExistingProductPage = () => {
                       <Button
                         variant="outline"
                         onClick={handleSkipLoading}
-                        className="text-gray-600 hover:text-gray-900"
+                        className="text-muted-foreground hover:text-foreground"
                       >
                         {t("skip_loading") || "Skip loading"}
                       </Button>
@@ -1148,14 +1148,14 @@ const AddFromExistingProductPage = () => {
               {/* Initial State - Existing */}
           {!searchTerm && searchResults.length === 0 && (
             <div className="text-center py-8">
-              <div className="bg-gray-50 rounded-lg p-8 border-2 border-dashed border-gray-200">
-                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Search className="h-8 w-8 text-gray-400" />
+              <div className="bg-muted rounded-lg p-8 border-2 border-dashed border-border">
+                <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Search className="h-8 w-8 text-muted-foreground" />
                 </div>
-                <p className="text-gray-500 mb-2" dir={langDir}>
+                <p className="text-muted-foreground mb-2" dir={langDir}>
                   {t("search_existing_product_description")}
                 </p>
-                <p className="text-sm text-gray-400" dir={langDir}>
+                <p className="text-sm text-muted-foreground" dir={langDir}>
                   {t("enter_product_name_to_search")}
                 </p>
               </div>
@@ -1167,16 +1167,16 @@ const AddFromExistingProductPage = () => {
             <TabsContent value="image" className="mt-0">
               <div className="space-y-4">
                 <div>
-                  <h4 className="font-semibold text-gray-900 mb-2" dir={langDir}>
+                  <h4 className="font-semibold text-foreground mb-2" dir={langDir}>
                     {t("scan_product_image") || "Scan Product Image"}
                   </h4>
-                  <p className="text-sm text-gray-600 mb-4" dir={langDir}>
+                  <p className="text-sm text-muted-foreground mb-4" dir={langDir}>
                     {t("upload_product_photo_ai_will_analyze_and_fill_details") || "Upload product photo, AI will analyze and fill details"}
                   </p>
                 </div>
 
                 {/* Image Upload Area */}
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-purple-400 transition-colors">
+                <div className="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-purple-400 transition-colors">
                   <input
                     type="file"
                     accept="image/*"
@@ -1210,8 +1210,8 @@ const AddFromExistingProductPage = () => {
                       </div>
                     ) : (
                       <>
-                        <Camera className="h-10 w-10 text-gray-400 mb-2" />
-                        <span className="text-sm text-gray-600 mb-2">
+                        <Camera className="h-10 w-10 text-muted-foreground mb-2" />
+                        <span className="text-sm text-muted-foreground mb-2">
                           {t("click_to_upload_or_drag_drop") || "Click to upload or drag & drop"}
                         </span>
                       </>
@@ -1249,7 +1249,7 @@ const AddFromExistingProductPage = () => {
                 {aiProductSuggestions.length > 0 && (
                   <div className="space-y-3 mt-6">
                     <div className="flex items-center justify-between">
-                      <h4 className="font-medium text-gray-900 flex items-center gap-2" dir={langDir}>
+                      <h4 className="font-medium text-foreground flex items-center gap-2" dir={langDir}>
                         <Sparkles className="h-5 w-5 text-info" />
                         {t("product_suggestions_from_web") || "Product Suggestions from Web"}
                       </h4>
@@ -1277,12 +1277,12 @@ const AddFromExistingProductPage = () => {
                       {aiProductSuggestions.map((product, idx) => (
                         <div
                           key={idx}
-                          className="bg-white border border-gray-200 rounded-lg p-4 hover:border-purple-400 hover:shadow-md transition-all"
+                          className="bg-card border border-border rounded-lg p-4 hover:border-purple-400 hover:shadow-md transition-all"
                         >
                           <div className="flex items-start gap-4">
                             <div className="flex-1">
                               <div className="flex items-start justify-between mb-2">
-                                <h5 className="font-semibold text-gray-900" dir={langDir}>
+                                <h5 className="font-semibold text-foreground" dir={langDir}>
                                   {product.productName || product.name}
                                 </h5>
                                 <Button
@@ -1304,16 +1304,16 @@ const AddFromExistingProductPage = () => {
                               
                               {/* Source Information */}
                               <div className="flex items-center gap-2 mb-2">
-                                <LinkIcon className="h-4 w-4 text-gray-400" />
+                                <LinkIcon className="h-4 w-4 text-muted-foreground" />
                                 <span className="text-xs font-medium text-info">
                                   {product.sourceName || "Unknown Source"}
                                 </span>
                               </div>
 
                               {/* Product Details */}
-                              <div className="space-y-1 text-sm text-gray-600">
+                              <div className="space-y-1 text-sm text-muted-foreground">
                                 {product.category && (
-                                  <p className="font-medium text-gray-900">
+                                  <p className="font-medium text-foreground">
                                     {t("category")}: {product.category}
                                   </p>
                                 )}
@@ -1336,7 +1336,7 @@ const AddFromExistingProductPage = () => {
                   <div className="space-y-3 mt-6">
                     <div className="flex items-center justify-between">
                       <h4
-                        className="font-medium text-gray-900 flex items-center gap-2"
+                        className="font-medium text-foreground flex items-center gap-2"
                         dir={langDir}
                       >
                         <Sparkles className="h-5 w-5 text-info" />
@@ -1353,20 +1353,20 @@ const AddFromExistingProductPage = () => {
                         return (
                           <div
                             key={idx}
-                            className="bg-white border border-gray-200 rounded-lg p-4 hover:border-purple-400 hover:shadow-md transition-all"
+                            className="bg-card border border-border rounded-lg p-4 hover:border-purple-400 hover:shadow-md transition-all"
                           >
                             <div className="flex items-start justify-between gap-4">
                               <div className="flex-1 min-w-0">
                                 {specifications ? (
                                   <div
-                                    className="text-sm text-gray-700"
+                                    className="text-sm text-muted-foreground"
                                     dir={langDir}
                                   >
-                                    <span className="font-semibold text-gray-900">
+                                    <span className="font-semibold text-foreground">
                                       {modelName}
                                     </span>
-                                    <span className="text-gray-600 mx-1">-</span>
-                                    <span className="text-gray-700">
+                                    <span className="text-muted-foreground mx-1">-</span>
+                                    <span className="text-muted-foreground">
                                       {specifications
                                         .split("\n")
                                         .filter((line) => line.trim())
@@ -1385,7 +1385,7 @@ const AddFromExistingProductPage = () => {
                                   </div>
                                 ) : (
                                   <h5
-                                    className="font-semibold text-gray-900"
+                                    className="font-semibold text-foreground"
                                     dir={langDir}
                                   >
                                     {modelName}
@@ -1426,10 +1426,10 @@ const AddFromExistingProductPage = () => {
             <TabsContent value="url" className="mt-0">
               <div className="space-y-4">
                 <div>
-                  <h4 className="font-semibold text-gray-900 mb-2" dir={langDir}>
+                  <h4 className="font-semibold text-foreground mb-2" dir={langDir}>
                     {t("import_from_url") || "Import from URL"}
                   </h4>
-                  <p className="text-sm text-gray-600 mb-4" dir={langDir}>
+                  <p className="text-sm text-muted-foreground mb-4" dir={langDir}>
                     {t("paste_product_link_ai_will_extract_product_data") || "Paste product link, AI will extract product data"}
                   </p>
                 </div>
@@ -1479,17 +1479,17 @@ const AddFromExistingProductPage = () => {
       {/* Product Details Popup */}
       {showProductPopup && selectedProduct && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-card rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             {/* Popup Header */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-200">
-              <h3 className="text-xl font-semibold text-gray-900" dir={langDir}>
+            <div className="flex items-center justify-between p-6 border-b border-border">
+              <h3 className="text-xl font-semibold text-foreground" dir={langDir}>
                 {t("product_details")}
               </h3>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={closeProductPopup}
-                className="p-2 hover:bg-gray-100"
+                className="p-2 hover:bg-muted"
               >
                 <X className="h-5 w-5" />
               </Button>
@@ -1499,7 +1499,7 @@ const AddFromExistingProductPage = () => {
             <div className="p-6">
               {/* Product Images */}
               <div className="mb-6">
-                <h4 className="font-medium text-gray-900 mb-3" dir={langDir}>
+                <h4 className="font-medium text-foreground mb-3" dir={langDir}>
                   {t("product_images")}
                 </h4>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -1512,7 +1512,7 @@ const AddFromExistingProductPage = () => {
                         !imageSrc.includes("puremoon.s3.amazonaws.com");
                       
                       return (
-                        <div key={index} className="aspect-square bg-gray-100 rounded-lg overflow-hidden relative">
+                        <div key={index} className="aspect-square bg-muted rounded-lg overflow-hidden relative">
                           {isExternalUrl ? (
                             <img
                               src={imageSrc}
@@ -1534,7 +1534,7 @@ const AddFromExistingProductPage = () => {
                       );
                     })
                   ) : (
-                    <div className="col-span-full text-center py-8 text-gray-500">
+                    <div className="col-span-full text-center py-8 text-muted-foreground">
                       {t("no_images_available")}
                     </div>
                   )}
@@ -1544,39 +1544,39 @@ const AddFromExistingProductPage = () => {
               {/* Product Information */}
               <div className="space-y-4">
                 <div>
-                  {/* <h4 className="font-medium text-gray-900 mb-3" dir={langDir}>
+                  {/* <h4 className="font-medium text-foreground mb-3" dir={langDir}>
                     {t("product_information")}
                   </h4> */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="text-sm font-medium text-gray-600" dir={langDir}>
+                      <label className="text-sm font-medium text-muted-foreground" dir={langDir}>
                         {t("product_name")}
                       </label>
-                      <p className="text-gray-900 mt-1" dir={langDir}>
+                      <p className="text-foreground mt-1" dir={langDir}>
                         {selectedProduct.productName}
                       </p>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-gray-600" dir={langDir}>
+                      <label className="text-sm font-medium text-muted-foreground" dir={langDir}>
                         {t("category")}
                       </label>
-                      <p className="text-gray-900 mt-1" dir={langDir}>
+                      <p className="text-foreground mt-1" dir={langDir}>
                         {selectedProduct.category?.name || t("not_specified")}
                       </p>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-gray-600" dir={langDir}>
+                      <label className="text-sm font-medium text-muted-foreground" dir={langDir}>
                         {t("brand")}
                       </label>
-                      <p className="text-gray-900 mt-1" dir={langDir}>
+                      <p className="text-foreground mt-1" dir={langDir}>
                         {selectedProduct.brand?.brandName || t("not_specified")}
                       </p>
                     </div>
                     {/* <div>
-                      <label className="text-sm font-medium text-gray-600" dir={langDir}>
+                      <label className="text-sm font-medium text-muted-foreground" dir={langDir}>
                         {t("product_id")}
                       </label>
-                      <p className="text-gray-900 mt-1 font-mono">
+                      <p className="text-foreground mt-1 font-mono">
                         {selectedProduct.id}
                       </p>
                     </div> */}
@@ -1586,10 +1586,10 @@ const AddFromExistingProductPage = () => {
                 {/* Short Description */}
                 {selectedProduct.shortDescription && (
                   <div>
-                    <label className="text-sm font-medium text-gray-600" dir={langDir}>
+                    <label className="text-sm font-medium text-muted-foreground" dir={langDir}>
                       {t("short_description")}
                     </label>
-                    <p className="text-gray-900 mt-1" dir={langDir}>
+                    <p className="text-foreground mt-1" dir={langDir}>
                       {selectedProduct.shortDescription}
                     </p>
                   </div>
@@ -1598,10 +1598,10 @@ const AddFromExistingProductPage = () => {
                 {/* Full Description */}
                 {selectedProduct.description && (
                   <div>
-                    <label className="text-sm font-medium text-gray-600" dir={langDir}>
+                    <label className="text-sm font-medium text-muted-foreground" dir={langDir}>
                       {t("description_and_specification")}
                     </label>
-                    <p className="text-gray-900 mt-1" dir={langDir}>
+                    <p className="text-foreground mt-1" dir={langDir}>
                       {(() => {
                         try {
                           const desc = typeof selectedProduct.description === 'string' 
@@ -1629,11 +1629,11 @@ const AddFromExistingProductPage = () => {
                 {/* Additional Details */}
                 {selectedProduct.specifications && (
                   <div>
-                    <h4 className="font-medium text-gray-900 mb-3" dir={langDir}>
+                    <h4 className="font-medium text-foreground mb-3" dir={langDir}>
                       {t("specifications")}
                     </h4>
-                    <div className="bg-gray-50 rounded-lg p-4">
-                      <pre className="text-sm text-gray-700 whitespace-pre-wrap" dir={langDir}>
+                    <div className="bg-muted rounded-lg p-4">
+                      <pre className="text-sm text-muted-foreground whitespace-pre-wrap" dir={langDir}>
                         {JSON.stringify(selectedProduct.specifications, null, 2)}
                       </pre>
                     </div>
@@ -1643,7 +1643,7 @@ const AddFromExistingProductPage = () => {
             </div>
 
             {/* Popup Footer */}
-            <div className="flex items-center justify-end gap-3 p-6 border-t border-gray-200">
+            <div className="flex items-center justify-end gap-3 p-6 border-t border-border">
               <Button variant="outline" onClick={closeProductPopup}>
                 {t("close")}
               </Button>
@@ -1665,16 +1665,16 @@ const AddFromExistingProductPage = () => {
       {/* AI Preview Modal - New */}
       {showPreviewModal && previewData && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={() => setShowPreviewModal(false)}>
-          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-xl" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between p-6 border-b border-gray-200">
-              <h3 className="text-xl font-semibold text-gray-900" dir={langDir}>
+          <div className="bg-card rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-xl" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between p-6 border-b border-border">
+              <h3 className="text-xl font-semibold text-foreground" dir={langDir}>
                 {t("review_product_data") || "Review Product Data"}
               </h3>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setShowPreviewModal(false)}
-                className="p-2 hover:bg-gray-100"
+                className="p-2 hover:bg-muted"
               >
                 <X className="h-5 w-5" />
               </Button>
@@ -1684,32 +1684,32 @@ const AddFromExistingProductPage = () => {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm font-medium text-gray-600">
+                  <label className="text-sm font-medium text-muted-foreground">
                     {t("suggested_product_name") || "Suggested Product Name"}
                   </label>
-                  <p className="text-gray-900 mt-1">{previewData.productName || previewData.name || t("not_specified")}</p>
+                  <p className="text-foreground mt-1">{previewData.productName || previewData.name || t("not_specified")}</p>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-600">
+                  <label className="text-sm font-medium text-muted-foreground">
                     {t("approx_price_use_your_own") || "Approx price(use your own price)"}
                   </label>
-                  <p className="text-gray-900 mt-1">{previewData.price || previewData.estimatedPrice || t("not_specified")}</p>
+                  <p className="text-foreground mt-1">{previewData.price || previewData.estimatedPrice || t("not_specified")}</p>
                 </div>
                 {previewData.description && (
                   <div className="col-span-2">
-                    <label className="text-sm font-medium text-gray-600">
+                    <label className="text-sm font-medium text-muted-foreground">
                       {t("description")}
                     </label>
-                    <p className="text-gray-900 mt-1">{previewData.description}</p>
+                    <p className="text-foreground mt-1">{previewData.description}</p>
                   </div>
                 )}
                 {previewData.category && (
                   <div className="col-span-2">
-                    <label className="text-sm font-medium text-gray-600">
+                    <label className="text-sm font-medium text-muted-foreground">
                       {t("category")}
                     </label>
                     <div className="mt-1">
-                      <p className="text-gray-900">{previewData.category}</p>
+                      <p className="text-foreground">{previewData.category}</p>
                       {previewData.matchedCategoryId ? (
                         <p className={`text-xs mt-1 flex items-center gap-1 ${
                           previewData.categoryConfidence === 'high' 
@@ -1737,30 +1737,30 @@ const AddFromExistingProductPage = () => {
                 )}
                 {previewData.brand && (
                   <div>
-                    <label className="text-sm font-medium text-gray-600">
+                    <label className="text-sm font-medium text-muted-foreground">
                       {t("brand")}
                     </label>
-                    <p className="text-gray-900 mt-1">{previewData.brand}</p>
+                    <p className="text-foreground mt-1">{previewData.brand}</p>
                   </div>
                 )}
                 {previewData.shortDescription && (
                   <div className="col-span-2">
-                    <label className="text-sm font-medium text-gray-600">
+                    <label className="text-sm font-medium text-muted-foreground">
                       {t("short_description")}
                     </label>
-                    <p className="text-gray-900 mt-1">{previewData.shortDescription}</p>
+                    <p className="text-foreground mt-1">{previewData.shortDescription}</p>
                   </div>
                 )}
                 {previewData.specifications && Array.isArray(previewData.specifications) && previewData.specifications.length > 0 && (
                   <div className="col-span-2">
-                    <label className="text-sm font-medium text-gray-600">
+                    <label className="text-sm font-medium text-muted-foreground">
                       {t("specifications")}
                     </label>
                     <div className="mt-1 space-y-2">
                       {previewData.specifications.map((spec: any, idx: number) => (
                         <div key={idx} className="flex gap-2 text-sm">
-                          <span className="font-medium text-gray-700">{spec.label}:</span>
-                          <span className="text-gray-900">{spec.specification}</span>
+                          <span className="font-medium text-muted-foreground">{spec.label}:</span>
+                          <span className="text-foreground">{spec.specification}</span>
                         </div>
                       ))}
                     </div>
@@ -1786,7 +1786,7 @@ const AddFromExistingProductPage = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-3 p-6 border-t border-gray-200">
+            <div className="flex items-center justify-end gap-3 p-6 border-t border-border">
               <Button variant="outline" onClick={() => setShowPreviewModal(false)}>
                 {t("cancel")}
               </Button>

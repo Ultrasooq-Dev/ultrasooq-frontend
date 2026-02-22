@@ -9,7 +9,7 @@ import SellerChat from "@/components/modules/chat/seller/SellerChat";
 const ProductChat = dynamic(
   () => import("@/components/modules/chat/productChat/ProductChat"),
   {
-    loading: () => <div className="animate-pulse h-64 bg-gray-200 rounded-lg" />,
+    loading: () => <div className="animate-pulse h-64 bg-muted rounded-lg" />,
     ssr: false,
   },
 );
@@ -114,23 +114,23 @@ const SellerRfqRequestPage = () => {
   // Four-column layout for RFQ tab with collapsible accordion
   if (currentTab === "RFQ") {
     return (
-      <div className="flex h-screen flex-col bg-gray-50">
+      <div className="flex h-screen flex-col bg-muted">
         {/* Four Column Layout for RFQ */}
         <div className="flex flex-1 overflow-hidden">
           {/* Column 1: Left Sidebar - Navigation (Collapsible) */}
           <div className={cn(
-            "flex-shrink-0 border-r border-gray-200 bg-white transition-all duration-300 ease-in-out overflow-hidden",
+            "flex-shrink-0 border-r border-border bg-card transition-all duration-300 ease-in-out overflow-hidden",
             isSidebarCollapsed ? "w-16" : "w-56"
           )}>
             <div className="p-3">
               <div className="mb-4 flex items-center justify-between">
                 {!isSidebarCollapsed && (
-                  <h2 className="text-lg font-bold text-gray-900">Puremoon</h2>
+                  <h2 className="text-lg font-bold text-foreground">Puremoon</h2>
                 )}
                 <button
                   onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
                   className={cn(
-                    "flex items-center justify-center p-1.5 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors",
+                    "flex items-center justify-center p-1.5 rounded-lg text-muted-foreground hover:bg-muted transition-colors",
                     isSidebarCollapsed && "w-full"
                   )}
                   title={isSidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
@@ -156,7 +156,7 @@ const SellerRfqRequestPage = () => {
                     isSidebarCollapsed && "justify-center px-2",
                     currentTab === "RFQ"
                       ? "bg-destructive/5 text-destructive"
-                      : "text-gray-600 hover:bg-gray-50"
+                      : "text-muted-foreground hover:bg-muted"
                   )}
                   title={isSidebarCollapsed ? "RFQ" : undefined}
                 >
@@ -175,7 +175,7 @@ const SellerRfqRequestPage = () => {
                     isSidebarCollapsed && "justify-center px-2",
                     currentTab === "Product Messages"
                       ? "bg-destructive/5 text-destructive"
-                      : "text-gray-600 hover:bg-gray-50"
+                      : "text-muted-foreground hover:bg-muted"
                   )}
                   title={isSidebarCollapsed ? "Message System" : undefined}
                 >
@@ -193,16 +193,16 @@ const SellerRfqRequestPage = () => {
 
           {/* Column 2: RFQ Requests List - Shows column list view */}
           <div className={cn(
-            "flex-shrink-0 border-r border-gray-200 bg-white transition-all duration-300 ease-in-out overflow-hidden",
+            "flex-shrink-0 border-r border-border bg-card transition-all duration-300 ease-in-out overflow-hidden",
             isRfqListCollapsed ? "w-16" : "w-80" // Collapse to narrow when collapsed
           )}>
             {isRfqListCollapsed ? (
               // Collapsed view - show product images
               <div className="flex h-full flex-col">
-                <div className="border-b border-gray-200 bg-gray-50 p-2">
+                <div className="border-b border-border bg-muted p-2">
                   <button
                     onClick={() => setIsRfqListCollapsed(false)}
-                    className="flex items-center justify-center w-full p-2 text-gray-600 hover:bg-gray-100 rounded transition-colors"
+                    className="flex items-center justify-center w-full p-2 text-muted-foreground hover:bg-muted rounded transition-colors"
                     title="Expand RFQ list"
                   >
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -243,7 +243,7 @@ const SellerRfqRequestPage = () => {
                     
                     if (rfqGroup.length === 0) {
                       return (
-                        <div className="relative w-full aspect-square rounded-lg overflow-hidden border-2 border-destructive bg-gray-100">
+                        <div className="relative w-full aspect-square rounded-lg overflow-hidden border-2 border-destructive bg-muted">
                           <Image
                             src={PlaceholderImage}
                             alt="No product image"
@@ -290,7 +290,7 @@ const SellerRfqRequestPage = () => {
                     // If no images found, show placeholder
                     if (productImages.length === 0) {
                       return (
-                        <div className="relative w-full aspect-square rounded-lg overflow-hidden border-2 border-destructive bg-gray-100">
+                        <div className="relative w-full aspect-square rounded-lg overflow-hidden border-2 border-destructive bg-muted">
                           <Image
                             src={PlaceholderImage}
                             alt="No product image"
@@ -327,11 +327,11 @@ const SellerRfqRequestPage = () => {
             ) : (
               // Expanded view - show list of RFQ requests
               <div className="flex h-full flex-col">
-                <div className="border-b border-gray-200 bg-gray-50 p-3 flex items-center justify-between">
-                  <h3 className="text-xs font-semibold text-gray-700">Request For RFQ</h3>
+                <div className="border-b border-border bg-muted p-3 flex items-center justify-between">
+                  <h3 className="text-xs font-semibold text-muted-foreground">Request For RFQ</h3>
                   <button
                     onClick={() => setIsRfqListCollapsed(true)}
-                    className="flex items-center justify-center p-1.5 text-gray-600 hover:bg-gray-100 rounded transition-colors"
+                    className="flex items-center justify-center p-1.5 text-muted-foreground hover:bg-muted rounded transition-colors"
                     title="Collapse RFQ list"
                   >
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -361,7 +361,7 @@ const SellerRfqRequestPage = () => {
 
           {/* Column 3: Customers List - Expands when RFQ selected, stays expanded when customer selected */}
           <div className={cn(
-            "flex-shrink-0 border-r border-gray-200 bg-white transition-all duration-300 ease-in-out overflow-hidden",
+            "flex-shrink-0 border-r border-border bg-card transition-all duration-300 ease-in-out overflow-hidden",
             selectedRfqId 
               ? "w-72" // Always expanded when RFQ is selected (don't collapse when customer selected)
               : "w-0" // Hide if no RFQ selected
@@ -369,8 +369,8 @@ const SellerRfqRequestPage = () => {
             {selectedRfqId ? (
               // Always show expanded customers list
               <div className="flex h-full flex-col">
-                <div className="border-b border-gray-200 bg-gray-50 p-3">
-                  <h3 className="text-xs font-semibold text-gray-700">Customers</h3>
+                <div className="border-b border-border bg-muted p-3">
+                  <h3 className="text-xs font-semibold text-muted-foreground">Customers</h3>
                 </div>
                 <div className="flex-1 overflow-y-auto">
                   <SellerChat
@@ -386,7 +386,7 @@ const SellerRfqRequestPage = () => {
               </div>
             ) : (
               <div className="flex h-full items-center justify-center p-8">
-                <p className="text-center text-xs text-gray-500">
+                <p className="text-center text-xs text-muted-foreground">
                   Select an RFQ request
                 </p>
               </div>
@@ -395,7 +395,7 @@ const SellerRfqRequestPage = () => {
 
           {/* Column 4: Details/Chat - Expands when customer selected */}
           <div className={cn(
-            "bg-white transition-all duration-300 ease-in-out overflow-hidden",
+            "bg-card transition-all duration-300 ease-in-out overflow-hidden",
             selectedCustomerId ? "flex-1 min-w-0" : "w-0 flex-shrink-0"
           )}>
             {selectedCustomerId ? (
@@ -407,7 +407,7 @@ const SellerRfqRequestPage = () => {
               />
             ) : (
               <div className="flex h-full items-center justify-center p-8">
-                <p className="text-center text-sm text-gray-500">
+                <p className="text-center text-sm text-muted-foreground">
                   Select a customer to view details
                 </p>
               </div>
@@ -421,23 +421,23 @@ const SellerRfqRequestPage = () => {
   // Three-column layout for Message System tab with collapsible accordion
   if (currentTab === "Product Messages") {
     return (
-      <div className="flex h-screen flex-col bg-gray-50">
+      <div className="flex h-screen flex-col bg-muted">
         {/* Three Column Layout for Message System */}
         <div className="flex flex-1 overflow-hidden">
           {/* Column 1: Left Sidebar (Collapsible) */}
           <div className={cn(
-            "flex-shrink-0 border-r border-gray-200 bg-white transition-all duration-300 ease-in-out overflow-hidden",
+            "flex-shrink-0 border-r border-border bg-card transition-all duration-300 ease-in-out overflow-hidden",
             isSidebarCollapsed ? "w-16" : "w-56"
           )}>
             <div className="p-3">
               <div className="mb-4 flex items-center justify-between">
                 {!isSidebarCollapsed && (
-                  <h2 className="text-lg font-bold text-gray-900">Puremoon</h2>
+                  <h2 className="text-lg font-bold text-foreground">Puremoon</h2>
                 )}
                 <button
                   onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
                   className={cn(
-                    "flex items-center justify-center p-1.5 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors",
+                    "flex items-center justify-center p-1.5 rounded-lg text-muted-foreground hover:bg-muted transition-colors",
                     isSidebarCollapsed && "w-full"
                   )}
                   title={isSidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
@@ -463,7 +463,7 @@ const SellerRfqRequestPage = () => {
                     isSidebarCollapsed && "justify-center px-2",
                     currentTab === "RFQ"
                       ? "bg-destructive/5 text-destructive"
-                      : "text-gray-600 hover:bg-gray-50"
+                      : "text-muted-foreground hover:bg-muted"
                   )}
                   title={isSidebarCollapsed ? "RFQ" : undefined}
                 >
@@ -482,7 +482,7 @@ const SellerRfqRequestPage = () => {
                     isSidebarCollapsed && "justify-center px-2",
                     currentTab === "Product Messages"
                       ? "bg-destructive/5 text-destructive"
-                      : "text-gray-600 hover:bg-gray-50"
+                      : "text-muted-foreground hover:bg-muted"
                   )}
                   title={isSidebarCollapsed ? "Message System" : undefined}
                 >
@@ -500,20 +500,20 @@ const SellerRfqRequestPage = () => {
 
           {/* Column 2: Customers List - Collapses when customer is selected */}
           <div className={cn(
-            "flex-shrink-0 border-r border-gray-200 bg-white transition-all duration-300 ease-in-out overflow-hidden",
+            "flex-shrink-0 border-r border-border bg-card transition-all duration-300 ease-in-out overflow-hidden",
             selectedCustomerId && productId && roomId ? "w-16" : "w-72" // Collapse when customer selected
           )}>
             {selectedCustomerId && productId && roomId ? (
               // Collapsed view - show back button
               <div className="flex h-full flex-col">
-                <div className="border-b border-gray-200 bg-gray-50 p-2">
+                <div className="border-b border-border bg-muted p-2">
                   <button
                     onClick={() => {
                       setProductId(null);
                       setRoomId(null);
                       setSelectedCustomerId(null);
                     }}
-                    className="flex items-center justify-center w-full p-2 text-gray-600 hover:bg-gray-100 rounded transition-colors"
+                    className="flex items-center justify-center w-full p-2 text-muted-foreground hover:bg-muted rounded transition-colors"
                     title="Back to customers"
                   >
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -522,7 +522,7 @@ const SellerRfqRequestPage = () => {
                   </button>
                 </div>
                 <div className="flex-1 overflow-y-auto p-2">
-                  <div className="text-xs text-gray-600 text-center break-words leading-tight">
+                  <div className="text-xs text-muted-foreground text-center break-words leading-tight">
                     Selected Customer
                   </div>
                 </div>
@@ -530,8 +530,8 @@ const SellerRfqRequestPage = () => {
             ) : (
               // Expanded view - show customers list
               <div className="flex h-full flex-col">
-                <div className="border-b border-gray-200 bg-gray-50 p-3">
-                  <h3 className="text-xs font-semibold text-gray-700">Customers</h3>
+                <div className="border-b border-border bg-muted p-3">
+                  <h3 className="text-xs font-semibold text-muted-foreground">Customers</h3>
                 </div>
                 <div className="flex-1 overflow-y-auto">
                   <ProductMessagesList
@@ -550,14 +550,14 @@ const SellerRfqRequestPage = () => {
 
           {/* Column 3: Message History - Expands when customer selected */}
           <div className={cn(
-            "bg-white transition-all duration-300 ease-in-out overflow-hidden",
+            "bg-card transition-all duration-300 ease-in-out overflow-hidden",
             selectedCustomerId && productId && roomId ? "flex-1 min-w-0" : "w-0 flex-shrink-0"
           )}>
             {selectedCustomerId && productId && roomId ? (
               <ProductChat productId={productId} roomId={roomId} />
             ) : (
               <div className="flex h-full items-center justify-center p-8">
-                <p className="text-center text-sm text-gray-500">
+                <p className="text-center text-sm text-muted-foreground">
                   Select a customer to view message history
                 </p>
               </div>
@@ -570,11 +570,11 @@ const SellerRfqRequestPage = () => {
 
   // For Vendor Operations and other tabs, use original layout
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-muted">
       <div className="mx-auto w-full max-w-[1600px] px-4 py-6 lg:px-6">
         {/* Tab Navigation */}
         <div className="mb-6">
-          <div className="rounded-t-xl border-b border-gray-200 bg-white shadow-sm">
+          <div className="rounded-t-xl border-b border-border bg-card shadow-sm">
             <nav
               className="scrollbar-hide flex space-x-1 overflow-x-auto"
               dir={langDir}
@@ -596,7 +596,7 @@ const SellerRfqRequestPage = () => {
                       "group relative flex items-center gap-2 border-b-2 px-6 py-4 text-sm font-medium whitespace-nowrap transition-all duration-200",
                       isActive
                         ? "border-dark-orange text-dark-orange bg-warning/5/50"
-                        : "border-transparent text-gray-600 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-900",
+                        : "border-transparent text-muted-foreground hover:border-border hover:bg-muted hover:text-foreground",
                     )}
                     translate="no"
                   >
@@ -612,7 +612,7 @@ const SellerRfqRequestPage = () => {
         </div>
 
         {/* Tab Content */}
-        <div className="rounded-b-xl border border-t-0 border-gray-200 bg-white shadow-sm">
+        <div className="rounded-b-xl border border-t-0 border-border bg-card shadow-sm">
           <div className="p-4 lg:p-6">
             {productId && roomId && currentTab === "MSG" ? (
               <ProductChat productId={productId} roomId={roomId} />

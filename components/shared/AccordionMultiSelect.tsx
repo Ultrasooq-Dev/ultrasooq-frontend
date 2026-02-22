@@ -78,7 +78,7 @@ const AccordionMultiSelect = ({
       <Accordion
         type="single"
         collapsible
-        className="mb-4 w-full rounded border border-solid border-gray-300 bg-white"
+        className="mb-4 w-full rounded border border-solid border-border bg-card"
       >
         <AccordionItem value="item-1" className="border-b-0 px-5">
           <AccordionTrigger className="flex h-auto min-h-[65px] justify-between py-0 hover:no-underline!">

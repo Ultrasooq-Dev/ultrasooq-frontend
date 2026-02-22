@@ -117,23 +117,23 @@ export default function ChangePasswordPage() {
   return (
     <div className="space-y-6">
       {/* Header Section */}
-      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
-        <h2 className="text-2xl font-bold tracking-tight text-gray-900" dir={langDir} translate="no">
+      <div className="overflow-hidden rounded-xl border border-border bg-card p-6 shadow-sm transition-shadow hover:shadow-md">
+        <h2 className="text-2xl font-bold tracking-tight text-foreground" dir={langDir} translate="no">
           {t("change_password")}
         </h2>
-        <p className="mt-1.5 text-sm text-gray-600" translate="no">
+        <p className="mt-1.5 text-sm text-muted-foreground" translate="no">
           {t("update_your_password_to_keep_your_account_secure")}
         </p>
       </div>
 
       {showSuccess ? (
-        <div className="overflow-hidden rounded-xl border border-success/20 bg-white p-8 shadow-sm">
+        <div className="overflow-hidden rounded-xl border border-success/20 bg-card p-8 shadow-sm">
           <PasswordChangeSuccessContent />
         </div>
       ) : (
         <>
           {/* Form Section */}
-          <div className="overflow-hidden rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
+          <div className="overflow-hidden rounded-xl border border-border bg-card p-6 shadow-sm transition-shadow hover:shadow-md">
             <Form {...form}>
               <form
                 className="space-y-6"
@@ -144,14 +144,14 @@ export default function ChangePasswordPage() {
                   name="password"
                   render={({ field }) => (
                     <FormItem dir={langDir}>
-                      <FormLabel className="text-sm font-semibold text-gray-700" translate="no">
+                      <FormLabel className="text-sm font-semibold text-muted-foreground" translate="no">
                         {t("old_password")}
                       </FormLabel>
                       <FormControl>
                         <Input
                           type="password"
                           placeholder="**********"
-                          className="h-12 rounded-lg border-gray-300 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-0"
+                          className="h-12 rounded-lg border-border focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-0"
                           {...field}
                           dir={langDir}
                         />
@@ -166,20 +166,20 @@ export default function ChangePasswordPage() {
                   name="newPassword"
                   render={({ field }) => (
                     <FormItem dir={langDir}>
-                      <FormLabel className="text-sm font-semibold text-gray-700" translate="no">
+                      <FormLabel className="text-sm font-semibold text-muted-foreground" translate="no">
                         {t("new_password")}
                       </FormLabel>
                       <FormControl>
                         <Input
                           type="password"
                           placeholder="**********"
-                          className="h-12 rounded-lg border-gray-300 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-0"
+                          className="h-12 rounded-lg border-border focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-0"
                           {...field}
                           dir={langDir}
                         />
                       </FormControl>
                       <FormMessage className="text-sm" />
-                      <p className="mt-2 text-xs text-gray-500" translate="no">
+                      <p className="mt-2 text-xs text-muted-foreground" translate="no">
                         {t("password_must_be_at_least_8_characters")}
                       </p>
                     </FormItem>
@@ -191,14 +191,14 @@ export default function ChangePasswordPage() {
                   name="confirmPassword"
                   render={({ field }) => (
                     <FormItem dir={langDir}>
-                      <FormLabel className="text-sm font-semibold text-gray-700" translate="no">
+                      <FormLabel className="text-sm font-semibold text-muted-foreground" translate="no">
                         {t("reenter_new_password")}
                       </FormLabel>
                       <FormControl>
                         <Input
                           type="password"
                           placeholder="**********"
-                          className="h-12 rounded-lg border-gray-300 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-0"
+                          className="h-12 rounded-lg border-border focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-0"
                           {...field}
                           dir={langDir}
                         />
@@ -236,10 +236,10 @@ export default function ChangePasswordPage() {
           </div>
 
           {/* Security Tips Section */}
-          <div className="overflow-hidden rounded-xl border border-amber-200 bg-amber-50 p-4 shadow-sm">
+          <div className="overflow-hidden rounded-xl border border-warning/20 bg-warning/5 p-4 shadow-sm">
             <div className="flex gap-3">
               <svg
-                className="h-5 w-5 flex-shrink-0 text-amber-600"
+                className="h-5 w-5 flex-shrink-0 text-warning"
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >

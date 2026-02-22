@@ -389,7 +389,7 @@ const ProductLocationAndCustomizationSection: React.FC<
                       type="number"
                       onWheel={(e) => e.currentTarget.blur()}
                       placeholder={t("product_price")}
-                      className="h-[48px]! rounded border-gray-300 pl-12 pr-10 focus-visible:ring-0!"
+                      className="h-[48px]! rounded border-border pl-12 pr-10 focus-visible:ring-0!"
                       disabled={watchIsOfferPriceRequired}
                       {...field}
                       dir={langDir}
@@ -420,7 +420,7 @@ const ProductLocationAndCustomizationSection: React.FC<
                       type="number"
                       onWheel={(e) => e.currentTarget.blur()}
                       placeholder={t("offer_price")}
-                      className="h-[48px]! rounded border-gray-300 pl-12 pr-10 focus-visible:ring-0!"
+                      className="h-[48px]! rounded border-border pl-12 pr-10 focus-visible:ring-0!"
                       disabled={watchIsOfferPriceRequired}
                       {...field}
                       dir={langDir}
@@ -448,7 +448,7 @@ const ProductLocationAndCustomizationSection: React.FC<
                     type="number"
                     onWheel={(e) => e.currentTarget.blur()}
                     placeholder={t("stock")}
-                    className="h-[48px]! rounded border-gray-300 focus-visible:ring-0!"
+                    className="h-[48px]! rounded border-border focus-visible:ring-0!"
                     disabled={watchIsStockRequired}
                     {...field}
                     dir={langDir}
@@ -465,7 +465,7 @@ const ProductLocationAndCustomizationSection: React.FC<
       {/* Warehouse location */}
       {activeProductType !== "R" ? (
         <h3
-          className="text-base font-bold text-gray-900 mb-3"
+          className="text-base font-bold text-foreground mb-3"
           dir={langDir}
           translate="no"
         >

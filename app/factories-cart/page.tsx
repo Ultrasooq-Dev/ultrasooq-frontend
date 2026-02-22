@@ -185,7 +185,7 @@ const FactoriesCartPage = () => {
               <div className="add-delivery-card">
                 <h3 dir={langDir} translate="no">{t("add_delivery_address_date")}</h3>
                 <Form {...form}>
-                  <form className="grid grid-cols-2 gap-x-5 bg-white! p-5">
+                  <form className="grid grid-cols-2 gap-x-5 bg-card! p-5">
                     <ControlledSelectInput
                       label={t("address")}
                       name="address"

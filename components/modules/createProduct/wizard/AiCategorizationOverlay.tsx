@@ -51,7 +51,7 @@ const AiCategorizationOverlay: React.FC<AiCategorizationOverlayProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
       <div
         className={cn(
-          "mx-4 flex max-w-md flex-col items-center gap-4 rounded-2xl border bg-white p-8 shadow-2xl transition-all duration-300",
+          "mx-4 flex max-w-md flex-col items-center gap-4 rounded-2xl border bg-card p-8 shadow-2xl transition-all duration-300",
           config.bgColor === "bg-warning/5" && "border-warning/20",
           config.bgColor === "bg-primary/5" && "border-primary/20",
           config.bgColor === "bg-success/5" && "border-success/20",
@@ -85,7 +85,7 @@ const AiCategorizationOverlay: React.FC<AiCategorizationOverlayProps> = ({
             {message || config.label}
           </h3>
           {isLoading && (
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-1 text-sm text-muted-foreground">
               This may take a few seconds...
             </p>
           )}

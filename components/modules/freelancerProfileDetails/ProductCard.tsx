@@ -495,7 +495,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
         <Link href={`/trending/${item.id}`}>
           <div className="relative w-full text-sm font-normal capitalize text-color-blue lg:text-base">
-            <h4 className="mb-2.5 border-b border-solid border-gray-300 pb-2.5 text-xs font-normal uppercase text-color-dark">
+            <h4 className="mb-2.5 border-b border-solid border-border pb-2.5 text-xs font-normal uppercase text-color-dark">
               {item.productName}
             </h4>
             <p title={item.shortDescription} className="truncate">
@@ -529,7 +529,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
               {(() => {
                 const { discount } = getApplicableDiscount();
                 return discount > 0 && item.productProductPrice && Number(item.productProductPrice) > calculateDiscountedPrice() && (
-                  <span className="text-gray-500 line-through!">
+                  <span className="text-muted-foreground line-through!">
                     {currency.symbol}
                     {item.productProductPrice}
                   </span>
@@ -679,7 +679,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             <DialogTitle className="text-center text-xl font-bold text-dark-orange"></DialogTitle>
             <Button
               onClick={onCancelRemove}
-              className={`${langDir == "ltr" ? "absolute" : ""} right-2 top-2 z-10 bg-white! text-black! shadow-none`}
+              className={`${langDir == "ltr" ? "absolute" : ""} right-2 top-2 z-10 bg-card! text-foreground! shadow-none`}
             >
               <IoCloseSharp size={20} />
             </Button>
@@ -692,7 +692,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             <div>
               <Button
                 type="button"
-                className="mr-2 bg-white text-destructive"
+                className="mr-2 bg-card text-destructive"
                 onClick={onCancelRemove}
               >
                 Cancel

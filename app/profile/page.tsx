@@ -505,7 +505,7 @@ export default function ProfilePage() {
       </div>
       <div className="relative z-10 container m-auto">
         <div className="flex">
-          <div className="m-auto mb-12 w-11/12 rounded-lg border border-solid border-gray-300 bg-white p-6 shadow-xs sm:p-8 md:w-9/12 lg:w-7/12 lg:p-12">
+          <div className="m-auto mb-12 w-11/12 rounded-lg border border-solid border-border bg-card p-6 shadow-xs sm:p-8 md:w-9/12 lg:w-7/12 lg:p-12">
             <div className="text-normal text-light-gray m-auto mb-7 w-full text-center text-sm leading-6">
               <h2
                 className="text-color-dark mb-3 text-center text-3xl leading-8 font-semibold sm:text-4xl sm:leading-10"
@@ -531,7 +531,7 @@ export default function ProfilePage() {
                     render={({ field }) => (
                       <FormItem className="mb-4 w-full">
                         <FormControl>
-                          <div className="relative m-auto h-44 w-44 rounded-full border-2 border-dashed border-gray-300">
+                          <div className="relative m-auto h-44 w-44 rounded-full border-2 border-dashed border-border">
                             <div className="relative h-full w-full">
                               {imageFile || me.data?.data?.profilePicture ? (
                                 <>
@@ -548,7 +548,7 @@ export default function ProfilePage() {
                                     className="rounded-full object-contain"
                                     priority
                                   />
-                                  <div className="absolute right-4 bottom-3 rounded-full bg-white p-1 shadow-md">
+                                  <div className="absolute right-4 bottom-3 rounded-full bg-card p-1 shadow-md">
                                     <Image
                                       src="/images/camera.png"
                                       width={29}
@@ -789,7 +789,7 @@ export default function ProfilePage() {
                   {fieldArrayForSocialMedia.fields.map((field, index) => (
                     <div
                       key={field.id}
-                      className="relative mb-3.5 h-auto min-h-[65px] w-full rounded border border-solid border-gray-300 p-3.5"
+                      className="relative mb-3.5 h-auto min-h-[65px] w-full rounded border border-solid border-border p-3.5"
                     >
                       <Accordion type="single" collapsible>
                         <AccordionItem
@@ -910,7 +910,7 @@ export default function ProfilePage() {
                                 {t("front")}
                               </FormLabel>
                               <FormControl>
-                                <div className="upload-identity-proof-box relative w-full border-2 border-dashed border-gray-300">
+                                <div className="upload-identity-proof-box relative w-full border-2 border-dashed border-border">
                                   <div className="relative h-full w-full">
                                     {identityFrontImageFile ? (
                                       <button
@@ -1003,7 +1003,7 @@ export default function ProfilePage() {
                                 {t("back")}
                               </FormLabel>
                               <FormControl>
-                                <div className="upload-identity-proof-box relative w-full border-2 border-dashed border-gray-300">
+                                <div className="upload-identity-proof-box relative w-full border-2 border-dashed border-border">
                                   <div className="relative h-full w-full">
                                     {identityBackImageFile ? (
                                       <button

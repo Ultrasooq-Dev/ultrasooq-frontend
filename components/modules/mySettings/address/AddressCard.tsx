@@ -67,11 +67,11 @@ const AddressCard: React.FC<AddressCardProps> = ({
   const fullAddress = addressParts.join(", ");
 
   return (
-    <div className="group relative overflow-visible rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-all hover:border-gray-300 hover:shadow-md">
+    <div className="group relative overflow-visible rounded-xl border border-border bg-card p-6 shadow-sm transition-all hover:border-border hover:shadow-md">
       {/* Card Header */}
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1 min-w-0">
-          <h3 className="text-lg font-semibold text-gray-900 truncate">
+          <h3 className="text-lg font-semibold text-foreground truncate">
             {firstName} {lastName}
           </h3>
         </div>
@@ -82,7 +82,7 @@ const AddressCard: React.FC<AddressCardProps> = ({
             <DropdownMenuTrigger asChild>
               <button
                 type="button"
-                className="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-gray-400 transition-all hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                className="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-all hover:bg-muted hover:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                 aria-label="Address options"
               >
                 <MoreVertical className="h-5 w-5" />
@@ -94,7 +94,7 @@ const AddressCard: React.FC<AddressCardProps> = ({
                   e.preventDefault();
                   onEdit();
                 }}
-                className="cursor-pointer focus:bg-gray-100"
+                className="cursor-pointer focus:bg-muted"
               >
                 <Edit className="mr-2 h-4 w-4" />
                 Edit
@@ -129,8 +129,8 @@ const AddressCard: React.FC<AddressCardProps> = ({
             />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-sm font-medium text-gray-900">
-              {cc && <span className="text-gray-600">{cc}</span>} {phoneNumber}
+            <p className="text-sm font-medium text-foreground">
+              {cc && <span className="text-muted-foreground">{cc}</span>} {phoneNumber}
             </p>
           </div>
         </div>
@@ -147,7 +147,7 @@ const AddressCard: React.FC<AddressCardProps> = ({
             />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-sm leading-relaxed text-gray-700">
+            <p className="text-sm leading-relaxed text-muted-foreground">
               {fullAddress}
             </p>
           </div>

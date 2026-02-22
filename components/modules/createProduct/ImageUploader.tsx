@@ -126,7 +126,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
         className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
           isDragOver
             ? 'border-primary/70 bg-primary/5'
-            : 'border-gray-300 hover:border-gray-400'
+            : 'border-border hover:border-border'
         }`}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
@@ -142,8 +142,8 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
         />
         
         <div className="space-y-2">
-          <Upload className="h-8 w-8 text-gray-400 mx-auto" />
-          <p className="text-sm text-gray-600">
+          <Upload className="h-8 w-8 text-muted-foreground mx-auto" />
+          <p className="text-sm text-muted-foreground">
             {t("drag_and_drop_images_here")} {t("or")}
           </p>
           <Button
@@ -157,7 +157,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
           </Button>
         </div>
         
-        <p className="text-xs text-gray-500 mt-2">
+        <p className="text-xs text-muted-foreground mt-2">
           {t("max_images")}: {maxImages} | {t("supported_formats")}: JPG, PNG, GIF
         </p>
       </div>
@@ -165,7 +165,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
       {/* Image Preview Grid */}
       {images.length > 0 && (
         <div className="space-y-2">
-          <h4 className="text-sm font-medium text-gray-700">
+          <h4 className="text-sm font-medium text-muted-foreground">
             {t("uploaded_images")} ({images.length}/{maxImages})
           </h4>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">

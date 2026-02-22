@@ -199,7 +199,7 @@ const ProductDetailsSection: React.FC<ProductDetailsSectionProps> = () => {
 
   return (
     <div className="mx-auto grid  w-full max-w-[950px] grid-cols-4 gap-x-5">
-      <div className="col-span-4 mb-3 w-full rounded-lg border border-solid border-gray-300 bg-white p-2 shadow-xs sm:p-3 lg:p-4">
+      <div className="col-span-4 mb-3 w-full rounded-lg border border-solid border-border bg-card p-2 shadow-xs sm:p-3 lg:p-4">
         <div className="flex w-full flex-wrap">
           <div className="form-groups-common-sec-s1">
             <h3 dir={langDir} translate="no">{t("product_details")}</h3>
@@ -336,7 +336,7 @@ const ProductDetailsSection: React.FC<ProductDetailsSectionProps> = () => {
 
               <div className="mb-4 mr-4 flex flex-row items-start space-x-3 space-y-0">
                 <Checkbox
-                  className="border border-solid border-gray-300 data-[state=checked]:bg-dark-orange!"
+                  className="border border-solid border-border data-[state=checked]:bg-dark-orange!"
                   onCheckedChange={handleRequiredField}
                 />
                 <Label className="text-sm font-normal" dir={langDir} translate="no">{t("required")}</Label>
@@ -451,7 +451,7 @@ const ProductDetailsSection: React.FC<ProductDetailsSectionProps> = () => {
 
               <div className="mb-4 mr-4 flex flex-row items-start space-x-3 space-y-0">
                 <Checkbox
-                  className="border border-solid border-gray-300 data-[state=checked]:bg-dark-orange!"
+                  className="border border-solid border-border data-[state=checked]:bg-dark-orange!"
                   onCheckedChange={handleRequiredField}
                 />
                 <Label className="text-sm font-normal">Required</Label>
@@ -543,7 +543,7 @@ const ProductDetailsSection: React.FC<ProductDetailsSectionProps> = () => {
 
               <div className="mb-4 mr-4 flex flex-row items-start space-x-3 space-y-0">
                 <Checkbox
-                  className="border border-solid border-gray-300 data-[state=checked]:bg-dark-orange!"
+                  className="border border-solid border-border data-[state=checked]:bg-dark-orange!"
                   onCheckedChange={handleRequiredField}
                 />
                 <Label className="text-sm font-normal" dir={langDir} translate="no">{t("required")}</Label>
@@ -619,7 +619,7 @@ const ProductDetailsSection: React.FC<ProductDetailsSectionProps> = () => {
                           index: number,
                         ) => (
                           <li key={index}>
-                            <Card className="mb-2 flex items-center justify-between rounded-sm bg-gray-100 p-3">
+                            <Card className="mb-2 flex items-center justify-between rounded-sm bg-muted p-3">
                               {item.label}
                               <div>
                                 <button
@@ -723,7 +723,7 @@ const ProductDetailsSection: React.FC<ProductDetailsSectionProps> = () => {
 
               <div className="mb-4 mr-4 flex flex-row items-start space-x-3 space-y-0">
                 <Checkbox
-                  className="border border-solid border-gray-300 data-[state=checked]:bg-dark-orange!"
+                  className="border border-solid border-border data-[state=checked]:bg-dark-orange!"
                   onCheckedChange={handleRequiredField}
                 />
                 <Label className="text-sm font-normal" dir={langDir} translate="no">{t("required")}</Label>
@@ -819,7 +819,7 @@ const ProductDetailsSection: React.FC<ProductDetailsSectionProps> = () => {
 
               <div className="mb-4 mr-4 flex flex-row items-start space-x-3 space-y-0">
                 <Checkbox
-                  className="border border-solid border-gray-300 data-[state=checked]:bg-dark-orange!"
+                  className="border border-solid border-border data-[state=checked]:bg-dark-orange!"
                   onCheckedChange={handleRequiredField}
                 />
                 <Label className="text-sm font-normal" dir={langDir} translate="no">{t("required")}</Label>
@@ -890,7 +890,7 @@ const ProductDetailsSection: React.FC<ProductDetailsSectionProps> = () => {
                           index: number,
                         ) => (
                           <li key={index}>
-                            <Card className="mb-2 flex items-center justify-between rounded-sm bg-gray-100 p-3">
+                            <Card className="mb-2 flex items-center justify-between rounded-sm bg-muted p-3">
                               {item.label}
                               <div>
                                 <button
@@ -993,7 +993,7 @@ const ProductDetailsSection: React.FC<ProductDetailsSectionProps> = () => {
 
               <div className="mb-4 mr-4 flex flex-row items-start space-x-3 space-y-0">
                 <Checkbox
-                  className="border border-solid border-gray-300 data-[state=checked]:bg-dark-orange!"
+                  className="border border-solid border-border data-[state=checked]:bg-dark-orange!"
                   onCheckedChange={handleRequiredField}
                 />
                 <Label className="text-sm font-normal" dir={langDir} translate="no">{t("required")}</Label>

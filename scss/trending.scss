@@ -386,7 +386,7 @@
                 .products_sec_top_right {
                     .trending_filter {
                         select {
-                            background: #fff;
+                            background: var(--card);
                             font-size: 14px;
                             font-weight: 400;
                             line-height: 24px;
@@ -457,7 +457,7 @@
                     background: hsl(var(--primary));
                     border-color: hsl(var(--primary));
                     border-radius: 2px;
-                    color: #fff;
+                    color: var(--card);
                     font-weight: 600;
                     padding: 5px 15px;
                     img {
@@ -469,7 +469,7 @@
                     background: hsl(var(--primary));
                     border-color: hsl(var(--primary));
                     border-radius: 2px;
-                    color: #fff;
+                    color: var(--card);
                     font-weight: 600;
                     padding: 5px 15px;
                     img {
@@ -485,7 +485,7 @@
 .category-dropdown-content {
   display: block;
   position: absolute;
-  background-color: #fff;
+  background-color: var(--card);
   min-width: 280px;
   box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 0.2);
   z-index: 100;
@@ -520,7 +520,7 @@
 .category-dropdown-content-second {
   display: block;
   position: absolute;
-  background-color: #fff;
+  background-color: var(--card);
   min-width: 280px;
   box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 0.2);
   z-index: 100;
@@ -534,7 +534,7 @@
 .category-dropdown-content-third {
   display: block;
   position: absolute;
-  background-color: #fff;
+  background-color: var(--card);
   min-width: 560px;
   box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 0.2);
   z-index: 100;
@@ -549,7 +549,7 @@
 .category-dropdown-content-fourth {
   display: block;
   position: absolute;
-  background-color: #fff;
+  background-color: var(--card);
   min-width: 560px;
   box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 0.2);
   z-index: 100;
@@ -563,7 +563,7 @@
 .category-dropdown-content-fifth {
   display: block;
   position: absolute;
-  background-color: #fff;
+  background-color: var(--card);
   min-width: 560px;
   box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 0.2);
   z-index: 100;

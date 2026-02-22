@@ -67,7 +67,7 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({ sellerId }) => {
               {/* {calculateRatings(calculateAvgRating)} */}
             </div>
             <div
-              className="mt-1.5 w-auto text-sm font-medium leading-5 text-gray-500"
+              className="mt-1.5 w-auto text-sm font-medium leading-5 text-muted-foreground"
               dir={langDir}
             >
               <p translate="no">
@@ -106,7 +106,7 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({ sellerId }) => {
             <Button
               variant={sortType === "newest" ? "secondary" : "ghost"}
               onClick={() => setSortType("newest")}
-              className="block rounded-full border border-solid border-gray-300 px-2 text-sm font-medium text-gray-500"
+              className="block rounded-full border border-solid border-border px-2 text-sm font-medium text-muted-foreground"
               dir={langDir}
               translate="no"
             >
@@ -117,7 +117,7 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({ sellerId }) => {
             <Button
               variant={sortType === "highest" ? "secondary" : "ghost"}
               onClick={() => setSortType("highest")}
-              className="block rounded-full border border-solid border-gray-300 px-2 text-sm font-medium text-gray-500"
+              className="block rounded-full border border-solid border-border px-2 text-sm font-medium text-muted-foreground"
               dir={langDir}
               translate="no"
             >
@@ -128,7 +128,7 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({ sellerId }) => {
             <Button
               variant={sortType === "lowest" ? "secondary" : "ghost"}
               onClick={() => setSortType("lowest")}
-              className="block rounded-full border border-solid border-gray-300 px-2 text-sm font-medium text-gray-500"
+              className="block rounded-full border border-solid border-border px-2 text-sm font-medium text-muted-foreground"
               dir={langDir}
               translate="no"
             >
@@ -137,7 +137,7 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({ sellerId }) => {
           </li>
         </ul>
       </div>
-      <div className="flex w-full border-t-2 border-dashed border-gray-300 py-5">
+      <div className="flex w-full border-t-2 border-dashed border-border py-5">
         {!reviewsQuery?.data?.data?.length ? (
           <div
             className="w-full text-center text-sm font-bold text-dark-orange"

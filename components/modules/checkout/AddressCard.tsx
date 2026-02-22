@@ -56,13 +56,13 @@ const AddressCard: React.FC<AddressCardProps> = ({
       />
       <Label 
         htmlFor={id?.toString()} 
-        className="block p-6 pl-12 border border-gray-200 rounded-lg hover:border-gray-300 hover:shadow-sm transition-all duration-200 cursor-pointer bg-white"
+        className="block p-6 pl-12 border border-border rounded-lg hover:border-border hover:shadow-sm transition-all duration-200 cursor-pointer bg-card"
       >
         <div className="flex justify-between items-start">
           <div className="flex-1 min-w-0">
             {/* Name */}
             <div className="mb-4">
-              <h3 className="text-lg font-semibold text-gray-900 truncate">
+              <h3 className="text-lg font-semibold text-foreground truncate">
                 {firstName} {lastName}
               </h3>
             </div>
@@ -77,10 +77,10 @@ const AddressCard: React.FC<AddressCardProps> = ({
                     alt="phone-icon" 
                     width={16} 
                     height={16}
-                    className="text-gray-500"
+                    className="text-muted-foreground"
                   />
                 </div>
-                <span className="text-gray-700 font-medium">{phoneNumber}</span>
+                <span className="text-muted-foreground font-medium">{phoneNumber}</span>
               </div>
 
               {/* Address */}
@@ -91,10 +91,10 @@ const AddressCard: React.FC<AddressCardProps> = ({
                     alt="location-icon" 
                     width={16} 
                     height={16}
-                    className="text-gray-500"
+                    className="text-muted-foreground"
                   />
                 </div>
-                <span className="text-gray-600 leading-relaxed">
+                <span className="text-muted-foreground leading-relaxed">
                   {[address, town, city?.name, state?.name, postCode, country?.name].filter(el => el).join(', ')}
                 </span>
               </div>
@@ -104,26 +104,26 @@ const AddressCard: React.FC<AddressCardProps> = ({
           {/* Options Menu */}
           <div className="flex-shrink-0 ml-4">
             <DropdownMenu>
-              <DropdownMenuTrigger className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200">
+              <DropdownMenuTrigger className="p-2 hover:bg-muted rounded-full transition-colors duration-200">
                 <Image
                   alt="options-icon"
                   src={DropdownIcon}
                   height={20}
                   width={20}
-                  className="text-gray-500"
+                  className="text-muted-foreground"
                 />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-40">
                 <DropdownMenuItem 
                   onClick={onEdit}
-                  className="cursor-pointer hover:bg-gray-50"
+                  className="cursor-pointer hover:bg-muted"
                 >
                   Edit Address
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem 
                   onClick={onDelete}
-                  className="cursor-pointer hover:bg-gray-50 text-destructive focus:text-destructive"
+                  className="cursor-pointer hover:bg-muted text-destructive focus:text-destructive"
                 >
                   Delete Address
                 </DropdownMenuItem>

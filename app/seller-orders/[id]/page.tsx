@@ -277,7 +277,7 @@ const MyOrderDetailsPage = ({ }) => {
                         >
                           {orderDetails?.orderProductType == 'SERVICE' ? (
                             <figure>
-                              <div className="image-container rounded border border-gray-300">
+                              <div className="image-container rounded border border-border">
                                 <Image
                                   src={PlaceholderImage}
                                   alt="preview-product"
@@ -309,14 +309,14 @@ const MyOrderDetailsPage = ({ }) => {
                                   {currency.symbol}
                                   {Number(orderDetails?.purchasePrice || 0) * (orderDetails?.orderQuantity || 0)}
                                 </h4>
-                                <p className="text-gray-500" translate="no">
+                                <p className="text-muted-foreground" translate="no">
                                   {t("quantity")} x {orderDetails?.orderQuantity || 0}
                                 </p>
                               </figcaption>
                             </figure>
                           ) : (
                             <figure>
-                              <div className="image-container rounded border border-gray-300">
+                              <div className="image-container rounded border border-border">
                                 <Image
                                   src={
                                     orderDetails?.orderProduct_productPrice
@@ -360,7 +360,7 @@ const MyOrderDetailsPage = ({ }) => {
                                     : 0}
                                 </h4>
                                 <p
-                                  className="text-gray-500"
+                                  className="text-muted-foreground"
                                   dir={langDir}
                                   translate="no"
                                 >
@@ -374,7 +374,7 @@ const MyOrderDetailsPage = ({ }) => {
                                     if (Array.isArray(object)) {
                                       return object.map((obj: any, index: number) => {
                                         return (
-                                          <p className="text-gray-500" dir={langDir} key={index}>
+                                          <p className="text-muted-foreground" dir={langDir} key={index}>
                                             {obj.type}: {obj.value}
                                           </p>
                                         );
@@ -382,7 +382,7 @@ const MyOrderDetailsPage = ({ }) => {
                                     }
 
                                     return (
-                                      <p className="text-gray-500" dir={langDir}>
+                                      <p className="text-muted-foreground" dir={langDir}>
                                         {object.type}: {object.value}
                                       </p>
                                     );

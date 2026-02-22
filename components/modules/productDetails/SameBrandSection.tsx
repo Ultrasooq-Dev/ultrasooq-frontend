@@ -296,8 +296,8 @@ const SameBrandSection: React.FC<SameBrandSectionProps> = ({
   return (
     <div className="space-y-4">
       {/* Clean Section Header */}
-      <div className="border-b border-gray-100 pb-3">
-        <h3 className="text-lg font-semibold text-gray-900" dir={langDir} translate="no">
+      <div className="border-b border-border pb-3">
+        <h3 className="text-lg font-semibold text-foreground" dir={langDir} translate="no">
           {t("same_brand")}
         </h3>
         </div>
@@ -315,7 +315,7 @@ const SameBrandSection: React.FC<SameBrandSectionProps> = ({
         ) : memoizedSameBrandProductList?.length ? (
           <div className="space-y-4">
             {/* Single Product Card */}
-            <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+            <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
               <div className="flex">
                 {/* Product Image */}
                 <div className="relative h-40 w-40 flex-shrink-0 overflow-hidden">
@@ -336,10 +336,10 @@ const SameBrandSection: React.FC<SameBrandSectionProps> = ({
                 <div className="flex-1 p-4">
                   {/* Product Name & Brand */}
                   <div className="mb-3">
-                    <h4 className="text-lg font-bold text-gray-900 truncate">
+                    <h4 className="text-lg font-bold text-foreground truncate">
                       {currentProduct?.productName}
                     </h4>
-                    <p className="text-sm text-gray-500 truncate">
+                    <p className="text-sm text-muted-foreground truncate">
                       {currentProduct?.brandName || "Brand"}
                     </p>
                   </div>
@@ -355,7 +355,7 @@ const SameBrandSection: React.FC<SameBrandSectionProps> = ({
                         />
                       ))}
                     </div>
-                    <span className="text-sm text-gray-500">
+                    <span className="text-sm text-muted-foreground">
                       ({currentProduct?.productReview?.length || 0})
                     </span>
                   </div>
@@ -368,11 +368,11 @@ const SameBrandSection: React.FC<SameBrandSectionProps> = ({
                       </span>
                     ) : (
                       <div className="flex items-baseline gap-2">
-                        <span className="text-xl font-bold text-gray-900">
+                        <span className="text-xl font-bold text-foreground">
                           ₹{calculateDiscountedPrice(currentProduct)}
                         </span>
                         {currentProduct?.productProductPrice && currentProduct?.productProductPrice !== calculateDiscountedPrice(currentProduct).toString() && (
-                          <span className="text-sm text-gray-500 line-through">
+                          <span className="text-sm text-muted-foreground line-through">
                             ₹{currentProduct?.productProductPrice}
                           </span>
                         )}
@@ -384,7 +384,7 @@ const SameBrandSection: React.FC<SameBrandSectionProps> = ({
                   <div className="flex items-center gap-2">
                     <Link
                       href={`/trending/${currentProduct?.id}`}
-                      className="flex items-center gap-1.5 rounded-lg bg-gray-100 px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-200"
+                      className="flex items-center gap-1.5 rounded-lg bg-muted px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted"
                     >
                       <FiEye size={14} />
                       {t("view")}
@@ -401,7 +401,7 @@ const SameBrandSection: React.FC<SameBrandSectionProps> = ({
                     {haveAccessToken && (
                       <button
                         onClick={() => handleAddToWishlist(currentProduct.id, currentProduct?.productWishlist)}
-                        className="flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 bg-white transition-colors hover:bg-gray-50"
+                        className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-card transition-colors hover:bg-muted"
                       >
                         {currentProduct?.inWishlist ? (
                           <FaHeart color="red" size={14} />
@@ -420,10 +420,10 @@ const SameBrandSection: React.FC<SameBrandSectionProps> = ({
               <div className="flex items-center justify-between px-2">
                 <button
                   onClick={prevProduct}
-                  className="flex h-11 w-11 items-center justify-center rounded-full bg-white border-2 border-gray-200 shadow-sm transition-all hover:shadow-md hover:border-warning/30 hover:bg-warning/5"
+                  className="flex h-11 w-11 items-center justify-center rounded-full bg-card border-2 border-border shadow-sm transition-all hover:shadow-md hover:border-warning/30 hover:bg-warning/5"
                   aria-label="Previous product"
                 >
-                  <svg className="h-5 w-5 text-gray-600 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="h-5 w-5 text-muted-foreground transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                   </svg>
                 </button>
@@ -434,22 +434,22 @@ const SameBrandSection: React.FC<SameBrandSectionProps> = ({
                       <div
                         key={index}
                         className={`h-2 w-2 rounded-full transition-colors ${
-                          index === currentIndex ? 'bg-warning' : 'bg-gray-300'
+                          index === currentIndex ? 'bg-warning' : 'bg-muted'
                         }`}
                       />
                     ))}
                   </div>
-                  <span className="text-sm font-medium text-gray-600">
+                  <span className="text-sm font-medium text-muted-foreground">
                     {currentIndex + 1} of {memoizedSameBrandProductList.length}
                   </span>
                 </div>
 
                 <button
                   onClick={nextProduct}
-                  className="flex h-11 w-11 items-center justify-center rounded-full bg-white border-2 border-gray-200 shadow-sm transition-all hover:shadow-md hover:border-warning/30 hover:bg-warning/5"
+                  className="flex h-11 w-11 items-center justify-center rounded-full bg-card border-2 border-border shadow-sm transition-all hover:shadow-md hover:border-warning/30 hover:bg-warning/5"
                   aria-label="Next product"
                 >
-                  <svg className="h-5 w-5 text-gray-600 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="h-5 w-5 text-muted-foreground transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
                 </button>
@@ -458,15 +458,15 @@ const SameBrandSection: React.FC<SameBrandSectionProps> = ({
           </div>
         ) : (
           <div className="text-center py-12">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
-              <svg className="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
+              <svg className="h-8 w-8 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
               </svg>
             </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2" dir={langDir} translate="no">
+            <h3 className="text-lg font-medium text-foreground mb-2" dir={langDir} translate="no">
               {t("no_product_found")}
             </h3>
-            <p className="text-sm text-gray-500" dir={langDir} translate="no">
+            <p className="text-sm text-muted-foreground" dir={langDir} translate="no">
               {t("no_products_from_same_brand")}
             </p>
         </div>

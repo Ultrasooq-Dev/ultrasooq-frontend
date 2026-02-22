@@ -31,8 +31,8 @@ const CompactVendorInfo: React.FC<CompactVendorInfoProps> = ({ adminId }) => {
   return vendorQuery.isLoading ? (
     <div className="flex items-center gap-4 animate-pulse">
       <div className="flex-1 space-y-2">
-        <div className="h-4 w-32 rounded bg-gray-300"></div>
-        <div className="h-3 w-48 rounded bg-gray-300"></div>
+        <div className="h-4 w-32 rounded bg-muted"></div>
+        <div className="h-3 w-48 rounded bg-muted"></div>
       </div>
     </div>
   ) : (
@@ -40,7 +40,7 @@ const CompactVendorInfo: React.FC<CompactVendorInfoProps> = ({ adminId }) => {
       {/* Vendor Info */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-gray-600">Sold By:</span>
+          <span className="text-sm font-medium text-muted-foreground">Sold By:</span>
           <Link
             href={
               vendor?.tradeRole === "COMPANY"
@@ -49,7 +49,7 @@ const CompactVendorInfo: React.FC<CompactVendorInfoProps> = ({ adminId }) => {
                   ? `/freelancer-profile-details?userId=${adminId}`
                   : "#"
             }
-            className="text-base font-semibold text-gray-900 hover:text-primary transition-colors"
+            className="text-base font-semibold text-foreground hover:text-primary transition-colors"
           >
             {vendor?.accountName || 
              vendor?.userProfile?.[0]?.companyName || 
@@ -58,10 +58,10 @@ const CompactVendorInfo: React.FC<CompactVendorInfoProps> = ({ adminId }) => {
           </Link>
         </div>
         <div className="flex items-center gap-2 mt-1">
-          <span className="text-sm font-medium text-gray-600">Email:</span>
+          <span className="text-sm font-medium text-muted-foreground">Email:</span>
           <a 
             href={`mailto:${vendor?.masterAccount?.email || vendor?.email || 'test@gmail.com'}`}
-            className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-primary transition-colors"
+            className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors"
           >
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />

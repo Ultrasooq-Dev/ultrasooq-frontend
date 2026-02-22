@@ -1027,9 +1027,9 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
           </div>
         ) : !vendorList?.length ? (
           <div className="flex h-full flex-col items-center justify-center p-8">
-            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
+            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
               <svg
-                className="h-8 w-8 text-gray-400"
+                className="h-8 w-8 text-muted-foreground"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -1043,7 +1043,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
               </svg>
             </div>
             <p
-              className="text-center text-sm font-medium text-gray-500"
+              className="text-center text-sm font-medium text-muted-foreground"
               dir={langDir}
               translate="no"
             >
@@ -1146,7 +1146,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
                     "cursor-pointer rounded-lg border-2 p-1.5 transition-all hover:shadow-md",
                     isSelected
                       ? "border-warning bg-warning/5"
-                      : "border-gray-200 bg-white hover:border-gray-300",
+                      : "border-border bg-card hover:border-border",
                   )}
                 >
                   <div className="flex items-center gap-2">
@@ -1162,7 +1162,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
                       />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h4 className="text-xs font-semibold text-gray-900 truncate">
+                      <h4 className="text-xs font-semibold text-foreground truncate">
                         {getVendorName()}
                       </h4>
                       {getVendorOfferPrice() && getVendorOfferPrice() !== "-" ? (
@@ -1171,7 +1171,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
                           {getVendorOfferPrice()}
                         </p>
                       ) : (
-                        <p className="mt-0.5 text-[9px] text-gray-500">
+                        <p className="mt-0.5 text-[9px] text-muted-foreground">
                           {t("no_offer_yet") || "No offer yet"}
                         </p>
                       )}
@@ -1203,7 +1203,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
     if (!selectedVendor) {
       return (
         <div className="flex h-full items-center justify-center p-8">
-          <p className="text-center text-sm text-gray-500">
+          <p className="text-center text-sm text-muted-foreground">
             Select a vendor to view details
           </p>
         </div>
@@ -1213,7 +1213,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
     return (
       <div className="flex h-full flex-col overflow-hidden">
         {/* Header with Vendor Info, Price and Checkout */}
-        <div className="flex-shrink-0 border-b border-gray-100 bg-white px-3 py-2">
+        <div className="flex-shrink-0 border-b border-border bg-card px-3 py-2">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             {/* Vendor Info */}
             <div className="flex items-center gap-2">
@@ -1228,13 +1228,13 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
                 </div>
               )}
               <div>
-                <h3 className="text-sm font-bold text-gray-900">
+                <h3 className="text-sm font-bold text-foreground">
                   {selectedVendor?.sellerIDDetail?.accountName ||
                     `${selectedVendor?.sellerIDDetail?.firstName || ""} ${selectedVendor?.sellerIDDetail?.lastName || ""}`.trim() ||
                     selectedVendor?.sellerIDDetail?.email ||
                     `Vendor ${selectedVendor?.sellerID}`}
                 </h3>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-muted-foreground">
                   {t("vendor_details") || "Vendor Details"}
                 </p>
               </div>
@@ -1260,13 +1260,13 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
                 </div>
                 <div className="flex flex-row items-center gap-2">
                   <span
-                    className="text-[10px] font-medium text-gray-600 whitespace-nowrap"
+                    className="text-[10px] font-medium text-muted-foreground whitespace-nowrap"
                     dir={langDir}
                     translate="no"
                   >
                     Total Price
                   </span>
-                  <span className="text-sm font-bold text-gray-900">
+                  <span className="text-sm font-bold text-foreground">
                     {(() => {
                       // Calculate main products total
                       let mainProductsTotal = 0;
@@ -1410,31 +1410,31 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
         <div className="flex-1 flex flex-col overflow-hidden min-h-0 px-2 py-1.5 gap-1.5">
           {/* Product Details Table - list style like vendor side */}
           {selectedVendor?.rfqQuotesProducts?.length > 0 ? (
-            <div className="flex-shrink-0 overflow-hidden rounded border border-gray-200 bg-white">
-              <div className="grid grid-cols-4 gap-1 border-b border-gray-200 bg-gray-50 px-3 py-1.5">
+            <div className="flex-shrink-0 overflow-hidden rounded border border-border bg-card">
+              <div className="grid grid-cols-4 gap-1 border-b border-border bg-muted px-3 py-1.5">
                 <div
-                  className="text-[11px] font-semibold text-gray-700"
+                  className="text-[11px] font-semibold text-muted-foreground"
                   dir={langDir}
                   translate="no"
                 >
                   {t("component") || "Component"}
                 </div>
                 <div
-                  className="text-[11px] font-semibold text-gray-700 text-center"
+                  className="text-[11px] font-semibold text-muted-foreground text-center"
                   dir={langDir}
                   translate="no"
                 >
                   {t("selection") || "Selection"}
                 </div>
                 <div
-                  className="text-[11px] font-semibold text-gray-700 text-center"
+                  className="text-[11px] font-semibold text-muted-foreground text-center"
                   dir={langDir}
                   translate="no"
                 >
                   {t("price") || "Price"}
                 </div>
                 <div
-                  className="text-[11px] font-semibold text-gray-700 text-center"
+                  className="text-[11px] font-semibold text-muted-foreground text-center"
                   dir={langDir}
                   translate="no"
                 >
@@ -1458,13 +1458,13 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
                       return (
                         <div
                           key={item.id}
-                          className="border-b border-gray-200"
+                          className="border-b border-border"
                         >
                           {/* Main requested product row */}
-                          <div className="grid grid-cols-4 items-center gap-2 px-3 py-2.5 bg-white">
+                          <div className="grid grid-cols-4 items-center gap-2 px-3 py-2.5 bg-card">
                             {/* Requested product info */}
                             <div className="flex items-center gap-2 min-w-0">
-                              <div className="relative h-8 w-8 flex-shrink-0 overflow-hidden rounded border border-gray-200 bg-gray-50">
+                              <div className="relative h-8 w-8 flex-shrink-0 overflow-hidden rounded border border-border bg-muted">
                                 <Image
                                   src={
                                     item?.rfqProductDetails?.productImages?.[0]
@@ -1479,10 +1479,10 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
                                 />
                               </div>
                               <div className="min-w-0">
-                                <p className="truncate text-xs font-semibold text-gray-900">
+                                <p className="truncate text-xs font-semibold text-foreground">
                                   {translate(item?.rfqProductDetails?.productName || "-")}
                                 </p>
-                                <p className="text-[10px] text-gray-500">
+                                <p className="text-[10px] text-muted-foreground">
                                   {item?.deliveryDate ||
                                     rfqQuoteDetailsById
                                       ?.rfqQuotes_rfqQuoteAddress?.rfqDate ||
@@ -1499,7 +1499,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
                                 
                                 if (!hasSuggestions) {
                                   return (
-                                    <span className="text-[10px] text-gray-500">
+                                    <span className="text-[10px] text-muted-foreground">
                                       {item?.productType === "SIMILAR"
                                         ? t("similar_product") || "Similar product"
                                         : t("same_product") || "Same product"}
@@ -1523,7 +1523,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
                             </div>
 
                             {/* Price column */}
-                            <div className="flex flex-col items-center gap-0.5 text-[10px] text-gray-700">
+                            <div className="flex flex-col items-center gap-0.5 text-[10px] text-muted-foreground">
                               <span className="font-bold">
                                 {(() => {
                                   // Multiply price by quantity
@@ -1538,7 +1538,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
                             </div>
 
                             {/* Address column */}
-                            <div className="text-center text-[10px] text-gray-700">
+                            <div className="text-center text-[10px] text-muted-foreground">
                               <span className="line-clamp-2">
                                 {item?.address ||
                                   rfqQuoteDetailsById
@@ -1556,7 +1556,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
                             if (selectedSuggestions.length === 0) return null;
                             
                             return (
-                              <div className="border-t border-gray-100 bg-gray-50 px-3 py-2">
+                              <div className="border-t border-border bg-muted px-3 py-2">
                                 {selectedSuggestions.map((s: any) => {
                                 const p = s.suggestedProduct;
                                 const imageUrl =
@@ -1589,7 +1589,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
                                   >
                                     {/* Component column */}
                                     <div className="flex items-center gap-2 min-w-0">
-                                      <div className="relative h-7 w-7 flex-shrink-0 overflow-hidden rounded border border-gray-200 bg-white">
+                                      <div className="relative h-7 w-7 flex-shrink-0 overflow-hidden rounded border border-border bg-card">
                                         <Image
                                           src={imageUrl}
                                           alt={p?.productName || "Product"}
@@ -1602,7 +1602,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
                                           {translate(p?.productName || "-")}
                                         </span>
                                         {s.quantity && s.quantity > 0 && (
-                                          <span className="text-[9px] text-gray-500">
+                                          <span className="text-[9px] text-muted-foreground">
                                             Qty: {s.quantity}
                                           </span>
                                         )}
@@ -1622,14 +1622,14 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
                                     </div>
 
                                     {/* Price column */}
-                                    <div className="text-center text-[10px] text-gray-700">
+                                    <div className="text-center text-[10px] text-muted-foreground">
                                       <span>
                                         {price ? `${currency.symbol}${price}` : "-"}
                                       </span>
                                     </div>
 
                                     {/* Address column - empty for suggested products */}
-                                    <div className="text-center text-[10px] text-gray-500">
+                                    <div className="text-center text-[10px] text-muted-foreground">
                                       <span>-</span>
                                     </div>
                                   </div>
@@ -1649,13 +1649,13 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
 
           {/* Send Update and Cancel Buttons */}
           {hasPendingSelections && (
-            <div className="border-t border-gray-200 bg-gray-50 px-3 py-2 flex items-center justify-end gap-2">
+            <div className="border-t border-border bg-muted px-3 py-2 flex items-center justify-end gap-2">
               <button
                 onClick={() => {
                   setPendingProductSelections(new Map());
                   setHasPendingSelections(false);
                 }}
-                className="px-4 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-50 transition-colors"
+                className="px-4 py-1.5 text-xs font-medium text-muted-foreground bg-card border border-border rounded hover:bg-muted transition-colors"
               >
                 {t("cancel") || "Cancel"}
               </button>
@@ -1682,7 +1682,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
           />
 
           {/* Chat History - Takes remaining space */}
-          <div className="flex-1 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm min-h-0 flex flex-col">
+          <div className="flex-1 overflow-hidden rounded-lg border border-border bg-card shadow-sm min-h-0 flex flex-col">
             <div className="flex-1 overflow-y-auto min-h-0">
               <RfqRequestChatHistory
                 roomId={selectedRoom}
@@ -1699,17 +1699,17 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
         </div>
 
         {/* Message Input Area */}
-        <div className="flex-shrink-0 border-t border-gray-100 bg-white px-3 py-2">
+        <div className="flex-shrink-0 border-t border-border bg-card px-3 py-2">
           {/* Attachment Preview */}
           {!isAttachmentUploading && attachments.length > 0 && (
             <div className="mb-2 flex flex-wrap gap-1.5">
               {attachments.map((file: any, index: any) => (
                 <div
                   key={index}
-                  className="group flex items-center gap-1.5 rounded-lg border border-gray-300 bg-white px-2 py-1 shadow-sm transition-all hover:border-destructive/30 hover:bg-destructive/5"
+                  className="group flex items-center gap-1.5 rounded-lg border border-border bg-card px-2 py-1 shadow-sm transition-all hover:border-destructive/30 hover:bg-destructive/5"
                 >
                   <svg
-                    className="h-3 w-3 text-gray-500"
+                    className="h-3 w-3 text-muted-foreground"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -1721,7 +1721,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
                       d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"
                     />
                   </svg>
-                  <span className="max-w-[150px] truncate text-xs text-gray-700">
+                  <span className="max-w-[150px] truncate text-xs text-muted-foreground">
                     {file.name}
                   </span>
                   <button
@@ -1749,7 +1749,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
 
           {/* Emoji Picker */}
           {showEmoji && (
-            <div className="mb-2 rounded-lg border border-gray-200 bg-white p-1 shadow-lg">
+            <div className="mb-2 rounded-lg border border-border bg-card p-1 shadow-lg">
               <EmojiPicker onEmojiClick={onEmojiClick} />
             </div>
           )}
@@ -1757,7 +1757,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
           {/* Input Area */}
           <div className="flex items-end gap-2">
             {/* File Attachment Button */}
-            <label className="hover:border-dark-orange hover:text-dark-orange flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-600 transition-all hover:bg-warning/5">
+            <label className="hover:border-dark-orange hover:text-dark-orange flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg border border-border bg-card text-muted-foreground transition-all hover:bg-warning/5">
               <input
                 type="file"
                 className="hidden"
@@ -1768,10 +1768,10 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
             </label>
 
             {/* Text Input */}
-            <div className="focus-within:border-dark-orange flex-1 rounded-lg border-2 border-gray-200 bg-white transition-all focus-within:ring-1 focus-within:ring-orange-100">
+            <div className="focus-within:border-dark-orange flex-1 rounded-lg border-2 border-border bg-card transition-all focus-within:ring-1 focus-within:ring-orange-100">
               <textarea
                 placeholder={t("type_your_message") || "Type your message..."}
-                className="w-full resize-none rounded-lg border-0 bg-transparent px-3 py-2 text-xs text-gray-900 placeholder-gray-400 focus:outline-none"
+                className="w-full resize-none rounded-lg border-0 bg-transparent px-3 py-2 text-xs text-foreground placeholder-muted-foreground focus:outline-none"
                 rows={1}
                 value={message}
                 onChange={(e) => {
@@ -1788,7 +1788,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
               type="button"
               onClick={() => setShowEmoji(!showEmoji)}
               className={cn(
-                "hover:border-dark-orange hover:text-dark-orange flex h-8 w-8 items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-600 transition-all hover:bg-warning/5",
+                "hover:border-dark-orange hover:text-dark-orange flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-card text-muted-foreground transition-all hover:bg-warning/5",
                 showEmoji &&
                   "border-dark-orange text-dark-orange bg-warning/5",
               )}
@@ -1817,10 +1817,10 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
   return (
     <div className="space-y-6">
       {/* Request Info Section - Top */}
-      <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-lg shadow-gray-200/50">
+      <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-lg shadow-border/50">
         <div className="bg-dark-orange flex min-h-[70px] w-full items-center px-6 py-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/20 backdrop-blur-sm">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-card/20 backdrop-blur-sm">
               <svg
                 className="h-6 w-6 text-white"
                 fill="none"
@@ -1860,8 +1860,8 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
       </div>
 
       {/* Vendor List Section - Middle */}
-      <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-lg shadow-gray-200/50">
-        <div className="flex min-h-[50px] w-full items-center justify-between border-b border-gray-100 bg-white px-3 py-2">
+      <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-lg shadow-border/50">
+        <div className="flex min-h-[50px] w-full items-center justify-between border-b border-border bg-card px-3 py-2">
           <div className="flex items-center gap-2">
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-warning/10">
               <svg
@@ -1880,13 +1880,13 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
             </div>
             <div>
               <h2
-                className="text-sm font-bold text-gray-800"
+                className="text-sm font-bold text-foreground"
                 dir={langDir}
                 translate="no"
               >
                 {t("vendor_lists")}
               </h2>
-              <p className="mt-0.5 text-[10px] text-gray-500">
+              <p className="mt-0.5 text-[10px] text-muted-foreground">
                 {t("select_vendor_to_chat") ||
                   "Select a vendor to view details and chat"}
               </p>
@@ -1911,9 +1911,9 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
 
           {!allRfqQuotesQuery?.isLoading && !vendorList?.length ? (
             <div className="flex flex-col items-center justify-center py-16">
-              <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-gray-100">
+              <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-muted">
                 <svg
-                  className="h-10 w-10 text-gray-400"
+                  className="h-10 w-10 text-muted-foreground"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -1927,7 +1927,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
                 </svg>
               </div>
               <p
-                className="text-center text-base font-medium text-gray-500"
+                className="text-center text-base font-medium text-muted-foreground"
                 dir={langDir}
                 translate="no"
               >
@@ -2069,9 +2069,9 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
 
       {/* Main Chat & Product Details Section - Bottom */}
       {selectedVendor && (
-        <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-lg shadow-gray-200/50">
+        <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-lg shadow-border/50">
           {/* Header with Vendor Info, Price and Checkout */}
-          <div className="border-b border-gray-100 bg-white px-6 py-5">
+          <div className="border-b border-border bg-card px-6 py-5">
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
               {/* Vendor Info */}
               <div className="flex items-center gap-4">
@@ -2086,13 +2086,13 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
                   </div>
                 )}
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900">
+                  <h3 className="text-lg font-bold text-foreground">
                     {selectedVendor?.sellerIDDetail?.accountName ||
                       `${selectedVendor?.sellerIDDetail?.firstName || ""} ${selectedVendor?.sellerIDDetail?.lastName || ""}`.trim() ||
                       selectedVendor?.sellerIDDetail?.email ||
                       `Vendor ${selectedVendor?.sellerID}`}
                   </h3>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-muted-foreground">
                     {t("vendor_details") || "Vendor Details"}
                   </p>
                 </div>
@@ -2118,13 +2118,13 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
                   </div>
                   <div className="flex flex-row items-center gap-2">
                     <span
-                      className="text-xs font-medium text-gray-600 whitespace-nowrap"
+                      className="text-xs font-medium text-muted-foreground whitespace-nowrap"
                       dir={langDir}
                       translate="no"
                     >
                       {t("offering_price")}
                     </span>
-                    <span className="text-xl font-bold text-gray-900">
+                    <span className="text-xl font-bold text-foreground">
                       {(() => {
                         // Calculate total from approved product prices
                         if (
@@ -2215,45 +2215,45 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
           {/* Product Details Table */}
           <div className="flex-1 overflow-y-auto px-6 py-6">
             {selectedVendor?.rfqQuotesProducts?.length > 0 ? (
-              <div className="mb-6 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-md">
-                <div className="sticky top-0 z-10 grid grid-cols-6 gap-4 border-b border-gray-200 bg-white px-4 py-4">
+              <div className="mb-6 overflow-hidden rounded-xl border border-border bg-card shadow-md">
+                <div className="sticky top-0 z-10 grid grid-cols-6 gap-4 border-b border-border bg-card px-4 py-4">
                   <div
-                    className="text-xs font-bold text-gray-700 md:text-sm"
+                    className="text-xs font-bold text-muted-foreground md:text-sm"
                     dir={langDir}
                     translate="no"
                   >
                     {t("product")}
                   </div>
                   <div
-                    className="text-xs font-bold text-gray-700 md:text-sm"
+                    className="text-xs font-bold text-muted-foreground md:text-sm"
                     dir={langDir}
                     translate="no"
                   >
                     {t("delivery_date")}
                   </div>
                   <div
-                    className="text-xs font-bold text-gray-700 md:text-sm"
+                    className="text-xs font-bold text-muted-foreground md:text-sm"
                     dir={langDir}
                     translate="no"
                   >
                     {t("brand")}
                   </div>
                   <div
-                    className="text-xs font-bold text-gray-700 md:text-sm"
+                    className="text-xs font-bold text-muted-foreground md:text-sm"
                     dir={langDir}
                     translate="no"
                   >
                     {t("number_of_piece")}
                   </div>
                   <div
-                    className="text-xs font-bold text-gray-700 md:text-sm"
+                    className="text-xs font-bold text-muted-foreground md:text-sm"
                     dir={langDir}
                     translate="no"
                   >
                     {t("price")}
                   </div>
                   <div
-                    className="text-xs font-bold text-gray-700 md:text-sm"
+                    className="text-xs font-bold text-muted-foreground md:text-sm"
                     dir={langDir}
                     translate="no"
                   >
@@ -2323,9 +2323,9 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
             ) : !rfqQuotesUsersByBuyerIdQuery?.isLoading &&
               !selectedVendor?.rfqQuotesProducts?.length ? (
               <div className="flex flex-col items-center justify-center py-16">
-                <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
+                <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
                   <svg
-                    className="h-8 w-8 text-gray-400"
+                    className="h-8 w-8 text-muted-foreground"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -2339,7 +2339,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
                   </svg>
                 </div>
                 <p
-                  className="text-center text-sm font-medium text-gray-500"
+                  className="text-center text-sm font-medium text-muted-foreground"
                   dir={langDir}
                   translate="no"
                 >
@@ -2349,7 +2349,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
             ) : null}
 
             {/* Chat History */}
-            <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-md">
+            <div className="overflow-hidden rounded-xl border border-border bg-card shadow-md">
               <RfqRequestChatHistory
                 roomId={selectedRoom}
                 selectedChatHistory={selectedChatHistory}
@@ -2364,17 +2364,17 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
           </div>
 
           {/* Message Input Area */}
-          <div className="border-t border-gray-100 bg-white px-6 py-5">
+          <div className="border-t border-border bg-card px-6 py-5">
             {/* Attachment Preview */}
             {!isAttachmentUploading && attachments.length > 0 && (
               <div className="mb-3 flex flex-wrap gap-2">
                 {attachments.map((file: any, index: any) => (
                   <div
                     key={index}
-                    className="group flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2 shadow-sm transition-all hover:border-destructive/30 hover:bg-destructive/5"
+                    className="group flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 shadow-sm transition-all hover:border-destructive/30 hover:bg-destructive/5"
                   >
                     <svg
-                      className="h-4 w-4 text-gray-500"
+                      className="h-4 w-4 text-muted-foreground"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -2386,7 +2386,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
                         d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"
                       />
                     </svg>
-                    <span className="max-w-[200px] truncate text-sm text-gray-700">
+                    <span className="max-w-[200px] truncate text-sm text-muted-foreground">
                       {file.name}
                     </span>
                     <button
@@ -2414,7 +2414,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
 
             {/* Emoji Picker */}
             {showEmoji && (
-              <div className="mb-3 rounded-lg border border-gray-200 bg-white p-2 shadow-lg">
+              <div className="mb-3 rounded-lg border border-border bg-card p-2 shadow-lg">
                 <EmojiPicker onEmojiClick={onEmojiClick} />
               </div>
             )}
@@ -2422,7 +2422,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
             {/* Input Area */}
             <div className="flex items-end gap-3">
               {/* File Attachment Button */}
-              <label className="hover:border-dark-orange hover:text-dark-orange flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-600 transition-all hover:bg-warning/5">
+              <label className="hover:border-dark-orange hover:text-dark-orange flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border border-border bg-card text-muted-foreground transition-all hover:bg-warning/5">
                 <input
                   type="file"
                   className="hidden"
@@ -2433,10 +2433,10 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
               </label>
 
               {/* Text Input */}
-              <div className="focus-within:border-dark-orange flex-1 rounded-lg border-2 border-gray-200 bg-white transition-all focus-within:ring-2 focus-within:ring-orange-100">
+              <div className="focus-within:border-dark-orange flex-1 rounded-lg border-2 border-border bg-card transition-all focus-within:ring-2 focus-within:ring-orange-100">
                 <textarea
                   placeholder={t("type_your_message") || "Type your message..."}
-                  className="w-full resize-none rounded-lg border-0 bg-transparent px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none"
+                  className="w-full resize-none rounded-lg border-0 bg-transparent px-4 py-3 text-sm text-foreground placeholder-muted-foreground focus:outline-none"
                   rows={1}
                   value={message}
                   onChange={(e) => {
@@ -2453,7 +2453,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
                 type="button"
                 onClick={() => setShowEmoji(!showEmoji)}
                 className={cn(
-                  "hover:border-dark-orange hover:text-dark-orange flex h-10 w-10 items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-600 transition-all hover:bg-warning/5",
+                  "hover:border-dark-orange hover:text-dark-orange flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-card text-muted-foreground transition-all hover:bg-warning/5",
                   showEmoji &&
                     "border-dark-orange text-dark-orange bg-warning/5",
                 )}

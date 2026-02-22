@@ -128,9 +128,9 @@ const SellerCard: React.FC<SellerCardProps> = ({
 
   return (
     <div className="w-full">
-      <div className="grid w-full grid-cols-3 border-b border-solid border-gray-300">
+      <div className="grid w-full grid-cols-3 border-b border-solid border-border">
         <div>
-          <div className="h-[57px] w-full border-b border-solid border-gray-300 px-3 py-4">
+          <div className="h-[57px] w-full border-b border-solid border-border px-3 py-4">
             <span dir={langDir} translate="no">{t("seller")}</span>
           </div>
           <div className="w-full px-3 py-4">
@@ -156,12 +156,12 @@ const SellerCard: React.FC<SellerCardProps> = ({
         </div>
         {askForPrice !== "true" ? (
           <div>
-            <div className="h-[57px] w-full border-b border-solid border-gray-300 px-3 py-4">
+            <div className="h-[57px] w-full border-b border-solid border-border px-3 py-4">
               <span dir={langDir} translate="no">{t("price")}</span>
             </div>
             <div className="w-full px-3 py-4">
               <div className="flex w-full items-end">
-                <span className="text-md font-medium text-black">
+                <span className="text-md font-medium text-foreground">
                   {calculateDiscountedPrice
                     ? `${currency.symbol}${calculateDiscountedPrice()}`
                     : `${currency.symbol}${0}`}
@@ -174,7 +174,7 @@ const SellerCard: React.FC<SellerCardProps> = ({
           </div>
         ) : null}
         <div>
-          <div className="h-[57px] w-full border-b border-solid border-gray-300 px-3 py-4">
+          <div className="h-[57px] w-full border-b border-solid border-border px-3 py-4">
             <span>Delivery</span>
           </div>
           <div className="w-full px-3 py-4">
@@ -189,11 +189,11 @@ const SellerCard: React.FC<SellerCardProps> = ({
         </div>
       </div>
 
-      <div className="w-full border-b border-solid border-gray-300 p-3">
+      <div className="w-full border-b border-solid border-border p-3">
         <div className="flex w-full items-center justify-between gap-2 text-sm font-medium">
           <button
             onClick={onChooseSeller}
-            className="whitespace-nowrap rounded-sm bg-gray-500 px-6 py-3 text-sm font-bold capitalize text-white"
+            className="whitespace-nowrap rounded-sm bg-muted-foreground px-6 py-3 text-sm font-bold capitalize text-white"
             dir={langDir}
             translate="no"
           >

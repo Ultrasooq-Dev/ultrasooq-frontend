@@ -58,27 +58,27 @@ const RfqRequestPage = () => {
   };
 
   return (
-    <div className="flex h-screen flex-col bg-gray-50">
+    <div className="flex h-screen flex-col bg-muted">
       <div className="flex flex-1 overflow-hidden">
         {/* Column 1: RFQ Requests List (Left Sidebar) - Collapsible */}
         <div
           className={cn(
-            "flex-shrink-0 border-r border-gray-200 bg-white transition-all duration-300 ease-in-out overflow-hidden",
+            "flex-shrink-0 border-r border-border bg-card transition-all duration-300 ease-in-out overflow-hidden",
             isSidebarCollapsed ? "w-16" : "w-80"
           )}
         >
           <div className="flex h-full flex-col">
-            <div className="border-b border-gray-200 bg-gray-50 p-3">
+            <div className="border-b border-border bg-muted p-3">
               <div className="flex items-center justify-between">
                 {!isSidebarCollapsed && (
-                  <h3 className="text-xs font-semibold text-gray-700">
+                  <h3 className="text-xs font-semibold text-muted-foreground">
                     My RFQ Requests
                   </h3>
                 )}
                 <button
                   onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
                   className={cn(
-                    "flex items-center justify-center p-1.5 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors",
+                    "flex items-center justify-center p-1.5 rounded-lg text-muted-foreground hover:bg-muted transition-colors",
                     isSidebarCollapsed && "w-full"
                   )}
                   title={isSidebarCollapsed ? "Expand" : "Collapse"}
@@ -105,7 +105,7 @@ const RfqRequestPage = () => {
             {selectedRfqId && isSidebarCollapsed ? (
               // Collapsed view - show product images
               <div className="flex h-full flex-col">
-                <div className="border-b border-gray-200 bg-gray-50 p-2">
+                <div className="border-b border-border bg-muted p-2">
                   <button
                     onClick={() => {
                       setSelectedRfqId(null);
@@ -114,7 +114,7 @@ const RfqRequestPage = () => {
                       setIsSidebarCollapsed(false);
                       router.push("/rfq-request");
                     }}
-                    className="flex items-center justify-center w-full p-2 text-gray-600 hover:bg-gray-100 rounded transition-colors"
+                    className="flex items-center justify-center w-full p-2 text-muted-foreground hover:bg-muted rounded transition-colors"
                     title="Back to all RFQ requests"
                   >
                     <svg
@@ -137,7 +137,7 @@ const RfqRequestPage = () => {
                     const productImages = getSelectedRfqProductImages();
                     if (productImages.length === 0) {
                       return (
-                        <div className="relative w-full aspect-square rounded-lg overflow-hidden border-2 border-warning bg-gray-100">
+                        <div className="relative w-full aspect-square rounded-lg overflow-hidden border-2 border-warning bg-muted">
                           <Image
                             src={PlaceholderImage}
                             alt="No product image"
@@ -190,15 +190,15 @@ const RfqRequestPage = () => {
         {/* Column 2: Vendor Lists - Expands when RFQ selected */}
         <div
           className={cn(
-            "flex-shrink-0 border-r border-gray-200 bg-white transition-all duration-300 ease-in-out overflow-hidden",
+            "flex-shrink-0 border-r border-border bg-card transition-all duration-300 ease-in-out overflow-hidden",
             selectedRfqId ? "w-56" : "w-0"
           )}
         >
           {selectedRfqId ? (
             <div className="flex h-full flex-col">
-              <div className="border-b border-gray-200 bg-gray-50 p-3">
+              <div className="border-b border-border bg-muted p-3">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-xs font-semibold text-gray-700">
+                  <h3 className="text-xs font-semibold text-muted-foreground">
                     Vendors
                   </h3>
                   <button
@@ -209,7 +209,7 @@ const RfqRequestPage = () => {
                       setIsSidebarCollapsed(false);
                       router.push("/rfq-request");
                     }}
-                    className="p-1.5 text-gray-600 hover:bg-gray-100 rounded transition-colors"
+                    className="p-1.5 text-muted-foreground hover:bg-muted rounded transition-colors"
                     title="Back to RFQ requests"
                   >
                     <svg
@@ -242,7 +242,7 @@ const RfqRequestPage = () => {
             </div>
           ) : (
             <div className="flex h-full items-center justify-center p-8">
-              <p className="text-center text-xs text-gray-500">
+              <p className="text-center text-xs text-muted-foreground">
                 Select an RFQ request
               </p>
             </div>
@@ -252,7 +252,7 @@ const RfqRequestPage = () => {
         {/* Column 3: Chat with Product Card - Expands when vendor selected */}
         <div
           className={cn(
-            "bg-white transition-all duration-300 ease-in-out overflow-hidden flex flex-col",
+            "bg-card transition-all duration-300 ease-in-out overflow-hidden flex flex-col",
             selectedVendorId && selectedRfqId ? "flex-1 min-w-0" : "w-0 flex-shrink-0"
           )}
         >
@@ -265,7 +265,7 @@ const RfqRequestPage = () => {
             />
           ) : (
             <div className="flex h-full items-center justify-center p-8">
-              <p className="text-center text-sm text-gray-500">
+              <p className="text-center text-sm text-muted-foreground">
                 Select a vendor to view chat and product details
               </p>
             </div>

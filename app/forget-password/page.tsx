@@ -80,7 +80,7 @@ export default function ForgetPasswordPage() {
       </div>
       <div className="container relative z-10 m-auto">
         <div className="flex">
-          <div className="m-auto mb-12 w-11/12 rounded-lg border border-solid border-gray-300 bg-white p-7 shadow-xs sm:p-12 md:w-9/12 lg:w-7/12">
+          <div className="m-auto mb-12 w-11/12 rounded-lg border border-solid border-border bg-card p-7 shadow-xs sm:p-12 md:w-9/12 lg:w-7/12">
             <div className="text-normal m-auto mb-7 w-full text-center text-sm leading-6 text-light-gray">
               <h2
                 className="mb-3 text-center text-3xl font-semibold leading-8 text-color-dark sm:text-4xl sm:leading-10"

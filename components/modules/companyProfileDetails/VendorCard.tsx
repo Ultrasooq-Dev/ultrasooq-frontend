@@ -15,7 +15,7 @@ const VendorCard: React.FC<VendorCardProps> = ({ vendor }) => {
   const { langDir, currency } = useAuth();
 
   return (
-    <div className="flex w-full flex-wrap rounded-3xl border border-solid border-gray-300 bg-white p-4 shadow-md md:p-9">
+    <div className="flex w-full flex-wrap rounded-3xl border border-solid border-border bg-card p-4 shadow-md md:p-9">
       <div className="relative h-40 w-40 rounded-2xl">
         <Image
           src={
@@ -35,7 +35,7 @@ const VendorCard: React.FC<VendorCardProps> = ({ vendor }) => {
           </h2>
         </div>
         <div className="mt-3 h-auto w-full"></div>
-        <div className="text-normal mt-4 w-full text-sm font-normal leading-4 text-gray-500">
+        <div className="text-normal mt-4 w-full text-sm font-normal leading-4 text-muted-foreground">
           <p dir={langDir} translate="no">
             {t("annual_purchasing_volume")}:{" "}
             <span className="font-bold text-dark-cyan">
@@ -45,7 +45,7 @@ const VendorCard: React.FC<VendorCardProps> = ({ vendor }) => {
             </span>
           </p>
         </div>
-        <div className="text-normal mt-4 w-full text-sm font-normal leading-4 text-gray-500">
+        <div className="text-normal mt-4 w-full text-sm font-normal leading-4 text-muted-foreground">
           <h5 dir={langDir} translate="no">{t("business_type")}</h5>
           <div className="tagLists">
             <div className="tagItem">
@@ -61,10 +61,10 @@ const VendorCard: React.FC<VendorCardProps> = ({ vendor }) => {
           </div>
         </div>
         <div className="mt-4 flex w-full flex-wrap items-center justify-between">
-          <div className="my-2 text-sm font-normal leading-4 text-gray-500">
+          <div className="my-2 text-sm font-normal leading-4 text-muted-foreground">
             <p dir={langDir} translate="no">
               {t("company_id")}:
-              <span className="text-base font-medium leading-4 text-gray-600">
+              <span className="text-base font-medium leading-4 text-muted-foreground">
                 {vendor?.uniqueId
                   ? `${COMPANY_UNIQUE_ID}${vendor?.uniqueId}`
                   : "NA"}

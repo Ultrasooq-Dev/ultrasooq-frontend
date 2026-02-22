@@ -406,19 +406,19 @@ function HomePage() {
       <HeroBanner />
 
       {/* Categories Section */}
-      {/* <section className="w-full bg-white px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+      {/* <section className="w-full bg-card px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
         <div className="mx-auto w-full max-w-[1400px]">
           <div className="mb-8 sm:mb-12" dir="ltr">
             <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-6">
               <div className="flex-1">
                 <h2
-                  className="mb-3 text-2xl font-bold text-gray-900 sm:text-3xl lg:text-4xl"
+                  className="mb-3 text-2xl font-bold text-foreground sm:text-3xl lg:text-4xl"
                   translate="no"
                 >
                   {t("explore_categories")}
                 </h2>
                 <p
-                  className="max-w-2xl text-sm text-gray-600 sm:text-base"
+                  className="max-w-2xl text-sm text-muted-foreground sm:text-base"
                   translate="no"
                 >
                   {t("browse_categories_to_find_trending_products")}
@@ -451,13 +451,13 @@ function HomePage() {
               <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-6">
                 <div className="flex-1">
                   <h2
-                    className="mb-3 text-2xl font-bold text-gray-900 sm:text-3xl lg:text-4xl"
+                    className="mb-3 text-2xl font-bold text-foreground sm:text-3xl lg:text-4xl"
                     translate="no"
                   >
                     {t("deal_of_the_day")}
                   </h2>
                   <p
-                    className="max-w-2xl text-sm text-gray-600 sm:text-base"
+                    className="max-w-2xl text-sm text-muted-foreground sm:text-base"
                     translate="no"
                   >
                     {t("explore_all_best_deals_for_limited_time")}
@@ -519,7 +519,7 @@ function HomePage() {
       {/* <section className="w-full py-8">
         <div className="container m-auto px-3">
           <div className="flex flex-wrap">
-            <div className="flex w-full flex-wrap items-center justify-between border-b border-solid border-gray-300 bg-neutral-100 px-3.5 py-3.5">
+            <div className="flex w-full flex-wrap items-center justify-between border-b border-solid border-border bg-neutral-100 px-3.5 py-3.5">
               <div className="flex flex-wrap items-center justify-start">
                 <h4 className="mr-3 whitespace-nowrap text-lg font-normal capitalize text-color-dark md:mr-6 md:text-2xl">
                   Best Seller In The Last Month
@@ -528,25 +528,25 @@ function HomePage() {
               <div className="flex flex-wrap items-center justify-start sm:justify-end">
                 <a
                   href="#"
-                  className="mr-3.5 text-sm font-normal text-black sm:mr-0"
+                  className="mr-3.5 text-sm font-normal text-foreground sm:mr-0"
                 >
                   Iphone
                 </a>
                 <a
                   href="#"
-                  className="mr-3.5 text-sm font-normal text-black sm:ml-3.5 sm:mr-0"
+                  className="mr-3.5 text-sm font-normal text-foreground sm:ml-3.5 sm:mr-0"
                 >
                   Ipad
                 </a>
                 <a
                   href="#"
-                  className="mr-3.5 text-sm font-normal text-black sm:ml-3.5 sm:mr-0"
+                  className="mr-3.5 text-sm font-normal text-foreground sm:ml-3.5 sm:mr-0"
                 >
                   Samsung
                 </a>
                 <a
                   href="#"
-                  className="mr-3.5 text-sm font-normal text-black sm:ml-3.5 sm:mr-0"
+                  className="mr-3.5 text-sm font-normal text-foreground sm:ml-3.5 sm:mr-0"
                 >
                   View all
                 </a>
@@ -562,7 +562,7 @@ function HomePage() {
       </section> */}
 
       {/* Promotional Section */}
-      <section className="w-full bg-gray-50 px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+      <section className="w-full bg-muted px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
         <div className="mx-auto w-full max-w-[1400px]">
           <div className="relative overflow-hidden rounded-3xl border border-indigo-700 bg-info">
             <div className="absolute inset-0 bg-black/5" />
@@ -571,7 +571,7 @@ function HomePage() {
               {/* Text Content */}
               <div className="z-10 md:col-span-6 lg:col-span-6">
                 <div className="space-y-5 sm:space-y-7" dir={langDir}>
-                  <span className="inline-block rounded-full bg-white px-5 py-2 text-xs font-bold tracking-wide text-info sm:text-sm">
+                  <span className="inline-block rounded-full bg-card px-5 py-2 text-xs font-bold tracking-wide text-info sm:text-sm">
                     {t("special_offer")}
                   </span>
                   <h3 className="text-3xl leading-tight font-bold text-white sm:text-4xl lg:text-5xl xl:text-6xl">
@@ -585,18 +585,18 @@ function HomePage() {
 
               {/* Price & CTA Section */}
               <div className="z-10 md:col-span-6 lg:col-span-6" dir={langDir}>
-                <div className="rounded-3xl bg-white p-8 sm:p-10">
+                <div className="rounded-3xl bg-card p-8 sm:p-10">
                   <div className="mb-6">
-                    <p className="mb-2 text-sm font-medium text-gray-600">
+                    <p className="mb-2 text-sm font-medium text-muted-foreground">
                       {t("original_price")}
                     </p>
                     <p
-                      className="mb-4 text-2xl font-semibold text-gray-400 line-through"
+                      className="mb-4 text-2xl font-semibold text-muted-foreground line-through"
                       translate="no"
                     >
                       {currency.symbol}332.38
                     </p>
-                    <p className="mb-2 text-base font-bold text-gray-900">
+                    <p className="mb-2 text-base font-bold text-foreground">
                       {t("special_price")}
                     </p>
                     <h4
@@ -613,7 +613,7 @@ function HomePage() {
                     {t("shop_now")}
                     <ArrowRight className="h-5 w-5" />
                   </a>
-                  <div className="mt-6 flex items-center justify-center gap-2 text-sm text-gray-600">
+                  <div className="mt-6 flex items-center justify-center gap-2 text-sm text-muted-foreground">
                     <svg
                       className="h-5 w-5 text-success"
                       fill="currentColor"
@@ -635,13 +635,13 @@ function HomePage() {
       </section>
 
       {memoizedHomeDecorProducts?.length > 0 ? (
-        <section className="w-full bg-white px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+        <section className="w-full bg-card px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
           <div className="mx-auto w-full max-w-[1400px]">
             <div className="mb-8 sm:mb-12">
               <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-6">
                 <div className="flex-1">
                   <h2
-                    className="text-2xl font-bold text-gray-900 sm:text-3xl lg:text-4xl"
+                    className="text-2xl font-bold text-foreground sm:text-3xl lg:text-4xl"
                     translate="no"
                   >
                     {t("home_decor")}
@@ -650,37 +650,37 @@ function HomePage() {
                 <div className="flex flex-wrap items-center gap-3">
                   {/* <a
                   href="#"
-                  className="mr-3.5 text-sm font-normal text-black sm:mr-0"
+                  className="mr-3.5 text-sm font-normal text-foreground sm:mr-0"
                 >
                   Laptop
                 </a>
                 <a
                   href="#"
-                  className="mr-3.5 text-sm font-normal text-black sm:ml-3.5 sm:mr-0"
+                  className="mr-3.5 text-sm font-normal text-foreground sm:ml-3.5 sm:mr-0"
                 >
                   Desktop PC
                 </a>
                 <a
                   href="#"
-                  className="mr-3.5 text-sm font-normal text-black sm:ml-3.5 sm:mr-0"
+                  className="mr-3.5 text-sm font-normal text-foreground sm:ml-3.5 sm:mr-0"
                 >
                   Smartphone
                 </a>
                 <a
                   href="#"
-                  className="mr-3.5 text-sm font-normal text-black sm:ml-3.5 sm:mr-0"
+                  className="mr-3.5 text-sm font-normal text-foreground sm:ml-3.5 sm:mr-0"
                 >
                   Mainboars
                 </a>
                 <a
                   href="#"
-                  className="mr-3.5 text-sm font-normal text-black sm:ml-3.5 sm:mr-0"
+                  className="mr-3.5 text-sm font-normal text-foreground sm:ml-3.5 sm:mr-0"
                 >
                   PC Gaming
                 </a>
                 <a
                   href="#"
-                  className="mr-3.5 text-sm font-normal text-black sm:ml-3.5 sm:mr-0"
+                  className="mr-3.5 text-sm font-normal text-foreground sm:ml-3.5 sm:mr-0"
                 >
                   Accessories
                 </a> */}
@@ -769,7 +769,7 @@ function HomePage() {
               <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-6">
                 <div className="flex-1">
                   <h2
-                    className="text-2xl font-bold text-gray-900 sm:text-3xl lg:text-4xl"
+                    className="text-2xl font-bold text-foreground sm:text-3xl lg:text-4xl"
                     translate="no"
                   >
                     {t("fashion_n_beauty")}
@@ -778,31 +778,31 @@ function HomePage() {
                 <div className="flex flex-wrap items-center gap-3">
                   {/* <a
                   href="#"
-                  className="mr-3.5 text-sm font-normal text-black sm:mr-0"
+                  className="mr-3.5 text-sm font-normal text-foreground sm:mr-0"
                 >
                   Smart
                 </a>
                 <a
                   href="#"
-                  className="mr-3.5 text-sm font-normal text-black sm:ml-3.5 sm:mr-0"
+                  className="mr-3.5 text-sm font-normal text-foreground sm:ml-3.5 sm:mr-0"
                 >
                   TV LED
                 </a>
                 <a
                   href="#"
-                  className="mr-3.5 text-sm font-normal text-black sm:ml-3.5 sm:mr-0"
+                  className="mr-3.5 text-sm font-normal text-foreground sm:ml-3.5 sm:mr-0"
                 >
                   Air Conditions
                 </a>
                 <a
                   href="#"
-                  className="mr-3.5 text-sm font-normal text-black sm:ml-3.5 sm:mr-0"
+                  className="mr-3.5 text-sm font-normal text-foreground sm:ml-3.5 sm:mr-0"
                 >
                   Sony Speakers
                 </a>
                 <a
                   href="#"
-                  className="mr-3.5 text-sm font-normal text-black sm:ml-3.5 sm:mr-0"
+                  className="mr-3.5 text-sm font-normal text-foreground sm:ml-3.5 sm:mr-0"
                 >
                   Panasonic Refrigerations
                 </a> */}
@@ -885,13 +885,13 @@ function HomePage() {
       ) : null}
 
       {memoizedConsumerElectronicsProducts.length > 0 ? (
-        <section className="w-full bg-white px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+        <section className="w-full bg-card px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
           <div className="mx-auto w-full max-w-[1400px]">
             <div className="mb-8 sm:mb-12">
               <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-6">
                 <div className="flex-1">
                   <h2
-                    className="text-2xl font-bold text-gray-900 sm:text-3xl lg:text-4xl"
+                    className="text-2xl font-bold text-foreground sm:text-3xl lg:text-4xl"
                     translate="no"
                   >
                     {t("consumer_electronics")}
@@ -900,31 +900,31 @@ function HomePage() {
                 <div className="flex flex-wrap items-center gap-3">
                   {/* <a
                   href="#"
-                  className="mr-3.5 text-sm font-normal text-black sm:mr-0"
+                  className="mr-3.5 text-sm font-normal text-foreground sm:mr-0"
                 >
                   Videos
                 </a>
                 <a
                   href="#"
-                  className="mr-3.5 text-sm font-normal text-black sm:ml-3.5 sm:mr-0"
+                  className="mr-3.5 text-sm font-normal text-foreground sm:ml-3.5 sm:mr-0"
                 >
                   Projectors
                 </a>
                 <a
                   href="#"
-                  className="mr-3.5 text-sm font-normal text-black sm:ml-3.5 sm:mr-0"
+                  className="mr-3.5 text-sm font-normal text-foreground sm:ml-3.5 sm:mr-0"
                 >
                   Digital Cameras
                 </a>
                 <a
                   href="#"
-                  className="mr-3.5 text-sm font-normal text-black sm:ml-3.5 sm:mr-0"
+                  className="mr-3.5 text-sm font-normal text-foreground sm:ml-3.5 sm:mr-0"
                 >
                   Printers & Scanners
                 </a>
                 <a
                   href="#"
-                  className="mr-3.5 text-sm font-normal text-black sm:ml-3.5 sm:mr-0"
+                  className="mr-3.5 text-sm font-normal text-foreground sm:ml-3.5 sm:mr-0"
                 >
                   Accessories
                 </a> */}
@@ -1024,13 +1024,13 @@ function HomePage() {
               <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-6">
                 <div className="flex-1">
                   <h2
-                    className="mb-3 text-2xl font-bold text-gray-900 sm:text-3xl lg:text-4xl"
+                    className="mb-3 text-2xl font-bold text-foreground sm:text-3xl lg:text-4xl"
                     translate="no"
                   >
                     Top Rated Products
                   </h2>
                   <p
-                    className="max-w-2xl text-sm text-gray-600 sm:text-base"
+                    className="max-w-2xl text-sm text-muted-foreground sm:text-base"
                     translate="no"
                   >
                     Products with the highest customer ratings
@@ -1082,19 +1082,19 @@ function HomePage() {
 
       {/* Best Sellers Section */}
       {memoizedBestSellers?.length > 0 ? (
-        <section className="w-full bg-white px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+        <section className="w-full bg-card px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
           <div className="mx-auto w-full max-w-[1400px]">
             <div className="mb-8 sm:mb-12">
               <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-6">
                 <div className="flex-1">
                   <h2
-                    className="mb-3 text-2xl font-bold text-gray-900 sm:text-3xl lg:text-4xl"
+                    className="mb-3 text-2xl font-bold text-foreground sm:text-3xl lg:text-4xl"
                     translate="no"
                   >
                     {t("best_sellers")}
                   </h2>
                   <p
-                    className="max-w-2xl text-sm text-gray-600 sm:text-base"
+                    className="max-w-2xl text-sm text-muted-foreground sm:text-base"
                     translate="no"
                   >
                     {t("most_popular_products")}
@@ -1153,13 +1153,13 @@ function HomePage() {
               <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-6">
                 <div className="flex-1">
                   <h2
-                    className="mb-3 text-2xl font-bold text-gray-900 sm:text-3xl lg:text-4xl"
+                    className="mb-3 text-2xl font-bold text-foreground sm:text-3xl lg:text-4xl"
                     translate="no"
                   >
                     {t("new_arrivals")}
                   </h2>
                   <p
-                    className="max-w-2xl text-sm text-gray-600 sm:text-base"
+                    className="max-w-2xl text-sm text-muted-foreground sm:text-base"
                     translate="no"
                   >
                     {t("latest_products_added")}
@@ -1211,19 +1211,19 @@ function HomePage() {
 
       {/* Hot Deals Section */}
       {memoizedHotDeals?.length > 0 ? (
-        <section className="w-full bg-white px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+        <section className="w-full bg-card px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
           <div className="mx-auto w-full max-w-[1400px]">
             <div className="mb-8 sm:mb-12">
               <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-6">
                 <div className="flex-1">
                   <h2
-                    className="mb-3 text-2xl font-bold text-gray-900 sm:text-3xl lg:text-4xl"
+                    className="mb-3 text-2xl font-bold text-foreground sm:text-3xl lg:text-4xl"
                     translate="no"
                   >
                     {t("hot_deals")}
                   </h2>
                   <p
-                    className="max-w-2xl text-sm text-gray-600 sm:text-base"
+                    className="max-w-2xl text-sm text-muted-foreground sm:text-base"
                     translate="no"
                   >
                     {t("best_discounts")}
@@ -1281,13 +1281,13 @@ function HomePage() {
               <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-6">
                 <div className="flex-1">
                   <h2
-                    className="mb-3 text-2xl font-bold text-gray-900 sm:text-3xl lg:text-4xl"
+                    className="mb-3 text-2xl font-bold text-foreground sm:text-3xl lg:text-4xl"
                     translate="no"
                   >
                     Highly Reviewed
                   </h2>
                   <p
-                    className="max-w-2xl text-sm text-gray-600 sm:text-base"
+                    className="max-w-2xl text-sm text-muted-foreground sm:text-base"
                     translate="no"
                   >
                     Products with most customer reviews

@@ -225,7 +225,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
     if (!list?.length) return null;
 
     return (
-      <div className="relative w-full overflow-hidden rounded-lg bg-white shadow-sm sm:rounded-xl">
+      <div className="relative w-full overflow-hidden rounded-lg bg-card shadow-sm sm:rounded-xl">
         <div
           className="flex transition-transform duration-500"
           style={{ transform: `translateX(-${index * 100}%)` }}
@@ -280,7 +280,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
             <button
               key={i}
               onClick={() => setIndex(i)}
-              className={`h-1 rounded-full transition-all sm:h-1.5 ${i === index ? "w-4 bg-white sm:w-6" : "w-2 bg-white/60 sm:w-3"}`}
+              className={`h-1 rounded-full transition-all sm:h-1.5 ${i === index ? "w-4 bg-card sm:w-6" : "w-2 bg-card/60 sm:w-3"}`}
             />
           ))}
         </div>
@@ -704,7 +704,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
         </div>
 
         {/* Full Width Two Column Layout */}
-        <div className="min-h-screen w-full bg-white px-2 sm:px-4 lg:px-8">
+        <div className="min-h-screen w-full bg-card px-2 sm:px-4 lg:px-8">
           <div
             className={cn(
               "flex h-full flex-col gap-4",
@@ -712,11 +712,11 @@ const TrendingPage = (props0: TrendingPageProps) => {
             )}
           >
             {/* Sidebar - Filters (Desktop) */}
-            <div className="hidden flex-shrink-0 overflow-y-auto bg-white p-4 lg:block lg:w-1/4">
-              <div className="sticky top-4 rounded-xl bg-white p-6 shadow-lg">
+            <div className="hidden flex-shrink-0 overflow-y-auto bg-card p-4 lg:block lg:w-1/4">
+              <div className="sticky top-4 rounded-xl bg-card p-6 shadow-lg">
                 {/* Filter Header */}
-                <div className="mb-6 border-b border-gray-200 pb-4">
-                  <h3 className="mb-3 text-lg font-bold text-gray-900">
+                <div className="mb-6 border-b border-border pb-4">
+                  <h3 className="mb-3 text-lg font-bold text-foreground">
                     {t("filters")}
                   </h3>
                   <div className="flex gap-2">
@@ -730,7 +730,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                     <button
                       type="button"
                       onClick={clearFilter}
-                      className="flex-1 rounded-lg bg-gray-200 px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-300"
+                      className="flex-1 rounded-lg bg-muted px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted"
                     >
                       {t("clean_select")}
                     </button>
@@ -743,16 +743,16 @@ const TrendingPage = (props0: TrendingPageProps) => {
                   <Accordion
                     type="multiple"
                     defaultValue={["category_filter"]}
-                    className="overflow-hidden rounded-lg border border-gray-200"
+                    className="overflow-hidden rounded-lg border border-border"
                   >
                     <AccordionItem value="category_filter" className="border-0">
-                      <AccordionTrigger className="bg-gray-50 px-4 py-3 font-semibold text-gray-900 hover:bg-gray-100">
+                      <AccordionTrigger className="bg-muted px-4 py-3 font-semibold text-foreground hover:bg-muted">
                         <div className="flex items-center gap-2">
                           <Package className="h-4 w-4" />
                           <span>{t("by_category")}</span>
                         </div>
                       </AccordionTrigger>
-                      <AccordionContent className="bg-white px-4 py-4">
+                      <AccordionContent className="bg-card px-4 py-4">
                         <CategoryFilter
                           selectedCategoryIds={
                             category.categoryIds
@@ -774,21 +774,21 @@ const TrendingPage = (props0: TrendingPageProps) => {
                   <Accordion
                     type="multiple"
                     defaultValue={["brand"]}
-                    className="overflow-hidden rounded-lg border border-gray-200"
+                    className="overflow-hidden rounded-lg border border-border"
                   >
                     <AccordionItem value="brand" className="border-0">
-                      <AccordionTrigger className="bg-gray-50 px-4 py-3 font-semibold text-gray-900 hover:bg-gray-100">
+                      <AccordionTrigger className="bg-muted px-4 py-3 font-semibold text-foreground hover:bg-muted">
                         <div className="flex items-center gap-2">
                           <Building2 className="h-4 w-4" />
                           <span>{t("by_brand")}</span>
                         </div>
                       </AccordionTrigger>
-                      <AccordionContent className="bg-white px-4 py-4">
+                      <AccordionContent className="bg-card px-4 py-4">
                         <div className="mb-3">
                           <Input
                             type="text"
                             placeholder={t("search_brand")}
-                            className="h-9 w-full border-gray-300 text-sm focus:border-primary focus:ring-primary"
+                            className="h-9 w-full border-border text-sm focus:border-primary focus:ring-primary"
                             onChange={handleDebounce}
                             dir={langDir}
                             translate="no"
@@ -796,18 +796,18 @@ const TrendingPage = (props0: TrendingPageProps) => {
                         </div>
                         <div className="max-h-48 space-y-2 overflow-y-auto">
                           {!memoizedBrands.length ? (
-                            <p className="py-4 text-center text-sm text-gray-500">
+                            <p className="py-4 text-center text-sm text-muted-foreground">
                               {t("no_data_found")}
                             </p>
                           ) : null}
                           {memoizedBrands.map((item: ISelectOptions) => (
                             <div
                               key={item.value}
-                              className="flex items-center space-x-2 rounded px-2 py-1 transition-colors hover:bg-gray-50"
+                              className="flex items-center space-x-2 rounded px-2 py-1 transition-colors hover:bg-muted"
                             >
                               <Checkbox
                                 id={item.label}
-                                className="border border-gray-300 data-[state=checked]:border-primary data-[state=checked]:bg-primary"
+                                className="border border-border data-[state=checked]:border-primary data-[state=checked]:bg-primary"
                                 onCheckedChange={(checked) =>
                                   handleBrandChange(checked, item)
                                 }
@@ -832,16 +832,16 @@ const TrendingPage = (props0: TrendingPageProps) => {
                   <Accordion
                     type="multiple"
                     defaultValue={["price"]}
-                    className="overflow-hidden rounded-lg border border-gray-200"
+                    className="overflow-hidden rounded-lg border border-border"
                   >
                     <AccordionItem value="price" className="border-0">
-                      <AccordionTrigger className="bg-gray-50 px-4 py-3 font-semibold text-gray-900 hover:bg-gray-100">
+                      <AccordionTrigger className="bg-muted px-4 py-3 font-semibold text-foreground hover:bg-muted">
                         <div className="flex items-center gap-2">
                           <span className="text-lg">💰</span>
                           <span>{t("price")}</span>
                         </div>
                       </AccordionTrigger>
-                      <AccordionContent className="bg-white px-4 py-4">
+                      <AccordionContent className="bg-card px-4 py-4">
                         <div className="mb-4 px-2">
                           <ReactSlider
                             className="horizontal-slider"
@@ -879,7 +879,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                           <Input
                             type="number"
                             placeholder={`${currency.symbol}0`}
-                            className="custom-form-control-s1 rounded-lg border-gray-300 focus:border-primary focus:ring-primary"
+                            className="custom-form-control-s1 rounded-lg border-border focus:border-primary focus:ring-primary"
                             onChange={handleMinPriceChange}
                             onWheel={(e) => e.currentTarget.blur()}
                             ref={minPriceInputRef}
@@ -888,7 +888,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                           <Input
                             type="number"
                             placeholder={`${currency.symbol}500`}
-                            className="custom-form-control-s1 rounded-lg border-gray-300 focus:border-primary focus:ring-primary"
+                            className="custom-form-control-s1 rounded-lg border-border focus:border-primary focus:ring-primary"
                             onChange={handleMaxPriceChange}
                             onWheel={(e) => e.currentTarget.blur()}
                             ref={maxPriceInputRef}
@@ -904,7 +904,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
             {/* Main Content Column - Products */}
             <div
               className={cn(
-                "w-full flex-1 overflow-y-auto bg-white lg:w-auto",
+                "w-full flex-1 overflow-y-auto bg-card lg:w-auto",
                 cartList.length > 0
                   ? isRTL
                     ? "lg:pl-36"
@@ -916,13 +916,13 @@ const TrendingPage = (props0: TrendingPageProps) => {
             >
               <div className="p-2 sm:p-4 lg:p-6">
                 {/* Product Header Filter Section */}
-                <div className="mb-6 flex flex-col items-start justify-between gap-4 rounded-lg border border-gray-200 bg-gray-50 p-4 sm:flex-row sm:items-center">
+                <div className="mb-6 flex flex-col items-start justify-between gap-4 rounded-lg border border-border bg-muted p-4 sm:flex-row sm:items-center">
                   {/* Left Section - Mobile Buttons & Title */}
                   <div className="flex w-full items-center gap-3 sm:w-auto">
                     {/* Mobile Filter Button */}
                     <button
                       type="button"
-                      className="rounded-lg border border-gray-300 bg-white p-2.5 transition-colors hover:bg-gray-100 lg:hidden"
+                      className="rounded-lg border border-border bg-card p-2.5 transition-colors hover:bg-muted lg:hidden"
                       onClick={() => setProductFilter(true)}
                     >
                       <FilterMenuIcon />
@@ -931,7 +931,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                     {/* Mobile Cart Button */}
                     <button
                       type="button"
-                      className="relative rounded-lg border border-gray-300 bg-white p-2.5 transition-colors hover:bg-gray-100 lg:hidden"
+                      className="relative rounded-lg border border-border bg-card p-2.5 transition-colors hover:bg-muted lg:hidden"
                       onClick={() => setShowCartDrawer(true)}
                     >
                       <ShoppingCart className="h-5 w-5" />
@@ -945,7 +945,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                     {/* Title */}
                     <div className="flex-1 sm:flex-none">
                       <h2
-                        className="text-base font-semibold text-gray-900 sm:text-xl"
+                        className="text-base font-semibold text-foreground sm:text-xl"
                         dir={langDir}
                         translate="no"
                       >
@@ -958,7 +958,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                   <div className="flex w-full items-center gap-3 sm:w-auto">
                     {/* Sort Dropdown */}
                     <Select onValueChange={(e) => setSortBy(e)} value={sortBy}>
-                      <SelectTrigger className="h-10 w-full border-gray-300 bg-white sm:w-[180px]">
+                      <SelectTrigger className="h-10 w-full border-border bg-card sm:w-[180px]">
                         <SelectValue
                           placeholder={t("sort_by")}
                           dir={langDir}
@@ -978,13 +978,13 @@ const TrendingPage = (props0: TrendingPageProps) => {
                     </Select>
 
                     {/* View Type Buttons */}
-                    <div className="hidden items-center gap-2 rounded-lg border border-gray-300 bg-white p-1 sm:flex">
+                    <div className="hidden items-center gap-2 rounded-lg border border-border bg-card p-1 sm:flex">
                       <button
                         type="button"
                         className={`rounded p-2 transition-colors ${
                           viewType === "grid"
                             ? "bg-primary text-white"
-                            : "text-gray-600 hover:bg-gray-100"
+                            : "text-muted-foreground hover:bg-muted"
                         }`}
                         onClick={() => setViewType("grid")}
                       >
@@ -995,7 +995,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                         className={`rounded p-2 transition-colors ${
                           viewType === "list"
                             ? "bg-primary text-white"
-                            : "text-gray-600 hover:bg-gray-100"
+                            : "text-muted-foreground hover:bg-muted"
                         }`}
                         onClick={() => setViewType("list")}
                       >
@@ -1018,7 +1018,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                 {!memoizedProductList.length && !allProductsQuery.isLoading ? (
                   <div className="py-12 text-center">
                     <p
-                      className="text-lg text-gray-500"
+                      className="text-lg text-muted-foreground"
                       dir={langDir}
                       translate="no"
                     >
@@ -1164,18 +1164,18 @@ const TrendingPage = (props0: TrendingPageProps) => {
               <div className="hidden lg:block">
                 <div
                   className={cn(
-                    "fixed top-0 z-[60] h-screen w-36 bg-white shadow-lg",
+                    "fixed top-0 z-[60] h-screen w-36 bg-card shadow-lg",
                     isRTL
-                      ? "left-0 border-r border-gray-200"
-                      : "right-0 border-l border-gray-200",
+                      ? "left-0 border-r border-border"
+                      : "right-0 border-l border-border",
                   )}
                 >
                   <div className="flex h-full flex-col">
                     {/* Top sticky subtotal + Go To Cart */}
-                    <div className="sticky top-0 z-10 border-b border-gray-200 bg-white px-4 pt-4 pb-3 text-center">
+                    <div className="sticky top-0 z-10 border-b border-border bg-card px-4 pt-4 pb-3 text-center">
                       <div className="flex flex-col items-center">
                         <span
-                          className="mb-0.5 text-[11px] font-medium text-gray-600"
+                          className="mb-0.5 text-[11px] font-medium text-muted-foreground"
                           dir={langDir}
                           translate="no"
                         >
@@ -1190,7 +1190,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                         onClick={() => {
                           window.location.href = "/cart";
                         }}
-                        className="mt-3 flex w-full items-center justify-center space-x-1.5 rounded-lg bg-warning px-3 py-2 text-xs font-medium text-gray-900 shadow-sm transition-colors duration-200 hover:bg-warning"
+                        className="mt-3 flex w-full items-center justify-center space-x-1.5 rounded-lg bg-warning px-3 py-2 text-xs font-medium text-foreground shadow-sm transition-colors duration-200 hover:bg-warning"
                       >
                         <Package className="h-3 w-3" />
                         <span>{t("go_to_cart")}</span>
@@ -1231,7 +1231,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                               <div className="flex justify-center">
                                 <Link
                                   href={`/trending/${cartItem.productId}`}
-                                  className="h-20 w-20 overflow-hidden rounded-lg bg-gray-100 transition-opacity hover:opacity-80"
+                                  className="h-20 w-20 overflow-hidden rounded-lg bg-muted transition-opacity hover:opacity-80"
                                 >
                                   {productImage ? (
                                     <img
@@ -1241,7 +1241,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                                     />
                                   ) : (
                                     <div className="flex h-full w-full items-center justify-center">
-                                      <Package className="h-8 w-8 text-gray-400" />
+                                      <Package className="h-8 w-8 text-muted-foreground" />
                                     </div>
                                   )}
                                 </Link>
@@ -1249,7 +1249,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
 
                               {/* Price */}
                               <div className="mb-2 text-center">
-                                <p className="text-sm font-semibold text-gray-900">
+                                <p className="text-sm font-semibold text-foreground">
                                   {currency.symbol}
                                   {pricing.totalPrice.toFixed(2)}
                                 </p>
@@ -1279,11 +1279,11 @@ const TrendingPage = (props0: TrendingPageProps) => {
                                     className="px-1.5 py-1 transition-colors hover:bg-warning/5 disabled:cursor-not-allowed disabled:opacity-50"
                                     aria-label={t("decrease_quantity")}
                                   >
-                                    <Trash2 className="h-3 w-3 text-gray-600" />
+                                    <Trash2 className="h-3 w-3 text-muted-foreground" />
                                   </button>
 
                                   {/* Quantity Number */}
-                                  <span className="min-w-[2rem] border-x border-yellow-400 bg-white px-2 py-1 text-center text-xs font-medium text-gray-900">
+                                  <span className="min-w-[2rem] border-x border-yellow-400 bg-card px-2 py-1 text-center text-xs font-medium text-foreground">
                                     {quantity}
                                   </span>
 
@@ -1303,7 +1303,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                                     className="px-1.5 py-1 transition-colors hover:bg-warning/5 disabled:cursor-not-allowed disabled:opacity-50"
                                     aria-label={t("increase_quantity")}
                                   >
-                                    <span className="text-sm font-semibold text-gray-600">
+                                    <span className="text-sm font-semibold text-muted-foreground">
                                       +
                                     </span>
                                   </button>
@@ -1325,7 +1325,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                               </div>
 
                               {/* Divider */}
-                              <div className="mt-3 border-t border-gray-200" />
+                              <div className="mt-3 border-t border-border" />
                             </div>
                           );
                         })}
@@ -1360,7 +1360,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                   <button
                     type="button"
                     onClick={clearFilter}
-                    className="rounded bg-gray-100 px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-200"
+                    className="rounded bg-muted px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted"
                   >
                     {t("clean_select")}
                   </button>
@@ -1418,7 +1418,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                     </div>
                     <div className="max-h-40 space-y-2 overflow-y-auto">
                       {!memoizedBrands.length ? (
-                        <p className="text-center text-sm text-gray-500">
+                        <p className="text-center text-sm text-muted-foreground">
                           {t("no_data_found")}
                         </p>
                       ) : null}
@@ -1429,7 +1429,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                         >
                           <Checkbox
                             id={`mobile-${item.label}`}
-                            className="border border-gray-300 data-[state=checked]:bg-primary!"
+                            className="border border-border data-[state=checked]:bg-primary!"
                             onCheckedChange={(checked) =>
                               handleBrandChange(checked, item)
                             }
@@ -1527,8 +1527,8 @@ const TrendingPage = (props0: TrendingPageProps) => {
               </SheetTitle>
             </SheetHeader>
             <div className="mt-6">
-              <div className="mb-4 border-b border-gray-200 pb-4">
-                <span className="rounded-full bg-gray-100 px-2 py-1 text-sm text-gray-500">
+              <div className="mb-4 border-b border-border pb-4">
+                <span className="rounded-full bg-muted px-2 py-1 text-sm text-muted-foreground">
                   {cartList.length}{" "}
                   {cartList.length === 1 ? t("item") : t("items")}
                 </span>
@@ -1537,11 +1537,11 @@ const TrendingPage = (props0: TrendingPageProps) => {
               <div className="max-h-[calc(100vh-250px)] overflow-y-auto">
                 {cartList.length === 0 ? (
                   <div className="py-6 text-center">
-                    <Package className="mx-auto mb-3 h-12 w-12 text-gray-400" />
-                    <p className="text-sm text-gray-500">
+                    <Package className="mx-auto mb-3 h-12 w-12 text-muted-foreground" />
+                    <p className="text-sm text-muted-foreground">
                       {t("your_cart_is_empty")}
                     </p>
-                    <p className="mt-1 text-xs text-gray-400">
+                    <p className="mt-1 text-xs text-muted-foreground">
                       {t("add_some_products_to_get_started")}
                     </p>
                   </div>
@@ -1573,11 +1573,11 @@ const TrendingPage = (props0: TrendingPageProps) => {
                       return (
                         <div
                           key={cartItem.id}
-                          className="flex items-center space-x-3 rounded-lg p-2 transition-colors hover:bg-gray-50"
+                          className="flex items-center space-x-3 rounded-lg p-2 transition-colors hover:bg-muted"
                         >
                           <Link
                             href={`/trending/${cartItem.productId}`}
-                            className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100 transition-opacity hover:opacity-80"
+                            className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg bg-muted transition-opacity hover:opacity-80"
                             onClick={() => setShowCartDrawer(false)}
                           >
                             {productImage ? (
@@ -1588,17 +1588,17 @@ const TrendingPage = (props0: TrendingPageProps) => {
                               />
                             ) : (
                               <div className="flex h-full w-full items-center justify-center">
-                                <Package className="h-8 w-8 text-gray-400" />
+                                <Package className="h-8 w-8 text-muted-foreground" />
                               </div>
                             )}
                           </Link>
 
                           <div className="min-w-0 flex-1">
-                            <h4 className="truncate text-sm font-medium text-gray-900">
+                            <h4 className="truncate text-sm font-medium text-foreground">
                               {translate(productName)}
                             </h4>
                             <div className="mt-1 flex items-center justify-between">
-                              <p className="text-xs text-gray-500">
+                              <p className="text-xs text-muted-foreground">
                                 Qty: {quantity}
                               </p>
                               <p className="text-sm font-semibold text-success">
@@ -1613,7 +1613,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
 
                     {cartList.length > 10 && (
                       <div className="py-2 text-center">
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-muted-foreground">
                           {t("and_n_more_items", { n: cartList.length - 10 })}
                         </p>
                       </div>
@@ -1624,7 +1624,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
 
               {/* Go to Cart Button */}
               {cartList.length > 0 && (
-                <div className="border-t border-gray-200 bg-gray-50 p-4">
+                <div className="border-t border-border bg-muted p-4">
                   <button
                     onClick={() => router.push("/cart")}
                     className="flex w-full items-center justify-center space-x-2 rounded-lg bg-primary px-4 py-2 font-medium text-white transition-colors duration-200 hover:bg-primary/90"

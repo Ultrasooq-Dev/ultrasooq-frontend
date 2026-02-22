@@ -51,14 +51,14 @@ export default function DropshipManagementPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-muted py-8">
       <div className="container mx-auto px-4 max-w-7xl">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <h1 className="text-3xl font-bold text-foreground mb-2">
             {t("dropship_dashboard")}
           </h1>
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             {t("manage_your_wholesale_products_and_track_reseller_sales")}
           </p>
         </div>
@@ -69,10 +69,10 @@ export default function DropshipManagementPage() {
             <Card className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">
+                  <p className="text-sm text-muted-foreground mb-1">
                     {t("wholesale_products")}
                   </p>
-                  <p className="text-3xl font-bold text-gray-900">
+                  <p className="text-3xl font-bold text-foreground">
                     {dashboard.summary?.totalWholesaleProducts || 0}
                   </p>
                 </div>
@@ -85,10 +85,10 @@ export default function DropshipManagementPage() {
             <Card className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">
+                  <p className="text-sm text-muted-foreground mb-1">
                     {t("active_resellers")}
                   </p>
-                  <p className="text-3xl font-bold text-gray-900">
+                  <p className="text-3xl font-bold text-foreground">
                     {dashboard.summary?.totalActiveResellers || 0}
                   </p>
                 </div>
@@ -101,10 +101,10 @@ export default function DropshipManagementPage() {
             <Card className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">
+                  <p className="text-sm text-muted-foreground mb-1">
                     {t("total_orders")}
                   </p>
-                  <p className="text-3xl font-bold text-gray-900">
+                  <p className="text-3xl font-bold text-foreground">
                     {dashboard.summary?.totalOrders || 0}
                   </p>
                 </div>
@@ -117,10 +117,10 @@ export default function DropshipManagementPage() {
             <Card className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">
+                  <p className="text-sm text-muted-foreground mb-1">
                     {t("total_revenue")}
                   </p>
-                  <p className="text-3xl font-bold text-gray-900">
+                  <p className="text-3xl font-bold text-foreground">
                     ${dashboard.summary?.totalRevenue?.toFixed(2) || '0.00'}
                   </p>
                 </div>
@@ -135,49 +135,49 @@ export default function DropshipManagementPage() {
         {/* Top Resellers Section */}
         {dashboard?.topResellers && dashboard.topResellers.length > 0 && (
           <Card className="p-6 mb-8">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">
+            <h2 className="text-xl font-bold text-foreground mb-4">
               {t("top_resellers")}
             </h2>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
                   <tr className="border-b">
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-muted-foreground">
                       {t("reseller")}
                     </th>
-                    <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700">
+                    <th className="text-right py-3 px-4 text-sm font-semibold text-muted-foreground">
                       {t("products")}
                     </th>
-                    <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700">
+                    <th className="text-right py-3 px-4 text-sm font-semibold text-muted-foreground">
                       {t("orders")}
                     </th>
-                    <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700">
+                    <th className="text-right py-3 px-4 text-sm font-semibold text-muted-foreground">
                       {t("revenue")}
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   {dashboard.topResellers.map((reseller: any, index: number) => (
-                    <tr key={reseller.id} className="border-b hover:bg-gray-50">
+                    <tr key={reseller.id} className="border-b hover:bg-muted">
                       <td className="py-3 px-4">
                         <div className="flex items-center space-x-3">
                           <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold">
                             #{index + 1}
                           </div>
                           <div>
-                            <div className="font-medium text-gray-900">
+                            <div className="font-medium text-foreground">
                               {reseller.name}
                             </div>
-                            <div className="text-sm text-gray-500">
+                            <div className="text-sm text-muted-foreground">
                               {reseller.email}
                             </div>
                           </div>
                         </div>
                       </td>
-                      <td className="text-right py-3 px-4 text-gray-900">
+                      <td className="text-right py-3 px-4 text-foreground">
                         {reseller.products}
                       </td>
-                      <td className="text-right py-3 px-4 text-gray-900">
+                      <td className="text-right py-3 px-4 text-foreground">
                         {reseller.orders}
                       </td>
                       <td className="text-right py-3 px-4 font-semibold text-success">
@@ -194,7 +194,7 @@ export default function DropshipManagementPage() {
         {/* Wholesale Products List */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-gray-900">
+            <h2 className="text-xl font-bold text-foreground">
               {t("my_wholesale_products")}
             </h2>
             <Button onClick={handleCreateWholesaleProduct}>
@@ -207,17 +207,17 @@ export default function DropshipManagementPage() {
             <div className="grid grid-cols-1 gap-6">
               {[...Array(3)].map((_, i) => (
                 <Card key={i} className="p-6 animate-pulse">
-                  <div className="h-24 bg-gray-200 rounded"></div>
+                  <div className="h-24 bg-muted rounded"></div>
                 </Card>
               ))}
             </div>
           ) : wholesaleProducts.length === 0 ? (
             <Card className="p-12 text-center">
-              <Package className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              <Package className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
+              <h3 className="text-lg font-semibold text-foreground mb-2">
                 {t("no_wholesale_products")}
               </h3>
-              <p className="text-gray-600 mb-6">
+              <p className="text-muted-foreground mb-6">
                 {t("create_your_first_wholesale_product")}
               </p>
               <Button onClick={handleCreateWholesaleProduct}>
@@ -230,7 +230,7 @@ export default function DropshipManagementPage() {
                 <Card key={product.id} className="p-6">
                   <div className="flex items-start space-x-6">
                     {/* Product Image */}
-                    <div className="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0 bg-gray-100">
+                    <div className="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0 bg-muted">
                       <Image
                         src={
                           product.productImages?.[0]?.image &&
@@ -249,10 +249,10 @@ export default function DropshipManagementPage() {
                     <div className="flex-1">
                       <div className="flex items-start justify-between mb-3">
                         <div>
-                          <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                          <h3 className="text-lg font-semibold text-foreground mb-1">
                             {product.productName}
                           </h3>
-                          <div className="flex items-center space-x-4 text-sm text-gray-600">
+                          <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                             <span className="font-medium text-success">
                               {t("wholesale_price")}: ${Number(product.productPrice).toFixed(2)}
                             </span>
@@ -268,24 +268,24 @@ export default function DropshipManagementPage() {
 
                       {/* Sales Statistics */}
                       <div className="grid grid-cols-3 gap-4 mb-4">
-                        <div className="bg-gray-50 p-3 rounded-lg">
-                          <div className="text-xs text-gray-600 mb-1">
+                        <div className="bg-muted p-3 rounded-lg">
+                          <div className="text-xs text-muted-foreground mb-1">
                             {t("resellers_selling")}
                           </div>
-                          <div className="text-xl font-bold text-gray-900">
+                          <div className="text-xl font-bold text-foreground">
                             {product.wholesaleStats?.totalResellers || 0}
                           </div>
                         </div>
-                        <div className="bg-gray-50 p-3 rounded-lg">
-                          <div className="text-xs text-gray-600 mb-1">
+                        <div className="bg-muted p-3 rounded-lg">
+                          <div className="text-xs text-muted-foreground mb-1">
                             {t("total_orders")}
                           </div>
-                          <div className="text-xl font-bold text-gray-900">
+                          <div className="text-xl font-bold text-foreground">
                             {product.wholesaleStats?.totalOrders || 0}
                           </div>
                         </div>
-                        <div className="bg-gray-50 p-3 rounded-lg">
-                          <div className="text-xs text-gray-600 mb-1">
+                        <div className="bg-muted p-3 rounded-lg">
+                          <div className="text-xs text-muted-foreground mb-1">
                             {t("total_revenue")}
                           </div>
                           <div className="text-xl font-bold text-success">
@@ -297,7 +297,7 @@ export default function DropshipManagementPage() {
                       {/* Resellers Preview */}
                       {product.wholesaleStats?.resellers && product.wholesaleStats.resellers.length > 0 && (
                         <div className="mb-4">
-                          <div className="text-sm text-gray-700 font-medium mb-2">
+                          <div className="text-sm text-muted-foreground font-medium mb-2">
                             {t("top_resellers")}:
                           </div>
                           <div className="flex flex-wrap gap-2">
@@ -315,7 +315,7 @@ export default function DropshipManagementPage() {
                               </div>
                             ))}
                             {product.wholesaleStats.resellers.length > 5 && (
-                              <div className="bg-gray-100 px-3 py-1 rounded-full text-sm text-gray-600">
+                              <div className="bg-muted px-3 py-1 rounded-full text-sm text-muted-foreground">
                                 +{product.wholesaleStats.resellers.length - 5} {t("more")}
                               </div>
                             )}
@@ -364,45 +364,45 @@ export default function DropshipManagementPage() {
         {/* Best Selling Products */}
         {dashboard?.bestSellingProducts && dashboard.bestSellingProducts.length > 0 && (
           <Card className="p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">
+            <h2 className="text-xl font-bold text-foreground mb-4">
               {t("best_selling_products")}
             </h2>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
                   <tr className="border-b">
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-muted-foreground">
                       {t("product")}
                     </th>
-                    <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700">
+                    <th className="text-right py-3 px-4 text-sm font-semibold text-muted-foreground">
                       {t("wholesale_price")}
                     </th>
-                    <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700">
+                    <th className="text-right py-3 px-4 text-sm font-semibold text-muted-foreground">
                       {t("resellers")}
                     </th>
-                    <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700">
+                    <th className="text-right py-3 px-4 text-sm font-semibold text-muted-foreground">
                       {t("orders")}
                     </th>
-                    <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700">
+                    <th className="text-right py-3 px-4 text-sm font-semibold text-muted-foreground">
                       {t("revenue")}
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   {dashboard.bestSellingProducts.map((product: any) => (
-                    <tr key={product.id} className="border-b hover:bg-gray-50">
+                    <tr key={product.id} className="border-b hover:bg-muted">
                       <td className="py-3 px-4">
-                        <div className="font-medium text-gray-900">
+                        <div className="font-medium text-foreground">
                           {product.productName}
                         </div>
                       </td>
-                      <td className="text-right py-3 px-4 text-gray-900">
+                      <td className="text-right py-3 px-4 text-foreground">
                         ${Number(product.wholesalePrice).toFixed(2)}
                       </td>
-                      <td className="text-right py-3 px-4 text-gray-900">
+                      <td className="text-right py-3 px-4 text-foreground">
                         {product.resellers}
                       </td>
-                      <td className="text-right py-3 px-4 text-gray-900">
+                      <td className="text-right py-3 px-4 text-foreground">
                         {product.totalOrders}
                       </td>
                       <td className="text-right py-3 px-4 font-semibold text-success">
@@ -426,16 +426,16 @@ export default function DropshipManagementPage() {
             {salesQuery.isLoading ? (
               <div className="p-8 text-center">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-                <p className="mt-4 text-gray-600">{t("loading")}</p>
+                <p className="mt-4 text-muted-foreground">{t("loading")}</p>
               </div>
             ) : salesQuery?.data?.data ? (
               <div className="space-y-6">
                 {/* Product Info */}
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <h3 className="font-semibold text-gray-900 mb-2">
+                <div className="bg-muted p-4 rounded-lg">
+                  <h3 className="font-semibold text-foreground mb-2">
                     {salesQuery.data.data.product?.productName}
                   </h3>
-                  <div className="flex items-center space-x-6 text-sm text-gray-600">
+                  <div className="flex items-center space-x-6 text-sm text-muted-foreground">
                     <span>
                       {t("wholesale_price")}: ${Number(salesQuery.data.data.product?.wholesalePrice).toFixed(2)}
                     </span>
@@ -450,16 +450,16 @@ export default function DropshipManagementPage() {
                   <Card key={sale.dropshipProductId} className="p-6">
                     <div className="flex items-start justify-between mb-4">
                       <div>
-                        <h4 className="font-semibold text-gray-900 mb-1">
+                        <h4 className="font-semibold text-foreground mb-1">
                           {sale.reseller.name}
                         </h4>
-                        <p className="text-sm text-gray-600">{sale.reseller.email}</p>
+                        <p className="text-sm text-muted-foreground">{sale.reseller.email}</p>
                         {sale.reseller.phoneNumber && (
-                          <p className="text-sm text-gray-600">{sale.reseller.phoneNumber}</p>
+                          <p className="text-sm text-muted-foreground">{sale.reseller.phoneNumber}</p>
                         )}
                       </div>
                       <div className="text-right">
-                        <div className="text-sm text-gray-600 mb-1">
+                        <div className="text-sm text-muted-foreground mb-1">
                           {t("resale_price")}
                         </div>
                         <div className="text-lg font-bold text-primary">
@@ -469,22 +469,22 @@ export default function DropshipManagementPage() {
                     </div>
 
                     <div className="grid grid-cols-4 gap-4 mb-4">
-                      <div className="bg-gray-50 p-3 rounded">
-                        <div className="text-xs text-gray-600 mb-1">{t("orders")}</div>
+                      <div className="bg-muted p-3 rounded">
+                        <div className="text-xs text-muted-foreground mb-1">{t("orders")}</div>
                         <div className="text-lg font-bold">{sale.totalOrders}</div>
                       </div>
-                      <div className="bg-gray-50 p-3 rounded">
-                        <div className="text-xs text-gray-600 mb-1">{t("quantity")}</div>
+                      <div className="bg-muted p-3 rounded">
+                        <div className="text-xs text-muted-foreground mb-1">{t("quantity")}</div>
                         <div className="text-lg font-bold">{sale.totalQuantity}</div>
                       </div>
                       <div className="bg-success/5 p-3 rounded">
-                        <div className="text-xs text-gray-600 mb-1">{t("your_revenue")}</div>
+                        <div className="text-xs text-muted-foreground mb-1">{t("your_revenue")}</div>
                         <div className="text-lg font-bold text-success">
                           ${sale.wholesaleRevenue?.toFixed(2) || '0.00'}
                         </div>
                       </div>
                       <div className="bg-primary/5 p-3 rounded">
-                        <div className="text-xs text-gray-600 mb-1">{t("reseller_profit")}</div>
+                        <div className="text-xs text-muted-foreground mb-1">{t("reseller_profit")}</div>
                         <div className="text-lg font-bold text-primary">
                           ${sale.resellerProfit?.toFixed(2) || '0.00'}
                         </div>
@@ -494,18 +494,18 @@ export default function DropshipManagementPage() {
                     {/* Recent Orders */}
                     {sale.recentOrders && sale.recentOrders.length > 0 && (
                       <div>
-                        <div className="text-sm font-medium text-gray-700 mb-2">
+                        <div className="text-sm font-medium text-muted-foreground mb-2">
                           {t("recent_orders")}:
                         </div>
                         <div className="space-y-2">
                           {sale.recentOrders.map((order: any, index: number) => (
                             <div
                               key={index}
-                              className="flex items-center justify-between text-sm bg-gray-50 p-2 rounded"
+                              className="flex items-center justify-between text-sm bg-muted p-2 rounded"
                             >
-                              <span className="text-gray-700">{order.orderNo}</span>
-                              <span className="text-gray-600">Qty: {order.quantity}</span>
-                              <span className="text-gray-600">
+                              <span className="text-muted-foreground">{order.orderNo}</span>
+                              <span className="text-muted-foreground">Qty: {order.quantity}</span>
+                              <span className="text-muted-foreground">
                                 {new Date(order.orderDate).toLocaleDateString()}
                               </span>
                               <span className="text-success font-medium">
@@ -514,7 +514,7 @@ export default function DropshipManagementPage() {
                               <span className={`px-2 py-1 rounded text-xs ${
                                 order.status === 'DELIVERED' ? 'bg-success/10 text-success' :
                                 order.status === 'SHIPPED' ? 'bg-primary/10 text-primary' :
-                                'bg-gray-100 text-gray-800'
+                                'bg-muted text-foreground'
                               }`}>
                                 {order.status}
                               </span>
@@ -527,7 +527,7 @@ export default function DropshipManagementPage() {
                 ))}
               </div>
             ) : (
-              <div className="p-8 text-center text-gray-600">
+              <div className="p-8 text-center text-muted-foreground">
                 {t("no_sales_data_available")}
               </div>
             )}

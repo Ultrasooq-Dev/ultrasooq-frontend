@@ -43,7 +43,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ userDetails }) => {
   ]);
 
   return (
-    <div className="flex w-full flex-wrap rounded-3xl border border-solid border-gray-300 bg-white p-4 shadow-md md:p-9">
+    <div className="flex w-full flex-wrap rounded-3xl border border-solid border-border bg-card p-4 shadow-md md:p-9">
       <div className="relative h-24 w-24 rounded-2xl md:h-40 md:w-40">
         <Image
           src={
@@ -91,7 +91,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ userDetails }) => {
           ) : null}
         </div>
         <div className="mt-3 h-auto w-full"></div>
-        <div className="text-normal md-2 w-full text-sm font-normal leading-4 text-gray-500 md:mt-4">
+        <div className="text-normal md-2 w-full text-sm font-normal leading-4 text-muted-foreground md:mt-4">
           <p dir={langDir}>
             <span translate="no">{t("annual_purchasing_volume")}:{" "}</span>
             <span className="font-bold text-dark-cyan">
@@ -101,13 +101,13 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ userDetails }) => {
             </span>
           </p>
         </div>
-        <div className="text-normal mt-2 w-full text-sm font-normal leading-4 text-gray-500 md:mt-4">
+        <div className="text-normal mt-2 w-full text-sm font-normal leading-4 text-muted-foreground md:mt-4">
           <p dir={langDir} translate="no">{t("business_type")}</p>
           {userDetails?.userProfile?.[0]?.userProfileBusinessType?.map(
             (item: any) => (
               <span
                 key={item?.id}
-                className="mr-3 mt-4 inline-block rounded bg-gray-300 p-2 text-sm font-semibold leading-5 text-dark-cyan md:p-4 md:py-2.5 md:text-base"
+                className="mr-3 mt-4 inline-block rounded bg-muted p-2 text-sm font-semibold leading-5 text-dark-cyan md:p-4 md:py-2.5 md:text-base"
               >
                 {item?.userProfileBusinessTypeTag?.tagName}
               </span>
@@ -115,10 +115,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ userDetails }) => {
           )}
         </div>
         <div className="mt-4 flex w-full flex-wrap items-center justify-between">
-          <div className="my-2 text-sm font-normal leading-4 text-gray-500">
+          <div className="my-2 text-sm font-normal leading-4 text-muted-foreground">
             <p dir={langDir}>
               <span translate="no">{t("company_id")}:</span>
-              <span className="text-base font-medium leading-4 text-gray-600">
+              <span className="text-base font-medium leading-4 text-muted-foreground">
                 {userDetails?.uniqueId
                   ? `${COMPANY_UNIQUE_ID}${userDetails?.uniqueId}`
                   : "NA"}

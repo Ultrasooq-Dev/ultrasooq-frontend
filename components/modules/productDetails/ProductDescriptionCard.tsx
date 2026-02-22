@@ -511,7 +511,7 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
         <Skeleton className="h-10 w-3/4" />
       ) : (
         <div>
-          <h1 className="text-2xl font-semibold text-gray-900 leading-relaxed" dir={langDir} translate="no">
+          <h1 className="text-2xl font-semibold text-foreground leading-relaxed" dir={langDir} translate="no">
             {translate(productName)}
           </h1>
         </div>
@@ -528,10 +528,10 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
           {/* Brand and Rating Row */}
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-gray-600" dir={langDir} translate="no">
+              <span className="text-sm font-medium text-muted-foreground" dir={langDir} translate="no">
                 {t("brand")}:
               </span>
-              <span className="text-sm text-gray-900" dir={langDir} translate="no">
+              <span className="text-sm text-foreground" dir={langDir} translate="no">
                 {brand}
               </span>
             </div>
@@ -541,7 +541,7 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
               <div className="flex items-center gap-1">
                 {calculateRatings(calculateAvgRating)}
               </div>
-              <span className="text-sm text-gray-600">
+              <span className="text-sm text-muted-foreground">
                 ({productReview?.length || 0} {t("reviews")})
               </span>
             </div>
@@ -569,11 +569,11 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
                 </div>
               ) : productType != "R" ? (
                 <div className="flex items-baseline gap-3">
-                  <span className="text-3xl font-bold text-gray-900">
+                  <span className="text-3xl font-bold text-foreground">
                     {currency.symbol}{calculateDiscountedPrice()}
                   </span>
                   {Number(productProductPrice) > calculateDiscountedPrice() && (
-                    <span className="text-lg text-gray-500 line-through">
+                    <span className="text-lg text-muted-foreground line-through">
                       {currency.symbol}{Number(productProductPrice)}
                     </span>
                   )}
@@ -606,26 +606,26 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
       {isLoading ? (
         <Skeleton className="h-32 w-full" />
       ) : (
-        <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
-          <h3 className="mb-3 text-lg font-semibold text-gray-900" dir={langDir} translate="no">
+        <div className="rounded-lg border border-border bg-muted p-4">
+          <h3 className="mb-3 text-lg font-semibold text-foreground" dir={langDir} translate="no">
             {t("product_description")}
           </h3>
           {/* For dropship products, show marketing text if available, otherwise show regular description */}
           {isDropshipped && customMarketingContent?.marketingText ? (
-            <p className="text-sm text-gray-700" dir={langDir} translate="no">
+            <p className="text-sm text-muted-foreground" dir={langDir} translate="no">
               {customMarketingContent.marketingText}
             </p>
           ) : productShortDescription?.length ? (
             <ul className="space-y-2">
               {productShortDescription?.map((item) => (
-                <li key={item?.id} className="flex items-start gap-2 text-sm text-gray-700">
+                <li key={item?.id} className="flex items-start gap-2 text-sm text-muted-foreground">
                   <span className="mt-1 h-1 w-1 rounded-full bg-gray-400 flex-shrink-0" />
                   {item?.shortDescription}
                 </li>
               ))}
             </ul>
           ) : (
-            <p className="text-sm text-gray-500" dir={langDir} translate="no">
+            <p className="text-sm text-muted-foreground" dir={langDir} translate="no">
               {t("no_description")}
             </p>
           )}
@@ -639,7 +639,7 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
           : selectedProductVariant;
         return (
           <div className="space-y-2" key={index}>
-            <label className="text-sm font-medium text-gray-700" dir={langDir} translate="no">
+            <label className="text-sm font-medium text-muted-foreground" dir={langDir} translate="no">
               {type}
             </label>
             <select
@@ -678,7 +678,7 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
 
                 selectProductVariant?.(selectedVariants);
               }}
-              className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:border-dark-orange focus:outline-none focus:ring-1 focus:ring-dark-orange"
+              className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-dark-orange focus:outline-none focus:ring-1 focus:ring-dark-orange"
             >
               {productVariants
                 ?.filter((item: any) => item.type == type)
@@ -697,14 +697,14 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
       {/* Quantity Selector - Hide for RFQ products and own products */}
       {!isOwnProduct && productType !== "RFQ" && (
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700" dir={langDir} translate="no">
+          <label className="text-sm font-medium text-muted-foreground" dir={langDir} translate="no">
             {t("quantity")}
           </label>
           <div className="flex items-center gap-3">
             <Button
               variant="outline"
               size="sm"
-              className="h-10 w-10 rounded-lg border-gray-300 hover:bg-gray-50"
+              className="h-10 w-10 rounded-lg border-border hover:bg-muted"
               onClick={() => updateQuantity(quantity - 1, "remove")}
               disabled={!isAddedToCart && quantity === 0}
             >
@@ -714,7 +714,7 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
               type="number"
               min="0"
               value={quantity}
-              className="h-10 w-16 rounded-lg border border-gray-300 bg-white text-center text-sm focus:border-dark-orange focus:outline-none focus:ring-1 focus:ring-dark-orange"
+              className="h-10 w-16 rounded-lg border border-border bg-card text-center text-sm focus:border-dark-orange focus:outline-none focus:ring-1 focus:ring-dark-orange"
               onChange={(e) => {
                 const value = Number(e.target.value);
                 setQuantity(isNaN(value) ? 0 : value);
@@ -724,7 +724,7 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
             <Button
               variant="outline"
               size="sm"
-              className="h-10 w-10 rounded-lg border-gray-300 hover:bg-gray-50"
+              className="h-10 w-10 rounded-lg border-border hover:bg-muted"
               onClick={() => updateQuantity(quantity + 1, "add")}
             >
               <Image src={PlusIcon} alt="plus-icon" width={16} height={16} />
@@ -749,8 +749,8 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
           )}
 
           {isBuygroup && saleExpired && (
-            <div className="rounded-lg border-2 border-gray-300 bg-gray-50 p-4 text-center">
-              <p className="text-sm font-semibold text-gray-600" dir={langDir} translate="no">
+            <div className="rounded-lg border-2 border-border bg-muted p-4 text-center">
+              <p className="text-sm font-semibold text-muted-foreground" dir={langDir} translate="no">
                 {t("sale_has_ended")}
               </p>
             </div>
@@ -772,7 +772,7 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
                   ? "bg-gradient-to-r from-destructive to-destructive/90 text-white hover:from-destructive hover:to-destructive/80"
                   : saleNotStarted || saleExpired
                   ? "bg-gray-400 text-white"
-                  : "bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-900 hover:from-yellow-500 hover:to-yellow-600"
+                  : "bg-gradient-to-r from-yellow-400 to-yellow-500 text-foreground hover:from-yellow-500 hover:to-yellow-600"
               }`}
               dir={langDir}
               translate="no"
@@ -807,7 +807,7 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
             <Button
               onClick={onOpenChat}
               variant="outline"
-              className="w-full rounded-lg border-2 border-primary bg-white py-3 text-base font-medium text-primary shadow-md transition-all hover:bg-primary/5 hover:shadow-lg active:scale-95"
+              className="w-full rounded-lg border-2 border-primary bg-card py-3 text-base font-medium text-primary shadow-md transition-all hover:bg-primary/5 hover:shadow-lg active:scale-95"
               dir={langDir}
               translate="no"
             >
@@ -893,7 +893,7 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
             width={24}
             height={20}
           />
-          <span className="text-sm text-gray-600" dir={langDir} translate="no">
+          <span className="text-sm text-muted-foreground" dir={langDir} translate="no">
             {t("secure_payment")}
           </span>
         </div>
@@ -904,7 +904,7 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
             width={24}
             height={24}
           />
-          <span className="text-sm text-gray-600" dir={langDir} translate="no">
+          <span className="text-sm text-muted-foreground" dir={langDir} translate="no">
             {t("support_24_7")}
           </span>
         </div>
@@ -919,30 +919,30 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
         </div>
       ) : (
         <div className="space-y-4">
-          <h4 className="text-lg font-semibold text-gray-900" dir={langDir} translate="no">
+          <h4 className="text-lg font-semibold text-foreground" dir={langDir} translate="no">
             {t("product_details")}
           </h4>
           
           <div className="space-y-2 text-sm">
             <div className="flex items-center gap-2">
-              <span className="font-medium text-gray-600 w-20" dir={langDir} translate="no">
+              <span className="font-medium text-muted-foreground w-20" dir={langDir} translate="no">
                 {t("sku")}:
               </span>
-              <span className="text-gray-900">{skuNo}</span>
+              <span className="text-foreground">{skuNo}</span>
             </div>
             
             <div className="flex items-center gap-2">
-              <span className="font-medium text-gray-600 w-20" dir={langDir} translate="no">
+              <span className="font-medium text-muted-foreground w-20" dir={langDir} translate="no">
                 {t("categories")}:
               </span>
-              <span className="text-gray-900">{category}</span>
+              <span className="text-foreground">{category}</span>
             </div>
             
             <div className="flex items-start gap-2">
-              <span className="font-medium text-gray-600 w-20 flex-shrink-0" dir={langDir} translate="no">
+              <span className="font-medium text-muted-foreground w-20 flex-shrink-0" dir={langDir} translate="no">
                 {t("tags")}:
               </span>
-              <span className="text-gray-900">
+              <span className="text-foreground">
                 {productTags?.map((item) => item.productTagsTag?.tagName).join(", ")}
               </span>
             </div>

@@ -7,7 +7,7 @@ const DescriptionAndSpecificationSection = dynamic(
   () => import("../DescriptionAndSpecificationSection"),
   {
     loading: () => (
-      <div className="animate-pulse h-64 bg-gray-200 rounded-lg" />
+      <div className="animate-pulse h-64 bg-muted rounded-lg" />
     ),
     ssr: false,
   }
@@ -29,8 +29,8 @@ const Step2ProductDetails: React.FC<Step2Props> = ({
   return (
     <div className="space-y-6">
       {/* Category, Brand, Condition, Tags */}
-      <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-        <div className="border-b border-gray-200 bg-primary/5 px-6 py-4">
+      <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+        <div className="border-b border-border bg-primary/5 px-6 py-4">
           <div className="flex items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10">
               <svg
@@ -48,10 +48,10 @@ const Step2ProductDetails: React.FC<Step2Props> = ({
               </svg>
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-gray-800">
+              <h2 className="text-lg font-semibold text-foreground">
                 Category & Basic Details
               </h2>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-muted-foreground">
                 Category, brand, condition, and tags
               </p>
             </div>
@@ -69,8 +69,8 @@ const Step2ProductDetails: React.FC<Step2Props> = ({
       </div>
 
       {/* Description, Specifications, Variants */}
-      <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-        <div className="border-b border-gray-200 bg-success/5 px-6 py-4">
+      <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+        <div className="border-b border-border bg-success/5 px-6 py-4">
           <div className="flex items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-success/10">
               <svg
@@ -88,10 +88,10 @@ const Step2ProductDetails: React.FC<Step2Props> = ({
               </svg>
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-gray-800">
+              <h2 className="text-lg font-semibold text-foreground">
                 Description & Specifications
               </h2>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-muted-foreground">
                 Product details, specs, and variants
               </p>
             </div>

@@ -164,7 +164,7 @@ const ReactSelectInput: React.FC<{
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Info className="h-4 w-4 cursor-pointer text-gray-500" />
+                <Info className="h-4 w-4 cursor-pointer text-muted-foreground" />
               </TooltipTrigger>
               <TooltipContent side="right" dir={langDir} translate="no">
                 {t("brand_input_info")}{" "}

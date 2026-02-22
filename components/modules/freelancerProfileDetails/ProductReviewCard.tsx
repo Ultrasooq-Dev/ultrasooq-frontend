@@ -45,7 +45,7 @@ const ProductReviewCard: React.FC<ProductReviewCardProps> = ({
   );
 
   return (
-    <div className="w-full rounded-2xl border border-solid border-gray-300 p-4">
+    <div className="w-full rounded-2xl border border-solid border-border p-4">
       <div className="flex w-full flex-wrap items-start justify-between">
         <div className="flex flex-1 flex-row">
           <div className="relative h-16 w-16 rounded-sm">
@@ -56,7 +56,7 @@ const ProductReviewCard: React.FC<ProductReviewCardProps> = ({
               className="rounded-sm"
             />
           </div>
-          <div className="w-[calc(100%-2rem)] pl-3.5 text-sm font-normal leading-5 text-gray-500">
+          <div className="w-[calc(100%-2rem)] pl-3.5 text-sm font-normal leading-5 text-muted-foreground">
             <div className="flex w-full items-start justify-between">
               <h4 className="text-base font-semibold text-color-dark">
                 {productName}
@@ -73,7 +73,7 @@ const ProductReviewCard: React.FC<ProductReviewCardProps> = ({
               ) : null}
             </div>
             <div className="w-full">
-              <div className="flex w-full flex-wrap items-start gap-2 text-xs leading-5 text-gray-500">
+              <div className="flex w-full flex-wrap items-start gap-2 text-xs leading-5 text-muted-foreground">
                 <div className="flex">{calculateRatings(rating)}</div>
               </div>
             </div>
@@ -81,7 +81,7 @@ const ProductReviewCard: React.FC<ProductReviewCardProps> = ({
         </div>
         <div className="w-full pt-3 ">
           <h3>{title}</h3>
-          <p className="text-sm font-normal leading-6 text-gray-500">
+          <p className="text-sm font-normal leading-6 text-muted-foreground">
             {review}
           </p>
         </div>

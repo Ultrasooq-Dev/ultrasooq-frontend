@@ -74,10 +74,10 @@ const NotificationsPage = () => {
       {/* Header */}
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold text-foreground">
             {t("notifications") || "Notifications"}
           </h1>
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-muted-foreground">
             {unreadCount > 0
               ? `${unreadCount} ${t("unread_notifications") || "unread notifications"}`
               : t("all_caught_up") || "All caught up!"}
@@ -135,7 +135,7 @@ const NotificationsPage = () => {
         {isLoading ? (
           <div className="space-y-4">
             {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="flex gap-3 rounded-lg border border-gray-200 p-4">
+              <div key={i} className="flex gap-3 rounded-lg border border-border p-4">
                 <Skeleton className="h-10 w-10 rounded-full" />
                 <div className="flex-1 space-y-2">
                   <Skeleton className="h-4 w-3/4" />
@@ -146,10 +146,10 @@ const NotificationsPage = () => {
             ))}
           </div>
         ) : notifications.length === 0 ? (
-          <div className="flex flex-col items-center justify-center rounded-lg border border-gray-200 bg-white p-12 text-center">
-            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
+          <div className="flex flex-col items-center justify-center rounded-lg border border-border bg-card p-12 text-center">
+            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
               <svg
-                className="h-8 w-8 text-gray-400"
+                className="h-8 w-8 text-muted-foreground"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -162,10 +162,10 @@ const NotificationsPage = () => {
                 />
               </svg>
             </div>
-            <h3 className="text-lg font-semibold text-gray-900">
+            <h3 className="text-lg font-semibold text-foreground">
               {t("no_notifications_found") || "No notifications found"}
             </h3>
-            <p className="mt-2 text-sm text-gray-500">
+            <p className="mt-2 text-sm text-muted-foreground">
               {t("no_notifications_match_filters") ||
                 "No notifications match your current filters"}
             </p>
@@ -175,7 +175,7 @@ const NotificationsPage = () => {
             {notifications.map((notification) => (
               <div
                 key={notification.id}
-                className="flex items-start justify-between gap-4 rounded-lg border border-gray-200 bg-white p-4"
+                className="flex items-start justify-between gap-4 rounded-lg border border-border bg-card p-4"
               >
                 <div className="flex-1">
                   <NotificationItem
@@ -188,7 +188,7 @@ const NotificationsPage = () => {
                 </div>
                 <button
                   onClick={() => handleDelete(notification.id)}
-                  className="flex-shrink-0 text-gray-400 hover:text-destructive"
+                  className="flex-shrink-0 text-muted-foreground hover:text-destructive"
                   aria-label={t("delete") || "Delete"}
                 >
                   <svg
@@ -218,7 +218,7 @@ const NotificationsPage = () => {
                 >
                   {t("previous") || "Previous"}
                 </Button>
-                <span className="text-sm text-gray-600">
+                <span className="text-sm text-muted-foreground">
                   {t("page") || "Page"} {page} {t("of") || "of"} {totalPages}
                 </span>
                 <Button

@@ -100,7 +100,7 @@ const ControlledMarkdownEditor: React.FC<ControlledMarkdownEditorProps> = ({
                 data-color-mode="light"
               />
               {maxLength && (
-                <div className={`mt-2 text-xs text-right ${isOverLimit ? 'text-destructive' : 'text-gray-400'}`}>
+                <div className={`mt-2 text-xs text-right ${isOverLimit ? 'text-destructive' : 'text-muted-foreground'}`}>
                   {currentLength}/{maxLength} characters
                 </div>
               )}

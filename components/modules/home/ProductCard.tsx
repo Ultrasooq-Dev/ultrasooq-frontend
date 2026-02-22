@@ -11,7 +11,7 @@ type ProductCardProps = {
 const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
   const { currency } = useAuth();
   return (
-    <div className="relative border border-solid border-transparent px-2 py-1 pt-7 hover:border-gray-300">
+    <div className="relative border border-solid border-transparent px-2 py-1 pt-7 hover:border-border">
       {item?.discount ? (
         <div className="absolute right-2.5 top-2.5 inline-block rounded bg-dark-orange px-2.5 py-2 text-lg font-medium capitalize leading-5 text-white">
           <span>{currency.symbol}{item?.discount}</span>
@@ -27,7 +27,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
         />
       </div>
       <div className="relative w-full text-sm font-normal capitalize text-color-blue lg:text-base">
-        <h6 className="mb-2.5 border-b border-solid border-gray-300 pb-2.5 text-xs font-normal uppercase text-color-dark">
+        <h6 className="mb-2.5 border-b border-solid border-border pb-2.5 text-xs font-normal uppercase text-color-dark">
           {item?.name}
         </h6>
         <div className="mt-2.5 w-full">

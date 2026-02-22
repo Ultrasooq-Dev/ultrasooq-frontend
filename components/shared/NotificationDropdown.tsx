@@ -51,10 +51,10 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
   };
 
   return (
-    <div className="flex h-[500px] w-[380px] flex-col bg-white shadow-xl" dir={langDir}>
+    <div className="flex h-[500px] w-[380px] flex-col bg-card shadow-xl" dir={langDir}>
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-gray-200 px-4 py-3">
-        <h3 className="text-lg font-semibold text-gray-900">
+      <div className="flex items-center justify-between border-b border-border px-4 py-3">
+        <h3 className="text-lg font-semibold text-foreground">
           {t("notifications") || "Notifications"}
         </h3>
         <div className="flex items-center gap-2">
@@ -86,9 +86,9 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
           </div>
         ) : notifications.length === 0 ? (
           <div className="flex h-full flex-col items-center justify-center p-8 text-center">
-            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
+            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
               <svg
-                className="h-8 w-8 text-gray-400"
+                className="h-8 w-8 text-muted-foreground"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -101,15 +101,15 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
                 />
               </svg>
             </div>
-            <p className="text-sm font-medium text-gray-700">
+            <p className="text-sm font-medium text-muted-foreground">
               {t("no_notifications") || "No notifications"}
             </p>
-            <p className="mt-1 text-xs text-gray-500">
+            <p className="mt-1 text-xs text-muted-foreground">
               {t("you_are_all_caught_up") || "You're all caught up!"}
             </p>
           </div>
         ) : (
-          <div className="divide-y divide-gray-100">
+          <div className="divide-y divide-border">
             {notifications.map((notification) => (
               <NotificationItem
                 key={notification.id}
@@ -126,7 +126,7 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
 
       {/* Footer */}
       {notifications.length > 0 && (
-        <div className="border-t border-gray-200 px-4 py-3">
+        <div className="border-t border-border px-4 py-3">
           <button
             onClick={handleViewAll}
             className="w-full rounded-lg bg-primary/5 px-4 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/10"

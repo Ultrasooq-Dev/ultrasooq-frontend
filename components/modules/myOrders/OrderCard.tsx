@@ -65,7 +65,7 @@ const OrderCard: React.FC<OrderCardProps> = ({
         <Link href={`/my-orders/${id}`}>
           {orderProductType == 'SERVICE' ? (
             <figure>
-              <div className="image-container rounded border border-gray-300">
+              <div className="image-container rounded border border-border">
                 <Image
                   src={PlaceholderImage}
                   alt="preview-product"
@@ -81,7 +81,7 @@ const OrderCard: React.FC<OrderCardProps> = ({
             </figure>
           ) : (
             <figure>
-              <div className="image-container rounded border border-gray-300">
+              <div className="image-container rounded border border-border">
                 <Image
                   src={produtctImage?.[0]?.image || PlaceholderImage}
                   alt="preview-product"
@@ -100,7 +100,7 @@ const OrderCard: React.FC<OrderCardProps> = ({
         </Link>
         <div className="center-price-info">
           <h4>{currency.symbol}{Number(purchasePrice) * (orderQuantity ?? 0)}</h4>
-          <p className="text-gray-500" translate="no">{t("quantity")} x {orderQuantity || 0}</p>
+          <p className="text-muted-foreground" translate="no">{t("quantity")} x {orderQuantity || 0}</p>
         </div>
         <div className="right-info" dir={langDir}>
           <h4 translate="no">

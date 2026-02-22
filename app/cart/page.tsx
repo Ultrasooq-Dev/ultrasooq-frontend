@@ -745,13 +745,13 @@ const CartListPage = () => {
   ]);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-card">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         {/* Cart and Order Summary Section */}
         {/* Header Section - Amazon Style */}
-        <div className="mb-6 border-b border-gray-200 pb-4">
+        <div className="mb-6 border-b border-border pb-4">
           <h1
-            className="text-3xl font-semibold text-gray-900"
+            className="text-3xl font-semibold text-foreground"
             dir={langDir}
             translate="no"
           >
@@ -759,7 +759,7 @@ const CartListPage = () => {
           </h1>
           {memoizedCartList.length > 0 && (
             <p
-              className="mt-1 text-sm text-gray-600"
+              className="mt-1 text-sm text-muted-foreground"
               dir={langDir}
               translate="no"
             >
@@ -777,14 +777,14 @@ const CartListPage = () => {
               <div className="mb-4 flex items-center justify-between">
                 <div>
                   <h2
-                    className="text-xl font-bold text-gray-900"
+                    className="text-xl font-bold text-foreground"
                     dir={langDir}
                     translate="no"
                   >
                     {t("items_in_your_cart") || "Items in Your Cart"}
                   </h2>
                   <p
-                    className="mt-1 text-sm text-gray-600"
+                    className="mt-1 text-sm text-muted-foreground"
                     dir={langDir}
                     translate="no"
                   >
@@ -806,16 +806,16 @@ const CartListPage = () => {
                 !cartListByUser.data?.data?.length &&
                 !cartListByUser.isLoading ? (
                   <div className="py-12 text-center">
-                    <div className="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full bg-gray-100">
-                      <ShoppingBag className="h-12 w-12 text-gray-400" />
+                    <div className="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full bg-muted">
+                      <ShoppingBag className="h-12 w-12 text-muted-foreground" />
                     </div>
                     <h3
-                      className="mb-2 text-lg font-medium text-gray-900"
+                      className="mb-2 text-lg font-medium text-foreground"
                       translate="no"
                     >
                       {t("no_cart_items")}
                     </h3>
-                    <p className="mb-6 text-gray-500" translate="no">
+                    <p className="mb-6 text-muted-foreground" translate="no">
                       Add some products to get started
                     </p>
                     <Button
@@ -831,16 +831,16 @@ const CartListPage = () => {
                 !cartListByDeviceQuery.data?.data?.length &&
                 !cartListByDeviceQuery.isLoading ? (
                   <div className="py-12 text-center">
-                    <div className="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full bg-gray-100">
-                      <ShoppingBag className="h-12 w-12 text-gray-400" />
+                    <div className="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full bg-muted">
+                      <ShoppingBag className="h-12 w-12 text-muted-foreground" />
                     </div>
                     <h3
-                      className="mb-2 text-lg font-medium text-gray-900"
+                      className="mb-2 text-lg font-medium text-foreground"
                       translate="no"
                     >
                       {t("no_cart_items")}
                     </h3>
-                    <p className="mb-6 text-gray-500" translate="no">
+                    <p className="mb-6 text-muted-foreground" translate="no">
                       Add some products to get started
                     </p>
                     <Button
@@ -858,7 +858,7 @@ const CartListPage = () => {
                     {Array.from({ length: 2 }).map((_, i) => (
                       <div
                         key={i}
-                        className="flex items-center space-x-4 rounded-lg border border-gray-200 p-4"
+                        className="flex items-center space-x-4 rounded-lg border border-border p-4"
                       >
                         <Skeleton className="h-20 w-20 rounded-lg" />
                         <div className="flex-1 space-y-2">
@@ -877,7 +877,7 @@ const CartListPage = () => {
                     {Array.from({ length: 2 }).map((_, i) => (
                       <div
                         key={i}
-                        className="flex items-center space-x-4 rounded-lg border border-gray-200 p-4"
+                        className="flex items-center space-x-4 rounded-lg border border-border p-4"
                       >
                         <Skeleton className="h-20 w-20 rounded-lg" />
                         <div className="flex-1 space-y-2">
@@ -946,7 +946,7 @@ const CartListPage = () => {
                         return (
                           <div
                             key={feature.id}
-                            className="rounded-lg border border-gray-200 p-4 transition-shadow hover:shadow-md"
+                            className="rounded-lg border border-border p-4 transition-shadow hover:shadow-md"
                           >
                             <ServiceCard
                               cartId={item.id}
@@ -978,10 +978,10 @@ const CartListPage = () => {
 
           {/* Right Column - Order Summary - Amazon Style */}
           <div className="lg:col-span-4">
-            <div className="sticky top-6 rounded-lg border border-gray-300 bg-white shadow-sm">
-              <div className="border-b border-gray-200 bg-gray-50 px-4 py-3">
+            <div className="sticky top-6 rounded-lg border border-border bg-card shadow-sm">
+              <div className="border-b border-border bg-muted px-4 py-3">
                 <h2
-                  className="text-lg font-semibold text-gray-900"
+                  className="text-lg font-semibold text-foreground"
                   dir={langDir}
                   translate="no"
                 >
@@ -993,29 +993,29 @@ const CartListPage = () => {
                 <div className="space-y-3 text-sm">
                   <div className="flex items-center justify-between">
                     <span
-                      className="text-gray-600"
+                      className="text-muted-foreground"
                       dir={langDir}
                       translate="no"
                     >
                       {t("subtotal")} ({memoizedCartList.length}{" "}
                       {memoizedCartList.length === 1 ? t("item") : t("items")})
                     </span>
-                    <span className="font-medium text-gray-900">
+                    <span className="font-medium text-foreground">
                       {currency.symbol}
                       {totalAmount}
                     </span>
                   </div>
 
-                  <div className="border-t border-gray-200 pt-3">
+                  <div className="border-t border-border pt-3">
                     <div className="flex items-center justify-between">
                       <span
-                        className="text-base font-semibold text-gray-900"
+                        className="text-base font-semibold text-foreground"
                         dir={langDir}
                         translate="no"
                       >
                         {t("total_amount")}
                       </span>
-                      <span className="text-lg font-bold text-gray-900">
+                      <span className="text-lg font-bold text-foreground">
                         {currency.symbol}
                         {totalAmount}
                       </span>
@@ -1028,7 +1028,7 @@ const CartListPage = () => {
                   <Button
                     onClick={() => router.push("/checkout")}
                     disabled={!memoizedCartList?.length}
-                    className="w-full rounded-md bg-warning px-4 py-2.5 font-medium text-gray-900 shadow-sm transition-colors hover:bg-warning disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500"
+                    className="w-full rounded-md bg-warning px-4 py-2.5 font-medium text-foreground shadow-sm transition-colors hover:bg-warning disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground"
                     dir={langDir}
                     translate="no"
                   >
@@ -1039,7 +1039,7 @@ const CartListPage = () => {
                     <Button
                       onClick={() => router.push("/trending")}
                       variant="outline"
-                      className="w-full border-gray-300 text-sm text-gray-700 hover:bg-gray-50"
+                      className="w-full border-border text-sm text-muted-foreground hover:bg-muted"
                     >
                       {t("continue_shopping") || "Continue Shopping"}
                     </Button>
@@ -1047,7 +1047,7 @@ const CartListPage = () => {
                 </div>
 
                 {/* Security Badge */}
-                <div className="mt-4 flex items-center justify-center gap-2 text-xs text-gray-500">
+                <div className="mt-4 flex items-center justify-center gap-2 text-xs text-muted-foreground">
                   <svg
                     className="h-4 w-4"
                     fill="none"
@@ -1070,18 +1070,18 @@ const CartListPage = () => {
       </div>
 
       {/* Promotional Products Sections - Full Screen Width */}
-      <div className="w-full bg-gray-50">
+      <div className="w-full bg-muted">
         <div className="mx-auto w-full px-2 sm:px-4 lg:px-6">
           <div className="space-y-8">
             {/* Recommended for You Section - Amazon Style */}
             {memoizedCartList.length > 0 && (
-              <div className="w-full bg-white p-4">
+              <div className="w-full bg-card p-4">
                 {/* Header Section - Amazon Style */}
-                <div className="mb-4 flex items-start justify-between border-b border-gray-200 pb-3">
+                <div className="mb-4 flex items-start justify-between border-b border-border pb-3">
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
                       <h2
-                        className="text-lg font-semibold text-gray-900"
+                        className="text-lg font-semibold text-foreground"
                         dir={langDir}
                         translate="no"
                       >
@@ -1089,11 +1089,11 @@ const CartListPage = () => {
                       </h2>
                     </div>
                     <div className="mt-1 flex items-center gap-1">
-                      <span className="text-xs text-gray-500" translate="no">
+                      <span className="text-xs text-muted-foreground" translate="no">
                         Sponsored
                       </span>
                       <svg
-                        className="h-3 w-3 text-gray-400"
+                        className="h-3 w-3 text-muted-foreground"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -1107,7 +1107,7 @@ const CartListPage = () => {
                       </svg>
                     </div>
                   </div>
-                  {/* <div className="flex items-center gap-2 text-xs text-gray-600">
+                  {/* <div className="flex items-center gap-2 text-xs text-muted-foreground">
                     <span translate="no">Page 1 of 1</span>
                     <button
                       className="text-primary hover:text-primary hover:underline"
@@ -1123,7 +1123,7 @@ const CartListPage = () => {
                     {Array.from({ length: 6 }).map((_, i) => (
                       <div
                         key={i}
-                        className="w-[180px] flex-shrink-0 rounded border border-gray-200 bg-white p-3"
+                        className="w-[180px] flex-shrink-0 rounded border border-border bg-card p-3"
                       >
                         <Skeleton className="mb-3 h-40 w-full rounded" />
                         <Skeleton className="mb-2 h-4 w-full" />
@@ -1169,9 +1169,9 @@ const CartListPage = () => {
                                 className="basis-auto pl-2 md:pl-4"
                               >
                                 <div className="w-[180px] flex-shrink-0">
-                                  <div className="group/product relative flex h-full min-h-[380px] flex-col rounded border border-gray-200 bg-white p-3 transition-shadow hover:shadow-md">
+                                  <div className="group/product relative flex h-full min-h-[380px] flex-col rounded border border-border bg-card p-3 transition-shadow hover:shadow-md">
                                     {/* Product Image */}
-                                    <div className="relative mb-3 aspect-square w-full overflow-hidden rounded bg-gray-50">
+                                    <div className="relative mb-3 aspect-square w-full overflow-hidden rounded bg-muted">
                                       <Image
                                         src={
                                           product.productImages?.[0]?.image ||
@@ -1187,7 +1187,7 @@ const CartListPage = () => {
                                     <div className="flex flex-1 flex-col space-y-2">
                                       {/* Product Title */}
                                       <h3
-                                        className="line-clamp-2 cursor-pointer text-sm leading-tight text-gray-900 group-hover/product:text-primary"
+                                        className="line-clamp-2 cursor-pointer text-sm leading-tight text-foreground group-hover/product:text-primary"
                                         dir={langDir}
                                         onClick={() =>
                                           router.push(`/trending/${product.id}`)
@@ -1220,11 +1220,11 @@ const CartListPage = () => {
                                                     );
                                                   },
                                                 )}
-                                                <span className="ml-1 text-xs text-gray-600">
+                                                <span className="ml-1 text-xs text-muted-foreground">
                                                   {avgRating}
                                                 </span>
                                               </div>
-                                              <span className="text-xs text-gray-500">
+                                              <span className="text-xs text-muted-foreground">
                                                 ({product.productReview.length})
                                               </span>
                                             </div>
@@ -1234,7 +1234,7 @@ const CartListPage = () => {
                                       {/* Price Section */}
                                       <div className="space-y-0.5">
                                         <div className="flex items-baseline gap-1">
-                                          <span className="text-base font-semibold text-gray-900">
+                                          <span className="text-base font-semibold text-foreground">
                                             {currency.symbol}
                                             {Number(
                                               priceInfo.discountedPrice || 0,
@@ -1242,7 +1242,7 @@ const CartListPage = () => {
                                           </span>
                                         </div>
                                         {hasListPrice && (
-                                          <div className="text-xs text-gray-500">
+                                          <div className="text-xs text-muted-foreground">
                                             <span translate="no">
                                               List Price:{" "}
                                             </span>
@@ -1257,7 +1257,7 @@ const CartListPage = () => {
                                         {!hasListPrice &&
                                           Number(product.productPrice || 0) >
                                             Number(product.offerPrice || 0) && (
-                                            <div className="text-xs text-gray-500">
+                                            <div className="text-xs text-muted-foreground">
                                               <span translate="no">
                                                 List Price:{" "}
                                               </span>
@@ -1280,7 +1280,7 @@ const CartListPage = () => {
                                               product.productProductPriceId,
                                             )
                                           }
-                                          className="w-full rounded-md bg-warning px-3 py-1.5 text-xs font-medium text-gray-900 shadow-sm transition-colors hover:bg-warning"
+                                          className="w-full rounded-md bg-warning px-3 py-1.5 text-xs font-medium text-foreground shadow-sm transition-colors hover:bg-warning"
                                           translate="no"
                                         >
                                           Add to Cart
@@ -1293,13 +1293,13 @@ const CartListPage = () => {
                             );
                           })}
                       </CarouselContent>
-                      <CarouselPrevious className="-left-4 h-8 w-8 border border-gray-300 bg-white shadow-md hover:bg-gray-50" />
-                      <CarouselNext className="-right-4 h-8 w-8 border border-gray-300 bg-white shadow-md hover:bg-gray-50" />
+                      <CarouselPrevious className="-left-4 h-8 w-8 border border-border bg-card shadow-md hover:bg-muted" />
+                      <CarouselNext className="-right-4 h-8 w-8 border border-border bg-card shadow-md hover:bg-muted" />
                     </Carousel>
                   </div>
                 ) : !cartRecommendationsQuery.isLoading &&
                   memoizedCartList.length > 0 ? (
-                  <div className="py-8 text-center text-gray-500">
+                  <div className="py-8 text-center text-muted-foreground">
                     <p>
                       {t("no_recommended_products") ||
                         "No recommended products found"}

@@ -46,18 +46,18 @@ const DescriptionAndSpecificationSection: React.FC<
     <div className="space-y-8">
       {/* Description Section */}
       <div className="space-y-6">
-        <div className="flex items-center gap-3 pb-4 border-b border-gray-100">
+        <div className="flex items-center gap-3 pb-4 border-b border-border">
           <div className="w-8 h-8 bg-info rounded-lg flex items-center justify-center">
             <span className="text-white text-sm font-semibold">1</span>
           </div>
           <div>
-            <h4 className="text-lg font-semibold text-gray-900">
+            <h4 className="text-lg font-semibold text-foreground">
               {t("description")}
             </h4>
           </div>
         </div>
         
-        <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
+        <div className="bg-muted rounded-xl p-4 border border-border">
           <ControlledMarkdownEditor
             label={t("description")}
             name="descriptionJson"
@@ -68,13 +68,13 @@ const DescriptionAndSpecificationSection: React.FC<
 
       {/* Specifications Section */}
       <div className="space-y-6">
-        <div className="flex items-center justify-between pb-4 border-b border-gray-100">
+        <div className="flex items-center justify-between pb-4 border-b border-border">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-success rounded-lg flex items-center justify-center">
               <span className="text-white text-sm font-semibold">2</span>
             </div>
             <div>
-              <h4 className="text-lg font-semibold text-gray-900">
+              <h4 className="text-lg font-semibold text-foreground">
                 {t("specification")}
               </h4>
             </div>
@@ -97,12 +97,12 @@ const DescriptionAndSpecificationSection: React.FC<
           {fieldArrayForSpecification.fields.map((field, index) => (
             <div
               key={field.id}
-              className="relative bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-shadow duration-200"
+              className="relative bg-card rounded-xl border border-border p-4 hover:shadow-md transition-shadow duration-200"
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-                    <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <Label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                    <svg className="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                     </svg>
                     {t("label")}
@@ -117,8 +117,8 @@ const DescriptionAndSpecificationSection: React.FC<
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-                    <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <Label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                    <svg className="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                     {t("value")}
@@ -137,7 +137,7 @@ const DescriptionAndSpecificationSection: React.FC<
                 <button
                   type="button"
                   onClick={() => removeSpecification(index)}
-                  className="absolute top-2 right-2 p-2 text-gray-400 hover:text-destructive hover:bg-destructive/5 rounded-lg transition-colors duration-200"
+                  className="absolute top-2 right-2 p-2 text-muted-foreground hover:text-destructive hover:bg-destructive/5 rounded-lg transition-colors duration-200"
                   title={t("remove_specification")}
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -153,18 +153,18 @@ const DescriptionAndSpecificationSection: React.FC<
       {/* Product Variants Section */}
       {pathname == "/product" && (
         <div className="space-y-6">
-          <div className="flex items-center gap-3 pb-4 border-b border-gray-100">
-            <div className="w-8 h-8 bg-violet-500 rounded-lg flex items-center justify-center">
+          <div className="flex items-center gap-3 pb-4 border-b border-border">
+            <div className="w-8 h-8 bg-info rounded-lg flex items-center justify-center">
               <span className="text-white text-sm font-semibold">3</span>
             </div>
             <div>
-              <h4 className="text-lg font-semibold text-gray-900">
+              <h4 className="text-lg font-semibold text-foreground">
                 {t("product_variants")}
               </h4>
             </div>
           </div>
           
-          <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
+          <div className="bg-muted rounded-xl p-4 border border-border">
             <ProductVariantTypes />
           </div>
         </div>
@@ -173,18 +173,18 @@ const DescriptionAndSpecificationSection: React.FC<
       {/* Product Location and Customization Section — hidden in wizard mode (lives in Step 3) */}
       {pathname == "/product" && !wizardMode && (
         <div className="space-y-6">
-          <div className="flex items-center gap-3 pb-4 border-b border-gray-100">
-            <div className="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center">
+          <div className="flex items-center gap-3 pb-4 border-b border-border">
+            <div className="w-8 h-8 bg-success rounded-lg flex items-center justify-center">
               <span className="text-white text-sm font-semibold">4</span>
             </div>
             <div>
-              <h4 className="text-lg font-semibold text-gray-900">
+              <h4 className="text-lg font-semibold text-foreground">
                 {t("product_location_and_customization")}
               </h4>
             </div>
           </div>
 
-          <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
+          <div className="bg-muted rounded-xl p-4 border border-border">
             <ProductLocationAndCustomizationSection
               activeProductType={activeProductType}
             />

@@ -86,7 +86,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ userDetails }) => {
   };
 
   return (
-    <div className="flex w-full flex-wrap rounded-3xl border border-solid border-gray-300 bg-white p-4 shadow-md md:p-9">
+    <div className="flex w-full flex-wrap rounded-3xl border border-solid border-border bg-card p-4 shadow-md md:p-9">
       <div className="relative mx-auto h-40 w-40 rounded-full">
         <Avatar className="h-40 w-40">
           <AvatarImage src={userDetails?.profilePicture} alt="image-icon" />
@@ -94,7 +94,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ userDetails }) => {
             {memoizedInitials}
           </AvatarFallback>
         </Avatar>
-        {/* <div className="absolute bottom-2 right-0 z-10 h-11 w-11 rounded-full bg-gray-300">
+        {/* <div className="absolute bottom-2 right-0 z-10 h-11 w-11 rounded-full bg-muted">
           <div className="flex h-full w-full cursor-pointer flex-wrap items-center justify-center">
             <Image
               src="/images/camera-icon.png"
@@ -163,13 +163,13 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ userDetails }) => {
             </li>
           </ul>
         </div>
-        <div className="text-normal mt-5 w-full text-sm font-normal leading-4 text-gray-500">
+        <div className="text-normal mt-5 w-full text-sm font-normal leading-4 text-muted-foreground">
           <p dir={langDir} translate="no">{t("business_type")}</p>
           {userDetails?.userBranch?.[0]?.userBranchBusinessType?.map(
             (item: any) => (
               <span
                 key={item?.id}
-                className="mr-3 mt-4 inline-block rounded bg-gray-300 p-4 py-2.5 text-base font-medium leading-5 text-dark-cyan"
+                className="mr-3 mt-4 inline-block rounded bg-muted p-4 py-2.5 text-base font-medium leading-5 text-dark-cyan"
                 dir={langDir}
               >
                 {item?.userBranch_BusinessType_Tag?.tagName}
@@ -178,10 +178,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ userDetails }) => {
           )}
         </div>
         <div className="mt-5 flex w-full flex-wrap items-center justify-between">
-          <div className="my-2 text-sm font-normal leading-4 text-gray-500">
+          <div className="my-2 text-sm font-normal leading-4 text-muted-foreground">
             <p dir={langDir} translate="no">
               {t("freelancer_id")}:
-              <span className="text-base font-medium leading-4 text-gray-600" dir={langDir}>
+              <span className="text-base font-medium leading-4 text-muted-foreground" dir={langDir}>
                 {userDetails?.uniqueId
                   ? `${FREELANCER_UNIQUE_ID}${userDetails?.uniqueId}`
                   : "NA"}
@@ -200,7 +200,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ userDetails }) => {
               </span>
             </div>
             <select
-              className="h-12! w-full rounded border border-gray-300! px-3 text-sm focus-visible:ring-0!"
+              className="h-12! w-full rounded border border-border! px-3 text-sm focus-visible:ring-0!"
               onChange={handleTimeChange}
               value={userDetails?.onlineOffline || "0"}
             >

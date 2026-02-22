@@ -16,7 +16,7 @@
         margin: auto auto 50px;
         padding: 50px;
         border-radius: 10px;
-        background: #fff;
+        background: var(--card);
         @media only screen and (min-width: 240px) and (max-width: 767px) {
             padding: 30px 20px;
         }
@@ -100,7 +100,7 @@
             }
             span {
                 padding: 10px;
-                background: #fff;
+                background: var(--card);
                 position: relative;
                 z-index: 2;
                 font-size: 14px;
@@ -260,7 +260,7 @@
                 .submit_button {
                     height: 55px;
                     background: hsl(var(--primary));
-                    color: #fff;
+                    color: var(--card);
                     text-align: center;
                     font-size: 18px;
                     font-weight: 700;
@@ -354,7 +354,7 @@
                         left: 0;
                         height: 14px;
                         width: 14px;
-                        background-color: #fff;
+                        background-color: var(--card);
                         border-radius: 50%;
                         border: solid 2px #7F818D;
                         &::after {

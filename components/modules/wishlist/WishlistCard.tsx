@@ -216,13 +216,13 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
     : 0;
 
   return (
-    <div className="group relative overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-all hover:border-gray-300 hover:shadow-md">
+    <div className="group relative overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all hover:border-border hover:shadow-md">
       {/* Delete Button */}
       <Button
         type="button"
         variant="ghost"
         size="icon"
-        className="absolute right-2 top-2 z-10 h-8 w-8 rounded-full bg-white/90 text-gray-400 shadow-sm opacity-0 backdrop-blur-sm transition-all hover:bg-destructive/5 hover:text-destructive group-hover:opacity-100"
+        className="absolute right-2 top-2 z-10 h-8 w-8 rounded-full bg-card/90 text-muted-foreground shadow-sm opacity-0 backdrop-blur-sm transition-all hover:bg-destructive/5 hover:text-destructive group-hover:opacity-100"
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -235,7 +235,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
 
       {/* Product Image */}
       <Link href={`/trending/${wishlistData?.id}`} className="block">
-        <div className="relative aspect-square w-full overflow-hidden bg-gray-50">
+        <div className="relative aspect-square w-full overflow-hidden bg-muted">
           <Image
             src={
               wishlistData?.productImages?.[0]?.image &&
@@ -268,7 +268,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
       {/* Product Info */}
       <div className="p-4">
         <Link href={`/trending/${wishlistData?.id}`}>
-          <h3 className="mb-2 line-clamp-2 min-h-[2.5rem] text-sm font-semibold text-gray-900 transition-colors hover:text-primary">
+          <h3 className="mb-2 line-clamp-2 min-h-[2.5rem] text-sm font-semibold text-foreground transition-colors hover:text-primary">
             {wishlistData?.productName}
           </h3>
         </Link>
@@ -276,7 +276,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
         {/* Description */}
         {wishlistData?.product_productShortDescription?.[0]?.shortDescription && (
           <p
-            className="mb-3 line-clamp-2 text-xs text-gray-600"
+            className="mb-3 line-clamp-2 text-xs text-muted-foreground"
             title={
               wishlistData?.product_productShortDescription?.[0]
                 ?.shortDescription
@@ -295,7 +295,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
                 <span key={index}>{star}</span>
               ))}
             </div>
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-muted-foreground">
               ({wishlistData?.productReview?.length})
             </span>
           </div>
@@ -310,7 +310,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
             >
               <Button
                 type="button"
-                className="w-full rounded-lg bg-amber-500 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-amber-600"
+                className="w-full rounded-lg bg-warning text-xs font-semibold text-white shadow-sm transition-colors hover:bg-amber-600"
                 dir={langDir}
                 translate="no"
               >
@@ -329,7 +329,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
                 {t("coming_soon")}
               </Button>
               {getSaleStartLabel() && (
-                <p className="text-xs text-center text-gray-600" dir={langDir} translate="no">
+                <p className="text-xs text-center text-muted-foreground" dir={langDir} translate="no">
                   {t("sale_starts_on")}: {getSaleStartLabel()}
                 </p>
               )}
@@ -342,7 +342,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
                   {discountedPrice.toFixed(2)}
                 </span>
                 {hasDiscount && originalPrice > 0 && (
-                  <span className="text-xs text-gray-500 line-through">
+                  <span className="text-xs text-muted-foreground line-through">
                     {currency.symbol}
                     {originalPrice.toFixed(2)}
                   </span>

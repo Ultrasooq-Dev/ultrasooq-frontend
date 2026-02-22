@@ -121,7 +121,7 @@ const BrandFilterList: React.FC<BrandFilterListTypes> = ({
                       <div key={item.value} className="div-li">
                         <Checkbox
                           id={item.label}
-                          className="border border-solid border-gray-300 data-[state=checked]:bg-dark-orange!"
+                          className="border border-solid border-border data-[state=checked]:bg-dark-orange!"
                           onCheckedChange={(checked) =>
                             handleBrandChange(checked, item)
                           }

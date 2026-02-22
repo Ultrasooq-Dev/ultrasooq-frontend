@@ -592,7 +592,7 @@ const ManageProductAside: React.FC<ManageProductAsideProps> = ({
                       render={({ field }) => (
                         <select
                           {...field}
-                          className="h-[48px]! w-full rounded border border-gray-300! px-3 text-sm focus-visible:ring-0!"
+                          className="h-[48px]! w-full rounded border border-border! px-3 text-sm focus-visible:ring-0!"
                         >
                           <option value="" dir={langDir}></option>
                           <option value="FLAT" dir={langDir} translate="no">
@@ -646,7 +646,7 @@ const ManageProductAside: React.FC<ManageProductAsideProps> = ({
                       render={({ field }) => (
                         <select
                           {...field}
-                          className="h-[48px]! w-full rounded border border-gray-300! px-3 text-sm focus-visible:ring-0!"
+                          className="h-[48px]! w-full rounded border border-border! px-3 text-sm focus-visible:ring-0!"
                         >
                           <option value="" dir={langDir}></option>
                           <option value="FLAT" dir={langDir} translate="no">

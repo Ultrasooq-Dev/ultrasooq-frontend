@@ -38,7 +38,7 @@ const NotificationBell: React.FC = () => {
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
         <button
-          className="relative flex items-center justify-center p-2 rounded-lg hover:bg-white/10 transition-all active:scale-95"
+          className="relative flex items-center justify-center p-2 rounded-lg hover:bg-card/10 transition-all active:scale-95"
           aria-label="Notifications"
         >
           <svg

@@ -168,15 +168,15 @@ const CreateDropshipableProductPage = () => {
             <div className="row">
               <div className="rfq_main_box justify-center!">
                 <div className="rfq_middle">
-                  <div className="bg-white p-8 rounded-lg shadow-sm text-center">
+                  <div className="bg-card p-8 rounded-lg shadow-sm text-center">
                     <div className="flex flex-col items-center justify-center space-y-4">
                       <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
                         <Truck className="w-8 h-8 text-primary animate-pulse" />
                       </div>
-                      <h2 className="text-xl font-semibold text-gray-900">
+                      <h2 className="text-xl font-semibold text-foreground">
                         {t("redirecting_to_form")}
                       </h2>
-                      <p className="text-gray-500">
+                      <p className="text-muted-foreground">
                         {t("preparing_dropship_form")}
                       </p>
                       <div className="flex items-center space-x-2">
@@ -211,12 +211,12 @@ const CreateDropshipableProductPage = () => {
               </div>
               <div className="rfq_middle">
                 {/* Header Section */}
-                <div className="mb-6 bg-white p-6 rounded-lg shadow-sm">
+                <div className="mb-6 bg-card p-6 rounded-lg shadow-sm">
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-3">
                       <button
                         onClick={() => router.back()}
-                        className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                        className="p-2 hover:bg-muted rounded-full transition-colors"
                       >
                         <ArrowLeft className="w-5 h-5" />
                       </button>
@@ -225,10 +225,10 @@ const CreateDropshipableProductPage = () => {
                           <Truck className="w-6 h-6 text-primary" />
                         </div>
                         <div>
-                          <h1 className="text-xl font-semibold text-gray-900">
+                          <h1 className="text-xl font-semibold text-foreground">
                             {t("create_dropshipable_product")}
                           </h1>
-                          <p className="text-sm text-gray-500">
+                          <p className="text-sm text-muted-foreground">
                             {t("create_dropshipable_product_description")}
                           </p>
                         </div>
@@ -279,17 +279,17 @@ const CreateDropshipableProductPage = () => {
                   {/* Search Results */}
                   {searchResults.length > 0 && (
                     <div className="mb-6">
-                      <h3 className="text-lg font-medium text-gray-900 mb-4">
+                      <h3 className="text-lg font-medium text-foreground mb-4">
                         {t("search_results")} ({searchResults.length})
                       </h3>
                       <div className="space-y-3">
                         {searchResults.map((product: any) => (
                           <div
                             key={product.id}
-                            className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-primary/30 transition-colors"
+                            className="flex items-center justify-between p-4 border border-border rounded-lg hover:border-primary/30 transition-colors"
                           >
                             <div className="flex items-center gap-4">
-                              <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden relative">
+                              <div className="w-16 h-16 bg-muted rounded-lg flex items-center justify-center overflow-hidden relative">
                                 {product.existingProductImages?.[0]?.image ? (
                                   (() => {
                                     const imageSrc = product.existingProductImages[0].image;
@@ -317,23 +317,23 @@ const CreateDropshipableProductPage = () => {
                                     );
                                   })()
                                 ) : (
-                                  <div className="text-gray-400 text-xs text-center">
+                                  <div className="text-muted-foreground text-xs text-center">
                                     {t("no_image")}
                                   </div>
                                 )}
                               </div>
                               <div>
-                                <h4 className="font-medium text-gray-900">
+                                <h4 className="font-medium text-foreground">
                                   {product.productName}
                                 </h4>
-                                <p className="text-sm text-gray-500">
+                                <p className="text-sm text-muted-foreground">
                                   SKU: {product.skuNo}
                                 </p>
-                                <p className="text-sm text-gray-500">
+                                <p className="text-sm text-muted-foreground">
                                   {t("price")}: ${product.productPrice || product.product_productPrice?.[0]?.productPrice || "0.00"}
                                 </p>
                                 {product.category && (
-                                  <p className="text-sm text-gray-500">
+                                  <p className="text-sm text-muted-foreground">
                                     {t("category")}: {product.category.name || product.category.categoryName}
                                   </p>
                                 )}
@@ -369,7 +369,7 @@ const CreateDropshipableProductPage = () => {
 
                   {searchTerm && searchResults.length === 0 && !isSearching && (
                     <div className="text-center py-8">
-                      <div className="text-gray-500 mb-4">
+                      <div className="text-muted-foreground mb-4">
                         <Search className="w-12 h-12 mx-auto mb-2 opacity-50" />
                         <p>{t("no_products_found")}</p>
                         <p className="text-sm">{t("try_different_search_term")}</p>
@@ -387,14 +387,14 @@ const CreateDropshipableProductPage = () => {
       {/* Product View Modal */}
       {showViewModal && viewProduct && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+          <div className="bg-card rounded-lg p-6 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">
+              <h3 className="text-lg font-semibold text-foreground">
                 {t("product_details")}
               </h3>
               <button
                 onClick={handleCloseViewModal}
-                className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+                className="p-1 hover:bg-muted rounded-full transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -403,7 +403,7 @@ const CreateDropshipableProductPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Product Images */}
               <div>
-                <h4 className="font-medium text-gray-900 mb-2">{t("product_images")}</h4>
+                <h4 className="font-medium text-foreground mb-2">{t("product_images")}</h4>
                 <div className="grid grid-cols-2 gap-2">
                   {viewProduct.existingProductImages?.map((image: any, index: number) => {
                     const imageSrc = image.image;
@@ -413,7 +413,7 @@ const CreateDropshipableProductPage = () => {
                       !imageSrc.includes("puremoon.s3.amazonaws.com");
                     
                     return (
-                      <div key={index} className="aspect-square bg-gray-100 rounded-lg overflow-hidden relative">
+                      <div key={index} className="aspect-square bg-muted rounded-lg overflow-hidden relative">
                         {imageSrc ? (
                           isExternalUrl ? (
                             <img
@@ -433,7 +433,7 @@ const CreateDropshipableProductPage = () => {
                             />
                           )
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">
+                          <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm">
                             {t("no_image")}
                           </div>
                         )}
@@ -441,8 +441,8 @@ const CreateDropshipableProductPage = () => {
                     );
                   })}
                   {(!viewProduct.existingProductImages || viewProduct.existingProductImages.length === 0) && (
-                    <div className="col-span-2 aspect-video bg-gray-100 rounded-lg flex items-center justify-center">
-                      <div className="text-gray-400 text-center">
+                    <div className="col-span-2 aspect-video bg-muted rounded-lg flex items-center justify-center">
+                      <div className="text-muted-foreground text-center">
                         <div className="text-lg mb-2">📷</div>
                         <div className="text-sm">{t("no_images_available")}</div>
                       </div>
@@ -453,36 +453,36 @@ const CreateDropshipableProductPage = () => {
 
               {/* Product Details */}
               <div>
-                <h4 className="font-medium text-gray-900 mb-4">{t("product_information")}</h4>
+                <h4 className="font-medium text-foreground mb-4">{t("product_information")}</h4>
                 <div className="space-y-3">
                   <div>
-                    <span className="font-medium text-gray-700">{t("product_name")}:</span>
-                    <p className="text-gray-900">{viewProduct.productName}</p>
+                    <span className="font-medium text-muted-foreground">{t("product_name")}:</span>
+                    <p className="text-foreground">{viewProduct.productName}</p>
                   </div>
                   
                   <div>
-                    <span className="font-medium text-gray-700">{t("price")}:</span>
-                    <p className="text-gray-900">${viewProduct.productPrice || "0.00"}</p>
+                    <span className="font-medium text-muted-foreground">{t("price")}:</span>
+                    <p className="text-foreground">${viewProduct.productPrice || "0.00"}</p>
                   </div>
 
                   {viewProduct.offerPrice && viewProduct.offerPrice !== viewProduct.productPrice && (
                     <div>
-                      <span className="font-medium text-gray-700">{t("offer_price")}:</span>
+                      <span className="font-medium text-muted-foreground">{t("offer_price")}:</span>
                       <p className="text-success font-medium">${viewProduct.offerPrice}</p>
                     </div>
                   )}
                   
                   {viewProduct.category && (
                     <div>
-                      <span className="font-medium text-gray-700">{t("category")}:</span>
-                      <p className="text-gray-900">{viewProduct.category.name || viewProduct.category.categoryName}</p>
+                      <span className="font-medium text-muted-foreground">{t("category")}:</span>
+                      <p className="text-foreground">{viewProduct.category.name || viewProduct.category.categoryName}</p>
                     </div>
                   )}
                   
                   {viewProduct.brand && (
                     <div>
-                      <span className="font-medium text-gray-700">{t("brand")}:</span>
-                      <p className="text-gray-900">{viewProduct.brand.brandName}</p>
+                      <span className="font-medium text-muted-foreground">{t("brand")}:</span>
+                      <p className="text-foreground">{viewProduct.brand.brandName}</p>
                     </div>
                   )}
                 </div>
@@ -491,8 +491,8 @@ const CreateDropshipableProductPage = () => {
                 {/* Description */}
                 {viewProduct.description && (
                   <div className="mt-4">
-                    <span className="font-medium text-gray-700 mb-2 block">{t("description")}:</span>
-                    <div className="text-gray-900 text-sm whitespace-pre-wrap">
+                    <span className="font-medium text-muted-foreground mb-2 block">{t("description")}:</span>
+                    <div className="text-foreground text-sm whitespace-pre-wrap">
                       {parseDescription(viewProduct.description)}
                     </div>
                   </div>
@@ -501,8 +501,8 @@ const CreateDropshipableProductPage = () => {
                 {/* Short Description */}
                 {viewProduct.shortDescription && (
                   <div className="mt-4">
-                    <span className="font-medium text-gray-700 mb-2 block">{t("short_description")}:</span>
-                    <p className="text-gray-900 text-sm">{viewProduct.shortDescription}</p>
+                    <span className="font-medium text-muted-foreground mb-2 block">{t("short_description")}:</span>
+                    <p className="text-foreground text-sm">{viewProduct.shortDescription}</p>
                   </div>
                 )}
               </div>

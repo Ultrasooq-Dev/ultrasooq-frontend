@@ -135,20 +135,20 @@ const MyOrdersPage = () => {
       case "CANCELLED":
         return "bg-destructive/10 text-destructive";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-muted text-foreground";
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-muted">
       <div className="w-full px-6 py-8 lg:px-12">
         {/* Breadcrumb */}
         <nav className="mb-8">
-          <ol className="flex items-center space-x-2 text-sm text-gray-600">
+          <ol className="flex items-center space-x-2 text-sm text-muted-foreground">
             <li>
               <Link
                 href="/home"
-                className="transition-colors hover:text-gray-900"
+                className="transition-colors hover:text-foreground"
                 dir={langDir}
               >
                 {t("home")}
@@ -156,7 +156,7 @@ const MyOrdersPage = () => {
             </li>
             <li className="flex items-center">
               <span className="mx-2">/</span>
-              <span className="font-medium text-gray-900">
+              <span className="font-medium text-foreground">
                 {t("my_orders")}
               </span>
             </li>
@@ -168,13 +168,13 @@ const MyOrdersPage = () => {
           <div className="flex items-center justify-between">
             <div>
               <h1
-                className="flex items-center gap-3 text-3xl font-bold text-gray-900"
+                className="flex items-center gap-3 text-3xl font-bold text-foreground"
                 dir={langDir}
               >
                 <ShoppingBag className="h-8 w-8 text-primary" />
                 {t("my_orders")}
               </h1>
-              <p className="mt-2 text-gray-600" dir={langDir}>
+              <p className="mt-2 text-muted-foreground" dir={langDir}>
                 Track and manage your orders
               </p>
             </div>
@@ -200,7 +200,7 @@ const MyOrdersPage = () => {
               <CardContent className="space-y-6">
                 {/* Order Status Filter */}
                 <div>
-                  <h3 className="mb-3 flex items-center gap-2 font-semibold text-gray-900">
+                  <h3 className="mb-3 flex items-center gap-2 font-semibold text-foreground">
                     <Package className="h-4 w-4" />
                     {t("order_status")}
                   </h3>
@@ -268,7 +268,7 @@ const MyOrdersPage = () => {
 
                 <div className="border-t pt-6">
                   {/* Order Time Filter */}
-                  <h3 className="mb-3 flex items-center gap-2 font-semibold text-gray-900">
+                  <h3 className="mb-3 flex items-center gap-2 font-semibold text-foreground">
                     <Calendar className="h-4 w-4" />
                     {t("order_time")}
                   </h3>
@@ -364,7 +364,7 @@ const MyOrdersPage = () => {
               <CardContent className="p-6">
                 <div className="flex gap-4">
                   <div className="relative flex-1">
-                    <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
+                    <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-muted-foreground" />
                     <Input
                       type="text"
                       placeholder={t("search_orders")}
@@ -405,11 +405,11 @@ const MyOrdersPage = () => {
                 ))
               ) : !ordersQuery?.data?.data?.length ? (
                 <Card className="p-12 text-center">
-                  <Package className="mx-auto mb-4 h-16 w-16 text-gray-400" />
-                  <h3 className="mb-2 text-lg font-semibold text-gray-900">
+                  <Package className="mx-auto mb-4 h-16 w-16 text-muted-foreground" />
+                  <h3 className="mb-2 text-lg font-semibold text-foreground">
                     {t("no_orders_found")}
                   </h3>
-                  <p className="text-gray-600">
+                  <p className="text-muted-foreground">
                     No orders match your current filters
                   </p>
                 </Card>
@@ -420,7 +420,7 @@ const MyOrdersPage = () => {
                       <CardContent className="p-6">
                         <div className="flex items-start gap-4">
                           {/* Product Image */}
-                          <div className="flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-lg bg-gray-100">
+                          <div className="flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-lg bg-muted">
                             {/* Check for product image from productPrice (regular orders) or product (RFQ orders) */}
                             {item.orderProduct_productPrice
                               ?.productPrice_product?.productImages?.[0]
@@ -447,7 +447,7 @@ const MyOrdersPage = () => {
                                 className="h-full w-full rounded-lg object-cover"
                               />
                             ) : (
-                              <Package className="h-8 w-8 text-gray-400" />
+                              <Package className="h-8 w-8 text-muted-foreground" />
                             )}
                           </div>
 
@@ -455,13 +455,13 @@ const MyOrdersPage = () => {
                           <div className="min-w-0 flex-1">
                             <div className="flex items-start justify-between">
                               <div className="flex-1">
-                                <h3 className="mb-2 line-clamp-2 text-lg font-semibold text-gray-900">
+                                <h3 className="mb-2 line-clamp-2 text-lg font-semibold text-foreground">
                                   {item.orderProduct_productPrice
                                     ?.productPrice_product?.productName ||
                                     item.orderProduct_product?.productName ||
                                     "Unknown Product"}
                                 </h3>
-                                <div className="mb-3 flex items-center gap-4 text-sm text-gray-600">
+                                <div className="mb-3 flex items-center gap-4 text-sm text-muted-foreground">
                                   <span>
                                     Order #{item.orderProduct_order?.orderNo || "N/A"}
                                   </span>
@@ -480,7 +480,7 @@ const MyOrdersPage = () => {
                                     {getStatusIcon(item.orderProductStatus)}
                                     {item.orderProductStatus || "PENDING"}
                                   </Badge>
-                                  <span className="text-sm text-gray-500">
+                                  <span className="text-sm text-muted-foreground">
                                     {item.orderProductDate
                                       ? new Date(
                                           item.orderProductDate,

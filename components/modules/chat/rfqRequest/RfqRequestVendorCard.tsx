@@ -43,15 +43,15 @@ const VendorCard: React.FC<VendorCardProps> = ({
       type="button"
       onClick={onClick}
       className={cn(
-        "group relative flex w-full items-start gap-1.5 rounded-lg border-2 bg-white p-1.5 text-left transition-all duration-200",
+        "group relative flex w-full items-start gap-1.5 rounded-lg border-2 bg-card p-1.5 text-left transition-all duration-200",
         isSelected
-          ? "border-dark-orange bg-white shadow-md shadow-orange-100/50"
-          : "border-gray-200 hover:border-gray-300 hover:shadow-sm",
+          ? "border-dark-orange bg-card shadow-md shadow-orange-100/50"
+          : "border-border hover:border-border hover:shadow-sm",
       )}
     >
       {/* Profile Picture with Status Indicator */}
       <div className="relative flex-shrink-0">
-        <div className="relative h-8 w-8 overflow-hidden rounded-full border border-white shadow-sm ring-0.5 ring-gray-100 group-hover:ring-gray-200">
+        <div className="relative h-8 w-8 overflow-hidden rounded-full border border-white shadow-sm ring-0.5 ring-gray-100 group-hover:ring-border">
           <Image
             src={profilePicture || AvatarPlaceholder}
             alt={name || "Vendor"}
@@ -77,14 +77,14 @@ const VendorCard: React.FC<VendorCardProps> = ({
       <div className="flex min-w-0 flex-1 flex-col gap-0.5">
         {/* Vendor Name */}
         <div className="flex items-center justify-between gap-2">
-          <h4 className="truncate text-xs font-semibold text-gray-900 group-hover:text-dark-orange transition-colors">
+          <h4 className="truncate text-xs font-semibold text-foreground group-hover:text-dark-orange transition-colors">
             {name || "Unknown Vendor"}
           </h4>
         </div>
 
         {/* Offer Price */}
         <div className="flex items-center gap-1">
-          <span className="text-[9px] font-medium text-gray-500 whitespace-nowrap">Offer Price:</span>
+          <span className="text-[9px] font-medium text-muted-foreground whitespace-nowrap">Offer Price:</span>
           {hasPrice ? (
             <span className="inline-flex items-center gap-0.5 rounded bg-success/5 px-1 py-0.5 text-[10px] font-bold text-success ring-0.5 ring-green-200">
               <svg className="h-2 w-2" fill="currentColor" viewBox="0 0 20 20">
@@ -94,17 +94,17 @@ const VendorCard: React.FC<VendorCardProps> = ({
               {currency.symbol}{offerPrice}
             </span>
           ) : (
-            <span className="text-[9px] font-medium text-gray-400">Not quoted yet</span>
+            <span className="text-[9px] font-medium text-muted-foreground">Not quoted yet</span>
           )}
         </div>
 
         {/* Last Message Preview */}
         {hasMessage && (
           <div className="mt-0.5 space-y-0.5">
-            <p className="line-clamp-2 text-[9px] text-gray-600">
+            <p className="line-clamp-2 text-[9px] text-muted-foreground">
               {vendor.lastUnreadMessage.content}
             </p>
-            <div className="flex items-center gap-1 text-[8px] text-gray-400">
+            <div className="flex items-center gap-1 text-[8px] text-muted-foreground">
               <svg className="h-2 w-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
@@ -115,7 +115,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
 
         {/* Action Hint */}
         {!hasMessage && !hasPrice && (
-          <div className="mt-0.5 flex items-center gap-1 text-[9px] text-gray-400">
+          <div className="mt-0.5 flex items-center gap-1 text-[9px] text-muted-foreground">
             <svg className="h-2 w-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
             </svg>

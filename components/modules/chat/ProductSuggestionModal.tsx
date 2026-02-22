@@ -229,13 +229,13 @@ const ProductSuggestionModal: React.FC<ProductSuggestionModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" onClick={onClose}>
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
+      <div className="bg-card rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
         {/* Header */}
-        <div className="p-4 border-b border-gray-200 flex items-center justify-between flex-shrink-0">
+        <div className="p-4 border-b border-border flex items-center justify-between flex-shrink-0">
           <h2 className="text-base font-semibold">{t("suggest_alternative_products") || "Suggest Alternative Products"}</h2>
           <button 
             onClick={onClose} 
-            className="text-gray-500 hover:text-gray-700 p-1 rounded hover:bg-gray-100"
+            className="text-muted-foreground hover:text-muted-foreground p-1 rounded hover:bg-muted"
             type="button"
           >
             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -246,8 +246,8 @@ const ProductSuggestionModal: React.FC<ProductSuggestionModalProps> = ({
 
         {/* Main requested product preview */}
         {mainProduct && (
-          <div className="flex items-center gap-3 border-b border-gray-200 bg-gray-50 px-4 py-3 flex-shrink-0">
-            <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded border border-gray-300 bg-white">
+          <div className="flex items-center gap-3 border-b border-border bg-muted px-4 py-3 flex-shrink-0">
+            <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded border border-border bg-card">
               <Image
                 src={mainProduct.image || PlaceholderImage}
                 alt={mainProduct.name}
@@ -256,10 +256,10 @@ const ProductSuggestionModal: React.FC<ProductSuggestionModalProps> = ({
               />
             </div>
             <div className="min-w-0">
-              <p className="truncate text-sm font-semibold text-gray-900">
+              <p className="truncate text-sm font-semibold text-foreground">
                 {mainProduct.name}
               </p>
-              <p className="text-[11px] text-gray-500">
+              <p className="text-[11px] text-muted-foreground">
                 Requested qty: {mainProduct.quantity}
                 {mainProduct.offerPrice
                   ? ` • ${currency.symbol}${mainProduct.offerPrice}`
@@ -270,13 +270,13 @@ const ProductSuggestionModal: React.FC<ProductSuggestionModalProps> = ({
         )}
 
         {/* Search */}
-        <div className="p-3 border-b border-gray-200 flex-shrink-0">
+        <div className="p-3 border-b border-border flex-shrink-0">
           <input
             type="text"
             placeholder="Search products..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full px-3 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
             dir={langDir}
           />
         </div>
@@ -290,8 +290,8 @@ const ProductSuggestionModal: React.FC<ProductSuggestionModalProps> = ({
               ))}
             </div>
           ) : products.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-12 text-gray-500">
-              <svg className="h-12 w-12 mb-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
+              <svg className="h-12 w-12 mb-3 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
               </svg>
               <p className="text-sm">{t("no_products_found") || "No products found"}</p>
@@ -319,7 +319,7 @@ const ProductSuggestionModal: React.FC<ProductSuggestionModalProps> = ({
                       className={`flex items-center justify-between rounded-lg border px-3 py-2 text-xs transition-all ${
                         isSelected
                           ? "border-primary bg-primary/5"
-                          : "border-gray-200 bg-white hover:border-gray-300"
+                          : "border-border bg-card hover:border-border"
                       }`}
                       onClick={() => toggleProductSelection(product.id, defaultPrice)}
                     >
@@ -329,12 +329,12 @@ const ProductSuggestionModal: React.FC<ProductSuggestionModalProps> = ({
                           className={`flex h-4 w-4 items-center justify-center rounded border text-[10px] ${
                             isSelected
                               ? "border-primary bg-primary text-white"
-                              : "border-gray-400 bg-white text-transparent"
+                              : "border-gray-400 bg-card text-transparent"
                           }`}
                         >
                           ✓
                         </div>
-                        <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded border border-gray-300 bg-gray-50">
+                        <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded border border-border bg-muted">
                           <Image
                             src={imageUrl && validator.isURL(imageUrl) ? imageUrl : PlaceholderImage}
                             alt={product.productName || "Product"}
@@ -343,10 +343,10 @@ const ProductSuggestionModal: React.FC<ProductSuggestionModalProps> = ({
                           />
                         </div>
                         <div className="min-w-0">
-                          <p className="truncate text-xs font-semibold text-gray-900">
+                          <p className="truncate text-xs font-semibold text-foreground">
                             {product.productName}
                           </p>
-                          <p className="text-[10px] text-gray-500">
+                          <p className="text-[10px] text-muted-foreground">
                             {currency.symbol}
                             {defaultPrice}
                           </p>
@@ -361,7 +361,7 @@ const ProductSuggestionModal: React.FC<ProductSuggestionModalProps> = ({
                         {isSelected && (
                           <>
                             <div className="flex flex-col gap-0.5">
-                              <span className="text-[9px] text-gray-500">
+                              <span className="text-[9px] text-muted-foreground">
                                 {t("price") || "Price"}
                               </span>
                               <input
@@ -371,13 +371,13 @@ const ProductSuggestionModal: React.FC<ProductSuggestionModalProps> = ({
                                 onChange={(e) =>
                                   updateProductPrice(product.id, e.target.value)
                                 }
-                                className="w-24 rounded border border-gray-300 px-2 py-1 text-[10px] focus:outline-none focus:ring-1 focus:ring-primary"
+                                className="w-24 rounded border border-border px-2 py-1 text-[10px] focus:outline-none focus:ring-1 focus:ring-primary"
                                 step="0.01"
                                 min="0"
                               />
                             </div>
                             <div className="flex flex-col gap-0.5">
-                              <span className="text-[9px] text-gray-500">
+                              <span className="text-[9px] text-muted-foreground">
                                 {t("quantity") || "Qty"}
                               </span>
                               <input
@@ -387,7 +387,7 @@ const ProductSuggestionModal: React.FC<ProductSuggestionModalProps> = ({
                                 onChange={(e) =>
                                   updateProductQuantity(product.id, e.target.value)
                                 }
-                                className="w-16 rounded border border-gray-300 px-2 py-1 text-[10px] focus:outline-none focus:ring-1 focus:ring-primary"
+                                className="w-16 rounded border border-border px-2 py-1 text-[10px] focus:outline-none focus:ring-1 focus:ring-primary"
                                 min="1"
                               />
                             </div>
@@ -403,7 +403,7 @@ const ProductSuggestionModal: React.FC<ProductSuggestionModalProps> = ({
                   <button
                     onClick={loadMore}
                     disabled={loading}
-                    className="px-4 py-2 text-xs border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50"
+                    className="px-4 py-2 text-xs border border-border rounded-lg hover:bg-muted disabled:opacity-50"
                     type="button"
                   >
                     {loading ? (t("loading") || "Loading...") : "Load More"}
@@ -415,14 +415,14 @@ const ProductSuggestionModal: React.FC<ProductSuggestionModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="p-3 border-t border-gray-200 flex items-center justify-between flex-shrink-0">
-          <span className="text-xs text-gray-600">
+        <div className="p-3 border-t border-border flex items-center justify-between flex-shrink-0">
+          <span className="text-xs text-muted-foreground">
             {selectedProducts.size} {t("products_selected") || "products selected"} • {totalCount} {t("total") || "total"}
           </span>
           <div className="flex gap-2">
             <button
               onClick={onClose}
-              className="px-3 py-1.5 text-xs border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              className="px-3 py-1.5 text-xs border border-border rounded-lg hover:bg-muted transition-colors"
               type="button"
             >
               {t("cancel") || "Cancel"}
@@ -430,7 +430,7 @@ const ProductSuggestionModal: React.FC<ProductSuggestionModalProps> = ({
             <button
               onClick={handleSubmit}
               disabled={selectedProducts.size === 0}
-              className="px-3 py-1.5 text-xs bg-primary text-white rounded-lg hover:bg-primary/90 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+              className="px-3 py-1.5 text-xs bg-primary text-white rounded-lg hover:bg-primary/90 disabled:bg-muted disabled:cursor-not-allowed transition-colors"
               type="button"
             >
               {t("suggest_products") || "Suggest Products"} ({selectedProducts.size})

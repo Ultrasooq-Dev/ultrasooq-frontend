@@ -157,21 +157,21 @@ const TrendingCategories: React.FC<TrendingCategoriesProps> = ({
       );
     }
     return (
-      <MdOutlineImageNotSupported className="h-8 w-8 text-gray-400" />
+      <MdOutlineImageNotSupported className="h-8 w-8 text-muted-foreground" />
     );
   };
 
   if (mainCategoriesQuery.isLoading) {
     return (
       <div className="flex items-center justify-center py-8">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600"></div>
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-border border-t-blue-600"></div>
       </div>
     );
   }
 
   if (mainCategoriesQuery.isError || !mainCategories.length) {
     return (
-      <div className="text-center py-8 text-gray-500" translate="no">
+      <div className="text-center py-8 text-muted-foreground" translate="no">
         {t("no_categories_available")}
       </div>
     );
@@ -214,7 +214,7 @@ const TrendingCategories: React.FC<TrendingCategoriesProps> = ({
                 key={category.id}
                 onClick={() => handleMainCategoryClick(category)}
                 className={cn(
-                  "category-card group relative overflow-hidden rounded-2xl bg-white text-center transition-all duration-300 h-40 shadow-md border border-gray-100",
+                  "category-card group relative overflow-hidden rounded-2xl bg-card text-center transition-all duration-300 h-40 shadow-md border border-border",
                   category.children && category.children.length > 0 
                     ? "hover:shadow-xl hover:-translate-y-1 cursor-pointer" 
                     : "cursor-default opacity-75"
@@ -238,7 +238,7 @@ const TrendingCategories: React.FC<TrendingCategoriesProps> = ({
                   
                   {category.children && category.children.length > 0 && (
                     <div className="flex justify-center">
-                      <div className="rounded-full p-1.5 bg-white/20 text-white backdrop-blur-sm group-hover:bg-white/30 transition-colors">
+                      <div className="rounded-full p-1.5 bg-card/20 text-white backdrop-blur-sm group-hover:bg-card/30 transition-colors">
                         {expandedMainCategory === category.id ? (
                           <ChevronDown className="h-4 w-4" />
                         ) : (
@@ -258,13 +258,13 @@ const TrendingCategories: React.FC<TrendingCategoriesProps> = ({
             {mainCategories.length > 2 && (
               <>
                 <div className="absolute left-0 top-1/2 -translate-y-1/2 z-20 pointer-events-none">
-                  <div className="hidden sm:flex items-center justify-center w-10 h-10 rounded-full bg-white/90 shadow-lg">
-                    <ChevronRight className="h-5 w-5 text-gray-600 rotate-180" />
+                  <div className="hidden sm:flex items-center justify-center w-10 h-10 rounded-full bg-card/90 shadow-lg">
+                    <ChevronRight className="h-5 w-5 text-muted-foreground rotate-180" />
                   </div>
                 </div>
                 <div className="absolute right-0 top-1/2 -translate-y-1/2 z-20 pointer-events-none">
-                  <div className="hidden sm:flex items-center justify-center w-10 h-10 rounded-full bg-white/90 shadow-lg">
-                    <ChevronRight className="h-5 w-5 text-gray-600" />
+                  <div className="hidden sm:flex items-center justify-center w-10 h-10 rounded-full bg-card/90 shadow-lg">
+                    <ChevronRight className="h-5 w-5 text-muted-foreground" />
                   </div>
                 </div>
               </>
@@ -281,7 +281,7 @@ const TrendingCategories: React.FC<TrendingCategoriesProps> = ({
                   key={category.id}
                   onClick={() => handleMainCategoryClick(category)}
                   className={cn(
-                    "category-card group relative shrink-0 snap-start overflow-hidden rounded-2xl bg-white text-center transition-all duration-300 shadow-md border border-gray-100",
+                    "category-card group relative shrink-0 snap-start overflow-hidden rounded-2xl bg-card text-center transition-all duration-300 shadow-md border border-border",
                     "w-40 h-32 sm:w-48 sm:h-36",
                     category.children && category.children.length > 0 
                       ? "active:scale-95 cursor-pointer" 
@@ -306,7 +306,7 @@ const TrendingCategories: React.FC<TrendingCategoriesProps> = ({
                     
                     {category.children && category.children.length > 0 && (
                       <div className="flex justify-center">
-                        <div className="rounded-full p-1 bg-white/20 text-white backdrop-blur-sm">
+                        <div className="rounded-full p-1 bg-card/20 text-white backdrop-blur-sm">
                           {expandedMainCategory === category.id ? (
                             <ChevronDown className="h-3 w-3" />
                           ) : (
@@ -332,7 +332,7 @@ const TrendingCategories: React.FC<TrendingCategoriesProps> = ({
                 <Grid3X3 className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
               </div>
               <div className="text-left">
-                <h4 className="text-sm sm:text-lg font-bold text-gray-900" data-dynamic="true">
+                <h4 className="text-sm sm:text-lg font-bold text-foreground" data-dynamic="true">
                   {mainCategories.find((cat: any) => cat.id === expandedMainCategory)?.name}
                 </h4>
               </div>
@@ -340,7 +340,7 @@ const TrendingCategories: React.FC<TrendingCategoriesProps> = ({
                 variant="ghost"
                 size="sm"
                 onClick={() => setExpandedMainCategory(null)}
-                className="ml-1 sm:ml-2 rounded-full bg-white/70 hover:bg-white text-gray-600 hover:text-gray-900 h-7 w-7 sm:h-8 sm:w-8 p-0 transition-all"
+                className="ml-1 sm:ml-2 rounded-full bg-card/70 hover:bg-card text-muted-foreground hover:text-foreground h-7 w-7 sm:h-8 sm:w-8 p-0 transition-all"
               >
                 <ChevronDown className="h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
@@ -356,7 +356,7 @@ const TrendingCategories: React.FC<TrendingCategoriesProps> = ({
                   key={subCategory.id}
                   onClick={() => handleSubCategoryClick(subCategory, mainCategories.find((cat: any) => cat.id === expandedMainCategory)!)}
                   className={cn(
-                    "category-card group relative overflow-hidden rounded-xl bg-white text-center transition-all duration-300 h-28 lg:h-32 shadow-md border border-gray-100",
+                    "category-card group relative overflow-hidden rounded-xl bg-card text-center transition-all duration-300 h-28 lg:h-32 shadow-md border border-border",
                     subCategory.children && subCategory.children.length > 0 
                       ? "hover:shadow-lg hover:-translate-y-0.5 cursor-pointer" 
                       : "cursor-default opacity-75"
@@ -375,7 +375,7 @@ const TrendingCategories: React.FC<TrendingCategoriesProps> = ({
                     
                     {subCategory.children && subCategory.children.length > 0 && (
                       <div className="flex justify-center">
-                        <div className="rounded-full p-1 bg-white/20 text-white backdrop-blur-sm group-hover:bg-white/30 transition-colors">
+                        <div className="rounded-full p-1 bg-card/20 text-white backdrop-blur-sm group-hover:bg-card/30 transition-colors">
                           {expandedSubCategory === subCategory.id ? (
                             <ChevronDown className="h-3 w-3" />
                           ) : (
@@ -403,7 +403,7 @@ const TrendingCategories: React.FC<TrendingCategoriesProps> = ({
                     key={subCategory.id}
                     onClick={() => handleSubCategoryClick(subCategory, mainCategories.find((cat: any) => cat.id === expandedMainCategory)!)}
                     className={cn(
-                      "category-card group relative shrink-0 snap-start overflow-hidden rounded-xl bg-white text-center transition-all duration-300 shadow-md border border-gray-100",
+                      "category-card group relative shrink-0 snap-start overflow-hidden rounded-xl bg-card text-center transition-all duration-300 shadow-md border border-border",
                       "w-32 h-24 sm:w-36 sm:h-28",
                       subCategory.children && subCategory.children.length > 0 
                         ? "active:scale-95 cursor-pointer" 
@@ -423,7 +423,7 @@ const TrendingCategories: React.FC<TrendingCategoriesProps> = ({
                       
                       {subCategory.children && subCategory.children.length > 0 && (
                         <div className="flex justify-center">
-                          <div className="rounded-full p-0.5 bg-white/20 text-white backdrop-blur-sm">
+                          <div className="rounded-full p-0.5 bg-card/20 text-white backdrop-blur-sm">
                             {expandedSubCategory === subCategory.id ? (
                               <ChevronDown className="h-2.5 w-2.5" />
                             ) : (
@@ -449,7 +449,7 @@ const TrendingCategories: React.FC<TrendingCategoriesProps> = ({
                 <Layers className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
               </div>
               <div className="text-left">
-                <h4 className="text-sm sm:text-lg font-bold text-gray-900" data-dynamic="true">
+                <h4 className="text-sm sm:text-lg font-bold text-foreground" data-dynamic="true">
                   {mainCategories
                     .find((cat: any) => cat.id === expandedMainCategory)
                     ?.children?.find((sub: any) => sub.id === expandedSubCategory)?.name}
@@ -459,7 +459,7 @@ const TrendingCategories: React.FC<TrendingCategoriesProps> = ({
                 variant="ghost"
                 size="sm"
                 onClick={() => setExpandedSubCategory(null)}
-                className="ml-1 sm:ml-2 rounded-full bg-white/70 hover:bg-white text-gray-600 hover:text-gray-900 h-7 w-7 sm:h-8 sm:w-8 p-0 transition-all"
+                className="ml-1 sm:ml-2 rounded-full bg-card/70 hover:bg-card text-muted-foreground hover:text-foreground h-7 w-7 sm:h-8 sm:w-8 p-0 transition-all"
               >
                 <ChevronDown className="h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
@@ -481,7 +481,7 @@ const TrendingCategories: React.FC<TrendingCategoriesProps> = ({
                       .find((cat: any) => cat.id === expandedMainCategory)
                       ?.children?.find((sub: any) => sub.id === expandedSubCategory)
                   )}
-                  className="category-card group relative overflow-hidden rounded-lg bg-white text-center shadow-md border border-gray-100 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 h-20 lg:h-24"
+                  className="category-card group relative overflow-hidden rounded-lg bg-card text-center shadow-md border border-border transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 h-20 lg:h-24"
                   style={{ animationDelay: `${index * 20}ms` }}
                 >
                   <div className="absolute inset-0 rounded-lg overflow-hidden">
@@ -518,7 +518,7 @@ const TrendingCategories: React.FC<TrendingCategoriesProps> = ({
                         .find((cat: any) => cat.id === expandedMainCategory)
                         ?.children?.find((sub: any) => sub.id === expandedSubCategory)
                     )}
-                    className="category-card group relative shrink-0 snap-start overflow-hidden rounded-lg bg-white text-center shadow-md border border-gray-100 transition-all duration-300 active:scale-95 w-24 h-20"
+                    className="category-card group relative shrink-0 snap-start overflow-hidden rounded-lg bg-card text-center shadow-md border border-border transition-all duration-300 active:scale-95 w-24 h-20"
                     style={{ animationDelay: `${index * 20}ms` }}
                   >
                     <div className="absolute inset-0 rounded-lg overflow-hidden">

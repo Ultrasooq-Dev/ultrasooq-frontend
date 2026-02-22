@@ -14,7 +14,7 @@ const VendorOperations = () => {
 
   return (
     <>
-      <div className="flex w-full flex-wrap rounded-sm border border-solid border-gray-300">
+      <div className="flex w-full flex-wrap rounded-sm border border-solid border-border">
         <Operations onSelect={(operation) => setSelectedOperation(operation)} />
 
         <Products 
@@ -29,8 +29,8 @@ const VendorOperations = () => {
         />
 
         {selectedOperation == "admin_n_support" && selectedProduct ? (
-          <div className="w-full border-r border-solid border-gray-300 lg:w-[67%]">
-            <div className="flex min-h-[55px] w-full items-center justify-between border-b border-solid border-gray-300 px-[10px] py-[10px] text-base font-normal text-foreground">
+          <div className="w-full border-r border-solid border-border lg:w-[67%]">
+            <div className="flex min-h-[55px] w-full items-center justify-between border-b border-solid border-border px-[10px] py-[10px] text-base font-normal text-foreground">
               <span>Admin & Support</span>
             </div>
           </div>
@@ -51,16 +51,16 @@ const VendorOperations = () => {
         ) : null}
 
         {selectedOperation == "rate_n_review" && selectedProduct ? (
-          <div className="w-full border-r border-solid border-gray-300 lg:w-[67%]">
-            <div className="flex min-h-[55px] w-full items-center justify-between border-b border-solid border-gray-300 px-[10px] py-[10px] text-base font-normal text-foreground">
+          <div className="w-full border-r border-solid border-border lg:w-[67%]">
+            <div className="flex min-h-[55px] w-full items-center justify-between border-b border-solid border-border px-[10px] py-[10px] text-base font-normal text-foreground">
               <span>Rate & Review</span>
             </div>
           </div>
         ) : null}
 
         {selectedOperation == "complains" && selectedProduct ? (
-          <div className="w-full border-r border-solid border-gray-300 lg:w-[67%]">
-            <div className="flex min-h-[55px] w-full items-center justify-between border-b border-solid border-gray-300 px-[10px] py-[10px] text-base font-normal text-foreground">
+          <div className="w-full border-r border-solid border-border lg:w-[67%]">
+            <div className="flex min-h-[55px] w-full items-center justify-between border-b border-solid border-border px-[10px] py-[10px] text-base font-normal text-foreground">
               <span>Complains</span>
             </div>
           </div>

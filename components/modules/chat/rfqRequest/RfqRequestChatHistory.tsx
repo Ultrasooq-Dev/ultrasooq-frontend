@@ -161,7 +161,7 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
                             {chat?.attachments.map((file: any, index: any) => (
                               <div
                                 key={index}
-                                className="mb-2 flex items-center justify-between rounded-md border border-gray-300 p-2"
+                                className="mb-2 flex items-center justify-between rounded-md border border-border p-2"
                               >
                                 <div className="flex-1">
                                   {file?.fileType.includes("imag") &&
@@ -218,7 +218,7 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
                         ) : null}
 
                         {chat?.rfqProductPriceRequest ? (
-                          <div className="mt-3 rounded-xl border-2 border-gray-200 bg-gray-50 p-4 shadow-md">
+                          <div className="mt-3 rounded-xl border-2 border-border bg-muted p-4 shadow-md">
                             <div className="mb-3 flex items-center justify-between">
                               <div className="flex items-center gap-2">
                                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-success shadow-sm">
@@ -238,13 +238,13 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
                                 </div>
                                 <div>
                                   <p
-                                    className="text-xs font-medium text-gray-500"
+                                    className="text-xs font-medium text-muted-foreground"
                                     translate="no"
                                   >
                                     {t("requested_price")}
                                   </p>
                                   <p
-                                    className="text-lg font-bold text-gray-900"
+                                    className="text-lg font-bold text-foreground"
                                     translate="no"
                                   >
                                     {currency.symbol}
@@ -335,19 +335,19 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
                             </div>
                             
                             {/* Table-like structure for suggested products */}
-                            <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                            <div className="bg-card rounded-lg border border-border overflow-hidden">
                               {/* Header Row */}
-                              <div className="grid grid-cols-[1fr_auto] gap-4 px-4 py-2 bg-gray-50 border-b border-gray-200">
-                                <div className="text-xs font-semibold text-gray-700" translate="no">
+                              <div className="grid grid-cols-[1fr_auto] gap-4 px-4 py-2 bg-muted border-b border-border">
+                                <div className="text-xs font-semibold text-muted-foreground" translate="no">
                                   {t("component") || "Component"}
                                 </div>
-                                <div className="text-xs font-semibold text-gray-700 text-center" translate="no">
+                                <div className="text-xs font-semibold text-muted-foreground text-center" translate="no">
                                   {t("selection") || "Selection"}
                                 </div>
                               </div>
                               
                               {/* Product Rows */}
-                              <div className="divide-y divide-gray-200">
+                              <div className="divide-y divide-border">
                                 {chat.rfqSuggestedProducts
                                   .filter((suggestion: any) => (suggestion.quantity ?? 0) > 0)
                                   .map((suggestion: any) => {
@@ -371,11 +371,11 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
                                   return (
                                     <div
                                       key={suggestion.id}
-                                      className="grid grid-cols-[1fr_auto] gap-4 px-4 py-3 hover:bg-gray-50 transition-colors"
+                                      className="grid grid-cols-[1fr_auto] gap-4 px-4 py-3 hover:bg-muted transition-colors"
                                     >
                                       {/* Left Side: Product Information */}
                                       <div className="flex items-center gap-3 min-w-0">
-                                        <div className="relative w-12 h-12 flex-shrink-0 rounded overflow-hidden border border-gray-300 bg-gray-100">
+                                        <div className="relative w-12 h-12 flex-shrink-0 rounded overflow-hidden border border-border bg-muted">
                                           <Image
                                             src={imageUrl && validator.isURL(imageUrl) ? imageUrl : PlaceholderImage}
                                             alt={product?.productName || "Product"}
@@ -384,10 +384,10 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
                                           />
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                          <p className="text-sm font-medium text-gray-900 truncate mb-0.5">
+                                          <p className="text-sm font-medium text-foreground truncate mb-0.5">
                                             {product?.productName || "-"}
                                           </p>
-                                          <p className="text-xs text-gray-600">
+                                          <p className="text-xs text-muted-foreground">
                                             {currency.symbol}{displayPrice}
                                             {suggestion.quantity > 1 && ` × ${suggestion.quantity}`}
                                           </p>
@@ -497,7 +497,7 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
                             {chat?.attachments.map((file: any, index: any) => (
                               <div
                                 key={index}
-                                className="mb-2 flex items-center justify-between rounded-md border border-gray-300 p-2"
+                                className="mb-2 flex items-center justify-between rounded-md border border-border p-2"
                               >
                                 <div className="flex-1">
                                   {file?.fileType.includes("imag") &&
@@ -541,7 +541,7 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
                             : ""}
                         </span>
                         {chat?.content ? (
-                          <div className="inline-block w-auto rounded-xl border border-gray-300 bg-gray-200 p-3 text-left text-sm text-gray-800 shadow-sm">
+                          <div className="inline-block w-auto rounded-xl border border-border bg-muted p-3 text-left text-sm text-foreground shadow-sm">
                             <p
                               dangerouslySetInnerHTML={{
                                 __html: sanitizeHtml(chat?.content || ''),
@@ -551,7 +551,7 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
                         ) : null}
 
                         {chat?.rfqProductPriceRequest ? (
-                          <div className="mt-3 rounded-xl border-2 border-gray-200 bg-gray-50 p-4 shadow-md">
+                          <div className="mt-3 rounded-xl border-2 border-border bg-muted p-4 shadow-md">
                             <div className="mb-3 flex items-center justify-between">
                               <div className="flex items-center gap-2">
                                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-success shadow-sm">
@@ -571,13 +571,13 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
                                 </div>
                                 <div>
                                   <p
-                                    className="text-xs font-medium text-gray-500"
+                                    className="text-xs font-medium text-muted-foreground"
                                     translate="no"
                                   >
                                     {t("requested_price")}
                                   </p>
                                   <p
-                                    className="text-lg font-bold text-gray-900"
+                                    className="text-lg font-bold text-foreground"
                                     translate="no"
                                   >
                                     {currency.symbol}
@@ -723,19 +723,19 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
                             </div>
                             
                             {/* Table-like structure for suggested products */}
-                            <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                            <div className="bg-card rounded-lg border border-border overflow-hidden">
                               {/* Header Row */}
-                              <div className="grid grid-cols-[1fr_auto] gap-4 px-4 py-2 bg-gray-50 border-b border-gray-200">
-                                <div className="text-xs font-semibold text-gray-700" translate="no">
+                              <div className="grid grid-cols-[1fr_auto] gap-4 px-4 py-2 bg-muted border-b border-border">
+                                <div className="text-xs font-semibold text-muted-foreground" translate="no">
                                   {t("component") || "Component"}
                                 </div>
-                                <div className="text-xs font-semibold text-gray-700 text-center" translate="no">
+                                <div className="text-xs font-semibold text-muted-foreground text-center" translate="no">
                                   {t("selection") || "Selection"}
                                 </div>
                               </div>
                               
                               {/* Product Rows */}
-                              <div className="divide-y divide-gray-200">
+                              <div className="divide-y divide-border">
                                 {chat.rfqSuggestedProducts.map((suggestion: any) => {
                                   const product = suggestion.suggestedProduct;
                                   const imageUrl = product?.product_productPrice?.[0]?.productPrice_productSellerImage?.[0]?.image ||
@@ -757,11 +757,11 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
                                   return (
                                     <div
                                       key={suggestion.id}
-                                      className="grid grid-cols-[1fr_auto] gap-4 px-4 py-3 hover:bg-gray-50 transition-colors"
+                                      className="grid grid-cols-[1fr_auto] gap-4 px-4 py-3 hover:bg-muted transition-colors"
                                     >
                                       {/* Left Side: Product Information */}
                                       <div className="flex items-center gap-3 min-w-0">
-                                        <div className="relative w-12 h-12 flex-shrink-0 rounded overflow-hidden border border-gray-300 bg-gray-100">
+                                        <div className="relative w-12 h-12 flex-shrink-0 rounded overflow-hidden border border-border bg-muted">
                                           <Image
                                             src={imageUrl && validator.isURL(imageUrl) ? imageUrl : PlaceholderImage}
                                             alt={product?.productName || "Product"}
@@ -770,10 +770,10 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
                                           />
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                          <p className="text-sm font-medium text-gray-900 truncate mb-0.5">
+                                          <p className="text-sm font-medium text-foreground truncate mb-0.5">
                                             {product?.productName || "-"}
                                           </p>
-                                          <p className="text-xs text-gray-600">
+                                          <p className="text-xs text-muted-foreground">
                                             {currency.symbol}{displayPrice}
                                             {suggestion.quantity > 1 && ` × ${suggestion.quantity}`}
                                           </p>

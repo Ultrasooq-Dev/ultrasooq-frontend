@@ -644,7 +644,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
               {isLoggedIn && (
                 <button
                   onClick={openSidebar}
-                  className="flex h-8 w-8 items-center justify-center rounded-lg transition-all hover:bg-white/10 active:scale-95"
+                  className="flex h-8 w-8 items-center justify-center rounded-lg transition-all hover:bg-card/10 active:scale-95"
                   title="Open Menu"
                   aria-label="Open navigation menu"
                 >
@@ -672,7 +672,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
               {/* Wishlist */}
               <Link
                 href="/wishlist"
-                className="relative rounded-lg p-2 transition-all hover:bg-white/10 active:scale-95"
+                className="relative rounded-lg p-2 transition-all hover:bg-card/10 active:scale-95"
                 aria-label="Wishlist"
               >
                 <Image
@@ -699,7 +699,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
               {/* Cart */}
               <Link
                 href="/cart"
-                className="relative rounded-lg p-2 transition-all hover:bg-white/10 active:scale-95"
+                className="relative rounded-lg p-2 transition-all hover:bg-card/10 active:scale-95"
                 aria-label="Shopping cart"
               >
                 <Image
@@ -765,7 +765,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                                 ? "bg-warning"
                                 : userStatus === "REJECT"
                                   ? "bg-destructive"
-                                  : "bg-gray-500",
+                                  : "bg-muted-foreground",
                           )}
                         />
                       )}
@@ -784,7 +784,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                       }}
                     >
                       {userStatus && userStatus !== "ACTIVE" && (
-                        <div className="border-b border-gray-200 px-2 py-1.5 text-xs text-gray-500">
+                        <div className="border-b border-border px-2 py-1.5 text-xs text-muted-foreground">
                           Status:{" "}
                           <span className="font-medium">{userStatus}</span>
                         </div>
@@ -939,7 +939,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
               ) : (
                 <Link
                   href="/login"
-                  className="flex items-center gap-1.5 rounded-lg bg-white/10 px-3 py-1.5 transition-all hover:bg-white/20 active:scale-95"
+                  className="flex items-center gap-1.5 rounded-lg bg-card/10 px-3 py-1.5 transition-all hover:bg-card/20 active:scale-95"
                 >
                   <Image
                     src={UnAuthUserIcon}
@@ -961,7 +961,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
             <div className="relative flex-1">
               <input
                 type="text"
-                className={`h-9 w-full rounded-lg border-2 border-white/20 bg-white/95 text-sm transition-all placeholder:text-gray-400 focus:border-transparent focus:ring-2 focus:ring-primary focus:outline-none sm:h-10 sm:text-base ${
+                className={`h-9 w-full rounded-lg border-2 border-white/20 bg-card/95 text-sm transition-all placeholder:text-muted-foreground focus:border-transparent focus:ring-2 focus:ring-primary focus:outline-none sm:h-10 sm:text-base ${
                   langDir === "rtl" ? "pr-3 pl-10" : "pr-10 pl-3"
                 }`}
                 placeholder={t("global_search_placeholder")}
@@ -976,7 +976,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                 aria-label="Search products"
               />
               <svg
-                className={`pointer-events-none absolute top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400 sm:h-5 sm:w-5 ${
+                className={`pointer-events-none absolute top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground sm:h-5 sm:w-5 ${
                   langDir === "rtl" ? "left-3" : "right-3"
                 }`}
                 fill="none"
@@ -1066,7 +1066,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                 onClick={() => {
                   router.push("/home");
                 }}
-                className={`flex items-center gap-1.5 rounded-lg px-3 py-2 whitespace-nowrap transition-all sm:gap-2 sm:px-4 sm:py-2.5 ${pathname === "/home" ? "bg-white font-semibold text-primary shadow-md" : "bg-white/10 text-white hover:bg-white/20 active:scale-95"}`}
+                className={`flex items-center gap-1.5 rounded-lg px-3 py-2 whitespace-nowrap transition-all sm:gap-2 sm:px-4 sm:py-2.5 ${pathname === "/home" ? "bg-card font-semibold text-primary shadow-md" : "bg-card/10 text-white hover:bg-card/20 active:scale-95"}`}
               >
                 {langDir === "rtl" ? (
                   <>
@@ -1117,7 +1117,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                     <Link
                       key={item.id}
                       href={item.href}
-                      className={`flex items-center gap-1.5 rounded-lg px-3 py-2 whitespace-nowrap transition-all sm:gap-2 sm:px-4 sm:py-2.5 ${isActiveNav ? "bg-white font-semibold text-primary shadow-md" : "bg-white/10 text-white hover:bg-white/20 active:scale-95"}`}
+                      className={`flex items-center gap-1.5 rounded-lg px-3 py-2 whitespace-nowrap transition-all sm:gap-2 sm:px-4 sm:py-2.5 ${isActiveNav ? "bg-card font-semibold text-primary shadow-md" : "bg-card/10 text-white hover:bg-card/20 active:scale-95"}`}
                     >
                       {langDir === "rtl" ? (
                         <>
@@ -1168,7 +1168,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
       <header
         className={cn(
           "bg-dark-cyan relative sticky top-0 z-50 hidden w-full",
-          !isLoggedIn && "border-b border-solid border-gray-300 shadow-xl",
+          !isLoggedIn && "border-b border-solid border-border shadow-xl",
           "transition-all duration-300 md:block",
           ((pathname === "/trending" || pathname === "/buygroup") &&
             hasCartItems &&
@@ -1373,7 +1373,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                     <div className="relative max-w-[55%] flex-1 md:max-w-[50%] lg:max-w-[65%] xl:max-w-[75%]">
                       <input
                         type="text"
-                        className={`form-control h-9 w-full rounded-lg border-2 border-white/20 text-sm text-black transition-all placeholder:text-gray-400 focus:border-transparent focus:ring-2 focus:ring-primary focus:outline-none md:h-10 md:text-base ${
+                        className={`form-control h-9 w-full rounded-lg border-2 border-white/20 text-sm text-foreground transition-all placeholder:text-muted-foreground focus:border-transparent focus:ring-2 focus:ring-primary focus:outline-none md:h-10 md:text-base ${
                           langDir === "rtl" ? "pr-4 pl-12" : "pr-12 pl-4"
                         }`}
                         placeholder={t("global_search_placeholder")}
@@ -1389,7 +1389,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                         aria-label="Search products"
                       />
                       <svg
-                        className={`pointer-events-none absolute top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400 ${
+                        className={`pointer-events-none absolute top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground ${
                           langDir === "rtl" ? "left-4" : "right-4"
                         }`}
                         fill="none"
@@ -1484,7 +1484,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                     <div className="relative max-w-[55%] flex-1 md:max-w-[50%] lg:max-w-[65%] xl:max-w-[75%]">
                       <input
                         type="text"
-                        className={`form-control h-9 w-full rounded-lg border-2 border-white/20 text-sm text-black transition-all placeholder:text-gray-400 focus:border-transparent focus:ring-2 focus:ring-primary focus:outline-none md:h-10 md:text-base ${
+                        className={`form-control h-9 w-full rounded-lg border-2 border-white/20 text-sm text-foreground transition-all placeholder:text-muted-foreground focus:border-transparent focus:ring-2 focus:ring-primary focus:outline-none md:h-10 md:text-base ${
                           langDir === "rtl" ? "pr-4 pl-12" : "pr-12 pl-4"
                         }`}
                         placeholder={t("global_search_placeholder")}
@@ -1500,7 +1500,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                         aria-label="Search products"
                       />
                       <svg
-                        className={`pointer-events-none absolute top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400 ${
+                        className={`pointer-events-none absolute top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground ${
                           langDir === "rtl" ? "left-4" : "right-4"
                         }`}
                         fill="none"
@@ -1560,7 +1560,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                   <li className="relative">
                     <Link
                       href="/wishlist"
-                      className="relative flex items-center justify-center rounded-lg p-2 transition-all hover:bg-white/10 active:scale-95"
+                      className="relative flex items-center justify-center rounded-lg p-2 transition-all hover:bg-card/10 active:scale-95"
                       aria-label="Wishlist"
                     >
                       <Image
@@ -1587,7 +1587,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                   <li className="relative">
                     <Link
                       href="/cart"
-                      className="relative flex items-center justify-center rounded-lg p-2 transition-all hover:bg-white/10 active:scale-95"
+                      className="relative flex items-center justify-center rounded-lg p-2 transition-all hover:bg-card/10 active:scale-95"
                       aria-label="Shopping cart"
                     >
                       <Image
@@ -1656,7 +1656,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                                       ? "bg-warning"
                                       : userStatus === "REJECT"
                                         ? "bg-destructive"
-                                        : "bg-gray-500",
+                                        : "bg-muted-foreground",
                                 )}
                                 title={`Status: ${userStatus}`}
                               />
@@ -1677,7 +1677,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                           >
                             {/* Status indicator - only show for non-active users */}
                             {userStatus && userStatus !== "ACTIVE" && (
-                              <div className="border-b border-gray-200 px-2 py-1.5 text-xs text-gray-500">
+                              <div className="border-b border-border px-2 py-1.5 text-xs text-muted-foreground">
                                 Status:{" "}
                                 <span
                                   className={`font-medium ${
@@ -1687,7 +1687,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                                         ? "text-warning"
                                         : userStatus === "REJECT"
                                           ? "text-destructive"
-                                          : "text-gray-600"
+                                          : "text-muted-foreground"
                                   }`}
                                 >
                                   {userStatus}
@@ -1922,7 +1922,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                       <div dir={langDir} className="flex items-center gap-2">
                         <Link
                           href="/login"
-                          className="flex items-center justify-center gap-2 rounded-lg bg-white/10 px-4 py-2 transition-all hover:bg-white/20 active:scale-95"
+                          className="flex items-center justify-center gap-2 rounded-lg bg-card/10 px-4 py-2 transition-all hover:bg-card/20 active:scale-95"
                           translate="no"
                         >
                           <Image
@@ -2072,7 +2072,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
         </div>
 
         {isLoggedIn && (
-          <div className="w-full border-b border-solid border-gray-300 bg-white">
+          <div className="w-full border-b border-solid border-border bg-card">
             <div className="w-full px-8 lg:px-12">
               <div className="relative flex flex-row flex-wrap md:flex-nowrap">
                 <div className="flex w-full flex-1 flex-wrap gap-x-3 md:w-auto md:gap-x-5">

@@ -38,7 +38,7 @@ const VendorInformationSection: React.FC<VendorInformationSectionProps> = ({
   }, [vendor?.userSocialLink?.length]);
 
   return (
-    <div className="w-full border-b-2 border-dashed border-gray-200 py-4">
+    <div className="w-full border-b-2 border-dashed border-border py-4">
       <div className="flex w-full flex-wrap items-center justify-between pb-5">
         <h2 className="left-8 text-2xl font-semibold text-color-dark" dir={langDir} translate="no">
           {t("contact_information")}
@@ -48,7 +48,7 @@ const VendorInformationSection: React.FC<VendorInformationSectionProps> = ({
         <div className="w-full">
           <div className="flex w-full flex-wrap py-3.5">
             <div className="mr-1 flex w-2/12 items-center justify-start sm:mr-0">
-              <span className="text-sm font-normal capitalize leading-4 text-gray-500" dir={langDir} translate="no">
+              <span className="text-sm font-normal capitalize leading-4 text-muted-foreground" dir={langDir} translate="no">
                 {t("email")}:
               </span>
             </div>
@@ -60,7 +60,7 @@ const VendorInformationSection: React.FC<VendorInformationSectionProps> = ({
           </div>
           <div className="flex w-full flex-wrap py-3.5">
             <div className="mr-1 flex w-2/12 items-center justify-start sm:mr-0">
-              <span className="text-sm font-normal capitalize leading-4 text-gray-500" dir={langDir} translate="no">
+              <span className="text-sm font-normal capitalize leading-4 text-muted-foreground" dir={langDir} translate="no">
                 {t("phone")}:
               </span>
             </div>
@@ -72,7 +72,7 @@ const VendorInformationSection: React.FC<VendorInformationSectionProps> = ({
           </div>
           <div className="flex w-full flex-wrap py-3.5">
             <div className="mr-1 flex w-2/12 items-center justify-start sm:mr-0">
-              <span className="text-sm font-normal capitalize leading-4 text-gray-500" dir={langDir} translate="no">
+              <span className="text-sm font-normal capitalize leading-4 text-muted-foreground" dir={langDir} translate="no">
                 {t("social_links")}:
               </span>
             </div>

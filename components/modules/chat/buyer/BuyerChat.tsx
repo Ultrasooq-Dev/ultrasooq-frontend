@@ -84,9 +84,9 @@ const BuyerChat: React.FC<BuyerChatProps> = ({
           </div>
         ) : !memoizedRfqQuotesProducts.length ? (
           <div className="flex h-full flex-col items-center justify-center p-8">
-            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
+            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
               <svg
-                className="h-8 w-8 text-gray-400"
+                className="h-8 w-8 text-muted-foreground"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -99,7 +99,7 @@ const BuyerChat: React.FC<BuyerChatProps> = ({
                 />
               </svg>
             </div>
-            <p className="text-center text-sm font-medium text-gray-500">
+            <p className="text-center text-sm font-medium text-muted-foreground">
               {t("no_product_found")}
             </p>
           </div>
@@ -120,11 +120,11 @@ const BuyerChat: React.FC<BuyerChatProps> = ({
                     "cursor-pointer rounded-lg border-2 p-3 transition-all hover:shadow-md",
                     selectedRfqId === item?.id
                       ? "border-warning bg-warning/5"
-                      : "border-gray-200 bg-white hover:border-gray-300",
+                      : "border-border bg-card hover:border-border",
                   )}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg border border-gray-200 bg-gray-100">
+                    <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg border border-border bg-muted">
                       <Image
                         src={imageUrl}
                         alt="Product"
@@ -133,13 +133,13 @@ const BuyerChat: React.FC<BuyerChatProps> = ({
                       />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h4 className="font-semibold text-gray-900 truncate">
+                      <h4 className="font-semibold text-foreground truncate">
                         RFQ{String(item?.id || "").padStart(5, "0")}
                       </h4>
-                      <p className="mt-1 text-xs text-gray-500">
+                      <p className="mt-1 text-xs text-muted-foreground">
                         {item?.productCount} {t("products")}
                       </p>
-                      <p className="mt-1 text-xs text-gray-400">
+                      <p className="mt-1 text-xs text-muted-foreground">
                         {formatDate(item?.rfqDate)}
                       </p>
                     </div>

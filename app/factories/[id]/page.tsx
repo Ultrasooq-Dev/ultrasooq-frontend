@@ -51,7 +51,7 @@ import RelatedServices from "@/components/modules/trending/RelatedServices";
 const AddToCustomizeForm = dynamic(
   () => import("@/components/modules/factories/AddToCustomizeForm"),
   {
-    loading: () => <div className="animate-pulse h-64 bg-gray-200 rounded-lg" />,
+    loading: () => <div className="animate-pulse h-64 bg-muted rounded-lg" />,
     ssr: false,
   },
 );
@@ -608,7 +608,7 @@ const ProductDetailsPage = () => {
       {/* Modern Product Details Page */}
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
         {/* Main Product Section */}
-        <div className="bg-white">
+        <div className="bg-card">
           <div className="container mx-auto max-w-7xl px-4 py-8 lg:px-8">
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12">
               {/* Product Images - Left Side */}
@@ -769,11 +769,11 @@ const ProductDetailsPage = () => {
             <div className="w-full">
               <Tabs onValueChange={(e) => setActiveTab(e)} value={activeTab}>
                 {/* Clean Modern Tabs */}
-                <div className="bg-white">
+                <div className="bg-card">
                   <TabsList className="flex w-full items-center justify-start gap-1 bg-transparent p-0">
                     <TabsTrigger
                       value="description"
-                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold whitespace-nowrap text-gray-600 transition-all duration-300 hover:border-b-gray-300 hover:bg-gray-50 hover:text-gray-800 data-[state=active]:border-0 data-[state=active]:border-b-orange-500 data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:text-warning sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
+                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold whitespace-nowrap text-muted-foreground transition-all duration-300 hover:border-b-gray-300 hover:bg-muted hover:text-foreground data-[state=active]:border-0 data-[state=active]:border-b-orange-500 data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:text-warning sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
                       dir={langDir}
                       translate="no"
                     >
@@ -799,7 +799,7 @@ const ProductDetailsPage = () => {
                     </TabsTrigger>
                     <TabsTrigger
                       value="specification"
-                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold whitespace-nowrap text-gray-600 transition-all duration-300 hover:border-b-gray-300 hover:bg-gray-50 hover:text-gray-800 data-[state=active]:border-0 data-[state=active]:border-b-orange-500 data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:text-warning sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
+                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold whitespace-nowrap text-muted-foreground transition-all duration-300 hover:border-b-gray-300 hover:bg-muted hover:text-foreground data-[state=active]:border-0 data-[state=active]:border-b-orange-500 data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:text-warning sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
                       dir={langDir}
                       translate="no"
                     >
@@ -825,7 +825,7 @@ const ProductDetailsPage = () => {
                     </TabsTrigger>
                     <TabsTrigger
                       value="reviews"
-                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold whitespace-nowrap text-gray-600 transition-all duration-300 hover:border-b-gray-300 hover:bg-gray-50 hover:text-gray-800 data-[state=active]:border-0 data-[state=active]:border-b-orange-500 data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:text-warning sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
+                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold whitespace-nowrap text-muted-foreground transition-all duration-300 hover:border-b-gray-300 hover:bg-muted hover:text-foreground data-[state=active]:border-0 data-[state=active]:border-b-orange-500 data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:text-warning sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
                       dir={langDir}
                       translate="no"
                     >
@@ -849,7 +849,7 @@ const ProductDetailsPage = () => {
                     </TabsTrigger>
                     <TabsTrigger
                       value="qanda"
-                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold whitespace-nowrap text-gray-600 transition-all duration-300 hover:border-b-gray-300 hover:bg-gray-50 hover:text-gray-800 data-[state=active]:border-0 data-[state=active]:border-b-orange-500 data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:text-warning sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
+                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold whitespace-nowrap text-muted-foreground transition-all duration-300 hover:border-b-gray-300 hover:bg-muted hover:text-foreground data-[state=active]:border-0 data-[state=active]:border-b-orange-500 data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:text-warning sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
                       dir={langDir}
                       translate="no"
                     >
@@ -875,7 +875,7 @@ const ProductDetailsPage = () => {
                     </TabsTrigger>
                     <TabsTrigger
                       value="vendor"
-                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold whitespace-nowrap text-gray-600 transition-all duration-300 hover:border-b-gray-300 hover:bg-gray-50 hover:text-gray-800 data-[state=active]:border-0 data-[state=active]:border-b-orange-500 data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:text-warning sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
+                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold whitespace-nowrap text-muted-foreground transition-all duration-300 hover:border-b-gray-300 hover:bg-muted hover:text-foreground data-[state=active]:border-0 data-[state=active]:border-b-orange-500 data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:text-warning sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
                       dir={langDir}
                       translate="no"
                     >
@@ -899,7 +899,7 @@ const ProductDetailsPage = () => {
                     </TabsTrigger>
                     <TabsTrigger
                       value="services"
-                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold whitespace-nowrap text-gray-600 transition-all duration-300 hover:border-b-gray-300 hover:bg-gray-50 hover:text-gray-800 data-[state=active]:border-0 data-[state=active]:border-b-orange-500 data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:text-warning sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
+                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold whitespace-nowrap text-muted-foreground transition-all duration-300 hover:border-b-gray-300 hover:bg-muted hover:text-foreground data-[state=active]:border-0 data-[state=active]:border-b-orange-500 data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:text-warning sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
                       dir={langDir}
                       translate="no"
                     >
@@ -960,7 +960,7 @@ const ProductDetailsPage = () => {
                               ) {
                                 return (
                                   <div
-                                    className="leading-relaxed text-gray-700"
+                                    className="leading-relaxed text-muted-foreground"
                                     dir={langDir}
                                     translate="no"
                                   >
@@ -991,7 +991,7 @@ const ProductDetailsPage = () => {
                                 if (textContent.trim()) {
                                   return (
                                     <div
-                                      className="leading-relaxed text-gray-700"
+                                      className="leading-relaxed text-muted-foreground"
                                       dir={langDir}
                                       translate="no"
                                       dangerouslySetInnerHTML={{
@@ -1024,7 +1024,7 @@ const ProductDetailsPage = () => {
                                 } catch (error) {
                                   return (
                                     <div
-                                      className="text-gray-600"
+                                      className="text-muted-foreground"
                                       dir={langDir}
                                       translate="no"
                                     >
@@ -1037,7 +1037,7 @@ const ProductDetailsPage = () => {
 
                             return (
                               <div
-                                className="text-gray-600"
+                                className="text-muted-foreground"
                                 dir={langDir}
                                 translate="no"
                               >
@@ -1049,9 +1049,9 @@ const ProductDetailsPage = () => {
                       </div>
                     ) : (
                       <div className="flex min-h-[200px] flex-col items-center justify-center text-center">
-                        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
+                        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
                           <svg
-                            className="h-8 w-8 text-gray-400"
+                            className="h-8 w-8 text-muted-foreground"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -1065,7 +1065,7 @@ const ProductDetailsPage = () => {
                           </svg>
                         </div>
                         <h3
-                          className="mb-2 text-lg font-medium text-gray-900"
+                          className="mb-2 text-lg font-medium text-foreground"
                           dir={langDir}
                           translate="no"
                         >
@@ -1074,7 +1074,7 @@ const ProductDetailsPage = () => {
                             : t("no_description_available")}
                         </h3>
                         <p
-                          className="max-w-md text-gray-500"
+                          className="max-w-md text-muted-foreground"
                           dir={langDir}
                           translate="no"
                         >
@@ -1093,9 +1093,9 @@ const ProductDetailsPage = () => {
                     {!productDetails?.product_productSpecification?.length ||
                     productDetails?.isDropshipped ? (
                       <div className="flex min-h-[200px] flex-col items-center justify-center text-center">
-                        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
+                        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
                           <svg
-                            className="h-8 w-8 text-gray-400"
+                            className="h-8 w-8 text-muted-foreground"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -1109,7 +1109,7 @@ const ProductDetailsPage = () => {
                           </svg>
                         </div>
                         <h3
-                          className="mb-2 text-lg font-medium text-gray-900"
+                          className="mb-2 text-lg font-medium text-foreground"
                           dir={langDir}
                           translate="no"
                         >
@@ -1118,7 +1118,7 @@ const ProductDetailsPage = () => {
                             : t("no_specification_available")}
                         </h3>
                         <p
-                          className="max-w-md text-gray-500"
+                          className="max-w-md text-muted-foreground"
                           dir={langDir}
                           translate="no"
                         >
@@ -1130,14 +1130,14 @@ const ProductDetailsPage = () => {
                     ) : (
                       <div className="space-y-6">
                         <h2
-                          className="text-xl font-semibold text-gray-900"
+                          className="text-xl font-semibold text-foreground"
                           dir={langDir}
                           translate="no"
                         >
                           {t("technical_specifications")}
                         </h2>
-                        <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
-                          <div className="divide-y divide-gray-100">
+                        <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+                          <div className="divide-y divide-border">
                             {productDetails?.product_productSpecification?.map(
                               (
                                 item: {
@@ -1149,13 +1149,13 @@ const ProductDetailsPage = () => {
                               ) => (
                                 <div
                                   key={item?.id}
-                                  className={`p-6 ${index % 2 === 0 ? "bg-white" : "bg-gray-50/50"}`}
+                                  className={`p-6 ${index % 2 === 0 ? "bg-card" : "bg-muted/50"}`}
                                 >
                                   <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                                    <dt className="text-sm font-semibold text-gray-900">
+                                    <dt className="text-sm font-semibold text-foreground">
                                       {item?.label}
                                     </dt>
-                                    <dd className="text-sm text-gray-600">
+                                    <dd className="text-sm text-muted-foreground">
                                       {item?.specification}
                                     </dd>
                                   </div>
@@ -1174,7 +1174,7 @@ const ProductDetailsPage = () => {
                   <div className="min-h-[400px] p-8 sm:p-10 lg:p-12">
                     <div className="space-y-4">
                       <h2
-                        className="text-xl font-semibold text-gray-900"
+                        className="text-xl font-semibold text-foreground"
                         dir={langDir}
                         translate="no"
                       >
@@ -1207,7 +1207,7 @@ const ProductDetailsPage = () => {
                   <div className="min-h-[400px] p-8 sm:p-10 lg:p-12">
                     <div className="space-y-4">
                       <h2
-                        className="text-xl font-semibold text-gray-900"
+                        className="text-xl font-semibold text-foreground"
                         dir={langDir}
                         translate="no"
                       >
@@ -1227,7 +1227,7 @@ const ProductDetailsPage = () => {
                   <div className="min-h-[400px] p-8 sm:p-10 lg:p-12">
                     <div className="space-y-4">
                       <h2
-                        className="text-xl font-semibold text-gray-900"
+                        className="text-xl font-semibold text-foreground"
                         dir={langDir}
                         translate="no"
                       >
@@ -1288,10 +1288,10 @@ const ProductDetailsPage = () => {
         >
           {/* Dialog Header */}
           <div
-            className="flex items-center justify-between border-b border-gray-200 px-6 py-4"
+            className="flex items-center justify-between border-b border-border px-6 py-4"
             dir={langDir}
           >
-            <DialogTitle className="flex items-center gap-2 text-lg font-semibold text-gray-900">
+            <DialogTitle className="flex items-center gap-2 text-lg font-semibold text-foreground">
               <svg
                 className="h-5 w-5 text-destructive"
                 fill="none"
@@ -1309,7 +1309,7 @@ const ProductDetailsPage = () => {
             </DialogTitle>
             <Button
               onClick={onCancelRemove}
-              className="h-8 w-8 rounded-full bg-gray-100 p-0 text-gray-600 shadow-none hover:bg-gray-200"
+              className="h-8 w-8 rounded-full bg-muted p-0 text-muted-foreground shadow-none hover:bg-muted"
             >
               <IoCloseSharp size={18} />
             </Button>
@@ -1318,7 +1318,7 @@ const ProductDetailsPage = () => {
           {/* Dialog Content */}
           <div className="px-6 py-6">
             <p
-              className="mb-6 text-center text-gray-700"
+              className="mb-6 text-center text-muted-foreground"
               dir={langDir}
               translate="no"
             >
@@ -1329,7 +1329,7 @@ const ProductDetailsPage = () => {
               <Button
                 type="button"
                 onClick={onCancelRemove}
-                className="min-w-[120px] rounded-lg border-2 border-gray-300 bg-white px-6 py-2.5 font-medium text-gray-700 shadow-sm transition-all hover:border-gray-400 hover:bg-gray-50"
+                className="min-w-[120px] rounded-lg border-2 border-border bg-card px-6 py-2.5 font-medium text-muted-foreground shadow-sm transition-all hover:border-border hover:bg-muted"
                 dir={langDir}
                 translate="no"
               >

@@ -640,12 +640,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
   };
 
   return (
-    <div className="group relative bg-white rounded-lg sm:rounded-xl shadow-sm sm:shadow-lg border border-gray-100 hover:shadow-xl hover:border-gray-200 transition-all duration-300 overflow-hidden h-full flex flex-row sm:flex-col items-stretch">
+    <div className="group relative bg-card rounded-lg sm:rounded-xl shadow-sm sm:shadow-lg border border-border hover:shadow-xl hover:border-border transition-all duration-300 overflow-hidden h-full flex flex-row sm:flex-col items-stretch">
       {/* Selection Checkbox */}
       {isSelectable ? (
         <div className="absolute left-1.5 sm:left-3 top-1.5 sm:top-3 z-20">
           <Checkbox
-            className="border-2 border-gray-300 data-[state=checked]:bg-primary! data-[state=checked]:border-primary! scale-75 sm:scale-100"
+            className="border-2 border-border data-[state=checked]:bg-primary! data-[state=checked]:border-primary! scale-75 sm:scale-100"
             checked={selectedIds?.includes(item.id)}
             onCheckedChange={(checked) => onSelectedId?.(checked, item.id)}
           />
@@ -655,7 +655,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       {/* Time / Coming Soon Badge */}
       {timeLeft ? (
         <div className="absolute right-1.5 sm:right-3 top-1.5 sm:top-3 z-20">
-          <div className={`px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium ${saleNotStarted ? "bg-warning" : timeLeft === t("expired") ? "bg-gray-500" : "bg-destructive"} text-white`}>
+          <div className={`px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium ${saleNotStarted ? "bg-warning" : timeLeft === t("expired") ? "bg-muted-foreground" : "bg-destructive"} text-white`}>
             <span dir={langDir} translate="no">{timeLeft}</span>
           </div>
         </div>
@@ -683,7 +683,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           ) : null;
         })()}
 
-        <div className="relative w-full h-full sm:h-48 lg:h-56 bg-gray-50 overflow-hidden min-h-[140px]">
+        <div className="relative w-full h-full sm:h-48 lg:h-56 bg-muted overflow-hidden min-h-[140px]">
           {item?.productImage && (validator.isURL(item.productImage) || item.productImage.startsWith('data:image/')) ? (
             // Check if the image is from an allowed domain (S3 bucket) or is a data URL
             item.productImage.includes('puremoon.s3.amazonaws.com') || item.productImage.startsWith('data:image/') ? (
@@ -721,7 +721,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           {/* Eye-catching ad ribbon when sale not started */}
           {saleNotStarted ? (
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3">
-              <div className="bg-white/90 text-gray-900 text-[11px] sm:text-xs font-semibold inline-flex items-center gap-2 px-2.5 py-1.5 rounded-full shadow-md">
+              <div className="bg-card/90 text-foreground text-[11px] sm:text-xs font-semibold inline-flex items-center gap-2 px-2.5 py-1.5 rounded-full shadow-md">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-warning">
                   <path fillRule="evenodd" d="M12 2.25a.75.75 0 01.75.75v.61A8.25 8.25 0 1120.39 11.25h.61a.75.75 0 010 1.5h-.61A8.25 8.25 0 1112.75 3.61v-.61a.75.75 0 01.75-.75zM12 7.5a.75.75 0 01.75.75v3.69l2.28 2.28a.75.75 0 11-1.06 1.06l-2.5-2.5a.75.75 0 01-.22-.53V8.25A.75.75 0 0112 7.5z" clipRule="evenodd" />
                 </svg>
@@ -739,7 +739,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             <Button
               variant="secondary"
               size="sm"
-              className="h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-white/90 backdrop-blur-xs shadow-lg hover:bg-white hover:scale-110 transition-all duration-200 [&_svg]:scale-75 sm:[&_svg]:scale-100"
+              className="h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-card/90 backdrop-blur-xs shadow-lg hover:bg-card hover:scale-110 transition-all duration-200 [&_svg]:scale-75 sm:[&_svg]:scale-100"
               onClick={() => handleAddToCart(-1, "add")}
             >
               <ShoppingIcon />
@@ -747,21 +747,21 @@ const ProductCard: React.FC<ProductCardProps> = ({
           ) : null}
           <Link
             href={`/trending/${item.id}`}
-            className="h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-white/90 backdrop-blur-xs shadow-lg hover:bg-white hover:scale-110 transition-all duration-200 flex items-center justify-center"
+            className="h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-card/90 backdrop-blur-xs shadow-lg hover:bg-card hover:scale-110 transition-all duration-200 flex items-center justify-center"
           >
-            <FiEye size={14} className="text-gray-700 sm:w-4 sm:h-4" />
+            <FiEye size={14} className="text-muted-foreground sm:w-4 sm:h-4" />
           </Link>
           {haveAccessToken ? (
             <Button
               variant="secondary"
               size="sm"
-              className="h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-white/90 backdrop-blur-xs shadow-lg hover:bg-white hover:scale-110 transition-all duration-200"
+              className="h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-card/90 backdrop-blur-xs shadow-lg hover:bg-card hover:scale-110 transition-all duration-200"
               onClick={onWishlist}
             >
               {inWishlist ? (
                 <FaHeart color="#ef4444" size={12} className="sm:w-3.5 sm:h-3.5" />
               ) : (
-                <FaRegHeart size={12} className="text-gray-700 sm:w-3.5 sm:h-3.5" />
+                <FaRegHeart size={12} className="text-muted-foreground sm:w-3.5 sm:h-3.5" />
               )}
             </Button>
           ) : null}
@@ -771,7 +771,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       {/* Product Information */}
       <div className="p-2 sm:p-4 space-y-1 sm:space-y-3 flex-1 flex flex-col">
         <Link href={`/trending/${item.id}`} className="block group">
-          <h3 className="font-semibold text-gray-900 text-sm sm:text-base leading-tight line-clamp-2 group-hover:text-primary transition-colors duration-200 mb-1 sm:mb-2" dir={langDir}>
+          <h3 className="font-semibold text-foreground text-sm sm:text-base leading-tight line-clamp-2 group-hover:text-primary transition-colors duration-200 mb-1 sm:mb-2" dir={langDir}>
             {translate(item.productName)}
           </h3>
           
@@ -780,12 +780,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
             <div className="flex scale-75 sm:scale-100 origin-left">
               {calculateRatings(calculateAvgRating)}
             </div>
-            <span className="text-[10px] sm:text-sm text-gray-500 ml-0.5 sm:ml-1">
+            <span className="text-[10px] sm:text-sm text-muted-foreground ml-0.5 sm:ml-1">
               ({item.productReview?.length || 0})
             </span>
           </div>
 
-          <p className="text-gray-600 text-xs sm:text-sm line-clamp-2 mb-1 sm:mb-2" title={item.shortDescription}>
+          <p className="text-muted-foreground text-xs sm:text-sm line-clamp-2 mb-1 sm:mb-2" title={item.shortDescription}>
             {item.shortDescription}
           </p>
         </Link>
@@ -810,7 +810,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                   {currency.symbol}{calculateDiscountedPrice()}
                 </span>
                 {item.productProductPrice && Number(item.productProductPrice) > calculateDiscountedPrice() && (
-                  <span className="text-xs sm:text-sm text-gray-500 line-through">
+                  <span className="text-xs sm:text-sm text-muted-foreground line-through">
                     {currency.symbol}{item.productProductPrice}
                   </span>
                 )}
@@ -824,11 +824,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
             {productVariantTypes.map((variantType: string, index: number) => {
               return (
                 <div key={index} dir={langDir}>
-                  <label htmlFor={variantType} className="block text-xs sm:text-sm font-medium text-gray-700 mb-0.5 sm:mb-1">
+                  <label htmlFor={variantType} className="block text-xs sm:text-sm font-medium text-muted-foreground mb-0.5 sm:mb-1">
                     {variantType}
                   </label>
                   <select
-                    className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors duration-200"
+                    className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors duration-200"
                     value={selectedProductVariant?.find((variant: any) => variant.type == variantType)?.value}
                     onChange={(e) => {
                       let selectedVariants = [];
@@ -870,7 +870,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         {/* Quantity Section */}
         {!isOwnProduct && !saleNotStarted && (
           <div className="space-y-1 sm:space-y-2 mb-1 sm:mb-3">
-            <label className="block text-xs sm:text-sm font-medium text-gray-700" dir={langDir} translate="no">
+            <label className="block text-xs sm:text-sm font-medium text-muted-foreground" dir={langDir} translate="no">
               {t("quantity")}
             </label>
             <div className="flex items-center justify-center gap-1 sm:gap-2">
@@ -878,7 +878,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 type="button"
                 variant="outline"
                 size="sm"
-                className="h-6 w-6 sm:h-8 sm:w-8 rounded-full border-gray-300 hover:bg-gray-50 hover:border-gray-400 disabled:opacity-50"
+                className="h-6 w-6 sm:h-8 sm:w-8 rounded-full border-border hover:bg-muted hover:border-border disabled:opacity-50"
                 onClick={() => handleQuantity(quantity - 1, "remove")}
                 disabled={
                   quantity === 0 ||
@@ -898,7 +898,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
               <input
                 type="text"
                 value={quantity}
-                className="h-6 w-12 sm:h-8 sm:w-16 text-center text-xs sm:text-sm font-medium border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+                className="h-6 w-12 sm:h-8 sm:w-16 text-center text-xs sm:text-sm font-medium border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
                 onChange={(e) => {
                   const value = Number(e.target.value);
                   setQuantity(isNaN(value) ? productQuantity : value);
@@ -910,7 +910,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 type="button"
                 variant="outline"
                 size="sm"
-                className="h-6 w-6 sm:h-8 sm:w-8 rounded-full border-gray-300 hover:bg-gray-50 hover:border-gray-400 disabled:opacity-50"
+                className="h-6 w-6 sm:h-8 sm:w-8 rounded-full border-border hover:bg-muted hover:border-border disabled:opacity-50"
                 onClick={() => handleQuantity(quantity + 1, "add")}
                 disabled={
                   saleExpired ||
@@ -946,7 +946,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           ) : !isOwnProduct ? (
             <button
               type="button"
-              className={`w-full text-white font-semibold py-1.5 sm:py-2 px-2 sm:px-4 rounded-md sm:rounded-lg transition-all duration-200 shadow-sm sm:shadow-md disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-xs sm:text-sm ${saleNotStarted ? "bg-warning" : saleExpired || outOfStockActive ? "bg-gray-500" : "bg-primary sm:bg-linear-to-r sm:from-primary sm:to-primary/80 hover:bg-primary/90 sm:hover:from-blue-700 sm:hover:to-blue-800 sm:transform sm:hover:scale-105"}`}
+              className={`w-full text-white font-semibold py-1.5 sm:py-2 px-2 sm:px-4 rounded-md sm:rounded-lg transition-all duration-200 shadow-sm sm:shadow-md disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-xs sm:text-sm ${saleNotStarted ? "bg-warning" : saleExpired || outOfStockActive ? "bg-muted-foreground" : "bg-primary sm:bg-linear-to-r sm:from-primary sm:to-primary/80 hover:bg-primary/90 sm:hover:from-primary/90 sm:hover:to-primary/80 sm:transform sm:hover:scale-105"}`}
               onClick={() => !saleNotStarted && !saleExpired && !outOfStockActive && handleAddToCart(quantity, "add")}
               disabled={quantity == 0 || saleNotStarted || saleExpired || outOfStockActive}
               dir={langDir}
@@ -965,13 +965,13 @@ const ProductCard: React.FC<ProductCardProps> = ({
               );
               return (
                 <div className="mt-1.5 sm:mt-3 space-y-1 sm:space-y-2">
-                  <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="w-full bg-muted rounded-full h-2">
                     <div
                       className="bg-linear-to-r from-yellow-400 to-orange-500 h-2 rounded-full transition-all duration-300"
                       style={{ width: `${percentage}%` }}
                     />
                   </div>
-                  <div className="flex justify-between items-center text-sm text-gray-600">
+                  <div className="flex justify-between items-center text-sm text-muted-foreground">
                     <span translate="no">
                       {t("sold")}: {sold}
                     </span>
@@ -991,20 +991,20 @@ const ProductCard: React.FC<ProductCardProps> = ({
           ref={confirmDialogRef}
         >
           <div className="flex items-center justify-between mb-4" dir={langDir}>
-            <DialogTitle className="text-lg font-semibold text-gray-900">
+            <DialogTitle className="text-lg font-semibold text-foreground">
               {t("confirm_removal")}
             </DialogTitle>
             <Button
               onClick={onCancelRemove}
               variant="ghost"
               size="sm"
-              className="h-8 w-8 rounded-full hover:bg-gray-100"
+              className="h-8 w-8 rounded-full hover:bg-muted"
             >
               <IoCloseSharp size={18} />
             </Button>
           </div>
           <div className="text-center space-y-4">
-            <p className="text-gray-600" translate="no">
+            <p className="text-muted-foreground" translate="no">
               {t("do_you_want_to_remove_this_item_from_cart")}
             </p>
             <div className="flex gap-3 justify-center">
@@ -1034,20 +1034,20 @@ const ProductCard: React.FC<ProductCardProps> = ({
       <Dialog open={isBuygroupDisclaimerOpen} onOpenChange={setIsBuygroupDisclaimerOpen}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-xl font-bold text-gray-900 mb-4">
+            <DialogTitle className="text-xl font-bold text-foreground mb-4">
               How Buygroups Work
             </DialogTitle>
           </DialogHeader>
-          <div className="space-y-4 text-gray-700">
+          <div className="space-y-4 text-muted-foreground">
             <div>
-              <h3 className="font-semibold text-gray-900 mb-2">What is a Buygroup?</h3>
+              <h3 className="font-semibold text-foreground mb-2">What is a Buygroup?</h3>
               <p className="text-sm leading-relaxed">
                 A buygroup is a collective purchasing system where multiple customers come together to purchase products at better prices. When you book a product in a buygroup, you're reserving your spot for that item.
               </p>
             </div>
             
             <div>
-              <h3 className="font-semibold text-gray-900 mb-2">How It Works:</h3>
+              <h3 className="font-semibold text-foreground mb-2">How It Works:</h3>
               <ul className="list-disc list-inside space-y-2 text-sm leading-relaxed">
                 <li>Select the quantity you want to book</li>
                 <li>Click "Book" to reserve your items</li>
@@ -1058,7 +1058,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             </div>
 
             <div>
-              <h3 className="font-semibold text-gray-900 mb-2">Important Notes:</h3>
+              <h3 className="font-semibold text-foreground mb-2">Important Notes:</h3>
               <ul className="list-disc list-inside space-y-2 text-sm leading-relaxed">
                 <li>Your booking is a reservation, not an immediate purchase</li>
                 <li>You can cancel your booking before the buygroup closes</li>
@@ -1068,10 +1068,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
             </div>
           </div>
           
-          <div className="flex items-center justify-end gap-3 mt-6 pt-4 border-t border-gray-200">
+          <div className="flex items-center justify-end gap-3 mt-6 pt-4 border-t border-border">
             <button
               onClick={() => setIsBuygroupDisclaimerOpen(false)}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-50 transition-colors"
+              className="px-4 py-2 text-sm font-medium text-muted-foreground bg-card border border-border rounded hover:bg-muted transition-colors"
             >
               {t("cancel") || "Cancel"}
             </button>

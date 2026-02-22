@@ -561,19 +561,19 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
     // ────────────────────────────────────────────────────────────────────
     return (
       <>
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+        <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
           <div className="mb-4 flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-info/10">
               <Sparkles className="h-5 w-5 text-info" />
             </div>
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-gray-800">
+              <h3 className="text-lg font-semibold text-foreground">
                 {t("search_results") || "Search Results"}
               </h3>
               {lastSearchQuery && (
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-muted-foreground">
                   {t("results_for") || "Results for"}{" "}
-                  <span className="font-medium text-gray-700">
+                  <span className="font-medium text-muted-foreground">
                     &quot;{lastSearchQuery}&quot;
                   </span>
                 </p>
@@ -590,7 +590,7 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
                   setQuerySearchTerm("");
                   setLastSearchQuery("");
                 }}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-muted-foreground hover:text-muted-foreground"
               >
                 <X className="h-4 w-4" />
               </Button>
@@ -602,7 +602,7 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
             {isSearching && (
               <div className="flex items-center justify-center gap-2 py-6">
                 <Loader2 className="h-5 w-5 animate-spin text-info" />
-                <span className="text-sm text-gray-500">
+                <span className="text-sm text-muted-foreground">
                   {t("searching") || "Searching..."}
                 </span>
               </div>
@@ -612,7 +612,7 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
             {searchResults.length > 0 && (
               <div className="space-y-3">
                 <h4
-                  className="text-sm font-semibold text-gray-700"
+                  className="text-sm font-semibold text-muted-foreground"
                   dir={langDir}
                 >
                   {t("product_suggestion_from_ultrasooq") ||
@@ -622,9 +622,9 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
                   {searchResults.map((product) => (
                     <div
                       key={product.id}
-                      className="flex items-center gap-3 rounded-lg border border-gray-200 p-3 hover:bg-gray-50"
+                      className="flex items-center gap-3 rounded-lg border border-border p-3 hover:bg-muted"
                     >
-                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-100">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted">
                         {product.existingProductImages?.[0]?.image ? (
                           <Image
                             src={
@@ -636,18 +636,18 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
                             className="rounded-lg object-cover"
                           />
                         ) : (
-                          <Copy className="h-5 w-5 text-gray-400" />
+                          <Copy className="h-5 w-5 text-muted-foreground" />
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
                         <p
-                          className="truncate text-sm font-medium text-gray-900"
+                          className="truncate text-sm font-medium text-foreground"
                           dir={langDir}
                         >
                           {product.productName}
                         </p>
                         <p
-                          className="text-xs text-gray-400"
+                          className="text-xs text-muted-foreground"
                           dir={langDir}
                         >
                           {product.category?.name} •{" "}
@@ -680,7 +680,7 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
 
                 {/* Load more with AI */}
                 {!isAIGenerating && aiProductModels.length === 0 && (
-                  <div className="flex justify-center border-t border-gray-100 pt-3">
+                  <div className="flex justify-center border-t border-border pt-3">
                     <Button
                       onClick={() =>
                         handleAIGenerate(lastSearchQuery || "", "text")
@@ -695,7 +695,7 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
                 )}
 
                 {isAIGenerating && (
-                  <div className="flex flex-col items-center gap-2 border-t border-gray-100 pt-3">
+                  <div className="flex flex-col items-center gap-2 border-t border-border pt-3">
                     <Button
                       disabled
                       className="bg-info text-white"
@@ -719,7 +719,7 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
             {aiProductModels.length > 0 && (
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <h4 className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                  <h4 className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
                     <Sparkles className="h-4 w-4 text-info" />
                     {t("product_models_found") || "Product Models Found"}
                   </h4>
@@ -756,15 +756,15 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
                     return (
                       <div
                         key={idx}
-                        className="flex items-start justify-between gap-3 rounded-lg border border-gray-200 bg-white p-3 transition-all hover:border-purple-400 hover:shadow-sm"
+                        className="flex items-start justify-between gap-3 rounded-lg border border-border bg-card p-3 transition-all hover:border-purple-400 hover:shadow-sm"
                       >
                         <div className="min-w-0 flex-1">
                           {specs ? (
-                            <p className="text-sm text-gray-700" dir={langDir}>
-                              <span className="font-semibold text-gray-900">
+                            <p className="text-sm text-muted-foreground" dir={langDir}>
+                              <span className="font-semibold text-foreground">
                                 {modelName}
                               </span>
-                              <span className="mx-1 text-gray-400">
+                              <span className="mx-1 text-muted-foreground">
                                 –
                               </span>
                               <span>
@@ -783,7 +783,7 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
                             </p>
                           ) : (
                             <p
-                              className="text-sm font-semibold text-gray-900"
+                              className="text-sm font-semibold text-foreground"
                               dir={langDir}
                             >
                               {modelName}
@@ -825,10 +825,10 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
               !isAIGenerating && (
                 <div className="py-6 text-center">
                   <Search className="mx-auto mb-2 h-8 w-8 text-gray-300" />
-                  <p className="text-sm font-medium text-gray-600" dir={langDir}>
+                  <p className="text-sm font-medium text-muted-foreground" dir={langDir}>
                     {t("no_results_found") || "No Results Found"}
                   </p>
-                  <p className="mt-1 text-xs text-gray-400" dir={langDir}>
+                  <p className="mt-1 text-xs text-muted-foreground" dir={langDir}>
                     {t("no_products_matching") ||
                       "No products matching your search. Try a different name or use AI to generate."}
                   </p>
@@ -852,7 +852,7 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
               aiProductModels.length === 0 && (
                 <div className="flex flex-col items-center gap-2 py-6">
                   <Loader2 className="h-6 w-6 animate-spin text-info" />
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-muted-foreground">
                     {t("ai_generating_suggestions") || "AI is generating suggestions..."}
                   </p>
                   <Button
@@ -875,11 +875,11 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
             onClick={() => setShowPreviewModal(false)}
           >
             <div
-              className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-lg bg-white shadow-xl"
+              className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-lg bg-card shadow-xl"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex items-center justify-between border-b border-gray-200 p-6">
-                <h3 className="text-xl font-semibold text-gray-900" dir={langDir}>
+              <div className="flex items-center justify-between border-b border-border p-6">
+                <h3 className="text-xl font-semibold text-foreground" dir={langDir}>
                   {t("review_product_data") || "Review Product Data"}
                 </h3>
                 <Button
@@ -894,20 +894,20 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
               <div className="space-y-4 p-6">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="text-sm font-medium text-gray-600">
+                    <label className="text-sm font-medium text-muted-foreground">
                       {t("suggested_product_name") || "Product Name"}
                     </label>
-                    <p className="mt-1 text-gray-900">
+                    <p className="mt-1 text-foreground">
                       {previewData.productName ||
                         previewData.name ||
                         t("not_specified")}
                     </p>
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-gray-600">
+                    <label className="text-sm font-medium text-muted-foreground">
                       {t("approx_price_use_your_own") || "Approx. Price"}
                     </label>
-                    <p className="mt-1 text-gray-900">
+                    <p className="mt-1 text-foreground">
                       {previewData.price ||
                         previewData.estimatedPrice ||
                         t("not_specified")}
@@ -916,10 +916,10 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
 
                   {previewData.description && (
                     <div className="col-span-2">
-                      <label className="text-sm font-medium text-gray-600">
+                      <label className="text-sm font-medium text-muted-foreground">
                         {t("description") || "Description"}
                       </label>
-                      <p className="mt-1 text-sm text-gray-900">
+                      <p className="mt-1 text-sm text-foreground">
                         {previewData.description}
                       </p>
                     </div>
@@ -927,11 +927,11 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
 
                   {previewData.category && (
                     <div className="col-span-2">
-                      <label className="text-sm font-medium text-gray-600">
+                      <label className="text-sm font-medium text-muted-foreground">
                         {t("category") || "Category"}
                       </label>
                       <div className="mt-1">
-                        <p className="text-gray-900">{previewData.category}</p>
+                        <p className="text-foreground">{previewData.category}</p>
                         {previewData.matchedCategoryId ? (
                           <p
                             className={`mt-1 flex items-center gap-1 text-xs ${
@@ -965,19 +965,19 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
 
                   {previewData.brand && (
                     <div>
-                      <label className="text-sm font-medium text-gray-600">
+                      <label className="text-sm font-medium text-muted-foreground">
                         {t("brand") || "Brand"}
                       </label>
-                      <p className="mt-1 text-gray-900">{previewData.brand}</p>
+                      <p className="mt-1 text-foreground">{previewData.brand}</p>
                     </div>
                   )}
 
                   {previewData.shortDescription && (
                     <div className="col-span-2">
-                      <label className="text-sm font-medium text-gray-600">
+                      <label className="text-sm font-medium text-muted-foreground">
                         {t("short_description") || "Short Description"}
                       </label>
-                      <p className="mt-1 text-sm text-gray-900">
+                      <p className="mt-1 text-sm text-foreground">
                         {previewData.shortDescription}
                       </p>
                     </div>
@@ -985,17 +985,17 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
 
                   {previewData.specifications?.length > 0 && (
                     <div className="col-span-2">
-                      <label className="text-sm font-medium text-gray-600">
+                      <label className="text-sm font-medium text-muted-foreground">
                         {t("specifications") || "Specifications"}
                       </label>
                       <div className="mt-1 space-y-1">
                         {previewData.specifications.map(
                           (spec: any, i: number) => (
                             <div key={i} className="flex gap-2 text-sm">
-                              <span className="font-medium text-gray-700">
+                              <span className="font-medium text-muted-foreground">
                                 {spec.label}:
                               </span>
-                              <span className="text-gray-900">
+                              <span className="text-foreground">
                                 {spec.specification}
                               </span>
                             </div>
@@ -1029,7 +1029,7 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
                 </div>
               </div>
 
-              <div className="flex items-center justify-end gap-3 border-t border-gray-200 p-6">
+              <div className="flex items-center justify-end gap-3 border-t border-border p-6">
                 <Button
                   variant="outline"
                   onClick={() => setShowPreviewModal(false)}
@@ -1050,9 +1050,9 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
         {/* ─── Existing Product View Popup ───────────────────────────── */}
         {showProductPopup && selectedProduct && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-            <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-lg bg-white">
-              <div className="flex items-center justify-between border-b border-gray-200 p-6">
-                <h3 className="text-xl font-semibold text-gray-900" dir={langDir}>
+            <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-lg bg-card">
+              <div className="flex items-center justify-between border-b border-border p-6">
+                <h3 className="text-xl font-semibold text-foreground" dir={langDir}>
                   {t("product_details") || "Product Details"}
                 </h3>
                 <Button
@@ -1073,7 +1073,7 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
                       (img: any, i: number) => (
                         <div
                           key={i}
-                          className="relative aspect-square overflow-hidden rounded-lg bg-gray-100"
+                          className="relative aspect-square overflow-hidden rounded-lg bg-muted"
                         >
                           <Image
                             src={img.image}
@@ -1088,32 +1088,32 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
                 )}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="text-sm font-medium text-gray-600">
+                    <label className="text-sm font-medium text-muted-foreground">
                       {t("product_name") || "Product Name"}
                     </label>
-                    <p className="mt-1 text-gray-900">
+                    <p className="mt-1 text-foreground">
                       {selectedProduct.productName}
                     </p>
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-gray-600">
+                    <label className="text-sm font-medium text-muted-foreground">
                       {t("category") || "Category"}
                     </label>
-                    <p className="mt-1 text-gray-900">
+                    <p className="mt-1 text-foreground">
                       {selectedProduct.category?.name || t("not_specified")}
                     </p>
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-gray-600">
+                    <label className="text-sm font-medium text-muted-foreground">
                       {t("brand") || "Brand"}
                     </label>
-                    <p className="mt-1 text-gray-900">
+                    <p className="mt-1 text-foreground">
                       {selectedProduct.brand?.brandName || t("not_specified")}
                     </p>
                   </div>
                 </div>
               </div>
-              <div className="flex items-center justify-end gap-3 border-t border-gray-200 p-6">
+              <div className="flex items-center justify-end gap-3 border-t border-border p-6">
                 <Button
                   variant="outline"
                   onClick={() => {

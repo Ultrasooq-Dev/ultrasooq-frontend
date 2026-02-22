@@ -108,16 +108,16 @@ const Step1NameAndPictures: React.FC<Step1Props> = ({
   return (
     <div className="space-y-6">
       {/* Product Name + AI Search Button */}
-      <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+      <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
         <div className="mb-4 flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-warning/10">
             <Package className="h-5 w-5 text-warning" />
           </div>
           <div className="flex-1">
-            <h3 className="text-lg font-semibold text-gray-800">
+            <h3 className="text-lg font-semibold text-foreground">
               {t("product_name")}
             </h3>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-muted-foreground">
               Enter the name of your product
             </p>
           </div>
@@ -134,7 +134,7 @@ const Step1NameAndPictures: React.FC<Step1Props> = ({
                     {...field}
                     placeholder={t("enter_product_name")}
                     className={cn(
-                      "h-12 flex-1 rounded-lg border-gray-300 text-base focus:border-warning focus:ring-warning",
+                      "h-12 flex-1 rounded-lg border-border text-base focus:border-warning focus:ring-warning",
                       fieldState.error && "border-destructive/70",
                     )}
                     disabled={copy}
@@ -172,16 +172,16 @@ const Step1NameAndPictures: React.FC<Step1Props> = ({
       </div>
 
       {/* Product Images & Videos + AI Scan Button */}
-      <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+      <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
         <div className="mb-4 flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
             <Camera className="h-5 w-5 text-primary" />
           </div>
           <div className="flex-1">
-            <h3 className="text-lg font-semibold text-gray-800">
+            <h3 className="text-lg font-semibold text-foreground">
               {t("product_images")}
             </h3>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-muted-foreground">
               Add images and videos of your product
             </p>
           </div>
@@ -236,7 +236,7 @@ const Step1NameAndPictures: React.FC<Step1Props> = ({
             return (
               <div
                 key={img.id}
-                className="group relative aspect-square overflow-hidden rounded-lg border border-gray-200 bg-gray-50"
+                className="group relative aspect-square overflow-hidden rounded-lg border border-border bg-muted"
               >
                 {isVideoFile ? (
                   <video
@@ -259,7 +259,7 @@ const Step1NameAndPictures: React.FC<Step1Props> = ({
                   <button
                     type="button"
                     onClick={() => handleEditImage(index)}
-                    className="rounded-full bg-white px-3 py-1.5 text-xs font-medium text-gray-700 shadow hover:bg-gray-100"
+                    className="rounded-full bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground shadow hover:bg-muted"
                   >
                     Edit
                   </button>
@@ -286,10 +286,10 @@ const Step1NameAndPictures: React.FC<Step1Props> = ({
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="flex aspect-square flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 transition-colors hover:border-warning/70 hover:bg-warning/5"
+            className="flex aspect-square flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border bg-muted transition-colors hover:border-warning/70 hover:bg-warning/5"
           >
-            <IoMdAdd className="h-8 w-8 text-gray-400" />
-            <span className="text-xs font-medium text-gray-500">
+            <IoMdAdd className="h-8 w-8 text-muted-foreground" />
+            <span className="text-xs font-medium text-muted-foreground">
               {t("add_image")}
             </span>
           </button>

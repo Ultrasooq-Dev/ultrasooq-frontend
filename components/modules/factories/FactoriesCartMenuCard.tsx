@@ -133,7 +133,7 @@ const FactoriesCartMenuCard: React.FC<FactoriesCartMenuCardProps> = ({
                   className="p-3"
                 />
               </Button>
-              <p className="text-black!">{quantity}</p>
+              <p className="text-foreground!">{quantity}</p>
               <Button
                 variant="outline"
                 className="relative hover:shadow-xs"

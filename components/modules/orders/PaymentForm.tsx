@@ -153,7 +153,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
               <AccordionItemButton dir={langDir} translate="no">{t("cash")}</AccordionItemButton>
             </AccordionItemHeading>
             <AccordionItemPanel>
-              <div className="w-full bg-white">
+              <div className="w-full bg-card">
                 <div className="bodyPart">
                   <div className="card-item card-payment-form px-5 pb-5 pt-3">
                     <div className="flex flex-wrap">
@@ -189,7 +189,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
                 </AccordionItemButton>
               </AccordionItemHeading>
               <AccordionItemPanel>
-                <div className="w-full bg-white">
+                <div className="w-full bg-card">
                   <div className="bodyPart">
                     <div className="card-item card-payment-form px-5 pb-5 pt-3">
                       <div className="flex flex-wrap">
@@ -239,7 +239,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
             </AccordionItemHeading>
             {selectedPaymentType === 'direct' ?
               <AccordionItemPanel>
-                <div className="w-full bg-white">
+                <div className="w-full bg-card">
                   <div className="bodyPart">
                     <div className="card-item card-payment-form px-5 pb-5 pt-3">
                       <div className="flex flex-wrap">
@@ -294,7 +294,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
             </AccordionItemHeading>
             {selectedPaymentType === 'advance' ?
               <AccordionItemPanel>
-                <div className="w-full bg-white">
+                <div className="w-full bg-card">
                   <div className="bodyPart">
                     <div className="card-item card-payment-form px-5 pb-5 pt-3">
                       <div className="w-full">
@@ -303,14 +303,14 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
                         </Button>
                         <div className="mt-3 flex w-auto flex-wrap rounded-sm bg-[#B3B3B3] px-10 py-7">
                           <div className="relative mb-3 w-[80%]">
-                            <label className="mb-2 text-lg font-semibold text-black" dir={langDir} translate="no">
+                            <label className="mb-2 text-lg font-semibold text-foreground" dir={langDir} translate="no">
                               {t("payment_amount")}({currency.symbol}):
                             </label>
                             <input
                               type="number"
                               value={inputValue}
                               onChange={(e) => setInputValue(e.target.value)} // Allow empty value
-                              className="h-12 w-full rounded-[5px] bg-white px-4 py-3 text-lg text-black focus:shadow-none focus:outline-hidden"
+                              className="h-12 w-full rounded-[5px] bg-card px-4 py-3 text-lg text-foreground focus:shadow-none focus:outline-hidden"
                             />
                           </div>
                           <div className="relative mb-3 flex w-[20%] items-end justify-center text-center">
@@ -333,7 +333,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
                                 // handleIntentCreate();
                               }} // Set saved amount 
                               disabled={!inputValue} // Disable if inputValue is empty
-                              className="flex h-[50px] w-[150px] items-center justify-center rounded-sm bg-[#FFC7C2] p-3 text-center text-lg font-semibold text-black disabled:cursor-not-allowed disabled:opacity-50"
+                              className="flex h-[50px] w-[150px] items-center justify-center rounded-sm bg-[#FFC7C2] p-3 text-center text-lg font-semibold text-foreground disabled:cursor-not-allowed disabled:opacity-50"
                               dir={langDir}
                               translate="no"
                             >
@@ -347,7 +347,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
                                 onManageAmount("")
                               }}
                               disabled={!inputValue} // Disable if inputValue is empty
-                              className="flex h-[50px] w-[150px] items-center justify-center rounded-sm bg-[#FFC7C2] p-3 text-center text-lg font-semibold text-black disabled:cursor-not-allowed disabled:opacity-50"
+                              className="flex h-[50px] w-[150px] items-center justify-center rounded-sm bg-[#FFC7C2] p-3 text-center text-lg font-semibold text-foreground disabled:cursor-not-allowed disabled:opacity-50"
                               dir={langDir}
                               translate="no"
                             >
@@ -410,7 +410,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
               <AccordionItemButton dir={langDir} translate="no">{t("pay_it_for_me")}</AccordionItemButton>
             </AccordionItemHeading>
             <AccordionItemPanel>
-              <div className="w-full bg-white">
+              <div className="w-full bg-card">
                 <div className="bodyPart">
                   <div className="card-item card-payment-form px-5 pb-5 pt-3">
                     <div className="flex flex-wrap">
@@ -443,7 +443,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
               <AccordionItemButton dir={langDir} translate="no">{t("installments")}</AccordionItemButton>
             </AccordionItemHeading>
             <AccordionItemPanel>
-              <div className="w-full bg-white">
+              <div className="w-full bg-card">
                 <div className="bodyPart">
                   <div className="card-item card-payment-form px-5 pb-5 pt-3">
                     <div className="flex flex-wrap">

@@ -64,28 +64,28 @@ const CheckoutCompletePage = () => {
 
     if (!success || success !== 'true') {
         return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
-                <div className="max-w-2xl w-full bg-white rounded-lg shadow-lg p-8 text-center">
+            <div className="min-h-screen bg-muted flex items-center justify-center px-4">
+                <div className="max-w-2xl w-full bg-card rounded-lg shadow-lg p-8 text-center">
                     <div className="flex justify-center mb-6">
                         <div className="rounded-full bg-destructive/10 p-4">
                             <XCircle className="h-16 w-16 text-destructive" />
                         </div>
                     </div>
-                    <h1 className="text-3xl font-bold text-gray-900 mb-4" dir={langDir} translate="no">
+                    <h1 className="text-3xl font-bold text-foreground mb-4" dir={langDir} translate="no">
                         {t("order_failed") || "Order Failed"}
                     </h1>
-                    <p className="text-gray-600 mb-6" dir={langDir} translate="no">
+                    <p className="text-muted-foreground mb-6" dir={langDir} translate="no">
                         {t("order_failed_message") || "We're sorry, but your order could not be processed. Please try again or contact support."}
                     </p>
                     <div className="space-y-3">
                         {transactionId && (
-                            <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
+                            <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
                                 <span dir={langDir} translate="no">{t("transaction_id")}:</span>
                                 <span className="font-mono font-medium">{transactionId}</span>
                             </div>
                         )}
                         {orderId && (
-                            <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
+                            <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
                                 <span dir={langDir} translate="no">{t("order_id")}:</span>
                                 <span className="font-mono font-medium">{orderId}</span>
                             </div>
@@ -94,7 +94,7 @@ const CheckoutCompletePage = () => {
                     <div className="mt-8 flex gap-4 justify-center">
                         <Button
                             onClick={() => router.push("/trending")}
-                            className="bg-warning hover:bg-warning text-gray-900"
+                            className="bg-warning hover:bg-warning text-foreground"
                         >
                             {t("continue_shopping") || "Continue Shopping"}
                         </Button>
@@ -111,10 +111,10 @@ const CheckoutCompletePage = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 py-8 px-4">
+        <div className="min-h-screen bg-muted py-8 px-4">
             <div className="max-w-4xl mx-auto">
                 {/* Success Header Card */}
-                <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 mb-6">
+                <div className="bg-card rounded-lg shadow-sm border border-border p-8 mb-6">
                     <div className="flex items-start gap-6">
                         <div className="flex-shrink-0">
                             <div className="rounded-full bg-success/10 p-3">
@@ -122,23 +122,23 @@ const CheckoutCompletePage = () => {
                             </div>
                         </div>
                         <div className="flex-1">
-                            <h1 className="text-3xl font-bold text-gray-900 mb-2" dir={langDir} translate="no">
+                            <h1 className="text-3xl font-bold text-foreground mb-2" dir={langDir} translate="no">
                                 {t("order_placed_successfully") || "Order Placed Successfully!"}
                             </h1>
-                            <p className="text-lg text-gray-600 mb-4" dir={langDir} translate="no">
+                            <p className="text-lg text-muted-foreground mb-4" dir={langDir} translate="no">
                                 {t("order_confirmation_message") || "Thank you for your order. We've received your order and will begin processing it right away."}
                             </p>
                             
                             {/* Order & Transaction IDs */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
                                 {orderId && (
-                                    <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                                    <div className="bg-muted rounded-lg p-4 border border-border">
                                         <div className="flex items-center justify-between">
                                             <div>
-                                                <p className="text-sm text-gray-500 mb-1" dir={langDir} translate="no">
+                                                <p className="text-sm text-muted-foreground mb-1" dir={langDir} translate="no">
                                                     {t("order_id")}
                                                 </p>
-                                                <p className="text-lg font-semibold text-gray-900 font-mono">
+                                                <p className="text-lg font-semibold text-foreground font-mono">
                                                     #{orderId}
                                                 </p>
                                             </div>
@@ -148,19 +148,19 @@ const CheckoutCompletePage = () => {
                                                 onClick={() => copyToClipboard(orderId, 'order')}
                                                 className="h-8 w-8 p-0"
                                             >
-                                                <Copy className={`h-4 w-4 ${copiedId === 'order' ? 'text-success' : 'text-gray-400'}`} />
+                                                <Copy className={`h-4 w-4 ${copiedId === 'order' ? 'text-success' : 'text-muted-foreground'}`} />
                                             </Button>
                                         </div>
                                     </div>
                                 )}
                                 {transactionId && (
-                                    <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                                    <div className="bg-muted rounded-lg p-4 border border-border">
                                         <div className="flex items-center justify-between">
                                             <div>
-                                                <p className="text-sm text-gray-500 mb-1" dir={langDir} translate="no">
+                                                <p className="text-sm text-muted-foreground mb-1" dir={langDir} translate="no">
                                                     {t("transaction_id")}
                                                 </p>
-                                                <p className="text-lg font-semibold text-gray-900 font-mono text-sm">
+                                                <p className="text-lg font-semibold text-foreground font-mono text-sm">
                                                     {transactionId}
                                                 </p>
                                             </div>
@@ -170,7 +170,7 @@ const CheckoutCompletePage = () => {
                                                 onClick={() => copyToClipboard(transactionId, 'transaction')}
                                                 className="h-8 w-8 p-0"
                                             >
-                                                <Copy className={`h-4 w-4 ${copiedId === 'transaction' ? 'text-success' : 'text-gray-400'}`} />
+                                                <Copy className={`h-4 w-4 ${copiedId === 'transaction' ? 'text-success' : 'text-muted-foreground'}`} />
                                             </Button>
                                         </div>
                                     </div>
@@ -187,12 +187,12 @@ const CheckoutCompletePage = () => {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div className="bg-card rounded-lg shadow-sm border border-border p-6">
                     <div className="flex flex-col sm:flex-row gap-4">
                         {haveAccessToken ? (
                             <Button
                                 asChild
-                                className="flex-1 bg-warning hover:bg-warning text-gray-900 font-medium"
+                                className="flex-1 bg-warning hover:bg-warning text-foreground font-medium"
                             >
                                 <Link href="/my-orders">
                                     {t("track_your_order") || "Track Your Order"}
@@ -202,7 +202,7 @@ const CheckoutCompletePage = () => {
                         <Button
                             variant="outline"
                             onClick={() => router.push("/trending")}
-                            className="flex-1 border-gray-300"
+                            className="flex-1 border-border"
                         >
                             {t("continue_shopping") || "Continue Shopping"}
                         </Button>
@@ -210,7 +210,7 @@ const CheckoutCompletePage = () => {
                             <Button
                                 variant="outline"
                                 onClick={() => router.push(`/my-orders/${orderId}`)}
-                                className="flex-1 border-gray-300"
+                                className="flex-1 border-border"
                             >
                                 {t("view_order_details") || "View Order Details"}
                             </Button>
@@ -220,7 +220,7 @@ const CheckoutCompletePage = () => {
 
                 {/* Help Section */}
                 <div className="mt-6 text-center">
-                    <p className="text-sm text-gray-600 mb-2" dir={langDir} translate="no">
+                    <p className="text-sm text-muted-foreground mb-2" dir={langDir} translate="no">
                         {t("need_help") || "Need help?"}
                     </p>
                     <Link

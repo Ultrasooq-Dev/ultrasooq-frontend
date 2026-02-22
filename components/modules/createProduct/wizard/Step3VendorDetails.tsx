@@ -30,8 +30,8 @@ const Step3VendorDetails: React.FC<Step3Props> = ({ activeProductType }) => {
   return (
     <div className="space-y-6">
       {/* Pricing Section */}
-      <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-        <div className="border-b border-gray-200 bg-warning/5 px-6 py-4">
+      <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+        <div className="border-b border-border bg-warning/5 px-6 py-4">
           <div className="flex items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-warning/10">
               <svg
@@ -49,10 +49,10 @@ const Step3VendorDetails: React.FC<Step3Props> = ({ activeProductType }) => {
               </svg>
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-gray-800">
+              <h2 className="text-lg font-semibold text-foreground">
                 Pricing & Sales
               </h2>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-muted-foreground">
                 Set prices, discounts, and stock
               </p>
             </div>
@@ -65,8 +65,8 @@ const Step3VendorDetails: React.FC<Step3Props> = ({ activeProductType }) => {
 
       {/* Variant Pricing Section — only visible when variants are defined in Step 2 */}
       {hasVariants && (
-        <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-          <div className="border-b border-gray-200 bg-info/5 px-6 py-4">
+        <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+          <div className="border-b border-border bg-info/5 px-6 py-4">
             <div className="flex items-center gap-3">
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-info/10">
                 <svg
@@ -84,10 +84,10 @@ const Step3VendorDetails: React.FC<Step3Props> = ({ activeProductType }) => {
                 </svg>
               </div>
               <div>
-                <h2 className="text-lg font-semibold text-gray-800">
+                <h2 className="text-lg font-semibold text-foreground">
                   Variant Pricing
                 </h2>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-muted-foreground">
                   Set price and stock for each variant combination
                 </p>
               </div>
@@ -100,12 +100,12 @@ const Step3VendorDetails: React.FC<Step3Props> = ({ activeProductType }) => {
       )}
 
       {/* Location & Customization Section */}
-      <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-        <div className="border-b border-gray-200 bg-teal-50 px-6 py-4">
+      <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+        <div className="border-b border-border bg-teal-50 px-6 py-4">
           <div className="flex items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-teal-100">
               <svg
-                className="h-5 w-5 text-teal-600"
+                className="h-5 w-5 text-success"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -125,10 +125,10 @@ const Step3VendorDetails: React.FC<Step3Props> = ({ activeProductType }) => {
               </svg>
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-gray-800">
+              <h2 className="text-lg font-semibold text-foreground">
                 Location & Customization
               </h2>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-muted-foreground">
                 Sell locations and product customization
               </p>
             </div>

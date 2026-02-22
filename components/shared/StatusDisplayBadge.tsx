@@ -88,7 +88,7 @@ const StatusDisplayBadge: React.FC<StatusDisplayBadgeProps> = ({
 
       {statusNote && (
         <small
-          className="text-gray-500 text-xs max-w-xs truncate"
+          className="text-muted-foreground text-xs max-w-xs truncate"
           title={statusNote}
         >
           {statusNote}

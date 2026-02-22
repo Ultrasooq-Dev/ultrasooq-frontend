@@ -148,10 +148,10 @@ export default function MyAccountsPage() {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="text-center">
-          <h2 className="mb-2 text-xl font-semibold text-gray-900">
+          <h2 className="mb-2 text-xl font-semibold text-foreground">
             {t("error_loading_accounts")}
           </h2>
-          <p className="mb-4 text-gray-600">
+          <p className="mb-4 text-muted-foreground">
             {error?.response?.data?.message || t("failed_to_load_accounts")}
           </p>
           <Button onClick={() => refetch()} variant="outline">
@@ -191,14 +191,14 @@ export default function MyAccountsPage() {
     }) || [];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-muted py-8">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="mb-2 text-3xl font-bold text-gray-900">
+          <h1 className="mb-2 text-3xl font-bold text-foreground">
             {t("my_accounts")}
           </h1>
-          <p className="text-gray-600">{t("manage_your_business_accounts")}</p>
+          <p className="text-muted-foreground">{t("manage_your_business_accounts")}</p>
         </div>
 
         {/* Current Account Card */}
@@ -215,10 +215,10 @@ export default function MyAccountsPage() {
             <CardContent>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
                 <div>
-                  <p className="text-sm font-medium text-gray-500">
+                  <p className="text-sm font-medium text-muted-foreground">
                     {t("account_name")}
                   </p>
-                  <p className="text-lg font-semibold text-gray-900">
+                  <p className="text-lg font-semibold text-foreground">
                     {currentAccount.accountName ||
                       ("firstName" in currentAccount &&
                       "lastName" in currentAccount
@@ -227,15 +227,15 @@ export default function MyAccountsPage() {
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-500">
+                  <p className="text-sm font-medium text-muted-foreground">
                     {t("trade_role")}
                   </p>
-                  <p className="text-lg font-semibold text-gray-900">
+                  <p className="text-lg font-semibold text-foreground">
                     {currentAccount.tradeRole}
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-500">
+                  <p className="text-sm font-medium text-muted-foreground">
                     {t("status")}
                   </p>
                   <StatusDisplayBadge
@@ -244,10 +244,10 @@ export default function MyAccountsPage() {
                   />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-500">
+                  <p className="text-sm font-medium text-muted-foreground">
                     {t("email")}
                   </p>
-                  <p className="text-lg font-semibold text-gray-900">
+                  <p className="text-lg font-semibold text-foreground">
                     {"email" in currentAccount ? currentAccount.email : "N/A"}
                   </p>
                 </div>
@@ -260,8 +260,8 @@ export default function MyAccountsPage() {
                   0) > 0) ||
                 (("messages" in currentAccount ? currentAccount.messages : 0) ||
                   0) > 0) && (
-                <div className="mt-4 rounded-lg border border-gray-200 bg-gray-50 p-3">
-                  <p className="mb-2 text-xs font-semibold tracking-wide text-gray-700 uppercase">
+                <div className="mt-4 rounded-lg border border-border bg-muted p-3">
+                  <p className="mb-2 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
                     {t("notifications")}
                   </p>
                   <div className="flex flex-wrap gap-2">
@@ -426,13 +426,13 @@ export default function MyAccountsPage() {
                     </CardHeader>
                     <CardContent className="space-y-3">
                       <div>
-                        <p className="text-sm font-medium text-gray-500">
+                        <p className="text-sm font-medium text-muted-foreground">
                           {t("trade_role")}
                         </p>
                         <p className="font-semibold">{account.tradeRole}</p>
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-gray-500">
+                        <p className="text-sm font-medium text-muted-foreground">
                           {t("status")}
                         </p>
                         <StatusDisplayBadge
@@ -444,8 +444,8 @@ export default function MyAccountsPage() {
                       {/* Notification Counts - Only show if there are notifications */}
                       {((isCompanyOrFreelancer && (account.orders || 0) > 0) ||
                         (account.messages || 0) > 0) && (
-                        <div className="rounded-lg border border-gray-200 bg-gray-50 p-3">
-                          <p className="mb-2 text-xs font-semibold tracking-wide text-gray-700 uppercase">
+                        <div className="rounded-lg border border-border bg-muted p-3">
+                          <p className="mb-2 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
                             {t("notifications")}
                           </p>
                           <div className="flex flex-wrap gap-2">
@@ -528,14 +528,14 @@ export default function MyAccountsPage() {
                         )}
                       {account.companyName && (
                         <div>
-                          <p className="text-sm font-medium text-gray-500">
+                          <p className="text-sm font-medium text-muted-foreground">
                             {t("company")}
                           </p>
                           <p className="font-semibold">{account.companyName}</p>
                         </div>
                       )}
                       {/* <div>
-                        <p className="text-sm font-medium text-gray-500">Created</p>
+                        <p className="text-sm font-medium text-muted-foreground">Created</p>
                         <p className="font-semibold">
                           {new Date(account.createdAt).toLocaleDateString()}
                         </p>
@@ -575,7 +575,7 @@ export default function MyAccountsPage() {
                       </CardHeader>
                       <CardContent className="space-y-3">
                         <div>
-                          <p className="text-sm font-medium text-gray-500">
+                          <p className="text-sm font-medium text-muted-foreground">
                             Status
                           </p>
                           <StatusDisplayBadge
@@ -588,8 +588,8 @@ export default function MyAccountsPage() {
                         {/* Notification Counts - Only show if there are notifications */}
                         {((account.orders || 0) > 0 ||
                           (account.messages || 0) > 0) && (
-                          <div className="rounded-lg border border-gray-200 bg-gray-50 p-3">
-                            <p className="mb-2 text-xs font-semibold tracking-wide text-gray-700 uppercase">
+                          <div className="rounded-lg border border-border bg-muted p-3">
+                            <p className="mb-2 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
                               {t("notifications")}
                             </p>
                             <div className="flex flex-wrap gap-2">
@@ -671,7 +671,7 @@ export default function MyAccountsPage() {
                           )}
                         {account.companyName && (
                           <div>
-                            <p className="text-sm font-medium text-gray-500">
+                            <p className="text-sm font-medium text-muted-foreground">
                               {t("company_name")}
                             </p>
                             <p className="font-semibold">
@@ -714,7 +714,7 @@ export default function MyAccountsPage() {
                       </CardHeader>
                       <CardContent className="space-y-3">
                         <div>
-                          <p className="text-sm font-medium text-gray-500">
+                          <p className="text-sm font-medium text-muted-foreground">
                             Status
                           </p>
                           <StatusDisplayBadge
@@ -727,8 +727,8 @@ export default function MyAccountsPage() {
                         {/* Notification Counts - Only show if there are notifications */}
                         {((account.orders || 0) > 0 ||
                           (account.messages || 0) > 0) && (
-                          <div className="rounded-lg border border-gray-200 bg-gray-50 p-3">
-                            <p className="mb-2 text-xs font-semibold tracking-wide text-gray-700 uppercase">
+                          <div className="rounded-lg border border-border bg-muted p-3">
+                            <p className="mb-2 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
                               {t("notifications")}
                             </p>
                             <div className="flex flex-wrap gap-2">
@@ -843,7 +843,7 @@ export default function MyAccountsPage() {
                       </CardHeader>
                       <CardContent className="space-y-3">
                         <div>
-                          <p className="text-sm font-medium text-gray-500">
+                          <p className="text-sm font-medium text-muted-foreground">
                             {t("status")}
                           </p>
                           <StatusDisplayBadge
@@ -854,8 +854,8 @@ export default function MyAccountsPage() {
                         </div>
 
                         {/* Notification Counts - Only Messages for Buyer */}
-                        <div className="rounded-lg border border-gray-200 bg-gray-50 p-3">
-                          <p className="mb-2 text-xs font-semibold tracking-wide text-gray-700 uppercase">
+                        <div className="rounded-lg border border-border bg-muted p-3">
+                          <p className="mb-2 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
                             {t("notifications")}
                           </p>
                           <div className="flex flex-wrap gap-2">

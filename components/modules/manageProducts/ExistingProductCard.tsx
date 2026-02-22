@@ -63,7 +63,7 @@ const ExistingProductCard: React.FC<ExistingProductCardProps> = ({
   };
 
   return (
-    <div className="mb-4 w-full rounded-lg border border-gray-200 bg-white shadow-xs">
+    <div className="mb-4 w-full rounded-lg border border-border bg-card shadow-xs">
       {/* Compact View - Always Visible */}
       <div className="flex items-center justify-between p-4">
         {/* Left Section - Product Info */}
@@ -72,7 +72,7 @@ const ExistingProductCard: React.FC<ExistingProductCardProps> = ({
           {productType !== "R" && !isDropshipPage && onSelectedId && (
             <div className="flex flex-col items-center space-y-2">
               <Checkbox
-                className="border border-solid border-gray-300 data-[state=checked]:bg-primary!"
+                className="border border-solid border-border data-[state=checked]:bg-primary!"
                 checked={selectedIds?.includes(id)}
                 onCheckedChange={(checked) => {
                   onSelectedId?.(checked, id);
@@ -82,7 +82,7 @@ const ExistingProductCard: React.FC<ExistingProductCardProps> = ({
           )}
 
           {/* Product Image */}
-          <div className="relative h-24 w-24 overflow-hidden rounded-lg border border-gray-200">
+          <div className="relative h-24 w-24 overflow-hidden rounded-lg border border-border">
             {productImage && validator.isURL(productImage) ? (
               // Check if the image is from an allowed domain (S3 bucket)
               productImage.includes('puremoon.s3.amazonaws.com') ? (
@@ -121,10 +121,10 @@ const ExistingProductCard: React.FC<ExistingProductCardProps> = ({
 
           {/* Product Details */}
           <div className="flex flex-col space-y-2">
-            <h3 className="text-lg font-semibold text-gray-900">{translate(productName) || "-"}</h3>
+            <h3 className="text-lg font-semibold text-foreground">{translate(productName) || "-"}</h3>
             
             {/* Price Info */}
-            <div className="flex space-x-6 text-sm text-gray-600">
+            <div className="flex space-x-6 text-sm text-muted-foreground">
               <div className="flex items-center space-x-2">
                 <span className="font-medium">{t("price")}:</span>
                 <span className="text-primary font-semibold">
@@ -134,7 +134,7 @@ const ExistingProductCard: React.FC<ExistingProductCardProps> = ({
             </div>
 
             {/* Additional Info */}
-            <div className="flex space-x-6 text-sm text-gray-500">
+            <div className="flex space-x-6 text-sm text-muted-foreground">
               <div className="flex items-center space-x-2">
                 <span>{t("category")}:</span>
                 <span className="font-medium">{translate(categoryName) || "-"}</span>
@@ -146,7 +146,7 @@ const ExistingProductCard: React.FC<ExistingProductCardProps> = ({
             </div>
 
             {/* SKU and Description */}
-            {/* <div className="flex space-x-6 text-sm text-gray-500">
+            {/* <div className="flex space-x-6 text-sm text-muted-foreground">
               {skuNo && (
                 <div className="flex items-center space-x-2">
                   <span>{t("sku")}:</span>

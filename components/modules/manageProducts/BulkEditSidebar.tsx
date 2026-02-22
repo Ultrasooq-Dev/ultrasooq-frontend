@@ -751,19 +751,19 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
 
   return (
     <aside className="h-fit">
-      <div className="bg-white rounded-lg shadow-xs border border-gray-200 overflow-hidden">
+      <div className="bg-card rounded-lg shadow-xs border border-border overflow-hidden">
         {/* Header */}
-        <div className="bg-linear-to-r from-primary/5 to-info/5 px-6 py-4 border-b border-gray-200">
-          <h2 className="text-xl font-semibold text-gray-900" dir={langDir} translate="no">
+        <div className="bg-linear-to-r from-primary/5 to-info/5 px-6 py-4 border-b border-border">
+          <h2 className="text-xl font-semibold text-foreground" dir={langDir} translate="no">
             {t("bulk_edit")}
           </h2>
-          <p className="text-sm text-gray-600 mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             {t("select_fields_to_update")}
           </p>
         </div>
 
         {/* Tab Navigation */}
-        <div className="border-b border-gray-200 bg-white">
+        <div className="border-b border-border bg-card">
           <nav className="flex space-x-4 px-4" aria-label="Tabs">
             <button
               type="button"
@@ -771,7 +771,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
               className={`py-2 px-2 border-b-2 font-medium text-sm whitespace-nowrap ${
                 activeTab === 'warehouse-location'
                   ? 'border-primary text-primary'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-muted-foreground hover:text-muted-foreground hover:border-border'
               } transition-colors`}
             >
               Location
@@ -782,7 +782,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
               className={`py-2 px-2 border-b-2 font-medium text-sm whitespace-nowrap ${
                 activeTab === 'product-basic'
                   ? 'border-primary text-primary'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-muted-foreground hover:text-muted-foreground hover:border-border'
               } transition-colors`}
             >
               Product
@@ -793,7 +793,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
               className={`py-2 px-2 border-b-2 font-medium text-sm whitespace-nowrap ${
                 activeTab === 'ask-for'
                   ? 'border-primary text-primary'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-muted-foreground hover:text-muted-foreground hover:border-border'
               } transition-colors`}
             >
               Ask For
@@ -804,7 +804,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
               className={`py-2 px-2 border-b-2 font-medium text-sm whitespace-nowrap ${
                 activeTab === 'discounts'
                   ? 'border-primary text-primary'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  : 'border-transparent text-muted-foreground hover:text-muted-foreground hover:border-border'
               } transition-colors`}
             >
               Discounts
@@ -821,8 +821,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
               {/* Warehouse Section */}
               <div className="space-y-2">
             <div className="flex items-center space-x-2 mb-2">
-              <div className="h-px bg-gray-300 flex-1"></div>
-              <div className="flex items-center space-x-2 px-3 bg-white">
+              <div className="h-px bg-muted flex-1"></div>
+              <div className="flex items-center space-x-2 px-3 bg-card">
                 <Controller
                   name="updateWarehouse"
                   control={form.control}
@@ -834,22 +834,22 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                       onBlur={field.onBlur}
                       name={field.name}
                       ref={field.ref}
-                      className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+                      className="h-4 w-4 text-primary focus:ring-primary border-border rounded"
                     />
                   )}
                 />
-                <span className="text-sm font-medium text-gray-900" translate="no">
+                <span className="text-sm font-medium text-foreground" translate="no">
                   Warehouse
                 </span>
               </div>
-              <div className="h-px bg-gray-300 flex-1"></div>
+              <div className="h-px bg-muted flex-1"></div>
             </div>
 
             {/* Warehouse Fields */}
             <div className={`space-y-2 ${!watchUpdateWarehouse ? 'opacity-50 pointer-events-none' : ''}`}>
               {/* Branch Selection */}
-              <div className="p-3 bg-gray-50 rounded border border-gray-200">
-                <Label className="text-xs font-medium text-gray-900 mb-2 block" translate="no">
+              <div className="p-3 bg-muted rounded border border-border">
+                <Label className="text-xs font-medium text-foreground mb-2 block" translate="no">
                   Select Branch
                 </Label>
                 <Controller
@@ -859,7 +859,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                     <select
                       {...field}
                       disabled={!watchUpdateWarehouse}
-                      className="w-full h-8 capitalize rounded border border-gray-300 px-2 text-xs focus:outline-hidden focus:ring-1 focus:ring-primary focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                      className="w-full h-8 capitalize rounded border border-border px-2 text-xs focus:outline-hidden focus:ring-1 focus:ring-primary focus:border-transparent disabled:bg-muted disabled:cursor-not-allowed"
                     >
                       <option value="">{t("select")}</option>
                       {memoizedBranches.map((branch: IOption) => (
@@ -877,8 +877,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
           {/* Where to Sell Section */}
           <div className="space-y-2">
             <div className="flex items-center space-x-2 mb-2">
-              <div className="h-px bg-gray-300 flex-1"></div>
-              <div className="flex items-center space-x-2 px-3 bg-white">
+              <div className="h-px bg-muted flex-1"></div>
+              <div className="flex items-center space-x-2 px-3 bg-card">
                 <Controller
                   name="updateWhereToSell"
                   control={form.control}
@@ -890,22 +890,22 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                       onBlur={field.onBlur}
                       name={field.name}
                       ref={field.ref}
-                      className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+                      className="h-4 w-4 text-primary focus:ring-primary border-border rounded"
                     />
                   )}
                 />
-                <span className="text-sm font-medium text-gray-900" translate="no">
+                <span className="text-sm font-medium text-foreground" translate="no">
                   Where to Sell
                 </span>
               </div>
-              <div className="h-px bg-gray-300 flex-1"></div>
+              <div className="h-px bg-muted flex-1"></div>
             </div>
 
             {/* Where to Sell Fields */}
             <div className={`space-y-2 ${!watchUpdateWhereToSell ? 'opacity-50 pointer-events-none' : ''}`}>
               {/* Where to Sell - Select Multiple Country */}
-              <div className="p-3 bg-gray-50 rounded border border-gray-200">
-                <Label className="text-xs font-medium text-gray-900 mb-2 block" translate="no">
+              <div className="p-3 bg-muted rounded border border-border">
+                <Label className="text-xs font-medium text-foreground mb-2 block" translate="no">
                   {t("select_multiple_country")}
                 </Label>
                 <Controller
@@ -956,8 +956,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
               </div>
 
               {/* Select Multiple State - Always Available */}
-              <div className="p-3 bg-gray-50 rounded border border-gray-200">
-                <Label className="text-xs font-medium text-gray-900 mb-2 block" translate="no">
+              <div className="p-3 bg-muted rounded border border-border">
+                <Label className="text-xs font-medium text-foreground mb-2 block" translate="no">
                   {t("select_multiple_state")}
                 </Label>
                 <Controller
@@ -1000,8 +1000,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
               </div>
 
               {/* Select Multiple City - Always Available */}
-              <div className="p-3 bg-gray-50 rounded border border-gray-200">
-                <Label className="text-xs font-medium text-gray-900 mb-2 block" translate="no">
+              <div className="p-3 bg-muted rounded border border-border">
+                <Label className="text-xs font-medium text-foreground mb-2 block" translate="no">
                   {t("select_multiple_city")}
                 </Label>
                 <Controller
@@ -1033,8 +1033,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
               </div>
 
               {/* Place of Origin */}
-              <div className="p-3 bg-gray-50 rounded border border-gray-200">
-                <Label className="text-xs font-medium text-gray-900 mb-2 block" translate="no">
+              <div className="p-3 bg-muted rounded border border-border">
+                <Label className="text-xs font-medium text-foreground mb-2 block" translate="no">
                   {t("place_of_origin")}
                 </Label>
                 <Controller
@@ -1070,7 +1070,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                   className={`w-full px-3 py-1.5 text-xs font-medium rounded focus:outline-hidden focus:ring-1 focus:ring-offset-1 transition-colors ${
                     watchUpdateWhereToSell && (selectedCountries.length > 0 || selectedStates.length > 0 || selectedCities.length > 0)
                       ? 'bg-info text-white hover:bg-info/90 focus:ring-info'
-                      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      : 'bg-muted text-muted-foreground cursor-not-allowed'
                   }`}
                 >
                   Update Where to Sell
@@ -1087,19 +1087,19 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
               {/* Product Condition Section */}
               <div className="space-y-2">
             <div className="flex items-center space-x-2 mb-2">
-              <div className="h-px bg-gray-300 flex-1"></div>
-              <div className="flex items-center space-x-2 px-3 bg-white">
-                <span className="text-sm font-medium text-gray-900" translate="no">
+              <div className="h-px bg-muted flex-1"></div>
+              <div className="flex items-center space-x-2 px-3 bg-card">
+                <span className="text-sm font-medium text-foreground" translate="no">
                   Product Condition
                 </span>
               </div>
-              <div className="h-px bg-gray-300 flex-1"></div>
+              <div className="h-px bg-muted flex-1"></div>
             </div>
 
             {/* Product Condition Update */}
-            <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <div className="p-4 bg-muted rounded-lg border border-border">
               <div className="space-y-3">
-                <Label className="text-sm font-medium text-gray-900 mb-3 block" translate="no">
+                <Label className="text-sm font-medium text-foreground mb-3 block" translate="no">
                   Update Product Condition
                 </Label>
                 <Controller
@@ -1108,7 +1108,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                   render={({ field }) => (
                     <select
                       {...field}
-                      className="w-full h-10 rounded-md border border-gray-300 px-3 text-sm focus:outline-hidden focus:ring-2 focus:ring-primary focus:border-transparent"
+                      className="w-full h-10 rounded-md border border-border px-3 text-sm focus:outline-hidden focus:ring-2 focus:ring-primary focus:border-transparent"
                     >
                       <option value="">{t("select")}</option>
                       {productConditions().map((option) => (
@@ -1126,7 +1126,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                   className={`w-full px-4 py-2 text-xs font-medium rounded-md focus:outline-hidden focus:ring-2 focus:ring-offset-2 transition-colors ${
                     watchProductCondition
                       ? 'bg-primary text-white hover:bg-primary/90 focus:ring-primary'
-                      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      : 'bg-muted text-muted-foreground cursor-not-allowed'
                   }`}
                 >
                   Update Product Condition
@@ -1138,19 +1138,19 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
           {/* Customer Visibility Section */}
           <div className="space-y-2">
             <div className="flex items-center space-x-2 mb-2">
-              <div className="h-px bg-gray-300 flex-1"></div>
-              <div className="flex items-center space-x-2 px-3 bg-white">
-                <span className="text-sm font-medium text-gray-900" translate="no">
+              <div className="h-px bg-muted flex-1"></div>
+              <div className="flex items-center space-x-2 px-3 bg-card">
+                <span className="text-sm font-medium text-foreground" translate="no">
                   Customer Visibility
                 </span>
               </div>
-              <div className="h-px bg-gray-300 flex-1"></div>
+              <div className="h-px bg-muted flex-1"></div>
             </div>
 
             {/* Hide All Selected */}
-            <div className="p-3 bg-gray-50 rounded border border-gray-200">
+            <div className="p-3 bg-muted rounded border border-border">
               <div className="space-y-2">
-                <Label className="text-xs font-medium text-gray-900" translate="no">
+                <Label className="text-xs font-medium text-foreground" translate="no">
                   Control Customer Visibility
                 </Label>
                 <div className="flex gap-2">
@@ -1176,8 +1176,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
           {/* Basic Section */}
           <div className="space-y-2">
             <div className="flex items-center space-x-2 mb-2">
-              <div className="h-px bg-gray-300 flex-1"></div>
-              <div className="flex items-center space-x-2 px-3 bg-white">
+              <div className="h-px bg-muted flex-1"></div>
+              <div className="flex items-center space-x-2 px-3 bg-card">
                 <Controller
                   name="updateBasic"
                   control={form.control}
@@ -1189,21 +1189,21 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                       onBlur={field.onBlur}
                       name={field.name}
                       ref={field.ref}
-                      className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+                      className="h-4 w-4 text-primary focus:ring-primary border-border rounded"
                     />
                   )}
                 />
-                <span className="text-sm font-medium text-gray-900" translate="no">
+                <span className="text-sm font-medium text-foreground" translate="no">
                   Basic Settings
                 </span>
               </div>
-              <div className="h-px bg-gray-300 flex-1"></div>
+              <div className="h-px bg-muted flex-1"></div>
             </div>
 
             {/* Basic Fields */}
             <div className={`space-y-2 ${!watchUpdateBasic ? 'opacity-50 pointer-events-none' : ''}`}>
               {/* Enable Chat */}
-              <div className="p-3 bg-gray-50 rounded border border-gray-200">
+              <div className="p-3 bg-muted rounded border border-border">
                 <div className="flex items-center space-x-3">
                   <Controller
                     name="enableChat"
@@ -1217,11 +1217,11 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                         name={field.name}
                         ref={field.ref}
                         disabled={!watchUpdateBasic}
-                        className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="h-4 w-4 text-primary focus:ring-primary border-border rounded disabled:opacity-50 disabled:cursor-not-allowed"
                       />
                     )}
                   />
-                  <Label className="text-sm font-medium text-gray-900" translate="no">
+                  <Label className="text-sm font-medium text-foreground" translate="no">
                     Enable Chat
                   </Label>
                 </div>
@@ -1238,8 +1238,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
               {/* Ask For Section */}
               <div className="space-y-2">
             <div className="flex items-center space-x-2 mb-2">
-              <div className="h-px bg-gray-300 flex-1"></div>
-              <div className="flex items-center space-x-2 px-3 bg-white">
+              <div className="h-px bg-muted flex-1"></div>
+              <div className="flex items-center space-x-2 px-3 bg-card">
                 <Controller
                   name="updateAskFor"
                   control={form.control}
@@ -1251,22 +1251,22 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                       onBlur={field.onBlur}
                       name={field.name}
                       ref={field.ref}
-                      className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+                      className="h-4 w-4 text-primary focus:ring-primary border-border rounded"
                     />
                   )}
                 />
-                <span className="text-sm font-medium text-gray-900" translate="no">
+                <span className="text-sm font-medium text-foreground" translate="no">
                   Ask For Settings
                 </span>
               </div>
-              <div className="h-px bg-gray-300 flex-1"></div>
+              <div className="h-px bg-muted flex-1"></div>
             </div>
 
             {/* Ask For Fields */}
             <div className={`space-y-2 ${!watchUpdateAskFor ? 'opacity-50 pointer-events-none' : ''}`}>
               {/* Ask for Price */}
-              <div className="p-3 bg-gray-50 rounded border border-gray-200">
-                <Label className="text-xs font-medium text-gray-900 mb-2 block" translate="no">
+              <div className="p-3 bg-muted rounded border border-border">
+                <Label className="text-xs font-medium text-foreground mb-2 block" translate="no">
                   Ask for Price
                 </Label>
                 <Controller
@@ -1276,7 +1276,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                     <select
                       {...field}
                       disabled={!watchUpdateAskFor}
-                      className="w-full h-8 capitalize rounded border border-gray-300 px-2 text-xs focus:outline-hidden focus:ring-1 focus:ring-primary focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                      className="w-full h-8 capitalize rounded border border-border px-2 text-xs focus:outline-hidden focus:ring-1 focus:ring-primary focus:border-transparent disabled:bg-muted disabled:cursor-not-allowed"
                     >
                       <option value="">Select</option>
                       <option value="true">Yes</option>
@@ -1287,8 +1287,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
               </div>
 
               {/* Ask for Stock */}
-              <div className="p-3 bg-gray-50 rounded border border-gray-200">
-                <Label className="text-xs font-medium text-gray-900 mb-2 block" translate="no">
+              <div className="p-3 bg-muted rounded border border-border">
+                <Label className="text-xs font-medium text-foreground mb-2 block" translate="no">
                   Ask for Stock
                 </Label>
                 <Controller
@@ -1298,7 +1298,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                     <select
                       {...field}
                       disabled={!watchUpdateAskFor}
-                      className="w-full h-8 capitalize rounded border border-gray-300 px-2 text-xs focus:outline-hidden focus:ring-1 focus:ring-primary focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                      className="w-full h-8 capitalize rounded border border-border px-2 text-xs focus:outline-hidden focus:ring-1 focus:ring-primary focus:border-transparent disabled:bg-muted disabled:cursor-not-allowed"
                     >
                       <option value="">Select</option>
                       <option value="true">Yes</option>
@@ -1317,7 +1317,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                   className={`w-full px-3 py-1.5 text-xs font-medium rounded focus:outline-hidden focus:ring-1 focus:ring-offset-1 transition-colors ${
                     watchUpdateAskFor && (watchAskForPrice && watchAskForPrice !== "" || watchAskForStock && watchAskForStock !== "")
                       ? 'bg-warning text-white hover:bg-warning/90 focus:ring-warning'
-                      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      : 'bg-muted text-muted-foreground cursor-not-allowed'
                   }`}
                 >
                   Update Ask For Settings
@@ -1334,8 +1334,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
               {/* Discounts Section */}
               <div className="space-y-2">
             <div className="flex items-center space-x-2 mb-2">
-              <div className="h-px bg-gray-300 flex-1"></div>
-              <div className="flex items-center space-x-2 px-3 bg-white">
+              <div className="h-px bg-muted flex-1"></div>
+              <div className="flex items-center space-x-2 px-3 bg-card">
                 <Controller
                   name="updateDiscounts"
                   control={form.control}
@@ -1347,20 +1347,20 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                       onBlur={field.onBlur}
                       name={field.name}
                       ref={field.ref}
-                      className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+                      className="h-4 w-4 text-primary focus:ring-primary border-border rounded"
                     />
                   )}
                 />
-                <h3 className="text-sm font-semibold text-gray-700" translate="no">
+                <h3 className="text-sm font-semibold text-muted-foreground" translate="no">
                   {t("discounts")}
                 </h3>
               </div>
-              <div className="h-px bg-gray-300 flex-1"></div>
+              <div className="h-px bg-muted flex-1"></div>
             </div>
 
             {/* Consumer Type */}
-            <div className={`p-4 rounded-lg border ${watchUpdateDiscounts ? 'bg-gray-50 border-gray-200' : 'bg-gray-100 border-gray-300'}`}>
-              <Label className="text-sm font-medium text-gray-900 mb-3 block" translate="no">
+            <div className={`p-4 rounded-lg border ${watchUpdateDiscounts ? 'bg-muted border-border' : 'bg-muted border-border'}`}>
+              <Label className="text-sm font-medium text-foreground mb-3 block" translate="no">
                 {t("consumer_type")}
               </Label>
               <Controller
@@ -1372,8 +1372,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                     disabled={!watchUpdateDiscounts}
                     className={`w-full h-10 rounded-md border px-3 text-sm focus:outline-hidden focus:ring-2 focus:border-transparent ${
                       watchUpdateDiscounts 
-                        ? 'border-gray-300 focus:ring-primary' 
-                        : 'border-gray-300 bg-gray-100 cursor-not-allowed'
+                        ? 'border-border focus:ring-primary' 
+                        : 'border-border bg-muted cursor-not-allowed'
                     }`}
                   >
                     <option value="">{t("select")}</option>
@@ -1388,8 +1388,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
             </div>
 
             {/* Sell Type */}
-            <div className={`p-4 rounded-lg border ${watchUpdateDiscounts ? 'bg-gray-50 border-gray-200' : 'bg-gray-100 border-gray-300'}`}>
-              <Label className="text-sm font-medium text-gray-900 mb-3 block" translate="no">
+            <div className={`p-4 rounded-lg border ${watchUpdateDiscounts ? 'bg-muted border-border' : 'bg-muted border-border'}`}>
+              <Label className="text-sm font-medium text-foreground mb-3 block" translate="no">
                 {t("sell_type")}
               </Label>
               <Controller
@@ -1401,8 +1401,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                     disabled={!watchUpdateDiscounts}
                     className={`w-full h-10 rounded-md border px-3 text-sm focus:outline-hidden focus:ring-2 focus:border-transparent ${
                       watchUpdateDiscounts 
-                        ? 'border-gray-300 focus:ring-primary' 
-                        : 'border-gray-300 bg-gray-100 cursor-not-allowed'
+                        ? 'border-border focus:ring-primary' 
+                        : 'border-border bg-muted cursor-not-allowed'
                     }`}
                   >
                     <option value="">{t("select")}</option>
@@ -1420,8 +1420,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
             {watchConsumerType && watchSellType && watchUpdateDiscounts ? (
               <>
               {/* Delivery After */}
-              <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                <Label className="text-sm font-medium text-gray-900 mb-3 block" translate="no">
+              <div className="p-4 bg-muted rounded-lg border border-border">
+                <Label className="text-sm font-medium text-foreground mb-3 block" translate="no">
                   {t("deliver_after")}
                 </Label>
                 <Controller
@@ -1466,8 +1466,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
               {watchSellType === "BUYGROUP" && (
                 <>
                   {/* Min Quantity */}
-                  <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                    <Label className="text-sm font-medium text-gray-900 mb-3 block" translate="no">
+                  <div className="p-4 bg-muted rounded-lg border border-border">
+                    <Label className="text-sm font-medium text-foreground mb-3 block" translate="no">
                       {t("min_quantity")}
                     </Label>
                     <Controller
@@ -1509,8 +1509,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                   </div>
 
                   {/* Max Quantity */}
-                  <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                    <Label className="text-sm font-medium text-gray-900 mb-3 block" translate="no">
+                  <div className="p-4 bg-muted rounded-lg border border-border">
+                    <Label className="text-sm font-medium text-foreground mb-3 block" translate="no">
                       {t("max_quantity")}
                     </Label>
                     <Controller
@@ -1552,8 +1552,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                   </div>
 
                   {/* Min Customer */}
-                  <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                    <Label className="text-sm font-medium text-gray-900 mb-3 block" translate="no">
+                  <div className="p-4 bg-muted rounded-lg border border-border">
+                    <Label className="text-sm font-medium text-foreground mb-3 block" translate="no">
                       {t("min_customer")}
                     </Label>
                     <Controller
@@ -1595,8 +1595,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                   </div>
 
                   {/* Max Customer */}
-                  <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                    <Label className="text-sm font-medium text-gray-900 mb-3 block" translate="no">
+                  <div className="p-4 bg-muted rounded-lg border border-border">
+                    <Label className="text-sm font-medium text-foreground mb-3 block" translate="no">
                       {t("max_customer")}
                     </Label>
                     <Controller
@@ -1640,8 +1640,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
               )}
 
               {/* Time Open - Common for all sell types */}
-              <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                <Label className="text-sm font-medium text-gray-900 mb-3 block" translate="no">
+              <div className="p-4 bg-muted rounded-lg border border-border">
+                <Label className="text-sm font-medium text-foreground mb-3 block" translate="no">
                   {t("time_open")}
                 </Label>
                 <Controller
@@ -1683,8 +1683,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
               </div>
 
               {/* Time Close - Common for all sell types */}
-              <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                <Label className="text-sm font-medium text-gray-900 mb-3 block" translate="no">
+              <div className="p-4 bg-muted rounded-lg border border-border">
+                <Label className="text-sm font-medium text-foreground mb-3 block" translate="no">
                   {t("time_close")}
                 </Label>
                 <Controller
@@ -1729,8 +1729,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
               {(watchSellType === "BUYGROUP" || watchSellType === "WHOLESALE_PRODUCT") && (
                 <>
                   {/* Min Quantity Per Customer */}
-                  <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                    <Label className="text-sm font-medium text-gray-900 mb-3 block" translate="no">
+                  <div className="p-4 bg-muted rounded-lg border border-border">
+                    <Label className="text-sm font-medium text-foreground mb-3 block" translate="no">
                       {t("min_quantity_per_customer")}
                     </Label>
                     <Controller
@@ -1745,7 +1745,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                               const newValue = Math.max(currentValue - 1, 0);
                               field.onChange(newValue);
                             }}
-                            className="flex h-8 w-8 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50"
+                            className="flex h-8 w-8 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted"
                           >
                             -
                           </button>
@@ -1766,7 +1766,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                               const newValue = currentValue + 1;
                               field.onChange(newValue);
                             }}
-                            className="flex h-8 w-8 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50"
+                            className="flex h-8 w-8 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted"
                           >
                             +
                           </button>
@@ -1776,8 +1776,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                   </div>
 
                   {/* Max Quantity Per Customer */}
-                  <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                    <Label className="text-sm font-medium text-gray-900 mb-3 block" translate="no">
+                  <div className="p-4 bg-muted rounded-lg border border-border">
+                    <Label className="text-sm font-medium text-foreground mb-3 block" translate="no">
                       {t("max_quantity_per_customer")}
                     </Label>
                     <Controller
@@ -1792,7 +1792,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                               const newValue = Math.max(currentValue - 1, 0);
                               field.onChange(newValue);
                             }}
-                            className="flex h-8 w-8 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50"
+                            className="flex h-8 w-8 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted"
                           >
                             -
                           </button>
@@ -1813,7 +1813,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                               const newValue = currentValue + 1;
                               field.onChange(newValue);
                             }}
-                            className="flex h-8 w-8 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50"
+                            className="flex h-8 w-8 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted"
                           >
                             +
                           </button>
@@ -1826,8 +1826,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
 
               {/* Vendor Discount - Show for EVERYONE or VENDORS/BUSINESS consumer type */}
               {(watchConsumerType === "EVERYONE" || watchConsumerType === "VENDORS" || watchConsumerType === "BUSINESS") && (
-                <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                  <Label className="text-sm font-medium text-gray-900 mb-3 block" translate="no">
+                <div className="p-4 bg-muted rounded-lg border border-border">
+                  <Label className="text-sm font-medium text-foreground mb-3 block" translate="no">
                     {t("vendor_discount")}
                   </Label>
                   <Controller
@@ -1870,8 +1870,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
 
               {/* Consumer Discount - Show for EVERYONE or CONSUMER consumer type */}
               {(watchConsumerType === "EVERYONE" || watchConsumerType === "CONSUMER") && (
-                <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                  <Label className="text-sm font-medium text-gray-900 mb-3 block" translate="no">
+                <div className="p-4 bg-muted rounded-lg border border-border">
+                  <Label className="text-sm font-medium text-foreground mb-3 block" translate="no">
                     {t("consumer_discount")}
                   </Label>
                   <Controller
@@ -1914,8 +1914,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
 
               {/* Vendor Discount Type - Show for EVERYONE or VENDORS/BUSINESS consumer type */}
               {(watchConsumerType === "EVERYONE" || watchConsumerType === "VENDORS" || watchConsumerType === "BUSINESS") && (
-                <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                  <Label className="text-sm font-medium text-gray-900 mb-3 block" translate="no">
+                <div className="p-4 bg-muted rounded-lg border border-border">
+                  <Label className="text-sm font-medium text-foreground mb-3 block" translate="no">
                     {t("vendor_discount_type")}
                   </Label>
                   <Controller
@@ -1927,7 +1927,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                         onChange={field.onChange}
                         onBlur={field.onBlur}
                         name={field.name}
-                        className="w-full h-10 rounded-md border border-gray-300 px-3 text-sm focus:outline-hidden focus:ring-2 focus:ring-primary focus:border-transparent"
+                        className="w-full h-10 rounded-md border border-border px-3 text-sm focus:outline-hidden focus:ring-2 focus:ring-primary focus:border-transparent"
                       >
                         <option value="">Select Type</option>
                         {discountTypes().map((option) => (
@@ -1943,8 +1943,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
 
               {/* Consumer Discount Type - Show for EVERYONE or CONSUMER consumer type */}
               {(watchConsumerType === "EVERYONE" || watchConsumerType === "CONSUMER") && (
-                <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                  <Label className="text-sm font-medium text-gray-900 mb-3 block" translate="no">
+                <div className="p-4 bg-muted rounded-lg border border-border">
+                  <Label className="text-sm font-medium text-foreground mb-3 block" translate="no">
                     {t("consumer_discount_type")}
                   </Label>
                   <Controller
@@ -1956,7 +1956,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                         onChange={field.onChange}
                         onBlur={field.onBlur}
                         name={field.name}
-                        className="w-full h-10 rounded-md border border-gray-300 px-3 text-sm focus:outline-hidden focus:ring-2 focus:ring-primary focus:border-transparent"
+                        className="w-full h-10 rounded-md border border-border px-3 text-sm focus:outline-hidden focus:ring-2 focus:ring-primary focus:border-transparent"
                       >
                         <option value="">Select Type</option>
                         {discountTypes().map((option) => (
@@ -1974,8 +1974,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
               {watchSellType === "TRIAL_PRODUCT" && (
                 <>
                   {/* Max Quantity Per Customer for Trial Product */}
-                  <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                    <Label className="text-sm font-medium text-gray-900 mb-3 block" translate="no">
+                  <div className="p-4 bg-muted rounded-lg border border-border">
+                    <Label className="text-sm font-medium text-foreground mb-3 block" translate="no">
                       {t("max_quantity_per_customer")}
                     </Label>
                     <Controller
@@ -1990,7 +1990,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                               const newValue = Math.max(currentValue - 1, 0);
                               field.onChange(newValue);
                             }}
-                            className="flex h-8 w-8 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50"
+                            className="flex h-8 w-8 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted"
                           >
                             -
                           </button>
@@ -2011,7 +2011,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                               const newValue = currentValue + 1;
                               field.onChange(newValue);
                             }}
-                            className="flex h-8 w-8 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50"
+                            className="flex h-8 w-8 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted"
                           >
                             +
                           </button>
@@ -2083,7 +2083,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
       {/* Custom Confirmation Dialog */}
       {showConfirmDialog && confirmAction && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded shadow-xl max-w-sm w-full mx-4">
+          <div className="bg-card rounded shadow-xl max-w-sm w-full mx-4">
             <div className="p-4">
               <div className="flex items-center mb-3">
                 <div className={`w-6 h-6 rounded-full flex items-center justify-center mr-2 ${
@@ -2093,12 +2093,12 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                 }`}>
                   {confirmAction.type === 'hide' ? '⚠️' : '✅'}
                 </div>
-                <h3 className="text-base font-medium text-gray-900">
+                <h3 className="text-base font-medium text-foreground">
                   Confirm Action
                 </h3>
               </div>
               
-              <p className="text-sm text-gray-600 mb-4">
+              <p className="text-sm text-muted-foreground mb-4">
                 {confirmAction.message}
               </p>
               
@@ -2109,7 +2109,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                     setShowConfirmDialog(false);
                     setConfirmAction(null);
                   }}
-                  className="px-3 py-1.5 text-xs text-gray-600 border border-gray-300 rounded hover:bg-gray-50 focus:outline-hidden focus:ring-1 focus:ring-gray-500 transition-colors"
+                  className="px-3 py-1.5 text-xs text-muted-foreground border border-border rounded hover:bg-muted focus:outline-hidden focus:ring-1 focus:ring-gray-500 transition-colors"
                 >
                   Cancel
                 </button>

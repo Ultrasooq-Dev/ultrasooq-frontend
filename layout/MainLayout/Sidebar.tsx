@@ -185,7 +185,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
           },
         },
         {
-          icon: <StoreIcon className="h-5 w-5 text-pink-600" />,
+          icon: <StoreIcon className="h-5 w-5 text-destructive" />,
           label: t("wishlist"),
           translationKey: "wishlist",
           shortLabel: getShortLabel("wishlist"),
@@ -211,7 +211,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
           },
         },
         {
-          icon: <WrenchIcon className="h-5 w-5 text-teal-600" />,
+          icon: <WrenchIcon className="h-5 w-5 text-success" />,
           label: t("my_services"),
           translationKey: "my_services",
           shortLabel: getShortLabel("my_services"),
@@ -241,7 +241,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
           },
         },
         {
-          icon: <UsersIcon className="h-5 w-5 text-violet-600" />,
+          icon: <UsersIcon className="h-5 w-5 text-info" />,
           label: t("team_members"),
           translationKey: "team_members",
           shortLabel: getShortLabel("team_members"),
@@ -251,7 +251,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
           },
         },
         {
-          icon: <MessageCircleIcon className="h-5 w-5 text-cyan-600" />,
+          icon: <MessageCircleIcon className="h-5 w-5 text-info" />,
           label: t("messages"),
           translationKey: "messages",
           shortLabel: getShortLabel("messages"),
@@ -287,7 +287,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
           },
         },
         {
-          icon: <WrenchIcon className="h-5 w-5 text-teal-600" />,
+          icon: <WrenchIcon className="h-5 w-5 text-success" />,
           label: t("my_services"),
           translationKey: "my_services",
           shortLabel: getShortLabel("my_services"),
@@ -327,7 +327,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
           },
         },
         {
-          icon: <UsersIcon className="h-5 w-5 text-violet-600" />,
+          icon: <UsersIcon className="h-5 w-5 text-info" />,
           label: t("team_members"),
           translationKey: "team_members",
           shortLabel: getShortLabel("team_members"),
@@ -386,7 +386,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
         },
       },
       {
-        icon: <WalletIcon className="h-5 w-5 text-amber-600" />,
+        icon: <WalletIcon className="h-5 w-5 text-warning" />,
         label: t("my_wallet"),
         translationKey: "my_wallet",
         shortLabel: getShortLabel("my_wallet"),
@@ -396,7 +396,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
         },
       },
       {
-        icon: <SettingsIcon className="h-5 w-5 text-gray-600" />,
+        icon: <SettingsIcon className="h-5 w-5 text-muted-foreground" />,
         label: t("settings"),
         translationKey: "settings",
         shortLabel: getShortLabel("settings"),
@@ -475,7 +475,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
         <aside
           aria-label="Sidebar navigation"
           className={cn(
-            "fixed top-0 z-[70] h-full bg-white shadow-xl",
+            "fixed top-0 z-[70] h-full bg-card shadow-xl",
             // Position based on language direction
             langDir === "rtl" ? "right-0" : "left-0",
             // Mobile: slide in/out based on isOpen, full width when open
@@ -532,8 +532,8 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
             >
               {/* Decorative background pattern */}
               <div className="absolute inset-0 opacity-10">
-                <div className="absolute top-0 right-0 -mt-16 -mr-16 h-32 w-32 rounded-full bg-white"></div>
-                <div className="absolute bottom-0 left-0 -mb-12 -ml-12 h-24 w-24 rounded-full bg-white"></div>
+                <div className="absolute top-0 right-0 -mt-16 -mr-16 h-32 w-32 rounded-full bg-card"></div>
+                <div className="absolute bottom-0 left-0 -mb-12 -ml-12 h-24 w-24 rounded-full bg-card"></div>
               </div>
               {isHovered || isOpen ? (
                 <div className="relative z-10 flex w-full items-center justify-center text-white">
@@ -550,7 +550,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
                   <button
                     onClick={closeSidebar}
                     className={cn(
-                      "absolute flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-white/20 md:hidden",
+                      "absolute flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-card/20 md:hidden",
                       langDir === "rtl" ? "left-4" : "right-4",
                     )}
                     aria-label="Close menu"
@@ -593,7 +593,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
                         isActive &&
                           !(isHovered || isOpen) &&
                           "rounded-lg bg-primary/20",
-                        item.isLogout && "mt-3 border-t-2 border-gray-200 pt-3",
+                        item.isLogout && "mt-3 border-t-2 border-border pt-3",
                         langDir === "rtl" &&
                           (isHovered || isOpen) &&
                           "flex-row-reverse",
@@ -674,7 +674,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
                                   ? "text-destructive"
                                   : isActive
                                     ? "text-primary"
-                                    : "text-gray-700",
+                                    : "text-muted-foreground",
                               )}
                               style={{
                                 maxWidth: "48px",
@@ -698,13 +698,13 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
                                   ? "text-destructive group-hover:text-destructive"
                                   : isActive
                                     ? "font-semibold text-primary"
-                                    : "text-gray-700 group-hover:text-primary",
+                                    : "text-muted-foreground group-hover:text-primary",
                               )}
                             >
                               {item.label}
                             </div>
                             {item.subLabel && (
-                              <div className="mt-0.5 text-xs whitespace-nowrap text-gray-500">
+                              <div className="mt-0.5 text-xs whitespace-nowrap text-muted-foreground">
                                 {item.subLabel}
                               </div>
                             )}
@@ -714,7 +714,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
                       {(isHovered || isOpen) && !item.isLogout && (
                         <ChevronRightIcon
                           className={cn(
-                            "h-4 w-4 shrink-0 text-gray-400 transition-transform duration-200 group-hover:text-primary",
+                            "h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 group-hover:text-primary",
                             langDir === "rtl"
                               ? "rotate-180 group-hover:-translate-x-1"
                               : "group-hover:translate-x-1",
@@ -729,8 +729,8 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
 
             {/* Footer section - only visible when expanded */}
             {(isHovered || isOpen) && (
-              <div className="border-t border-gray-200 bg-gradient-to-b from-gray-50 to-white px-4 py-3">
-                <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
+              <div className="border-t border-border bg-gradient-to-b from-gray-50 to-white px-4 py-3">
+                <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
                   <span>© 2024 Ultrasooq</span>
                 </div>
               </div>

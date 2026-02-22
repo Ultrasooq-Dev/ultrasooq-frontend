@@ -768,7 +768,7 @@ html[dir="rtl"] body * {
 
   .product-view-s1 .product-view-s1-thumb-lists .thumb-item.active & {
     @apply border-[1.372px] border-solid border-(--theme-primary-color);
-    background: #fff;
+    background: var(--card);
   }
 
   .product-view-s1 .product-view-s1-thumb-lists .thumb-item & img {
@@ -2301,7 +2301,7 @@ html[dir="rtl"] body * {
 
   .product-view-s1 .product-view-s1-thumb-lists &.thumb-item .image-container {
     @apply border-[1.372px] border-solid border-(--theme-primary-color);
-    background: #fff;
+    background: var(--card);
   }
 
   .theme-tab-s1 ul li &a {
@@ -2645,12 +2645,12 @@ html[dir="rtl"] body * {
     &
     button.add_to_cart_button {
     @apply w-full rounded-sm border border-solid border-[#E8E8E8] p-2.5 text-[13px] font-bold leading-5 text-[#7F818D];
-    background: #fff;
+    background: var(--card);
   }
 
   & button.add_to_cart_button {
     @apply w-full rounded-sm border border-solid border-[#E8E8E8] p-2.5 text-[15px] font-bold leading-5 text-[#7F818D];
-    background: #fff;
+    background: var(--card);
   }
 
   /* start: responsive */
@@ -2953,7 +2953,7 @@ html[dir="rtl"] body * {
 
   & .product-view-s1-thumb-lists .thumb-item.active .image-container {
     @apply border-[1.372px] border-solid border-(--theme-primary-color);
-    background: #fff;
+    background: var(--card);
   }
 
   & .product-view-s1-thumb-lists .thumb-item .image-container img {
@@ -3022,7 +3022,7 @@ html[dir="rtl"] body * {
 
   .product-view-s1 & .thumb-item.active .image-container {
     @apply border-[1.372px] border-solid border-(--theme-primary-color);
-    background: #fff;
+    background: var(--card);
   }
 
   .product-view-s1 & .thumb-item .image-container img {
@@ -3061,7 +3061,7 @@ html[dir="rtl"] body * {
 
   .product-view-s1 .product-view-s1-thumb-lists &.active .image-container {
     @apply border-[1.372px] border-solid border-(--theme-primary-color);
-    background: #fff;
+    background: var(--card);
   }
 
   .product-view-s1 .product-view-s1-thumb-lists & .image-container img {
@@ -6038,7 +6038,7 @@ html[dir="rtl"] body * {
 
   & .custom-hover-dropdown-menu {
     @apply invisible absolute right-0 top-[calc(50%+2px)] min-w-[92px] overflow-hidden rounded-[5px] opacity-0 shadow-[0px_5px_31px_0px_#0000001F];
-    background: #ffffff;
+    background: var(--card);
   }
 
   &:hover .custom-hover-dropdown-menu {
@@ -6075,7 +6075,7 @@ html[dir="rtl"] body * {
 @utility custom-hover-dropdown-menu {
   .custom-hover-dropdown & {
     @apply invisible absolute right-0 top-[calc(50%+2px)] min-w-[92px] overflow-hidden rounded-[5px] opacity-0 shadow-[0px_5px_31px_0px_#0000001F];
-    background: #ffffff;
+    background: var(--card);
   }
 
   .custom-hover-dropdown:hover & {
@@ -7257,7 +7257,7 @@ html[dir="rtl"] body * {
 
   & .rfq_main_box {
     @apply flex items-start rounded-[10px] border border-solid border-[#E8E8E8] p-0 p-[15px];
-    background: #fff;
+    background: var(--card);
   }
 
   & .rfq_main_box .rfq_left {
@@ -7510,7 +7510,7 @@ html[dir="rtl"] body * {
     .trending_filter
     select {
     @apply w-[180px] appearance-none border border-solid border-[#DBDBDB] bg-[url(../../assets/images/down-icon.svg)] bg-position-[center_right_10px] bg-no-repeat px-[15px] py-2.5 pr-6 text-sm font-normal leading-6 text-[#7F818D] focus:shadow-none;
-    background: #fff;
+    background: var(--card);
   }
 
   &
@@ -7771,7 +7771,7 @@ html[dir="rtl"] body * {
     .cart_button
     button.add_to_cart_button {
     @apply w-full rounded-sm border border-solid border-[#E8E8E8] p-2.5 text-[13px] font-bold leading-5 text-[#7F818D];
-    background: #fff;
+    background: var(--card);
   }
 
   & .rfq_main_box .rfq_middle .product_gray_n_box .pagination {
@@ -8059,7 +8059,7 @@ html[dir="rtl"] body * {
 @utility rfq_main_box {
   .rfq_section & {
     @apply flex items-start rounded-[10px] border border-solid border-[#E8E8E8] p-0 p-[15px];
-    background: #fff;
+    background: var(--card);
   }
 
   .rfq_section & .rfq_left {
@@ -8307,7 +8307,7 @@ html[dir="rtl"] body * {
     .trending_filter
     select {
     @apply w-[180px] appearance-none border border-solid border-[#DBDBDB] bg-[url(../../assets/images/down-icon.svg)] bg-position-[center_right_10px] bg-no-repeat px-[15px] py-2.5 pr-6 text-sm font-normal leading-6 text-[#7F818D] focus:shadow-none;
-    background: #fff;
+    background: var(--card);
   }
 
   .rfq_section
@@ -8568,7 +8568,7 @@ html[dir="rtl"] body * {
     .cart_button
     button.add_to_cart_button {
     @apply w-full rounded-sm border border-solid border-[#E8E8E8] p-2.5 text-[13px] font-bold leading-5 text-[#7F818D];
-    background: #fff;
+    background: var(--card);
   }
 
   .rfq_section & .rfq_middle .product_gray_n_box .pagination {
@@ -9693,7 +9693,7 @@ html[dir="rtl"] body * {
     .trending_filter
     select {
     @apply w-[180px] appearance-none border border-solid border-[#DBDBDB] bg-[url(../../assets/images/down-icon.svg)] bg-position-[center_right_10px] bg-no-repeat px-[15px] py-2.5 pr-6 text-sm font-normal leading-6 text-[#7F818D] focus:shadow-none;
-    background: #fff;
+    background: var(--card);
   }
 
   .rfq_section
@@ -9954,7 +9954,7 @@ html[dir="rtl"] body * {
     .cart_button
     button.add_to_cart_button {
     @apply w-full rounded-sm border border-solid border-[#E8E8E8] p-2.5 text-[13px] font-bold leading-5 text-[#7F818D];
-    background: #fff;
+    background: var(--card);
   }
 
   .rfq_section .rfq_main_box & .product_gray_n_box .pagination {
@@ -10143,7 +10143,7 @@ html[dir="rtl"] body * {
     .trending_filter
     select {
     @apply w-[180px] appearance-none border border-solid border-[#DBDBDB] bg-[url(../../assets/images/down-icon.svg)] bg-position-[center_right_10px] bg-no-repeat px-[15px] py-2.5 pr-6 text-sm font-normal leading-6 text-[#7F818D] focus:shadow-none;
-    background: #fff;
+    background: var(--card);
   }
 
   .rfq_section
@@ -10404,7 +10404,7 @@ html[dir="rtl"] body * {
     .cart_button
     button.add_to_cart_button {
     @apply w-full rounded-sm border border-solid border-[#E8E8E8] p-2.5 text-[13px] font-bold leading-5 text-[#7F818D];
-    background: #fff;
+    background: var(--card);
   }
 
   .rfq_section .rfq_main_box .rfq_middle & .pagination {
@@ -10471,7 +10471,7 @@ html[dir="rtl"] body * {
     .trending_filter
     select {
     @apply w-[180px] appearance-none border border-solid border-[#DBDBDB] bg-[url(../../assets/images/down-icon.svg)] bg-position-[center_right_10px] bg-no-repeat px-[15px] py-2.5 pr-6 text-sm font-normal leading-6 text-[#7F818D] focus:shadow-none;
-    background: #fff;
+    background: var(--card);
   }
 
   .rfq_section
@@ -10571,7 +10571,7 @@ html[dir="rtl"] body * {
     .trending_filter
     select {
     @apply w-[180px] appearance-none border border-solid border-[#DBDBDB] bg-[url(../../assets/images/down-icon.svg)] bg-position-[center_right_10px] bg-no-repeat px-[15px] py-2.5 pr-6 text-sm font-normal leading-6 text-[#7F818D] focus:shadow-none;
-    background: #fff;
+    background: var(--card);
   }
 
   .rfq_section
@@ -10646,7 +10646,7 @@ html[dir="rtl"] body * {
     &
     select {
     @apply w-[180px] appearance-none border border-solid border-[#DBDBDB] bg-[url(../../assets/images/down-icon.svg)] bg-position-[center_right_10px] bg-no-repeat px-[15px] py-2.5 pr-6 text-sm font-normal leading-6 text-[#7F818D] focus:shadow-none;
-    background: #fff;
+    background: var(--card);
   }
 
   .rfq_section
@@ -10919,7 +10919,7 @@ html[dir="rtl"] body * {
     .cart_button
     button.add_to_cart_button {
     @apply w-full rounded-sm border border-solid border-[#E8E8E8] p-2.5 text-[13px] font-bold leading-5 text-[#7F818D];
-    background: #fff;
+    background: var(--card);
   }
 
   /* start: responsive */
@@ -11125,7 +11125,7 @@ html[dir="rtl"] body * {
     .cart_button
     button.add_to_cart_button {
     @apply w-full rounded-sm border border-solid border-[#E8E8E8] p-2.5 text-[13px] font-bold leading-5 text-[#7F818D];
-    background: #fff;
+    background: var(--card);
   }
 
   /* start: responsive */
@@ -11188,12 +11188,12 @@ html[dir="rtl"] body * {
     .cart_button
     &button {
     @apply w-full rounded-sm border border-solid border-[#E8E8E8] p-2.5 text-[13px] font-bold leading-5 text-[#7F818D];
-    background: #fff;
+    background: var(--card);
   }
 
   .cart_button &button {
     @apply w-full rounded-sm border border-solid border-[#E8E8E8] p-2.5 text-[15px] font-bold leading-5 text-[#7F818D];
-    background: #fff;
+    background: var(--card);
   }
 
   /* start: responsive */
@@ -11335,7 +11335,7 @@ html[dir="rtl"] body * {
     .cart_button
     button.add_to_cart_button {
     @apply w-full rounded-sm border border-solid border-[#E8E8E8] p-2.5 text-[13px] font-bold leading-5 text-[#7F818D];
-    background: #fff;
+    background: var(--card);
   }
 
   /* start: responsive */
@@ -12926,7 +12926,7 @@ html[dir="rtl"] body * {
   @apply gap-[unset];
   @apply mx-auto! my-0! w-[calc(100%-8px)]! min-w-[342px]! max-w-[420px]! border! border-l-[5px]! border-solid! px-0! py-4!;
   font-family: inherit;
-  background: #fff;
+  background: var(--card);
 
   &.size-420px {
     @apply max-w-[420px];
@@ -14123,7 +14123,7 @@ html[dir="rtl"] body * {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: #fff;
+    background: var(--card);
     box-shadow: 1px 1px 5px #999797;
     padding: 24px 24px;
     border-radius: 10px;
@@ -14277,7 +14277,7 @@ html[dir="rtl"] body * {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: #fff;
+    background: var(--card);
     box-shadow: 1px 1px 5px #999797;
     padding: 24px 24px;
     border-radius: 10px;
@@ -14494,7 +14494,7 @@ html[dir="rtl"] body * {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: #fff;
+    background: var(--card);
     box-shadow: 1px 1px 5px #999797;
     padding: 24px 24px;
     border-radius: 10px;
@@ -15305,7 +15305,7 @@ html[dir="rtl"] body * {
 
 @utility form-groups-common-sec-s1 {
   /* end: existing-product-add-page */
-  background-color: #f5f5f5;
+  background-color: var(--muted);
   border-radius: 10px;
   margin-bottom: 16px;
   padding: 8px 20px 0;
@@ -15802,7 +15802,7 @@ html[dir="rtl"] body * {
     padding: 12px 12px;
     font-weight: 400;
     font-size: 13px;
-    background-color: #f5f5f5;
+    background-color: var(--muted);
     width: 150px;
     max-width: 150px;
     min-width: 150px;
@@ -16225,7 +16225,7 @@ html[dir="rtl"] body * {
     cursor: pointer;
     position: absolute;
     z-index: 100;
-    background: #ffffff;
+    background: var(--card);
     border: 10px solid #3774ff;
     border-radius: 100%;
     display: block;

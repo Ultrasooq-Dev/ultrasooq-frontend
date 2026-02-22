@@ -118,7 +118,7 @@ const SearchPage = (props: SearchPageProps) => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-muted">
             <div className="w-full px-6 lg:px-12 py-6">
                 {/* Search Header with Sort + AI Toggle */}
                 <div className="mb-6">
@@ -131,10 +131,10 @@ const SearchPage = (props: SearchPageProps) => {
                             )}
                         </div>
                         <div className="flex-1">
-                            <h1 className="text-xl font-bold text-gray-900" dir={langDir}>
+                            <h1 className="text-xl font-bold text-foreground" dir={langDir}>
                                 {aiMode ? 'AI Search Results' : 'Search Results'}
                             </h1>
-                            <p className="text-gray-500 text-xs mt-1" dir={langDir}>
+                            <p className="text-muted-foreground text-xs mt-1" dir={langDir}>
                                 {searchParams?.term
                                     ? aiMode
                                         ? `${aiTotalCount > 0 ? aiTotalCount : ''} results for "${searchParams.term}"`
@@ -149,7 +149,7 @@ const SearchPage = (props: SearchPageProps) => {
                                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                                     aiMode
                                         ? 'bg-violet-600 text-white shadow-md shadow-violet-200'
-                                        : 'bg-white border border-gray-300 text-gray-700 hover:border-violet-400 hover:text-violet-600'
+                                        : 'bg-card border border-border text-muted-foreground hover:border-violet-400 hover:text-info'
                                 }`}
                             >
                                 <Sparkles className="h-4 w-4" />
@@ -161,7 +161,7 @@ const SearchPage = (props: SearchPageProps) => {
                                     onValueChange={(value) => setSortBy(value)}
                                     value={sortBy}
                                 >
-                                    <SelectTrigger className="h-9 w-[170px] border-gray-300 bg-white text-sm">
+                                    <SelectTrigger className="h-9 w-[170px] border-border bg-card text-sm">
                                         <SelectValue placeholder="Sort by" />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -182,7 +182,7 @@ const SearchPage = (props: SearchPageProps) => {
                     {aiMode && parsedQuery && (
                         <div className="mt-2 p-3 bg-violet-50 border border-violet-200 rounded-lg">
                             <div className="flex items-center gap-2 mb-2">
-                                <Sparkles className="h-4 w-4 text-violet-600" />
+                                <Sparkles className="h-4 w-4 text-info" />
                                 <span className="text-sm font-medium text-violet-800">AI understood your search as:</span>
                             </div>
                             <div className="flex flex-wrap gap-2">
@@ -209,7 +209,7 @@ const SearchPage = (props: SearchPageProps) => {
                                     </span>
                                 )}
                                 {parsedQuery.sortBy && (
-                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-amber-100 text-amber-800 text-xs font-medium rounded-full">
+                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-warning/10 text-amber-800 text-xs font-medium rounded-full">
                                         Sort: {parsedQuery.sortBy.replace('_', ' ')}
                                     </span>
                                 )}
@@ -232,7 +232,7 @@ const SearchPage = (props: SearchPageProps) => {
 
                     {/* AI Loading State */}
                     {aiMode && aiSearchQuery.isLoading && (
-                        <div className="mt-3 flex items-center gap-2 text-sm text-violet-600">
+                        <div className="mt-3 flex items-center gap-2 text-sm text-info">
                             <Loader2 className="h-4 w-4 animate-spin" />
                             AI is analyzing your search...
                         </div>
@@ -259,7 +259,7 @@ const SearchPage = (props: SearchPageProps) => {
 
                     {/* Did You Mean suggestion (standard mode only) */}
                     {!aiMode && didYouMean && !hasResults && !autoCorrection && (
-                        <div className="mt-2 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                        <div className="mt-2 p-3 bg-warning/5 border border-warning/20 rounded-lg">
                             <p className="text-sm text-amber-800">
                                 Did you mean{" "}
                                 <button
@@ -292,15 +292,15 @@ const SearchPage = (props: SearchPageProps) => {
                                 <div className="w-16 h-16 bg-violet-100 rounded-full flex items-center justify-center mb-4">
                                     <Sparkles className="h-8 w-8 text-violet-400" />
                                 </div>
-                                <h3 className="text-lg font-semibold text-gray-900 mb-2" dir={langDir}>
+                                <h3 className="text-lg font-semibold text-foreground mb-2" dir={langDir}>
                                     No AI Results Found
                                 </h3>
-                                <p className="text-gray-500 text-sm text-center max-w-md mb-4" dir={langDir}>
+                                <p className="text-muted-foreground text-sm text-center max-w-md mb-4" dir={langDir}>
                                     The AI couldn&apos;t find matching products. Try rephrasing your query or switch to standard search.
                                 </p>
                                 <button
                                     onClick={() => setAiMode(false)}
-                                    className="text-sm text-violet-600 hover:text-violet-800 underline"
+                                    className="text-sm text-info hover:text-violet-800 underline"
                                 >
                                     Switch to standard search
                                 </button>
@@ -359,18 +359,18 @@ const SearchPage = (props: SearchPageProps) => {
                 {/* No Results Message (standard mode only) */}
                 {!aiMode && !hasResults && !didYouMean && (
                     <div className="flex flex-col items-center justify-center py-12">
-                        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                            <Search className="h-8 w-8 text-gray-400" />
+                        <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
+                            <Search className="h-8 w-8 text-muted-foreground" />
                         </div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2" dir={langDir}>
+                        <h3 className="text-lg font-semibold text-foreground mb-2" dir={langDir}>
                             No Results Found
                         </h3>
-                        <p className="text-gray-500 text-sm text-center max-w-md mb-3" dir={langDir}>
+                        <p className="text-muted-foreground text-sm text-center max-w-md mb-3" dir={langDir}>
                             We couldn&apos;t find any results for &ldquo;{searchParams?.term}&rdquo;. Try searching with different keywords.
                         </p>
                         <button
                             onClick={() => setAiMode(true)}
-                            className="inline-flex items-center gap-2 text-sm text-violet-600 hover:text-violet-800 font-medium"
+                            className="inline-flex items-center gap-2 text-sm text-info hover:text-violet-800 font-medium"
                         >
                             <Sparkles className="h-4 w-4" />
                             Try AI-powered search

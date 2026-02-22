@@ -368,7 +368,7 @@ export default function EditBranchPage() {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="m-auto mb-12 w-11/12 rounded-lg border border-solid border-gray-300 bg-white p-6 shadow-xs sm:p-8 md:w-10/12 lg:w-10/12 lg:p-12"
+            className="m-auto mb-12 w-11/12 rounded-lg border border-solid border-border bg-card p-6 shadow-xs sm:p-8 md:w-10/12 lg:w-10/12 lg:p-12"
           >
             <div className="text-normal m-auto mb-7 w-full text-center text-sm leading-6 text-light-gray">
               <h2 className="mb-3 text-center text-3xl font-semibold leading-8 text-color-dark sm:text-4xl sm:leading-10" translate="no">
@@ -377,7 +377,7 @@ export default function EditBranchPage() {
             </div>
 
             <div className="mb-4 w-full">
-              <div className="mt-2.5 w-full border-b-2 border-dashed border-gray-300">
+              <div className="mt-2.5 w-full border-b-2 border-dashed border-border">
                 <label
                   className={cn(
                     "mb-3.5 block",
@@ -408,7 +408,7 @@ export default function EditBranchPage() {
                     <FormItem className="mb-3.5 w-full" dir={langDir}>
                       <FormLabel translate="no">{t("upload_branch_front_picture")}</FormLabel>
                       <FormControl>
-                        <div className="relative m-auto h-64 w-full border-2 border-dashed border-gray-300">
+                        <div className="relative m-auto h-64 w-full border-2 border-dashed border-border">
                           <div className="relative h-full w-full">
                             {branchImageFile || branchQueryById.data?.data ? (
                               <Image
@@ -482,7 +482,7 @@ export default function EditBranchPage() {
                     <FormItem className="mb-3.5 w-full" dir={langDir}>
                       <FormLabel translate="no">{t("address_proof")}</FormLabel>
                       <FormControl>
-                        <div className="relative m-auto h-64 w-full border-2 border-dashed border-gray-300">
+                        <div className="relative m-auto h-64 w-full border-2 border-dashed border-border">
                           <div className="relative h-full w-full">
                             {proofOfAddressImageFile ||
                               branchQueryById.data?.data ? (
@@ -555,7 +555,7 @@ export default function EditBranchPage() {
 
               <div className="flex w-full flex-wrap">
                 <div className="mb-4 w-full">
-                  <div className="mt-2.5 w-full border-b-2 border-dashed border-gray-300">
+                  <div className="mt-2.5 w-full border-b-2 border-dashed border-border">
                     <label
                       className={cn(
                         "mb-3.5 block",
@@ -654,7 +654,7 @@ export default function EditBranchPage() {
 
               <div className="flex w-full flex-wrap">
                 <div className="mb-4 w-full">
-                  <div className="mt-2.5 w-full border-b-2 border-dashed border-gray-300">
+                  <div className="mt-2.5 w-full border-b-2 border-dashed border-border">
                     <label className="mb-3.5 block text-left text-lg font-medium capitalize leading-5 text-color-dark" dir={langDir} translate="no">
                       {t("branch_working_hours")}
                     </label>
@@ -672,7 +672,7 @@ export default function EditBranchPage() {
                         render={({ field }) => (
                           <select
                             {...field}
-                            className="h-12! w-full rounded border border-gray-300! px-3 text-base focus-visible:ring-0!"
+                            className="h-12! w-full rounded border border-border! px-3 text-base focus-visible:ring-0!"
                           >
                             <option value="" dir={langDir} translate="no">{t("select")}</option>
                             {HOURS_24_FORMAT.map(
@@ -700,7 +700,7 @@ export default function EditBranchPage() {
                         render={({ field }) => (
                           <select
                             {...field}
-                            className="h-12! w-full rounded border border-gray-300! px-3 text-base focus-visible:ring-0!"
+                            className="h-12! w-full rounded border border-border! px-3 text-base focus-visible:ring-0!"
                           >
                             <option value="" dir={langDir} translate="no">{t("select")}</option>
                             {HOURS_24_FORMAT.map(
@@ -719,7 +719,7 @@ export default function EditBranchPage() {
                     </div>
                   </div>
                 </div>
-                <div className="mb-3.5 w-full border-b-2 border-dashed border-gray-300 pb-4">
+                <div className="mb-3.5 w-full border-b-2 border-dashed border-border pb-4">
                   <div className="flex flex-wrap">
                     {DAYS_OF_WEEK.map((item) => (
                       <FormField
@@ -741,7 +741,7 @@ export default function EditBranchPage() {
                                   item.value as keyof typeof field.value
                                   ]
                                 }
-                                className="border border-solid border-gray-300 data-[state=checked]:bg-dark-orange!"
+                                className="border border-solid border-border data-[state=checked]:bg-dark-orange!"
                               />
                             </FormControl>
                             <div className="space-y-1 leading-none">
@@ -775,7 +775,7 @@ export default function EditBranchPage() {
                 branchId={activeBranchId}
               />
 
-              <div className="mb-3.5 flex w-full border-b-2 border-dashed border-gray-300 pb-4" dir={langDir}>
+              <div className="mb-3.5 flex w-full border-b-2 border-dashed border-border pb-4" dir={langDir}>
                 <FormField
                   control={form.control}
                   name="mainOffice"

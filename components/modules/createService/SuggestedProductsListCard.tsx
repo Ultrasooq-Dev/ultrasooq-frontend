@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const SuggestedProductsListCard = () => {
   return (
-    <div className="w-full rounded-lg border border-solid border-gray-300 bg-white p-2 shadow-xs">
+    <div className="w-full rounded-lg border border-solid border-border bg-card p-2 shadow-xs">
       <div className="w-full rounded-lg bg-[#F8F6F6] px-4 py-6">
         <h3 className="mb-1 text-lg font-medium text-color-dark">
           Product Found
@@ -15,9 +15,9 @@ const SuggestedProductsListCard = () => {
         </p>
       </div>
       <div className="w-full">
-        <div className="mb-2 flex w-full items-start rounded-lg border border-solid border-gray-300 p-2">
+        <div className="mb-2 flex w-full items-start rounded-lg border border-solid border-border p-2">
           <div className="flex w-[calc(100%-2rem)] items-center py-2">
-            <div className="flex h-[64px] w-[64px] items-center justify-center rounded-lg border border-solid border-gray-300 p-1">
+            <div className="flex h-[64px] w-[64px] items-center justify-center rounded-lg border border-solid border-border p-1">
               <Image
                 src={IphoneIcon}
                 className="max-h-full max-w-full"
@@ -45,9 +45,9 @@ const SuggestedProductsListCard = () => {
             </a>
           </div>
         </div>
-        <div className="mb-2 flex w-full items-start rounded-lg border border-solid border-gray-300 p-2">
+        <div className="mb-2 flex w-full items-start rounded-lg border border-solid border-border p-2">
           <div className="flex w-[calc(100%-2rem)] items-center py-2">
-            <div className="flex h-[64px] w-[64px] items-center justify-center rounded-lg border border-solid border-gray-300 p-1">
+            <div className="flex h-[64px] w-[64px] items-center justify-center rounded-lg border border-solid border-border p-1">
               <Image
                 src={IphoneIcon}
                 className="max-h-full max-w-full"
@@ -75,9 +75,9 @@ const SuggestedProductsListCard = () => {
             </a>
           </div>
         </div>
-        <div className="mb-2 flex w-full items-start rounded-lg border border-solid border-gray-300 p-2">
+        <div className="mb-2 flex w-full items-start rounded-lg border border-solid border-border p-2">
           <div className="flex w-[calc(100%-2rem)] items-center py-2">
-            <div className="flex h-[64px] w-[64px] items-center justify-center rounded-lg border border-solid border-gray-300 p-1">
+            <div className="flex h-[64px] w-[64px] items-center justify-center rounded-lg border border-solid border-border p-1">
               <Image
                 src={IphoneIcon}
                 className="max-h-full max-w-full"
@@ -105,9 +105,9 @@ const SuggestedProductsListCard = () => {
             </a>
           </div>
         </div>
-        <div className="mb-2 flex w-full items-start rounded-lg border border-solid border-gray-300 p-2">
+        <div className="mb-2 flex w-full items-start rounded-lg border border-solid border-border p-2">
           <div className="flex w-[calc(100%-2rem)] items-center py-2">
-            <div className="flex h-[64px] w-[64px] items-center justify-center rounded-lg border border-solid border-gray-300 p-1">
+            <div className="flex h-[64px] w-[64px] items-center justify-center rounded-lg border border-solid border-border p-1">
               <Image
                 src={IphoneIcon}
                 className="max-h-full max-w-full"
@@ -135,9 +135,9 @@ const SuggestedProductsListCard = () => {
             </a>
           </div>
         </div>
-        <div className="mb-2 flex w-full items-start rounded-lg border border-solid border-gray-300 p-2">
+        <div className="mb-2 flex w-full items-start rounded-lg border border-solid border-border p-2">
           <div className="flex w-[calc(100%-2rem)] items-center py-2">
-            <div className="flex h-[64px] w-[64px] items-center justify-center rounded-lg border border-solid border-gray-300 p-1">
+            <div className="flex h-[64px] w-[64px] items-center justify-center rounded-lg border border-solid border-border p-1">
               <Image
                 src={IphoneIcon}
                 className="max-h-full max-w-full"

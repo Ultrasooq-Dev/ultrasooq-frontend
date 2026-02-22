@@ -139,7 +139,7 @@ const TeamMembersPage = () => {
                           <td>
                             {" "}
                             <Info
-                              className="h-4 w-4 cursor-pointer text-gray-500"
+                              className="h-4 w-4 cursor-pointer text-muted-foreground"
                               onClick={() => handleEditMode(item)}
                             />
                           </td>

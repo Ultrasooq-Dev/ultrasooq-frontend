@@ -232,7 +232,7 @@ export default function LoginPage() {
     <>
       <title dir={langDir} translate="no">{`${t("login")} | Ultrasooq`}</title>
       <section
-        className="relative flex min-h-screen w-full bg-white"
+        className="relative flex min-h-screen w-full bg-card"
         dir={langDir}
       >
         {/* ======================= LEFT PANEL - Company Branding (Desktop Only) ======================= */}
@@ -263,9 +263,9 @@ export default function LoginPage() {
           </div>
 
           {/* Decorative circles */}
-          <div className="absolute -top-20 -left-20 h-72 w-72 rounded-full bg-white/10 blur-xl" />
-          <div className="absolute -right-16 bottom-10 h-80 w-80 rounded-full bg-white/5 blur-2xl" />
-          <div className="absolute top-1/2 left-1/4 h-40 w-40 rounded-full bg-white/5 blur-lg" />
+          <div className="absolute -top-20 -left-20 h-72 w-72 rounded-full bg-card/10 blur-xl" />
+          <div className="absolute -right-16 bottom-10 h-80 w-80 rounded-full bg-card/5 blur-2xl" />
+          <div className="absolute top-1/2 left-1/4 h-40 w-40 rounded-full bg-card/5 blur-lg" />
 
           {/* Content */}
           <div className="relative z-10 flex w-full flex-col justify-between p-10 xl:p-14">
@@ -305,7 +305,7 @@ export default function LoginPage() {
               {/* Feature Points */}
               <div className="space-y-5">
                 <div className="flex items-start gap-4">
-                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-white/20 backdrop-blur-sm">
+                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-card/20 backdrop-blur-sm">
                     <svg
                       className="h-5 w-5 text-white"
                       fill="none"
@@ -332,7 +332,7 @@ export default function LoginPage() {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-white/20 backdrop-blur-sm">
+                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-card/20 backdrop-blur-sm">
                     <svg
                       className="h-5 w-5 text-white"
                       fill="none"
@@ -359,7 +359,7 @@ export default function LoginPage() {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-white/20 backdrop-blur-sm">
+                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-card/20 backdrop-blur-sm">
                     <svg
                       className="h-5 w-5 text-white"
                       fill="none"
@@ -397,7 +397,7 @@ export default function LoginPage() {
                   {s.stat_1_label || "Active Suppliers"}
                 </div>
               </div>
-              <div className="h-10 w-px bg-white/20" />
+              <div className="h-10 w-px bg-card/20" />
               <div>
                 <div className="text-2xl font-bold text-white xl:text-3xl">
                   {s.stat_2_value || "190+"}
@@ -406,7 +406,7 @@ export default function LoginPage() {
                   {s.stat_2_label || "Countries"}
                 </div>
               </div>
-              <div className="h-10 w-px bg-white/20" />
+              <div className="h-10 w-px bg-card/20" />
               <div>
                 <div className="text-2xl font-bold text-white xl:text-3xl">
                   {s.stat_3_value || "50K+"}
@@ -435,7 +435,7 @@ export default function LoginPage() {
                 height={36}
                 className="rounded-lg"
               />
-              <span className="text-lg font-bold text-gray-900">Ultrasooq</span>
+              <span className="text-lg font-bold text-foreground">Ultrasooq</span>
             </Link>
             <div className="hidden lg:block" />
 
@@ -444,12 +444,12 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => setLangDropdownOpen(!langDropdownOpen)}
-                className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
+                className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted"
               >
                 <span className="text-base">{currentLang.flag}</span>
                 <span className="hidden sm:inline">{currentLang.name}</span>
                 <svg
-                  className={`h-4 w-4 text-gray-400 transition-transform ${langDropdownOpen ? "rotate-180" : ""}`}
+                  className={`h-4 w-4 text-muted-foreground transition-transform ${langDropdownOpen ? "rotate-180" : ""}`}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -464,7 +464,7 @@ export default function LoginPage() {
               </button>
 
               {langDropdownOpen && (
-                <div className="absolute right-0 z-50 mt-2 max-h-72 w-56 overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-xl">
+                <div className="absolute right-0 z-50 mt-2 max-h-72 w-56 overflow-y-auto rounded-xl border border-border bg-card shadow-xl">
                   <div className="py-1">
                     {LANGUAGES.map((lang) => (
                       <button
@@ -477,7 +477,7 @@ export default function LoginPage() {
                         className={`flex w-full items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-warning/5 ${
                           lang.locale === selectedLocale
                             ? "bg-warning/5 font-semibold text-warning"
-                            : "text-gray-700"
+                            : "text-muted-foreground"
                         }`}
                       >
                         <span className="text-lg">{lang.flag}</span>
@@ -511,14 +511,14 @@ export default function LoginPage() {
               {/* Header Section */}
               <div className="mb-6 text-center">
                 <h2
-                  className="mb-1 text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl"
+                  className="mb-1 text-2xl font-bold tracking-tight text-foreground sm:text-3xl"
                   dir={langDir}
                   translate="no"
                 >
                   {t("login")}
                 </h2>
                 <p
-                  className="text-sm text-gray-500"
+                  className="text-sm text-muted-foreground"
                   dir={langDir}
                   translate="no"
                 >
@@ -527,7 +527,7 @@ export default function LoginPage() {
               </div>
 
               {/* Form Card */}
-              <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8">
+              <div className="rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-8">
                 {/* Form Section */}
                 <Form {...form}>
                   <form
@@ -572,12 +572,12 @@ export default function LoginPage() {
                       <div className="flex items-center space-x-2">
                         <Checkbox
                           id="remember"
-                          className="data-[state=checked]:bg-dark-orange data-[state=checked]:border-dark-orange h-3.5 w-3.5 rounded border-gray-300 transition-all"
+                          className="data-[state=checked]:bg-dark-orange data-[state=checked]:border-dark-orange h-3.5 w-3.5 rounded border-border transition-all"
                           onCheckedChange={(val) => setRememberMe(val)}
                         />
                         <label
                           htmlFor="remember"
-                          className="cursor-pointer text-xs font-medium text-gray-700 transition-colors select-none hover:text-gray-900 sm:text-sm"
+                          className="cursor-pointer text-xs font-medium text-muted-foreground transition-colors select-none hover:text-foreground sm:text-sm"
                           dir={langDir}
                           translate="no"
                         >
@@ -629,11 +629,11 @@ export default function LoginPage() {
                 {/* Divider */}
                 <div className="relative my-5">
                   <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-gray-200"></div>
+                    <div className="w-full border-t border-border"></div>
                   </div>
                   <div className="relative flex justify-center text-xs sm:text-sm">
                     <span
-                      className="bg-white px-3 font-medium text-gray-500"
+                      className="bg-card px-3 font-medium text-muted-foreground"
                       dir={langDir}
                       translate="no"
                     >
@@ -645,7 +645,7 @@ export default function LoginPage() {
                 {/* Social Login Buttons */}
                 <Button
                   variant="outline"
-                  className="h-10 w-full rounded-lg border-2 border-gray-200 text-xs font-semibold text-gray-700 shadow-sm transition-all duration-200 hover:border-destructive hover:bg-destructive/5 hover:text-destructive hover:shadow-md sm:h-11 sm:text-sm"
+                  className="h-10 w-full rounded-lg border-2 border-border text-xs font-semibold text-muted-foreground shadow-sm transition-all duration-200 hover:border-destructive hover:bg-destructive/5 hover:text-destructive hover:shadow-md sm:h-11 sm:text-sm"
                   onClick={() => {
                     setIsGoogleLoading(true);
                     localStorage.setItem("loginType", "GOOGLE");
@@ -684,7 +684,7 @@ export default function LoginPage() {
                 {/* Sign Up Link */}
                 <div className="mt-5 text-center">
                   <span
-                    className="text-xs font-medium text-gray-600 sm:text-sm"
+                    className="text-xs font-medium text-muted-foreground sm:text-sm"
                     dir={langDir}
                     translate="no"
                   >

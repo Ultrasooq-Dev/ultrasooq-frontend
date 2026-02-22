@@ -318,11 +318,11 @@ export default function RegisterPage() {
   return (
     <>
       <title dir={langDir} translate="no">{`${t("register")} | Ultrasooq`}</title>
-      <section className="relative flex min-h-screen w-full items-center justify-center bg-white px-4 py-4 sm:py-6">
+      <section className="relative flex min-h-screen w-full items-center justify-center bg-card px-4 py-4 sm:py-6">
         {/* Main Content */}
         <div className="relative z-10 mx-auto w-full max-w-md">
           {/* Register Card */}
-          <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl">
+          <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-xl">
             {/* Decorative Header */}
             <div className="from-dark-orange via-dark-orange h-1.5 bg-gradient-to-r to-warning/90"></div>
 
@@ -345,14 +345,14 @@ export default function RegisterPage() {
                   </svg>
                 </div>
                 <h2
-                  className="mb-1 text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl"
+                  className="mb-1 text-2xl font-bold tracking-tight text-foreground sm:text-3xl"
                   dir={langDir}
                   translate="no"
                 >
                   {t("registration")}
                 </h2>
                 <p
-                  className="text-xs text-gray-600 sm:text-sm"
+                  className="text-xs text-muted-foreground sm:text-sm"
                   dir={langDir}
                   translate="no"
                 >
@@ -364,7 +364,7 @@ export default function RegisterPage() {
               <div className="mb-5">
                 <Button
                   variant="outline"
-                  className="h-10 w-full rounded-lg border-2 border-gray-200 text-xs font-semibold text-gray-700 shadow-sm transition-all duration-200 hover:border-destructive hover:bg-destructive/5 hover:text-destructive hover:shadow-md sm:h-11 sm:text-sm"
+                  className="h-10 w-full rounded-lg border-2 border-border text-xs font-semibold text-muted-foreground shadow-sm transition-all duration-200 hover:border-destructive hover:bg-destructive/5 hover:text-destructive hover:shadow-md sm:h-11 sm:text-sm"
                   onClick={() => {
                     setIsGoogleLoading(true);
                     localStorage.setItem("loginType", "GOOGLE");
@@ -404,11 +404,11 @@ export default function RegisterPage() {
               {/* Divider */}
               <div className="relative my-5">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-200"></div>
+                  <div className="w-full border-t border-border"></div>
                 </div>
                 <div className="relative flex justify-center text-xs sm:text-sm">
                   <span
-                    className="bg-white px-3 font-medium text-gray-500"
+                    className="bg-card px-3 font-medium text-muted-foreground"
                     dir={langDir}
                     translate="no"
                   >
@@ -501,11 +501,11 @@ export default function RegisterPage() {
                               <Checkbox
                                 checked={field.value}
                                 onCheckedChange={field.onChange}
-                                className="data-[state=checked]:bg-dark-orange data-[state=checked]:border-dark-orange h-3.5 w-3.5 rounded border-gray-300 transition-all"
+                                className="data-[state=checked]:bg-dark-orange data-[state=checked]:border-dark-orange h-3.5 w-3.5 rounded border-border transition-all"
                               />
                             </FormControl>
                             <div className="flex flex-col leading-none">
-                              <div className="text-xs text-gray-700 sm:text-sm">
+                              <div className="text-xs text-muted-foreground sm:text-sm">
                                 <span dir={langDir} translate="no">
                                   {t("i_agree")}{" "}
                                 </span>
@@ -571,7 +571,7 @@ export default function RegisterPage() {
                 {/* Sign In Link */}
                 <div className="mt-4 text-center">
                   <span
-                    className="text-xs font-medium text-gray-600 sm:text-sm"
+                    className="text-xs font-medium text-muted-foreground sm:text-sm"
                     dir={langDir}
                     translate="no"
                   >

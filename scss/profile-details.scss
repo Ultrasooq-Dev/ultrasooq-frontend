@@ -17,7 +17,7 @@
         }
     }
     .profile_details_box {
-        background: #fff;
+        background: var(--card);
         border: 1px solid #E4E3E3;
         box-shadow: 0px 12px 40px 0px #FF452312;
         padding: 35px;
@@ -105,7 +105,7 @@
                     background: hsl(var(--primary));
                     padding: 8px 12px;
                     border-radius: 6px;
-                    color: #fff;
+                    color: var(--card);
                     font-size: 14px;
                     font-weight: 500;
                     line-height: 24px;
@@ -206,7 +206,7 @@
                     }
                     .form-control {
                         height: auto;
-                        background: #fff;
+                        background: var(--card);
                         border: 1px solid #DBDBDB;
                         padding: 12px 16px;
                         border-radius: 4px;
@@ -265,7 +265,7 @@
                 li.active {
                     a {
                         background: hsl(var(--primary));
-                        color: #fff;
+                        color: var(--card);
                     }
                 }
             }
@@ -273,7 +273,7 @@
         .profile_info_tab_content {
             width: 100%;
             padding: 50px 35px 30px;
-            background: #fff;
+            background: var(--card);
             box-shadow: 0px 12px 40px 0px #FF452312;
             border: 1px solid #E4E3E3;
             @media only screen and (min-width: 240px) and (max-width: 767px) {
@@ -315,7 +315,7 @@
                             background: hsl(var(--primary));
                             padding: 8px 12px;
                             border-radius: 6px;
-                            color: #fff;
+                            color: var(--card);
                             font-size: 14px;
                             font-weight: 500;
                             line-height: 24px;
@@ -447,7 +447,7 @@
                             background: hsl(var(--primary));
                             padding: 12px 22px;
                             border-radius: 2px;
-                            color: #fff;
+                            color: var(--card);
                             font-size: 16px;
                             font-weight: 700;
                             line-height: 24px;

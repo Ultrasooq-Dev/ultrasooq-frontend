@@ -74,17 +74,17 @@ export default function ChangeEmailPage() {
   return (
     <div className="space-y-6">
       {/* Header Section */}
-      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
-        <h2 className="text-2xl font-bold tracking-tight text-gray-900" dir={langDir} translate="no">
+      <div className="overflow-hidden rounded-xl border border-border bg-card p-6 shadow-sm transition-shadow hover:shadow-md">
+        <h2 className="text-2xl font-bold tracking-tight text-foreground" dir={langDir} translate="no">
           {t("change_email")}
         </h2>
-        <p className="mt-1.5 text-sm text-gray-600" translate="no">
+        <p className="mt-1.5 text-sm text-muted-foreground" translate="no">
           {t("update_your_account_email_address")}
         </p>
       </div>
 
       {/* Form Section */}
-      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
+      <div className="overflow-hidden rounded-xl border border-border bg-card p-6 shadow-sm transition-shadow hover:shadow-md">
         <Form {...form}>
           <form
             className="space-y-6"
@@ -95,21 +95,21 @@ export default function ChangeEmailPage() {
               name="email"
               render={({ field }) => (
                 <FormItem dir={langDir}>
-                  <FormLabel className="text-sm font-semibold text-gray-700" translate="no">
+                  <FormLabel className="text-sm font-semibold text-muted-foreground" translate="no">
                     {t("new_email")}
                   </FormLabel>
                   <FormControl>
                     <Input
                       type="email"
                       placeholder={t("enter_email")}
-                      className="h-12 rounded-lg border-gray-300 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-0"
+                      className="h-12 rounded-lg border-border focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-0"
                       {...field}
                       dir={langDir}
                       translate="no"
                     />
                   </FormControl>
                   <FormMessage className="text-sm" />
-                  <p className="mt-2 text-xs text-gray-500" translate="no">
+                  <p className="mt-2 text-xs text-muted-foreground" translate="no">
                     {t("we_will_send_a_verification_code_to_this_email")}
                   </p>
                 </FormItem>

@@ -18,7 +18,7 @@ import dynamic from "next/dynamic";
 const AddToRfqForm = dynamic(
   () => import("@/components/modules/rfq/AddToRfqForm"),
   {
-    loading: () => <div className="animate-pulse h-64 bg-gray-200 rounded-lg" />,
+    loading: () => <div className="animate-pulse h-64 bg-muted rounded-lg" />,
     ssr: false,
   },
 );
@@ -412,9 +412,9 @@ const RfqPage = (props: RfqPageProps) => {
   return (
     <>
       <title dir={langDir} translate="no">{`${t("rfq")} | Ultrasooq`}</title>
-      <div className="body-content-s1 bg-white">
+      <div className="body-content-s1 bg-card">
         {/* Full Width Two Column Layout */}
-        <div className="min-h-screen w-full bg-white px-2 sm:px-4 lg:px-8">
+        <div className="min-h-screen w-full bg-card px-2 sm:px-4 lg:px-8">
           <div
             className={cn(
               "flex h-full flex-col gap-4",
@@ -422,11 +422,11 @@ const RfqPage = (props: RfqPageProps) => {
             )}
           >
             {/* Sidebar - Filters (Desktop) */}
-            <div className="hidden flex-shrink-0 overflow-y-auto bg-white p-4 lg:block lg:w-1/4">
-              <div className="sticky top-4 rounded-xl bg-white p-6 shadow-lg">
+            <div className="hidden flex-shrink-0 overflow-y-auto bg-card p-4 lg:block lg:w-1/4">
+              <div className="sticky top-4 rounded-xl bg-card p-6 shadow-lg">
                 {/* Filter Header */}
-                <div className="mb-6 border-b border-gray-200 pb-4">
-                  <h3 className="mb-3 text-lg font-bold text-gray-900">
+                <div className="mb-6 border-b border-border pb-4">
+                  <h3 className="mb-3 text-lg font-bold text-foreground">
                     {t("filters")}
                   </h3>
                   <div className="flex gap-2">
@@ -440,7 +440,7 @@ const RfqPage = (props: RfqPageProps) => {
                     <button
                       type="button"
                       onClick={clearFilter}
-                      className="flex-1 rounded-lg bg-gray-200 px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-300"
+                      className="flex-1 rounded-lg bg-muted px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted"
                     >
                       {t("clean_select")}
                     </button>
@@ -454,22 +454,22 @@ const RfqPage = (props: RfqPageProps) => {
                   <Accordion
                     type="multiple"
                     defaultValue={["brand"]}
-                    className="overflow-hidden rounded-lg border border-gray-200"
+                    className="overflow-hidden rounded-lg border border-border"
                   >
                     <AccordionItem value="brand" className="border-0">
-                      <AccordionTrigger className="bg-gray-50 px-4 py-3 font-semibold text-gray-900 hover:bg-gray-100">
+                      <AccordionTrigger className="bg-muted px-4 py-3 font-semibold text-foreground hover:bg-muted">
                         <div className="flex items-center gap-2">
                           <Building2 className="h-4 w-4" />
                           <span>{t("by_brand")}</span>
                         </div>
                       </AccordionTrigger>
-                      <AccordionContent className="bg-white px-4 py-4">
+                      <AccordionContent className="bg-card px-4 py-4">
                         <div className="mb-3">
                           <div className="flex gap-2">
                             <Input
                               type="text"
                               placeholder={t("search_brand")}
-                              className="h-9 flex-1 border-gray-300 text-sm focus:border-primary focus:ring-primary"
+                              className="h-9 flex-1 border-border text-sm focus:border-primary focus:ring-primary"
                               value={searchTermBrand}
                               onChange={handleBrandSearchChange}
                               dir={langDir}
@@ -488,18 +488,18 @@ const RfqPage = (props: RfqPageProps) => {
                         </div>
                         <div className="max-h-48 space-y-2 overflow-y-auto">
                           {!memoizedBrands.length ? (
-                            <p className="py-4 text-center text-sm text-gray-500">
+                            <p className="py-4 text-center text-sm text-muted-foreground">
                               {t("no_data_found")}
                             </p>
                           ) : null}
                           {memoizedBrands.map((item: ISelectOptions) => (
                             <div
                               key={item.value}
-                              className="flex items-center space-x-2 rounded px-2 py-1 transition-colors hover:bg-gray-50"
+                              className="flex items-center space-x-2 rounded px-2 py-1 transition-colors hover:bg-muted"
                             >
                               <Checkbox
                                 id={item.label}
-                                className="border border-gray-300 data-[state=checked]:border-primary data-[state=checked]:bg-primary"
+                                className="border border-border data-[state=checked]:border-primary data-[state=checked]:bg-primary"
                                 onCheckedChange={(checked) =>
                                   handleBrandChange(checked, item)
                                 }
@@ -524,16 +524,16 @@ const RfqPage = (props: RfqPageProps) => {
                   <Accordion
                     type="multiple"
                     defaultValue={["price"]}
-                    className="overflow-hidden rounded-lg border border-gray-200"
+                    className="overflow-hidden rounded-lg border border-border"
                   >
                     <AccordionItem value="price" className="border-0">
-                      <AccordionTrigger className="bg-gray-50 px-4 py-3 font-semibold text-gray-900 hover:bg-gray-100">
+                      <AccordionTrigger className="bg-muted px-4 py-3 font-semibold text-foreground hover:bg-muted">
                         <div className="flex items-center gap-2">
                           <span className="text-lg">💰</span>
                           <span>{t("price")}</span>
                         </div>
                       </AccordionTrigger>
-                      <AccordionContent className="bg-white px-4 py-4">
+                      <AccordionContent className="bg-card px-4 py-4">
                         <div className="mb-4 px-2">
                           <ReactSlider
                             className="horizontal-slider"
@@ -571,7 +571,7 @@ const RfqPage = (props: RfqPageProps) => {
                           <Input
                             type="number"
                             placeholder={`${currency.symbol}0`}
-                            className="custom-form-control-s1 rounded-lg border-gray-300 focus:border-primary focus:ring-primary"
+                            className="custom-form-control-s1 rounded-lg border-border focus:border-primary focus:ring-primary"
                             onChange={handleMinPriceChange}
                             onWheel={(e) => e.currentTarget.blur()}
                             ref={minPriceInputRef}
@@ -580,7 +580,7 @@ const RfqPage = (props: RfqPageProps) => {
                           <Input
                             type="number"
                             placeholder={`${currency.symbol}500`}
-                            className="custom-form-control-s1 rounded-lg border-gray-300 focus:border-primary focus:ring-primary"
+                            className="custom-form-control-s1 rounded-lg border-border focus:border-primary focus:ring-primary"
                             onChange={handleMaxPriceChange}
                             onWheel={(e) => e.currentTarget.blur()}
                             ref={maxPriceInputRef}
@@ -596,7 +596,7 @@ const RfqPage = (props: RfqPageProps) => {
             {/* Main Content Column - Products */}
             <div
               className={cn(
-                "flex-1 overflow-y-auto bg-white",
+                "flex-1 overflow-y-auto bg-card",
                 cartList.length > 0
                   ? isRTL
                     ? "lg:pl-36"
@@ -608,13 +608,13 @@ const RfqPage = (props: RfqPageProps) => {
             >
               <div className="p-2 sm:p-4 lg:p-6">
                 {/* Product Header Filter Section */}
-                <div className="mb-6 flex flex-col items-start justify-between gap-4 rounded-lg border border-gray-200 bg-gray-50 p-4 sm:flex-row sm:items-center">
+                <div className="mb-6 flex flex-col items-start justify-between gap-4 rounded-lg border border-border bg-muted p-4 sm:flex-row sm:items-center">
                   {/* Left Section - Mobile Buttons & Title */}
                   <div className="flex w-full items-center gap-3 sm:w-auto">
                     {/* Mobile Filter Button */}
                     <button
                       type="button"
-                      className="rounded-lg border border-gray-300 bg-white p-2.5 transition-colors hover:bg-gray-100 lg:hidden"
+                      className="rounded-lg border border-border bg-card p-2.5 transition-colors hover:bg-muted lg:hidden"
                       onClick={() => setProductFilter(true)}
                     >
                       <FilterMenuIcon />
@@ -623,7 +623,7 @@ const RfqPage = (props: RfqPageProps) => {
                     {/* Mobile Cart Button - Hidden on desktop, floating button shows instead */}
                     <button
                       type="button"
-                      className="relative rounded-lg border border-gray-300 bg-white p-2.5 transition-colors hover:bg-gray-100 lg:hidden"
+                      className="relative rounded-lg border border-border bg-card p-2.5 transition-colors hover:bg-muted lg:hidden"
                       onClick={() => setShowCartDrawer(true)}
                     >
                       <ShoppingCart className="h-5 w-5" />
@@ -637,7 +637,7 @@ const RfqPage = (props: RfqPageProps) => {
                     {/* Title */}
                     <div className="flex-1 sm:flex-none">
                       <h2
-                        className="text-base font-semibold text-gray-900 sm:text-xl"
+                        className="text-base font-semibold text-foreground sm:text-xl"
                         dir={langDir}
                         translate="no"
                       >
@@ -653,7 +653,7 @@ const RfqPage = (props: RfqPageProps) => {
                       onValueChange={(e: any) => setSortBy(e)}
                       value={sortBy}
                     >
-                      <SelectTrigger className="h-10 w-full border-gray-300 bg-white sm:w-[180px]">
+                      <SelectTrigger className="h-10 w-full border-border bg-card sm:w-[180px]">
                         <SelectValue
                           placeholder={t("sort_by")}
                           dir={langDir}
@@ -681,13 +681,13 @@ const RfqPage = (props: RfqPageProps) => {
                     </Select>
 
                     {/* View Type Buttons */}
-                    <div className="hidden items-center gap-2 rounded-lg border border-gray-300 bg-white p-1 sm:flex">
+                    <div className="hidden items-center gap-2 rounded-lg border border-border bg-card p-1 sm:flex">
                       <button
                         type="button"
                         className={`rounded p-2 transition-colors ${
                           viewType === "grid"
                             ? "bg-primary text-white"
-                            : "text-gray-600 hover:bg-gray-100"
+                            : "text-muted-foreground hover:bg-muted"
                         }`}
                         onClick={() => setViewType("grid")}
                       >
@@ -698,7 +698,7 @@ const RfqPage = (props: RfqPageProps) => {
                         className={`rounded p-2 transition-colors ${
                           viewType === "list"
                             ? "bg-primary text-white"
-                            : "text-gray-600 hover:bg-gray-100"
+                            : "text-muted-foreground hover:bg-muted"
                         }`}
                         onClick={() => setViewType("list")}
                       >
@@ -715,7 +715,7 @@ const RfqPage = (props: RfqPageProps) => {
                       <div className="relative">
                         <input
                           type="search"
-                          className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-primary sm:py-2.5 sm:text-base"
+                          className="w-full rounded-lg border border-border px-4 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-primary sm:py-2.5 sm:text-base"
                           placeholder={t("search_product")}
                           onChange={handleRfqDebounce}
                           ref={searchInputRef}
@@ -725,7 +725,7 @@ const RfqPage = (props: RfqPageProps) => {
                         />
                         <div className="absolute inset-y-0 right-0 flex items-center pr-3">
                           <svg
-                            className="h-4 w-4 text-gray-400"
+                            className="h-4 w-4 text-muted-foreground"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -768,7 +768,7 @@ const RfqPage = (props: RfqPageProps) => {
                 !rfqProductsQuery.isLoading ? (
                   <div className="py-12 text-center">
                     <p
-                      className="text-lg text-gray-500"
+                      className="text-lg text-muted-foreground"
                       dir={langDir}
                       translate="no"
                     >
@@ -831,7 +831,7 @@ const RfqPage = (props: RfqPageProps) => {
 
                 {/* List View */}
                 {viewType === "list" && rfqProductsQuery?.data?.data?.length ? (
-                  <div className="rounded-lg bg-white shadow">
+                  <div className="rounded-lg bg-card shadow">
                     <RfqProductTable list={rfqProductsQuery?.data?.data} />
                   </div>
                 ) : null}
@@ -874,7 +874,7 @@ const RfqPage = (props: RfqPageProps) => {
                   <button
                     type="button"
                     onClick={clearFilter}
-                    className="rounded bg-gray-100 px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-200"
+                    className="rounded bg-muted px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted"
                   >
                     {t("clean_select")}
                   </button>
@@ -916,7 +916,7 @@ const RfqPage = (props: RfqPageProps) => {
                     </div>
                     <div className="max-h-40 space-y-2 overflow-y-auto">
                       {!memoizedBrands.length ? (
-                        <p className="text-center text-sm text-gray-500">
+                        <p className="text-center text-sm text-muted-foreground">
                           {t("no_data_found")}
                         </p>
                       ) : null}
@@ -927,7 +927,7 @@ const RfqPage = (props: RfqPageProps) => {
                         >
                           <Checkbox
                             id={`mobile-${item.label}`}
-                            className="border border-gray-300 data-[state=checked]:bg-primary!"
+                            className="border border-border data-[state=checked]:bg-primary!"
                             onCheckedChange={(checked) =>
                               handleBrandChange(checked, item)
                             }
@@ -1017,18 +1017,18 @@ const RfqPage = (props: RfqPageProps) => {
             <div className="hidden lg:block">
               <div
                 className={cn(
-                  "fixed top-0 z-[60] h-screen w-36 bg-white shadow-lg",
+                  "fixed top-0 z-[60] h-screen w-36 bg-card shadow-lg",
                   isRTL
-                    ? "left-0 border-r border-gray-200"
-                    : "right-0 border-l border-gray-200",
+                    ? "left-0 border-r border-border"
+                    : "right-0 border-l border-border",
                 )}
               >
                 <div className="flex h-full flex-col">
                   {/* Top sticky header + Go To Cart */}
-                  <div className="sticky top-0 z-10 border-b border-gray-200 bg-white px-4 pt-4 pb-3 text-center">
+                  <div className="sticky top-0 z-10 border-b border-border bg-card px-4 pt-4 pb-3 text-center">
                     <div className="flex flex-col items-center">
                       <span
-                        className="mb-0.5 text-[11px] font-medium text-gray-600"
+                        className="mb-0.5 text-[11px] font-medium text-muted-foreground"
                         dir={langDir}
                         translate="no"
                       >
@@ -1042,7 +1042,7 @@ const RfqPage = (props: RfqPageProps) => {
                       onClick={() => {
                         window.location.href = "/rfq-cart";
                       }}
-                      className="mt-3 flex w-full items-center justify-center space-x-1.5 rounded-lg bg-warning px-3 py-2 text-xs font-medium text-gray-900 shadow-sm transition-colors duration-200 hover:bg-warning"
+                      className="mt-3 flex w-full items-center justify-center space-x-1.5 rounded-lg bg-warning px-3 py-2 text-xs font-medium text-foreground shadow-sm transition-colors duration-200 hover:bg-warning"
                     >
                       <Package className="h-3 w-3" />
                       <span>{t("go_to_cart")}</span>
@@ -1073,7 +1073,7 @@ const RfqPage = (props: RfqPageProps) => {
                             <div className="flex justify-center">
                               <Link
                                 href={`/rfq/${cartItem.productId}`}
-                                className="h-20 w-20 overflow-hidden rounded-lg bg-gray-100 transition-opacity hover:opacity-80"
+                                className="h-20 w-20 overflow-hidden rounded-lg bg-muted transition-opacity hover:opacity-80"
                               >
                                 {productImage ? (
                                   <img
@@ -1083,7 +1083,7 @@ const RfqPage = (props: RfqPageProps) => {
                                   />
                                 ) : (
                                   <div className="flex h-full w-full items-center justify-center">
-                                    <Package className="h-8 w-8 text-gray-400" />
+                                    <Package className="h-8 w-8 text-muted-foreground" />
                                   </div>
                                 )}
                               </Link>
@@ -1112,11 +1112,11 @@ const RfqPage = (props: RfqPageProps) => {
                                   className="px-1.5 py-1 transition-colors hover:bg-warning/5 disabled:cursor-not-allowed disabled:opacity-50"
                                   aria-label={t("decrease_quantity")}
                                 >
-                                  <Trash2 className="h-3 w-3 text-gray-600" />
+                                  <Trash2 className="h-3 w-3 text-muted-foreground" />
                                 </button>
 
                                 {/* Quantity Number */}
-                                <span className="min-w-[2rem] border-x border-yellow-400 bg-white px-2 py-1 text-center text-xs font-medium text-gray-900">
+                                <span className="min-w-[2rem] border-x border-yellow-400 bg-card px-2 py-1 text-center text-xs font-medium text-foreground">
                                   {quantity}
                                 </span>
 
@@ -1136,7 +1136,7 @@ const RfqPage = (props: RfqPageProps) => {
                                   className="px-1.5 py-1 transition-colors hover:bg-warning/5 disabled:cursor-not-allowed disabled:opacity-50"
                                   aria-label={t("increase_quantity")}
                                 >
-                                  <span className="text-sm font-semibold text-gray-600">
+                                  <span className="text-sm font-semibold text-muted-foreground">
                                     +
                                   </span>
                                 </button>
@@ -1160,14 +1160,14 @@ const RfqPage = (props: RfqPageProps) => {
                             {/* Note if exists */}
                             {cartItem.note && (
                               <div className="mb-2">
-                                <span className="inline-block max-w-full truncate rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-medium text-gray-700">
+                                <span className="inline-block max-w-full truncate rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
                                   {cartItem.note}
                                 </span>
                               </div>
                             )}
 
                             {/* Divider */}
-                            <div className="mt-3 border-t border-gray-200" />
+                            <div className="mt-3 border-t border-border" />
                           </div>
                         );
                       })}
@@ -1184,13 +1184,13 @@ const RfqPage = (props: RfqPageProps) => {
             side={cartSheetSide}
             className="w-full overflow-y-auto sm:w-[400px] lg:hidden"
           >
-            <SheetHeader className="mb-4 border-b border-gray-200 pb-4">
+            <SheetHeader className="mb-4 border-b border-border pb-4">
               <SheetTitle className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <ShoppingCart className="h-5 w-5" />
                   <span className="text-lg font-bold">{t("my_cart")}</span>
                 </div>
-                <span className="rounded-full bg-gray-100 px-3 py-1 text-sm font-medium text-gray-500">
+                <span className="rounded-full bg-muted px-3 py-1 text-sm font-medium text-muted-foreground">
                   {cartList.length}{" "}
                   {cartList.length === 1 ? t("item") : t("items")}
                 </span>
@@ -1200,11 +1200,11 @@ const RfqPage = (props: RfqPageProps) => {
             <div className="mt-6">
               {cartList.length === 0 ? (
                 <div className="py-12 text-center">
-                  <Package className="mx-auto mb-4 h-16 w-16 text-gray-400" />
-                  <p className="text-base font-medium text-gray-500">
+                  <Package className="mx-auto mb-4 h-16 w-16 text-muted-foreground" />
+                  <p className="text-base font-medium text-muted-foreground">
                     {t("your_cart_is_empty")}
                   </p>
-                  <p className="mt-2 text-sm text-gray-400">
+                  <p className="mt-2 text-sm text-muted-foreground">
                     {t("add_some_products_to_get_started")}
                   </p>
                 </div>
@@ -1218,11 +1218,11 @@ const RfqPage = (props: RfqPageProps) => {
                     return (
                       <div
                         key={cartItem.id}
-                        className="group flex items-center space-x-4 rounded-lg border border-gray-100 p-3 transition-colors hover:bg-gray-50"
+                        className="group flex items-center space-x-4 rounded-lg border border-border p-3 transition-colors hover:bg-muted"
                       >
                         <Link
                           href={`/rfq/${cartItem.productId}`}
-                          className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100 transition-opacity hover:opacity-80"
+                          className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg bg-muted transition-opacity hover:opacity-80"
                           onClick={() => setShowCartDrawer(false)}
                         >
                           {productData?.productImages?.[0]?.image ? (
@@ -1233,21 +1233,21 @@ const RfqPage = (props: RfqPageProps) => {
                             />
                           ) : (
                             <div className="flex h-full w-full items-center justify-center">
-                              <Package className="h-8 w-8 text-gray-400" />
+                              <Package className="h-8 w-8 text-muted-foreground" />
                             </div>
                           )}
                         </Link>
 
                         <div className="min-w-0 flex-1">
-                          <h4 className="mb-1 truncate text-sm font-semibold text-gray-900">
+                          <h4 className="mb-1 truncate text-sm font-semibold text-foreground">
                             {productData?.productName || t("product")}
                           </h4>
                           <div className="flex items-center justify-between">
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs text-muted-foreground">
                               {t("quantity")}: {cartItem.quantity || 1}
                             </p>
                             {cartItem.note && (
-                              <p className="max-w-[150px] truncate text-xs text-gray-400">
+                              <p className="max-w-[150px] truncate text-xs text-muted-foreground">
                                 {cartItem.note}
                               </p>
                             )}
@@ -1258,7 +1258,7 @@ const RfqPage = (props: RfqPageProps) => {
                         <button
                           onClick={() => handleRemoveItemFromCart(cartItem.id)}
                           disabled={deleteRfqCartItem.isPending}
-                          className="flex-shrink-0 rounded-lg p-2 text-gray-400 opacity-0 transition-all duration-200 group-hover:opacity-100 hover:bg-destructive/5 hover:text-destructive disabled:cursor-not-allowed disabled:opacity-50"
+                          className="flex-shrink-0 rounded-lg p-2 text-muted-foreground opacity-0 transition-all duration-200 group-hover:opacity-100 hover:bg-destructive/5 hover:text-destructive disabled:cursor-not-allowed disabled:opacity-50"
                           aria-label={t("remove_from_cart")}
                           title={t("remove_from_cart")}
                         >
@@ -1273,7 +1273,7 @@ const RfqPage = (props: RfqPageProps) => {
 
             {/* Go to Cart Button */}
             {cartList.length > 0 && (
-              <div className="sticky bottom-0 mt-6 border-t border-gray-200 bg-white pt-4">
+              <div className="sticky bottom-0 mt-6 border-t border-border bg-card pt-4">
                 <button
                   onClick={() => {
                     setShowCartDrawer(false);

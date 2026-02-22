@@ -96,7 +96,7 @@ const SellerRewardsPage = () => {
                                                             href={`/seller-rewards/${item.id}`}
                                                         >
                                                             <Info
-                                                                className="h-4 w-4 cursor-pointer text-gray-500"
+                                                                className="h-4 w-4 cursor-pointer text-muted-foreground"
                                                             />
                                                         </Link>
                                                     </td>

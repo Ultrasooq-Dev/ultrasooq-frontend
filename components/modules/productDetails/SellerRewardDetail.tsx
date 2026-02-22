@@ -47,7 +47,7 @@ const SellerRewardDetail: React.FC<SellerRewardDetailProps> = ({ reward, onClose
                 </DialogTitle>
                 <Button
                     onClick={onClose}
-                    className="absolute right-2 top-2 z-10 bg-white! text-black! shadow-none"
+                    className="absolute right-2 top-2 z-10 bg-card! text-foreground! shadow-none"
                 >
                     <IoCloseSharp size={20} />
                 </Button>

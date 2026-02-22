@@ -39,12 +39,12 @@ const GuestAddressCard: React.FC<GuestAddressCardProps> = ({
 }) => {
   return (
     <div className="relative">
-      <div className="block p-6 border border-gray-200 rounded-lg hover:border-gray-300 hover:shadow-sm transition-all duration-200 bg-white">
+      <div className="block p-6 border border-border rounded-lg hover:border-border hover:shadow-sm transition-all duration-200 bg-card">
         <div className="flex justify-between items-start">
           <div className="flex-1 min-w-0">
             {/* Name */}
             <div className="mb-4">
-              <h3 className="text-lg font-semibold text-gray-900 truncate">
+              <h3 className="text-lg font-semibold text-foreground truncate">
                 {firstName} {lastName}
               </h3>
             </div>
@@ -59,10 +59,10 @@ const GuestAddressCard: React.FC<GuestAddressCardProps> = ({
                     alt="phone-icon" 
                     width={16} 
                     height={16}
-                    className="text-gray-500"
+                    className="text-muted-foreground"
                   />
                 </div>
-                <span className="text-gray-700 font-medium">{phoneNumber}</span>
+                <span className="text-muted-foreground font-medium">{phoneNumber}</span>
               </div>
 
               {/* Address */}
@@ -73,10 +73,10 @@ const GuestAddressCard: React.FC<GuestAddressCardProps> = ({
                     alt="location-icon" 
                     width={16} 
                     height={16}
-                    className="text-gray-500"
+                    className="text-muted-foreground"
                   />
                 </div>
-                <span className="text-gray-600 leading-relaxed">
+                <span className="text-muted-foreground leading-relaxed">
                   {[address, town, city, state, postCode, country].filter(el => el).join(', ')}
                 </span>
               </div>
@@ -86,19 +86,19 @@ const GuestAddressCard: React.FC<GuestAddressCardProps> = ({
           {/* Options Menu */}
           <div className="flex-shrink-0 ml-4">
             <DropdownMenu>
-              <DropdownMenuTrigger className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200">
+              <DropdownMenuTrigger className="p-2 hover:bg-muted rounded-full transition-colors duration-200">
                 <Image
                   alt="options-icon"
                   src={DropdownIcon}
                   height={20}
                   width={20}
-                  className="text-gray-500"
+                  className="text-muted-foreground"
                 />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-40">
                 <DropdownMenuItem 
                   onClick={onEdit}
-                  className="cursor-pointer hover:bg-gray-50"
+                  className="cursor-pointer hover:bg-muted"
                 >
                   Edit Address
                 </DropdownMenuItem>

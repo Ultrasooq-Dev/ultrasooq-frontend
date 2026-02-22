@@ -97,9 +97,9 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
         );
       case NotificationType.PAYMENT:
         return (
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-success/10">
             <svg
-              className="h-5 w-5 text-emerald-600"
+              className="h-5 w-5 text-success"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -133,9 +133,9 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
         );
       default:
         return (
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted">
             <svg
-              className="h-5 w-5 text-gray-600"
+              className="h-5 w-5 text-muted-foreground"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -172,8 +172,8 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
   return (
     <div
       onClick={handleClick}
-      className={`flex cursor-pointer gap-3 rounded-lg p-3 transition-colors hover:bg-gray-50 ${
-        !notification.read ? "bg-primary/5/50" : "bg-white"
+      className={`flex cursor-pointer gap-3 rounded-lg p-3 transition-colors hover:bg-muted ${
+        !notification.read ? "bg-primary/5/50" : "bg-card"
       }`}
       dir={langDir}
     >
@@ -183,15 +183,15 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
           <div className="flex-1 min-w-0">
             <h4
               className={`text-sm font-semibold ${
-                !notification.read ? "text-gray-900" : "text-gray-700"
+                !notification.read ? "text-foreground" : "text-muted-foreground"
               }`}
             >
               {notification.title}
             </h4>
-            <p className="mt-1 text-xs text-gray-600 line-clamp-2">
+            <p className="mt-1 text-xs text-muted-foreground line-clamp-2">
               {notification.message}
             </p>
-            <p className="mt-1 text-xs text-gray-400">
+            <p className="mt-1 text-xs text-muted-foreground">
               {moment(notification.createdAt).fromNow()}
             </p>
           </div>

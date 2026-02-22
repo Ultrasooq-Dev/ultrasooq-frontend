@@ -52,7 +52,7 @@ import dynamic from "next/dynamic";
 const AddToCustomizeForm = dynamic(
   () => import("@/components/modules/factories/AddToCustomizeForm"),
   {
-    loading: () => <div className="animate-pulse h-64 bg-gray-200 rounded-lg" />,
+    loading: () => <div className="animate-pulse h-64 bg-muted rounded-lg" />,
     ssr: false,
   },
 );
@@ -405,14 +405,14 @@ const FactoriesPage = (props: FactoriesPageProps) => {
       <title dir={langDir} translate="no">{`${t("factories")} | Ultrasooq`}</title>
 
       {/* Full Width Two Column Layout */}
-      <div className="min-h-screen w-full bg-white px-2 sm:px-4 lg:px-8">
+      <div className="min-h-screen w-full bg-card px-2 sm:px-4 lg:px-8">
         <div className="flex h-full flex-col gap-4 lg:flex-row">
           {/* Left Column - Filters (Desktop) - Improved UI */}
-          <div className="hidden flex-shrink-0 overflow-y-auto bg-white p-4 lg:block lg:w-1/4">
-            <div className="sticky top-4 rounded-xl bg-white p-6 shadow-lg">
+          <div className="hidden flex-shrink-0 overflow-y-auto bg-card p-4 lg:block lg:w-1/4">
+            <div className="sticky top-4 rounded-xl bg-card p-6 shadow-lg">
               {/* Filter Header */}
-              <div className="mb-6 border-b border-gray-200 pb-4">
-                <h3 className="mb-3 text-lg font-bold text-gray-900">
+              <div className="mb-6 border-b border-border pb-4">
+                <h3 className="mb-3 text-lg font-bold text-foreground">
                   {t("filters")}
                 </h3>
                 <div className="flex gap-2">
@@ -426,7 +426,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
                   <button
                     type="button"
                     onClick={clearFilter}
-                    className="flex-1 rounded-lg bg-gray-200 px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-300"
+                    className="flex-1 rounded-lg bg-muted px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted"
                   >
                     {t("clean_select")}
                   </button>
@@ -438,22 +438,22 @@ const FactoriesPage = (props: FactoriesPageProps) => {
                 <Accordion
                   type="multiple"
                   defaultValue={["brand"]}
-                  className="overflow-hidden rounded-lg border border-gray-200"
+                  className="overflow-hidden rounded-lg border border-border"
                 >
                   <AccordionItem value="brand" className="border-0">
-                    <AccordionTrigger className="bg-gray-50 px-4 py-3 font-semibold text-gray-900 hover:bg-gray-100">
+                    <AccordionTrigger className="bg-muted px-4 py-3 font-semibold text-foreground hover:bg-muted">
                       <div className="flex items-center gap-2">
                         <Building2 className="h-4 w-4" />
                         <span>{t("by_brand")}</span>
                       </div>
                     </AccordionTrigger>
-                    <AccordionContent className="bg-white px-4 py-4">
+                    <AccordionContent className="bg-card px-4 py-4">
                       <div className="mb-3">
                         <div className="flex gap-2">
                           <Input
                             type="text"
                             placeholder={t("search_brand")}
-                            className="h-9 flex-1 border-gray-300 text-sm focus:border-primary focus:ring-primary"
+                            className="h-9 flex-1 border-border text-sm focus:border-primary focus:ring-primary"
                             value={searchTermBrand}
                             onChange={handleBrandSearchChange}
                             dir={langDir}
@@ -472,18 +472,18 @@ const FactoriesPage = (props: FactoriesPageProps) => {
                       </div>
                       <div className="max-h-48 space-y-2 overflow-y-auto">
                         {!memoizedBrands.length ? (
-                          <p className="py-4 text-center text-sm text-gray-500">
+                          <p className="py-4 text-center text-sm text-muted-foreground">
                             {t("no_data_found")}
                           </p>
                         ) : null}
                         {memoizedBrands.map((item: ISelectOptions) => (
                           <div
                             key={item.value}
-                            className="flex items-center space-x-2 rounded px-2 py-1 transition-colors hover:bg-gray-50"
+                            className="flex items-center space-x-2 rounded px-2 py-1 transition-colors hover:bg-muted"
                           >
                             <Checkbox
                               id={item.label}
-                              className="border border-gray-300 data-[state=checked]:border-primary data-[state=checked]:bg-primary"
+                              className="border border-border data-[state=checked]:border-primary data-[state=checked]:bg-primary"
                               onCheckedChange={(checked) =>
                                 handleBrandChange(checked, item)
                               }
@@ -508,16 +508,16 @@ const FactoriesPage = (props: FactoriesPageProps) => {
                 <Accordion
                   type="multiple"
                   defaultValue={["price"]}
-                  className="overflow-hidden rounded-lg border border-gray-200"
+                  className="overflow-hidden rounded-lg border border-border"
                 >
                   <AccordionItem value="price" className="border-0">
-                    <AccordionTrigger className="bg-gray-50 px-4 py-3 font-semibold text-gray-900 hover:bg-gray-100">
+                    <AccordionTrigger className="bg-muted px-4 py-3 font-semibold text-foreground hover:bg-muted">
                       <div className="flex items-center gap-2">
                         <span className="text-lg">💰</span>
                         <span>{t("price")}</span>
                       </div>
                     </AccordionTrigger>
-                    <AccordionContent className="bg-white px-4 py-4">
+                    <AccordionContent className="bg-card px-4 py-4">
                       <div className="mb-4 px-2">
                         <ReactSlider
                           className="horizontal-slider"
@@ -555,7 +555,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
                         <Input
                           type="number"
                           placeholder={`${currency.symbol}0`}
-                          className="custom-form-control-s1 rounded-lg border-gray-300 focus:border-primary focus:ring-primary"
+                          className="custom-form-control-s1 rounded-lg border-border focus:border-primary focus:ring-primary"
                           value={minPriceInput}
                           onChange={handleMinPriceChange}
                           onWheel={(e) => e.currentTarget.blur()}
@@ -565,7 +565,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
                         <Input
                           type="number"
                           placeholder={`${currency.symbol}500`}
-                          className="custom-form-control-s1 rounded-lg border-gray-300 focus:border-primary focus:ring-primary"
+                          className="custom-form-control-s1 rounded-lg border-border focus:border-primary focus:ring-primary"
                           value={maxPriceInput}
                           onChange={handleMaxPriceChange}
                           onWheel={(e) => e.currentTarget.blur()}
@@ -598,7 +598,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
                   <button 
                     type="button" 
                     onClick={clearFilter}
-                    className="px-3 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors text-sm"
+                    className="px-3 py-2 bg-muted text-muted-foreground rounded hover:bg-muted transition-colors text-sm"
                   >
                     {t("clean_select")}
                   </button>
@@ -640,7 +640,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
                     </div>
                     <div className="space-y-2 max-h-40 overflow-y-auto">
                       {!memoizedBrands.length ? (
-                        <p className="text-center text-sm text-gray-500">
+                        <p className="text-center text-sm text-muted-foreground">
                           {t("no_data_found")}
                         </p>
                       ) : null}
@@ -648,7 +648,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
                         <div key={item.value} className="flex items-center space-x-2">
                           <Checkbox
                             id={`mobile-${item.label}`}
-                            className="border border-gray-300 data-[state=checked]:bg-primary!"
+                            className="border border-border data-[state=checked]:bg-primary!"
                             onCheckedChange={(checked) =>
                               handleBrandChange(checked, item)
                             }
@@ -741,20 +741,20 @@ const FactoriesPage = (props: FactoriesPageProps) => {
           {/* Main Content Column - Products */}
           <div
             className={cn(
-              "w-full flex-1 overflow-y-auto bg-white lg:w-auto",
+              "w-full flex-1 overflow-y-auto bg-card lg:w-auto",
               factoriesCartList.length > 0 ? "lg:pr-36" : "lg:pr-0",
             )}
           >
           <div className="p-2 sm:p-4 lg:p-6">
             
             {/* Product Header Filter Section */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 p-4 bg-muted rounded-lg border border-border">
               {/* Left Section - Mobile Buttons & Product Count */}
               <div className="flex items-center gap-3 w-full sm:w-auto">
                 {/* Mobile Filter Button */}
                 <button
                   type="button"
-                  className="lg:hidden p-2.5 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors"
+                  className="lg:hidden p-2.5 bg-card border border-border rounded-lg hover:bg-muted transition-colors"
                   onClick={() => setProductFilter(true)}
                 >
                   <FilterMenuIcon />
@@ -763,7 +763,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
                 {/* Mobile Cart Button - Hidden on desktop as cart is in right column */}
                 <button
                   type="button"
-                  className="lg:hidden p-2.5 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors relative"
+                  className="lg:hidden p-2.5 bg-card border border-border rounded-lg hover:bg-muted transition-colors relative"
                   onClick={() => {/* Will be handled by right column */}}
                 >
                   <ShoppingCart className="h-5 w-5" />
@@ -776,7 +776,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
 
                 {/* Product Count */}
                 <div className="flex-1 sm:flex-none">
-                  <p className="text-base sm:text-lg font-semibold text-gray-800" dir={langDir} translate="no">
+                  <p className="text-base sm:text-lg font-semibold text-foreground" dir={langDir} translate="no">
                     {factoriesProductsQuery.data?.totalCount || 0} {t("products")}
                   </p>
                 </div>
@@ -786,7 +786,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
               <div className="flex items-center gap-3 w-full sm:w-auto">
                 {/* Sort Dropdown */}
                 <Select onValueChange={(e: any) => setSortBy(e)} value={sortBy}>
-                  <SelectTrigger className="w-full sm:w-[180px] h-10 bg-white border-gray-300">
+                  <SelectTrigger className="w-full sm:w-[180px] h-10 bg-card border-border">
                     <SelectValue
                       placeholder={t("sort_by")}
                       dir={langDir}
@@ -814,13 +814,13 @@ const FactoriesPage = (props: FactoriesPageProps) => {
                 </Select>
 
                 {/* View Type Buttons */}
-                <div className="hidden sm:flex items-center gap-2 bg-white border border-gray-300 rounded-lg p-1">
+                <div className="hidden sm:flex items-center gap-2 bg-card border border-border rounded-lg p-1">
                   <button
                     type="button"
                     className={`p-2 rounded transition-colors ${
                       viewType === "grid" 
                         ? "bg-primary text-white" 
-                        : "text-gray-600 hover:bg-gray-100"
+                        : "text-muted-foreground hover:bg-muted"
                     }`}
                     onClick={() => setViewType("grid")}
                   >
@@ -831,7 +831,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
                     className={`p-2 rounded transition-colors ${
                       viewType === "list" 
                         ? "bg-primary text-white" 
-                        : "text-gray-600 hover:bg-gray-100"
+                        : "text-muted-foreground hover:bg-muted"
                     }`}
                     onClick={() => setViewType("list")}
                   >
@@ -970,13 +970,13 @@ const FactoriesPage = (props: FactoriesPageProps) => {
           {/* Fixed Right Sidebar Cart - Desktop Only (Amazon Style) */}
           {factoriesCartList.length > 0 && (
             <div className="hidden lg:block">
-              <div className="fixed top-0 right-0 z-[60] h-screen w-36 border-l border-gray-200 bg-white shadow-lg">
+              <div className="fixed top-0 right-0 z-[60] h-screen w-36 border-l border-border bg-card shadow-lg">
                 <div className="flex h-full flex-col">
                   {/* Top sticky header + Go To Cart */}
-                  <div className="sticky top-0 z-10 border-b border-gray-200 bg-white px-4 pt-4 pb-3 text-center">
+                  <div className="sticky top-0 z-10 border-b border-border bg-card px-4 pt-4 pb-3 text-center">
                     <div className="flex flex-col items-center">
                       <span
-                        className="mb-0.5 text-[11px] font-medium text-gray-600"
+                        className="mb-0.5 text-[11px] font-medium text-muted-foreground"
                         dir={langDir}
                         translate="no"
                       >
@@ -990,7 +990,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
                       onClick={() => {
                         window.location.href = "/factories-cart";
                       }}
-                      className="mt-3 flex w-full items-center justify-center space-x-1.5 rounded-lg bg-warning px-3 py-2 text-xs font-medium text-gray-900 shadow-sm transition-colors duration-200 hover:bg-warning"
+                      className="mt-3 flex w-full items-center justify-center space-x-1.5 rounded-lg bg-warning px-3 py-2 text-xs font-medium text-foreground shadow-sm transition-colors duration-200 hover:bg-warning"
                     >
                       <Package className="h-3 w-3" />
                       <span>{t("go_to_cart")}</span>
@@ -1021,7 +1021,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
                             <div className="flex justify-center">
                               <Link
                                 href={`/factories/${cartItem.productId}`}
-                                className="h-20 w-20 overflow-hidden rounded-lg bg-gray-100 transition-opacity hover:opacity-80"
+                                className="h-20 w-20 overflow-hidden rounded-lg bg-muted transition-opacity hover:opacity-80"
                               >
                                 {productImage ? (
                                   <img
@@ -1031,7 +1031,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
                                   />
                                 ) : (
                                   <div className="flex h-full w-full items-center justify-center">
-                                    <Package className="h-8 w-8 text-gray-400" />
+                                    <Package className="h-8 w-8 text-muted-foreground" />
                                   </div>
                                 )}
                               </Link>
@@ -1039,7 +1039,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
 
                             {/* Quantity */}
                             <div className="mb-2 text-center">
-                              <p className="text-xs font-medium text-gray-600">
+                              <p className="text-xs font-medium text-muted-foreground">
                                 {t("quantity")}: {quantity}
                               </p>
                             </div>
@@ -1052,7 +1052,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
                             </div>
 
                             {/* Divider */}
-                            <div className="mt-3 border-t border-gray-200" />
+                            <div className="mt-3 border-t border-border" />
                           </div>
                         );
                       })}

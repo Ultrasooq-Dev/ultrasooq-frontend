@@ -28,7 +28,7 @@ const VendorMoreInformationSection: React.FC<
           <div className="w-7/12">
             <div className="flex w-full flex-wrap py-4">
               <div className="mr-1 flex w-4/12 items-center justify-start sm:mr-0">
-                <span className="text-sm font-normal capitalize leading-4 text-gray-500" dir={langDir} translate="no">
+                <span className="text-sm font-normal capitalize leading-4 text-muted-foreground" dir={langDir} translate="no">
                   {t("year_of_establishment")}:
                 </span>
               </div>
@@ -42,7 +42,7 @@ const VendorMoreInformationSection: React.FC<
           <div className="w-5/12">
             <div className="flex w-full flex-wrap py-4">
               <div className="mr-1 flex w-5/12 items-center justify-start sm:mr-0">
-                <span className="text-sm font-normal capitalize leading-4 text-gray-500" dir={langDir} translate="no">
+                <span className="text-sm font-normal capitalize leading-4 text-muted-foreground" dir={langDir} translate="no">
                   {t("no_of_employees")}:
                 </span>
               </div>
@@ -56,7 +56,7 @@ const VendorMoreInformationSection: React.FC<
           <div className="w-full">
             <div className="flex w-full flex-wrap items-start py-4">
               <div className="mr-1 flex w-2/12 items-center justify-start sm:mr-0">
-                <span className="text-sm font-normal capitalize leading-4 text-gray-500" dir={langDir} translate="no">
+                <span className="text-sm font-normal capitalize leading-4 text-muted-foreground" dir={langDir} translate="no">
                   {t("about_us")}:
                 </span>
               </div>

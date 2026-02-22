@@ -73,24 +73,24 @@ const BuyerProductSelectionModal: React.FC<BuyerProductSelectionModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+      <div className="bg-card rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900">
+        <div className="flex items-center justify-between p-4 border-b border-border">
+          <h2 className="text-lg font-semibold text-foreground">
             {"Choose Alternative Products"}
           </h2>
           <button
             onClick={onClose}
-            className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+            className="p-1 hover:bg-muted rounded-full transition-colors"
           >
-            <X className="h-5 w-5 text-gray-500" />
+            <X className="h-5 w-5 text-muted-foreground" />
           </button>
         </div>
 
         {/* Content */}
         <div className="flex-1 overflow-y-auto p-4">
           {suggestedProducts.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
+            <div className="text-center py-8 text-muted-foreground">
               {t("no_suggested_products") || "No suggested products available"}
             </div>
           ) : (
@@ -118,7 +118,7 @@ const BuyerProductSelectionModal: React.FC<BuyerProductSelectionModalProps> = ({
                     className={`border rounded-lg p-3 cursor-pointer transition-all ${
                       isSelected
                         ? "border-primary bg-primary/5"
-                        : "border-gray-200 hover:border-gray-300"
+                        : "border-border hover:border-border"
                     }`}
                     onClick={() => handleToggleSelection(s.id)}
                   >
@@ -129,7 +129,7 @@ const BuyerProductSelectionModal: React.FC<BuyerProductSelectionModalProps> = ({
                           className={`w-5 h-5 rounded border-2 flex items-center justify-center ${
                             isSelected
                               ? "bg-primary border-primary"
-                              : "border-gray-300"
+                              : "border-border"
                           }`}
                         >
                           {isSelected && (
@@ -149,7 +149,7 @@ const BuyerProductSelectionModal: React.FC<BuyerProductSelectionModalProps> = ({
                       </div>
 
                       {/* Product Image */}
-                      <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded border border-gray-200 bg-white">
+                      <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded border border-border bg-card">
                         <Image
                           src={
                             imageUrl && validator.isURL(imageUrl)
@@ -164,11 +164,11 @@ const BuyerProductSelectionModal: React.FC<BuyerProductSelectionModalProps> = ({
 
                       {/* Product Details */}
                       <div className="flex-1 min-w-0">
-                        <h3 className="text-sm font-medium text-gray-900 truncate">
+                        <h3 className="text-sm font-medium text-foreground truncate">
                           {p?.productName || "-"}
                         </h3>
                         {quantity > 0 && (
-                          <p className="text-xs text-gray-500 mt-1">
+                          <p className="text-xs text-muted-foreground mt-1">
                             {t("quantity") || "Qty"}: {quantity}
                           </p>
                         )}
@@ -176,7 +176,7 @@ const BuyerProductSelectionModal: React.FC<BuyerProductSelectionModalProps> = ({
 
                       {/* Price */}
                       <div className="flex-shrink-0 text-right">
-                        <p className="text-sm font-semibold text-gray-900">
+                        <p className="text-sm font-semibold text-foreground">
                           {currency.symbol}
                           {totalPrice.toFixed(2)}
                         </p>
@@ -190,10 +190,10 @@ const BuyerProductSelectionModal: React.FC<BuyerProductSelectionModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-end gap-3 p-4 border-t border-gray-200">
+        <div className="flex items-center justify-end gap-3 p-4 border-t border-border">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-50 transition-colors"
+            className="px-4 py-2 text-sm font-medium text-muted-foreground bg-card border border-border rounded hover:bg-muted transition-colors"
           >
             {t("cancel") || "Cancel"}
           </button>

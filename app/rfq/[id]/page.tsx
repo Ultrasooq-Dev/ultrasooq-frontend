@@ -35,7 +35,7 @@ import dynamic from "next/dynamic";
 const AddToRfqForm = dynamic(
   () => import("@/components/modules/rfq/AddToRfqForm"),
   {
-    loading: () => <div className="animate-pulse h-64 bg-gray-200 rounded-lg" />,
+    loading: () => <div className="animate-pulse h-64 bg-muted rounded-lg" />,
     ssr: false,
   },
 );
@@ -222,7 +222,7 @@ const ProductDetailsPage = () => {
       {/* Modern Product Details Page */}
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
         {/* Main Product Section */}
-        <div className="bg-white">
+        <div className="bg-card">
           <div className="container mx-auto max-w-7xl px-4 py-8 lg:px-8">
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12">
               {/* Product Images - Left Side */}
@@ -420,11 +420,11 @@ const ProductDetailsPage = () => {
               <div className="w-full">
                 <Tabs onValueChange={(e) => setActiveTab(e)} value={activeTab}>
                 {/* Clean Modern Tabs */}
-                <div className="bg-white">
+                <div className="bg-card">
                   <TabsList className="flex w-full items-center justify-start gap-1 bg-transparent p-0">
                     <TabsTrigger
                       value="description"
-                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold text-gray-600 transition-all duration-300 hover:bg-gray-50 hover:text-gray-800 hover:border-b-gray-300 data-[state=active]:border-b-orange-500 data-[state=active]:text-warning data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:border-0 whitespace-nowrap sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
+                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold text-muted-foreground transition-all duration-300 hover:bg-muted hover:text-foreground hover:border-b-gray-300 data-[state=active]:border-b-orange-500 data-[state=active]:text-warning data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:border-0 whitespace-nowrap sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
                       dir={langDir}
                       translate="no"
                     >
@@ -438,7 +438,7 @@ const ProductDetailsPage = () => {
                     </TabsTrigger>
                     <TabsTrigger
                       value="specification"
-                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold text-gray-600 transition-all duration-300 hover:bg-gray-50 hover:text-gray-800 hover:border-b-gray-300 data-[state=active]:border-b-orange-500 data-[state=active]:text-warning data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:border-0 whitespace-nowrap sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
+                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold text-muted-foreground transition-all duration-300 hover:bg-muted hover:text-foreground hover:border-b-gray-300 data-[state=active]:border-b-orange-500 data-[state=active]:text-warning data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:border-0 whitespace-nowrap sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
                       dir={langDir}
                       translate="no"
                     >
@@ -452,7 +452,7 @@ const ProductDetailsPage = () => {
                     </TabsTrigger>
                     <TabsTrigger
                       value="reviews"
-                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold text-gray-600 transition-all duration-300 hover:bg-gray-50 hover:text-gray-800 hover:border-b-gray-300 data-[state=active]:border-b-orange-500 data-[state=active]:text-warning data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:border-0 whitespace-nowrap sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
+                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold text-muted-foreground transition-all duration-300 hover:bg-muted hover:text-foreground hover:border-b-gray-300 data-[state=active]:border-b-orange-500 data-[state=active]:text-warning data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:border-0 whitespace-nowrap sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
                       dir={langDir}
                       translate="no"
                     >
@@ -466,7 +466,7 @@ const ProductDetailsPage = () => {
                     </TabsTrigger>
                     <TabsTrigger
                       value="qanda"
-                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold text-gray-600 transition-all duration-300 hover:bg-gray-50 hover:text-gray-800 hover:border-b-gray-300 data-[state=active]:border-b-orange-500 data-[state=active]:text-warning data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:border-0 whitespace-nowrap sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
+                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold text-muted-foreground transition-all duration-300 hover:bg-muted hover:text-foreground hover:border-b-gray-300 data-[state=active]:border-b-orange-500 data-[state=active]:text-warning data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:border-0 whitespace-nowrap sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
                       dir={langDir}
                       translate="no"
                     >
@@ -480,7 +480,7 @@ const ProductDetailsPage = () => {
                     </TabsTrigger>
                     <TabsTrigger
                       value="vendor"
-                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold text-gray-600 transition-all duration-300 hover:bg-gray-50 hover:text-gray-800 hover:border-b-gray-300 data-[state=active]:border-b-orange-500 data-[state=active]:text-warning data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:border-0 whitespace-nowrap sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
+                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold text-muted-foreground transition-all duration-300 hover:bg-muted hover:text-foreground hover:border-b-gray-300 data-[state=active]:border-b-orange-500 data-[state=active]:text-warning data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:border-0 whitespace-nowrap sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
                       dir={langDir}
                       translate="no"
                     >
@@ -497,7 +497,7 @@ const ProductDetailsPage = () => {
 
                 {/* Tab Content - Description */}
                   <TabsContent value="description" className="mt-0">
-                  <div className="min-h-[400px] bg-white p-8 sm:p-10 lg:p-12">
+                  <div className="min-h-[400px] bg-card p-8 sm:p-10 lg:p-12">
                     {productDetails?.description ? (
                       <div className="space-y-4">
                         <div className="prose prose-gray max-w-none">
@@ -537,7 +537,7 @@ const ProductDetailsPage = () => {
                                 if (textContent.trim()) {
                                   return (
                                     <div 
-                                      className="text-gray-700 leading-relaxed" 
+                                      className="text-muted-foreground leading-relaxed" 
                                       dir={langDir} 
                                       translate="no"
                                       dangerouslySetInnerHTML={{
@@ -568,7 +568,7 @@ const ProductDetailsPage = () => {
                                   );
                                 } catch (error) {
                                   return (
-                                    <div className="text-gray-600" dir={langDir} translate="no">
+                                    <div className="text-muted-foreground" dir={langDir} translate="no">
                                       {desc}
                                     </div>
                                   );
@@ -578,7 +578,7 @@ const ProductDetailsPage = () => {
                             
                             // Fallback
                             return (
-                              <div className="text-gray-600" dir={langDir} translate="no">
+                              <div className="text-muted-foreground" dir={langDir} translate="no">
                                 {String(desc)}
                               </div>
                             );
@@ -587,15 +587,15 @@ const ProductDetailsPage = () => {
                       </div>
                     ) : (
                       <div className="flex min-h-[200px] flex-col items-center justify-center text-center">
-                        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
-                          <svg className="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
+                          <svg className="h-8 w-8 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                           </svg>
                         </div>
-                        <h3 className="text-lg font-medium text-gray-900 mb-2" dir={langDir} translate="no">
+                        <h3 className="text-lg font-medium text-foreground mb-2" dir={langDir} translate="no">
                           {t("no_description_available")}
                         </h3>
-                        <p className="text-gray-500 max-w-md" dir={langDir} translate="no">
+                        <p className="text-muted-foreground max-w-md" dir={langDir} translate="no">
                           {t("product_description_will_be_added_soon")}
                         </p>
                       </div>
@@ -605,40 +605,40 @@ const ProductDetailsPage = () => {
 
                 {/* Tab Content - Specification */}
                   <TabsContent value="specification" className="mt-0">
-                  <div className="min-h-[400px] bg-white p-8 sm:p-10 lg:p-12">
+                  <div className="min-h-[400px] bg-card p-8 sm:p-10 lg:p-12">
                       {!productDetails?.product_productSpecification?.length ? (
                       <div className="flex min-h-[200px] flex-col items-center justify-center text-center">
-                        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
-                          <svg className="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
+                          <svg className="h-8 w-8 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                           </svg>
                         </div>
-                        <h3 className="text-lg font-medium text-gray-900 mb-2" dir={langDir} translate="no">
+                        <h3 className="text-lg font-medium text-foreground mb-2" dir={langDir} translate="no">
                           {t("no_specification_available")}
                         </h3>
-                        <p className="text-gray-500 max-w-md" dir={langDir} translate="no">
+                        <p className="text-muted-foreground max-w-md" dir={langDir} translate="no">
                           {t("specifications_will_be_added_soon")}
                         </p>
                       </div>
                     ) : (
                       <div className="space-y-6">
-                        <h2 className="text-xl font-semibold text-gray-900" dir={langDir} translate="no">
+                        <h2 className="text-xl font-semibold text-foreground" dir={langDir} translate="no">
                           {t("technical_specifications")}
                           </h2>
-                        <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
-                          <div className="divide-y divide-gray-100">
+                        <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+                          <div className="divide-y divide-border">
                                 {productDetails?.product_productSpecification?.map(
                                   (item: {
                                     id: number;
                                     label: string;
                                     specification: string;
                               }, index: number) => (
-                                <div key={item?.id} className={`p-6 ${index % 2 === 0 ? "bg-white" : "bg-gray-50/50"}`}>
+                                <div key={item?.id} className={`p-6 ${index % 2 === 0 ? "bg-card" : "bg-muted/50"}`}>
                                   <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                                    <dt className="text-sm font-semibold text-gray-900">
+                                    <dt className="text-sm font-semibold text-foreground">
                                       {item?.label}
                                     </dt>
-                                    <dd className="text-sm text-gray-600">
+                                    <dd className="text-sm text-muted-foreground">
                                       {item?.specification}
                                     </dd>
                                   </div>
@@ -654,9 +654,9 @@ const ProductDetailsPage = () => {
 
                 {/* Tab Content - Reviews */}
                   <TabsContent value="reviews" className="mt-0">
-                  <div className="min-h-[400px] bg-white p-8 sm:p-10 lg:p-12">
+                  <div className="min-h-[400px] bg-card p-8 sm:p-10 lg:p-12">
                     <div className="space-y-4">
-                      <h2 className="text-xl font-semibold text-gray-900" dir={langDir} translate="no">
+                      <h2 className="text-xl font-semibold text-foreground" dir={langDir} translate="no">
                         {t("customer_reviews")}
                       </h2>
                       <ReviewSection
@@ -673,7 +673,7 @@ const ProductDetailsPage = () => {
 
                 {/* Tab Content - Q&A */}
                   <TabsContent value="qanda" className="mt-0">
-                  <div className="min-h-[400px] bg-white p-8 sm:p-10 lg:p-12">
+                  <div className="min-h-[400px] bg-card p-8 sm:p-10 lg:p-12">
                       <QuestionsAnswersSection
                         hasAccessToken={true}
                         productId={searchParams?.id as string}
@@ -683,9 +683,9 @@ const ProductDetailsPage = () => {
 
                 {/* Tab Content - Vendor */}
                 <TabsContent value="vendor" className="mt-0">
-                  <div className="min-h-[400px] bg-white p-8 sm:p-10 lg:p-12">
+                  <div className="min-h-[400px] bg-card p-8 sm:p-10 lg:p-12">
                     <div className="space-y-4">
-                      <h2 className="text-xl font-semibold text-gray-900" dir={langDir} translate="no">
+                      <h2 className="text-xl font-semibold text-foreground" dir={langDir} translate="no">
                         {t("vendor_information")}
                       </h2>
                       <VendorSection

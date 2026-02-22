@@ -62,13 +62,13 @@ const AddressPage: React.FC<AddressPageProps> = ({}) => {
   return (
     <div className="space-y-6">
       {/* Header Section */}
-      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
+      <div className="overflow-hidden rounded-xl border border-border bg-card p-6 shadow-sm transition-shadow hover:shadow-md">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 className="text-2xl font-bold tracking-tight text-gray-900" dir={langDir} translate="no">
+            <h2 className="text-2xl font-bold tracking-tight text-foreground" dir={langDir} translate="no">
               {t("manage_address")}
             </h2>
-            <p className="mt-1.5 text-sm text-gray-600" translate="no">
+            <p className="mt-1.5 text-sm text-muted-foreground" translate="no">
               {t("manage_your_saved_addresses")}
             </p>
           </div>
@@ -88,7 +88,7 @@ const AddressPage: React.FC<AddressPageProps> = ({}) => {
       {allUserAddressQuery.isLoading && (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
           {Array.from({ length: 2 }, (_, i) => i).map((item) => (
-            <div key={uuidv4()} className="overflow-hidden rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+            <div key={uuidv4()} className="overflow-hidden rounded-xl border border-border bg-card p-6 shadow-sm">
               <Skeleton className="h-6 w-3/4" />
               <Skeleton className="mt-3 h-4 w-full" />
               <Skeleton className="mt-2 h-4 w-full" />
@@ -100,10 +100,10 @@ const AddressPage: React.FC<AddressPageProps> = ({}) => {
 
       {/* Empty State */}
       {!allUserAddressQuery.isLoading && !memoziedAddressList?.length && (
-        <div className="overflow-hidden rounded-xl border-2 border-dashed border-gray-300 bg-white p-12 text-center shadow-sm">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
+        <div className="overflow-hidden rounded-xl border-2 border-dashed border-border bg-card p-12 text-center shadow-sm">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-muted">
             <svg
-              className="h-8 w-8 text-gray-400"
+              className="h-8 w-8 text-muted-foreground"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -123,10 +123,10 @@ const AddressPage: React.FC<AddressPageProps> = ({}) => {
               />
             </svg>
           </div>
-          <h3 className="mt-6 text-lg font-semibold text-gray-900" dir={langDir} translate="no">
+          <h3 className="mt-6 text-lg font-semibold text-foreground" dir={langDir} translate="no">
             {t("no_address_found")}
           </h3>
-          <p className="mt-2 text-sm text-gray-500" translate="no">
+          <p className="mt-2 text-sm text-muted-foreground" translate="no">
             {t("get_started_by_adding_a_new_address")}
           </p>
           <div className="mt-6">

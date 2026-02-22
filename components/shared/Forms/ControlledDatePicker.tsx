@@ -86,7 +86,7 @@ const ControlledDatePicker: React.FC<ControlledDatePickerProps> = ({
       render={({ field }) => (
         <FormItem className="space-y-2">
           {label && (
-            <FormLabel className="text-sm font-medium text-gray-700" dir={langDir}>
+            <FormLabel className="text-sm font-medium text-muted-foreground" dir={langDir}>
               {label}
             </FormLabel>
           )}
@@ -103,11 +103,11 @@ const ControlledDatePicker: React.FC<ControlledDatePickerProps> = ({
                 max={formatDateForInput(max)}
                 placeholder={placeholder || t("enter") + " " + (label || t("date"))}
                 className={cn(
-                  "w-full h-12 px-4 py-3 pr-12 bg-white border border-gray-300 rounded-xl text-sm font-normal",
-                  "hover:bg-gray-50 focus:ring-2 focus:ring-warning focus:border-warning",
+                  "w-full h-12 px-4 py-3 pr-12 bg-card border border-border rounded-xl text-sm font-normal",
+                  "hover:bg-muted focus:ring-2 focus:ring-warning focus:border-warning",
                   "transition-all duration-200 outline-none",
-                  "text-gray-900",
-                  !field.value && "text-gray-500",
+                  "text-foreground",
+                  !field.value && "text-muted-foreground",
                   "[&::-webkit-calendar-picker-indicator]:cursor-pointer",
                   "[&::-webkit-calendar-picker-indicator]:opacity-0",
                   "[&::-webkit-calendar-picker-indicator]:absolute",
@@ -119,7 +119,7 @@ const ControlledDatePicker: React.FC<ControlledDatePickerProps> = ({
                 translate="no"
               />
               <CalendarIcon 
-                className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" 
+                className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground pointer-events-none" 
               />
             </div>
           </FormControl>

@@ -242,7 +242,7 @@ const ProductImagesCard: React.FC<ProductImagesCardProps> = ({
           {!isLoading && haveAccessToken ? (
             <button
               type="button"
-              className="absolute top-4 right-4 z-10 rounded-full bg-white p-2.5 shadow-lg transition-all hover:scale-110 hover:shadow-xl"
+              className="absolute top-4 right-4 z-10 rounded-full bg-card p-2.5 shadow-lg transition-all hover:scale-110 hover:shadow-xl"
               onClick={onWishlist}
             >
               {inWishlist ? <FaHeart color="red" size={20} /> : <FaRegHeart size={20} />}
@@ -321,7 +321,7 @@ const ProductImagesCard: React.FC<ProductImagesCardProps> = ({
                 "relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg border-2 transition-all lg:h-24 lg:w-24",
                 previewImages[currentImageIndex] === item
                   ? "border-dark-orange shadow-md"
-                  : "border-gray-200 hover:border-gray-300"
+                  : "border-border hover:border-border"
               )}
               onClick={() => {
                 if (api) {

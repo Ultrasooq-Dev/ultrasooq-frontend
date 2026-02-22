@@ -95,7 +95,7 @@ const Footer = () => {
           <div className="lg:col-span-3">
             <h2 className="mb-4 text-2xl font-bold text-white">Ultrasooq</h2>
             <p
-              className="mb-6 text-sm leading-relaxed text-gray-400"
+              className="mb-6 text-sm leading-relaxed text-muted-foreground"
               dir={langDir}
             >
               {t("your_trusted_marketplace_for_quality_products")}
@@ -105,7 +105,7 @@ const Footer = () => {
               <a
                 href="#"
                 aria-label="Facebook"
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 text-gray-400 transition-colors duration-200"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 text-muted-foreground transition-colors duration-200"
               >
                 <svg
                   className="h-5 w-5"
@@ -119,7 +119,7 @@ const Footer = () => {
               <a
                 href="#"
                 aria-label="Twitter"
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 text-gray-400 transition-colors duration-200"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 text-muted-foreground transition-colors duration-200"
               >
                 <svg
                   className="h-5 w-5"
@@ -133,7 +133,7 @@ const Footer = () => {
               <a
                 href="#"
                 aria-label="Instagram"
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 text-gray-400 transition-colors duration-200"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 text-muted-foreground transition-colors duration-200"
               >
                 <svg
                   className="h-5 w-5"
@@ -147,7 +147,7 @@ const Footer = () => {
               <a
                 href="#"
                 aria-label="LinkedIn"
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 text-gray-400 transition-colors duration-200"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 text-muted-foreground transition-colors duration-200"
               >
                 <svg
                   className="h-5 w-5"
@@ -174,7 +174,7 @@ const Footer = () => {
                 <Button
                   variant="link"
                   onClick={handleTogglePrivacyModal}
-                  className="h-auto p-0 text-sm font-normal text-gray-400"
+                  className="h-auto p-0 text-sm font-normal text-muted-foreground"
                   dir={langDir}
                   translate="no"
                 >
@@ -185,7 +185,7 @@ const Footer = () => {
                 <Button
                   variant="link"
                   onClick={handleToggleTermsModal}
-                  className="h-auto p-0 text-sm font-normal text-gray-400"
+                  className="h-auto p-0 text-sm font-normal text-muted-foreground"
                   translate="no"
                 >
                   {t("term_n_condition")}
@@ -194,7 +194,7 @@ const Footer = () => {
               <li>
                 <a
                   href="#"
-                  className="text-sm text-gray-400 transition-colors duration-200"
+                  className="text-sm text-muted-foreground transition-colors duration-200"
                   translate="no"
                 >
                   {t("shipping")}
@@ -203,7 +203,7 @@ const Footer = () => {
               <li>
                 <a
                   href="#"
-                  className="text-sm text-gray-400 transition-colors duration-200"
+                  className="text-sm text-muted-foreground transition-colors duration-200"
                   translate="no"
                 >
                   {t("return")}
@@ -212,7 +212,7 @@ const Footer = () => {
               <li>
                 <a
                   href="#"
-                  className="text-sm text-gray-400 transition-colors duration-200"
+                  className="text-sm text-muted-foreground transition-colors duration-200"
                   translate="no"
                 >
                   {t("faqs")}
@@ -233,7 +233,7 @@ const Footer = () => {
               <li>
                 <a
                   href="#"
-                  className="text-sm text-gray-400 transition-colors duration-200"
+                  className="text-sm text-muted-foreground transition-colors duration-200"
                   translate="no"
                 >
                   {t("about_us")}
@@ -242,7 +242,7 @@ const Footer = () => {
               <li>
                 <a
                   href="#"
-                  className="text-sm text-gray-400 transition-colors duration-200"
+                  className="text-sm text-muted-foreground transition-colors duration-200"
                   translate="no"
                 >
                   {t("affiliate")}
@@ -251,7 +251,7 @@ const Footer = () => {
               <li>
                 <a
                   href="#"
-                  className="text-sm text-gray-400 transition-colors duration-200"
+                  className="text-sm text-muted-foreground transition-colors duration-200"
                   translate="no"
                 >
                   {t("career")}
@@ -260,7 +260,7 @@ const Footer = () => {
               <li>
                 <a
                   href="#"
-                  className="text-sm text-gray-400 transition-colors duration-200"
+                  className="text-sm text-muted-foreground transition-colors duration-200"
                   translate="no"
                 >
                   {t("contact")}
@@ -281,7 +281,7 @@ const Footer = () => {
               <li>
                 <a
                   href="#"
-                  className="text-sm text-gray-400 transition-colors duration-200"
+                  className="text-sm text-muted-foreground transition-colors duration-200"
                   translate="no"
                 >
                   {t("our_press")}
@@ -290,7 +290,7 @@ const Footer = () => {
               <li>
                 <a
                   href="#"
-                  className="text-sm text-gray-400 transition-colors duration-200"
+                  className="text-sm text-muted-foreground transition-colors duration-200"
                   translate="no"
                 >
                   {t("checkout")}
@@ -299,7 +299,7 @@ const Footer = () => {
               <li>
                 <a
                   href="#"
-                  className="text-sm text-gray-400 transition-colors duration-200"
+                  className="text-sm text-muted-foreground transition-colors duration-200"
                   translate="no"
                 >
                   {t("my_account")}
@@ -308,7 +308,7 @@ const Footer = () => {
               <li>
                 <a
                   href="#"
-                  className="text-sm text-gray-400 transition-colors duration-200"
+                  className="text-sm text-muted-foreground transition-colors duration-200"
                   translate="no"
                 >
                   {t("shop")}
@@ -326,7 +326,7 @@ const Footer = () => {
             >
               {t("newsletter")}
             </h3>
-            <p className="mb-4 text-sm text-gray-400" dir={langDir}>
+            <p className="mb-4 text-sm text-muted-foreground" dir={langDir}>
               {t("subscribe_to_get_special_offers")}
             </p>
             <Form {...form}>
@@ -362,7 +362,7 @@ const Footer = () => {
         <div className="container mx-auto px-4 py-6 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
             {/* Copyright */}
-            <div className="text-center text-sm text-gray-400 md:text-left">
+            <div className="text-center text-sm text-muted-foreground md:text-left">
               <p dir={langDir} translate="no">
                 © {new Date().getFullYear()} Ultrasooq.{" "}
                 {t("all_rights_reserved")}
@@ -373,7 +373,7 @@ const Footer = () => {
             <Button
               variant="link"
               onClick={handleWhatsAppHelp}
-              className="flex items-center gap-2 text-sm font-normal text-gray-400 transition-colors duration-200 hover:text-success"
+              className="flex items-center gap-2 text-sm font-normal text-muted-foreground transition-colors duration-200 hover:text-success"
               translate="no"
             >
               <MessageCircle className="h-4 w-4" />
@@ -382,7 +382,7 @@ const Footer = () => {
 
             {/* Payment Methods */}
             <div className="flex items-center gap-4">
-              <p className="text-sm text-gray-400" dir={langDir} translate="no">
+              <p className="text-sm text-muted-foreground" dir={langDir} translate="no">
                 {t("payment_info")}:
               </p>
               <Image
@@ -442,14 +442,14 @@ const Footer = () => {
             {/* For Buyers Option */}
             <button
               onClick={() => handleOptionSelect("buyer")}
-              className="flex w-full max-w-[200px] flex-col items-center justify-center gap-4 rounded-lg border-2 border-gray-200 bg-white p-6 transition-all hover:border-primary hover:bg-primary/5 hover:shadow-md sm:w-auto sm:flex-1"
+              className="flex w-full max-w-[200px] flex-col items-center justify-center gap-4 rounded-lg border-2 border-border bg-card p-6 transition-all hover:border-primary hover:bg-primary/5 hover:shadow-md sm:w-auto sm:flex-1"
               dir={langDir}
               translate="no"
             >
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
-                <User className="h-8 w-8 text-gray-700" />
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted">
+                <User className="h-8 w-8 text-muted-foreground" />
               </div>
-              <span className="text-base font-medium text-gray-800">
+              <span className="text-base font-medium text-foreground">
                 {t("for_buyers")}
               </span>
             </button>
@@ -457,14 +457,14 @@ const Footer = () => {
             {/* For Suppliers Option */}
             <button
               onClick={() => handleOptionSelect("supplier")}
-              className="flex w-full max-w-[200px] flex-col items-center justify-center gap-4 rounded-lg border-2 border-gray-200 bg-white p-6 transition-all hover:border-primary hover:bg-primary/5 hover:shadow-md sm:w-auto sm:flex-1"
+              className="flex w-full max-w-[200px] flex-col items-center justify-center gap-4 rounded-lg border-2 border-border bg-card p-6 transition-all hover:border-primary hover:bg-primary/5 hover:shadow-md sm:w-auto sm:flex-1"
               dir={langDir}
               translate="no"
             >
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
-                <Building2 className="h-8 w-8 text-gray-700" />
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted">
+                <Building2 className="h-8 w-8 text-muted-foreground" />
               </div>
-              <span className="text-base font-medium text-gray-800">
+              <span className="text-base font-medium text-foreground">
                 {t("for_suppliers")}
               </span>
             </button>

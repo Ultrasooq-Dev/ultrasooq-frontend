@@ -13,7 +13,7 @@ import dynamic from "next/dynamic";
 const DescriptionAndSpecificationSection = dynamic(
   () => import("@/components/modules/createProduct/DescriptionAndSpecificationSection"),
   {
-    loading: () => <div className="animate-pulse h-64 bg-gray-200 rounded-lg" />,
+    loading: () => <div className="animate-pulse h-64 bg-muted rounded-lg" />,
     ssr: false,
   },
 );
@@ -421,7 +421,7 @@ const EditProductPage = () => {
                 {!searchParams?.id ? <ProductDetailsSection /> : null}
 
                 <div className="grid w-full grid-cols-4 gap-x-5">
-                  <div className="col-span-4 mb-3 w-full rounded-lg border border-solid border-gray-300 bg-white p-6 shadow-xs sm:p-4 lg:p-8">
+                  <div className="col-span-4 mb-3 w-full rounded-lg border border-solid border-border bg-card p-6 shadow-xs sm:p-4 lg:p-8">
                     <div className="form-groups-common-sec-s1">
                       <DescriptionAndSpecificationSection />
                     </div>

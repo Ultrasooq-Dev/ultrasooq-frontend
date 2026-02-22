@@ -245,9 +245,9 @@ const DropshipProductForm: React.FC<DropshipProductFormProps> = () => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           {/* Step 1: Select Original Product */}
-          <div className="rounded-lg border border-gray-300 bg-white p-6 shadow-sm">
+          <div className="rounded-lg border border-border bg-card p-6 shadow-sm">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">
+              <h3 className="text-lg font-semibold text-foreground">
                 {t("step_1_select_product_to_dropship")}
               </h3>
               {/* Submit Button - Moved Up */}
@@ -284,14 +284,14 @@ const DropshipProductForm: React.FC<DropshipProductFormProps> = () => {
 
           {/* Step 2: Customize Marketing Content */}
           {selectedOriginalProduct && (
-            <div className="rounded-lg border border-gray-300 bg-white p-6 shadow-sm">
-              <h3 className="mb-4 text-lg font-semibold text-gray-900">
+            <div className="rounded-lg border border-border bg-card p-6 shadow-sm">
+              <h3 className="mb-4 text-lg font-semibold text-foreground">
                 {t("step_2_customize_your_marketing_strategy")}
               </h3>
               
               {/* Product Name Customization */}
               <div className="mb-4">
-                <Label htmlFor="customProductName" className="text-sm font-medium text-gray-700">
+                <Label htmlFor="customProductName" className="text-sm font-medium text-muted-foreground">
                   {t("custom_product_name")}
                 </Label>
                 <Input
@@ -300,14 +300,14 @@ const DropshipProductForm: React.FC<DropshipProductFormProps> = () => {
                   {...form.register("customProductName")}
                   className="mt-1"
                 />
-                <p className="mt-1 text-xs text-gray-500">
+                <p className="mt-1 text-xs text-muted-foreground">
                   {t("original")}: {selectedOriginalProduct.productName}
                 </p>
               </div>
 
               {/* Description Customization */}
               <div className="mb-4">
-                <Label htmlFor="customDescription" className="text-sm font-medium text-gray-700">
+                <Label htmlFor="customDescription" className="text-sm font-medium text-muted-foreground">
                   {t("custom_description")}
                 </Label>
                 <Textarea
@@ -321,7 +321,7 @@ const DropshipProductForm: React.FC<DropshipProductFormProps> = () => {
 
               {/* Marketing Text Addition */}
               <div className="mb-4">
-                <Label htmlFor="marketingText" className="text-sm font-medium text-gray-700">
+                <Label htmlFor="marketingText" className="text-sm font-medium text-muted-foreground">
                   {t("additional_marketing_text")}
                 </Label>
                 <Textarea
@@ -335,7 +335,7 @@ const DropshipProductForm: React.FC<DropshipProductFormProps> = () => {
 
               {/* Additional Images Upload */}
               <div className="mb-4">
-                <Label className="text-sm font-medium text-gray-700">
+                <Label className="text-sm font-medium text-muted-foreground">
                   {t("additional_marketing_images")}
                 </Label>
                 <ImageUploader
@@ -349,8 +349,8 @@ const DropshipProductForm: React.FC<DropshipProductFormProps> = () => {
 
           {/* Step 3: Pricing Strategy */}
           {selectedOriginalProduct && selectedOriginalProduct.productPrice && (
-            <div className="rounded-lg border border-gray-300 bg-white p-6 shadow-sm">
-              <h3 className="mb-4 text-lg font-semibold text-gray-900">
+            <div className="rounded-lg border border-border bg-card p-6 shadow-sm">
+              <h3 className="mb-4 text-lg font-semibold text-foreground">
                 {t("step_3_set_your_pricing")}
               </h3>
               <PricingCalculator
@@ -363,8 +363,8 @@ const DropshipProductForm: React.FC<DropshipProductFormProps> = () => {
 
           {/* Step 4: Preview */}
           {selectedOriginalProduct && (
-            <div className="rounded-lg border border-gray-300 bg-white p-6 shadow-sm">
-              <h3 className="mb-4 text-lg font-semibold text-gray-900">
+            <div className="rounded-lg border border-border bg-card p-6 shadow-sm">
+              <h3 className="mb-4 text-lg font-semibold text-foreground">
                 {t("step_4_preview_your_product")}
               </h3>
               <ProductPreview

@@ -347,9 +347,9 @@ const AddToCustomizeForm: React.FC<AddToCustomizeFormProps> = ({
 
   return (
     <>
-      <div className="flex items-center justify-between border-b border-gray-200 pb-4 mb-6 px-6 pt-6">
+      <div className="flex items-center justify-between border-b border-border pb-4 mb-6 px-6 pt-6">
         <DialogTitle
-          className="text-2xl font-bold text-gray-900"
+          className="text-2xl font-bold text-foreground"
           dir={langDir}
           translate="no"
         >
@@ -359,7 +359,7 @@ const AddToCustomizeForm: React.FC<AddToCustomizeFormProps> = ({
           onClick={onClose}
           variant="ghost"
           size="icon"
-          className="h-8 w-8 hover:bg-gray-100 rounded-full"
+          className="h-8 w-8 hover:bg-muted rounded-full"
         >
           <IoCloseSharp size={20} />
         </Button>
@@ -372,7 +372,7 @@ const AddToCustomizeForm: React.FC<AddToCustomizeFormProps> = ({
           {/* Product Images Section */}
           <div className="space-y-3">
             <label
-              className="text-base font-semibold text-gray-900 block"
+              className="text-base font-semibold text-foreground block"
               dir={langDir}
               translate="no"
             >
@@ -389,7 +389,7 @@ const AddToCustomizeForm: React.FC<AddToCustomizeFormProps> = ({
                       <FormItem>
                         <FormControl>
                           <div className="relative w-full aspect-square">
-                            <div className="relative w-full h-full rounded-lg border border-gray-200 overflow-hidden bg-gray-50 group">
+                            <div className="relative w-full h-full rounded-lg border border-border overflow-hidden bg-muted group">
                               {watchProductImages?.length ? (
                                 <button
                                   type="button"
@@ -503,7 +503,7 @@ const AddToCustomizeForm: React.FC<AddToCustomizeFormProps> = ({
                                       height={32}
                                       alt="upload"
                                     />
-                                    <span className="text-sm text-gray-600 block">{t("drop_your_file")}</span>
+                                    <span className="text-sm text-muted-foreground block">{t("drop_your_file")}</span>
                                   </div>
                                 </div>
                               )}
@@ -515,9 +515,9 @@ const AddToCustomizeForm: React.FC<AddToCustomizeFormProps> = ({
                   />
                 ))}
                 <div className="relative w-full aspect-square">
-                  <div className="absolute m-auto flex h-full w-full cursor-pointer flex-wrap items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 hover:border-primary/70 transition-colors">
+                  <div className="absolute m-auto flex h-full w-full cursor-pointer flex-wrap items-center justify-center rounded-lg border-2 border-dashed border-border bg-muted hover:bg-muted hover:border-primary/70 transition-colors">
                     <div
-                      className="text-gray-600 text-sm font-medium flex flex-col items-center gap-2"
+                      className="text-muted-foreground text-sm font-medium flex flex-col items-center gap-2"
                       dir={langDir}
                     >
                       <Image

@@ -52,14 +52,14 @@ const PricingCalculator: React.FC<PricingCalculatorProps> = ({
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Original Price */}
-            <div className="text-center p-4 bg-gray-50 rounded-lg">
+            <div className="text-center p-4 bg-muted rounded-lg">
               <div className="flex items-center justify-center gap-2 mb-2">
-                <DollarSign className="h-4 w-4 text-gray-600" />
-                <span className="text-sm font-medium text-gray-600">
+                <DollarSign className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm font-medium text-muted-foreground">
                   {t("original_price")}
                 </span>
               </div>
-              <div className="text-2xl font-bold text-gray-900">
+              <div className="text-2xl font-bold text-foreground">
                 ${safeOriginalPrice.toFixed(2)}
               </div>
             </div>
@@ -112,7 +112,7 @@ const PricingCalculator: React.FC<PricingCalculatorProps> = ({
                 {t("markup_amount")} ($)
               </Label>
               <div className="relative">
-                <DollarSign className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                <DollarSign className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <Input
                   id="markup-amount"
                   type="number"
@@ -132,7 +132,7 @@ const PricingCalculator: React.FC<PricingCalculatorProps> = ({
                 {t("markup_percentage")} (%)
               </Label>
               <div className="relative">
-                <Percent className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                <Percent className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <Input
                   id="markup-percentage"
                   type="number"
@@ -156,7 +156,7 @@ const PricingCalculator: React.FC<PricingCalculatorProps> = ({
                   key={percentage}
                   type="button"
                   onClick={() => handlePercentageChange(percentage.toString())}
-                  className="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
+                  className="px-3 py-1 text-sm bg-muted hover:bg-muted rounded-md transition-colors"
                 >
                   {percentage}%
                 </button>
@@ -174,29 +174,29 @@ const PricingCalculator: React.FC<PricingCalculatorProps> = ({
         <CardContent>
           <div className="space-y-3">
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">{t("profit_per_unit")}</span>
+              <span className="text-sm text-muted-foreground">{t("profit_per_unit")}</span>
               <span className="font-semibold text-success">
                 ${safeMarkup.toFixed(2)}
               </span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">{t("profit_margin")}</span>
+              <span className="text-sm text-muted-foreground">{t("profit_margin")}</span>
               <span className="font-semibold text-success">
                 {profitMargin.toFixed(1)}%
               </span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">{t("markup_percentage")}</span>
+              <span className="text-sm text-muted-foreground">{t("markup_percentage")}</span>
               <span className="font-semibold text-primary">
                 {markupPercentage.toFixed(1)}%
               </span>
             </div>
             <div className="border-t pt-3">
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium text-gray-700">
+                <span className="text-sm font-medium text-muted-foreground">
                   {t("total_revenue_per_unit")}
                 </span>
-                <span className="text-lg font-bold text-gray-900">
+                <span className="text-lg font-bold text-foreground">
                   ${finalPrice.toFixed(2)}
                 </span>
               </div>

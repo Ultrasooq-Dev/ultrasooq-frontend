@@ -236,7 +236,7 @@ const SearchedStoreProducts: React.FC<SearchedStoreProductsType> = ({
         <section className="w-full pb-8 pt-0">
             <div className="container m-auto">
                 <div className="flex flex-wrap">
-                    <div className="flex w-full flex-wrap items-center justify-between border-b border-solid border-gray-300 bg-neutral-100 px-3.5 py-3.5">
+                    <div className="flex w-full flex-wrap items-center justify-between border-b border-solid border-border bg-neutral-100 px-3.5 py-3.5">
                         <div className="flex flex-wrap items-center justify-start">
                             <h4 className="mr-3 whitespace-nowrap text-xl font-normal capitalize text-color-dark md:mr-6 md:text-2xl" translate="no">
                                 {t("store")}
@@ -245,7 +245,7 @@ const SearchedStoreProducts: React.FC<SearchedStoreProductsType> = ({
                         <div className="flex flex-wrap items-center justify-end">
                             <Link
                                 href={`/trending?term=${searchTerm}`}
-                                className="mr-3.5 text-sm font-normal text-black underline sm:mr-0"
+                                className="mr-3.5 text-sm font-normal text-foreground underline sm:mr-0"
                                 translate="no"
                             >
                                 {t("view_all")}

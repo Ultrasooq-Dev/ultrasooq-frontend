@@ -180,21 +180,21 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
   return (
     <div className="space-y-8">
       {/* Price Section Header */}
-      <div className="flex items-center gap-3 pb-4 border-b border-gray-100">
+      <div className="flex items-center gap-3 pb-4 border-b border-border">
         <div className="w-8 h-8 bg-warning/10 rounded-lg flex items-center justify-center">
           <span className="text-warning text-sm font-semibold">6</span>
         </div>
         <div>
-          <h4 className="text-lg font-semibold text-gray-900">
+          <h4 className="text-lg font-semibold text-foreground">
             {t("price")}
           </h4>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-muted-foreground">
             {t("price_section_description")}
           </p>
         </div>
       </div>
       {activeProductType !== "R" ? (
-        <div className="bg-white rounded-xl border border-gray-200 p-4">
+        <div className="bg-card rounded-xl border border-border p-4">
           <FormField
             control={formContext.control}
             name="setUpPrice"
@@ -204,11 +204,11 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                   <Checkbox
                     checked={field.value}
                     onCheckedChange={field.onChange}
-                    className="border-2 border-gray-300 data-[state=checked]:bg-warning data-[state=checked]:border-warning"
+                    className="border-2 border-border data-[state=checked]:bg-warning data-[state=checked]:border-warning"
                   />
                 </FormControl>
                 <div className="space-y-1 leading-none">
-                  <FormLabel className="text-sm font-medium text-gray-700" dir={langDir} translate="no">
+                  <FormLabel className="text-sm font-medium text-muted-foreground" dir={langDir} translate="no">
                     {t("set_up_price")}
                   </FormLabel>
                 </div>
@@ -221,12 +221,12 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
       {watchSetUpPrice ? (
         <>
           {activeProductType !== "R" ? (
-            <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-6">
-              <h5 className="text-md font-semibold text-gray-900">{t("pricing_options")}</h5>
+            <div className="bg-card rounded-xl border border-border p-6 space-y-6">
+              <h5 className="text-md font-semibold text-foreground">{t("pricing_options")}</h5>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-3">
-                  <Label className="text-sm font-medium text-gray-700 flex items-center gap-2" dir={langDir} translate="no">
-                    <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <Label className="text-sm font-medium text-muted-foreground flex items-center gap-2" dir={langDir} translate="no">
+                    <svg className="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
                     {t("consumer_type")}
@@ -287,8 +287,8 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                 </div>
 
                 <div className="space-y-3">
-                  <Label className="text-sm font-medium text-gray-700 flex items-center gap-2" dir={langDir} translate="no">
-                    <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <Label className="text-sm font-medium text-muted-foreground flex items-center gap-2" dir={langDir} translate="no">
+                    <svg className="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                     </svg>
                     {t("sell_type")}
@@ -354,15 +354,15 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
 
           {/* Discount Settings - Only show when consumer type and sell type are selected */}
           {watchConsumerType && watchSellType && (
-            <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-6">
-              <h5 className="text-md font-semibold text-gray-900">{t("discount_settings")}</h5>
+            <div className="bg-card rounded-xl border border-border p-6 space-y-6">
+              <h5 className="text-md font-semibold text-foreground">{t("discount_settings")}</h5>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {watchConsumerType === "EVERYONE" ||
                 watchConsumerType === "CONSUMER" ? (
                 <>
                   <div className="space-y-3">
-                    <Label className="text-sm font-medium text-gray-700 flex items-center gap-2" dir={langDir} translate="no">
-                      <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <Label className="text-sm font-medium text-muted-foreground flex items-center gap-2" dir={langDir} translate="no">
+                      <svg className="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                       </svg>
                       {t("consumer_discount")}
@@ -375,8 +375,8 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                   </div>
                   {watchConsumerDiscount > 0 ? (
                     <div className="space-y-3">
-                      <Label className="text-sm font-medium text-gray-700 flex items-center gap-2" dir={langDir} translate="no">
-                        <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <Label className="text-sm font-medium text-muted-foreground flex items-center gap-2" dir={langDir} translate="no">
+                        <svg className="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                         </svg>
                         {t("discount_type")}
@@ -387,7 +387,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                         render={({ field }) => (
                           <select
                             {...field}
-                            className="w-full h-12 px-4 py-3 bg-white border border-gray-300 rounded-xl text-sm text-gray-900 focus:ring-2 focus:ring-warning focus:border-warning transition-all duration-200 appearance-none cursor-pointer"
+                            className="w-full h-12 px-4 py-3 bg-card border border-border rounded-xl text-sm text-foreground focus:ring-2 focus:ring-warning focus:border-warning transition-all duration-200 appearance-none cursor-pointer"
                           >
                             <option value="" dir={langDir}></option>
                             <option value="FLAT" dir={langDir}>
@@ -408,8 +408,8 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
               watchConsumerType === "VENDORS" ? (
                 <>
                   <div className="space-y-3">
-                    <Label className="text-sm font-medium text-gray-700 flex items-center gap-2" dir={langDir} translate="no">
-                      <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <Label className="text-sm font-medium text-muted-foreground flex items-center gap-2" dir={langDir} translate="no">
+                      <svg className="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                       </svg>
                       {t("vendor_discount")}
@@ -422,8 +422,8 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                   </div>
                   {watchVendorDiscount > 0 ? (
                     <div className="space-y-3">
-                      <Label className="text-sm font-medium text-gray-700 flex items-center gap-2" dir={langDir} translate="no">
-                        <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <Label className="text-sm font-medium text-muted-foreground flex items-center gap-2" dir={langDir} translate="no">
+                        <svg className="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                         </svg>
                         {t("discount_type")}
@@ -434,7 +434,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                         render={({ field }) => (
                           <select
                             {...field}
-                            className="w-full h-12 px-4 py-3 bg-white border border-gray-300 rounded-xl text-sm text-gray-900 focus:ring-2 focus:ring-warning focus:border-warning transition-all duration-200 appearance-none cursor-pointer"
+                            className="w-full h-12 px-4 py-3 bg-card border border-border rounded-xl text-sm text-foreground focus:ring-2 focus:ring-warning focus:border-warning transition-all duration-200 appearance-none cursor-pointer"
                           >
                             <option value="" dir={langDir}></option>
                             <option value="FLAT" dir={langDir} translate="no">
@@ -568,12 +568,12 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
 
             {/* Date and Time Section - Only show when consumer type and sell type are selected */}
             {watchConsumerType && watchSellType && (
-              <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-6">
-                <h5 className="text-md font-semibold text-gray-900">{t("availability_period")}</h5>
+              <div className="bg-card rounded-xl border border-border p-6 space-y-6">
+                <h5 className="text-md font-semibold text-foreground">{t("availability_period")}</h5>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-3">
-                  <Label className="text-sm font-medium text-gray-700 flex items-center gap-2" dir={langDir} translate="no">
-                    <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <Label className="text-sm font-medium text-muted-foreground flex items-center gap-2" dir={langDir} translate="no">
+                    <svg className="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
                     {t("date_open")}
@@ -586,8 +586,8 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                 </div>
 
                 <div className="space-y-3">
-                  <Label className="text-sm font-medium text-gray-700 flex items-center gap-2" dir={langDir} translate="no">
-                    <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <Label className="text-sm font-medium text-muted-foreground flex items-center gap-2" dir={langDir} translate="no">
+                    <svg className="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     {t("time_open")}
@@ -599,8 +599,8 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                 </div>
 
                 <div className="space-y-3">
-                  <Label className="text-sm font-medium text-gray-700 flex items-center gap-2" dir={langDir} translate="no">
-                    <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <Label className="text-sm font-medium text-muted-foreground flex items-center gap-2" dir={langDir} translate="no">
+                    <svg className="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
                     {t("date_close")}
@@ -614,8 +614,8 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                 </div>
 
                 <div className="space-y-3">
-                  <Label className="text-sm font-medium text-gray-700 flex items-center gap-2" dir={langDir} translate="no">
-                    <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <Label className="text-sm font-medium text-muted-foreground flex items-center gap-2" dir={langDir} translate="no">
+                    <svg className="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     {t("time_close")}
@@ -630,12 +630,12 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
             )}
 
           {activeProductType !== "R" ? (
-            <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-6">
-              <h5 className="text-md font-semibold text-gray-900">{t("delivery_settings")}</h5>
+            <div className="bg-card rounded-xl border border-border p-6 space-y-6">
+              <h5 className="text-md font-semibold text-foreground">{t("delivery_settings")}</h5>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-3">
-                  <Label className="text-sm font-medium text-gray-700 flex items-center gap-2" dir={langDir} translate="no">
-                    <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <Label className="text-sm font-medium text-muted-foreground flex items-center gap-2" dir={langDir} translate="no">
+                    <svg className="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                     </svg>
                     {t("deliver_after")}

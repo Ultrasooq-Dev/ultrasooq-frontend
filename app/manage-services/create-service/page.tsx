@@ -12,7 +12,7 @@ import dynamic from "next/dynamic";
 const DescriptionAndSpecificationSection = dynamic(
   () => import("@/components/modules/createService/DescriptionAndSpecificationSection"),
   {
-    loading: () => <div className="animate-pulse h-64 bg-gray-200 rounded-lg" />,
+    loading: () => <div className="animate-pulse h-64 bg-muted rounded-lg" />,
     ssr: false,
   },
 );
@@ -597,7 +597,7 @@ const CreateServicePage = () => {
                   selectedCategoryIds={selectedCategoryIds}
                 />
                 <div className="grid w-full grid-cols-4 gap-x-5">
-                  <div className="col-span-4 mx-auto mb-3 w-full max-w-[950px] rounded-lg border border-solid border-gray-300 bg-white p-2 shadow-xs sm:p-3 lg:p-4">
+                  <div className="col-span-4 mx-auto mb-3 w-full max-w-[950px] rounded-lg border border-solid border-border bg-card p-2 shadow-xs sm:p-3 lg:p-4">
                     <div className="flex w-full flex-wrap">
                       <div className=" w-full">
                         <div className="flex flex-wrap">
@@ -713,11 +713,11 @@ const CreateServicePage = () => {
                                         e.target.value,
                                       )
                                     }
-                                    className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
+                                    className="h-4 w-4 border-border text-primary focus:ring-primary"
                                   />
                                   <label
                                     htmlFor="me"
-                                    className="ml-2 text-sm text-gray-700"
+                                    className="ml-2 text-sm text-muted-foreground"
                                     translate="no"
                                   >
                                     {t("me")}
@@ -738,11 +738,11 @@ const CreateServicePage = () => {
                                         e.target.value,
                                       )
                                     }
-                                    className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
+                                    className="h-4 w-4 border-border text-primary focus:ring-primary"
                                   />
                                   <label
                                     htmlFor="everyone"
-                                    className="ml-2 text-sm text-gray-700"
+                                    className="ml-2 text-sm text-muted-foreground"
                                     translate="no"
                                   >
                                     {t("everyone")}
@@ -756,7 +756,7 @@ const CreateServicePage = () => {
                               </Label>
                               <div className="my-2 flex flex-wrap gap-2">
                                 <select
-                                  className="w-full rounded border border-gray-300 p-2"
+                                  className="w-full rounded border border-border p-2"
                                   value={form.watch("serviceType")}
                                   onChange={(e) =>
                                     form.setValue("serviceType", e.target.value)
@@ -796,11 +796,11 @@ const CreateServicePage = () => {
                                         e.target.value,
                                       )
                                     }
-                                    className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
+                                    className="h-4 w-4 border-border text-primary focus:ring-primary"
                                   />
                                   <label
                                     htmlFor="auto"
-                                    className="ml-2 text-sm text-gray-700"
+                                    className="ml-2 text-sm text-muted-foreground"
                                     translate="no"
                                   >
                                     {t("auto_confirm")}
@@ -822,11 +822,11 @@ const CreateServicePage = () => {
                                         e.target.value,
                                       )
                                     }
-                                    className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
+                                    className="h-4 w-4 border-border text-primary focus:ring-primary"
                                   />
                                   <label
                                     htmlFor="manual"
-                                    className="ml-2 text-sm text-gray-700"
+                                    className="ml-2 text-sm text-muted-foreground"
                                     translate="no"
                                   >
                                     {t("manual")}
@@ -849,11 +849,11 @@ const CreateServicePage = () => {
                                       form.watch("renewEveryWeek") === true
                                     }
                                     onChange={handleRenewFun}
-                                    className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
+                                    className="h-4 w-4 border-border text-primary focus:ring-primary"
                                   />
                                   <label
                                     htmlFor="auto"
-                                    className="ml-2 text-sm text-gray-700"
+                                    className="ml-2 text-sm text-muted-foreground"
                                     translate="no"
                                   >
                                     {t("every_week")}
@@ -867,11 +867,11 @@ const CreateServicePage = () => {
                                     value="one_time"
                                     checked={form.watch("oneTime") === true}
                                     onChange={handleRenewFun}
-                                    className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
+                                    className="h-4 w-4 border-border text-primary focus:ring-primary"
                                   />
                                   <label
                                     htmlFor="manual"
-                                    className="ml-2 text-sm text-gray-700"
+                                    className="ml-2 text-sm text-muted-foreground"
                                     translate="no"
                                   >
                                     {t("one_by_general_tool")}
@@ -900,11 +900,11 @@ const CreateServicePage = () => {
                                               e.target.value
                                             )
                                           }
-                                          className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
+                                          className="h-4 w-4 border-border text-primary focus:ring-primary"
                                         />
                                         <label
                                           htmlFor="direction"
-                                          className="ml-2 text-sm text-gray-700"
+                                          className="ml-2 text-sm text-muted-foreground"
                                           translate="no"
                                         >
                                           {t("direction")}
@@ -925,12 +925,12 @@ const CreateServicePage = () => {
                                               e.target.value,
                                             )
                                           }
-                                          className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
+                                          className="h-4 w-4 border-border text-primary focus:ring-primary"
                                           translate="no"
                                         />
                                         <label
                                           htmlFor="rang"
-                                          className="ml-2 text-sm text-gray-700"
+                                          className="ml-2 text-sm text-muted-foreground"
                                           translate="no"
                                         >
                                           {t("range")}
@@ -1115,7 +1115,7 @@ const CreateServicePage = () => {
                                 </Label>
                                 <input
                                   type="text"
-                                  className="w-full rounded border border-gray-300 p-2"
+                                  className="w-full rounded border border-border p-2"
                                   min={0}
                                   placeholder={t("enter_minutes")}
                                   {...form.register("eachCustomerTime")}
@@ -1155,7 +1155,7 @@ const CreateServicePage = () => {
                                 <input
                                   type="text"
                                   min={0}
-                                  className="w-full rounded border border-gray-300 p-2"
+                                  className="w-full rounded border border-border p-2"
                                   placeholder={t("enter_number")}
                                   {...form.register("customerPerPeiod")}
                                   onChange={(e) => {
@@ -1244,7 +1244,7 @@ const CreateServicePage = () => {
                 {/* <ProductDetailsSection /> */}
 
                 <div className="grid w-full grid-cols-4 gap-x-5">
-                  <div className="col-span-4 mb-3 w-full rounded-lg border border-solid border-gray-300 bg-white p-2 shadow-xs sm:p-3 lg:p-4">
+                  <div className="col-span-4 mb-3 w-full rounded-lg border border-solid border-border bg-card p-2 shadow-xs sm:p-3 lg:p-4">
                     <div className="form-groups-common-sec-s1">
                       <DescriptionAndSpecificationSection />
                       <div className="mb-4 mt-4 inline-flex w-full items-center justify-end gap-2">

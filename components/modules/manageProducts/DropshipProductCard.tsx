@@ -178,7 +178,7 @@ const DropshipProductCard: React.FC<DropshipProductCardProps> = ({
             )}
             
             {/* Product Images */}
-            <div className="relative w-20 h-20 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0 shadow-sm">
+            <div className="relative w-20 h-20 rounded-lg overflow-hidden bg-muted flex-shrink-0 shadow-sm">
               {productImage && validator.isURL(productImage) && !productImage.includes('puremoon.s3.amazonaws.com') ? (
                 <img
                   src={productImage}
@@ -207,7 +207,7 @@ const DropshipProductCard: React.FC<DropshipProductCardProps> = ({
             <div className="flex-1 min-w-0">
               {/* Product Name and Badges */}
               <div className="flex items-start gap-2 mb-2">
-                <h3 className="font-semibold text-gray-900 text-base leading-tight flex-1 min-w-0">
+                <h3 className="font-semibold text-foreground text-base leading-tight flex-1 min-w-0">
                   {productName}
                 </h3>
                 <div className="flex items-center gap-1 flex-shrink-0">
@@ -219,7 +219,7 @@ const DropshipProductCard: React.FC<DropshipProductCardProps> = ({
                     className={`text-xs px-2 py-1 ${
                       isActive 
                         ? 'bg-success/10 text-success border-success/20' 
-                        : 'bg-gray-100 text-gray-800 border-gray-200'
+                        : 'bg-muted text-foreground border-border'
                     }`}
                   >
                     {isActive ? t("active") : t("inactive")}
@@ -230,13 +230,13 @@ const DropshipProductCard: React.FC<DropshipProductCardProps> = ({
               {/* Original Product Info */}
               {originalProduct && (
                 <div className="mb-3">
-                  <div className="text-sm text-gray-700">
-                    <span className="font-medium text-gray-600">{t("original_product")}:</span>
+                  <div className="text-sm text-muted-foreground">
+                    <span className="font-medium text-muted-foreground">{t("original_product")}:</span>
                   </div>
-                  <div className="text-sm text-gray-800 font-medium mt-1">
+                  <div className="text-sm text-foreground font-medium mt-1">
                     {originalProduct.productName}
                     {originalProduct.userBy && (
-                      <span className="ml-2 text-gray-600 font-normal">
+                      <span className="ml-2 text-muted-foreground font-normal">
                         ({originalProduct.userBy.companyName || `${originalProduct.userBy.firstName} ${originalProduct.userBy.lastName}`})
                       </span>
                     )}
@@ -256,9 +256,9 @@ const DropshipProductCard: React.FC<DropshipProductCardProps> = ({
                     </span>
                   )}
                 </div>
-                <div className="text-sm text-gray-600">
+                <div className="text-sm text-muted-foreground">
                   <span className="font-medium">{t("stock")}:</span> 
-                  <span className="ml-1 font-semibold text-gray-800">{initialStock} {t("in_stock")}</span>
+                  <span className="ml-1 font-semibold text-foreground">{initialStock} {t("in_stock")}</span>
                 </div>
               </div>
             </div>
@@ -283,7 +283,7 @@ const DropshipProductCard: React.FC<DropshipProductCardProps> = ({
             {/* Expand/Collapse Button */}
             <button
               type="button"
-              className="flex h-10 w-10 items-center justify-center rounded-lg border-2 border-gray-300 bg-white text-gray-600 hover:bg-gray-50 hover:border-gray-400 transition-colors shadow-sm"
+              className="flex h-10 w-10 items-center justify-center rounded-lg border-2 border-border bg-card text-muted-foreground hover:bg-muted hover:border-border transition-colors shadow-sm"
               onClick={() => setIsExpanded(!isExpanded)}
               title={isExpanded ? t("collapse") : t("expand")}
             >
@@ -294,23 +294,23 @@ const DropshipProductCard: React.FC<DropshipProductCardProps> = ({
 
         {/* Expanded View - Detailed Information */}
         {isExpanded && (
-          <div className="mt-6 pt-6 border-t border-gray-200 bg-gray-50 rounded-lg p-4">
+          <div className="mt-6 pt-6 border-t border-border bg-muted rounded-lg p-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Left Column - Pricing Details */}
               <div className="space-y-4">
-                <h4 className="font-semibold text-gray-900 text-base border-b border-gray-200 pb-2">{t("pricing_details")}</h4>
+                <h4 className="font-semibold text-foreground text-base border-b border-border pb-2">{t("pricing_details")}</h4>
                 
                 <div className="space-y-3">
-                  <div className="flex justify-between items-center py-2 px-3 bg-white rounded-md border">
-                    <span className="text-sm font-medium text-gray-700">{t("selling_price")}:</span>
+                  <div className="flex justify-between items-center py-2 px-3 bg-card rounded-md border">
+                    <span className="text-sm font-medium text-muted-foreground">{t("selling_price")}:</span>
                     <span className="font-bold text-lg text-success">
                       ${Number(initialPrice).toFixed(2)}
                     </span>
                   </div>
                   
                   {Number(dropshipMarkup) > 0 && (
-                    <div className="flex justify-between items-center py-2 px-3 bg-white rounded-md border">
-                      <span className="text-sm font-medium text-gray-700">{t("markup")}:</span>
+                    <div className="flex justify-between items-center py-2 px-3 bg-card rounded-md border">
+                      <span className="text-sm font-medium text-muted-foreground">{t("markup")}:</span>
                       <span className="text-primary font-bold text-sm bg-primary/5 px-2 py-1 rounded">
                         +${Number(dropshipMarkup).toFixed(2)}
                       </span>
@@ -318,9 +318,9 @@ const DropshipProductCard: React.FC<DropshipProductCardProps> = ({
                   )}
                   
                   {originalProduct && (
-                    <div className="flex justify-between items-center py-2 px-3 bg-white rounded-md border">
-                      <span className="text-sm font-medium text-gray-700">{t("original_price")}:</span>
-                      <span className="text-gray-600 font-semibold">
+                    <div className="flex justify-between items-center py-2 px-3 bg-card rounded-md border">
+                      <span className="text-sm font-medium text-muted-foreground">{t("original_price")}:</span>
+                      <span className="text-muted-foreground font-semibold">
                         ${Number(originalProduct.productPrice).toFixed(2)}
                       </span>
                     </div>
@@ -330,27 +330,27 @@ const DropshipProductCard: React.FC<DropshipProductCardProps> = ({
 
               {/* Right Column - Product Details */}
               <div className="space-y-4">
-                <h4 className="font-semibold text-gray-900 text-base border-b border-gray-200 pb-2">{t("product_details")}</h4>
+                <h4 className="font-semibold text-foreground text-base border-b border-border pb-2">{t("product_details")}</h4>
                 
                 <div className="space-y-3">
-                  <div className="flex justify-between items-center py-2 px-3 bg-white rounded-md border">
-                    <span className="text-sm font-medium text-gray-700">{t("stock")}:</span>
-                    <span className="font-semibold text-gray-800">{initialStock}</span>
+                  <div className="flex justify-between items-center py-2 px-3 bg-card rounded-md border">
+                    <span className="text-sm font-medium text-muted-foreground">{t("stock")}:</span>
+                    <span className="font-semibold text-foreground">{initialStock}</span>
                   </div>
                   
-                  <div className="flex justify-between items-center py-2 px-3 bg-white rounded-md border">
-                    <span className="text-sm font-medium text-gray-700">{t("delivery_after")}:</span>
-                    <span className="font-semibold text-gray-800">{initialDelivery} {t("days")}</span>
+                  <div className="flex justify-between items-center py-2 px-3 bg-card rounded-md border">
+                    <span className="text-sm font-medium text-muted-foreground">{t("delivery_after")}:</span>
+                    <span className="font-semibold text-foreground">{initialDelivery} {t("days")}</span>
                   </div>
                   
-                  <div className="flex justify-between items-center py-2 px-3 bg-white rounded-md border">
-                    <span className="text-sm font-medium text-gray-700">{t("consumer_type")}:</span>
-                    <span className="capitalize font-semibold text-gray-800">{initialConsumerType.toLowerCase()}</span>
+                  <div className="flex justify-between items-center py-2 px-3 bg-card rounded-md border">
+                    <span className="text-sm font-medium text-muted-foreground">{t("consumer_type")}:</span>
+                    <span className="capitalize font-semibold text-foreground">{initialConsumerType.toLowerCase()}</span>
                   </div>
                   
-                  <div className="flex justify-between items-center py-2 px-3 bg-white rounded-md border">
-                    <span className="text-sm font-medium text-gray-700">{t("sell_type")}:</span>
-                    <span className="capitalize font-semibold text-gray-800">{initialSellType.toLowerCase().replace('_', ' ')}</span>
+                  <div className="flex justify-between items-center py-2 px-3 bg-card rounded-md border">
+                    <span className="text-sm font-medium text-muted-foreground">{t("sell_type")}:</span>
+                    <span className="capitalize font-semibold text-foreground">{initialSellType.toLowerCase().replace('_', ' ')}</span>
                   </div>
                 </div>
               </div>
@@ -370,7 +370,7 @@ const DropshipProductCard: React.FC<DropshipProductCardProps> = ({
 
             {/* Action Buttons Section */}
             {!hideActionButtons && (
-              <div className="mt-6 flex justify-center space-x-3 border-t border-gray-300 pt-4">
+              <div className="mt-6 flex justify-center space-x-3 border-t border-border pt-4">
                 <button
                   type="button"
                   className="flex items-center justify-center rounded-lg bg-success px-6 py-2 text-sm font-medium text-white hover:bg-success transition-colors shadow-sm"

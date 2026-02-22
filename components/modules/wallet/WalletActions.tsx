@@ -353,17 +353,17 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
 
   return (
     <div>
-      <h3 className="text-lg font-semibold text-gray-900 mb-4" dir={langDir} translate="no">
+      <h3 className="text-lg font-semibold text-foreground mb-4" dir={langDir} translate="no">
         {t("wallet_actions")}
       </h3>
       
       <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
         {/* Deposit */}
-        <div className="border border-gray-200 rounded-lg p-4 hover:border-[#FF9900] transition-colors">
+        <div className="border border-border rounded-lg p-4 hover:border-[#FF9900] transition-colors">
           <div className="flex items-start justify-between mb-3">
             <div>
-              <h4 className="text-sm font-medium text-gray-900 mb-1">{t("deposit")}</h4>
-              <p className="text-xs text-gray-500">{t("add_funds_to_wallet")}</p>
+              <h4 className="text-sm font-medium text-foreground mb-1">{t("deposit")}</h4>
+              <p className="text-xs text-muted-foreground">{t("add_funds_to_wallet")}</p>
             </div>
             <div className="w-10 h-10 bg-success/5 rounded-full flex items-center justify-center">
               <svg className="w-5 h-5 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -375,13 +375,13 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
           {activeAction === "deposit" ? (
             <div className="space-y-3">
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">{t("amount")}</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">{t("amount")}</label>
                 <input
                   type="number"
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
                   placeholder="0.00"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#FF9900] focus:border-transparent"
+                  className="w-full px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#FF9900] focus:border-transparent"
                   dir={langDir}
                   disabled={isProcessing || isProcessingPayment}
                 />
@@ -399,7 +399,7 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
                     setActiveAction(null);
                     setAmount("");
                   }}
-                  className="px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+                  className="px-4 py-2 text-sm text-muted-foreground border border-border rounded-md hover:bg-muted transition-colors"
                 >
                   {t("cancel")}
                 </button>
@@ -416,11 +416,11 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
         </div>
 
         {/* Withdraw - Commented out for now */}
-        {/* <div className="border border-gray-200 rounded-lg p-4 hover:border-[#FF9900] transition-colors">
+        {/* <div className="border border-border rounded-lg p-4 hover:border-[#FF9900] transition-colors">
           <div className="flex items-start justify-between mb-3">
             <div>
-              <h4 className="text-sm font-medium text-gray-900 mb-1">{t("withdraw")}</h4>
-              <p className="text-xs text-gray-500">{t("withdraw_funds_from_wallet")}</p>
+              <h4 className="text-sm font-medium text-foreground mb-1">{t("withdraw")}</h4>
+              <p className="text-xs text-muted-foreground">{t("withdraw_funds_from_wallet")}</p>
             </div>
             <div className="w-10 h-10 bg-destructive/5 rounded-full flex items-center justify-center">
               <svg className="w-5 h-5 text-destructive" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -432,13 +432,13 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
           {activeAction === "withdraw" ? (
             <div className="space-y-3">
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">{t("amount")}</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">{t("amount")}</label>
                 <input
                   type="number"
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
                   placeholder="0.00"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#FF9900] focus:border-transparent"
+                  className="w-full px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#FF9900] focus:border-transparent"
                   dir={langDir}
                   disabled={isProcessing}
                 />
@@ -456,7 +456,7 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
                     setActiveAction(null);
                     setAmount("");
                   }}
-                  className="px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50"
+                  className="px-4 py-2 text-sm text-muted-foreground border border-border rounded-md hover:bg-muted"
                 >
                   {t("cancel")}
                 </button>
@@ -466,7 +466,7 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
             <button
               onClick={() => setActiveAction("withdraw")}
               disabled={!wallet || wallet.balance <= 0}
-              className="w-full mt-3 bg-white hover:bg-gray-50 text-[#FF9900] border border-[#FF9900] text-sm font-medium py-2.5 px-4 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full mt-3 bg-card hover:bg-muted text-[#FF9900] border border-[#FF9900] text-sm font-medium py-2.5 px-4 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {t("withdraw")}
             </button>
@@ -474,11 +474,11 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
         </div> */}
 
         {/* Transfer - Commented out for now */}
-        {/* <div className="border border-gray-200 rounded-lg p-4 hover:border-[#FF9900] transition-colors">
+        {/* <div className="border border-border rounded-lg p-4 hover:border-[#FF9900] transition-colors">
           <div className="flex items-start justify-between mb-3">
             <div>
-              <h4 className="text-sm font-medium text-gray-900 mb-1">{t("transfer")}</h4>
-              <p className="text-xs text-gray-500">{t("transfer_funds_to_user")}</p>
+              <h4 className="text-sm font-medium text-foreground mb-1">{t("transfer")}</h4>
+              <p className="text-xs text-muted-foreground">{t("transfer_funds_to_user")}</p>
             </div>
             <div className="w-10 h-10 bg-primary/5 rounded-full flex items-center justify-center">
               <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -490,36 +490,36 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
           {activeAction === "transfer" ? (
             <div className="space-y-3">
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">{t("user_id")}</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">{t("user_id")}</label>
                 <input
                   type="text"
                   value={transferUserId}
                   onChange={(e) => setTransferUserId(e.target.value)}
                   placeholder="Enter user ID"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#FF9900] focus:border-transparent"
+                  className="w-full px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#FF9900] focus:border-transparent"
                   disabled={isProcessing}
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">{t("amount")}</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">{t("amount")}</label>
                 <input
                   type="number"
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
                   placeholder="0.00"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#FF9900] focus:border-transparent"
+                  className="w-full px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#FF9900] focus:border-transparent"
                   dir={langDir}
                   disabled={isProcessing}
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">{t("description")} ({t("optional")})</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">{t("description")} ({t("optional")})</label>
                 <input
                   type="text"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder={t("transfer_description_placeholder")}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#FF9900] focus:border-transparent"
+                  className="w-full px-3 py-2 border border-border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#FF9900] focus:border-transparent"
                   disabled={isProcessing}
                 />
               </div>
@@ -538,7 +538,7 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
                     setTransferUserId("");
                     setDescription("");
                   }}
-                  className="px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50"
+                  className="px-4 py-2 text-sm text-muted-foreground border border-border rounded-md hover:bg-muted"
                 >
                   {t("cancel")}
                 </button>
@@ -548,7 +548,7 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
             <button
               onClick={() => setActiveAction("transfer")}
               disabled={!wallet || wallet.balance <= 0}
-              className="w-full mt-3 bg-white hover:bg-gray-50 text-[#FF9900] border border-[#FF9900] text-sm font-medium py-2.5 px-4 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full mt-3 bg-card hover:bg-muted text-[#FF9900] border border-[#FF9900] text-sm font-medium py-2.5 px-4 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {t("transfer")}
             </button>

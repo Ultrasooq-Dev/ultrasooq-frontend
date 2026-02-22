@@ -117,7 +117,7 @@ const ProductSearchSelector: React.FC<ProductSearchSelectorProps> = ({
     return (
       <div className="space-y-4">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             placeholder={t("search_products_to_dropship")}
             disabled
@@ -135,7 +135,7 @@ const ProductSearchSelector: React.FC<ProductSearchSelectorProps> = ({
     <div className="space-y-4">
       {/* Search Input */}
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           placeholder={t("search_products_to_dropship")}
           value={searchTerm}
@@ -169,13 +169,13 @@ const ProductSearchSelector: React.FC<ProductSearchSelectorProps> = ({
               className={`cursor-pointer transition-all duration-200 hover:shadow-md ${
                 selectedProduct?.id === product.id 
                   ? 'ring-2 ring-primary border-primary' 
-                  : 'hover:border-gray-300'
+                  : 'hover:border-border'
               }`}
               onClick={() => handleProductSelect(product)}
             >
               <CardContent className="p-4">
                 {/* Product Image */}
-                <div className="aspect-square mb-3 relative overflow-hidden rounded-lg bg-gray-100">
+                <div className="aspect-square mb-3 relative overflow-hidden rounded-lg bg-muted">
                   {product.productImages?.[0] ? (
                     <Image
                       src={product.productImages[0].image}
@@ -185,7 +185,7 @@ const ProductSearchSelector: React.FC<ProductSearchSelectorProps> = ({
                     />
                   ) : (
                     <div className="flex items-center justify-center h-full">
-                      <Package className="h-12 w-12 text-gray-400" />
+                      <Package className="h-12 w-12 text-muted-foreground" />
                     </div>
                   )}
                 </div>
@@ -196,7 +196,7 @@ const ProductSearchSelector: React.FC<ProductSearchSelectorProps> = ({
                     {product.productName}
                   </h4>
                   
-                  <p className="text-xs text-gray-600 line-clamp-2">
+                  <p className="text-xs text-muted-foreground line-clamp-2">
                     {extractPlainText(product.description)}
                   </p>
 
@@ -206,14 +206,14 @@ const ProductSearchSelector: React.FC<ProductSearchSelectorProps> = ({
                       ${Number(product.productPrice).toFixed(2)}
                     </span>
                     {product.offerPrice && Number(product.offerPrice) < Number(product.productPrice) && (
-                      <span className="text-sm text-gray-500 line-through">
+                      <span className="text-sm text-muted-foreground line-through">
                         ${Number(product.offerPrice).toFixed(2)}
                       </span>
                     )}
                   </div>
 
                   {/* Vendor Info */}
-                  <div className="flex items-center gap-1 text-xs text-gray-500">
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <MapPin className="h-3 w-3" />
                     <span>{product.userBy?.companyAddress || 'Location not specified'}</span>
                   </div>
@@ -227,7 +227,7 @@ const ProductSearchSelector: React.FC<ProductSearchSelectorProps> = ({
                   </Badge>
 
                   {/* Stock Info */}
-                  <div className="text-xs text-gray-500">
+                  <div className="text-xs text-muted-foreground">
                     Stock: {product.product_productPrice?.[0]?.stock || 0} units
                   </div>
                 </div>
@@ -239,7 +239,7 @@ const ProductSearchSelector: React.FC<ProductSearchSelectorProps> = ({
                   className={`w-full mt-3 ${
                     selectedProduct?.id === product.id
                       ? 'bg-primary hover:bg-primary/90'
-                      : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                      : 'bg-muted hover:bg-muted text-muted-foreground'
                   }`}
                   onClick={(e) => {
                     e.stopPropagation();
@@ -257,18 +257,18 @@ const ProductSearchSelector: React.FC<ProductSearchSelectorProps> = ({
       {/* No Results */}
       {products && products.length === 0 && searchTerm && (
         <div className="text-center py-8">
-          <Package className="h-12 w-12 text-gray-400 mx-auto mb-2" />
-          <p className="text-gray-500">{t("no_products_found")}</p>
-          <p className="text-sm text-gray-400">{t("try_different_search_terms")}</p>
+          <Package className="h-12 w-12 text-muted-foreground mx-auto mb-2" />
+          <p className="text-muted-foreground">{t("no_products_found")}</p>
+          <p className="text-sm text-muted-foreground">{t("try_different_search_terms")}</p>
         </div>
       )}
 
       {/* Empty State - Only show when no products are loaded and no search has been performed */}
       {!hasSearched && !products.length && !isLoading && (
         <div className="text-center py-8">
-          <Package className="h-12 w-12 text-gray-400 mx-auto mb-2" />
-          <p className="text-gray-500">{t("no_dropshipable_products_available")}</p>
-          <p className="text-sm text-gray-400">{t("try_searching_for_specific_products")}</p>
+          <Package className="h-12 w-12 text-muted-foreground mx-auto mb-2" />
+          <p className="text-muted-foreground">{t("no_dropshipable_products_available")}</p>
+          <p className="text-sm text-muted-foreground">{t("try_searching_for_specific_products")}</p>
         </div>
       )}
     </div>

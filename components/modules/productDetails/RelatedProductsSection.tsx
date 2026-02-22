@@ -299,12 +299,12 @@ const RelatedProductsSection: React.FC<RelatedProductsSectionProps> = ({
   };
 
   return (
-    <section className="w-full bg-white py-12">
+    <section className="w-full bg-card py-12">
       <div className="container mx-auto max-w-7xl px-4 lg:px-8">
         {/* Section Header - Amazon Style */}
         {relatedProductsQuery?.isFetched && memoizedRelatedProductList?.length > 0 && (
           <div className="mb-8 pb-4">
-            <h2 className="text-2xl font-bold text-gray-900" dir={langDir} translate="no">
+            <h2 className="text-2xl font-bold text-foreground" dir={langDir} translate="no">
               {t("related_products")}
             </h2>
           </div>
@@ -355,8 +355,8 @@ const RelatedProductsSection: React.FC<RelatedProductsSectionProps> = ({
               className="absolute left-0 top-0 bottom-0 z-20 w-12 bg-gradient-to-r from-white via-white to-transparent flex items-center justify-start pl-2 opacity-0 hover:opacity-100 transition-opacity duration-200 group"
               aria-label="Previous"
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-lg border border-gray-300">
-                <svg className="h-6 w-6 text-gray-800" fill="currentColor" viewBox="0 0 20 20">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-card shadow-lg border border-border">
+                <svg className="h-6 w-6 text-foreground" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
                 </svg>
               </div>
@@ -366,8 +366,8 @@ const RelatedProductsSection: React.FC<RelatedProductsSectionProps> = ({
               className="absolute right-0 top-0 bottom-0 z-20 w-12 bg-gradient-to-l from-white via-white to-transparent flex items-center justify-end pr-2 opacity-0 hover:opacity-100 transition-opacity duration-200 group"
               aria-label="Next"
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-lg border border-gray-300">
-                <svg className="h-6 w-6 text-gray-800" fill="currentColor" viewBox="0 0 20 20">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-card shadow-lg border border-border">
+                <svg className="h-6 w-6 text-foreground" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
                 </svg>
               </div>
@@ -375,15 +375,15 @@ const RelatedProductsSection: React.FC<RelatedProductsSectionProps> = ({
           </div>
         ) : relatedProductsQuery?.isFetched && !memoizedRelatedProductList?.length ? (
           <div className="py-16 text-center">
-            <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gray-100">
-              <svg className="h-10 w-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-muted">
+              <svg className="h-10 w-10 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
               </svg>
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2" dir={langDir} translate="no">
+            <h3 className="text-xl font-semibold text-foreground mb-2" dir={langDir} translate="no">
               {t("no_related_products_found")}
             </h3>
-            <p className="text-gray-500 max-w-md mx-auto" dir={langDir} translate="no">
+            <p className="text-muted-foreground max-w-md mx-auto" dir={langDir} translate="no">
               {t("explore_more_products_from_our_catalog")}
             </p>
           </div>

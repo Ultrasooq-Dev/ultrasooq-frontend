@@ -212,7 +212,7 @@ const ProductTable: React.FC<ProductTableProps> = ({
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>
-              <TableRow className="bg-gray-50 hover:bg-gray-50">
+              <TableRow className="bg-muted hover:bg-muted">
                 <TableHead className="min-w-[300px]" dir={langDir} translate="no">
                   {t("product")}
                 </TableHead>
@@ -250,13 +250,13 @@ const ProductTable: React.FC<ProductTableProps> = ({
                 return (
                   <TableRow 
                     key={item.id} 
-                    className="hover:bg-gray-50 transition-colors group"
+                    className="hover:bg-muted transition-colors group"
                   >
                     {/* Product Column */}
                     <TableCell className="py-4">
                       <Link href={`/trending/${item.id}`} className="flex items-center gap-4 group/link">
                         <div className="relative flex-shrink-0">
-                          <div className="relative h-20 w-20 sm:h-24 sm:w-24 rounded-lg overflow-hidden border border-gray-200 bg-gray-100">
+                          <div className="relative h-20 w-20 sm:h-24 sm:w-24 rounded-lg overflow-hidden border border-border bg-muted">
                             <Image
                               src={
                                 item?.productImage &&
@@ -280,7 +280,7 @@ const ProductTable: React.FC<ProductTableProps> = ({
                           )}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-gray-900 text-sm sm:text-base mb-1 line-clamp-2 group-hover/link:text-primary transition-colors">
+                          <h3 className="font-semibold text-foreground text-sm sm:text-base mb-1 line-clamp-2 group-hover/link:text-primary transition-colors">
                             {translate(item?.productName)}
                           </h3>
                           {/* Rating */}
@@ -295,7 +295,7 @@ const ProductTable: React.FC<ProductTableProps> = ({
                                   )}
                                 </span>
                               ))}
-                              <span className="text-xs text-gray-500 ml-1">
+                              <span className="text-xs text-muted-foreground ml-1">
                                 ({item.productReview?.length || 0})
                               </span>
                             </div>
@@ -320,12 +320,12 @@ const ProductTable: React.FC<ProductTableProps> = ({
 
                     {/* Category Column */}
                     <TableCell className="py-4">
-                      <span className="text-sm text-gray-700">{item?.categoryName || "-"}</span>
+                      <span className="text-sm text-muted-foreground">{item?.categoryName || "-"}</span>
                     </TableCell>
 
                     {/* Brand Column */}
                     <TableCell className="py-4">
-                      <span className="text-sm text-gray-700 font-medium">
+                      <span className="text-sm text-muted-foreground font-medium">
                         {item?.brandName || "-"}
                       </span>
                     </TableCell>
@@ -346,11 +346,11 @@ const ProductTable: React.FC<ProductTableProps> = ({
                       ) : (
                         <div className="flex flex-col gap-1">
                           <div className="flex items-center gap-2">
-                            <span className="text-lg font-bold text-gray-900">
+                            <span className="text-lg font-bold text-foreground">
                               {currency.symbol}{priceData.finalPrice}
                             </span>
                             {priceData.discount > 0 && priceData.originalPrice !== priceData.finalPrice && (
-                              <span className="text-sm text-gray-500 line-through">
+                              <span className="text-sm text-muted-foreground line-through">
                                 {currency.symbol}{priceData.originalPrice}
                               </span>
                             )}
@@ -376,7 +376,7 @@ const ProductTable: React.FC<ProductTableProps> = ({
                           <Button
                             variant="outline"
                             size="sm"
-                            className="h-9 w-9 p-0 border-gray-300 hover:bg-primary/5 hover:border-primary hover:text-primary transition-colors"
+                            className="h-9 w-9 p-0 border-border hover:bg-primary/5 hover:border-primary hover:text-primary transition-colors"
                             onClick={() => onAddToCart?.(item, 1, "add", undefined, cartItem?.cartId)}
                             title={t("add_to_cart")}
                           >
@@ -389,10 +389,10 @@ const ProductTable: React.FC<ProductTableProps> = ({
                           <Button
                             variant="outline"
                             size="sm"
-                            className="h-9 w-9 p-0 border-gray-300 hover:bg-gray-100 transition-colors"
+                            className="h-9 w-9 p-0 border-border hover:bg-muted transition-colors"
                             title={t("view") || "View"}
                           >
-                            <FiEye size={16} className="text-gray-600" />
+                            <FiEye size={16} className="text-muted-foreground" />
                           </Button>
                         </Link>
 
@@ -401,14 +401,14 @@ const ProductTable: React.FC<ProductTableProps> = ({
                           <Button
                             variant="outline"
                             size="sm"
-                            className="h-9 w-9 p-0 border-gray-300 hover:bg-destructive/5 hover:border-destructive transition-colors"
+                            className="h-9 w-9 p-0 border-border hover:bg-destructive/5 hover:border-destructive transition-colors"
                             onClick={() => onWishlist?.(item.id, item?.productWishlist)}
                             title={t("wishlist") || "Wishlist"}
                           >
                             {inWishlist ? (
                               <FaHeart size={16} className="text-destructive" />
                             ) : (
-                              <FaRegHeart size={16} className="text-gray-600" />
+                              <FaRegHeart size={16} className="text-muted-foreground" />
                             )}
                           </Button>
                         )}

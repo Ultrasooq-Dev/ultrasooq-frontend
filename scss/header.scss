@@ -142,7 +142,7 @@
                         input {
                             height: 100%;
                             border-radius: 0;
-                            background: #fff;
+                            background: var(--card);
                             &:focus {
                                 box-shadow: none;
                                 outline: none;
@@ -286,7 +286,7 @@
                             width: 100%;
                             height: 1.5px;
                             border-radius: 3px;
-                            background-color: #fff;
+                            background-color: var(--card);
                             position: relative;
                             transition: all .25s ease 0s;
                             &::before {
@@ -295,7 +295,7 @@
                                 left: 0;
                                 width: inherit;
                                 height: inherit;
-                                background-color: #fff;
+                                background-color: var(--card);
                                 border-radius: 3px;
                                 transition: all .25s ease 0s;
                                 -webkit-transform: translateY(-6px);
@@ -307,7 +307,7 @@
                                 left: 0;
                                 width: inherit;
                                 height: inherit;
-                                background-color: #fff;
+                                background-color: var(--card);
                                 border-radius: 3px;
                                 transition: all .25s ease 0s;
                                 -webkit-transform: translateY(6px);

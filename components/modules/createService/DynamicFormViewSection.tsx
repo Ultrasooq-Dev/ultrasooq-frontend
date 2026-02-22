@@ -15,7 +15,7 @@ const DynamicFormViewSection: React.FC<DynamicFormViewSectionProps> = ({
 
   return (
     <div className="grid w-full grid-cols-1 gap-x-5">
-      <div className="col-span-3 mb-3 w-full rounded-lg border border-solid border-gray-300 bg-white p-6 shadow-xs sm:p-4 lg:p-8">
+      <div className="col-span-3 mb-3 w-full rounded-lg border border-solid border-border bg-card p-6 shadow-xs sm:p-4 lg:p-8">
         {!dynamicFormList?.length ? (
           <p className="text-center" dir={langDir} translate="no">{t("no_form_found")}</p>
         ) : null}

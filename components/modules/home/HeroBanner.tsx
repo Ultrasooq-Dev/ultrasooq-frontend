@@ -49,13 +49,13 @@ const HeroBanner: React.FC = () => {
   // Show loading state
   if (isLoading) {
     return (
-      <section className="w-full py-6 sm:py-10 lg:py-12 px-4 sm:px-8 lg:px-12 bg-gray-50">
+      <section className="w-full py-6 sm:py-10 lg:py-12 px-4 sm:px-8 lg:px-12 bg-muted">
         <div className="w-full max-w-[1400px] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 lg:gap-8">
-            <div className="lg:col-span-1 h-[404px] sm:h-[376px] lg:h-[432px] bg-gray-200 animate-pulse rounded-3xl" />
+            <div className="lg:col-span-1 h-[404px] sm:h-[376px] lg:h-[432px] bg-muted animate-pulse rounded-3xl" />
             <div className="lg:col-span-1 flex flex-col gap-5 sm:gap-6 lg:gap-8">
-              <div className="h-48 sm:h-44 lg:h-[200px] bg-gray-200 animate-pulse rounded-3xl" />
-              <div className="h-48 sm:h-44 lg:h-[200px] bg-gray-200 animate-pulse rounded-3xl" />
+              <div className="h-48 sm:h-44 lg:h-[200px] bg-muted animate-pulse rounded-3xl" />
+              <div className="h-48 sm:h-44 lg:h-[200px] bg-muted animate-pulse rounded-3xl" />
             </div>
           </div>
         </div>
@@ -69,7 +69,7 @@ const HeroBanner: React.FC = () => {
   }
 
   return (
-    <section className="w-full py-6 sm:py-10 lg:py-12 px-4 sm:px-8 lg:px-12 bg-gray-50">
+    <section className="w-full py-6 sm:py-10 lg:py-12 px-4 sm:px-8 lg:px-12 bg-muted">
       <div className="w-full max-w-[1400px] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 lg:gap-8">
           {/* Main Banner Carousel */}
@@ -128,7 +128,7 @@ const BannerCarousel: React.FC<{
   if (!currentBanner || !currentBanner.image) return null;
 
   return (
-    <div className="group relative h-[404px] sm:h-[376px] lg:h-[432px] w-full overflow-hidden rounded-3xl border border-gray-200">
+    <div className="group relative h-[404px] sm:h-[376px] lg:h-[432px] w-full overflow-hidden rounded-3xl border border-border">
       <Image
         src={currentBanner.image}
         className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
@@ -140,7 +140,7 @@ const BannerCarousel: React.FC<{
       <div className="relative h-full flex items-center p-8 sm:p-10 lg:p-12">
         <div className="max-w-lg">
           {currentBanner.subtitle && (
-            <span className="inline-block px-4 py-1.5 bg-white text-gray-900 text-xs sm:text-sm font-bold rounded-full mb-4 tracking-wide">
+            <span className="inline-block px-4 py-1.5 bg-card text-foreground text-xs sm:text-sm font-bold rounded-full mb-4 tracking-wide">
               {currentBanner.subtitle}
             </span>
           )}
@@ -160,7 +160,7 @@ const BannerCarousel: React.FC<{
             <Link
               href={currentBanner.link}
               onClick={handleBannerClick}
-              className="inline-flex items-center gap-2 bg-white text-gray-900 px-8 sm:px-10 py-3.5 sm:py-4 rounded-full font-bold text-sm sm:text-base hover:bg-gray-100 transition-colors"
+              className="inline-flex items-center gap-2 bg-card text-foreground px-8 sm:px-10 py-3.5 sm:py-4 rounded-full font-bold text-sm sm:text-base hover:bg-muted transition-colors"
             >
               {currentBanner.buttonText || t("shop_now")}
               <ArrowRight className="h-5 w-5" />
@@ -174,14 +174,14 @@ const BannerCarousel: React.FC<{
         <>
           <button
             onClick={handlePrev}
-            className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-2 transition-all opacity-0 group-hover:opacity-100 z-10"
+            className="absolute left-4 top-1/2 -translate-y-1/2 bg-card/20 hover:bg-card/30 backdrop-blur-sm rounded-full p-2 transition-all opacity-0 group-hover:opacity-100 z-10"
             aria-label="Previous banner"
           >
             <ChevronLeft className="w-6 h-6 text-white" />
           </button>
           <button
             onClick={handleNext}
-            className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-2 transition-all opacity-0 group-hover:opacity-100 z-10"
+            className="absolute right-4 top-1/2 -translate-y-1/2 bg-card/20 hover:bg-card/30 backdrop-blur-sm rounded-full p-2 transition-all opacity-0 group-hover:opacity-100 z-10"
             aria-label="Next banner"
           >
             <ChevronRight className="w-6 h-6 text-white" />
@@ -197,7 +197,7 @@ const BannerCarousel: React.FC<{
               key={index}
               onClick={() => setCurrentIndex(index)}
               className={`h-2 rounded-full transition-all ${
-                index === currentIndex ? 'w-8 bg-white' : 'w-2 bg-white/50'
+                index === currentIndex ? 'w-8 bg-card' : 'w-2 bg-card/50'
               }`}
               aria-label={`Go to slide ${index + 1}`}
             />
@@ -240,7 +240,7 @@ const BannerCard: React.FC<{
   if (!banner.image) return null;
 
   const content = (
-    <div className="group relative h-48 sm:h-44 lg:h-[200px] w-full overflow-hidden rounded-3xl border border-gray-200">
+    <div className="group relative h-48 sm:h-44 lg:h-[200px] w-full overflow-hidden rounded-3xl border border-border">
       <Image
         src={banner.image}
         className="absolute inset-0 h-full w-full object-cover"
@@ -251,7 +251,7 @@ const BannerCard: React.FC<{
       <div className="relative h-full flex items-center p-6 sm:p-8">
         <div className="max-w-sm">
           {banner.subtitle && (
-            <span className="inline-block px-3 py-1 bg-white text-gray-900 text-xs sm:text-sm font-bold rounded-full mb-3 tracking-wide">
+            <span className="inline-block px-3 py-1 bg-card text-foreground text-xs sm:text-sm font-bold rounded-full mb-3 tracking-wide">
               {banner.subtitle}
             </span>
           )}

@@ -168,11 +168,11 @@ const RoleSettingsPage = () => {
                           {" "}
                           <div className="flex items-center gap-1">
                             <Copy
-                              className={`h-4 w-4 mr-1 ${!copyUserRole.isPending ? 'cursor-pointer' : ''} text-gray-500`}
+                              className={`h-4 w-4 mr-1 ${!copyUserRole.isPending ? 'cursor-pointer' : ''} text-muted-foreground`}
                               onClick={() => copyRole(item)}
                             />
                             <Info
-                              className="h-4 w-4 cursor-pointer text-gray-500"
+                              className="h-4 w-4 cursor-pointer text-muted-foreground"
                               onClick={() => handleEditMode(item)}
                             />
                             <a

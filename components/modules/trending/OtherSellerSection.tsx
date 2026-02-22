@@ -161,9 +161,9 @@ const OtherSellerSection: React.FC<OtherSellerSectionProps> = ({
   return (
     <section className="w-full">
       <div className="container m-auto px-3">
-        <div className="flex flex-wrap border border-solid border-gray-300 shadow-md">
+        <div className="flex flex-wrap border border-solid border-border shadow-md">
           <div className="flex w-full flex-wrap items-center justify-between">
-            <div className="flex w-full items-center justify-end border-b border-solid border-gray-300 px-4 py-3.5">
+            <div className="flex w-full items-center justify-end border-b border-solid border-border px-4 py-3.5">
               <div className="flex flex-wrap">
                 <div className="mr-3 flex items-center justify-end">
                   <span>{productDetails?.productName}</span>

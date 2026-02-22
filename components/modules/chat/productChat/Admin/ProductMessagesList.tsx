@@ -45,14 +45,14 @@ const ProductMessagesList: React.FC<ProductMessagesListProps> = ({
       <div className={layoutMode === "column" ? "flex h-full flex-col" : "w-full"}>
         {layoutMode === "grid" && (
           <div className="mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">{t("product_messages") || "Product Messages"}</h2>
-            <p className="mt-1 text-sm text-gray-500">{t("view_product_messages") || "View and respond to product inquiries"}</p>
+            <h2 className="text-2xl font-bold text-foreground">{t("product_messages") || "Product Messages"}</h2>
+            <p className="mt-1 text-sm text-muted-foreground">{t("view_product_messages") || "View and respond to product inquiries"}</p>
           </div>
         )}
         <div className={layoutMode === "column" ? "flex-1 overflow-y-auto p-4" : ""}>
           <div className="space-y-3">
             {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="rounded-xl border border-gray-200 bg-white p-4">
+              <div key={i} className="rounded-xl border border-border bg-card p-4">
                 <div className="flex items-center gap-4">
                   <Skeleton className="h-20 w-20 rounded-xl" />
                   <div className="flex-1 space-y-2">
@@ -74,21 +74,21 @@ const ProductMessagesList: React.FC<ProductMessagesListProps> = ({
       <div className={layoutMode === "column" ? "flex h-full flex-col" : "w-full"}>
         {layoutMode === "grid" && (
           <div className="mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">{t("product_messages") || "Product Messages"}</h2>
-            <p className="mt-1 text-sm text-gray-500">{t("view_product_messages") || "View and respond to product inquiries"}</p>
+            <h2 className="text-2xl font-bold text-foreground">{t("product_messages") || "Product Messages"}</h2>
+            <p className="mt-1 text-sm text-muted-foreground">{t("view_product_messages") || "View and respond to product inquiries"}</p>
           </div>
         )}
-        <div className={layoutMode === "column" ? "flex-1 overflow-y-auto p-4" : "flex h-[400px] w-full items-center justify-center rounded-xl border-2 border-dashed border-gray-200 bg-gray-50"}>
+        <div className={layoutMode === "column" ? "flex-1 overflow-y-auto p-4" : "flex h-[400px] w-full items-center justify-center rounded-xl border-2 border-dashed border-border bg-muted"}>
           <div className="text-center">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
-              <svg className="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
+              <svg className="h-8 w-8 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
               </svg>
             </div>
-            <p className="text-lg font-semibold text-gray-700">
+            <p className="text-lg font-semibold text-muted-foreground">
               {t("no_product_messages") || "No product messages yet"}
             </p>
-            <p className="mt-2 text-sm text-gray-500">
+            <p className="mt-2 text-sm text-muted-foreground">
               {t("messages_will_appear_here") || "Messages from buyers will appear here"}
             </p>
           </div>
@@ -101,10 +101,10 @@ const ProductMessagesList: React.FC<ProductMessagesListProps> = ({
     <div className={layoutMode === "column" ? "flex h-full flex-col" : "w-full"}>
       {layoutMode === "grid" && (
         <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-900" dir={langDir}>
+          <h2 className="text-2xl font-bold text-foreground" dir={langDir}>
             {t("product_messages") || "Product Messages"}
           </h2>
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-muted-foreground">
             {t("view_product_messages") || "View and respond to product inquiries"}
           </p>
         </div>
@@ -155,14 +155,14 @@ const ProductMessageItem: React.FC<ProductMessageItemProps> = ({ item, onSelect,
   return (
     <button
       onClick={onSelect}
-      className={`group relative flex w-full items-center gap-4 rounded-xl border-2 bg-white p-5 text-left transition-all duration-200 active:scale-[0.99] ${
+      className={`group relative flex w-full items-center gap-4 rounded-xl border-2 bg-card p-5 text-left transition-all duration-200 active:scale-[0.99] ${
         isSelected
           ? "border-destructive bg-destructive/5 hover:border-destructive hover:bg-destructive/5"
-          : "border-gray-200 hover:border-destructive hover:bg-destructive/5 hover:shadow-lg hover:shadow-gray-100"
+          : "border-border hover:border-destructive hover:bg-destructive/5 hover:shadow-lg hover:shadow-gray-100"
       }`}
     >
       {/* Product Image */}
-      <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl border-2 border-gray-100 shadow-sm group-hover:border-gray-200 transition-colors">
+      <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl border-2 border-border shadow-sm group-hover:border-border transition-colors">
         {productImage ? (
           <Image
             src={productImage}
@@ -184,7 +184,7 @@ const ProductMessageItem: React.FC<ProductMessageItemProps> = ({ item, onSelect,
         {/* Header Row */}
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1 min-w-0">
-            <h3 className="truncate text-base font-bold text-gray-900 group-hover:text-dark-orange transition-colors">
+            <h3 className="truncate text-base font-bold text-foreground group-hover:text-dark-orange transition-colors">
               {productName}
             </h3>
           </div>
@@ -199,7 +199,7 @@ const ProductMessageItem: React.FC<ProductMessageItemProps> = ({ item, onSelect,
         
         {/* User Info */}
         <div className="flex items-center gap-2.5">
-          <div className="relative h-7 w-7 overflow-hidden rounded-full border-2 border-white shadow-sm ring-1 ring-gray-200">
+          <div className="relative h-7 w-7 overflow-hidden rounded-full border-2 border-white shadow-sm ring-1 ring-border">
             <Image
               src={item.user?.profilePicture || AvatarPlaceholder}
               alt={(() => {
@@ -217,7 +217,7 @@ const ProductMessageItem: React.FC<ProductMessageItemProps> = ({ item, onSelect,
               className="object-cover"
             />
           </div>
-          <span className="text-sm font-semibold text-gray-700 truncate">
+          <span className="text-sm font-semibold text-muted-foreground truncate">
             {(() => {
               const accountName = item.user?.accountName;
               // Remove "buyer" and dashes from account name if they exist
@@ -235,17 +235,17 @@ const ProductMessageItem: React.FC<ProductMessageItemProps> = ({ item, onSelect,
         
         {/* Last Message */}
         <div className="flex items-center justify-between gap-2">
-          <p className="truncate text-sm text-gray-600 flex-1 min-w-0">
+          <p className="truncate text-sm text-muted-foreground flex-1 min-w-0">
             {item.lastMessage || t("no_message") || "No message"}
           </p>
         </div>
         
         {/* Timestamp */}
         <div className="flex items-center gap-2">
-          <svg className="h-3.5 w-3.5 text-gray-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className="h-3.5 w-3.5 text-muted-foreground shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <span className="text-xs font-medium text-gray-400">
+          <span className="text-xs font-medium text-muted-foreground">
             {moment(item.lastMessageTime).fromNow()}
           </span>
         </div>

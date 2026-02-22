@@ -108,22 +108,22 @@ const VendorsSection: React.FC<VendorsSectionProps> = ({
       <div className="py-6 sm:py-12">
         <div className="w-full">
           <div className="mb-4 sm:mb-8">
-            <div className="h-6 w-32 sm:h-8 sm:w-64 bg-gray-300 rounded animate-pulse mb-2 sm:mb-4"></div>
-            <div className="h-3 w-48 sm:h-4 sm:w-96 bg-gray-300 rounded animate-pulse"></div>
+            <div className="h-6 w-32 sm:h-8 sm:w-64 bg-muted rounded animate-pulse mb-2 sm:mb-4"></div>
+            <div className="h-3 w-48 sm:h-4 sm:w-96 bg-muted rounded animate-pulse"></div>
           </div>
           <div className="space-y-4 sm:space-y-8">
             {Array.from({ length: 3 }).map((_, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-xs p-3 sm:p-6">
+              <div key={index} className="bg-card rounded-lg shadow-xs p-3 sm:p-6">
                 <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
-                  <div className="h-10 w-10 sm:h-12 sm:w-12 bg-gray-300 rounded-full animate-pulse"></div>
+                  <div className="h-10 w-10 sm:h-12 sm:w-12 bg-muted rounded-full animate-pulse"></div>
                   <div className="space-y-2">
-                    <div className="h-3 w-24 sm:h-4 sm:w-32 bg-gray-300 rounded animate-pulse"></div>
-                    <div className="h-2 w-16 sm:h-3 sm:w-24 bg-gray-300 rounded animate-pulse"></div>
+                    <div className="h-3 w-24 sm:h-4 sm:w-32 bg-muted rounded animate-pulse"></div>
+                    <div className="h-2 w-16 sm:h-3 sm:w-24 bg-muted rounded animate-pulse"></div>
                   </div>
                 </div>
                 <div className="flex gap-2 sm:gap-4 overflow-x-hidden">
                   {Array.from({ length: 3 }).map((_, i) => (
-                    <div key={i} className="h-24 w-32 sm:h-32 sm:w-48 bg-gray-300 rounded animate-pulse shrink-0"></div>
+                    <div key={i} className="h-24 w-32 sm:h-32 sm:w-48 bg-muted rounded animate-pulse shrink-0"></div>
                   ))}
                 </div>
               </div>
@@ -138,11 +138,11 @@ const VendorsSection: React.FC<VendorsSectionProps> = ({
     return (
       <div className="py-8 sm:py-12">
         <div className="w-full text-center">
-          <Building2 className="h-12 w-12 sm:h-16 sm:w-16 text-gray-400 mx-auto mb-3 sm:mb-4" />
-          <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-1 sm:mb-2">
+          <Building2 className="h-12 w-12 sm:h-16 sm:w-16 text-muted-foreground mx-auto mb-3 sm:mb-4" />
+          <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-1 sm:mb-2">
             {t("no_vendors_found")}
           </h3>
-          <p className="text-sm sm:text-base text-gray-600">
+          <p className="text-sm sm:text-base text-muted-foreground">
             {t("no_vendors_available_description")}
           </p>
         </div>
@@ -157,10 +157,10 @@ const VendorsSection: React.FC<VendorsSectionProps> = ({
         <div className="mb-4 sm:mb-8">
           <div className="flex flex-col gap-4 sm:gap-6 md:flex-row md:items-center md:justify-between mb-4 sm:mb-6">
             <div>
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1 sm:mb-2">
+              <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-1 sm:mb-2">
                 {t("vendors")}
               </h2>
-              <p className="text-sm sm:text-base text-gray-600">
+              <p className="text-sm sm:text-base text-muted-foreground">
                 {t("discover_trusted_vendors_and_their_products")}
               </p>
             </div>
@@ -174,7 +174,7 @@ const VendorsSection: React.FC<VendorsSectionProps> = ({
                   className="pl-10 w-full md:w-64"
                   dir={langDir}
                 />
-                <Building2 className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Building2 className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               </div>
             </div>
           </div>
@@ -205,7 +205,7 @@ const VendorsSection: React.FC<VendorsSectionProps> = ({
           <div className="mt-4 sm:mt-8 flex flex-col gap-3 sm:gap-0 sm:flex-row items-center justify-between">
             {/* Items per page selector */}
             <div className="flex items-center space-x-2 text-xs sm:text-sm">
-              <span className="text-gray-700">
+              <span className="text-muted-foreground">
                 {t("show")}:
               </span>
               <Select
@@ -225,13 +225,13 @@ const VendorsSection: React.FC<VendorsSectionProps> = ({
                   <SelectItem value="12">12</SelectItem>
                 </SelectContent>
               </Select>
-              <span className="text-gray-700">
+              <span className="text-muted-foreground">
                 {t("per_page")}
               </span>
             </div>
 
             {/* Pagination info */}
-            <div className="text-xs sm:text-sm text-gray-700 order-3 sm:order-2">
+            <div className="text-xs sm:text-sm text-muted-foreground order-3 sm:order-2">
               {t("showing")} {startIndex + 1} - {Math.min(endIndex, filteredVendors.length)} {t("of")} {filteredVendors.length}
             </div>
 
@@ -342,11 +342,11 @@ const VendorWithProducts: React.FC<{
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-xs p-3 sm:p-6">
+    <div className="bg-card rounded-lg shadow-xs p-3 sm:p-6">
       {/* Vendor Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 mb-4 sm:mb-6">
         <div className="flex items-start sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
-          <div className="h-10 w-10 sm:h-12 sm:w-12 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
+          <div className="h-10 w-10 sm:h-12 sm:w-12 bg-muted rounded-full flex items-center justify-center flex-shrink-0">
             {vendor.profilePicture ? (
               <img
                 src={vendor.profilePicture}
@@ -354,14 +354,14 @@ const VendorWithProducts: React.FC<{
                 className="h-10 w-10 sm:h-12 sm:w-12 rounded-full object-cover"
               />
             ) : (
-              <Building2 className="h-5 w-5 sm:h-6 sm:w-6 text-gray-400" />
+              <Building2 className="h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground" />
             )}
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="text-base sm:text-xl font-semibold text-gray-900 truncate">
+            <h3 className="text-base sm:text-xl font-semibold text-foreground truncate">
               {vendor.firstName} {vendor.lastName}
             </h3>
-            <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-600 mt-1">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground mt-1">
               <span className="capitalize">{vendor.tradeRole.toLowerCase()}</span>
               <div className="flex items-center gap-1">
                 <Package className="h-3 w-3 sm:h-4 sm:w-4" />
@@ -477,7 +477,7 @@ const VendorWithProducts: React.FC<{
               <Button
                 variant="outline"
                 size="sm"
-                className="hidden sm:flex absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-2 bg-white shadow-lg h-8 w-8 sm:h-10 sm:w-10 p-0"
+                className="hidden sm:flex absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-2 bg-card shadow-lg h-8 w-8 sm:h-10 sm:w-10 p-0"
                 onClick={() => scroll('left')}
               >
                 <ChevronLeft className="h-3 w-3 sm:h-4 sm:w-4" />
@@ -485,7 +485,7 @@ const VendorWithProducts: React.FC<{
               <Button
                 variant="outline"
                 size="sm"
-                className="hidden sm:flex absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-2 bg-white shadow-lg h-8 w-8 sm:h-10 sm:w-10 p-0"
+                className="hidden sm:flex absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-2 bg-card shadow-lg h-8 w-8 sm:h-10 sm:w-10 p-0"
                 onClick={() => scroll('right')}
               >
                 <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
@@ -494,8 +494,8 @@ const VendorWithProducts: React.FC<{
           )}
         </div>
       ) : (
-        <div className="text-center py-6 sm:py-8 text-gray-500">
-          <Package className="h-8 w-8 sm:h-12 sm:w-12 mx-auto mb-2 text-gray-400" />
+        <div className="text-center py-6 sm:py-8 text-muted-foreground">
+          <Package className="h-8 w-8 sm:h-12 sm:w-12 mx-auto mb-2 text-muted-foreground" />
           <p className="text-xs sm:text-sm">{t("this_vendor_has_no_products_available")}</p>
         </div>
       )}

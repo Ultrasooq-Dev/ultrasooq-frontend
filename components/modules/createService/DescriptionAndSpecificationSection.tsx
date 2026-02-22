@@ -105,7 +105,7 @@ const DescriptionAndSpecificationSection = () => {
                     </label>
                     <select
                       {...formContext.register(`features.${index}.serviceCostType`)}
-                      className="w-full rounded border border-gray-300 p-2"
+                      className="w-full rounded border border-border p-2"
                     >
                       <option value="FLAT" translate="no">{t("flat")}</option>
                       <option value="HOURLY" translate="no">{t("hourly")}</option>

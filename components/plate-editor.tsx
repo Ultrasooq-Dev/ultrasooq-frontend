@@ -63,7 +63,7 @@ export default function PlateEditor({
                 </FixedToolbar>
               ) : null}
               <Editor
-                className="border border-solid border-gray-300 px-[15px] py-[15px] lg:px-[96px] lg:py-16"
+                className="border border-solid border-border px-[15px] py-[15px] lg:px-[96px] lg:py-16"
                 autoFocus
                 focusRing={false}
                 variant="ghost"

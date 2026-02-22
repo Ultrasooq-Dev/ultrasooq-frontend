@@ -67,16 +67,16 @@ const WishlistPage = () => {
                 <Button
                   variant="outline"
                   size="icon"
-                  className="h-10 w-10 rounded-lg border-gray-300 hover:bg-gray-100"
+                  className="h-10 w-10 rounded-lg border-border hover:bg-muted"
                   onClick={() => router.back()}
                 >
                   <MdOutlineChevronLeft size="20" />
                 </Button>
                 <div>
-                  <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl" dir={langDir} translate="no">
+                  <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl" dir={langDir} translate="no">
                     {t("my_wishlist")}
                   </h1>
-                  <p className="mt-2 text-sm text-gray-600" translate="no">
+                  <p className="mt-2 text-sm text-muted-foreground" translate="no">
                     {t("manage_your_saved_items")}
                   </p>
                 </div>
@@ -84,7 +84,7 @@ const WishlistPage = () => {
 
               {/* Stats Bar */}
               {wishlistQuery.data?.data?.length ? (
-                <div className="rounded-xl border border-gray-200 bg-white px-6 py-4 shadow-sm">
+                <div className="rounded-xl border border-border bg-card px-6 py-4 shadow-sm">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <svg
@@ -100,12 +100,12 @@ const WishlistPage = () => {
                           d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
                         />
                       </svg>
-                      <span className="text-sm font-medium text-gray-700" translate="no">
+                      <span className="text-sm font-medium text-muted-foreground" translate="no">
                         {wishlistQuery.data?.data?.length} {wishlistQuery.data?.data?.length === 1 ? t("item") : t("items")}
                       </span>
                     </div>
                     {wishlistQuery.data?.totalCount > wishlistQuery.data?.data?.length && (
-                      <span className="text-xs text-gray-500" translate="no">
+                      <span className="text-xs text-muted-foreground" translate="no">
                         {t("total")}: {wishlistQuery.data?.totalCount} {t("items")}
                       </span>
                     )}
@@ -118,7 +118,7 @@ const WishlistPage = () => {
             <div className="space-y-6">
               {/* Empty State */}
               {!wishlistQuery.isLoading && !wishlistQuery.data?.data?.length ? (
-                <div className="overflow-hidden rounded-xl border-2 border-dashed border-gray-300 bg-white p-12 text-center shadow-sm">
+                <div className="overflow-hidden rounded-xl border-2 border-dashed border-border bg-card p-12 text-center shadow-sm">
                   <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-destructive/5">
                     <svg
                       className="h-10 w-10 text-destructive/70"
@@ -135,10 +135,10 @@ const WishlistPage = () => {
                       />
                     </svg>
                   </div>
-                  <h3 className="mt-6 text-lg font-semibold text-gray-900" dir={langDir} translate="no">
+                  <h3 className="mt-6 text-lg font-semibold text-foreground" dir={langDir} translate="no">
                     {t("no_wishlist_items")}
                   </h3>
-                  <p className="mt-2 text-sm text-gray-500" translate="no">
+                  <p className="mt-2 text-sm text-muted-foreground" translate="no">
                     {t("start_adding_items_to_your_wishlist")}
                   </p>
                   <div className="mt-6">
@@ -164,7 +164,7 @@ const WishlistPage = () => {
 
               {/* Wishlist Items Grid */}
               {!wishlistQuery.isLoading && wishlistQuery.data?.data?.length ? (
-                <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+                <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
                   <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                     {wishlistQuery.data?.data.map((item: any) => (
                       <WishlistCard

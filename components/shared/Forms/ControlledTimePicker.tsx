@@ -57,7 +57,7 @@ const ControlledTimePicker: React.FC<ControlledTimePickerProps> = ({
       render={({ field }) => (
         <FormItem className="space-y-2">
           {label && (
-            <FormLabel className="text-sm font-medium text-gray-700" dir={langDir}>
+            <FormLabel className="text-sm font-medium text-muted-foreground" dir={langDir}>
               {label}
             </FormLabel>
           )}
@@ -67,8 +67,8 @@ const ControlledTimePicker: React.FC<ControlledTimePickerProps> = ({
                 <Button
                   variant="outline"
                   className={cn(
-                    "w-full h-12 px-4 py-3 bg-white border border-gray-300 rounded-xl text-sm text-left font-normal hover:bg-gray-50 focus:ring-2 focus:ring-warning focus:border-warning transition-all duration-200",
-                    !field.value && "text-gray-500"
+                    "w-full h-12 px-4 py-3 bg-card border border-border rounded-xl text-sm text-left font-normal hover:bg-muted focus:ring-2 focus:ring-warning focus:border-warning transition-all duration-200",
+                    !field.value && "text-muted-foreground"
                   )}
                   dir={langDir}
                   translate="no"
@@ -81,17 +81,17 @@ const ControlledTimePicker: React.FC<ControlledTimePickerProps> = ({
                         t("select") + " " + (label || t("time"))
                       )}
                     </span>
-                    <Clock className="h-5 w-5 text-gray-400" />
+                    <Clock className="h-5 w-5 text-muted-foreground" />
                   </div>
                 </Button>
               </FormControl>
             </PopoverTrigger>
             <PopoverContent
-              className="w-64 p-0 bg-white shadow-xl border border-gray-200 rounded-xl"
+              className="w-64 p-0 bg-card shadow-xl border border-border rounded-xl"
               align={langDir === 'rtl' ? 'end' : 'start'}
             >
               <div className="p-4">
-                <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
                   <Clock className="h-4 w-4 text-warning" />
                   {t("select_time")}
                 </h4>
@@ -106,7 +106,7 @@ const ControlledTimePicker: React.FC<ControlledTimePickerProps> = ({
                           "w-full px-3 py-2 text-left text-sm rounded-lg transition-colors hover:bg-warning/5 hover:text-warning",
                           field.value === option.value
                             ? "bg-warning text-white hover:bg-warning hover:text-white"
-                            : "text-gray-700"
+                            : "text-muted-foreground"
                         )}
                       >
                         <div className="flex items-center justify-between">

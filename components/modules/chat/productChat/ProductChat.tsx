@@ -443,14 +443,14 @@ const ProductChat: React.FC<ProductChatProps> = ({ productId, roomId }) => {
   return (
     <div className="flex h-full w-full flex-col">
       {/* Product Info Section */}
-      <div className="flex-shrink-0 border-b border-gray-200 bg-white p-4">
+      <div className="flex-shrink-0 border-b border-border bg-card p-4">
         {productDetails ? (
           <a
             target="_blank"
             href={`/trending/${productDetails?.id}`}
             className="flex items-center gap-3 hover:opacity-80 transition-opacity"
           >
-            <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg border border-gray-200">
+            <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg border border-border">
               {productDetails?.productImages?.[0] ? (
                 <Image
                   src={productDetails.productImages[0].image}
@@ -459,18 +459,18 @@ const ProductChat: React.FC<ProductChatProps> = ({ productId, roomId }) => {
                   className="object-cover"
                 />
               ) : (
-                <div className="flex h-full w-full items-center justify-center bg-gray-100">
-                  <svg className="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="flex h-full w-full items-center justify-center bg-muted">
+                  <svg className="h-6 w-6 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                 </div>
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="truncate text-sm font-semibold text-gray-900">
+              <h3 className="truncate text-sm font-semibold text-foreground">
                 {productDetails?.productName}
               </h3>
-              <p className="text-xs text-gray-500">SKU: {productDetails?.skuNo}</p>
+              <p className="text-xs text-muted-foreground">SKU: {productDetails?.skuNo}</p>
             </div>
           </a>
         ) : (
@@ -507,7 +507,7 @@ const ProductChat: React.FC<ProductChatProps> = ({ productId, roomId }) => {
       </div>
 
       {/* Input Section - Always visible */}
-      <div className="flex-shrink-0 border-t border-gray-200 bg-white p-4 relative z-10">
+      <div className="flex-shrink-0 border-t border-border bg-card p-4 relative z-10">
         {/* Emoji Picker */}
         {showEmoji && (
           <div className="absolute bottom-full left-4 mb-2 z-50">
@@ -521,12 +521,12 @@ const ProductChat: React.FC<ProductChatProps> = ({ productId, roomId }) => {
             {attachments.map((file: any, index: number) => (
               <div
                 key={index}
-                className="flex items-center gap-2 rounded-lg border border-gray-300 bg-gray-50 px-3 py-2"
+                className="flex items-center gap-2 rounded-lg border border-border bg-muted px-3 py-2"
               >
-                <svg className="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="h-4 w-4 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
-                <span className="text-xs font-medium text-gray-700 max-w-[150px] truncate">
+                <span className="text-xs font-medium text-muted-foreground max-w-[150px] truncate">
                   {file.name}
                 </span>
                 <button
@@ -555,17 +555,17 @@ const ProductChat: React.FC<ProductChatProps> = ({ productId, roomId }) => {
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors"
+            className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-muted hover:bg-muted transition-colors"
           >
             <Image src={AttachIcon} alt="attach" className="h-5 w-5" />
           </button>
 
           {/* Message Input */}
-          <div className="flex flex-1 items-end gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary">
+          <div className="flex flex-1 items-end gap-2 rounded-lg border border-border bg-card px-3 py-2 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary">
             <textarea
               ref={inputRef}
               placeholder={t("type_your_message") || "Type your message..."}
-              className="flex-1 resize-none border-0 bg-transparent text-sm text-gray-900 placeholder-gray-400 focus:outline-none max-h-32 min-h-[36px]"
+              className="flex-1 resize-none border-0 bg-transparent text-sm text-foreground placeholder-muted-foreground focus:outline-none max-h-32 min-h-[36px]"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={handleSendMessageKeyDown}
@@ -574,7 +574,7 @@ const ProductChat: React.FC<ProductChatProps> = ({ productId, roomId }) => {
             <button
               type="button"
               onClick={() => setShowEmoji(!showEmoji)}
-              className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg hover:bg-gray-100 transition-colors"
+              className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg hover:bg-muted transition-colors"
             >
               <Image src={SmileIcon} alt="emoji" className="h-5 w-5" />
             </button>
@@ -585,7 +585,7 @@ const ProductChat: React.FC<ProductChatProps> = ({ productId, roomId }) => {
             type="button"
             onClick={handleSendMessage}
             disabled={(!message.trim() && attachments.length === 0) || !connected}
-            className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary text-white hover:bg-primary/90 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+            className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary text-white hover:bg-primary/90 disabled:bg-muted disabled:cursor-not-allowed transition-colors"
           >
             {connected ? (
               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

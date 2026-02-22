@@ -309,17 +309,17 @@ const BulkAddExistingProductsPage = () => {
 
   if (loading && selectedProducts.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-muted flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-gray-600">{t("loading_products")}</p>
+          <p className="text-muted-foreground">{t("loading_products")}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-muted">
       <div className="container mx-auto px-4 py-6">
         {/* Header */}
         <div className="mb-6">
@@ -328,18 +328,18 @@ const BulkAddExistingProductsPage = () => {
               <Button
                 variant="ghost"
                 onClick={() => router.back()}
-                className="p-2 hover:bg-gray-100"
+                className="p-2 hover:bg-muted"
               >
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 {t("back")}
               </Button>
-              <h1 className="text-3xl font-bold text-gray-900">
+              <h1 className="text-3xl font-bold text-foreground">
                 {t("bulk_add_products")}
               </h1>
             </div>
             
             <div className="flex items-center gap-3">
-              <span className="text-sm text-gray-600">
+              <span className="text-sm text-muted-foreground">
                 {t("selected_products")}: {selectedProducts.length}
               </span>
               <Button
@@ -357,8 +357,8 @@ const BulkAddExistingProductsPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Bulk Settings */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-xs p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            <div className="bg-card rounded-lg shadow-xs p-6">
+              <h3 className="text-lg font-semibold text-foreground mb-4">
                 {t("bulk_settings")}
               </h3>
               
@@ -427,7 +427,7 @@ const BulkAddExistingProductsPage = () => {
                       ...prev,
                       productCondition: e.target.value
                     }))}
-                    className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-hidden focus:ring-2 focus:ring-primary"
+                    className="w-full mt-1 px-3 py-2 border border-border rounded-md focus:outline-hidden focus:ring-2 focus:ring-primary"
                   >
                     <option value="NEW">{t("new")}</option>
                     <option value="OLD">{t("old")}</option>
@@ -443,7 +443,7 @@ const BulkAddExistingProductsPage = () => {
                       ...prev,
                       consumerType: e.target.value
                     }))}
-                    className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-hidden focus:ring-2 focus:ring-primary"
+                    className="w-full mt-1 px-3 py-2 border border-border rounded-md focus:outline-hidden focus:ring-2 focus:ring-primary"
                   >
                     <option value="CONSUMER">{t("consumer")}</option>
                     <option value="BUSINESS">{t("business")}</option>
@@ -459,7 +459,7 @@ const BulkAddExistingProductsPage = () => {
                       ...prev,
                       sellType: e.target.value
                     }))}
-                    className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-hidden focus:ring-2 focus:ring-primary"
+                    className="w-full mt-1 px-3 py-2 border border-border rounded-md focus:outline-hidden focus:ring-2 focus:ring-primary"
                   >
                     <option value="NORMALSELL">{t("normal_sell")}</option>
                     <option value="BUYGROUP">{t("buy_group")}</option>
@@ -472,21 +472,21 @@ const BulkAddExistingProductsPage = () => {
 
           {/* Selected Products List */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-lg shadow-xs p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            <div className="bg-card rounded-lg shadow-xs p-6">
+              <h3 className="text-lg font-semibold text-foreground mb-4">
                 {t("selected_products")} ({selectedProducts.length})
               </h3>
               
               {selectedProducts.length === 0 ? (
                 <div className="text-center py-8">
-                  <p className="text-gray-500">{t("no_products_selected")}</p>
+                  <p className="text-muted-foreground">{t("no_products_selected")}</p>
                 </div>
               ) : (
                 <div className="space-y-4">
                   {selectedProducts.map((product) => (
-                    <div key={product.id} className="flex items-center gap-4 p-4 border border-gray-200 rounded-lg">
+                    <div key={product.id} className="flex items-center gap-4 p-4 border border-border rounded-lg">
                       {/* Product Image */}
-                      <div className="relative h-16 w-16 overflow-hidden rounded-lg border border-gray-200">
+                      <div className="relative h-16 w-16 overflow-hidden rounded-lg border border-border">
                         {product.productImage && validator.isURL(product.productImage) ? (
                           // Check if the image is from an allowed domain (S3 bucket)
                           product.productImage.includes('puremoon.s3.amazonaws.com') ? (
@@ -525,8 +525,8 @@ const BulkAddExistingProductsPage = () => {
 
                       {/* Product Details */}
                       <div className="flex-1">
-                        <h4 className="font-medium text-gray-900">{product.productName}</h4>
-                        <div className="flex gap-4 text-sm text-gray-600 mt-1">
+                        <h4 className="font-medium text-foreground">{product.productName}</h4>
+                        <div className="flex gap-4 text-sm text-muted-foreground mt-1">
                           <span>{t("category")}: {product.categoryName}</span>
                           <span>{t("brand")}: {product.brandName}</span>
                           <span>{t("price")}: ${product.productPrice}</span>

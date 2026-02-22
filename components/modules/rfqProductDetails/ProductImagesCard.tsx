@@ -105,11 +105,11 @@ const ProductImagesCard: React.FC<ProductImagesCardProps> = ({
   return (
     <div className="product-view-s1-left">
       <div className="mb-3 flex flex-col-reverse md:mb-3 lg:mb-0 lg:grid lg:grid-cols-4 lg:gap-4">
-        <div className="relative order-2 col-span-3 flex items-center space-y-4 bg-gray-100 pl-3 md:max-h-[500px] lg:pl-0">
+        <div className="relative order-2 col-span-3 flex items-center space-y-4 bg-muted pl-3 md:max-h-[500px] lg:pl-0">
           {!isLoading ? (
             <button
               type="button"
-              className="absolute top-2.5 right-2.5 z-10 rounded-full bg-white p-2"
+              className="absolute top-2.5 right-2.5 z-10 rounded-full bg-card p-2"
               onClick={onWishlist}
             >
               {inWishlist ? <FaHeart color="red" /> : <FaRegHeart />}
@@ -189,7 +189,7 @@ const ProductImagesCard: React.FC<ProductImagesCardProps> = ({
                     previewImages[currentImageIndex] === item?.video
                     ? "border-2 border-destructive"
                     : "",
-                  "relative h-28 w-28 rounded-none bg-gray-100",
+                  "relative h-28 w-28 rounded-none bg-muted",
                 )}
                 key={item?.id}
                 onClick={() => api?.scrollTo(index)}

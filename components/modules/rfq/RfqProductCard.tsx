@@ -100,10 +100,10 @@ const RfqProductCard: React.FC<RfqProductCardProps> = ({
   );
 
   return (
-    <div className="group relative bg-white rounded-lg sm:rounded-xl shadow-sm sm:shadow-lg border border-gray-100 hover:shadow-xl hover:border-gray-200 transition-all duration-300 overflow-hidden h-full flex flex-row sm:flex-col items-stretch">
+    <div className="group relative bg-card rounded-lg sm:rounded-xl shadow-sm sm:shadow-lg border border-border hover:shadow-xl hover:border-border transition-all duration-300 overflow-hidden h-full flex flex-row sm:flex-col items-stretch">
       {/* Product Image Container */}
       <Link href={`/rfq/${id}`} className="block w-32 sm:w-full flex-shrink-0">
-        <div className="relative w-full h-40 sm:h-56 bg-gray-50 overflow-hidden">
+        <div className="relative w-full h-40 sm:h-56 bg-muted overflow-hidden">
           <Image
             src={
               productImages?.[0]?.image &&
@@ -126,28 +126,28 @@ const RfqProductCard: React.FC<RfqProductCardProps> = ({
         <Button
           variant="secondary"
           size="sm"
-          className="h-8 w-8 rounded-full bg-white/90 backdrop-blur-xs shadow-lg hover:bg-white hover:scale-110 transition-all duration-200"
+          className="h-8 w-8 rounded-full bg-card/90 backdrop-blur-xs shadow-lg hover:bg-card hover:scale-110 transition-all duration-200"
           onClick={() => onAdd(quantity + 1, id, "add", offerPriceFrom, offerPriceTo, productNote || "")}
         >
           <ShoppingIcon />
         </Button>
         <Link
           href={`/rfq/${id}`}
-          className="h-8 w-8 rounded-full bg-white/90 backdrop-blur-xs shadow-lg hover:bg-white hover:scale-110 transition-all duration-200 flex items-center justify-center"
+          className="h-8 w-8 rounded-full bg-card/90 backdrop-blur-xs shadow-lg hover:bg-card hover:scale-110 transition-all duration-200 flex items-center justify-center"
         >
-          <FiEye size={16} className="text-gray-700" />
+          <FiEye size={16} className="text-muted-foreground" />
         </Link>
         {haveAccessToken ? (
           <Button
             variant="secondary"
             size="sm"
-            className="h-8 w-8 rounded-full bg-white/90 backdrop-blur-xs shadow-lg hover:bg-white hover:scale-110 transition-all duration-200"
+            className="h-8 w-8 rounded-full bg-card/90 backdrop-blur-xs shadow-lg hover:bg-card hover:scale-110 transition-all duration-200"
             onClick={onWishlist}
           >
             {inWishlist ? (
               <FaHeart color="#ef4444" size={14} />
             ) : (
-              <FaRegHeart size={14} className="text-gray-700" />
+              <FaRegHeart size={14} className="text-muted-foreground" />
             )}
           </Button>
         ) : null}
@@ -156,10 +156,10 @@ const RfqProductCard: React.FC<RfqProductCardProps> = ({
       {/* Product Information */}
       <div className="p-2 sm:p-4 space-y-1 sm:space-y-3 flex-1 flex flex-col">
         <Link href={`/rfq/${id}`} className="block group flex-1">
-          <h3 className="font-semibold text-gray-900 text-xs sm:text-base leading-tight line-clamp-2 group-hover:text-primary transition-colors duration-200 mb-1 sm:mb-2" dir={langDir}>
+          <h3 className="font-semibold text-foreground text-xs sm:text-base leading-tight line-clamp-2 group-hover:text-primary transition-colors duration-200 mb-1 sm:mb-2" dir={langDir}>
             {translate(productName)}
           </h3>
-          <p className="text-gray-600 text-xs sm:text-sm line-clamp-1 mb-1 sm:mb-2" title={shortDescription}>
+          <p className="text-muted-foreground text-xs sm:text-sm line-clamp-1 mb-1 sm:mb-2" title={shortDescription}>
             {shortDescription}
           </p>
           
@@ -168,7 +168,7 @@ const RfqProductCard: React.FC<RfqProductCardProps> = ({
             <div className="flex scale-75 sm:scale-100 origin-left">
               {calculateRatings(calculateAvgRating)}
             </div>
-            <span className="text-xs sm:text-sm text-gray-500 ml-1">
+            <span className="text-xs sm:text-sm text-muted-foreground ml-1">
               ({productReview?.length || 0})
             </span>
           </div>
@@ -187,7 +187,7 @@ const RfqProductCard: React.FC<RfqProductCardProps> = ({
 
         {/* Quantity Section */}
         <div className="space-y-1 sm:space-y-2 mb-2 sm:mb-3">
-          <label className="block text-xs sm:text-sm font-medium text-gray-700" dir={langDir} translate="no">
+          <label className="block text-xs sm:text-sm font-medium text-muted-foreground" dir={langDir} translate="no">
             {t("quantity")}
           </label>
           <div className="flex items-center justify-center gap-1 sm:gap-2">
@@ -195,7 +195,7 @@ const RfqProductCard: React.FC<RfqProductCardProps> = ({
               type="button"
               variant="outline"
               size="sm"
-              className="h-6 w-6 sm:h-8 sm:w-8 rounded-full border-gray-300 hover:bg-gray-50 hover:border-gray-400 disabled:opacity-50 p-0"
+              className="h-6 w-6 sm:h-8 sm:w-8 rounded-full border-border hover:bg-muted hover:border-border disabled:opacity-50 p-0"
               onClick={() => {
                 const newQuantity = Math.max(quantity - 1, 0);
                 setQuantity(newQuantity);
@@ -217,7 +217,7 @@ const RfqProductCard: React.FC<RfqProductCardProps> = ({
             <input
               type="text"
               value={quantity}
-              className="h-6 w-12 sm:h-8 sm:w-16 text-center text-xs sm:text-sm font-medium border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+              className="h-6 w-12 sm:h-8 sm:w-16 text-center text-xs sm:text-sm font-medium border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
               onChange={(e) => {
                 const value = Number(e.target.value);
                 const newQuantity = isNaN(value) || value < 0 ? 0 : value;
@@ -241,7 +241,7 @@ const RfqProductCard: React.FC<RfqProductCardProps> = ({
               type="button"
               variant="outline"
               size="sm"
-              className="h-6 w-6 sm:h-8 sm:w-8 rounded-full border-gray-300 hover:bg-gray-50 hover:border-gray-400 disabled:opacity-50 p-0"
+              className="h-6 w-6 sm:h-8 sm:w-8 rounded-full border-border hover:bg-muted hover:border-border disabled:opacity-50 p-0"
               onClick={() => {
                 setQuantity(quantity + 1);
               }}

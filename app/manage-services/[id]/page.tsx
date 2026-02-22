@@ -697,7 +697,7 @@ const ServiceDetailsPage = () => {
                     </TabsTrigger>
                   </TabsList>
                   <TabsContent value="description" className="mt-0">
-                    <div className="w-full bg-white">
+                    <div className="w-full bg-card">
                       <PlateEditor
                         description={
                           handleDescriptionParse(productDetails?.description) ||
@@ -709,7 +709,7 @@ const ServiceDetailsPage = () => {
                     </div>
                   </TabsContent>
                   <TabsContent value="specification" className="mt-0">
-                    <div className="w-full bg-white">
+                    <div className="w-full bg-card">
                       {!productDetails?.product_productSpecification?.length ? (
                         <div className="specification-sec">
                           <h2>No specification found</h2>
@@ -743,7 +743,7 @@ const ServiceDetailsPage = () => {
                     </div>
                   </TabsContent>
                   <TabsContent value="vendor" className="mt-0">
-                    <div className="w-full bg-white">
+                    <div className="w-full bg-card">
                       <VendorSection
                         adminId={
                           productDetails?.product_productPrice?.[0]?.adminId
@@ -752,7 +752,7 @@ const ServiceDetailsPage = () => {
                     </div>
                   </TabsContent>
                   <TabsContent value="reviews" className="mt-0">
-                    <div className="w-full border border-solid border-gray-300 bg-white p-5">
+                    <div className="w-full border border-solid border-border bg-card p-5">
                       <ReviewSection
                         productId={searchParams?.id as string}
                         hasAccessToken={haveAccessToken}
@@ -764,7 +764,7 @@ const ServiceDetailsPage = () => {
                     </div>
                   </TabsContent>
                   <TabsContent value="qanda" className="mt-0">
-                    <div className="w-full border border-solid border-gray-300 bg-white p-5">
+                    <div className="w-full border border-solid border-border bg-card p-5">
                       <QuestionsAnswersSection
                         hasAccessToken={haveAccessToken}
                         productId={searchParams?.id as string}
@@ -772,7 +772,7 @@ const ServiceDetailsPage = () => {
                     </div>
                   </TabsContent>
                   <TabsContent value="offers" className="mt-0">
-                    <div className="w-full bg-white">
+                    <div className="w-full bg-card">
                       <p>More Offers</p>
                     </div>
                   </TabsContent>
@@ -893,7 +893,7 @@ const ServiceDetailsPage = () => {
             <DialogTitle className="text-center text-xl font-bold text-dark-orange"></DialogTitle>
             <Button
               onClick={onCancelRemove}
-              className={`${langDir == "ltr" ? "absolute" : ""} right-2 top-2 z-10 bg-white! text-black! shadow-none`}
+              className={`${langDir == "ltr" ? "absolute" : ""} right-2 top-2 z-10 bg-card! text-foreground! shadow-none`}
             >
               <IoCloseSharp size={20} />
             </Button>
@@ -906,7 +906,7 @@ const ServiceDetailsPage = () => {
             <div>
               <Button
                 type="button"
-                className="mr-2 bg-white text-destructive"
+                className="mr-2 bg-card text-destructive"
                 onClick={onCancelRemove}
               >
                 Cancel

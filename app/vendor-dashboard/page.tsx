@@ -357,14 +357,14 @@ const queryParams = {
   return (
     <>
       <title dir={langDir} translate="no">{`${t("vendor_dashboard")} | Ultrasooq`}</title>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-muted">
         <div className="w-full px-6 lg:px-12 py-8">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900" dir={langDir}>
+            <h1 className="text-3xl font-bold text-foreground" dir={langDir}>
               {t("vendor_dashboard")}
             </h1>
-            <p className="text-gray-600 mt-2" dir={langDir}>
+            <p className="text-muted-foreground mt-2" dir={langDir}>
               {t("order_management")}
             </p>
           </div>
@@ -430,17 +430,17 @@ const queryParams = {
 
           {/* Tabs for All / Buygroup */}
           <div className="mb-6">
-            <div className="inline-flex rounded-lg bg-white shadow-sm border border-gray-200 overflow-hidden">
+            <div className="inline-flex rounded-lg bg-card shadow-sm border border-border overflow-hidden">
               <button
                 type="button"
-                className={`px-4 py-2 text-sm font-medium transition-colors ${orderTypeTab === "ALL" ? "bg-primary text-white" : "text-gray-700 hover:bg-gray-50"}`}
+                className={`px-4 py-2 text-sm font-medium transition-colors ${orderTypeTab === "ALL" ? "bg-primary text-white" : "text-muted-foreground hover:bg-muted"}`}
                 onClick={() => setOrderTypeTab("ALL")}
               >
                 {t("all")}
               </button>
               <button
                 type="button"
-                className={`px-4 py-2 text-sm font-medium transition-colors ${orderTypeTab === "BUYGROUP" ? "bg-primary text-white" : "text-gray-700 hover:bg-gray-50"}`}
+                className={`px-4 py-2 text-sm font-medium transition-colors ${orderTypeTab === "BUYGROUP" ? "bg-primary text-white" : "text-muted-foreground hover:bg-muted"}`}
                 onClick={() => setOrderTypeTab("BUYGROUP")}
               >
                 {t("buygroup")}
@@ -458,7 +458,7 @@ const queryParams = {
                 <div>
                   <Label htmlFor="search">{t("search")}</Label>
                   <div className="relative">
-                    <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                    <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                     <Input
                       id="search"
                       placeholder={t("search_orders")}
@@ -529,7 +529,7 @@ const queryParams = {
                   </CardDescription>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Label htmlFor="itemsPerPage" className="text-sm text-gray-600 whitespace-nowrap">
+                  <Label htmlFor="itemsPerPage" className="text-sm text-muted-foreground whitespace-nowrap">
                     {t("items_per_page")}:
                   </Label>
                   <Select value={String(limit)} onValueChange={(value) => setLimit(Number(value))}>
@@ -550,29 +550,29 @@ const queryParams = {
               {ordersLoading ? (
                 <div className="text-center py-8">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto"></div>
-                  <p className="mt-2 text-gray-600">{t("loading")}</p>
+                  <p className="mt-2 text-muted-foreground">{t("loading")}</p>
                 </div>
               ) : !recentOrders?.data?.orders?.length ? (
                 <div className="text-center py-8">
-                  <Package className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-600">{t("no_orders_found")}</p>
+                  <Package className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                  <p className="text-muted-foreground">{t("no_orders_found")}</p>
                 </div>
               ) : orderTypeTab === "BUYGROUP" ? (
                 <div className="space-y-4">
                   {groupedBuygroupOrders.map((group: any) => (
                     <div key={group.productId} className="border rounded-lg overflow-hidden">
-                      <button type="button" className="w-full flex items-center justify-between p-4 bg-white hover:bg-gray-50" onClick={() => toggleExpand(group.productId)}>
+                      <button type="button" className="w-full flex items-center justify-between p-4 bg-card hover:bg-muted" onClick={() => toggleExpand(group.productId)}>
                         <div className="flex items-center gap-3 text-left">
-                          <div className="w-12 h-12 rounded-md overflow-hidden bg-gray-100 flex items-center justify-center">
+                          <div className="w-12 h-12 rounded-md overflow-hidden bg-muted flex items-center justify-center">
                             {group.productImage ? (
                               <img src={group.productImage} alt={group.productName} className="w-full h-full object-cover" />
                             ) : (
-                              <Package className="h-6 w-6 text-gray-400" />
+                              <Package className="h-6 w-6 text-muted-foreground" />
                             )}
                           </div>
                           <div>
-                            <div className="font-semibold text-gray-900">{group.productName}</div>
-                            <div className="text-xs text-gray-500">
+                            <div className="font-semibold text-foreground">{group.productName}</div>
+                            <div className="text-xs text-muted-foreground">
                               <span className="font-semibold">{group.orders.length} {group.orders.length === 1 ? t("order") : t("orders")}</span> · <span className="font-semibold">{t("total_quantity")}: {group.totalQuantity || 0}</span>
                             </div>
                           </div>
@@ -582,8 +582,8 @@ const queryParams = {
                       {expandedProductIds[group.productId] ? (
                         <div className="divide-y">
                           {/* Bulk status update for this product group */}
-                          <div className="p-4 bg-gray-50 flex items-center justify-between gap-3">
-                            <div className="text-sm text-gray-700 font-medium">
+                          <div className="p-4 bg-muted flex items-center justify-between gap-3">
+                            <div className="text-sm text-muted-foreground font-medium">
                               {t("update_status")} · {group.orders.length} {group.orders.length === 1 ? t("order") : t("orders")}
                             </div>
                             <div className="flex items-center gap-2">
@@ -613,7 +613,7 @@ const queryParams = {
                             return (
                               <div key={order.id} className="p-4 flex items-center gap-4">
                                 <div className="flex-1">
-                                  <div className="text-sm text-gray-700">
+                                  <div className="text-sm text-muted-foreground">
                                     <span className="font-medium">#{order.id}</span> · {maskedCustomerName} · {format(new Date(order.createdAt), "MMM dd, yyyy")}
                                   </div>
                                   {(() => {
@@ -626,7 +626,7 @@ const queryParams = {
                                         addr.postCode,
                                         addr.country,
                                       ].filter(Boolean).join(", ");
-                                      return <p className="text-xs text-gray-600">{snippet}</p>;
+                                      return <p className="text-xs text-muted-foreground">{snippet}</p>;
                                     } else {
                                       const maskedName = addr.firstName ? addr.firstName.substring(0, 2) + "xxx" : "xxxx";
                                       const maskedCity = addr.city ? addr.city.substring(0, 2) + "xxx" : "xxxx";
@@ -636,10 +636,10 @@ const queryParams = {
                                         "xxxx",
                                         addr.country,
                                       ].filter(Boolean).join(", ");
-                                      return <p className="text-xs text-gray-600">{snippet}</p>;
+                                      return <p className="text-xs text-muted-foreground">{snippet}</p>;
                                     }
                                   })()}
-                                  <div className="text-xs text-gray-500">{currency.symbol}{order.totalAmount || 0}</div>
+                                  <div className="text-xs text-muted-foreground">{currency.symbol}{order.totalAmount || 0}</div>
                                 </div>
                                 <Badge variant={getStatusBadgeVariant(order.status)}>
                                   <span className="flex items-center gap-1">
@@ -680,7 +680,7 @@ const queryParams = {
                     </thead>
                     <tbody>
                       {recentOrders?.data?.orders?.map((order: any) => (
-                        <tr key={order.id} className="border-b hover:bg-gray-50">
+                        <tr key={order.id} className="border-b hover:bg-muted">
                           <td className="py-3 px-4 font-medium">#{order.id}</td>
                           <td className="py-3 px-4">{order.customerName || t("unknown_customer")}</td>
                           <td className="py-3 px-4">{format(new Date(order.createdAt), "MMM dd, yyyy")}</td>
@@ -691,7 +691,7 @@ const queryParams = {
                           </td>
                           <td className="py-3 px-4 font-medium">{currency.symbol}{order.totalAmount || 0}</td>
                           <td className="py-3 px-4">
-                            <span className="inline-flex items-center rounded px-2 py-1 text-xs font-medium bg-gray-100 text-gray-700">
+                            <span className="inline-flex items-center rounded px-2 py-1 text-xs font-medium bg-muted text-muted-foreground">
                               {order.paymentMethod || t("unknown")}
                             </span>
                           </td>
@@ -704,8 +704,8 @@ const queryParams = {
                                 : "";
                               return (
                                 <div className="max-w-[240px]">
-                                  <div className="truncate text-sm text-gray-900">{name || t("not_provided")}</div>
-                                  <div className="truncate text-xs text-gray-600">{line}</div>
+                                  <div className="truncate text-sm text-foreground">{name || t("not_provided")}</div>
+                                  <div className="truncate text-xs text-muted-foreground">{line}</div>
                                 </div>
                               );
                             })()}
@@ -765,7 +765,7 @@ const queryParams = {
                 return totalPages > 1;
               })() && (
                 <div className="flex items-center justify-between mt-6 pt-4 border-t">
-                  <div className="text-sm text-gray-600">
+                  <div className="text-sm text-muted-foreground">
                     {(() => {
                       const pagination = recentOrders.data.pagination || {};
                       const ordersCount = recentOrders.data.orders?.length || 0;
@@ -869,33 +869,33 @@ const queryParams = {
                         </CardHeader>
                         <CardContent className="space-y-2">
                           <div className="flex justify-between">
-                            <span className="text-gray-600">{t("order_number")}:</span>
+                            <span className="text-muted-foreground">{t("order_number")}:</span>
                             <span className="font-medium">{selectedOrder.orderNumber || `#${selectedOrder.id}`}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-gray-600">{t("order_id")}:</span>
+                            <span className="text-muted-foreground">{t("order_id")}:</span>
                             <span className="font-medium">#{selectedOrder.id}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-gray-600">{t("order_date")}:</span>
+                            <span className="text-muted-foreground">{t("order_date")}:</span>
                             <span>{format(new Date(selectedOrder.createdAt), "MMM dd, yyyy")}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-gray-600">{t("order_time")}:</span>
+                            <span className="text-muted-foreground">{t("order_time")}:</span>
                             <span>{format(new Date(selectedOrder.createdAt), "HH:mm:ss")}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-gray-600">{t("order_status")}:</span>
+                            <span className="text-muted-foreground">{t("order_status")}:</span>
                             <Badge variant={getStatusBadgeVariant(selectedOrder.status)}>
                               {selectedOrder.status}
                             </Badge>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-gray-600">{t("order_total")}:</span>
+                            <span className="text-muted-foreground">{t("order_total")}:</span>
                             <span className="font-bold">{currency.symbol}{selectedOrder.totalAmount}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-gray-600">{t("payment_method")}:</span>
+                            <span className="text-muted-foreground">{t("payment_method")}:</span>
                             <span className="font-medium">{selectedOrder.paymentMethod || t("unknown")}</span>
                           </div>
                         </CardContent>
@@ -907,15 +907,15 @@ const queryParams = {
                         </CardHeader>
                         <CardContent className="space-y-2">
                           <div className="flex justify-between">
-                            <span className="text-gray-600">{t("customer_name")}:</span>
+                            <span className="text-muted-foreground">{t("customer_name")}:</span>
                             <span>{maskedCustomerName}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-gray-600">{t("email")}:</span>
+                            <span className="text-muted-foreground">{t("email")}:</span>
                             <span>{maskedEmail}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-gray-600">{t("phone")}:</span>
+                            <span className="text-muted-foreground">{t("phone")}:</span>
                             <span>{maskedPhone}</span>
                           </div>
                         </CardContent>
@@ -928,19 +928,19 @@ const queryParams = {
                           {(() => {
                             const addr = getShippingFrom(selectedOrder);
                             if (!addr)
-                              return <div className="text-gray-500">{t("not_provided")}</div>;
+                              return <div className="text-muted-foreground">{t("not_provided")}</div>;
                             
                             if (isProcessing) {
                               return (
                                 <div className="space-y-2 flex flex-col">
-                                  <div className="font-bold text-xl text-gray-800 flex items-center gap-2">
+                                  <div className="font-bold text-xl text-foreground flex items-center gap-2">
                                     <span>{[addr.firstName, addr.lastName].filter(Boolean).join(" ")}</span>
                                   </div>
-                                  <div className="flex items-center gap-2 text-gray-700 text-base">
+                                  <div className="flex items-center gap-2 text-muted-foreground text-base">
                                     <Phone className="h-4 w-4" />
                                     <span>{addr.phone || t("not_provided")}</span>
                                   </div>
-                                  <div className="flex items-center gap-2 text-gray-700 text-base">
+                                  <div className="flex items-center gap-2 text-muted-foreground text-base">
                                     <MapPin className="h-4 w-4" />
                                     <span className="font-medium">{[addr.address, addr.city, addr.province, addr.postCode, addr.country].filter(Boolean).join(", ")}</span>
                                   </div>
@@ -962,14 +962,14 @@ const queryParams = {
                               const maskedCity = addr.city ? addr.city.substring(0, 2) + "xxx" : "xxxx";
                               return (
                                 <div className="space-y-2 flex flex-col">
-                                  <div className="font-bold text-xl text-gray-800 flex items-center gap-2">
+                                  <div className="font-bold text-xl text-foreground flex items-center gap-2">
                                     <span>{maskedName}</span>
                                   </div>
-                                  <div className="flex items-center gap-2 text-gray-700 text-base">
+                                  <div className="flex items-center gap-2 text-muted-foreground text-base">
                                     <Phone className="h-4 w-4" />
                                     <span>xxxx</span>
                                   </div>
-                                  <div className="flex items-center gap-2 text-gray-700 text-base">
+                                  <div className="flex items-center gap-2 text-muted-foreground text-base">
                                     <MapPin className="h-4 w-4" />
                                     <span className="font-medium">{[maskedCity, "xxxx", addr.country].filter(Boolean).join(", ")}</span>
                                   </div>
@@ -992,7 +992,7 @@ const queryParams = {
                         {selectedOrder.items?.map((item: any, index: number) => (
                           <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
                             <div className="flex items-center space-x-4">
-                              <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center">
+                              <div className="w-16 h-16 bg-muted rounded-lg flex items-center justify-center">
                                 {item.image ? (
                                   <img 
                                     src={item.image} 
@@ -1004,16 +1004,16 @@ const queryParams = {
                                     }}
                                   />
                                 ) : null}
-                                <Package className={`h-8 w-8 text-gray-400 ${item.image ? 'hidden' : ''}`} />
+                                <Package className={`h-8 w-8 text-muted-foreground ${item.image ? 'hidden' : ''}`} />
                               </div>
                               <div>
                                 <h4 className="font-medium">{item.name}</h4>
-                                <p className="text-sm text-gray-600">{t("quantity")}: {item.quantity}</p>
+                                <p className="text-sm text-muted-foreground">{t("quantity")}: {item.quantity}</p>
                               </div>
                             </div>
                             <div className="text-right">
                               <p className="font-medium">{currency.symbol}{item.price}</p>
-                              <p className="text-sm text-gray-600">{t("subtotal")}: {currency.symbol}{item.price * item.quantity}</p>
+                              <p className="text-sm text-muted-foreground">{t("subtotal")}: {currency.symbol}{item.price * item.quantity}</p>
                             </div>
                           </div>
                         ))}

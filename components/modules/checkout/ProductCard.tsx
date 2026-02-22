@@ -172,7 +172,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   }, [productQuantity]);
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-200">
+    <div className="bg-card rounded-lg border border-border overflow-hidden hover:shadow-md transition-shadow duration-200">
       {/* Error Messages */}
       {(invalidProduct || cannotBuy) && (
         <div className="bg-destructive/5 border-b border-destructive/20 px-4 py-3">
@@ -186,7 +186,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         <div className="flex items-start space-x-4">
           {/* Product Image */}
           <div className="flex-shrink-0">
-            <div className="relative w-24 h-24 rounded-lg overflow-hidden bg-gray-100">
+            <div className="relative w-24 h-24 rounded-lg overflow-hidden bg-muted">
               <Image
                 src={productImages?.[0]?.image || PlaceholderImage}
                 alt="product-image"
@@ -200,7 +200,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           <div className="flex-1 min-w-0">
             {/* Product Name */}
             <div className="mb-3">
-              <h3 className="text-lg font-semibold text-gray-900 line-clamp-2" dir={langDir}>
+              <h3 className="text-lg font-semibold text-foreground line-clamp-2" dir={langDir}>
                 {productName}
               </h3>
             </div>
@@ -208,14 +208,14 @@ const ProductCard: React.FC<ProductCardProps> = ({
             {/* Quantity Controls */}
             <div className="mb-4">
               <div className="flex items-center space-x-3">
-                <label className="text-sm font-medium text-gray-700" dir={langDir} translate="no">
+                <label className="text-sm font-medium text-muted-foreground" dir={langDir} translate="no">
                   {t("quantity")}:
                 </label>
-                <div className="flex items-center border border-gray-300 rounded-lg">
+                <div className="flex items-center border border-border rounded-lg">
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="h-8 w-8 p-0 hover:bg-gray-100"
+                    className="h-8 w-8 p-0 hover:bg-muted"
                     onClick={() => {
                       setQuantity(quantity - 1);
                       onAdd(quantity - 1, "remove", productPriceId, productVariant);
@@ -238,7 +238,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="h-8 w-8 p-0 hover:bg-gray-100"
+                    className="h-8 w-8 p-0 hover:bg-muted"
                     onClick={() => {
                       setQuantity(quantity + 1);
                       onAdd(quantity + 1, "add", productPriceId, productQuantity);
@@ -286,12 +286,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
           {/* Price Section */}
           <div className="flex-shrink-0 text-right">
-            <div className="text-sm text-gray-500 mb-1" dir={langDir} translate="no">
+            <div className="text-sm text-muted-foreground mb-1" dir={langDir} translate="no">
               {t("price")}
             </div>
-            <div className="text-xl font-bold text-gray-900" dir={langDir}>
+            <div className="text-xl font-bold text-foreground" dir={langDir}>
               {invalidProduct || cannotBuy ? (
-                <span className="line-through text-gray-500">
+                <span className="line-through text-muted-foreground">
                   {currency.symbol}{quantity * applicablePrice}
                 </span>
               ) : (

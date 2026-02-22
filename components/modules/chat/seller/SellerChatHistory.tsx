@@ -115,7 +115,7 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
   return (
     <div className="flex h-full flex-col overflow-hidden min-h-0">
       {/* Chat Header - Reduced Size */}
-      <div className="flex items-center border-b border-gray-200 bg-white px-3 py-2 shadow-sm flex-shrink-0">
+      <div className="flex items-center border-b border-border bg-card px-3 py-2 shadow-sm flex-shrink-0">
         <div className="flex items-center gap-2">
           <div className="flex h-6 w-6 items-center justify-center rounded bg-primary/10">
             <svg
@@ -132,14 +132,14 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
               />
             </svg>
           </div>
-          <h3 className="text-sm font-semibold text-gray-900" translate="no">
+          <h3 className="text-sm font-semibold text-foreground" translate="no">
             {t("messages") || "Messages"}
           </h3>
         </div>
       </div>
       
       {/* Chat Messages - Scrollable */}
-      <div ref={chatContainerRef} className="flex-1 overflow-y-auto bg-gray-50 px-4 py-3 min-h-0">
+      <div ref={chatContainerRef} className="flex-1 overflow-y-auto bg-muted px-4 py-3 min-h-0">
         <div className="d-flex w-full space-y-1">
         {selectedChatHistory.length > 0 ? (
           <div>
@@ -166,7 +166,7 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
                           {chat?.attachments.map((file: any, index: any) => (
                             <div
                               key={index}
-                              className="flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white p-2 shadow-sm transition-shadow hover:shadow-md"
+                              className="flex items-center gap-1.5 rounded-lg border border-border bg-card p-2 shadow-sm transition-shadow hover:shadow-md"
                             >
                               <div className="flex-1">
                                 {file?.fileType.includes("imag") &&
@@ -185,15 +185,15 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
                                     />
                                   ) : null
                                 )}
-                                <p className="mt-1 truncate text-xs font-medium text-gray-700">
+                                <p className="mt-1 truncate text-xs font-medium text-muted-foreground">
                                   {file.fileName}
                                 </p>
                                 {file?.status === "UPLOADING" ? (
-                                  <p className="truncate text-[10px] italic text-gray-500" translate="no">
+                                  <p className="truncate text-[10px] italic text-muted-foreground" translate="no">
                                     {t("uploading")}
                                   </p>
                                 ) : (
-                                  <p className="truncate text-[10px] italic text-gray-500">
+                                  <p className="truncate text-[10px] italic text-muted-foreground">
                                     {file?.status}
                                   </p>
                                 )}
@@ -261,7 +261,7 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
                                     {t("rejected")}
                                   </span>
                                 ) : (
-                                  <span className="inline-flex items-center gap-0.5 rounded-full bg-amber-500/90 px-2 py-0.5 text-[10px] font-semibold text-white ring-1 ring-amber-400/50" translate="no">
+                                  <span className="inline-flex items-center gap-0.5 rounded-full bg-warning/90 px-2 py-0.5 text-[10px] font-semibold text-white ring-1 ring-amber-400/50" translate="no">
                                     <svg className="h-2.5 w-2.5" fill="currentColor" viewBox="0 0 20 20">
                                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
                                     </svg>
@@ -300,11 +300,11 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
                                     <div
                                       key={suggestion.id}
                                       className={`p-2 rounded-lg border transition-all ${
-                                        isSelected ? "border-success bg-success/5" : "border-gray-300 bg-white"
+                                        isSelected ? "border-success bg-success/5" : "border-border bg-card"
                                       }`}
                                     >
                                       <div className="flex gap-2 items-start">
-                                        <div className="relative w-12 h-12 flex-shrink-0 rounded overflow-hidden border border-gray-300">
+                                        <div className="relative w-12 h-12 flex-shrink-0 rounded overflow-hidden border border-border">
                                           <Image
                                             src={imageUrl && validator.isURL(imageUrl) ? imageUrl : PlaceholderImage}
                                             alt={product?.productName || "Product"}
@@ -314,7 +314,7 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
                                         </div>
                                         <div className="flex-1 min-w-0">
                                           <p className="text-xs font-medium truncate mb-1">{product?.productName || "-"}</p>
-                                          <p className="text-[10px] text-gray-600 mb-1">
+                                          <p className="text-[10px] text-muted-foreground mb-1">
                                             {currency.symbol}{displayPrice}
                                             {suggestion.quantity > 1 && ` × ${suggestion.quantity}`}
                                           </p>
@@ -337,7 +337,7 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
                         </div>
                       ) : null}
                       {/* Timestamp */}
-                      <div className="mr-1 text-[10px] font-normal text-gray-400">
+                      <div className="mr-1 text-[10px] font-normal text-muted-foreground">
                         {chat?.status === "SD" ? (
                           <span translate="no">{t("sending")}</span>
                         ) : (
@@ -372,7 +372,7 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
                               (file: any, index: any) => (
                                 <div
                                   key={index}
-                                  className="flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white p-2 shadow-sm transition-shadow hover:shadow-md"
+                                  className="flex items-center gap-1.5 rounded-lg border border-border bg-card p-2 shadow-sm transition-shadow hover:shadow-md"
                                 >
                                   <div className="flex-1">
                                     {file?.fileType.includes("imag") &&
@@ -391,15 +391,15 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
                                         />
                                       ) : null
                                     )}
-                                    <p className="mt-1 truncate text-xs font-medium text-gray-700">
+                                    <p className="mt-1 truncate text-xs font-medium text-muted-foreground">
                                       {file.fileName}
                                     </p>
                                     {file?.status === "UPLOADING" ? (
-                                      <p className="truncate text-[10px] italic text-gray-500" translate="no">
+                                      <p className="truncate text-[10px] italic text-muted-foreground" translate="no">
                                         {t("uploading")}
                                       </p>
                                     ) : (
-                                      <p className="truncate text-[10px] italic text-gray-500">
+                                      <p className="truncate text-[10px] italic text-muted-foreground">
                                         {file?.status}
                                       </p>
                                     )}
@@ -418,12 +418,12 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
                         {chat?.content ? (
                           chat?.rfqProductPriceRequest ? (
                             /* Price Request Card */
-                            <div className="overflow-hidden rounded-xl rounded-tl-sm bg-white shadow-sm ring-1 ring-gray-200">
+                            <div className="overflow-hidden rounded-xl rounded-tl-sm bg-card shadow-sm ring-1 ring-border">
                               {/* Price Request Content */}
                               {chat?.content && !chat?.content.match(/^\s*$/) && (
-                                <div className="border-b border-gray-100 px-3 py-2">
+                                <div className="border-b border-border px-3 py-2">
                                   <p
-                                    className="text-xs text-gray-800"
+                                    className="text-xs text-foreground"
                                     dangerouslySetInnerHTML={{
                                       __html: sanitizeHtml(chat?.content || ''),
                                     }}
@@ -449,16 +449,16 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
                                       />
                                     </svg>
                                   </div>
-                                  <p className="text-xs font-semibold text-gray-900" translate="no">
+                                  <p className="text-xs font-semibold text-foreground" translate="no">
                                     {t("requested_for_offer_price")}
                                   </p>
                                 </div>
                                 
-                                <div className="mb-2 rounded-lg bg-white p-2 shadow-sm">
-                                  <p className="mb-1 text-[10px] font-medium text-gray-500" translate="no">
+                                <div className="mb-2 rounded-lg bg-card p-2 shadow-sm">
+                                  <p className="mb-1 text-[10px] font-medium text-muted-foreground" translate="no">
                                     {t("requested_price")}
                                   </p>
-                                  <p className="text-sm font-bold text-gray-900" translate="no">
+                                  <p className="text-sm font-bold text-foreground" translate="no">
                                     {currency.symbol}
                                     {chat.rfqProductPriceRequest?.requestedPrice}
                                   </p>
@@ -466,7 +466,7 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
                                 
                                 <div className="flex items-center justify-between gap-2">
                                   <div className="flex items-center gap-1.5">
-                                    <span className="text-[10px] font-medium text-gray-600" translate="no">
+                                    <span className="text-[10px] font-medium text-muted-foreground" translate="no">
                                       {t("status")}:
                                     </span>
                                     {chat.rfqProductPriceRequest?.status ===
@@ -486,7 +486,7 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
                                         {t("rejected")}
                                       </span>
                                     ) : (
-                                      <span className="inline-flex items-center gap-0.5 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-700 ring-1 ring-amber-200" translate="no">
+                                      <span className="inline-flex items-center gap-0.5 rounded-full bg-warning/10 px-2 py-0.5 text-[10px] font-semibold text-amber-700 ring-1 ring-amber-200" translate="no">
                                         <svg className="h-2.5 w-2.5" fill="currentColor" viewBox="0 0 20 20">
                                           <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
                                         </svg>
@@ -541,7 +541,7 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
                             </div>
                           ) : (
                             /* Regular Text Message */
-                            <div className="rounded-xl rounded-tl-sm bg-white px-3 py-2 text-xs text-gray-800 shadow-sm ring-1 ring-gray-200">
+                            <div className="rounded-xl rounded-tl-sm bg-card px-3 py-2 text-xs text-foreground shadow-sm ring-1 ring-border">
                               <p
                                 dangerouslySetInnerHTML={{
                                   __html: sanitizeHtml(chat?.content || ''),
@@ -577,11 +577,11 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
                                   <div
                                     key={suggestion.id}
                                     className={`p-2 rounded-lg border transition-all ${
-                                      isSelected ? "border-success bg-success/5" : "border-gray-300 bg-white"
+                                      isSelected ? "border-success bg-success/5" : "border-border bg-card"
                                     }`}
                                   >
                                     <div className="flex gap-2 items-start">
-                                      <div className="relative w-12 h-12 flex-shrink-0 rounded overflow-hidden border border-gray-300">
+                                      <div className="relative w-12 h-12 flex-shrink-0 rounded overflow-hidden border border-border">
                                         <Image
                                           src={imageUrl && validator.isURL(imageUrl) ? imageUrl : PlaceholderImage}
                                           alt={product?.productName || "Product"}
@@ -591,7 +591,7 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
                                       </div>
                                       <div className="flex-1 min-w-0">
                                         <p className="text-xs font-medium truncate mb-1">{product?.productName || "-"}</p>
-                                        <p className="text-[10px] text-gray-600 mb-1">
+                                        <p className="text-[10px] text-muted-foreground mb-1">
                                           {currency.symbol}{displayPrice}
                                           {suggestion.quantity > 1 && ` × ${suggestion.quantity}`}
                                         </p>
@@ -613,7 +613,7 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
                         )}
                         
                         {/* Timestamp */}
-                        <div className="ml-1 text-[10px] font-normal text-gray-400">
+                        <div className="ml-1 text-[10px] font-normal text-muted-foreground">
                           {chat?.status === "SD" ? (
                             <span translate="no">{t("sending")}</span>
                           ) : (
@@ -634,7 +634,7 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
             ))}
           </div>
         ) : (
-          <div className="mt-3 flex w-full flex-wrap items-end text-xs text-gray-500" dir={langDir} translate="no">
+          <div className="mt-3 flex w-full flex-wrap items-end text-xs text-muted-foreground" dir={langDir} translate="no">
             {chatHistoryLoading ? t("loading") : t("no_chat_history_found")}
           </div>
         )}

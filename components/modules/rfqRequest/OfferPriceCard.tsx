@@ -85,12 +85,12 @@ const OfferPriceCard: React.FC<OfferPriceCardProps> = ({
   };
 
   return (
-    <div className="border-b border-solid border-gray-300 px-1.5 py-1">
+    <div className="border-b border-solid border-border px-1.5 py-1">
       <div className="grid grid-cols-6 gap-1 items-start">
         {/* Product Column */}
         <div className="flex-shrink-0 min-w-0">
           <div className="flex items-center gap-1">
-            <div className="relative h-6 w-6 flex-shrink-0 border border-gray-300 rounded overflow-hidden">
+            <div className="relative h-6 w-6 flex-shrink-0 border border-border rounded overflow-hidden">
               <Image
                 src={productImage || PlaceholderImage}
                 alt="preview"
@@ -98,7 +98,7 @@ const OfferPriceCard: React.FC<OfferPriceCardProps> = ({
                 className="object-cover"
               />
             </div>
-            <p className="text-xs font-normal text-black leading-tight line-clamp-2 min-w-0">
+            <p className="text-xs font-normal text-foreground leading-tight line-clamp-2 min-w-0">
               {productName || "-"}
             </p>
           </div>
@@ -111,7 +111,7 @@ const OfferPriceCard: React.FC<OfferPriceCardProps> = ({
               <span className="text-xs font-semibold text-primary leading-tight" translate="no">
                 {t("same_product")}
               </span>
-              <span className="text-[10px] text-gray-500 leading-tight" translate="no">
+              <span className="text-[10px] text-muted-foreground leading-tight" translate="no">
                 {t("same_product_required")}
               </span>
             </div>
@@ -120,25 +120,25 @@ const OfferPriceCard: React.FC<OfferPriceCardProps> = ({
               <span className="text-xs font-semibold text-success leading-tight" translate="no">
                 {t("similar_product")}
               </span>
-              <span className="text-[10px] text-gray-500 leading-tight" translate="no">
+              <span className="text-[10px] text-muted-foreground leading-tight" translate="no">
                 {t("similar_products_allowed")}
               </span>
             </div>
           ) : (
-            <span className="text-xs text-gray-500">-</span>
+            <span className="text-xs text-muted-foreground">-</span>
           )}
         </div>
         
         {/* Brand Column */}
         <div className="flex-shrink-0 px-0.5">
-          <span className="text-xs font-normal text-black leading-tight">
+          <span className="text-xs font-normal text-foreground leading-tight">
             {formatDate(deliveryDate) || "-"}
           </span>
         </div>
         
         {/* Number of Piece Column */}
         <div className="flex-shrink-0 px-0.5">
-          <span className="text-xs font-normal text-black leading-tight">{quantity || "-"}</span>
+          <span className="text-xs font-normal text-foreground leading-tight">{quantity || "-"}</span>
         </div>
         
         {/* Price Column */}
@@ -148,7 +148,7 @@ const OfferPriceCard: React.FC<OfferPriceCardProps> = ({
               <input
                 value={editedOfferPrice}
                 onChange={(e) => setEditedOfferPrice(e.target.value)}
-                className="w-full rounded border border-gray-300 px-1 py-0.5 text-xs"
+                className="w-full rounded border border-border px-1 py-0.5 text-xs"
                 type="number"
                 disabled={isEditDisabled}
               />
@@ -175,20 +175,20 @@ const OfferPriceCard: React.FC<OfferPriceCardProps> = ({
               {/* Show budget range if available */}
               {offerPriceFrom && offerPriceTo && offerPriceFrom > 0 && offerPriceTo > 0 && (
                 <div className="text-[10px] mb-0.5">
-                  <div className="text-gray-600 mb-0.5" translate="no">
+                  <div className="text-muted-foreground mb-0.5" translate="no">
                     {t("budget")}:
                   </div>
                   <div className="font-semibold text-success leading-tight">
                     {currency.symbol}{offerPriceFrom} - {currency.symbol}{offerPriceTo}
                   </div>
-                  <div className="mt-0.5 text-gray-500 text-[10px] leading-tight" translate="no">
+                  <div className="mt-0.5 text-muted-foreground text-[10px] leading-tight" translate="no">
                     {t("customer_budget_range")}
                   </div>
                 </div>
               )}
               {/* Always show offer price and edit button */}
               <div className="flex flex-col gap-0">
-                <div className="text-xs font-normal text-black leading-tight">
+                <div className="text-xs font-normal text-foreground leading-tight">
                   {editedOfferPrice ? `${currency.symbol}${editedOfferPrice}` : "-"}
                 </div>
                 {!isEditDisabled && (
@@ -201,12 +201,12 @@ const OfferPriceCard: React.FC<OfferPriceCardProps> = ({
                   </button>
                 )}
                 {priceRequest?.status === "APPROVED" && (
-                  <span className="text-[10px] text-gray-500 leading-tight" translate="no">
+                  <span className="text-[10px] text-muted-foreground leading-tight" translate="no">
                     ({t("approved")})
                   </span>
                 )}
                 {isBuyer && !hasFirstVendorApproval && (
-                  <span className="text-[10px] text-gray-500 leading-tight" translate="no">
+                  <span className="text-[10px] text-muted-foreground leading-tight" translate="no">
                     {t("waiting_for_vendor_offer") || "Waiting for vendor offer"}
                   </span>
                 )}
@@ -217,14 +217,14 @@ const OfferPriceCard: React.FC<OfferPriceCardProps> = ({
         
         {/* Address Column */}
         <div className="flex-shrink-0 px-0.5 min-w-0">
-          <span className="text-xs font-normal text-black leading-tight line-clamp-2">
+          <span className="text-xs font-normal text-foreground leading-tight line-clamp-2">
             {address || "-"}
           </span>
         </div>
       </div>
       {priceRequest?.status === "PENDING" ? (
-        <div className="mt-1 flex w-full flex-wrap rounded border border-gray-300 px-1.5 py-0.5 bg-gray-50">
-          <p className="text-[10px] font-normal text-gray-500 leading-tight">
+        <div className="mt-1 flex w-full flex-wrap rounded border border-border px-1.5 py-0.5 bg-muted">
+          <p className="text-[10px] font-normal text-muted-foreground leading-tight">
             <span translate="no">{t("requested_offer_price")}:</span>
             <span className="mx-1.5">
               <span translate="no">{t("requested_price")}:</span>{" "}
@@ -243,13 +243,13 @@ const OfferPriceCard: React.FC<OfferPriceCardProps> = ({
       ) : null}
       {note && (
         <div
-          className="mt-1 flex w-full flex-wrap rounded border border-gray-300 px-1.5 py-0.5 bg-gray-50"
+          className="mt-1 flex w-full flex-wrap rounded border border-border px-1.5 py-0.5 bg-muted"
           dir={langDir}
         >
-          <span className="text-[10px] font-normal text-gray-500 leading-tight" translate="no">
+          <span className="text-[10px] font-normal text-muted-foreground leading-tight" translate="no">
             {t("vendor_note")}:{" "}
           </span>
-          <p className="text-[10px] font-normal text-black leading-tight inline"> {note || "-"}</p>
+          <p className="text-[10px] font-normal text-foreground leading-tight inline"> {note || "-"}</p>
         </div>
       )}
     </div>

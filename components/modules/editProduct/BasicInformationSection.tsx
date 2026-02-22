@@ -152,7 +152,7 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
   return (
     <>
       <div className="grid w-full grid-cols-4 gap-x-5">
-        <div className="col-span-4 mx-auto mb-3 w-full max-w-[950px] rounded-lg border border-solid border-gray-300 bg-white p-6 shadow-xs sm:p-4 lg:p-8">
+        <div className="col-span-4 mx-auto mb-3 w-full max-w-[950px] rounded-lg border border-solid border-border bg-card p-6 shadow-xs sm:p-4 lg:p-8">
           <div className="flex w-full flex-wrap">
             <div className="w-full">
               <div className="flex flex-wrap">
@@ -170,7 +170,7 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
                           render={({ field }) => (
                             <select
                               {...field}
-                              className="h-[48px]! w-full rounded border border-gray-300! px-3 text-sm focus-visible:ring-0!"
+                              className="h-[48px]! w-full rounded border border-border! px-3 text-sm focus-visible:ring-0!"
                               onChange={(e) => {
                                 if (e.target.value === "") {
                                   return;
@@ -224,7 +224,7 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
                               <div className="flex w-full flex-col justify-between gap-y-2">
                                 <Label>Sub Category</Label>
                                 <select
-                                  className="h-[48px]! w-full rounded border border-gray-300! px-3 text-sm focus-visible:ring-0!"
+                                  className="h-[48px]! w-full rounded border border-border! px-3 text-sm focus-visible:ring-0!"
                                   onChange={(e) => {
                                     if (e.target.value === "") {
                                       return;
@@ -341,7 +341,7 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
                                   <FormItem>
                                     <FormControl>
                                       <div className="relative mb-3 w-full px-2">
-                                        <div className="relative m-auto flex h-48 w-full flex-wrap items-center justify-center rounded-xl border-2 border-dashed border-gray-300 text-center">
+                                        <div className="relative m-auto flex h-48 w-full flex-wrap items-center justify-center rounded-xl border-2 border-dashed border-border text-center">
                                           {watchProductImages?.length ? (
                                             <button
                                               type="button"
@@ -433,7 +433,7 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
                                               </div>
 
                                               <div className="absolute h-20 w-full p-5">
-                                                <p className="rounded-lg border border-gray-300 bg-gray-100 py-2 text-sm font-semibold">
+                                                <p className="rounded-lg border border-border bg-muted py-2 text-sm font-semibold">
                                                   Upload Video
                                                 </p>
                                               </div>
@@ -479,7 +479,7 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
                             ),
                           )}
                           <div className="relative mb-3 w-full pl-2">
-                            <div className="absolute m-auto flex h-48 w-full cursor-pointer flex-wrap items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-white text-center">
+                            <div className="absolute m-auto flex h-48 w-full cursor-pointer flex-wrap items-center justify-center rounded-xl border-2 border-dashed border-border bg-card text-center">
                               <div className="text-color-dark text-sm leading-4 font-medium">
                                 <Image
                                   src="/images/plus.png"

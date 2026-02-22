@@ -161,11 +161,11 @@ export default function AccountSwitcher() {
                `${currentAccountDisplay?.firstName || ''} ${currentAccountDisplay?.lastName || ''}`.trim() ||
                'Account'}
             </span>
-            <span className="text-xs text-gray-500 capitalize">
+            <span className="text-xs text-muted-foreground capitalize">
               {currentAccountDisplay?.tradeRole?.toLowerCase() || 'buyer'}
             </span>
             {currentAccountDisplay?.companyName && (
-              <span className="text-xs text-gray-400">
+              <span className="text-xs text-muted-foreground">
                 {currentAccountDisplay.companyName}
               </span>
             )}
@@ -191,7 +191,7 @@ export default function AccountSwitcher() {
                   <span className="font-medium">
                     {`${mainAccount?.firstName || ''} ${mainAccount?.lastName || ''}`.trim() || 'Main Account'}
                   </span>
-                  <span className="text-xs text-gray-500 capitalize">
+                  <span className="text-xs text-muted-foreground capitalize">
                     {mainAccount?.tradeRole?.toLowerCase() || 'buyer'} (Main)
                   </span>
                 </div>
@@ -209,11 +209,11 @@ export default function AccountSwitcher() {
                 {getAccountIcon(account.tradeRole)}
                 <div className="flex flex-col">
                   <span className="font-medium">{account.accountName}</span>
-                  <span className="text-xs text-gray-500 capitalize">
+                  <span className="text-xs text-muted-foreground capitalize">
                     {account.tradeRole.toLowerCase()}
                   </span>
                   {account.companyName && (
-                    <span className="text-xs text-gray-400">
+                    <span className="text-xs text-muted-foreground">
                       {account.companyName}
                     </span>
                   )}

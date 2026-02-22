@@ -290,7 +290,7 @@ const SameBrandProductCard: React.FC<SameBrandProductCardProps> = ({
               {(() => {
                 const { discount } = getApplicableDiscount();
                 return discount > 0 && productProductPrice && Number(productProductPrice) > calculateDiscountedPrice() && (
-                  <span className="text-gray-500 line-through!">
+                  <span className="text-muted-foreground line-through!">
                     {currency.symbol}{productProductPrice}
                   </span>
                 );

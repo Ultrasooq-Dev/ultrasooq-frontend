@@ -122,19 +122,19 @@ const RfqQuotesPage = () => {
 
   return (
     <>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-muted">
         <div className="container m-auto max-w-7xl px-4 py-8">
           {/* Header */}
           <div className="mb-6">
             <h1
-              className="text-3xl font-bold text-gray-900"
+              className="text-3xl font-bold text-foreground"
               dir={langDir}
               translate="no"
             >
               {t("rfq_product")}
             </h1>
             <p
-              className="mt-2 text-sm text-gray-600"
+              className="mt-2 text-sm text-muted-foreground"
               dir={langDir}
               translate="no"
             >
@@ -156,9 +156,9 @@ const RfqQuotesPage = () => {
           {!memoizedRfqQuotesProducts.length &&
           !rfqQuotesByBuyerIdQuery.isLoading ? (
             <div className="flex flex-col items-center justify-center py-16">
-              <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-gray-100">
+              <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-muted">
                 <svg
-                  className="h-10 w-10 text-gray-400"
+                  className="h-10 w-10 text-muted-foreground"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -172,7 +172,7 @@ const RfqQuotesPage = () => {
                 </svg>
               </div>
               <p
-                className="text-center text-lg font-medium text-gray-500"
+                className="text-center text-lg font-medium text-muted-foreground"
                 dir={langDir}
                 translate="no"
               >
@@ -351,7 +351,7 @@ const RfqQuoteCard: React.FC<RfqQuoteCardProps> = ({
   const vendorsWithOffersCount = vendorsWithOffers.length;
 
   return (
-    <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md">
+    <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all hover:shadow-md">
       {/* Compact View */}
       <div className="flex items-center gap-4 p-6">
         {/* Product Images */}
@@ -360,7 +360,7 @@ const RfqQuoteCard: React.FC<RfqQuoteCardProps> = ({
             {item?.productImages?.slice(0, 3).map((ele: any, index: number) => (
               <div
                 key={`${ele}_${index}`}
-                className="relative h-20 w-20 overflow-hidden rounded-lg border border-gray-200 bg-gray-100"
+                className="relative h-20 w-20 overflow-hidden rounded-lg border border-border bg-muted"
               >
                 <Image
                   src={ele && validator.isURL(ele) ? ele : PlaceholderImage}
@@ -371,16 +371,16 @@ const RfqQuoteCard: React.FC<RfqQuoteCardProps> = ({
               </div>
             ))}
             {item?.productImages?.length > 3 && (
-              <div className="relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-lg border border-gray-200 bg-gray-100">
-                <span className="text-sm font-bold text-gray-600">
+              <div className="relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-lg border border-border bg-muted">
+                <span className="text-sm font-bold text-muted-foreground">
                   +{item.productImages.length - 3}
                 </span>
               </div>
             )}
             {(!item?.productImages || item.productImages.length === 0) && (
-              <div className="relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-lg border border-gray-200 bg-gray-100">
+              <div className="relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-lg border border-border bg-muted">
                 <svg
-                  className="h-8 w-8 text-gray-400"
+                  className="h-8 w-8 text-muted-foreground"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -403,7 +403,7 @@ const RfqQuoteCard: React.FC<RfqQuoteCardProps> = ({
             <div className="flex items-center gap-3">
               <Link
                 href={`/rfq-request?rfqQuotesId=${item?.id}`}
-                className="hover:text-dark-orange text-xl font-bold text-gray-900 transition-colors"
+                className="hover:text-dark-orange text-xl font-bold text-foreground transition-colors"
               >
                 RFQ{String(item?.id || "").padStart(5, "0")}
               </Link>
@@ -411,7 +411,7 @@ const RfqQuoteCard: React.FC<RfqQuoteCardProps> = ({
                 {item?.productCount} {t("products")}
               </span>
             </div>
-            <div className="mt-2 flex flex-wrap items-center gap-4 text-sm text-gray-600">
+            <div className="mt-2 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
               <div className="flex items-center gap-1.5">
                 <svg
                   className="h-4 w-4"
@@ -463,7 +463,7 @@ const RfqQuoteCard: React.FC<RfqQuoteCardProps> = ({
                       />
                     </svg>
                     <span
-                      className={`font-medium ${totalUnreadMessages > 0 ? "text-primary" : "text-gray-500"}`}
+                      className={`font-medium ${totalUnreadMessages > 0 ? "text-primary" : "text-muted-foreground"}`}
                     >
                       {totalUnreadMessages} {t("unread_messages")}
                     </span>
@@ -497,7 +497,7 @@ const RfqQuoteCard: React.FC<RfqQuoteCardProps> = ({
           <div className="flex items-center gap-2">
             <Link
               href={`/rfq-request?rfqQuotesId=${item?.id}`}
-              className="hover:border-dark-orange hover:text-dark-orange inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-all hover:bg-gray-50"
+              className="hover:border-dark-orange hover:text-dark-orange inline-flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-muted-foreground transition-all hover:bg-muted"
             >
               <svg
                 className="h-4 w-4"
@@ -523,7 +523,7 @@ const RfqQuoteCard: React.FC<RfqQuoteCardProps> = ({
             <button
               type="button"
               onClick={onDelete}
-              className="inline-flex items-center gap-2 rounded-lg border border-destructive/30 bg-white px-4 py-2 text-sm font-medium text-destructive transition-all hover:bg-destructive/5"
+              className="inline-flex items-center gap-2 rounded-lg border border-destructive/30 bg-card px-4 py-2 text-sm font-medium text-destructive transition-all hover:bg-destructive/5"
             >
               <svg
                 className="h-4 w-4"
@@ -543,7 +543,7 @@ const RfqQuoteCard: React.FC<RfqQuoteCardProps> = ({
             <button
               type="button"
               onClick={() => setIsExpanded(!isExpanded)}
-              className="flex h-10 w-10 items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-600 transition-all hover:bg-gray-50"
+              className="flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-card text-muted-foreground transition-all hover:bg-muted"
               title={isExpanded ? t("collapse") : t("expand")}
             >
               {isExpanded ? (
@@ -558,7 +558,7 @@ const RfqQuoteCard: React.FC<RfqQuoteCardProps> = ({
 
       {/* Expanded View */}
       {isExpanded && (
-        <div className="border-t border-gray-200 bg-gray-50 p-6">
+        <div className="border-t border-border bg-muted p-6">
           {vendorsQuery.isLoading ? (
             <div className="space-y-3">
               {Array.from({ length: 2 }).map((_, i) => (
@@ -569,7 +569,7 @@ const RfqQuoteCard: React.FC<RfqQuoteCardProps> = ({
             <div className="space-y-4">
               <div className="mb-4 flex items-center justify-between">
                 <h3
-                  className="text-lg font-semibold text-gray-900"
+                  className="text-lg font-semibold text-foreground"
                   dir={langDir}
                   translate="no"
                 >
@@ -603,7 +603,7 @@ const RfqQuoteCard: React.FC<RfqQuoteCardProps> = ({
                   <Link
                     key={vendor.id}
                     href={`/rfq-request?rfqQuotesId=${item?.id}`}
-                    className="group hover:border-dark-orange rounded-lg border border-gray-200 bg-white p-4 transition-all hover:shadow-md"
+                    className="group hover:border-dark-orange rounded-lg border border-border bg-card p-4 transition-all hover:shadow-md"
                   >
                     <div className="flex items-start justify-between">
                       <div className="flex items-center gap-3">
@@ -619,7 +619,7 @@ const RfqQuoteCard: React.FC<RfqQuoteCardProps> = ({
                           />
                         </div>
                         <div>
-                          <h4 className="group-hover:text-dark-orange font-semibold text-gray-900 transition-colors">
+                          <h4 className="group-hover:text-dark-orange font-semibold text-foreground transition-colors">
                             {vendor.sellerIDDetail?.accountName ||
                               `${vendor.sellerIDDetail?.firstName || ""} ${vendor.sellerIDDetail?.lastName || ""}`.trim() ||
                               "Vendor"}
@@ -631,7 +631,7 @@ const RfqQuoteCard: React.FC<RfqQuoteCardProps> = ({
                               {vendor.calculatedOfferPrice}
                             </p>
                           ) : (
-                            <p className="mt-1 text-sm text-gray-500">
+                            <p className="mt-1 text-sm text-muted-foreground">
                               {t("no_offer_yet") || "No offer yet"}
                             </p>
                           )}
@@ -646,7 +646,7 @@ const RfqQuoteCard: React.FC<RfqQuoteCardProps> = ({
                       )}
                     </div>
                     {vendor.lastUnreadMessage?.content && (
-                      <p className="mt-2 line-clamp-2 text-xs text-gray-600">
+                      <p className="mt-2 line-clamp-2 text-xs text-muted-foreground">
                         {vendor.lastUnreadMessage.content}
                       </p>
                     )}
@@ -657,7 +657,7 @@ const RfqQuoteCard: React.FC<RfqQuoteCardProps> = ({
           ) : (
             <div className="flex flex-col items-center justify-center py-8">
               <svg
-                className="h-12 w-12 text-gray-400"
+                className="h-12 w-12 text-muted-foreground"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -670,7 +670,7 @@ const RfqQuoteCard: React.FC<RfqQuoteCardProps> = ({
                 />
               </svg>
               <p
-                className="mt-3 text-sm font-medium text-gray-500"
+                className="mt-3 text-sm font-medium text-muted-foreground"
                 dir={langDir}
                 translate="no"
               >

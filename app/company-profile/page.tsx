@@ -445,7 +445,7 @@ export default function CompanyProfilePage() {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="m-auto mb-12 w-11/12 rounded-lg border border-solid border-gray-300 bg-white p-6 shadow-xs sm:p-8 md:w-10/12 lg:w-10/12 lg:p-12"
+            className="m-auto mb-12 w-11/12 rounded-lg border border-solid border-border bg-card p-6 shadow-xs sm:p-8 md:w-10/12 lg:w-10/12 lg:p-12"
           >
             <div className="text-normal m-auto mb-7 w-full text-center text-sm leading-6 text-light-gray">
               <h2
@@ -458,7 +458,7 @@ export default function CompanyProfilePage() {
             </div>
             <div className="flex w-full flex-wrap">
               <div className="mb-4 w-full">
-                <div className="mt-2.5 w-full border-b-2 border-dashed border-gray-300">
+                <div className="mt-2.5 w-full border-b-2 border-dashed border-border">
                   <label
                     className="mb-3.5 block text-left text-lg font-medium capitalize leading-5 text-color-dark"
                     dir={langDir}
@@ -479,7 +479,7 @@ export default function CompanyProfilePage() {
                           {t("upload_company_logo")}
                         </FormLabel>
                         <FormControl>
-                          <div className="relative m-auto h-64 w-full border-2 border-dashed border-gray-300">
+                          <div className="relative m-auto h-64 w-full border-2 border-dashed border-border">
                             <div className="relative h-full w-full">
                               {imageFile ? (
                                 <Image
@@ -586,7 +586,7 @@ export default function CompanyProfilePage() {
               </div>
 
               <div className="mb-3.5 w-full">
-                <div className="mb-4 w-full border-y border-solid border-gray-200 py-2.5">
+                <div className="mb-4 w-full border-y border-solid border-border py-2.5">
                   <label
                     className="m-0 block text-left text-base font-medium leading-5 text-color-dark"
                     dir={langDir}
@@ -643,7 +643,7 @@ export default function CompanyProfilePage() {
               </div>
 
               <div className="mb-5 w-full">
-                <div className="mb-4 w-full border-y border-solid border-gray-200 py-2.5">
+                <div className="mb-4 w-full border-y border-solid border-border py-2.5">
                   <label
                     className="m-0 block text-left text-base font-medium leading-5 text-color-dark"
                     dir={langDir}
@@ -679,7 +679,7 @@ export default function CompanyProfilePage() {
             </div>
 
             <div className="mb-3.5 w-full">
-              <div className="mb-4 flex w-full items-center justify-between border-y border-solid border-gray-200 py-2.5">
+              <div className="mb-4 flex w-full items-center justify-between border-y border-solid border-border py-2.5">
                 <label
                   className="m-0 block text-left text-base font-medium leading-5 text-color-dark"
                   dir={langDir}
@@ -729,7 +729,7 @@ export default function CompanyProfilePage() {
                           {t("upload_branch_front_picture")}
                         </FormLabel>
                         <FormControl>
-                          <div className="relative m-auto h-64 w-full border-2 border-dashed border-gray-300">
+                          <div className="relative m-auto h-64 w-full border-2 border-dashed border-border">
                             <div className="relative h-full w-full">
                               {form.getValues()?.branchList[index]
                                 ?.branchFrontPicture ? (
@@ -816,7 +816,7 @@ export default function CompanyProfilePage() {
                           {t("proof_of_address")}
                         </FormLabel>
                         <FormControl>
-                          <div className="relative m-auto h-64 w-full border-2 border-dashed border-gray-300">
+                          <div className="relative m-auto h-64 w-full border-2 border-dashed border-border">
                             <div className="relative h-full w-full">
                               {form.getValues()?.branchList[index]
                                 ?.proofOfAddress ? (
@@ -895,7 +895,7 @@ export default function CompanyProfilePage() {
 
                 <div className="flex w-full flex-wrap">
                   <div className="mb-4 w-full">
-                    <div className="mt-2.5 w-full border-b-2 border-dashed border-gray-300">
+                    <div className="mt-2.5 w-full border-b-2 border-dashed border-border">
                       <label
                         className="mb-3.5 block text-left text-lg font-medium capitalize leading-5 text-color-dark"
                         dir={langDir}
@@ -975,7 +975,7 @@ export default function CompanyProfilePage() {
 
                 <div className="flex w-full flex-wrap">
                   <div className="mb-4 w-full">
-                    <div className="mt-2.5 w-full border-b-2 border-dashed border-gray-300">
+                    <div className="mt-2.5 w-full border-b-2 border-dashed border-border">
                       <label
                         className="mb-3.5 block text-left text-lg font-medium capitalize leading-5 text-color-dark"
                         dir={langDir}
@@ -1002,7 +1002,7 @@ export default function CompanyProfilePage() {
                           render={({ field }) => (
                             <select
                               {...field}
-                              className="h-12! w-full rounded border border-gray-300! px-3 text-base focus-visible:ring-0!"
+                              className="h-12! w-full rounded border border-border! px-3 text-base focus-visible:ring-0!"
                             >
                               <option value="" dir={langDir} translate="no">
                                 {t("select")}
@@ -1044,7 +1044,7 @@ export default function CompanyProfilePage() {
                           render={({ field }) => (
                             <select
                               {...field}
-                              className="h-12! w-full rounded border border-gray-300! px-3 text-base focus-visible:ring-0!"
+                              className="h-12! w-full rounded border border-border! px-3 text-base focus-visible:ring-0!"
                             >
                               <option value="" dir={langDir} translate="no">
                                 {t("select")}
@@ -1072,7 +1072,7 @@ export default function CompanyProfilePage() {
                       </div>
                     </div>
                   </div>
-                  <div className="mb-3.5 w-full border-b-2 border-dashed border-gray-300 pb-4">
+                  <div className="mb-3.5 w-full border-b-2 border-dashed border-border pb-4">
                     <div className="flex flex-wrap">
                       {DAYS_OF_WEEK.map((item) => (
                         <FormField
@@ -1094,7 +1094,7 @@ export default function CompanyProfilePage() {
                                     item.value as keyof typeof field.value
                                     ]
                                   }
-                                  className="border border-solid border-gray-300 data-[state=checked]:bg-dark-orange!"
+                                  className="border border-solid border-border data-[state=checked]:bg-dark-orange!"
                                 />
                               </FormControl>
                               <div className="space-y-1 leading-none">
@@ -1131,8 +1131,8 @@ export default function CompanyProfilePage() {
                   name={`branchList.${index}.categoryList`}
                 />
 
-                <div className="mb-3.5 flex w-full justify-end border-b-2 border-dashed border-gray-300 pb-4">
-                  <div className="mb-3.5 flex w-full border-b-2 border-dashed border-gray-300 pb-4">
+                <div className="mb-3.5 flex w-full justify-end border-b-2 border-dashed border-border pb-4">
+                  <div className="mb-3.5 flex w-full border-b-2 border-dashed border-border pb-4">
                     <FormField
                       control={form.control}
                       name={`branchList.${index}.mainOffice`}

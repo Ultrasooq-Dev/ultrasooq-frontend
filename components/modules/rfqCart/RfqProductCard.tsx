@@ -51,10 +51,10 @@ const RfqProductCard: React.FC<RfqProductCardProps> = ({
   }, [productQuantity]);
 
   return (
-    <div className="group rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-all hover:shadow-md hover:border-gray-300">
+    <div className="group rounded-xl border border-border bg-card p-4 shadow-sm transition-all hover:shadow-md hover:border-border">
       <div className="flex gap-4">
         {/* Product Image */}
-        <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100 md:h-32 md:w-32">
+        <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-lg bg-muted md:h-32 md:w-32">
           <Image
             src={
               productImages?.[0]?.image &&
@@ -70,14 +70,14 @@ const RfqProductCard: React.FC<RfqProductCardProps> = ({
 
         {/* Product Details */}
         <div className="flex-1 min-w-0">
-          <h3 className="mb-2 text-base font-semibold text-gray-900 line-clamp-2 md:text-lg">
+          <h3 className="mb-2 text-base font-semibold text-foreground line-clamp-2 md:text-lg">
             {productName}
           </h3>
 
           {/* Quantity Controls */}
           <div className="mb-3">
             <label
-              className="mb-1.5 block text-xs font-medium text-gray-600"
+              className="mb-1.5 block text-xs font-medium text-muted-foreground"
               dir={langDir}
               translate="no"
             >
@@ -88,7 +88,7 @@ const RfqProductCard: React.FC<RfqProductCardProps> = ({
                 type="button"
                 variant="outline"
                 size="sm"
-                className="h-8 w-8 rounded-lg border-gray-300 p-0 hover:bg-gray-50 disabled:opacity-50"
+                className="h-8 w-8 rounded-lg border-border p-0 hover:bg-muted disabled:opacity-50"
                 onClick={() => {
                   const newQuantity = Math.max(quantity - 1, 0);
                   setQuantity(newQuantity);
@@ -110,14 +110,14 @@ const RfqProductCard: React.FC<RfqProductCardProps> = ({
                   height={14}
                 />
               </Button>
-              <div className="flex h-8 w-12 items-center justify-center rounded-lg border border-gray-300 bg-white text-sm font-semibold text-gray-900">
+              <div className="flex h-8 w-12 items-center justify-center rounded-lg border border-border bg-card text-sm font-semibold text-foreground">
                 {quantity}
               </div>
               <Button
                 type="button"
                 variant="outline"
                 size="sm"
-                className="h-8 w-8 rounded-lg border-gray-300 p-0 hover:bg-gray-50"
+                className="h-8 w-8 rounded-lg border-border p-0 hover:bg-muted"
                 onClick={() => {
                   const newQuantity = quantity + 1;
                   setQuantity(newQuantity);
@@ -169,28 +169,28 @@ const RfqProductCard: React.FC<RfqProductCardProps> = ({
 
           {/* Price Range */}
           <div className="mb-2 grid grid-cols-2 gap-3">
-            <div className="rounded-lg border border-gray-200 bg-gray-50 p-2">
+            <div className="rounded-lg border border-border bg-muted p-2">
               <p
-                className="mb-1 text-xs font-medium text-gray-600"
+                className="mb-1 text-xs font-medium text-muted-foreground"
                 dir={langDir}
                 translate="no"
               >
                 {t("offer_price_from")}
               </p>
-              <p className="text-sm font-bold text-gray-900">
+              <p className="text-sm font-bold text-foreground">
                 {currency.symbol}
                 {offerPriceFrom || "0"}
               </p>
             </div>
-            <div className="rounded-lg border border-gray-200 bg-gray-50 p-2">
+            <div className="rounded-lg border border-border bg-muted p-2">
               <p
-                className="mb-1 text-xs font-medium text-gray-600"
+                className="mb-1 text-xs font-medium text-muted-foreground"
                 dir={langDir}
                 translate="no"
               >
                 {t("offer_price_to")}
               </p>
-              <p className="text-sm font-bold text-gray-900">
+              <p className="text-sm font-bold text-foreground">
                 {currency.symbol}
                 {offerPriceTo || "0"}
               </p>

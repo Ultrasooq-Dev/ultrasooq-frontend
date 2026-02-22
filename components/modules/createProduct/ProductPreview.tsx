@@ -103,10 +103,10 @@ const ProductPreview: React.FC<ProductPreviewProps> = ({
   return (
     <div className="space-y-4">
       <div className="text-center">
-        <h4 className="text-lg font-semibold text-gray-900 mb-2">
+        <h4 className="text-lg font-semibold text-foreground mb-2">
           {t("how_your_product_will_appear_to_customers")}
         </h4>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-muted-foreground">
           {t("this_is_how_customers_will_see_your_dropshipped_product")}
         </p>
       </div>
@@ -114,7 +114,7 @@ const ProductPreview: React.FC<ProductPreviewProps> = ({
       <Card className="max-w-md mx-auto">
         <CardContent className="p-0">
           {/* Product Images */}
-          <div className="aspect-square relative overflow-hidden rounded-t-lg bg-gray-100">
+          <div className="aspect-square relative overflow-hidden rounded-t-lg bg-muted">
             {allImages[0] ? (
               <Image
                 src={allImages[0].image}
@@ -124,7 +124,7 @@ const ProductPreview: React.FC<ProductPreviewProps> = ({
               />
             ) : (
               <div className="flex items-center justify-center h-full">
-                <span className="text-gray-400">No Image</span>
+                <span className="text-muted-foreground">No Image</span>
               </div>
             )}
             
@@ -144,7 +144,7 @@ const ProductPreview: React.FC<ProductPreviewProps> = ({
             </h3>
             
             {/* Description */}
-            <p className="text-sm text-gray-600 line-clamp-3">
+            <p className="text-sm text-muted-foreground line-clamp-3">
               {displayDescription}
             </p>
 
@@ -163,14 +163,14 @@ const ProductPreview: React.FC<ProductPreviewProps> = ({
                 ${safeFinalPrice.toFixed(2)}
               </span>
               {Number(originalProduct.offerPrice) < Number(originalProduct.productPrice) && (
-                <span className="text-sm text-gray-500 line-through">
+                <span className="text-sm text-muted-foreground line-through">
                   ${Number(originalProduct.offerPrice).toFixed(2)}
                 </span>
               )}
             </div>
 
             {/* Vendor Info */}
-            <div className="flex items-center gap-1 text-xs text-gray-500">
+            <div className="flex items-center gap-1 text-xs text-muted-foreground">
               <MapPin className="h-3 w-3" />
               <span>{originalProduct.vendor?.location || "Location not specified"}</span>
             </div>
@@ -182,7 +182,7 @@ const ProductPreview: React.FC<ProductPreviewProps> = ({
                   <Star key={star} className="h-4 w-4 fill-yellow-400 text-warning" />
                 ))}
               </div>
-              <span className="text-xs text-gray-500">(4.8)</span>
+              <span className="text-xs text-muted-foreground">(4.8)</span>
             </div>
 
             {/* Action Buttons */}
@@ -200,11 +200,11 @@ const ProductPreview: React.FC<ProductPreviewProps> = ({
       </Card>
 
       {/* Comparison with Original */}
-      <div className="bg-gray-50 rounded-lg p-4">
-        <h5 className="font-medium text-sm text-gray-700 mb-2">
+      <div className="bg-muted rounded-lg p-4">
+        <h5 className="font-medium text-sm text-muted-foreground mb-2">
           {t("changes_made")}:
         </h5>
-        <ul className="text-xs text-gray-600 space-y-1">
+        <ul className="text-xs text-muted-foreground space-y-1">
           {customContent.productName !== originalProduct.productName && (
             <li>• {t("product_name_customized")}</li>
           )}

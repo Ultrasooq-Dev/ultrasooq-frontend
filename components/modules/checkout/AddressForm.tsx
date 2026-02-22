@@ -259,7 +259,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ addressId, onClose }) => {
         </DialogTitle>
         <Button
           onClick={onClose}
-          className={`${langDir == "ltr" ? "absolute" : ""} right-2 top-2 z-10 bg-white! text-black! shadow-none`}
+          className={`${langDir == "ltr" ? "absolute" : ""} right-2 top-2 z-10 bg-card! text-foreground! shadow-none`}
         >
           <IoCloseSharp size={20} />
         </Button>

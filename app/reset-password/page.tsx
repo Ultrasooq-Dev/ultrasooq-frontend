@@ -124,7 +124,7 @@ export default function ResetPasswordPage() {
       </div>
       <div className="container relative z-10 m-auto">
         <div className="flex">
-          <div className="m-auto mb-12 w-11/12 rounded-lg border border-solid border-gray-300 bg-white p-7 shadow-xs sm:p-12 md:w-9/12 lg:w-7/12">
+          <div className="m-auto mb-12 w-11/12 rounded-lg border border-solid border-border bg-card p-7 shadow-xs sm:p-12 md:w-9/12 lg:w-7/12">
             {showSuccess ? (
               <PasswordChangeSuccessContent />
             ) : (

@@ -409,7 +409,7 @@ const FactoriesProductCard: React.FC<RfqProductCardProps> = ({
 
   return (
     <>
-      <div className="group relative bg-white rounded-lg sm:rounded-xl shadow-sm sm:shadow-lg border border-gray-100 hover:shadow-xl hover:border-gray-200 transition-all duration-300 overflow-hidden h-full flex flex-col">
+      <div className="group relative bg-card rounded-lg sm:rounded-xl shadow-sm sm:shadow-lg border border-border hover:shadow-xl hover:border-border transition-all duration-300 overflow-hidden h-full flex flex-col">
         {/* Product Image Container */}
         <Link href={`/factories/${id}`} className="block w-full">
           {/* Discount Badge - Only show if user is eligible for discount */}
@@ -425,7 +425,7 @@ const FactoriesProductCard: React.FC<RfqProductCardProps> = ({
             ) : null;
           })()}
 
-          <div className="relative w-full h-48 lg:h-56 bg-gray-50 overflow-hidden">
+          <div className="relative w-full h-48 lg:h-56 bg-muted overflow-hidden">
             <Image
               src={
                 productImages?.[0]?.image && validator.isURL(productImages?.[0]?.image)
@@ -446,7 +446,7 @@ const FactoriesProductCard: React.FC<RfqProductCardProps> = ({
             <Button
               variant="secondary"
               size="sm"
-              className="h-8 w-8 rounded-full bg-white/90 backdrop-blur-sm shadow-lg hover:bg-white hover:scale-110 transition-all duration-200"
+              className="h-8 w-8 rounded-full bg-card/90 backdrop-blur-sm shadow-lg hover:bg-card hover:scale-110 transition-all duration-200"
               onClick={onAdd}
             >
               <ShoppingIcon />
@@ -456,7 +456,7 @@ const FactoriesProductCard: React.FC<RfqProductCardProps> = ({
             <Button
               variant="secondary"
               size="sm"
-              className="h-8 w-8 rounded-full bg-white/90 backdrop-blur-sm shadow-lg hover:bg-white hover:scale-110 transition-all duration-200"
+              className="h-8 w-8 rounded-full bg-card/90 backdrop-blur-sm shadow-lg hover:bg-card hover:scale-110 transition-all duration-200"
             >
               <FiEye className="h-4 w-4" />
             </Button>
@@ -464,7 +464,7 @@ const FactoriesProductCard: React.FC<RfqProductCardProps> = ({
           <Button
             variant="secondary"
             size="sm"
-            className="h-8 w-8 rounded-full bg-white/90 backdrop-blur-sm shadow-lg hover:bg-white hover:scale-110 transition-all duration-200"
+            className="h-8 w-8 rounded-full bg-card/90 backdrop-blur-sm shadow-lg hover:bg-card hover:scale-110 transition-all duration-200"
             onClick={onWishlist}
           >
             {inWishlist ? (
@@ -478,7 +478,7 @@ const FactoriesProductCard: React.FC<RfqProductCardProps> = ({
         {/* Product Info */}
         <div className="p-3 sm:p-4 flex flex-col flex-1">
           <Link href={`/factories/${id}`}>
-            <h3 className="text-sm sm:text-base font-medium text-gray-900 line-clamp-2 mb-2 hover:text-primary transition-colors" dir={langDir}>
+            <h3 className="text-sm sm:text-base font-medium text-foreground line-clamp-2 mb-2 hover:text-primary transition-colors" dir={langDir}>
               {productName}
             </h3>
           </Link>
@@ -492,7 +492,7 @@ const FactoriesProductCard: React.FC<RfqProductCardProps> = ({
 
           {/* Product Description/Note */}
           {productNote && (
-            <p className="text-xs text-gray-600 line-clamp-2 mb-2" dir={langDir}>
+            <p className="text-xs text-muted-foreground line-clamp-2 mb-2" dir={langDir}>
               {productNote}
             </p>
           )}
@@ -507,7 +507,7 @@ const FactoriesProductCard: React.FC<RfqProductCardProps> = ({
                 {(() => {
                   const { discount } = getApplicableDiscount();
                   return discount > 0 && (
-                    <span className="text-sm text-gray-500 line-through">
+                    <span className="text-sm text-muted-foreground line-through">
                       {currency.symbol}{productPrices?.[0]?.offerPrice}
                     </span>
                   );
@@ -516,7 +516,7 @@ const FactoriesProductCard: React.FC<RfqProductCardProps> = ({
             </div>
           ) : (
             <div className="mb-3">
-              <span className="text-sm font-medium text-gray-600">{t("customizable")}</span>
+              <span className="text-sm font-medium text-muted-foreground">{t("customizable")}</span>
             </div>
           )}
 
@@ -525,9 +525,9 @@ const FactoriesProductCard: React.FC<RfqProductCardProps> = ({
             <div className="mb-3 space-y-2">
               {productVariantTypes.map((variantType: string, index: number) => (
                 <div key={index} dir={langDir}>
-                  <label className="text-xs text-gray-600 mb-1 block">{variantType}</label>
+                  <label className="text-xs text-muted-foreground mb-1 block">{variantType}</label>
                   <select
-                    className="w-full text-sm border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full text-sm border border-border rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-primary"
                     value={selectedProductVariant?.find((variant: any) => variant.type == variantType)?.value}
                     onChange={(e) => {
                       let selectedVariants = [];
@@ -568,7 +568,7 @@ const FactoriesProductCard: React.FC<RfqProductCardProps> = ({
 
           {/* Quantity Controls */}
           <div className="mt-auto">
-            <label className="text-xs text-gray-600 mb-1 block" translate="no">{t("quantity")}</label>
+            <label className="text-xs text-muted-foreground mb-1 block" translate="no">{t("quantity")}</label>
             <div className="flex items-center gap-2">
               <Button
                 type="button"
@@ -586,7 +586,7 @@ const FactoriesProductCard: React.FC<RfqProductCardProps> = ({
                 value={quantity}
                 onChange={(e) => setQuantity(parseInt(e.target.value) || 0)}
                 onBlur={handleQuantityChange}
-                className="w-16 text-center text-sm border border-gray-300 rounded-md px-2 py-1"
+                className="w-16 text-center text-sm border border-border rounded-md px-2 py-1"
                 dir={langDir}
               />
               <Button
@@ -642,7 +642,7 @@ const FactoriesProductCard: React.FC<RfqProductCardProps> = ({
             </button>
           </DialogTitle>
           <div className="py-4">
-            <p className="text-sm text-gray-600">{t("are_you_sure_you_want_to_remove_this_item")}</p>
+            <p className="text-sm text-muted-foreground">{t("are_you_sure_you_want_to_remove_this_item")}</p>
           </div>
           <div className="flex justify-end gap-3">
             <Button variant="outline" onClick={onCancelRemove}>

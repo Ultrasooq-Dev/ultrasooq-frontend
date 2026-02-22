@@ -34,7 +34,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   return (
     <div
       className={cn(
-        !isLastItem ? "border-b border-solid border-gray-300" : "",
+        !isLastItem ? "border-b border-solid border-border" : "",
         "w-full p-3",
       )}
     >
@@ -43,7 +43,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
           <span className="mr-2">Q:</span>
           {question}
         </h3>
-        {questionByUserDetail ? <p className="text-xs font-medium text-gray-500">
+        {questionByUserDetail ? <p className="text-xs font-medium text-muted-foreground">
           {`${questionByUserDetail.firstName} ${questionByUserDetail.lastName}`}
         </p> : ''}
         {answers?.length ? answers.map((answer: any) => (
@@ -52,7 +52,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
               <span className="mr-2 font-bold">A:</span>
               {answer.answer}
             </p>
-            <p className="text-xs font-medium text-gray-500">{answer.userName || ""}</p>
+            <p className="text-xs font-medium text-muted-foreground">{answer.userName || ""}</p>
           </React.Fragment>
         )) : null}
         {!answers?.length ? (
@@ -61,7 +61,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
               <span className="mr-2 font-bold">A:</span>
               {t("no_answer_yet")}
             </p>
-            <p className="text-xs font-medium text-gray-500"></p>
+            <p className="text-xs font-medium text-muted-foreground"></p>
           </>
         ) : null}
 

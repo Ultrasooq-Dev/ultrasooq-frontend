@@ -112,7 +112,7 @@ const VariantPricingSection: React.FC = () => {
     <div className="space-y-3">
       {/* Header row */}
       <div
-        className="grid grid-cols-[1fr_120px_120px] gap-3 px-3 text-sm font-semibold text-gray-500"
+        className="grid grid-cols-[1fr_120px_120px] gap-3 px-3 text-sm font-semibold text-muted-foreground"
         dir={langDir}
       >
         <div>{t("variant") || "Variant"}</div>
@@ -124,11 +124,11 @@ const VariantPricingSection: React.FC = () => {
       {fields.map((field, index) => (
         <div
           key={field.id}
-          className="grid grid-cols-[1fr_120px_120px] items-center gap-3 rounded-xl border border-gray-200 bg-gray-50 p-3"
+          className="grid grid-cols-[1fr_120px_120px] items-center gap-3 rounded-xl border border-border bg-muted p-3"
           dir={langDir}
         >
           {/* Combination label */}
-          <div className="text-sm font-medium text-gray-800">
+          <div className="text-sm font-medium text-foreground">
             {form.getValues(
               `variantPricingList.${index}.combinationLabel`,
             )}
@@ -147,7 +147,7 @@ const VariantPricingSection: React.FC = () => {
                     step="0.01"
                     onWheel={(e) => e.currentTarget.blur()}
                     placeholder="0.00"
-                    className="h-9 rounded-lg border-gray-300 text-sm focus-visible:ring-0"
+                    className="h-9 rounded-lg border-border text-sm focus-visible:ring-0"
                     {...inputField}
                     dir={langDir}
                   />
@@ -170,7 +170,7 @@ const VariantPricingSection: React.FC = () => {
                     step="1"
                     onWheel={(e) => e.currentTarget.blur()}
                     placeholder="0"
-                    className="h-9 rounded-lg border-gray-300 text-sm focus-visible:ring-0"
+                    className="h-9 rounded-lg border-border text-sm focus-visible:ring-0"
                     {...inputField}
                     dir={langDir}
                   />

@@ -254,7 +254,7 @@ export default function EditProfilePage() {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="m-auto mb-12 w-11/12 rounded-lg border border-solid border-gray-300 bg-white p-6 shadow-xs sm:p-8 md:w-10/12 lg:w-10/12 lg:p-12"
+            className="m-auto mb-12 w-11/12 rounded-lg border border-solid border-border bg-card p-6 shadow-xs sm:p-8 md:w-10/12 lg:w-10/12 lg:p-12"
           >
             <div className="text-normal m-auto mb-7 w-full text-center text-sm leading-6 text-light-gray">
               <h2 className="mb-3 text-center text-3xl font-semibold leading-8 text-color-dark sm:text-4xl sm:leading-10" translate="no">
@@ -263,7 +263,7 @@ export default function EditProfilePage() {
             </div>
             <div className="flex w-full flex-wrap">
               <div className="mb-4 w-full">
-                <div className="mt-2.5 w-full border-b-2 border-dashed border-gray-300">
+                <div className="mt-2.5 w-full border-b-2 border-dashed border-border">
                   <label
                     className={cn(
                       "mb-3.5 block",
@@ -285,7 +285,7 @@ export default function EditProfilePage() {
                       <FormItem className="mb-3.5 w-full md:w-6/12 md:pr-3.5" dir={langDir}>
                         <FormLabel translate="no">{t("upload_company_logo")}</FormLabel>
                         <FormControl>
-                          <div className="relative m-auto h-64 w-full border-2 border-dashed border-gray-300">
+                          <div className="relative m-auto h-64 w-full border-2 border-dashed border-border">
                             <div className="relative h-full w-full">
                               {imageFile ||
                                 uniqueUser.data?.data?.userProfile?.[0]?.logo ? (
@@ -390,7 +390,7 @@ export default function EditProfilePage() {
               </div>
 
               <div className="mb-3.5 w-full">
-                <div className="mb-4 w-full border-y border-solid border-gray-200 py-2.5">
+                <div className="mb-4 w-full border-y border-solid border-border py-2.5">
                   <label
                     className={cn(
                       "mb-0 block",
@@ -447,7 +447,7 @@ export default function EditProfilePage() {
               </div>
 
               <div className="mb-5 w-full">
-                <div className="mb-4 w-full border-y border-solid border-gray-200 py-2.5">
+                <div className="mb-4 w-full border-y border-solid border-border py-2.5">
                   <label
                     className={cn(
                       "mb-0 block",

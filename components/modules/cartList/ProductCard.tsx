@@ -275,10 +275,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
   };
 
   return (
-    <div className="flex items-center space-x-4 p-4 bg-white rounded-lg border border-gray-200 hover:shadow-md transition-shadow">
+    <div className="flex items-center space-x-4 p-4 bg-card rounded-lg border border-border hover:shadow-md transition-shadow">
       {/* Product Image */}
       <div className="flex-shrink-0">
-        <div className="relative w-28 h-28 rounded-lg overflow-hidden bg-gray-100">
+        <div className="relative w-28 h-28 rounded-lg overflow-hidden bg-muted">
           <Image
             src={productImages?.[0]?.image || PlaceholderImage}
             alt="product-image"
@@ -290,20 +290,20 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
       {/* Product Details */}
       <div className="flex-1 min-w-0">
-        <h4 className="text-lg font-semibold text-gray-900 truncate" dir={langDir}>
+        <h4 className="text-lg font-semibold text-foreground truncate" dir={langDir}>
           {productName}
         </h4>
         
         {/* Quantity Controls */}
         <div className="mt-3 flex items-center space-x-3">
-          <label className="text-sm font-medium text-gray-700" dir={langDir} translate="no">
+          <label className="text-sm font-medium text-muted-foreground" dir={langDir} translate="no">
             {t("quantity")}:
           </label>
-          <div className="flex items-center border border-gray-300 rounded-lg">
+          <div className="flex items-center border border-border rounded-lg">
             <Button
               variant="ghost"
               size="sm"
-              className="h-8 w-8 p-0 hover:bg-gray-100"
+              className="h-8 w-8 p-0 hover:bg-muted"
               onClick={() => {
                 setQuantity(quantity - 1);
                 handleAddToCart(quantity - 1, "remove");
@@ -334,7 +334,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             <Button
               variant="ghost"
               size="sm"
-              className="h-8 w-8 p-0 hover:bg-gray-100"
+              className="h-8 w-8 p-0 hover:bg-muted"
               onClick={() => {
                 setQuantity(quantity + 1);
                 handleAddToCart(quantity + 1, "add");
@@ -384,10 +384,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
       {/* Price */}
       <div className="flex-shrink-0 text-right">
-        <div className="text-sm text-gray-500" dir={langDir} translate="no">
+        <div className="text-sm text-muted-foreground" dir={langDir} translate="no">
           {t("price")}
         </div>
-        <div className="text-xl font-bold text-gray-900" dir={langDir}>
+        <div className="text-xl font-bold text-foreground" dir={langDir}>
           {currency.symbol}{quantity * calculateDiscountedPrice()}
         </div>
       </div>
@@ -400,7 +400,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             <DialogTitle className="text-center text-xl text-dark-orange font-bold"></DialogTitle>
             <Button
               onClick={onCancelRemove}
-              className={`${langDir == 'ltr' ? 'absolute' : ''} right-2 top-2 z-10 bg-white! text-black! shadow-none`}
+              className={`${langDir == 'ltr' ? 'absolute' : ''} right-2 top-2 z-10 bg-card! text-foreground! shadow-none`}
             >
               <IoCloseSharp size={20} />
             </Button>
@@ -411,7 +411,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             <div>
               <Button
                 type="button"
-                className="bg-white text-destructive mr-2"
+                className="bg-card text-destructive mr-2"
                 onClick={onCancelRemove}
               >
                 Cancel

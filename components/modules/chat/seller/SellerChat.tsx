@@ -1095,7 +1095,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
               </div>
             ) : groupedRfqQuotes.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-16">
-                <p className="text-gray-500">{t("no_data_found")}</p>
+                <p className="text-muted-foreground">{t("no_data_found")}</p>
               </div>
             ) : (
               <div className="space-y-3">
@@ -1147,14 +1147,14 @@ const SellerChat: React.FC<SellerChatProps> = ({
                         }
                       }}
                       className={cn(
-                        "cursor-pointer rounded-lg border-2 bg-white p-4 transition-all hover:border-destructive hover:bg-destructive/5",
+                        "cursor-pointer rounded-lg border-2 bg-card p-4 transition-all hover:border-destructive hover:bg-destructive/5",
                         selectedRfqId === mainQuote.rfqQuotesId
                           ? "border-destructive bg-destructive/5"
-                          : "border-gray-200"
+                          : "border-border"
                       )}
                     >
                       <div className="flex items-center gap-3">
-                        <div className="relative h-12 w-12 rounded overflow-hidden bg-gray-200 flex-shrink-0">
+                        <div className="relative h-12 w-12 rounded overflow-hidden bg-muted flex-shrink-0">
                           {firstProductImage && validator.isURL(firstProductImage) ? (
                             <Image
                               src={firstProductImage}
@@ -1164,17 +1164,17 @@ const SellerChat: React.FC<SellerChatProps> = ({
                             />
                           ) : (
                             <div className="h-full w-full flex items-center justify-center">
-                              <svg className="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <svg className="h-6 w-6 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                               </svg>
                             </div>
                           )}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="font-medium text-gray-900 truncate">
+                          <p className="font-medium text-foreground truncate">
                             {productDisplayText}
                           </p>
-                          <p className="text-sm text-gray-500 mt-1 truncate">
+                          <p className="text-sm text-muted-foreground mt-1 truncate">
                             {buyerName} - {rfqGroup.length} request{rfqGroup.length > 1 ? "s" : ""}
                           </p>
                         </div>
@@ -1201,7 +1201,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
           <div className="flex-1 overflow-y-auto p-4">
             {rfqCustomers.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-16">
-                <p className="text-gray-500">No customers found</p>
+                <p className="text-muted-foreground">No customers found</p>
               </div>
             ) : (
               <div className="space-y-3">
@@ -1224,10 +1224,10 @@ const SellerChat: React.FC<SellerChatProps> = ({
                         }
                       }}
                       className={cn(
-                        "cursor-pointer rounded-lg border-2 bg-white p-4 transition-all hover:border-destructive hover:bg-destructive/5",
+                        "cursor-pointer rounded-lg border-2 bg-card p-4 transition-all hover:border-destructive hover:bg-destructive/5",
                         selectedCustomerId === customer.id
                           ? "border-destructive bg-destructive/5"
-                          : "border-gray-200"
+                          : "border-border"
                       )}
                     >
                       <div className="flex items-center gap-3">
@@ -1240,14 +1240,14 @@ const SellerChat: React.FC<SellerChatProps> = ({
                           />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="font-medium text-gray-900 truncate">{buyerName}</p>
-                          <p className="text-sm text-gray-500 truncate">
+                          <p className="font-medium text-foreground truncate">{buyerName}</p>
+                          <p className="text-sm text-muted-foreground truncate">
                             {customer.lastUnreadMessage?.content 
                               ? customer.lastUnreadMessage.content.substring(0, 50) + "..."
                               : "Lorem Ipsum Dolor Sit Amet,"}
                           </p>
                         </div>
-                        <span className="text-xs text-gray-400 flex-shrink-0">
+                        <span className="text-xs text-muted-foreground flex-shrink-0">
                           {customer.lastUnreadMessage?.createdAt
                             ? moment(customer.lastUnreadMessage.createdAt).fromNow()
                             : "2hr Ago"}
@@ -1273,7 +1273,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
               <div className="mb-4 flex justify-center">
                 <Skeleton className="h-12 w-12 rounded-full" />
               </div>
-              <p className="text-sm text-gray-500">Loading details...</p>
+              <p className="text-sm text-muted-foreground">Loading details...</p>
             </div>
           </div>
         );
@@ -1282,7 +1282,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
       if (!selectedCustomerId) {
         return (
           <div className="flex h-full items-center justify-center p-8">
-            <p className="text-center text-sm text-gray-500">
+            <p className="text-center text-sm text-muted-foreground">
               Select a customer to view details and chat
             </p>
           </div>
@@ -1301,7 +1301,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
     return (
       <div className={cn(
         "flex h-full flex-col",
-        layoutMode === "column" ? "bg-white" : ""
+        layoutMode === "column" ? "bg-card" : ""
       )}>
         {/* Back Button - Only show in grid mode */}
         {layoutMode === "grid" && (
@@ -1316,7 +1316,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
               setSelectedChatHistory([]);
               setMessage("");
             }}
-            className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-all hover:bg-gray-50"
+            className="flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-muted-foreground transition-all hover:bg-muted"
           >
             <svg
               className="h-4 w-4"
@@ -1339,10 +1339,10 @@ const SellerChat: React.FC<SellerChatProps> = ({
         {/* Detailed View */}
         <div className={cn(
           "flex w-full flex-1 flex-col overflow-hidden",
-          layoutMode === "column" ? "bg-white" : "rounded-xl border border-gray-200 bg-white shadow-lg"
+          layoutMode === "column" ? "bg-card" : "rounded-xl border border-border bg-card shadow-lg"
         )}>
           {/* Header Section - Reduced Size */}
-          <div className="flex w-full items-center justify-between border-b border-gray-200 bg-gray-50 px-4 py-2">
+          <div className="flex w-full items-center justify-between border-b border-border bg-muted px-4 py-2">
             <div className="flex items-center gap-2">
               <div className="flex h-7 w-7 items-center justify-center rounded bg-success/10">
                 <svg
@@ -1361,7 +1361,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
               </div>
               <div className="flex flex-row items-center gap-2">
                 <p
-                  className="text-xs font-medium text-gray-600 whitespace-nowrap"
+                  className="text-xs font-medium text-muted-foreground whitespace-nowrap"
                   dir={langDir}
                   translate="no"
                 >
@@ -1414,34 +1414,34 @@ const SellerChat: React.FC<SellerChatProps> = ({
           {/* Content Section */}
           <div className="flex flex-1 flex-col overflow-hidden min-h-0 p-2">
             {/* Product Table Section */}
-            <div className="mb-2 w-full overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm flex-shrink-0 max-h-[180px] overflow-y-auto">
+            <div className="mb-2 w-full overflow-hidden rounded-lg border border-border bg-card shadow-sm flex-shrink-0 max-h-[180px] overflow-y-auto">
               <div className="w-full overflow-x-auto">
                 <div className="min-w-[700px]">
                   {/* Table Header - list style like PCPartPicker */}
-                  <div className="sticky top-0 z-10 grid grid-cols-4 gap-1 border-b border-gray-200 bg-gray-50 px-3 py-1.5">
+                  <div className="sticky top-0 z-10 grid grid-cols-4 gap-1 border-b border-border bg-muted px-3 py-1.5">
                     <div
-                      className="text-[11px] font-semibold text-gray-700"
+                      className="text-[11px] font-semibold text-muted-foreground"
                       dir={langDir}
                       translate="no"
                     >
                       {t("component") || "Component"}
                     </div>
                     <div
-                      className="text-[11px] font-semibold text-gray-700 text-center"
+                      className="text-[11px] font-semibold text-muted-foreground text-center"
                       dir={langDir}
                       translate="no"
                     >
                       {t("selection") || "Selection"}
                     </div>
                     <div
-                      className="text-[11px] font-semibold text-gray-700 text-center"
+                      className="text-[11px] font-semibold text-muted-foreground text-center"
                       dir={langDir}
                       translate="no"
                     >
                       {t("price") || "Price"}
                     </div>
                     <div
-                      className="text-[11px] font-semibold text-gray-700 text-center"
+                      className="text-[11px] font-semibold text-muted-foreground text-center"
                       dir={langDir}
                       translate="no"
                     >
@@ -1459,9 +1459,9 @@ const SellerChat: React.FC<SellerChatProps> = ({
 
                   {!allRfqQuotesQuery?.isLoading && !quoteProducts?.length ? (
                     <div className="flex flex-col items-center justify-center py-12">
-                      <div className="mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
+                      <div className="mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
                         <svg
-                          className="h-8 w-8 text-gray-400"
+                          className="h-8 w-8 text-muted-foreground"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
@@ -1475,7 +1475,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                         </svg>
                       </div>
                       <p
-                        className="text-center text-sm font-medium text-gray-500"
+                        className="text-center text-sm font-medium text-muted-foreground"
                         dir={langDir}
                         translate="no"
                       >
@@ -1490,12 +1490,12 @@ const SellerChat: React.FC<SellerChatProps> = ({
                     const isEditingPrice = editingPriceProductId === item.id;
 
                     return (
-                      <div key={item.id} className="border-b border-gray-200">
+                      <div key={item.id} className="border-b border-border">
                         {/* Main requested product row */}
-                        <div className="grid grid-cols-4 items-center gap-2 px-3 py-2.5 bg-white">
+                        <div className="grid grid-cols-4 items-center gap-2 px-3 py-2.5 bg-card">
                           {/* Requested product info */}
                           <div className="flex items-center gap-2 min-w-0">
-                            <div className="relative h-8 w-8 flex-shrink-0 overflow-hidden rounded border border-gray-200 bg-gray-50">
+                            <div className="relative h-8 w-8 flex-shrink-0 overflow-hidden rounded border border-border bg-muted">
                               <Image
                                 src={
                                   item?.rfqProductDetails?.productImages?.[0]?.image ||
@@ -1507,10 +1507,10 @@ const SellerChat: React.FC<SellerChatProps> = ({
                               />
                             </div>
                             <div className="min-w-0">
-                              <p className="truncate text-xs font-semibold text-gray-900">
+                              <p className="truncate text-xs font-semibold text-foreground">
                                 {translate(item?.rfqProductDetails?.productName || "-")}
                               </p>
-                              <p className="text-[10px] text-gray-500">
+                              <p className="text-[10px] text-muted-foreground">
                                 {item?.deliveryDate || "-"}
                               </p>
                             </div>
@@ -1536,7 +1536,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                                 </span>
                               </button>
                             ) : (
-                              <span className="text-[10px] text-gray-500">
+                              <span className="text-[10px] text-muted-foreground">
                                 {item?.productType === "SAME"
                                   ? t("same_product") || "Same product"
                                   : "-"}
@@ -1545,7 +1545,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                           </div>
 
                           {/* Base column: main product price editor */}
-                          <div className="flex flex-col items-center gap-0.5 text-[10px] text-gray-700">
+                          <div className="flex flex-col items-center gap-0.5 text-[10px] text-muted-foreground">
                             {isEditingPrice ? (
                               <>
                                 <input
@@ -1554,7 +1554,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                                   onChange={(e) =>
                                     setEditingPriceValue(e.target.value)
                                   }
-                                  className="w-20 rounded border border-gray-300 px-1 py-0.5 text-[10px] focus:outline-none focus:ring-1 focus:ring-primary"
+                                  className="w-20 rounded border border-border px-1 py-0.5 text-[10px] focus:outline-none focus:ring-1 focus:ring-primary"
                                 />
                                 <div className="flex gap-1">
                                   <button
@@ -1573,7 +1573,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                                   </button>
                                   <button
                                     type="button"
-                                    className="text-[9px] text-gray-500"
+                                    className="text-[9px] text-muted-foreground"
                                     onClick={() => {
                                       setEditingPriceProductId(null);
                                       setEditingPriceValue("");
@@ -1618,7 +1618,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                           </div>
 
                           {/* Address column */}
-                          <div className="text-center text-[10px] text-gray-700">
+                          <div className="text-center text-[10px] text-muted-foreground">
                             <span className="line-clamp-2">
                               {item?.address || "-"}
                             </span>
@@ -1627,7 +1627,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
 
                         {/* Suggested products under this requested product */}
                         {suggestions.filter((s: any) => (s.quantity ?? 0) > 0).length > 0 && (
-                          <div className="border-t border-gray-100 bg-gray-50 px-3 py-2">
+                          <div className="border-t border-border bg-muted px-3 py-2">
                             {suggestions
                               .filter((s: any) => (s.quantity ?? 0) > 0)
                               .map((s: any) => {
@@ -1656,7 +1656,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                                 >
                                   {/* Component column */}
                                   <div className="flex items-center gap-2 min-w-0">
-                                    <div className="relative h-7 w-7 flex-shrink-0 overflow-hidden rounded border border-gray-200 bg-white">
+                                    <div className="relative h-7 w-7 flex-shrink-0 overflow-hidden rounded border border-border bg-card">
                                       <Image
                                         src={imageUrl}
                                         alt={p?.productName || "Product"}
@@ -1669,7 +1669,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                                         {p?.productName || "-"}
                                       </span>
                                       {s.quantity && s.quantity > 0 && (
-                                        <span className="text-[9px] text-gray-500">
+                                        <span className="text-[9px] text-muted-foreground">
                                           Qty: {s.quantity}
                                         </span>
                                       )}
@@ -1689,14 +1689,14 @@ const SellerChat: React.FC<SellerChatProps> = ({
                                   </div>
 
                                   {/* Price column */}
-                                  <div className="text-center text-[10px] text-gray-700">
+                                  <div className="text-center text-[10px] text-muted-foreground">
                                     <span>
                                       {totalPrice ? `${currency.symbol}${totalPrice}` : "-"}
                                     </span>
                                   </div>
 
                                   {/* Address column */}
-                                  <div className="text-center text-[10px] text-gray-500">
+                                  <div className="text-center text-[10px] text-muted-foreground">
                                     <span>-</span>
                                   </div>
                                 </div>
@@ -1712,7 +1712,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
               
               {/* Send Update and Cancel Buttons */}
               {quoteProducts && quoteProducts.length > 0 && (
-                <div className="border-t border-gray-200 bg-gray-50 px-3 py-2 flex items-center justify-end gap-2">
+                <div className="border-t border-border bg-muted px-3 py-2 flex items-center justify-end gap-2">
                   <button
                     type="button"
                     onClick={() => {
@@ -1721,7 +1721,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                       setPendingSuggestionUpdates(new Map());
                       setHasPendingUpdates(false);
                     }}
-                    className="px-4 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-50 transition-colors"
+                    className="px-4 py-1.5 text-xs font-medium text-muted-foreground bg-card border border-border rounded hover:bg-muted transition-colors"
                     dir={langDir}
                   >
                     {t("cancel") || "Cancel"}
@@ -1733,7 +1733,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                     className={`px-4 py-1.5 text-xs font-medium rounded transition-colors ${
                       hasPendingUpdates
                         ? "bg-primary text-white hover:bg-primary/90"
-                        : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                        : "bg-muted text-muted-foreground cursor-not-allowed"
                     }`}
                     dir={langDir}
                   >
@@ -1745,7 +1745,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
 
             {/* Chat Section - Scrollable */}
             {rfqQuotes?.length > 0 ? (
-              <div className="flex-1 flex flex-col overflow-hidden min-h-0 w-full rounded-lg border border-gray-200 bg-white shadow-sm flex-shrink-0">
+              <div className="flex-1 flex flex-col overflow-hidden min-h-0 w-full rounded-lg border border-border bg-card shadow-sm flex-shrink-0">
                 <SellerChatHistory
                   roomId={selectedRoom}
                   selectedChatHistory={selectedChatHistory}
@@ -1760,10 +1760,10 @@ const SellerChat: React.FC<SellerChatProps> = ({
 
             {/* Message Input Section - Reduced Size */}
             {rfqQuotes?.length > 0 ? (
-              <div className="flex-shrink-0 rounded-lg border border-gray-200 bg-gray-50 p-2">
+              <div className="flex-shrink-0 rounded-lg border border-border bg-muted p-2">
                 <div className="flex w-full items-end gap-2">
                   {/* Attachment Button */}
-                  <div className="relative flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg border border-gray-300 bg-white transition-colors hover:bg-gray-50">
+                  <div className="relative flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg border border-border bg-card transition-colors hover:bg-muted">
                     <input
                       type="file"
                       className="absolute inset-0 z-10 cursor-pointer opacity-0"
@@ -1778,7 +1778,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                   </div>
 
                   {/* Message Input */}
-                  <div className="flex flex-1 items-end gap-1.5 rounded-lg border border-gray-300 bg-white px-3 py-2">
+                  <div className="flex flex-1 items-end gap-1.5 rounded-lg border border-border bg-card px-3 py-2">
                     <textarea
                       onChange={(e) => setMessage(e.target.value)}
                       value={message}
@@ -1791,7 +1791,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                     />
                     <button
                       onClick={() => setShowEmoji(!showEmoji)}
-                      className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg transition-colors hover:bg-gray-100"
+                      className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg transition-colors hover:bg-muted"
                       type="button"
                     >
                       <Image
@@ -1814,7 +1814,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
 
                 {/* Emoji Picker */}
                 {showEmoji ? (
-                  <div className="mt-2 rounded-lg border border-gray-200 bg-white p-2">
+                  <div className="mt-2 rounded-lg border border-border bg-card p-2">
                     <EmojiPicker
                       lazyLoadEmojis={true}
                       onEmojiClick={onEmojiClick}
@@ -1829,10 +1829,10 @@ const SellerChat: React.FC<SellerChatProps> = ({
                     {attachments.map((file: any, index: any) => (
                       <div
                         key={index}
-                        className="flex items-center gap-1.5 rounded-lg border border-gray-300 bg-white px-2 py-1.5"
+                        className="flex items-center gap-1.5 rounded-lg border border-border bg-card px-2 py-1.5"
                       >
                         <svg
-                          className="h-3.5 w-3.5 text-gray-500"
+                          className="h-3.5 w-3.5 text-muted-foreground"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
@@ -1844,7 +1844,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                           />
                         </svg>
-                        <span className="max-w-[200px] truncate text-xs text-gray-700">
+                        <span className="max-w-[200px] truncate text-xs text-muted-foreground">
                           {file.name}
                         </span>
                         <button
@@ -1940,7 +1940,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
         <div className="flex items-center justify-between">
           <div>
             <h2
-              className="text-2xl font-bold text-gray-900"
+              className="text-2xl font-bold text-foreground"
               dir={langDir}
               translate="no"
             >
@@ -1948,7 +1948,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                 ? "Hidden Requests"
                 : t("request_for_rfq")}
             </h2>
-            <p className="mt-1 text-sm text-gray-600" dir={langDir} translate="no">
+            <p className="mt-1 text-sm text-muted-foreground" dir={langDir} translate="no">
               {showHiddenRequests
                 ? "View and restore hidden RFQ requests"
                 : t("select_an_rfq_request_to_view_details") ||
@@ -1960,7 +1960,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
               <button
                 onClick={handleBulkHide}
                 disabled={hideRfqRequestMutation.isPending}
-                className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-all hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-muted-foreground transition-all hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50"
                 translate="no"
                 type="button"
               >
@@ -2043,7 +2043,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                 "flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition-all",
                 isSelectMode
                   ? "border-dark-orange bg-warning/5 text-dark-orange hover:bg-warning/10"
-                  : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50",
+                  : "border-border bg-card text-muted-foreground hover:bg-muted",
               )}
               translate="no"
               type="button"
@@ -2086,7 +2086,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
             </button>
             <button
               onClick={() => setShowHiddenRequests(!showHiddenRequests)}
-              className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-all hover:bg-gray-50"
+              className="flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-muted-foreground transition-all hover:bg-muted"
               translate="no"
               type="button"
             >
@@ -2135,10 +2135,10 @@ const SellerChat: React.FC<SellerChatProps> = ({
           </div>
         </div>
         {isSelectMode && (
-          <div className="mt-4 flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 px-4 py-2">
+          <div className="mt-4 flex items-center gap-4 rounded-lg border border-border bg-muted px-4 py-2">
             <button
               onClick={handleSelectAll}
-              className="text-sm font-medium text-gray-700 hover:text-gray-900"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground"
               translate="no"
               type="button"
             >
@@ -2146,7 +2146,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                 ? "Deselect All"
                 : "Select All"}
             </button>
-            <span className="text-sm text-gray-600" translate="no">
+            <span className="text-sm text-muted-foreground" translate="no">
               {selectedRequests.size} of {groupedRfqQuotes.length} selected
             </span>
           </div>
@@ -2155,7 +2155,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
 
       {/* Loading State */}
       {allRfqQuotesQuery?.isLoading ? (
-        <div className={displayMode === "list" ? "space-y-0 border border-gray-200 rounded-lg bg-white overflow-hidden divide-y divide-gray-200" : "grid gap-4 md:grid-cols-2 lg:grid-cols-3"}>
+        <div className={displayMode === "list" ? "space-y-0 border border-border rounded-lg bg-card overflow-hidden divide-y divide-border" : "grid gap-4 md:grid-cols-2 lg:grid-cols-3"}>
           {Array.from({ length: 6 }).map((_, i) => (
             <Skeleton key={i} className={displayMode === "list" ? "h-24 w-full rounded-none" : "h-64 w-full rounded-xl"} />
           ))}
@@ -2165,10 +2165,10 @@ const SellerChat: React.FC<SellerChatProps> = ({
       {/* Empty State */}
       {!allRfqQuotesQuery?.isLoading && groupedRfqQuotes.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-16">
-          <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-gray-100">
+          <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-muted">
             {showHiddenRequests ? (
               <svg
-                className="h-10 w-10 text-gray-400"
+                className="h-10 w-10 text-muted-foreground"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -2182,7 +2182,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
               </svg>
             ) : (
               <svg
-                className="h-10 w-10 text-gray-400"
+                className="h-10 w-10 text-muted-foreground"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -2197,7 +2197,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
             )}
           </div>
           <p
-            className="text-center text-lg font-medium text-gray-500"
+            className="text-center text-lg font-medium text-muted-foreground"
             dir={langDir}
             translate="no"
           >
@@ -2210,22 +2210,22 @@ const SellerChat: React.FC<SellerChatProps> = ({
 
       {/* RFQ Request Cards Grid or List */}
       {!allRfqQuotesQuery?.isLoading && groupedRfqQuotes.length > 0 && (
-        <div className={displayMode === "list" ? "space-y-0 border border-gray-200 rounded-lg bg-white overflow-hidden shadow-sm" : "grid gap-4 md:grid-cols-2 lg:grid-cols-3"}>
+        <div className={displayMode === "list" ? "space-y-0 border border-border rounded-lg bg-card overflow-hidden shadow-sm" : "grid gap-4 md:grid-cols-2 lg:grid-cols-3"}>
           {/* List View Header */}
           {displayMode === "list" && (
             <div className={cn(
-              "hidden lg:grid gap-6 px-6 py-3 bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200 sticky top-0 z-10",
+              "hidden lg:grid gap-6 px-6 py-3 bg-gradient-to-r from-gray-50 to-gray-100 border-b border-border sticky top-0 z-10",
               isSelectMode 
                 ? "grid-cols-[auto_120px_auto_300px_160px_220px_auto]" 
                 : "grid-cols-[120px_auto_300px_160px_220px_auto]"
             )}>
               {isSelectMode && <div></div>}
-              <div className="text-xs font-semibold uppercase tracking-wide text-gray-600">RFQ ID</div>
-              <div className="text-xs font-semibold uppercase tracking-wide text-gray-600">Products</div>
-              <div className="text-xs font-semibold uppercase tracking-wide text-gray-600">Product Details</div>
-              <div className="text-xs font-semibold uppercase tracking-wide text-gray-600">Buyer</div>
-              <div className="text-xs font-semibold uppercase tracking-wide text-gray-600">Latest Message</div>
-              <div className="text-xs font-semibold uppercase tracking-wide text-gray-600 text-right">Actions</div>
+              <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">RFQ ID</div>
+              <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Products</div>
+              <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Product Details</div>
+              <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Buyer</div>
+              <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Latest Message</div>
+              <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground text-right">Actions</div>
             </div>
           )}
           {groupedRfqQuotes.map((rfqGroup, groupIndex) => {
@@ -2306,12 +2306,12 @@ const SellerChat: React.FC<SellerChatProps> = ({
                 className={cn(
                   displayMode === "list"
                     ? cn(
-                        "group border-b border-gray-200 bg-white px-4 py-4 lg:px-6 lg:py-5 transition-all hover:bg-gray-50/50 last:border-b-0 flex flex-col lg:grid gap-4 lg:gap-6 items-start lg:items-center",
+                        "group border-b border-border bg-card px-4 py-4 lg:px-6 lg:py-5 transition-all hover:bg-muted/50 last:border-b-0 flex flex-col lg:grid gap-4 lg:gap-6 items-start lg:items-center",
                         isSelectMode 
                           ? "lg:grid-cols-[auto_120px_auto_300px_160px_220px_auto]" 
                           : "lg:grid-cols-[120px_auto_300px_160px_220px_auto]"
                       )
-                    : "group overflow-hidden rounded-xl border-2 bg-white shadow-sm transition-all",
+                    : "group overflow-hidden rounded-xl border-2 bg-card shadow-sm transition-all",
                   isSelectMode
                     ? "cursor-default"
                     : displayMode === "list"
@@ -2323,7 +2323,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                       ? "border-dark-orange bg-warning/5"
                       : displayMode === "list"
                         ? ""
-                        : "border-gray-200",
+                        : "border-border",
                 )}
               >
                 {displayMode === "list" ? (
@@ -2340,7 +2340,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                           "flex h-5 w-5 cursor-pointer items-center justify-center rounded border-2 transition-all",
                           isSelected
                             ? "border-dark-orange bg-dark-orange"
-                            : "border-gray-300 hover:border-dark-orange"
+                            : "border-border hover:border-dark-orange"
                         )}
                       >
                         {isSelected && (
@@ -2373,7 +2373,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                       {allProductImages.slice(0, 3).map((img: any, idx: number) => (
                         <div
                           key={idx}
-                          className="relative h-14 w-14 flex-shrink-0 overflow-hidden rounded-lg border-2 border-gray-200 bg-gray-100 shadow-sm transition-all group-hover:border-dark-orange/30"
+                          className="relative h-14 w-14 flex-shrink-0 overflow-hidden rounded-lg border-2 border-border bg-muted shadow-sm transition-all group-hover:border-dark-orange/30"
                         >
                           <Image
                             src={
@@ -2388,8 +2388,8 @@ const SellerChat: React.FC<SellerChatProps> = ({
                         </div>
                       ))}
                       {allProductImages.length > 3 && (
-                        <div className="relative flex h-14 w-14 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg border-2 border-gray-200 bg-gradient-to-br from-gray-100 to-gray-200 shadow-sm">
-                          <span className="text-xs font-bold text-gray-600">
+                        <div className="relative flex h-14 w-14 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg border-2 border-border bg-gradient-to-br from-gray-100 to-gray-200 shadow-sm">
+                          <span className="text-xs font-bold text-muted-foreground">
                             +{allProductImages.length - 3}
                           </span>
                         </div>
@@ -2402,16 +2402,16 @@ const SellerChat: React.FC<SellerChatProps> = ({
                         <div className="space-y-1.5">
                           {allProductDetails.slice(0, 2).map((product: any, idx: number) => (
                             <div key={idx} className="flex items-center gap-3">
-                              <span className="truncate text-sm font-medium text-gray-900">
+                              <span className="truncate text-sm font-medium text-foreground">
                                 {translate(product.productName)}
                               </span>
-                              <span className="flex-shrink-0 rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-600">
+                              <span className="flex-shrink-0 rounded-full bg-muted px-2 py-0.5 text-xs font-semibold text-muted-foreground">
                                 Qty: {product.quantity}
                               </span>
                             </div>
                           ))}
                           {allProductDetails.length > 2 && (
-                            <div className="text-xs font-medium text-gray-500">
+                            <div className="text-xs font-medium text-muted-foreground">
                               +{allProductDetails.length - 2} more product{allProductDetails.length - 2 > 1 ? "s" : ""}
                             </div>
                           )}
@@ -2430,10 +2430,10 @@ const SellerChat: React.FC<SellerChatProps> = ({
                         />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className="text-sm font-semibold text-gray-900 truncate">
+                        <p className="text-sm font-semibold text-foreground truncate">
                           {buyerName}
                         </p>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-muted-foreground">
                           {rfqGroup.length} {rfqGroup.length === 1 ? "request" : "requests"}
                         </p>
                       </div>
@@ -2442,18 +2442,18 @@ const SellerChat: React.FC<SellerChatProps> = ({
                     {/* Latest Message Section */}
                     <div className="min-w-0">
                       {latestMessage?.content ? (
-                        <div className="rounded-lg bg-gray-50 px-3 py-2 border border-gray-200">
-                          <p className="line-clamp-1 text-xs text-gray-700 truncate font-medium">
+                        <div className="rounded-lg bg-muted px-3 py-2 border border-border">
+                          <p className="line-clamp-1 text-xs text-muted-foreground truncate font-medium">
                             {latestMessage.content}
                           </p>
                           {latestMessage.createdAt && (
-                            <p className="mt-1 text-[10px] text-gray-400 font-medium">
+                            <p className="mt-1 text-[10px] text-muted-foreground font-medium">
                               {moment(latestMessage.createdAt).fromNow()}
                             </p>
                           )}
                         </div>
                       ) : (
-                        <span className="text-xs text-gray-400">-</span>
+                        <span className="text-xs text-muted-foreground">-</span>
                       )}
                     </div>
 
@@ -2499,7 +2499,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                                 handleHideRequest(e, mainQuote.id);
                               }}
                               disabled={hideRfqRequestMutation.isPending}
-                              className="flex items-center gap-1.5 rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 transition-all hover:bg-gray-50 hover:border-gray-400 disabled:cursor-not-allowed disabled:opacity-50 shadow-sm"
+                              className="flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground transition-all hover:bg-muted hover:border-border disabled:cursor-not-allowed disabled:opacity-50 shadow-sm"
                               title="Hide Request"
                               type="button"
                             >
@@ -2526,7 +2526,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                   /* Card View Layout (Original) */
                   <>
                 {/* Card Header */}
-                <div className="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-4 py-3">
+                <div className="flex items-center justify-between border-b border-border bg-muted px-4 py-3">
                   <div className="flex items-center gap-2">
                     {isSelectMode && (
                       <div
@@ -2534,7 +2534,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                           e.stopPropagation();
                           handleToggleSelect(mainQuote.id);
                         }}
-                        className="flex h-5 w-5 cursor-pointer items-center justify-center rounded border-2 border-gray-300 transition-all hover:border-dark-orange"
+                        className="flex h-5 w-5 cursor-pointer items-center justify-center rounded border-2 border-border transition-all hover:border-dark-orange"
                       >
                         {isSelected && (
                           <svg
@@ -2570,7 +2570,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                     </div>
                     <div>
                       <span
-                        className="text-xs font-medium text-gray-500"
+                        className="text-xs font-medium text-muted-foreground"
                         translate="no"
                       >
                         {t("rfq_id")}
@@ -2648,7 +2648,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                           <button
                             onClick={(e) => handleHideRequest(e, mainQuote.id)}
                             disabled={hideRfqRequestMutation.isPending}
-                            className="flex items-center gap-1.5 rounded-lg border border-gray-300 bg-white px-2 py-1.5 text-gray-600 transition-all hover:bg-gray-100 hover:text-gray-900 disabled:cursor-not-allowed disabled:opacity-50"
+                            className="flex items-center gap-1.5 rounded-lg border border-border bg-card px-2 py-1.5 text-muted-foreground transition-all hover:bg-muted hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50"
                             title="Hide Request"
                             type="button"
                           >
@@ -2705,7 +2705,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                       .map((img: any, idx: number) => (
                         <div
                           key={idx}
-                          className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg border border-gray-200 bg-gray-100"
+                          className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg border border-border bg-muted"
                         >
                           <Image
                             src={
@@ -2720,8 +2720,8 @@ const SellerChat: React.FC<SellerChatProps> = ({
                         </div>
                       ))}
                     {allProductImages.length > 3 && (
-                      <div className="relative flex h-20 w-20 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg border border-gray-200 bg-gray-100">
-                        <span className="text-sm font-bold text-gray-600">
+                      <div className="relative flex h-20 w-20 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg border border-border bg-muted">
+                        <span className="text-sm font-bold text-muted-foreground">
                           +{allProductImages.length - 3}
                         </span>
                       </div>
@@ -2736,18 +2736,18 @@ const SellerChat: React.FC<SellerChatProps> = ({
                         .map((product: any, idx: number) => (
                           <div
                             key={idx}
-                            className="flex items-center justify-between rounded-md bg-gray-50 px-2 py-1.5 text-xs"
+                            className="flex items-center justify-between rounded-md bg-muted px-2 py-1.5 text-xs"
                           >
-                            <span className="flex-1 truncate font-medium text-gray-700">
+                            <span className="flex-1 truncate font-medium text-muted-foreground">
                               {translate(product.productName)}
                             </span>
-                            <span className="ml-2 flex-shrink-0 text-gray-500">
+                            <span className="ml-2 flex-shrink-0 text-muted-foreground">
                               Qty: {product.quantity}
                             </span>
                           </div>
                         ))}
                       {allProductDetails.length > 2 && (
-                        <div className="text-center text-xs text-gray-500">
+                        <div className="text-center text-xs text-muted-foreground">
                           +{allProductDetails.length - 2} more product
                           {allProductDetails.length - 2 > 1 ? "s" : ""}
                         </div>
@@ -2766,10 +2766,10 @@ const SellerChat: React.FC<SellerChatProps> = ({
                       />
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm font-semibold text-gray-900">
+                      <p className="text-sm font-semibold text-foreground">
                         {buyerName}
                       </p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-muted-foreground">
                         {rfqGroup.length}{" "}
                         {rfqGroup.length === 1 ? "request" : "requests"}
                       </p>
@@ -2778,12 +2778,12 @@ const SellerChat: React.FC<SellerChatProps> = ({
 
                   {/* Latest Message Preview */}
                   {latestMessage?.content && (
-                    <div className="rounded-lg border border-gray-200 bg-gray-50 p-2">
-                      <p className="line-clamp-2 text-xs text-gray-600">
+                    <div className="rounded-lg border border-border bg-muted p-2">
+                      <p className="line-clamp-2 text-xs text-muted-foreground">
                         {latestMessage.content}
                       </p>
                       {latestMessage.createdAt && (
-                        <p className="mt-1 text-xs text-gray-400">
+                        <p className="mt-1 text-xs text-muted-foreground">
                           {moment(latestMessage.createdAt).fromNow()}
                         </p>
                       )}
@@ -2793,7 +2793,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                   {/* Delivery Date */}
                   {mainQuote.rfqQuotesUser_rfqQuotes?.rfqQuotes_rfqQuoteAddress
                     ?.rfqDate && (
-                    <div className="mt-3 flex items-center gap-1.5 text-xs text-gray-600">
+                    <div className="mt-3 flex items-center gap-1.5 text-xs text-muted-foreground">
                       <svg
                         className="h-4 w-4"
                         fill="none"

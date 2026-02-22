@@ -81,14 +81,14 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({
       <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
         {/* Ratings Summary - Row Format */}
         <div className="flex items-center gap-6">
-          <h3 className="text-5xl font-bold text-gray-900">
+          <h3 className="text-5xl font-bold text-foreground">
             {calculateAvgRating ? `${calculateAvgRating}.0` : "0"}
           </h3>
           <div className="flex flex-col gap-1">
             <div className="flex items-center gap-1">
               {calculateRatings(calculateAvgRating)}
             </div>
-            <p className="text-sm text-gray-600" dir={langDir} translate="no">
+            <p className="text-sm text-muted-foreground" dir={langDir} translate="no">
               ({t("based_on_n_reviews", {
                 n: reviewsQuery.data?.data?.length || 0,
               })})
@@ -113,12 +113,12 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({
       </div>
 
       {/* Sort By Section */}
-      <div className="flex items-center justify-between border-b border-gray-200 pb-4">
-        <h4 className="text-lg font-semibold text-gray-900" dir={langDir} translate="no">
+      <div className="flex items-center justify-between border-b border-border pb-4">
+        <h4 className="text-lg font-semibold text-foreground" dir={langDir} translate="no">
           {t("reviews")}
         </h4>
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-gray-600" dir={langDir} translate="no">
+          <span className="text-sm font-medium text-muted-foreground" dir={langDir} translate="no">
             {t("sort_by")}:
           </span>
           <div className="flex gap-2">
@@ -129,7 +129,7 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({
               className={`rounded-full px-4 text-sm font-medium transition-all ${
                 sortType === "newest"
                   ? "bg-warning text-white hover:bg-warning"
-                  : "border-gray-300 text-gray-700 hover:bg-gray-50"
+                  : "border-border text-muted-foreground hover:bg-muted"
               }`}
               dir={langDir}
               translate="no"
@@ -143,7 +143,7 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({
               className={`rounded-full px-4 text-sm font-medium transition-all ${
                 sortType === "highest"
                   ? "bg-warning text-white hover:bg-warning"
-                  : "border-gray-300 text-gray-700 hover:bg-gray-50"
+                  : "border-border text-muted-foreground hover:bg-muted"
               }`}
               dir={langDir}
               translate="no"
@@ -157,7 +157,7 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({
               className={`rounded-full px-4 text-sm font-medium transition-all ${
                 sortType === "lowest"
                   ? "bg-warning text-white hover:bg-warning"
-                  : "border-gray-300 text-gray-700 hover:bg-gray-50"
+                  : "border-border text-muted-foreground hover:bg-muted"
               }`}
               dir={langDir}
               translate="no"
@@ -170,14 +170,14 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({
 
       {/* Reviews Grid */}
       {!reviewsQuery?.data?.data?.length ? (
-        <div className="flex min-h-[300px] flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 py-12">
-          <svg className="h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div className="flex min-h-[300px] flex-col items-center justify-center rounded-lg border-2 border-dashed border-border bg-muted py-12">
+          <svg className="h-16 w-16 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
           </svg>
-          <p className="mt-4 text-lg font-semibold text-gray-900" dir={langDir} translate="no">
+          <p className="mt-4 text-lg font-semibold text-foreground" dir={langDir} translate="no">
             {t("no_reviews_found")}
           </p>
-          <p className="mt-2 text-sm text-gray-600" dir={langDir} translate="no">
+          <p className="mt-2 text-sm text-muted-foreground" dir={langDir} translate="no">
             Be the first to review this product
           </p>
         </div>

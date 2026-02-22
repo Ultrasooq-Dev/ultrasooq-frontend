@@ -182,7 +182,7 @@ const ExistingProductsPage = () => {
       <div className="body-content-s1">
         <div className="trending-search-sec manage_product_sec mt-0">
           <div className="container m-auto flex flex-wrap px-3">
-            <div className="mb-5 flex w-full flex-wrap items-center justify-between border-b border-solid border-gray-300 pb-3.5">
+            <div className="mb-5 flex w-full flex-wrap items-center justify-between border-b border-solid border-border pb-3.5">
               <div className="flex flex-wrap items-center justify-start">
                 <h4 className="mr-3 whitespace-nowrap text-xl font-normal capitalize text-color-dark md:mr-6 md:text-2xl" dir={langDir} translate="no">
                   {t("choose_products")}
@@ -231,7 +231,7 @@ const ExistingProductsPage = () => {
                           <div key={item.value} className="div-li">
                             <Checkbox
                               id={item.label}
-                              className="border border-solid border-gray-300 data-[state=checked]:bg-dark-orange!"
+                              className="border border-solid border-border data-[state=checked]:bg-dark-orange!"
                               onCheckedChange={(checked) =>
                                 handleBrandChange(checked, item)
                               }
@@ -301,7 +301,7 @@ const ExistingProductsPage = () => {
       </div>
 
       {selectedProductIds.length ? (
-        <div className="fixed bottom-0 left-0 z-10 flex w-full items-center justify-end border-t border-solid border-gray-300 bg-dark-orange px-10 py-3">
+        <div className="fixed bottom-0 left-0 z-10 flex w-full items-center justify-end border-t border-solid border-border bg-dark-orange px-10 py-3">
           <p className="mr-4 text-base font-medium text-white" translate="no">
             {t("n_products_selected").replace("{n}", String(selectedProductIds.length))}
           </p>
@@ -309,7 +309,7 @@ const ExistingProductsPage = () => {
             type="submit"
             onClick={onSubmit}
             size="lg"
-            className="flex items-center rounded-sm bg-white text-sm font-bold text-dark-orange"
+            className="flex items-center rounded-sm bg-card text-sm font-bold text-dark-orange"
             disabled={addMultiplePriceForProductIds.isPending}
             dir={langDir}
             translate="no"

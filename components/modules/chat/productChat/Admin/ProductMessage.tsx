@@ -62,7 +62,7 @@ const ProductMessage: React.FC<ProductMessageProps> = ({
           <div>
             <div className="flex space-x-2 p-2">
               <div className="flex items-center space-x-1">
-                <div className="text-xs font-normal text-gray-500">
+                <div className="text-xs font-normal text-muted-foreground">
                   {message.content}
                 </div>
                 {message?.unreadMsgCount ? (

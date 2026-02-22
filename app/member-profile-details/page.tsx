@@ -105,7 +105,7 @@ export default function MemberProfileDetailsPage() {
                                     </TabsTrigger>
                                 </TabsList>
                                 <TabsContent value="profile-info" className="mt-0">
-                                    <div className="w-full rounded-b-3xl border border-solid border-gray-300 bg-white p-4 shadow-md sm:px-6 sm:pb-4 sm:pt-8 md:px-9 md:pb-7 md:pt-12">
+                                    <div className="w-full rounded-b-3xl border border-solid border-border bg-card p-4 shadow-md sm:px-6 sm:pb-4 sm:pt-8 md:px-9 md:pb-7 md:pt-12">
                                         {!activeSellerId ? (
                                             <InformationSection userDetails={me.data?.data} />
                                         ) : null}
@@ -124,7 +124,7 @@ export default function MemberProfileDetailsPage() {
                                     </div>
                                 </TabsContent>
                                 <TabsContent value="ratings" className="mt-0">
-                                    <div className="w-full rounded-b-3xl border border-solid border-gray-300 bg-white p-4 shadow-md sm:px-6 sm:pb-4 sm:pt-8 md:px-9 md:pb-7 md:pt-12">
+                                    <div className="w-full rounded-b-3xl border border-solid border-border bg-card p-4 shadow-md sm:px-6 sm:pb-4 sm:pt-8 md:px-9 md:pb-7 md:pt-12">
                                         <ReviewSection
                                             sellerId={
                                                 activeSellerId
@@ -135,7 +135,7 @@ export default function MemberProfileDetailsPage() {
                                     </div>
                                 </TabsContent>
                                 <TabsContent value="products" className="mt-0">
-                                    <div className="w-full rounded-b-3xl border border-solid border-gray-300 bg-white p-4 shadow-md sm:px-6 sm:pb-4 sm:pt-8 md:px-9 md:pb-7 md:pt-12">
+                                    <div className="w-full rounded-b-3xl border border-solid border-border bg-card p-4 shadow-md sm:px-6 sm:pb-4 sm:pt-8 md:px-9 md:pb-7 md:pt-12">
                                         <ProductsSection sellerId={activeSellerId as string} />
                                     </div>
                                 </TabsContent>

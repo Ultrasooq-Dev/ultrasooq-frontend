@@ -54,7 +54,7 @@ export function EmojiPickerNavigation({
               title={i18n.categories[id]}
               type="button"
               className={cn(
-                'flex grow cursor-pointer items-center justify-center border-none bg-transparent fill-current text-sm text-gray-500 hover:text-gray-800',
+                'flex grow cursor-pointer items-center justify-center border-none bg-transparent fill-current text-sm text-muted-foreground hover:text-foreground',
                 id === focusedCategory &&
                   'pointer-events-none fill-current text-primary'
               )}

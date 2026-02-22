@@ -64,7 +64,7 @@ const ProductVariants: React.FC<ProductVariantsTypes> = ({ index }) => {
                     <div className="relative mb-3 mt-2 w-full">
                         {formContext.getValues(`productVariants.${index}.variants.${i}.image`) ? (
                             <>
-                                <div className="relative m-auto flex h-48 w-full flex-wrap items-center justify-center rounded-xl border-2 border-dashed border-gray-300 text-center">
+                                <div className="relative m-auto flex h-48 w-full flex-wrap items-center justify-center rounded-xl border-2 border-dashed border-border text-center">
                                     <button
                                         type="button"
                                         className="common-close-btn-uploader-s1"
@@ -113,7 +113,7 @@ const ProductVariants: React.FC<ProductVariantsTypes> = ({ index }) => {
                             </>
                         ) : (
                             <>
-                                <div className="absolute m-auto flex h-48 w-full cursor-pointer flex-wrap items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-white text-center">
+                                <div className="absolute m-auto flex h-48 w-full cursor-pointer flex-wrap items-center justify-center rounded-xl border-2 border-dashed border-border bg-card text-center">
                                     <div className="text-sm font-medium leading-4 text-color-dark">
                                         <Image
                                             src="/images/plus.png"

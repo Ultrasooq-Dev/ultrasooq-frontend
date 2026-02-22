@@ -107,7 +107,7 @@ const MyOrderDetailsPage = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "PLACED":
-        return "bg-gray-100 text-gray-800";
+        return "bg-muted text-foreground";
       case "CONFIRMED":
         return "bg-primary/10 text-primary";
       case "SHIPPED":
@@ -119,7 +119,7 @@ const MyOrderDetailsPage = () => {
       case "CANCELLED":
         return "bg-destructive/10 text-destructive";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-muted text-foreground";
     }
   };
 
@@ -153,15 +153,15 @@ const MyOrderDetailsPage = () => {
 
   return (
     <>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-muted">
         <div className="w-full px-6 py-8 lg:px-12">
           {/* Breadcrumb Navigation */}
           <nav className="mb-8">
-            <ol className="flex items-center space-x-2 text-sm text-gray-600">
+            <ol className="flex items-center space-x-2 text-sm text-muted-foreground">
               <li>
                 <Link
                   href="/home"
-                  className="transition-colors hover:text-gray-900"
+                  className="transition-colors hover:text-foreground"
                   dir={langDir}
                 >
                   {t("home")}
@@ -171,7 +171,7 @@ const MyOrderDetailsPage = () => {
                 <span className="mx-2">/</span>
                 <Link
                   href="/my-orders"
-                  className="transition-colors hover:text-gray-900"
+                  className="transition-colors hover:text-foreground"
                   dir={langDir}
                 >
                   {t("my_orders")}
@@ -179,7 +179,7 @@ const MyOrderDetailsPage = () => {
               </li>
               <li className="flex items-center">
                 <span className="mx-2">/</span>
-                <span className="font-medium text-gray-900">
+                <span className="font-medium text-foreground">
                   {orderDetails?.orderProduct_order?.orderNo || "Loading..."}
                 </span>
               </li>
@@ -195,12 +195,12 @@ const MyOrderDetailsPage = () => {
                 </div>
                 <div>
                   <h1
-                    className="text-3xl font-bold text-gray-900"
+                    className="text-3xl font-bold text-foreground"
                     dir={langDir}
                   >
                     Order Details
                   </h1>
-                  <p className="mt-1 text-gray-600" dir={langDir}>
+                  <p className="mt-1 text-muted-foreground" dir={langDir}>
                     Order #
                     {orderDetails?.orderProduct_order?.orderNo || "Loading..."}
                   </p>
@@ -237,22 +237,22 @@ const MyOrderDetailsPage = () => {
                 <CardContent className="pt-6">
                   <div className="space-y-3">
                     <div className="flex items-center gap-2">
-                      <User className="h-4 w-4 text-gray-500" />
-                      <h3 className="font-semibold text-gray-900" dir={langDir}>
+                      <User className="h-4 w-4 text-muted-foreground" />
+                      <h3 className="font-semibold text-foreground" dir={langDir}>
                         {shippingDetails?.firstName} {shippingDetails?.lastName}
                       </h3>
                     </div>
                     <address
-                      className="leading-relaxed text-gray-600 not-italic"
+                      className="leading-relaxed text-muted-foreground not-italic"
                       dir={langDir}
                     >
                       {shippingDetails?.address}
                       <br />
-                      <span className="text-gray-500">
+                      <span className="text-muted-foreground">
                         Pin: {shippingDetails?.postCode}
                       </span>
                     </address>
-                    <div className="flex items-center gap-2 border-t pt-2 text-gray-600">
+                    <div className="flex items-center gap-2 border-t pt-2 text-muted-foreground">
                       <Phone className="h-4 w-4" />
                       <span dir={langDir}>{shippingDetails?.phone}</span>
                     </div>
@@ -271,22 +271,22 @@ const MyOrderDetailsPage = () => {
                 <CardContent className="pt-6">
                   <div className="space-y-3">
                     <div className="flex items-center gap-2">
-                      <User className="h-4 w-4 text-gray-500" />
-                      <h3 className="font-semibold text-gray-900" dir={langDir}>
+                      <User className="h-4 w-4 text-muted-foreground" />
+                      <h3 className="font-semibold text-foreground" dir={langDir}>
                         {billingDetails?.firstName} {billingDetails?.lastName}
                       </h3>
                     </div>
                     <address
-                      className="leading-relaxed text-gray-600 not-italic"
+                      className="leading-relaxed text-muted-foreground not-italic"
                       dir={langDir}
                     >
                       {billingDetails?.address}
                       <br />
-                      <span className="text-gray-500">
+                      <span className="text-muted-foreground">
                         Pin: {billingDetails?.postCode}
                       </span>
                     </address>
-                    <div className="flex items-center gap-2 border-t pt-2 text-gray-600">
+                    <div className="flex items-center gap-2 border-t pt-2 text-muted-foreground">
                       <Phone className="h-4 w-4" />
                       <span dir={langDir}>{billingDetails?.phone}</span>
                     </div>
@@ -348,26 +348,26 @@ const MyOrderDetailsPage = () => {
               <CardContent className="pt-6">
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-600">
+                    <label className="text-sm font-medium text-muted-foreground">
                       Order Number
                     </label>
-                    <p className="text-lg font-semibold text-gray-900">
+                    <p className="text-lg font-semibold text-foreground">
                       {orderDetails.orderProduct_order.orderNo || "N/A"}
                     </p>
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-600">
+                    <label className="text-sm font-medium text-muted-foreground">
                       Order Status
                     </label>
-                    <p className="text-lg font-semibold text-gray-900">
+                    <p className="text-lg font-semibold text-foreground">
                       {orderDetails.orderProduct_order.orderStatus || "N/A"}
                     </p>
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-600">
+                    <label className="text-sm font-medium text-muted-foreground">
                       Date & Time
                     </label>
-                    <p className="text-lg font-semibold text-gray-900">
+                    <p className="text-lg font-semibold text-foreground">
                       {orderDetails.orderProduct_order.orderDate
                         ? formatDate(orderDetails.orderProduct_order.orderDate)
                         : orderDetails.orderProduct_order.createdAt
@@ -376,17 +376,17 @@ const MyOrderDetailsPage = () => {
                     </p>
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-600">
+                    <label className="text-sm font-medium text-muted-foreground">
                       Subtotal
                     </label>
-                    <p className="text-lg font-semibold text-gray-900">
+                    <p className="text-lg font-semibold text-foreground">
                       {currency.symbol}
                       {orderDetails.orderProduct_order.totalPrice || 0}
                     </p>
                   </div>
                   {orderDetails.orderProduct_order.totalDiscount > 0 && (
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-gray-600">
+                      <label className="text-sm font-medium text-muted-foreground">
                         Discount
                       </label>
                       <p className="text-lg font-semibold text-success">
@@ -396,7 +396,7 @@ const MyOrderDetailsPage = () => {
                     </div>
                   )}
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-600">
+                    <label className="text-sm font-medium text-muted-foreground">
                       Total Amount
                     </label>
                     <p className="text-xl font-bold text-primary">
@@ -408,16 +408,16 @@ const MyOrderDetailsPage = () => {
                    orderDetails.orderProduct_order.dueAmount > 0 && (
                     <>
                       <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-600">
+                        <label className="text-sm font-medium text-muted-foreground">
                           Advance Paid
                         </label>
-                        <p className="text-lg font-semibold text-gray-900">
+                        <p className="text-lg font-semibold text-foreground">
                           {currency.symbol}
                           {orderDetails.orderProduct_order.advanceAmount || 0}
                         </p>
                       </div>
                       <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-600">
+                        <label className="text-sm font-medium text-muted-foreground">
                           Remaining Due
                         </label>
                         <p className="text-lg font-semibold text-warning">
@@ -447,20 +447,20 @@ const MyOrderDetailsPage = () => {
                   <CardContent className="pt-6">
                     <div className="space-y-4">
                       <div className="space-y-2">
-                        <h4 className="flex items-center gap-2 font-medium text-gray-900">
-                          <Truck className="h-4 w-4 text-gray-500" />
+                        <h4 className="flex items-center gap-2 font-medium text-foreground">
+                          <Truck className="h-4 w-4 text-muted-foreground" />
                           Shipping Mode
                         </h4>
-                        <p className="text-gray-600">
+                        <p className="text-muted-foreground">
                           {orderDetails?.orderShippingDetail?.orderShippingType}
                         </p>
                       </div>
                       <div className="space-y-2">
-                        <h4 className="flex items-center gap-2 font-medium text-gray-900">
-                          <Package className="h-4 w-4 text-gray-500" />
+                        <h4 className="flex items-center gap-2 font-medium text-foreground">
+                          <Package className="h-4 w-4 text-muted-foreground" />
                           Delivery Charge
                         </h4>
-                        <p className="text-gray-600">
+                        <p className="text-muted-foreground">
                           {currency.symbol}
                           {orderDetails?.orderShippingDetail?.shippingCharge}
                         </p>
@@ -469,33 +469,33 @@ const MyOrderDetailsPage = () => {
                         "PICKUP" && (
                         <>
                           <div className="space-y-2">
-                            <h4 className="flex items-center gap-2 font-medium text-gray-900">
-                              <Calendar className="h-4 w-4 text-gray-500" />
+                            <h4 className="flex items-center gap-2 font-medium text-foreground">
+                              <Calendar className="h-4 w-4 text-muted-foreground" />
                               Shipping Date
                             </h4>
-                            <p className="text-gray-600">
+                            <p className="text-muted-foreground">
                               {convertDate(
                                 orderDetails?.orderShippingDetail?.shippingDate,
                               )}
                             </p>
                           </div>
                           <div className="space-y-2">
-                            <h4 className="flex items-center gap-2 font-medium text-gray-900">
-                              <Clock className="h-4 w-4 text-gray-500" />
+                            <h4 className="flex items-center gap-2 font-medium text-foreground">
+                              <Clock className="h-4 w-4 text-muted-foreground" />
                               From Time
                             </h4>
-                            <p className="text-gray-600">
+                            <p className="text-muted-foreground">
                               {convertTime(
                                 orderDetails?.orderShippingDetail?.fromTime,
                               )}
                             </p>
                           </div>
                           <div className="space-y-2">
-                            <h4 className="flex items-center gap-2 font-medium text-gray-900">
-                              <Clock className="h-4 w-4 text-gray-500" />
+                            <h4 className="flex items-center gap-2 font-medium text-foreground">
+                              <Clock className="h-4 w-4 text-muted-foreground" />
                               To Time
                             </h4>
-                            <p className="text-gray-600">
+                            <p className="text-muted-foreground">
                               {convertTime(
                                 orderDetails?.orderShippingDetail?.toTime,
                               )}
@@ -532,7 +532,7 @@ const MyOrderDetailsPage = () => {
                         href={`/trending/${orderDetails?.orderProduct_product?.id}`}
                         className="flex-shrink-0"
                       >
-                        <div className="flex h-32 w-32 items-center justify-center overflow-hidden rounded-xl border-2 border-gray-200 bg-white shadow-md transition-shadow hover:shadow-lg">
+                        <div className="flex h-32 w-32 items-center justify-center overflow-hidden rounded-xl border-2 border-border bg-card shadow-md transition-shadow hover:shadow-lg">
                           {orderDetails?.orderProductType === "SERVICE" ? (
                             <Image
                               src={PlaceholderImage}
@@ -560,7 +560,7 @@ const MyOrderDetailsPage = () => {
                         </div>
                       </Link>
                       <div className="flex-1">
-                        <h3 className="mb-2 text-xl font-bold text-gray-900">
+                        <h3 className="mb-2 text-xl font-bold text-foreground">
                           {orderDetails?.orderProductType === "SERVICE"
                             ? orderDetails?.serviceFeatures
                                 ?.serviceFeatures?.[0]?.name
@@ -569,7 +569,7 @@ const MyOrderDetailsPage = () => {
                               orderDetails?.orderProduct_product?.productName ||
                               "Unknown Product"}
                         </h3>
-                        <div className="mb-3 flex items-center gap-6 text-sm text-gray-600">
+                        <div className="mb-3 flex items-center gap-6 text-sm text-muted-foreground">
                           <span className="flex items-center gap-1">
                             <Package className="h-4 w-4" />
                             Quantity: {orderDetails?.orderQuantity || 0}
@@ -643,14 +643,14 @@ const MyOrderDetailsPage = () => {
                     ].includes(orderDetails?.orderProductStatus || "");
                     if (!showTracking || !tracking) return null;
                     return (
-                      <div className="mb-8 rounded-lg border bg-white p-4">
-                        <h4 className="mb-3 font-semibold text-gray-900">
+                      <div className="mb-8 rounded-lg border bg-card p-4">
+                        <h4 className="mb-3 font-semibold text-foreground">
                           Tracking details
                         </h4>
                         <div className="grid grid-cols-1 gap-4 text-sm md:grid-cols-3">
                           <div>
-                            <div className="text-gray-500">Tracking Number</div>
-                            <div className="flex items-center gap-2 font-medium text-gray-900">
+                            <div className="text-muted-foreground">Tracking Number</div>
+                            <div className="flex items-center gap-2 font-medium text-foreground">
                               <span>{tracking?.trackingNumber || "-"}</span>
                               {tracking?.trackingNumber ? (
                                 <button
@@ -669,14 +669,14 @@ const MyOrderDetailsPage = () => {
                             </div>
                           </div>
                           <div>
-                            <div className="text-gray-500">Carrier</div>
-                            <div className="font-medium text-gray-900">
+                            <div className="text-muted-foreground">Carrier</div>
+                            <div className="font-medium text-foreground">
                               {tracking?.carrier || "-"}
                             </div>
                           </div>
                           <div>
-                            <div className="text-gray-500">Added</div>
-                            <div className="font-medium text-gray-900">
+                            <div className="text-muted-foreground">Added</div>
+                            <div className="font-medium text-foreground">
                               {tracking?.addedAt
                                 ? formattedDate(tracking.addedAt)
                                 : "-"}
@@ -685,8 +685,8 @@ const MyOrderDetailsPage = () => {
                         </div>
                         {tracking?.notes ? (
                           <div className="mt-3 text-sm">
-                            <div className="text-gray-500">Notes</div>
-                            <div className="text-gray-900">
+                            <div className="text-muted-foreground">Notes</div>
+                            <div className="text-foreground">
                               {tracking.notes}
                             </div>
                           </div>
@@ -696,7 +696,7 @@ const MyOrderDetailsPage = () => {
                   })()}
                   <div className="relative">
                     {/* Timeline */}
-                    <div className="absolute top-0 bottom-0 left-6 w-0.5 bg-gray-200"></div>
+                    <div className="absolute top-0 bottom-0 left-6 w-0.5 bg-muted"></div>
 
                     <div className="space-y-6">
                       {/* Order Placed */}
@@ -705,10 +705,10 @@ const MyOrderDetailsPage = () => {
                           <CheckCircle className="h-6 w-6 text-success" />
                         </div>
                         <div className="flex-1 pt-1">
-                          <h4 className="mb-1 font-semibold text-gray-900">
+                          <h4 className="mb-1 font-semibold text-foreground">
                             {t("placed")}
                           </h4>
-                          <p className="text-sm text-gray-600">
+                          <p className="text-sm text-muted-foreground">
                             {orderDetails?.orderProductDate
                               ? formatDate(orderDetails.orderProductDate)
                               : orderDetails?.orderProduct_order?.orderDate
@@ -735,7 +735,7 @@ const MyOrderDetailsPage = () => {
                               "CONFIRMED",
                             ].includes(orderDetails?.orderProductStatus || "")
                               ? "bg-primary/10"
-                              : "bg-gray-100",
+                              : "bg-muted",
                           )}
                         >
                           {[
@@ -747,14 +747,14 @@ const MyOrderDetailsPage = () => {
                           ].includes(orderDetails?.orderProductStatus || "") ? (
                             <CheckCircle className="h-6 w-6 text-primary" />
                           ) : (
-                            <Clock className="h-6 w-6 text-gray-400" />
+                            <Clock className="h-6 w-6 text-muted-foreground" />
                           )}
                         </div>
                         <div className="flex-1 pt-1">
-                          <h4 className="mb-1 font-semibold text-gray-900">
+                          <h4 className="mb-1 font-semibold text-foreground">
                             {t("order_confirmed")}
                           </h4>
-                          <p className="text-sm text-gray-600">
+                          <p className="text-sm text-muted-foreground">
                             {[
                               "CANCELLED",
                               "DELIVERED",
@@ -788,7 +788,7 @@ const MyOrderDetailsPage = () => {
                               "SHIPPED",
                             ].includes(orderDetails?.orderProductStatus || "")
                               ? "bg-info/10"
-                              : "bg-gray-100",
+                              : "bg-muted",
                           )}
                         >
                           {[
@@ -799,14 +799,14 @@ const MyOrderDetailsPage = () => {
                           ].includes(orderDetails?.orderProductStatus || "") ? (
                             <Truck className="h-6 w-6 text-info" />
                           ) : (
-                            <Clock className="h-6 w-6 text-gray-400" />
+                            <Clock className="h-6 w-6 text-muted-foreground" />
                           )}
                         </div>
                         <div className="flex-1 pt-1">
-                          <h4 className="mb-1 font-semibold text-gray-900">
+                          <h4 className="mb-1 font-semibold text-foreground">
                             {t("shipped")}
                           </h4>
-                          <p className="text-sm text-gray-600">
+                          <p className="text-sm text-muted-foreground">
                             {[
                               "CANCELLED",
                               "DELIVERED",
@@ -828,7 +828,7 @@ const MyOrderDetailsPage = () => {
                               orderDetails?.orderProductStatus || "",
                             )
                               ? "bg-warning/10"
-                              : "bg-gray-100",
+                              : "bg-muted",
                           )}
                         >
                           {["CANCELLED", "DELIVERED", "OFD"].includes(
@@ -836,14 +836,14 @@ const MyOrderDetailsPage = () => {
                           ) ? (
                             <Truck className="h-6 w-6 text-warning" />
                           ) : (
-                            <Clock className="h-6 w-6 text-gray-400" />
+                            <Clock className="h-6 w-6 text-muted-foreground" />
                           )}
                         </div>
                         <div className="flex-1 pt-1">
-                          <h4 className="mb-1 font-semibold text-gray-900">
+                          <h4 className="mb-1 font-semibold text-foreground">
                             {t("out_for_delivery")}
                           </h4>
-                          <p className="text-sm text-gray-600">
+                          <p className="text-sm text-muted-foreground">
                             {["CANCELLED", "DELIVERED", "OFD"].includes(
                               orderDetails?.orderProductStatus || "",
                             )
@@ -864,7 +864,7 @@ const MyOrderDetailsPage = () => {
                               ? orderDetails?.orderProductStatus === "CANCELLED"
                                 ? "bg-destructive/10"
                                 : "bg-success/10"
-                              : "bg-gray-100",
+                              : "bg-muted",
                           )}
                         >
                           {["CANCELLED", "DELIVERED"].includes(
@@ -876,16 +876,16 @@ const MyOrderDetailsPage = () => {
                               <CheckCircle className="h-6 w-6 text-success" />
                             )
                           ) : (
-                            <Clock className="h-6 w-6 text-gray-400" />
+                            <Clock className="h-6 w-6 text-muted-foreground" />
                           )}
                         </div>
                         <div className="flex-1 pt-1">
-                          <h4 className="mb-1 font-semibold text-gray-900">
+                          <h4 className="mb-1 font-semibold text-foreground">
                             {orderDetails?.orderProductStatus === "CANCELLED"
                               ? t("cancelled")
                               : t("delivered")}
                           </h4>
-                          <p className="text-sm text-gray-600">
+                          <p className="text-sm text-muted-foreground">
                             {["CANCELLED", "DELIVERED"].includes(
                               orderDetails?.orderProductStatus || "",
                             )
@@ -932,7 +932,7 @@ const MyOrderDetailsPage = () => {
                           href={`/my-orders/${item?.id}`}
                           className="flex-shrink-0"
                         >
-                          <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-xl border-2 border-gray-200 bg-white shadow-md transition-shadow hover:shadow-lg">
+                          <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-xl border-2 border-border bg-card shadow-md transition-shadow hover:shadow-lg">
                             {item?.orderProductType === "SERVICE" ? (
                               <Image
                                 src={PlaceholderImage}
@@ -962,7 +962,7 @@ const MyOrderDetailsPage = () => {
 
                         {/* Product Info */}
                         <div className="min-w-0 flex-1">
-                          <h3 className="mb-1 line-clamp-2 text-lg font-bold text-gray-900">
+                          <h3 className="mb-1 line-clamp-2 text-lg font-bold text-foreground">
                             {item?.orderProductType === "SERVICE"
                               ? item?.serviceFeatures?.serviceFeatures?.[0]
                                   ?.name
@@ -971,7 +971,7 @@ const MyOrderDetailsPage = () => {
                                 item?.orderProduct_product?.productName ||
                                 "Unknown Product"}
                           </h3>
-                          <div className="mb-2 flex items-center gap-4 text-sm text-gray-600">
+                          <div className="mb-2 flex items-center gap-4 text-sm text-muted-foreground">
                             <span className="flex items-center gap-1">
                               <Package className="h-3 w-3" />
                               Qty: {item?.orderQuantity || 0}

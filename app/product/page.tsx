@@ -14,7 +14,7 @@ import dynamic from "next/dynamic";
 const DescriptionAndSpecificationSection = dynamic(
   () => import("@/components/modules/createProduct/DescriptionAndSpecificationSection"),
   {
-    loading: () => <div className="animate-pulse h-64 bg-gray-200 rounded-lg" />,
+    loading: () => <div className="animate-pulse h-64 bg-muted rounded-lg" />,
     ssr: false,
   },
 );
@@ -2248,7 +2248,7 @@ const CreateProductPage = () => {
           <h2 className="mb-2 text-xl font-semibold text-destructive">
             {t("error_loading_product")}
           </h2>
-          <p className="mb-4 text-gray-600">
+          <p className="mb-4 text-muted-foreground">
             {t("failed_to_load_product_data")}
           </p>
           <Button
@@ -2273,7 +2273,7 @@ const CreateProductPage = () => {
 
   return (
     <>
-      <section className="min-h-screen bg-gray-50 py-8">
+      <section className="min-h-screen bg-muted py-8">
         <div className="container mx-auto max-w-6xl px-4">
           {/* Header Section */}
           <div className="mb-8 text-center">
@@ -2282,13 +2282,13 @@ const CreateProductPage = () => {
               searchParams?.get("productType") !== "R") ? (
               <>
                 {/* Tab Navigation */}
-                <div className="inline-flex rounded-xl border border-gray-200 bg-white p-1 shadow-sm">
+                <div className="inline-flex rounded-xl border border-border bg-card p-1 shadow-sm">
                   <button
                     type="button"
                     className={`rounded-lg px-6 py-3 text-sm font-medium transition-all duration-200 ${
                       activeTab === "create"
                         ? "bg-warning text-white shadow-md"
-                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                        : "text-muted-foreground hover:bg-muted hover:text-foreground"
                     }`}
                     onClick={() => setActiveTab("create")}
                   >
@@ -2299,7 +2299,7 @@ const CreateProductPage = () => {
                     className={`rounded-lg px-6 py-3 text-sm font-medium transition-all duration-200 ${
                       activeTab === "dropship"
                         ? "bg-warning text-white shadow-md"
-                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                        : "text-muted-foreground hover:bg-muted hover:text-foreground"
                     }`}
                     onClick={() => setActiveTab("dropship")}
                   >

@@ -294,7 +294,7 @@ const AddBranchPage = () => {
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="m-auto mb-12 w-11/12 rounded-lg border border-solid border-gray-300 bg-white p-6 shadow-xs sm:p-8 md:w-10/12 lg:w-10/12 lg:p-10"
+              className="m-auto mb-12 w-11/12 rounded-lg border border-solid border-border bg-card p-6 shadow-xs sm:p-8 md:w-10/12 lg:w-10/12 lg:p-10"
             >
               <div className="text-normal text-light-gray m-auto mb-7 w-full text-center text-sm leading-6">
                 <h2
@@ -306,7 +306,7 @@ const AddBranchPage = () => {
               </div>
 
               <div className="mb-4 w-full">
-                <div className="mt-2.5 w-full border-b-2 border-dashed border-gray-300">
+                <div className="mt-2.5 w-full border-b-2 border-dashed border-border">
                   <label
                     className={cn(
                       "mb-3.5 block",
@@ -341,7 +341,7 @@ const AddBranchPage = () => {
                           {t("upload_branch_front_picture")}
                         </FormLabel>
                         <FormControl>
-                          <div className="relative m-auto h-64 w-full border-2 border-dashed border-gray-300">
+                          <div className="relative m-auto h-64 w-full border-2 border-dashed border-border">
                             <div className="relative h-full w-full">
                               {branchImageFile ? (
                                 <Image
@@ -426,7 +426,7 @@ const AddBranchPage = () => {
                           {t("proof_of_address")}
                         </FormLabel>
                         <FormControl>
-                          <div className="relative m-auto h-64 w-full border-2 border-dashed border-gray-300">
+                          <div className="relative m-auto h-64 w-full border-2 border-dashed border-border">
                             <div className="relative h-full w-full">
                               {proofOfAddressImageFile ? (
                                 <Image
@@ -509,7 +509,7 @@ const AddBranchPage = () => {
 
                 <div className="flex w-full flex-wrap">
                   <div className="mb-4 w-full">
-                    <div className="mt-2.5 w-full border-b-2 border-dashed border-gray-300">
+                    <div className="mt-2.5 w-full border-b-2 border-dashed border-border">
                       <label
                         className={cn(
                           "mb-3.5 block",
@@ -585,7 +585,7 @@ const AddBranchPage = () => {
 
                 <div className="flex w-full flex-wrap">
                   <div className="mb-4 w-full">
-                    <div className="mt-2.5 w-full border-b-2 border-dashed border-gray-300">
+                    <div className="mt-2.5 w-full border-b-2 border-dashed border-border">
                       <label
                         className="text-color-dark mb-3.5 block text-left text-lg leading-5 font-medium capitalize"
                         translate="no"
@@ -611,7 +611,7 @@ const AddBranchPage = () => {
                           render={({ field }) => (
                             <select
                               {...field}
-                              className="h-12! w-full rounded border border-gray-300! px-3 text-base focus-visible:ring-0!"
+                              className="h-12! w-full rounded border border-border! px-3 text-base focus-visible:ring-0!"
                             >
                               <option value="" dir={langDir} translate="no">
                                 {t("select")}
@@ -650,7 +650,7 @@ const AddBranchPage = () => {
                           render={({ field }) => (
                             <select
                               {...field}
-                              className="h-12! w-full rounded border border-gray-300! px-3 text-base focus-visible:ring-0!"
+                              className="h-12! w-full rounded border border-border! px-3 text-base focus-visible:ring-0!"
                             >
                               <option value="" dir={langDir} translate="no">
                                 {t("select")}
@@ -675,7 +675,7 @@ const AddBranchPage = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="mb-3.5 w-full border-b-2 border-dashed border-gray-300 pb-4">
+                  <div className="mb-3.5 w-full border-b-2 border-dashed border-border pb-4">
                     <div className="flex flex-wrap">
                       {DAYS_OF_WEEK.map((item) => (
                         <FormField
@@ -697,7 +697,7 @@ const AddBranchPage = () => {
                                       item.value as keyof typeof field.value
                                     ]
                                   }
-                                  className="data-[state=checked]:bg-dark-orange! border border-solid border-gray-300"
+                                  className="data-[state=checked]:bg-dark-orange! border border-solid border-border"
                                 />
                               </FormControl>
                               <div className="space-y-1 leading-none">
@@ -733,7 +733,7 @@ const AddBranchPage = () => {
                 <MultiSelectCategory name="categoryList" />
 
                 <div
-                  className="mb-3.5 flex w-full border-b-2 border-dashed border-gray-300 pb-4"
+                  className="mb-3.5 flex w-full border-b-2 border-dashed border-border pb-4"
                   dir={langDir}
                 >
                   <FormField

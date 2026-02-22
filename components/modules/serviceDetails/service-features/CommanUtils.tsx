@@ -25,7 +25,7 @@ export const DatePicker = ({
                 <Button
                     variant={"outline-solid"}
                     className={cn(
-                        "h-12! rounded border-gray-300 pl-3 text-left font-normal focus-visible:ring-0!",
+                        "h-12! rounded border-border pl-3 text-left font-normal focus-visible:ring-0!",
                         !selectedFeature?.date && "text-muted-foreground",
                     )}
                     translate="no"
@@ -81,7 +81,7 @@ export const TimePicker = ({
                 <Button
                     variant={"outline-solid"}
                     className={cn(
-                        "h-12! rounded border-gray-300 pl-3 text-left font-normal focus-visible:ring-0!",
+                        "h-12! rounded border-border pl-3 text-left font-normal focus-visible:ring-0!",
                         !selectedFeature?.time && "text-muted-foreground",
                     )}
                     translate="no"
@@ -100,7 +100,7 @@ export const TimePicker = ({
                 align={langDir == "rtl" ? "end" : "start"}
             >
                 <select
-                    className="w-full cursor-pointer rounded-lg border border-gray-300 p-2 text-lg"
+                    className="w-full cursor-pointer rounded-lg border border-border p-2 text-lg"
                     value={selectedFeature?.time || ""}
                     onChange={(e) => {
                         const selectedTime = e.target.value;

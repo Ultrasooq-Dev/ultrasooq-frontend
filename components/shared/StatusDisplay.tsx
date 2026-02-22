@@ -20,8 +20,8 @@ const StatusDisplay: React.FC<StatusDisplayProps> = ({
   if (meLoading || accountLoading) {
     return (
       <div className={`flex items-center space-x-2 ${className}`}>
-        <div className="animate-pulse w-4 h-4 bg-gray-300 rounded-full"></div>
-        <span className="text-sm text-gray-500">Loading...</span>
+        <div className="animate-pulse w-4 h-4 bg-muted rounded-full"></div>
+        <span className="text-sm text-muted-foreground">Loading...</span>
       </div>
     );
   }
@@ -30,7 +30,7 @@ const StatusDisplay: React.FC<StatusDisplayProps> = ({
     return (
       <div className={`flex items-center space-x-2 ${className}`}>
         <div className="w-4 h-4 bg-gray-400 rounded-full"></div>
-        <span className="text-sm text-gray-500">Not logged in</span>
+        <span className="text-sm text-muted-foreground">Not logged in</span>
       </div>
     );
   }
@@ -56,7 +56,7 @@ const StatusDisplay: React.FC<StatusDisplayProps> = ({
       case "SUSPENDED":
         return "bg-warning/10 text-warning border-warning/20";
       default:
-        return "bg-gray-100 text-gray-800 border-gray-200";
+        return "bg-muted text-foreground border-border";
     }
   };
 
@@ -68,7 +68,7 @@ const StatusDisplay: React.FC<StatusDisplayProps> = ({
           displayStatus === "WAITING" ? "bg-warning border-white" :
           displayStatus === "REJECT" ? "bg-destructive border-white" :
           displayStatus === "INACTIVE" ? "bg-destructive border-white" :
-          "bg-gray-500 border-white"
+          "bg-muted-foreground border-white"
         }`} />
         
         <Badge 
@@ -79,7 +79,7 @@ const StatusDisplay: React.FC<StatusDisplayProps> = ({
         </Badge>
         
         {showDetails && (
-          <div className="text-xs text-gray-500 ml-2">
+          <div className="text-xs text-muted-foreground ml-2">
             {displayStatus === "ACTIVE" && "Full access"}
             {displayStatus === "WAITING" && "Pending approval"}
             {displayStatus === "REJECT" && "Access denied"}

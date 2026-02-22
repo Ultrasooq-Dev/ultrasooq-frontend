@@ -327,12 +327,12 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
     <div className="space-y-8">
       {/* Category Selection Section */}
       <div className="space-y-6">
-        <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
+        <div className="flex items-center gap-3 border-b border-border pb-4">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-info">
             <span className="text-sm font-semibold text-white">1</span>
           </div>
           <div>
-            <h4 className="text-lg font-semibold text-gray-900">
+            <h4 className="text-lg font-semibold text-foreground">
               {t("product_category")}
             </h4>
           </div>
@@ -364,12 +364,12 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
             return (
               <div key={levelIndex} className="space-y-3">
                 <Label
-                  className="flex items-center gap-2 text-sm font-medium text-gray-700"
+                  className="flex items-center gap-2 text-sm font-medium text-muted-foreground"
                   dir={langDir}
                   translate="no"
                 >
                   <svg
-                    className="h-4 w-4 text-gray-500"
+                    className="h-4 w-4 text-muted-foreground"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -385,7 +385,7 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
                 </Label>
                 <div className="relative">
                   <select
-                    className="h-12 w-full cursor-pointer appearance-none rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 transition-all duration-200 focus:border-warning focus:ring-2 focus:ring-warning"
+                    className="h-12 w-full cursor-pointer appearance-none rounded-xl border border-border bg-card px-4 py-3 text-sm text-foreground transition-all duration-200 focus:border-warning focus:ring-2 focus:ring-warning"
                     value={level.selectedId?.toString() || ""}
                     onChange={(e) =>
                       handleCategoryChange(levelIndex, e.target.value)
@@ -408,7 +408,7 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
                   </select>
                   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                     <svg
-                      className="h-5 w-5 text-gray-400"
+                      className="h-5 w-5 text-muted-foreground"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -451,12 +451,12 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
 
       {/* Product Name Section — hidden in wizard mode (lives in Step 1) */}
       <div className={`space-y-6${wizardMode ? " hidden" : ""}`}>
-        <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
+        <div className="flex items-center gap-3 border-b border-border pb-4">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
             <span className="text-sm font-semibold text-white">2</span>
           </div>
           <div>
-            <h4 className="text-lg font-semibold text-gray-900">
+            <h4 className="text-lg font-semibold text-foreground">
               {t("product_name")}
             </h4>
           </div>
@@ -474,12 +474,12 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
 
       {/* Product Details Section */}
       <div className="space-y-6">
-        <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
+        <div className="flex items-center gap-3 border-b border-border pb-4">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-success">
             <span className="text-sm font-semibold text-white">3</span>
           </div>
           <div>
-            <h4 className="text-lg font-semibold text-gray-900">
+            <h4 className="text-lg font-semibold text-foreground">
               {t("product_details")}
             </h4>
           </div>
@@ -493,12 +493,12 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
 
           <div className="space-y-3">
             <Label
-              className="flex items-center gap-2 text-sm font-medium text-gray-700"
+              className="flex items-center gap-2 text-sm font-medium text-muted-foreground"
               dir={langDir}
               translate="no"
             >
               <svg
-                className="h-4 w-4 text-gray-500"
+                className="h-4 w-4 text-muted-foreground"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -562,12 +562,12 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
       {/* Tags Section - temporarily disabled */}
       {/*
       <div className="space-y-6">
-        <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
+        <div className="flex items-center gap-3 border-b border-border pb-4">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-warning">
             <span className="text-sm font-semibold text-white">4</span>
           </div>
           <div>
-            <h4 className="text-lg font-semibold text-gray-900">{t("tags")}</h4>
+            <h4 className="text-lg font-semibold text-foreground">{t("tags")}</h4>
           </div>
         </div>
 
@@ -587,12 +587,12 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
 
       {/* Product Images Section — hidden in wizard mode (lives in Step 1) */}
       <div className={`space-y-6${wizardMode ? " hidden" : ""}`}>
-        <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-pink-500">
+        <div className="flex items-center gap-3 border-b border-border pb-4">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-destructive">
             <span className="text-sm font-semibold text-white">5</span>
           </div>
           <div>
-            <h4 className="text-lg font-semibold text-gray-900">
+            <h4 className="text-lg font-semibold text-foreground">
               {t("product_images")}
             </h4>
           </div>
@@ -600,12 +600,12 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
 
         <div className="space-y-4">
           <Label
-            className="flex items-center gap-2 text-sm font-medium text-gray-700"
+            className="flex items-center gap-2 text-sm font-medium text-muted-foreground"
             dir={langDir}
             translate="no"
           >
             <svg
-              className="h-4 w-4 text-gray-500"
+              className="h-4 w-4 text-muted-foreground"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -624,7 +624,7 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
             {watchProductImages?.map((item: any) => (
               <div
                 key={item.id}
-                className="group relative aspect-square overflow-hidden rounded-xl border-2 border-gray-200 bg-gray-50 transition-colors duration-200 hover:border-warning/30"
+                className="group relative aspect-square overflow-hidden rounded-xl border-2 border-border bg-muted transition-colors duration-200 hover:border-warning/30"
               >
                 {isImage(item.path) ? (
                   <Image
@@ -642,7 +642,7 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
                 ) : (
                   <div className="flex h-full items-center justify-center">
                     <svg
-                      className="h-12 w-12 text-gray-400"
+                      className="h-12 w-12 text-muted-foreground"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -661,7 +661,7 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
                 <div className="bg-opacity-50 absolute inset-0 flex items-center justify-center gap-2 bg-black opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                   <label
                     htmlFor="editImage"
-                    className="cursor-pointer rounded-full bg-white p-2 transition-colors hover:bg-gray-100"
+                    className="cursor-pointer rounded-full bg-card p-2 transition-colors hover:bg-muted"
                     title={t("edit_image")}
                   >
                     <input
@@ -675,7 +675,7 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
                       }}
                     />
                     <svg
-                      className="h-4 w-4 text-gray-600"
+                      className="h-4 w-4 text-muted-foreground"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -713,16 +713,16 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
             ))}
 
             {/* Add Image Button */}
-            <div className="group flex aspect-square cursor-pointer items-center justify-center rounded-xl border-2 border-dashed border-gray-300 transition-colors duration-200 hover:border-warning/70 hover:bg-warning/5">
+            <div className="group flex aspect-square cursor-pointer items-center justify-center rounded-xl border-2 border-dashed border-border transition-colors duration-200 hover:border-warning/70 hover:bg-warning/5">
               <label
                 htmlFor="productImages"
-                className="flex cursor-pointer flex-col items-center justify-center text-gray-500 group-hover:text-warning"
+                className="flex cursor-pointer flex-col items-center justify-center text-muted-foreground group-hover:text-warning"
               >
-                <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 transition-colors duration-200 group-hover:bg-warning/10">
+                <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-muted transition-colors duration-200 group-hover:bg-warning/10">
                   <IoMdAdd className="h-6 w-6" />
                 </div>
                 <span className="text-sm font-medium">{t("add_image")}</span>
-                <span className="mt-1 text-xs text-gray-400">
+                <span className="mt-1 text-xs text-muted-foreground">
                   {t("click_to_upload")}
                 </span>
               </label>

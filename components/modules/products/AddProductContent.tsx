@@ -123,14 +123,14 @@ const AddProductContent: React.FC<AddProductContentProps> = ({ productId, onClos
             <Button
               variant="ghost"
               onClick={handleBack}
-              className="mb-4 p-2 hover:bg-gray-100"
+              className="mb-4 p-2 hover:bg-muted"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               {t("back")}
             </Button>
             
             <div className="mb-4">
-              <p className="text-sm text-gray-600 mb-3" dir={langDir}>
+              <p className="text-sm text-muted-foreground mb-3" dir={langDir}>
                 {t("search_existing_product_description")}
               </p>
               <div className="flex gap-2">
@@ -152,17 +152,17 @@ const AddProductContent: React.FC<AddProductContentProps> = ({ productId, onClos
 
             {searchResults.length > 0 && (
               <div className="space-y-3">
-                <h4 className="font-medium text-gray-900" dir={langDir}>
+                <h4 className="font-medium text-foreground" dir={langDir}>
                   {t("search_results")}
                 </h4>
                 <div className="max-h-60 overflow-y-auto space-y-2">
                   {searchResults.map((product) => (
                     <div
                       key={product.id}
-                      className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer"
+                      className="flex items-center gap-3 p-3 border border-border rounded-lg hover:bg-muted cursor-pointer"
                       onClick={() => handleSelectProduct(product)}
                     >
-                      <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
+                      <div className="w-12 h-12 bg-muted rounded-lg flex items-center justify-center">
                         {product.existingProductImages?.[0]?.image ? (
                           <Image
                             src={product.existingProductImages[0].image}
@@ -172,17 +172,17 @@ const AddProductContent: React.FC<AddProductContentProps> = ({ productId, onClos
                             className="rounded-lg object-cover"
                           />
                         ) : (
-                          <Copy className="h-6 w-6 text-gray-400" />
+                          <Copy className="h-6 w-6 text-muted-foreground" />
                         )}
                       </div>
                       <div className="flex-1">
-                        <h5 className="font-medium text-gray-900" dir={langDir}>
+                        <h5 className="font-medium text-foreground" dir={langDir}>
                           {product.productName}
                         </h5>
-                        {/* <p className="text-sm text-gray-500" dir={langDir}>
+                        {/* <p className="text-sm text-muted-foreground" dir={langDir}>
                            SKU: {product.skuNo}
                         </p> */}
-                        <p className="text-xs text-gray-400" dir={langDir}>
+                        <p className="text-xs text-muted-foreground" dir={langDir}>
                           {product.category?.name} • {product.brand?.brandName}
                         </p>
                       </div>
@@ -198,10 +198,10 @@ const AddProductContent: React.FC<AddProductContentProps> = ({ productId, onClos
 
             {searchTerm && searchResults.length === 0 && !isSearching && (
               <div className="text-center py-8">
-                <p className="text-gray-500 mb-2" dir={langDir}>
+                <p className="text-muted-foreground mb-2" dir={langDir}>
                   {t("no_products_found")}
                 </p>
-                <p className="text-sm text-gray-400" dir={langDir}>
+                <p className="text-sm text-muted-foreground" dir={langDir}>
                   {t("try_different_search_term")}
                 </p>
               </div>
@@ -224,14 +224,14 @@ const AddProductContent: React.FC<AddProductContentProps> = ({ productId, onClos
           <div className="import-pickup-type-selector-item">
             <button
               onClick={handleAddNewProduct}
-              className="import-pickup-type-selector-box hover:bg-gray-100! w-full text-left"
+              className="import-pickup-type-selector-box hover:bg-muted! w-full text-left"
             >
               <div className="icon-container">
                 <Image src={AddProductIcon} alt="add-product-icon" />
               </div>
               <div className="text-container">
                 <h5 dir={langDir} translate="no">{t("add_new_product")}</h5>
-                <p className="text-sm text-gray-600" dir={langDir}>
+                <p className="text-sm text-muted-foreground" dir={langDir}>
                   {t("create_product_from_scratch")}
                 </p>
               </div>
@@ -241,14 +241,14 @@ const AddProductContent: React.FC<AddProductContentProps> = ({ productId, onClos
           <div className="import-pickup-type-selector-item">
             <button
               onClick={handleAddFromExisting}
-              className="import-pickup-type-selector-box hover:bg-gray-100! w-full text-left"
+              className="import-pickup-type-selector-box hover:bg-muted! w-full text-left"
             >
               <div className="icon-container">
                 <Image src={ExistingProductIcon} alt="existing-product-icon" />
               </div>
               <div className="text-container">
                 <h5 dir={langDir} translate="no">{t("add_from_existing_product")}</h5>
-                <p className="text-sm text-gray-600" dir={langDir}>
+                <p className="text-sm text-muted-foreground" dir={langDir}>
                   {t("copy_and_modify_existing_product")}
                 </p>
               </div>

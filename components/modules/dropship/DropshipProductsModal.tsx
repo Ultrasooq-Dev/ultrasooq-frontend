@@ -68,17 +68,17 @@ const DropshipProductsModal: React.FC<DropshipProductsModalProps> = ({
             </div>
           ) : dropshipProducts.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-gray-500">{t("no_dropship_products_created")}</p>
+              <p className="text-muted-foreground">{t("no_dropship_products_created")}</p>
             </div>
           ) : (
             <div className="space-y-4">
               {dropshipProducts.map((product: any) => (
                 <div
                   key={product.id}
-                  className="flex items-center space-x-4 p-4 bg-white border border-gray-200 rounded-lg hover:shadow-md transition-shadow"
+                  className="flex items-center space-x-4 p-4 bg-card border border-border rounded-lg hover:shadow-md transition-shadow"
                 >
                   {/* Product Image */}
-                  <div className="w-16 h-16 rounded-lg overflow-hidden border border-gray-200 relative">
+                  <div className="w-16 h-16 rounded-lg overflow-hidden border border-border relative">
                     {product.productImages?.[0]?.image ? (
                       (() => {
                         const imageSrc = product.productImages[0].image;
@@ -117,10 +117,10 @@ const DropshipProductsModal: React.FC<DropshipProductsModalProps> = ({
 
                   {/* Product Info */}
                   <div className="flex-1">
-                    <h4 className="font-medium text-gray-900 mb-1">
+                    <h4 className="font-medium text-foreground mb-1">
                       {product.productName}
                     </h4>
-                    <p className="text-sm text-gray-600 mb-1">
+                    <p className="text-sm text-muted-foreground mb-1">
                       {t("by")}: {(() => {
                         if (!product.user) return 'Unknown User';
                         
@@ -148,11 +148,11 @@ const DropshipProductsModal: React.FC<DropshipProductsModalProps> = ({
                         return 'Unknown User';
                       })()}
                     </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-muted-foreground">
                       {t("created")}: {new Date(product.createdAt).toLocaleDateString()}
                     </p>
                     {product.brand?.brandName && (
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-muted-foreground">
                         {t("brand")}: {product.brand.brandName}
                       </p>
                     )}
@@ -185,7 +185,7 @@ const DropshipProductsModal: React.FC<DropshipProductsModalProps> = ({
         <div className="flex justify-end mt-4 pt-4 border-t">
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors"
+            className="px-4 py-2 bg-muted text-muted-foreground rounded hover:bg-muted transition-colors"
           >
             {t("close")}
           </button>

@@ -453,7 +453,7 @@ const ServiceCard: React.FC<any> = ({
         {isSelectable ? (
           <div className="absolute left-[10px] top-[20px]">
             <Checkbox
-              className="border border-solid border-gray-300 data-[state=checked]:bg-dark-orange!"
+              className="border border-solid border-border data-[state=checked]:bg-dark-orange!"
               checked={selectedIds?.includes(item.id)}
               onCheckedChange={(checked) => onSelectedId?.(checked, item.id)}
             />
@@ -535,7 +535,7 @@ const ServiceCard: React.FC<any> = ({
 
         <Link href={manageService ? "#" : `/services/${item.id}`}>
           <div className="relative w-full text-sm font-normal capitalize text-color-blue lg:text-base">
-            <h4 className="mb-2.5 border-b border-solid border-gray-300 pb-2.5 text-xs font-normal uppercase text-color-dark">
+            <h4 className="mb-2.5 border-b border-solid border-border pb-2.5 text-xs font-normal uppercase text-color-dark">
               {item.serviceName}
             </h4>
             <p
@@ -583,7 +583,7 @@ const ServiceCard: React.FC<any> = ({
                         <h5 className="py-1 text-[#1D77D1]">
                             {currency.symbol}
                             {calculateDiscountedPrice()}{" "}
-                            <span className="text-gray-500 line-through!">
+                            <span className="text-muted-foreground line-through!">
                                 {currency.symbol}
                                 {item.productProductPrice}
                             </span>
@@ -704,7 +704,7 @@ const ServiceCard: React.FC<any> = ({
 
         {sold !== undefined ? (
           <>
-            <div className="mt-3 h-3 w-full bg-gray-300">
+            <div className="mt-3 h-3 w-full bg-muted">
               <div className="h-full w-4/5 bg-color-yellow"></div>
             </div>
             <span
@@ -725,7 +725,7 @@ const ServiceCard: React.FC<any> = ({
             <DialogTitle className="text-center text-xl font-bold text-dark-orange"></DialogTitle>
             <Button
               onClick={onCancelRemove}
-              className={`${langDir == "ltr" ? "absolute" : ""} right-2 top-2 z-10 bg-white! text-black! shadow-none`}
+              className={`${langDir == "ltr" ? "absolute" : ""} right-2 top-2 z-10 bg-card! text-foreground! shadow-none`}
             >
               <IoCloseSharp size={20} />
             </Button>
@@ -738,7 +738,7 @@ const ServiceCard: React.FC<any> = ({
             <div>
               <Button
                 type="button"
-                className="mr-2 bg-white text-destructive"
+                className="mr-2 bg-card text-destructive"
                 onClick={onCancelRemove}
               >
                 Cancel

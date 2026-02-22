@@ -919,7 +919,7 @@ const ManageProductsPage = () => {
 
   return (
     <>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-muted">
         <div className="w-full px-8 lg:px-12 py-6">
           {/* Header */}
           <div className="mb-6">
@@ -930,7 +930,7 @@ const ManageProductsPage = () => {
                     <Store className="w-6 h-6 text-primary" />
                   </div>
                   <div>
-                    <h1 className="text-xl font-semibold text-gray-900 capitalize">
+                    <h1 className="text-xl font-semibold text-foreground capitalize">
                       {(() => {
                         const account = currentAccount?.data?.account;
                         if (currentAccount?.data?.isMainAccount) {
@@ -940,7 +940,7 @@ const ManageProductsPage = () => {
                         }
                       })()}
                     </h1>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-muted-foreground">
                       {currentAccount?.data?.account?.tradeRole || "User"}
                     </p>
                   </div>
@@ -1007,7 +1007,7 @@ const ManageProductsPage = () => {
                   Select All Products
                 </button> */}
                 {/* <button
-                  className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors"
+                  className="px-4 py-2 bg-muted-foreground text-white rounded hover:bg-muted-foreground/90 transition-colors"
                   onClick={clearAllProductSelections}
                   dir={langDir}
                   translate="no"
@@ -1029,14 +1029,14 @@ const ManageProductsPage = () => {
 
           {/* Tab Navigation */}
           <div className="mb-6">
-            <div className="border-b border-gray-200">
+            <div className="border-b border-border">
               <nav className="-mb-px flex space-x-8">
                 <button
                   onClick={() => setActiveTab('my-products')}
                   className={`py-2 px-1 border-b-2 font-medium text-sm ${
                     activeTab === 'my-products'
                       ? 'border-primary text-primary'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                      : 'border-transparent text-muted-foreground hover:text-muted-foreground hover:border-border'
                   }`}
                 >
                   {t("my_products")}
@@ -1046,7 +1046,7 @@ const ManageProductsPage = () => {
                   className={`py-2 px-1 border-b-2 font-medium text-sm ${
                     activeTab === 'dropship-products'
                       ? 'border-primary text-primary'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                      : 'border-transparent text-muted-foreground hover:text-muted-foreground hover:border-border'
                   }`}
                 >
                   {t("my_dropship_products")}
@@ -1056,7 +1056,7 @@ const ManageProductsPage = () => {
                   className={`py-2 px-1 border-b-2 font-medium text-sm ${
                     activeTab === 'existing-products'
                       ? 'border-primary text-primary'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                      : 'border-transparent text-muted-foreground hover:text-muted-foreground hover:border-border'
                   }`}
                 >
                   {t("existing_products")}
@@ -1072,7 +1072,7 @@ const ManageProductsPage = () => {
                 <div className="flex flex-col lg:flex-row gap-6">
                   {/* Filters - Left Side */}
                   <div className="lg:w-1/4">
-                    <div className="bg-white rounded-lg shadow-xs p-6">
+                    <div className="bg-card rounded-lg shadow-xs p-6">
                       <div className="mb-4">
                         <div className="flex gap-2 mb-4">
                           <button 
@@ -1085,7 +1085,7 @@ const ManageProductsPage = () => {
                           <button 
                             type="button" 
                             onClick={clearFilter}
-                            className="px-3 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors text-sm"
+                            className="px-3 py-2 bg-muted text-muted-foreground rounded hover:bg-muted transition-colors text-sm"
                           >
                             {t("clean_select")}
                           </button>
@@ -1146,7 +1146,7 @@ const ManageProductsPage = () => {
                             </div>
                             <div className="space-y-2 max-h-40 overflow-y-auto">
                               {!memoizedBrands.length ? (
-                                <p className="text-center text-sm text-gray-500">
+                                <p className="text-center text-sm text-muted-foreground">
                                   {t("no_data_found")}
                                 </p>
                               ) : null}
@@ -1154,7 +1154,7 @@ const ManageProductsPage = () => {
                                 <div key={item.value} className="flex items-center space-x-2">
                                   <Checkbox
                                     id={item.label}
-                                    className="border border-gray-300 data-[state=checked]:bg-primary!"
+                                    className="border border-border data-[state=checked]:bg-primary!"
                                     onCheckedChange={(checked) =>
                                       handleBrandChange(checked, item)
                                     }
@@ -1187,7 +1187,7 @@ const ManageProductsPage = () => {
                             <div className="flex items-center space-x-2">
                               <Checkbox
                                 id="displayStoreProducts"
-                                className="border border-gray-300 data-[state=checked]:bg-primary!"
+                                className="border border-border data-[state=checked]:bg-primary!"
                                 onCheckedChange={(checked: boolean) =>
                                   setDisplayStoreProducts(checked)
                                 }
@@ -1205,7 +1205,7 @@ const ManageProductsPage = () => {
                             <div className="flex items-center space-x-2">
                               <Checkbox
                                 id="displayBuyGroupProducts"
-                                className="border border-gray-300 data-[state=checked]:bg-primary!"
+                                className="border border-border data-[state=checked]:bg-primary!"
                                 onCheckedChange={(checked: boolean) => {
                                   setDisplayBuyGroupProducts(checked);
                                   setDisplayExpiredProducts(
@@ -1228,7 +1228,7 @@ const ManageProductsPage = () => {
                             <div className="flex items-center space-x-2">
                               <Checkbox
                                 id="displayTrialProducts"
-                                className="border border-gray-300 data-[state=checked]:bg-primary!"
+                                className="border border-border data-[state=checked]:bg-primary!"
                                 onCheckedChange={(checked: boolean) =>
                                   setDisplayTrialProducts(checked)
                                 }
@@ -1246,7 +1246,7 @@ const ManageProductsPage = () => {
                             <div className="flex items-center space-x-2">
                               <Checkbox
                                 id="displayWholesaleProducts"
-                                className="border border-gray-300 data-[state=checked]:bg-primary!"
+                                className="border border-border data-[state=checked]:bg-primary!"
                                 onCheckedChange={(checked: boolean) =>
                                   setDisplayWholesaleProducts(checked)
                                 }
@@ -1265,7 +1265,7 @@ const ManageProductsPage = () => {
                               <div className="flex items-center space-x-2">
                                 <Checkbox
                                   id="displayExpiredProducts"
-                                  className="border border-gray-300 data-[state=checked]:bg-primary!"
+                                  className="border border-border data-[state=checked]:bg-primary!"
                                   onCheckedChange={(checked: boolean) =>
                                     setDisplayExpiredProducts(checked)
                                   }
@@ -1284,7 +1284,7 @@ const ManageProductsPage = () => {
                             <div className="flex items-center space-x-2">
                               <Checkbox
                                 id="displayHiddenProducts"
-                                className="border border-gray-300 data-[state=checked]:bg-primary!"
+                                className="border border-border data-[state=checked]:bg-primary!"
                                 onCheckedChange={(checked: boolean) =>
                                   setDisplayHiddenProducts(checked)
                                 }
@@ -1302,7 +1302,7 @@ const ManageProductsPage = () => {
                             <div className="flex items-center space-x-2">
                               <Checkbox
                                 id="displayDiscountedProducts"
-                                className="border border-gray-300 data-[state=checked]:bg-primary!"
+                                className="border border-border data-[state=checked]:bg-primary!"
                                 onCheckedChange={(checked: boolean) =>
                                   setDisplayDiscountedProducts(checked)
                                 }
@@ -1327,7 +1327,7 @@ const ManageProductsPage = () => {
 
                 {/* Products List - Right Side */}
                 <div className="lg:w-3/4">
-                  <div className="bg-white rounded-lg shadow-xs p-6">
+                  <div className="bg-card rounded-lg shadow-xs p-6">
                     <div className="mb-4">
                       <div className="flex items-center justify-between">
                         <h2 className="text-xl font-semibold">
@@ -1336,16 +1336,16 @@ const ManageProductsPage = () => {
                         <div className="flex items-center gap-4">
                           {/* Show Only Selected Filter */}
                           <div className="flex items-center gap-2">
-                            <label className="text-sm font-medium text-gray-700">Show Selected :</label>
+                            <label className="text-sm font-medium text-muted-foreground">Show Selected :</label>
                             <button
                               type="button"
                               onClick={handleFilterToggle}
                               className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
-                                showOnlySelected ? 'bg-primary' : 'bg-gray-200'
+                                showOnlySelected ? 'bg-primary' : 'bg-muted'
                               }`}
                             >
                               <span
-                                className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${
+                                className={`inline-block h-3 w-3 transform rounded-full bg-card transition-transform ${
                                   showOnlySelected ? 'translate-x-5' : 'translate-x-1'
                                 }`}
                               />
@@ -1358,11 +1358,11 @@ const ManageProductsPage = () => {
                           </div>
                           {/* Page Limit Selector */}
                           <div className="flex items-center gap-2">
-                            <label className="text-sm font-medium text-gray-700">Show:</label>
+                            <label className="text-sm font-medium text-muted-foreground">Show:</label>
                             <select
                               value={limit}
                               onChange={(e) => handleLimitChange(Number(e.target.value))}
-                              className="h-8 px-2 border border-gray-300 rounded-md bg-white text-sm focus:outline-hidden focus:ring-2 focus:ring-primary"
+                              className="h-8 px-2 border border-border rounded-md bg-card text-sm focus:outline-hidden focus:ring-2 focus:ring-primary"
                             >
                               <option value={3}>3</option>
                               <option value={6}>6</option>
@@ -1374,7 +1374,7 @@ const ManageProductsPage = () => {
 
 
 
-                          {/* <div className="text-sm text-gray-600">
+                          {/* <div className="text-sm text-muted-foreground">
                             <span className="font-medium">Current Page:</span> {selectedProductIds.length} selected
                             {Array.from(globalSelectedIds).length > 0 && (
                               <span className="ml-3">
@@ -1397,7 +1397,7 @@ const ManageProductsPage = () => {
                     {!allManagedProductsQuery.data?.data?.length &&
                     !allManagedProductsQuery.isLoading ? (
                       <div className="text-center py-16">
-                        <p className="text-gray-500 text-lg">
+                        <p className="text-muted-foreground text-lg">
                           {t("no_product_found")}
                         </p>
                       </div>
@@ -1406,10 +1406,10 @@ const ManageProductsPage = () => {
                     {/* Show message when filter is active but no products match */}
                     {showOnlySelected && products.length === 0 && allManagedProductsQuery.data?.data?.length > 0 ? (
                       <div className="text-center py-16">
-                        <p className="text-gray-500 text-lg">
+                        <p className="text-muted-foreground text-lg">
                           No selected products found in the current data
                         </p>
-                        <p className="text-gray-400 text-sm mt-2">
+                        <p className="text-muted-foreground text-sm mt-2">
                           Try refreshing the page or check if your selections are still valid
                         </p>
                         <button
@@ -1523,7 +1523,7 @@ const ManageProductsPage = () => {
                       </div>
                     ) : null}
                     {showOnlySelected && (
-                      <div className="mt-8 text-center text-gray-500">
+                      <div className="mt-8 text-center text-muted-foreground">
                         Showing {products.length} selected products from all pages
                       </div>
                     )}
@@ -1537,7 +1537,7 @@ const ManageProductsPage = () => {
             <div className="flex flex-col lg:flex-row gap-6">
               {/* Filters - Left Side */}
               <div className="lg:w-1/4">
-                <div className="bg-white rounded-lg shadow-xs p-6">
+                <div className="bg-card rounded-lg shadow-xs p-6">
                   <div className="mb-4">
                     <div className="flex gap-2 mb-4">
                       <button 
@@ -1564,7 +1564,7 @@ const ManageProductsPage = () => {
                           setSearchTermBrand("");
                           setActiveSearchTermBrand("");
                         }}
-                        className="px-3 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors text-sm"
+                        className="px-3 py-2 bg-muted text-muted-foreground rounded hover:bg-muted transition-colors text-sm"
                       >
                         {t("clean_select")}
                       </button>
@@ -1625,7 +1625,7 @@ const ManageProductsPage = () => {
                         </div>
                         <div className="space-y-2 max-h-40 overflow-y-auto">
                           {!memoizedExistingProductsBrands.length ? (
-                            <p className="text-center text-sm text-gray-500">
+                            <p className="text-center text-sm text-muted-foreground">
                               {t("no_data_found")}
                             </p>
                           ) : null}
@@ -1633,7 +1633,7 @@ const ManageProductsPage = () => {
                             <div key={item.value} className="flex items-center space-x-2">
                               <Checkbox
                                 id={`existing-${item.label}`}
-                                className="border border-gray-300 data-[state=checked]:bg-primary!"
+                                className="border border-border data-[state=checked]:bg-primary!"
                                 onCheckedChange={(checked) =>
                                   handleExistingProductsBrandChange(checked, item)
                                 }
@@ -1668,7 +1668,7 @@ const ManageProductsPage = () => {
                           <div className="flex items-center space-x-2">
                             <Checkbox
                               id="existing-type-p"
-                              className="border border-gray-300 data-[state=checked]:bg-primary!"
+                              className="border border-border data-[state=checked]:bg-primary!"
                               onCheckedChange={(checked) => {
                                 if (checked) {
                                   setExistingProductsSelectedType("P");
@@ -1688,7 +1688,7 @@ const ManageProductsPage = () => {
                           <div className="flex items-center space-x-2">
                             <Checkbox
                               id="existing-type-r"
-                              className="border border-gray-300 data-[state=checked]:bg-primary!"
+                              className="border border-border data-[state=checked]:bg-primary!"
                               onCheckedChange={(checked) => {
                                 if (checked) {
                                   setExistingProductsSelectedType("R");
@@ -1714,7 +1714,7 @@ const ManageProductsPage = () => {
 
               {/* Products List - Right Side */}
               <div className="lg:w-3/4">
-                <div className="bg-white rounded-lg shadow-xs p-6">
+                <div className="bg-card rounded-lg shadow-xs p-6">
                   <div className="mb-4">
                     <div className="flex items-center justify-between">
                       <h2 className="text-xl font-semibold">
@@ -1733,7 +1733,7 @@ const ManageProductsPage = () => {
 
                   {!memoizedExistingProductList.length && !existingProductsQuery.isLoading ? (
                     <div className="text-center py-16">
-                      <p className="text-gray-500 text-lg">
+                      <p className="text-muted-foreground text-lg">
                         {t("no_product_found")}
                       </p>
                     </div>
@@ -1777,18 +1777,18 @@ const ManageProductsPage = () => {
             <div className="flex flex-col lg:flex-row gap-6">
               {/* Filters - Left Side */}
               <div className="lg:w-1/4">
-                <div className="bg-white rounded-lg shadow-xs p-6">
+                <div className="bg-card rounded-lg shadow-xs p-6">
                   <h3 className="text-lg font-semibold mb-4">{t("filters")}</h3>
                   
                   {/* Status Filter */}
                   <div className="mb-4">
-                    <Label className="text-sm font-medium text-gray-700 mb-2 block">
+                    <Label className="text-sm font-medium text-muted-foreground mb-2 block">
                       {t("status")}
                     </Label>
                     <select
                       value={dropshipStatus}
                       onChange={(e) => setDropshipStatus(e.target.value)}
-                      className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary"
+                      className="w-full p-2 border border-border rounded-md focus:ring-2 focus:ring-primary focus:border-primary"
                     >
                       <option value="">{t("all_statuses")}</option>
                       <option value="ACTIVE">{t("active")}</option>
@@ -1797,9 +1797,9 @@ const ManageProductsPage = () => {
                   </div>
 
                   {/* Stats */}
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <h4 className="font-medium text-gray-700 mb-2">{t("dropship_stats")}</h4>
-                    <div className="space-y-1 text-sm text-gray-600">
+                  <div className="bg-muted p-4 rounded-lg">
+                    <h4 className="font-medium text-muted-foreground mb-2">{t("dropship_stats")}</h4>
+                    <div className="space-y-1 text-sm text-muted-foreground">
                       <div className="flex justify-between">
                         <span>{t("total_products")}:</span>
                         <span className="font-medium">{dropshipProductsQuery.data?.totalCount || 0}</span>
@@ -1817,7 +1817,7 @@ const ManageProductsPage = () => {
 
               {/* Products Grid - Right Side */}
               <div className="lg:w-3/4">
-                <div className="bg-white rounded-lg shadow-xs p-6">
+                <div className="bg-card rounded-lg shadow-xs p-6">
                   <div className="flex items-center justify-between mb-6">
                     <h3 className="text-lg font-semibold">{t("dropship_products")}</h3>
                     <Button
@@ -1881,13 +1881,13 @@ const ManageProductsPage = () => {
                     </div>
                   ) : (
                     <div className="text-center py-12">
-                      <div className="text-gray-400 mb-4">
+                      <div className="text-muted-foreground mb-4">
                         <Store className="h-16 w-16 mx-auto" />
                       </div>
-                      <h3 className="text-lg font-medium text-gray-900 mb-2">
+                      <h3 className="text-lg font-medium text-foreground mb-2">
                         {t("no_dropship_products")}
                       </h3>
-                      <p className="text-gray-500 mb-6">
+                      <p className="text-muted-foreground mb-6">
                         {t("no_dropship_products_description")}
                       </p>
                       <Button
@@ -1920,7 +1920,7 @@ const ManageProductsPage = () => {
 
       {/* Fixed bottom bar for existing products */}
       {activeTab === 'existing-products' && existingProductsSelectedIds.length > 0 && (
-        <div className="fixed bottom-0 left-0 z-10 flex w-full items-center justify-between border-t border-solid border-gray-300 bg-primary px-10 py-3">
+        <div className="fixed bottom-0 left-0 z-10 flex w-full items-center justify-between border-t border-solid border-border bg-primary px-10 py-3">
           <div className="flex items-center gap-4">
             {/* <p className="text-base font-medium text-white" translate="no">
               {t("n_products_selected").replace("{n}", String(existingProductsSelectedIds.length))}
@@ -1929,7 +1929,7 @@ const ManageProductsPage = () => {
               type="button"
               onClick={() => setExistingProductsSelectedIds([])}
               size="sm"
-              className="flex items-center rounded-sm bg-transparent border border-white text-sm font-bold text-white hover:bg-white hover:text-primary"
+              className="flex items-center rounded-sm bg-transparent border border-white text-sm font-bold text-white hover:bg-card hover:text-primary"
               dir={langDir}
               translate="no"
             >
@@ -1944,7 +1944,7 @@ const ManageProductsPage = () => {
                 router.push(`/manage-products/bulk-add-existing?ids=${selectedIds}`);
               }}
               size="lg"
-              className="flex items-center rounded-sm bg-transparent border border-white text-sm font-bold text-white hover:bg-white hover:text-primary"
+              className="flex items-center rounded-sm bg-transparent border border-white text-sm font-bold text-white hover:bg-card hover:text-primary"
               dir={langDir}
               translate="no"
             >

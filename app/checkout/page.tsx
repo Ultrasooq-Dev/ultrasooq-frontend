@@ -1149,14 +1149,14 @@ const CheckoutPage = () => {
   }, [accessToken]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-muted">
       <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2" dir={langDir} translate="no">
+          <h1 className="text-3xl font-bold text-foreground mb-2" dir={langDir} translate="no">
             {t("checkout")}
           </h1>
-          <p className="text-gray-600" dir={langDir} translate="no">
+          <p className="text-muted-foreground" dir={langDir} translate="no">
             Review your order and complete your purchase
           </p>
         </div>
@@ -1165,9 +1165,9 @@ const CheckoutPage = () => {
           {/* Left Column - Order Details */}
           <div className="lg:col-span-2 space-y-6">
             {/* Cart Items Section */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-              <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
-                <h2 className="text-xl font-semibold text-gray-900" dir={langDir} translate="no">
+            <div className="bg-card rounded-xl shadow-sm border border-border overflow-hidden">
+              <div className="px-6 py-4 border-b border-border bg-muted">
+                <h2 className="text-xl font-semibold text-foreground" dir={langDir} translate="no">
                   {t("order_summary")}
                 </h2>
               </div>
@@ -1176,7 +1176,7 @@ const CheckoutPage = () => {
                 {/* RFQ Products Display - Prioritize rfqQuoteData which has the approved offering prices */}
                 {isFromRfq && rfqQuoteData && rfqQuoteData.quoteProducts?.length > 0 ? (
                   <div className="mb-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4" dir={langDir} translate="no">
+                    <h3 className="text-lg font-semibold text-foreground mb-4" dir={langDir} translate="no">
                       {t("rfq_products") || "RFQ Products"}
                     </h3>
                     <div className="space-y-4">
@@ -1187,7 +1187,7 @@ const CheckoutPage = () => {
                         const displayPrice = parseFloat(quoteProduct.offerPrice || "0");
                         const productImage = product?.rfqProductDetails?.productImages?.[0]?.image;
                         return (
-                          <div key={quoteProduct.id || index} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                          <div key={quoteProduct.id || index} className="border border-border rounded-lg p-4 bg-muted">
                             <div className="flex items-start gap-4">
                               {productImage && (
                                 <Image
@@ -1199,13 +1199,13 @@ const CheckoutPage = () => {
                                 />
                               )}
                               <div className="flex-1">
-                                <h4 className="font-semibold text-gray-900 mb-1">
+                                <h4 className="font-semibold text-foreground mb-1">
                                   {product?.rfqProductDetails?.productName || "Product"}
                                 </h4>
-                                <p className="text-sm text-gray-600 mb-2">
+                                <p className="text-sm text-muted-foreground mb-2">
                                   {t("quantity")}: {quoteProduct.quantity || product?.quantity || 1}
                                 </p>
-                                <p className="text-lg font-semibold text-gray-900">
+                                <p className="text-lg font-semibold text-foreground">
                                   {currency.symbol}{displayPrice}
                                 </p>
                               </div>
@@ -1220,7 +1220,7 @@ const CheckoutPage = () => {
                 {/* NEW: Display Selected Suggested Products */}
                 {isFromRfq && rfqQuoteData && rfqQuoteData.suggestedProducts && rfqQuoteData.suggestedProducts.length > 0 ? (
                   <div className="mb-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4" dir={langDir} translate="no">
+                    <h3 className="text-lg font-semibold text-foreground mb-4" dir={langDir} translate="no">
                       {t("suggested_alternative_products") || "Suggested Alternative Products"}
                     </h3>
                     <div className="space-y-4">
@@ -1239,25 +1239,25 @@ const CheckoutPage = () => {
                                   className="rounded-lg object-cover"
                                 />
                               ) : (
-                                <div className="w-20 h-20 rounded-lg bg-gray-200 flex items-center justify-center">
-                                  <svg className="w-10 h-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <div className="w-20 h-20 rounded-lg bg-muted flex items-center justify-center">
+                                  <svg className="w-10 h-10 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                   </svg>
                                 </div>
                               )}
                               <div className="flex-1">
                                 <div className="flex items-center gap-2 mb-1">
-                                  <h4 className="font-semibold text-gray-900">
+                                  <h4 className="font-semibold text-foreground">
                                     {suggestedProduct.productName || "Product"}
                                   </h4>
                                   <span className="px-2 py-0.5 rounded-full bg-info/10 text-info text-xs font-medium">
                                     {t("suggested") || "Suggested"}
                                   </span>
                                 </div>
-                                <p className="text-sm text-gray-600 mb-2">
+                                <p className="text-sm text-muted-foreground mb-2">
                                   {t("quantity")}: {suggestedProduct.quantity || 1}
                                 </p>
-                                <p className="text-lg font-semibold text-gray-900">
+                                <p className="text-lg font-semibold text-foreground">
                                   {currency.symbol}{displayPrice}
                                 </p>
                               </div>
@@ -1278,7 +1278,7 @@ const CheckoutPage = () => {
                       const displayPrice = parseFloat(quoteProduct?.offerPrice || product.offerPrice || "0");
                       const productImage = product?.rfqProductDetails?.productImages?.[0]?.image;
                       return (
-                        <div key={product.id || index} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                        <div key={product.id || index} className="border border-border rounded-lg p-4 bg-muted">
                           <div className="flex items-start gap-4">
                             {productImage && (
                               <Image
@@ -1290,13 +1290,13 @@ const CheckoutPage = () => {
                               />
                             )}
                             <div className="flex-1">
-                              <h4 className="font-semibold text-gray-900 mb-1">
+                              <h4 className="font-semibold text-foreground mb-1">
                                 {translate(product?.rfqProductDetails?.productName || "Product")}
                               </h4>
-                              <p className="text-sm text-gray-600 mb-2">
+                              <p className="text-sm text-muted-foreground mb-2">
                                 {t("quantity")}: {quoteProduct?.quantity || product.quantity || 1}
                               </p>
-                              <p className="text-lg font-semibold text-gray-900">
+                              <p className="text-lg font-semibold text-foreground">
                                 {currency.symbol}{displayPrice}
                               </p>
                             </div>
@@ -1307,14 +1307,14 @@ const CheckoutPage = () => {
                   </div>
                 ) : memoizedCartList.filter((item: any) => item.productId).length > 0 ? (
                   <div className="mb-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4" dir={langDir} translate="no">
+                    <h3 className="text-lg font-semibold text-foreground mb-4" dir={langDir} translate="no">
                       {t("products")}
                     </h3>
                     
                     <div className="space-y-4">
                       {sellerIds.map((sellerId: number, index: number) => {
                         return (
-                          <div key={sellerId} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                          <div key={sellerId} className="border border-border rounded-lg p-4 bg-muted">
                             <div className="space-y-4">
                               {memoizedCartList
                                 ?.filter(
@@ -1374,13 +1374,13 @@ const CheckoutPage = () => {
                                 }) || []}
                               
                               {/* Shipping Options */}
-                              <div className="mt-4 p-4 bg-white rounded-lg border border-gray-200">
-                                <h4 className="text-sm font-semibold text-gray-700 mb-3" dir={langDir} translate="no">
+                              <div className="mt-4 p-4 bg-card rounded-lg border border-border">
+                                <h4 className="text-sm font-semibold text-muted-foreground mb-3" dir={langDir} translate="no">
                                   Shipping Options
                                 </h4>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                   <div>
-                                    <Label className="text-sm font-medium text-gray-600">Shipping Method</Label>
+                                    <Label className="text-sm font-medium text-muted-foreground">Shipping Method</Label>
                                     <Select
                                       className="mt-1"
                                       options={shippingOptions()}
@@ -1482,7 +1482,7 @@ const CheckoutPage = () => {
 
                 {memoizedCartList.filter((item: any) => item.serviceId).length > 0 && (
                   <div className="mb-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4" dir={langDir} translate="no">
+                    <h3 className="text-lg font-semibold text-foreground mb-4" dir={langDir} translate="no">
                       {t("services")}
                     </h3>
                     
@@ -1530,15 +1530,15 @@ const CheckoutPage = () => {
 
             {/* Guest Information */}
             {!me.data && (
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
-                  <h2 className="text-xl font-semibold text-gray-900" dir={langDir} translate="no">
+              <div className="bg-card rounded-xl shadow-sm border border-border overflow-hidden">
+                <div className="px-6 py-4 border-b border-border bg-muted">
+                  <h2 className="text-xl font-semibold text-foreground" dir={langDir} translate="no">
                     {t("your_informations")}
                   </h2>
                 </div>
                 <div className="p-6">
                   <div className="max-w-md">
-                    <Label className="text-sm font-medium text-gray-600 mb-2 block" dir={langDir} translate="no">
+                    <Label className="text-sm font-medium text-muted-foreground mb-2 block" dir={langDir} translate="no">
                       {t("email")}
                     </Label>
                     <Input
@@ -1555,9 +1555,9 @@ const CheckoutPage = () => {
             )}
 
             {/* Shipping Address */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-              <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
-                <h2 className="text-xl font-semibold text-gray-900" dir={langDir} translate="no">
+            <div className="bg-card rounded-xl shadow-sm border border-border overflow-hidden">
+              <div className="px-6 py-4 border-b border-border bg-muted">
+                <h2 className="text-xl font-semibold text-foreground" dir={langDir} translate="no">
                   {me?.data
                     ? t("select_shipping_address")
                     : t("shipping_address")}
@@ -1625,7 +1625,7 @@ const CheckoutPage = () => {
                   <Button
                     variant="outline"
                     type="button"
-                    className="w-full border-dashed border-2 border-gray-300 hover:border-gray-400 bg-transparent hover:bg-gray-50"
+                    className="w-full border-dashed border-2 border-border hover:border-border bg-transparent hover:bg-muted"
                     onClick={() => {
                       setAddressType("shipping");
                       handleToggleAddModal();
@@ -1646,9 +1646,9 @@ const CheckoutPage = () => {
             </div>
 
             {/* Billing Address - Read-only from Profile */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-              <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
-                <h2 className="text-xl font-semibold text-gray-900" dir={langDir} translate="no">
+            <div className="bg-card rounded-xl shadow-sm border border-border overflow-hidden">
+              <div className="px-6 py-4 border-b border-border bg-muted">
+                <h2 className="text-xl font-semibold text-foreground" dir={langDir} translate="no">
                   {t("billing_address")}
                 </h2>
               </div>
@@ -1657,12 +1657,12 @@ const CheckoutPage = () => {
                 {me.data ? (
                   // Logged-in user: Show billing from profile (read-only)
                   selectedOrderDetails?.billingAddress ? (
-                    <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                    <div className="border border-border rounded-lg p-4 bg-muted">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
                           <div className="flex items-center space-x-2 mb-2">
                             <svg
-                              className="w-5 h-5 text-gray-400"
+                              className="w-5 h-5 text-muted-foreground"
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
@@ -1674,20 +1674,20 @@ const CheckoutPage = () => {
                                 d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                               />
                             </svg>
-                            <p className="font-semibold text-gray-900" dir={langDir}>
+                            <p className="font-semibold text-foreground" dir={langDir}>
                               {selectedOrderDetails.firstName} {selectedOrderDetails.lastName}
                             </p>
                           </div>
-                          <p className="text-sm text-gray-600 mb-1" dir={langDir}>
+                          <p className="text-sm text-muted-foreground mb-1" dir={langDir}>
                             {selectedOrderDetails.cc} {selectedOrderDetails.phone}
                           </p>
-                          <p className="text-sm text-gray-600 mb-1" dir={langDir}>
+                          <p className="text-sm text-muted-foreground mb-1" dir={langDir}>
                             {selectedOrderDetails.email}
                           </p>
-                          <p className="text-sm text-gray-600 mt-2" dir={langDir}>
+                          <p className="text-sm text-muted-foreground mt-2" dir={langDir}>
                             {selectedOrderDetails.billingAddress}
                           </p>
-                          <p className="text-sm text-gray-600" dir={langDir}>
+                          <p className="text-sm text-muted-foreground" dir={langDir}>
                             {selectedOrderDetails.billingCity}, {selectedOrderDetails.billingProvince}, {selectedOrderDetails.billingCountry} {selectedOrderDetails.billingPostCode}
                           </p>
                         </div>
@@ -1695,7 +1695,7 @@ const CheckoutPage = () => {
                     </div>
                   ) : (
                     <div className="text-center py-8">
-                      <p className="text-gray-500" dir={langDir} translate="no">
+                      <p className="text-muted-foreground" dir={langDir} translate="no">
                         {t("no_billing_address_available")}
                       </p>
                     </div>
@@ -1726,7 +1726,7 @@ const CheckoutPage = () => {
                       <Button
                         variant="outline"
                         type="button"
-                        className="w-full border-dashed border-2 border-gray-300 hover:border-gray-400 bg-transparent hover:bg-gray-50"
+                        className="w-full border-dashed border-2 border-border hover:border-border bg-transparent hover:bg-muted"
                         onClick={() => {
                           setAddressType("billing");
                           handleToggleAddModal();
@@ -1750,12 +1750,12 @@ const CheckoutPage = () => {
 
             {/* Add New Address Button for logged-in users - Only for Shipping */}
             {me.data && (
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+              <div className="bg-card rounded-xl shadow-sm border border-border overflow-hidden">
                 <div className="p-6">
                   <Button
                     variant="outline"
                     type="button"
-                    className="w-full border-dashed border-2 border-gray-300 hover:border-gray-400 bg-transparent hover:bg-gray-50"
+                    className="w-full border-dashed border-2 border-border hover:border-border bg-transparent hover:bg-muted"
                     onClick={() => {
                       setAddressType("shipping");
                       handleToggleAddModal();
@@ -1780,28 +1780,28 @@ const CheckoutPage = () => {
           {/* Right Column - Order Summary */}
           <div className="lg:col-span-1">
             <div className="sticky top-8">
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
-                  <h2 className="text-xl font-semibold text-gray-900" dir={langDir} translate="no">
+              <div className="bg-card rounded-xl shadow-sm border border-border overflow-hidden">
+                <div className="px-6 py-4 border-b border-border bg-muted">
+                  <h2 className="text-xl font-semibold text-foreground" dir={langDir} translate="no">
                     {t("order_summary")}
                   </h2>
                 </div>
                 
                 <div className="p-6 space-y-4">
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600" dir={langDir} translate="no">
+                    <span className="text-muted-foreground" dir={langDir} translate="no">
                       {t("subtotal")}
                     </span>
-                    <span className="font-semibold text-gray-900">
+                    <span className="font-semibold text-foreground">
                       {currency.symbol}{itemsTotal}
                     </span>
                   </div>
                   
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600" dir={langDir} translate="no">
+                    <span className="text-muted-foreground" dir={langDir} translate="no">
                       {t("shipping")}
                     </span>
-                    <span className="font-semibold text-gray-900">
+                    <span className="font-semibold text-foreground">
                       {shippingCharge > 0 ? (
                         `${currency.symbol}${shippingCharge}`
                       ) : (
@@ -1811,20 +1811,20 @@ const CheckoutPage = () => {
                   </div>
                   
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600" dir={langDir} translate="no">
+                    <span className="text-muted-foreground" dir={langDir} translate="no">
                       {t("fee")}
                     </span>
-                    <span className="font-semibold text-gray-900">
+                    <span className="font-semibold text-foreground">
                       {currency.symbol}{fee}
                     </span>
                   </div>
                   
-                  <div className="border-t border-gray-200 pt-4">
+                  <div className="border-t border-border pt-4">
                     <div className="flex justify-between items-center">
-                      <span className="text-lg font-semibold text-gray-900" dir={langDir} translate="no">
+                      <span className="text-lg font-semibold text-foreground" dir={langDir} translate="no">
                         {t("total_amount")}
                       </span>
-                      <span className="text-xl font-bold text-gray-900">
+                      <span className="text-xl font-bold text-foreground">
                         {currency.symbol}{totalAmount}
                       </span>
                     </div>
@@ -1900,7 +1900,7 @@ const CheckoutPage = () => {
             <DialogTitle className="text-center text-xl font-bold text-dark-orange"></DialogTitle>
             <Button
               onClick={onCancelRemove}
-              className={`${langDir == "ltr" ? "absolute" : ""} right-2 top-2 z-10 bg-white! text-black! shadow-none`}
+              className={`${langDir == "ltr" ? "absolute" : ""} right-2 top-2 z-10 bg-card! text-foreground! shadow-none`}
             >
               <IoCloseSharp size={20} />
             </Button>
@@ -1913,7 +1913,7 @@ const CheckoutPage = () => {
             <div>
               <Button
                 type="button"
-                className="mr-2 bg-white text-destructive"
+                className="mr-2 bg-card text-destructive"
                 onClick={onCancelRemove}
                 translate="no"
               >

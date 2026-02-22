@@ -22,10 +22,10 @@ const VendorBranchSection: React.FC<VendorBranchSectionProps> = ({ branchDetails
   );
 
   return (
-    <div className="mb-5 w-full overflow-hidden rounded-lg border border-solid border-gray-300 bg-white">
+    <div className="mb-5 w-full overflow-hidden rounded-lg border border-solid border-border bg-card">
       {/* Header Section - Clickable */}
       <div 
-        className="flex w-full cursor-pointer items-center justify-between bg-[#FAFAFA] px-3 py-4 transition-colors hover:bg-gray-100"
+        className="flex w-full cursor-pointer items-center justify-between bg-[#FAFAFA] px-3 py-4 transition-colors hover:bg-muted"
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className="flex w-auto items-center text-base font-medium text-color-dark">
@@ -51,7 +51,7 @@ const VendorBranchSection: React.FC<VendorBranchSectionProps> = ({ branchDetails
             {branchDetails?.mainOffice === 1 ? t("main_branch") : t("sub_branch")}
           </p>
           {/* Dropdown Icon */}
-          <div className="flex items-center text-gray-600">
+          <div className="flex items-center text-muted-foreground">
             {isExpanded ? (
               <ChevronUpIcon className="h-5 w-5" />
             ) : (
@@ -63,7 +63,7 @@ const VendorBranchSection: React.FC<VendorBranchSectionProps> = ({ branchDetails
 
       {/* Branch Information Section - Collapsible */}
       {isExpanded && (
-        <div className="w-full border-t border-solid border-gray-300 bg-white px-5 py-4">
+        <div className="w-full border-t border-solid border-border bg-card px-5 py-4">
           <div className="mb-4 w-full">
             <h2 className="left-8 text-lg font-semibold text-color-dark" dir={langDir} translate="no">
               {t("branch_information")}
@@ -75,7 +75,7 @@ const VendorBranchSection: React.FC<VendorBranchSectionProps> = ({ branchDetails
               <div className="flex w-full flex-wrap py-4">
                 <div className="mr-1 flex w-4/12 items-center justify-start sm:mr-0">
                   <span
-                    className="text-sm font-normal capitalize leading-4 text-gray-500"
+                    className="text-sm font-normal capitalize leading-4 text-muted-foreground"
                     dir={langDir}
                     translate="no"
                   >
@@ -96,7 +96,7 @@ const VendorBranchSection: React.FC<VendorBranchSectionProps> = ({ branchDetails
               <div className="flex w-full flex-wrap py-4">
                 <div className="mr-1 flex w-5/12 items-center justify-start sm:mr-0">
                   <span
-                    className="text-sm font-normal capitalize leading-4 text-gray-500"
+                    className="text-sm font-normal capitalize leading-4 text-muted-foreground"
                     dir={langDir}
                     translate="no"
                   >
@@ -117,7 +117,7 @@ const VendorBranchSection: React.FC<VendorBranchSectionProps> = ({ branchDetails
               <div className="flex w-full flex-wrap py-4">
                 <div className="mr-1 flex w-4/12 items-center justify-start sm:mr-0">
                   <span
-                    className="text-sm font-normal capitalize leading-4 text-gray-500"
+                    className="text-sm font-normal capitalize leading-4 text-muted-foreground"
                     dir={langDir}
                     translate="no"
                   >
@@ -138,7 +138,7 @@ const VendorBranchSection: React.FC<VendorBranchSectionProps> = ({ branchDetails
               <div className="flex w-full flex-wrap py-4">
                 <div className="mr-1 flex w-5/12 items-center justify-start sm:mr-0">
                   <span
-                    className="text-sm font-normal capitalize leading-4 text-gray-500"
+                    className="text-sm font-normal capitalize leading-4 text-muted-foreground"
                     dir={langDir}
                     translate="no"
                   >
@@ -159,7 +159,7 @@ const VendorBranchSection: React.FC<VendorBranchSectionProps> = ({ branchDetails
               <div className="flex w-full flex-wrap py-4">
                 <div className="mr-1 flex w-4/12 items-center justify-start sm:mr-0">
                   <span
-                    className="text-sm font-normal capitalize leading-4 text-gray-500"
+                    className="text-sm font-normal capitalize leading-4 text-muted-foreground"
                     dir={langDir}
                     translate="no"
                   >
@@ -180,7 +180,7 @@ const VendorBranchSection: React.FC<VendorBranchSectionProps> = ({ branchDetails
               <div className="flex w-full flex-wrap py-4">
                 <div className="mr-1 flex w-5/12 items-center justify-start sm:mr-0">
                   <span
-                    className="text-sm font-normal capitalize leading-4 text-gray-500"
+                    className="text-sm font-normal capitalize leading-4 text-muted-foreground"
                     dir={langDir}
                     translate="no"
                   >
@@ -201,7 +201,7 @@ const VendorBranchSection: React.FC<VendorBranchSectionProps> = ({ branchDetails
               <div className="flex w-full flex-wrap py-4">
                 <div className="mr-1 flex w-4/12 items-center justify-start sm:mr-0">
                   <span
-                    className="text-sm font-normal capitalize leading-4 text-gray-500"
+                    className="text-sm font-normal capitalize leading-4 text-muted-foreground"
                     dir={langDir}
                     translate="no"
                   >
@@ -222,7 +222,7 @@ const VendorBranchSection: React.FC<VendorBranchSectionProps> = ({ branchDetails
               <div className="flex w-full flex-wrap py-4">
                 <div className="mr-1 flex w-5/12 items-center justify-start sm:mr-0">
                   <span
-                    className="text-sm font-normal capitalize leading-4 text-gray-500"
+                    className="text-sm font-normal capitalize leading-4 text-muted-foreground"
                     dir={langDir}
                     translate="no"
                   >
@@ -243,7 +243,7 @@ const VendorBranchSection: React.FC<VendorBranchSectionProps> = ({ branchDetails
               <div className="flex w-full flex-wrap py-4">
                 <div className="mr-1 flex w-4/12 items-center justify-start sm:mr-0">
                   <span
-                    className="text-sm font-normal capitalize leading-4 text-gray-500"
+                    className="text-sm font-normal capitalize leading-4 text-muted-foreground"
                     dir={langDir}
                     translate="no"
                   >
@@ -267,7 +267,7 @@ const VendorBranchSection: React.FC<VendorBranchSectionProps> = ({ branchDetails
                 <div className="flex w-full flex-wrap py-4">
                   <div className="mb-3 mr-1 flex w-full items-center justify-start sm:mr-0">
                     <span
-                      className="text-sm font-normal capitalize leading-4 text-gray-500"
+                      className="text-sm font-normal capitalize leading-4 text-muted-foreground"
                       dir={langDir}
                       translate="no"
                     >
@@ -276,7 +276,7 @@ const VendorBranchSection: React.FC<VendorBranchSectionProps> = ({ branchDetails
                   </div>
                   <div className="mr-1 flex w-full  items-center justify-start sm:mr-0">
                     <div
-                      className="relative h-32 w-36 rounded-2xl border border-gray-300"
+                      className="relative h-32 w-36 rounded-2xl border border-border"
                       dir={langDir}
                     >
                       <Image
@@ -297,7 +297,7 @@ const VendorBranchSection: React.FC<VendorBranchSectionProps> = ({ branchDetails
                 <div className="flex w-full flex-wrap py-4">
                   <div className="mb-3 mr-1 flex w-full items-center justify-start sm:mr-0">
                     <span
-                      className="text-sm font-normal capitalize leading-4 text-gray-500"
+                      className="text-sm font-normal capitalize leading-4 text-muted-foreground"
                       dir={langDir}
                       translate="no"
                     >
@@ -306,7 +306,7 @@ const VendorBranchSection: React.FC<VendorBranchSectionProps> = ({ branchDetails
                   </div>
                   <div className="mr-1 flex w-full  items-center justify-start sm:mr-0">
                     <div
-                      className="relative h-32 w-36 rounded-2xl border border-gray-300"
+                      className="relative h-32 w-36 rounded-2xl border border-border"
                       dir={langDir}
                     >
                       <Image

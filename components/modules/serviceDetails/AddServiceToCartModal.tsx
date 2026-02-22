@@ -212,7 +212,7 @@ const AddServiceToCartModal: React.FC<AddServiceToCartModalProps> = ({
             <div className="modal-headerpart">
                 <DialogTitle
                     dir={langDir}
-                    className="text-lg font-semibold text-gray-800"
+                    className="text-lg font-semibold text-foreground"
                     translate="no"
                 >
                     {t("select_services")}
@@ -243,7 +243,7 @@ const AddServiceToCartModal: React.FC<AddServiceToCartModalProps> = ({
                                     <div
                                         className={`import-pickup-type-selector-box flex items-center gap-3 p-4 border rounded-xl cursor-pointer ${isSelected
                                             ? "bg-success/5 border-success"
-                                            : "bg-white border-gray-200"
+                                            : "bg-card border-border"
                                             }`}
                                         style={{
                                             minHeight: "0px",
@@ -261,20 +261,20 @@ const AddServiceToCartModal: React.FC<AddServiceToCartModalProps> = ({
                                             className="h-5 w-5 text-success focus:ring-success"
                                         />
                                         <div className="text-container flex-1">
-                                            <h5 dir={langDir} className="text-sm text-gray-800">
+                                            <h5 dir={langDir} className="text-sm text-foreground">
                                                 {feature.name}
                                             </h5>
-                                            <p className="text-xs text-gray-500">
+                                            <p className="text-xs text-muted-foreground">
                                                 {feature.serviceCostType.toLowerCase()} — ₹
                                                 {feature.serviceCost}
                                             </p>
                                         </div>
                                         {isSelected ? (
                                             <div className="quantity-container flex items-center gap-2">
-                                                <label className="text-sm text-gray-600">Qty:</label>
+                                                <label className="text-sm text-muted-foreground">Qty:</label>
                                                 <button
                                                     onClick={() => decrementQuantity(feature.id)}
-                                                    className="w-8 h-8 flex items-center justify-center border rounded-md text-gray-600 hover:bg-gray-100"
+                                                    className="w-8 h-8 flex items-center justify-center border rounded-md text-muted-foreground hover:bg-muted"
                                                 >
                                                     -
                                                 </button>
@@ -292,7 +292,7 @@ const AddServiceToCartModal: React.FC<AddServiceToCartModalProps> = ({
                                                 />
                                                 <button
                                                     onClick={() => incrementQuantity(feature.id)}
-                                                    className="w-8 h-8 flex items-center justify-center border rounded-md text-gray-600 hover:bg-gray-100"
+                                                    className="w-8 h-8 flex items-center justify-center border rounded-md text-muted-foreground hover:bg-muted"
                                                 >
                                                     +
                                                 </button>

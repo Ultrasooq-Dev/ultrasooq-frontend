@@ -82,7 +82,7 @@ const ServiceDescriptionCard: React.FC<any> = ({
                                         <div
                                             className={`import-pickup-type-selector-box flex flex-wrap items-center gap-3 p-4 border rounded-xl cursor-pointer ${isSelected
                                                 ? "bg-success/5 border-success"
-                                                : "bg-white border-gray-200"
+                                                : "bg-card border-border"
                                                 }`}
                                             style={{
                                                 minHeight: "0px",
@@ -102,10 +102,10 @@ const ServiceDescriptionCard: React.FC<any> = ({
                                                 className="h-5 w-5 text-success focus:ring-success"
                                             />
                                             <div className="text-container flex-1 min-w-0">
-                                                <h5 dir={langDir} className="text-sm text-gray-800 truncate">
+                                                <h5 dir={langDir} className="text-sm text-foreground truncate">
                                                     {feature.name}
                                                 </h5>
-                                                <p className="text-xs text-gray-500" dir={langDir}>
+                                                <p className="text-xs text-muted-foreground" dir={langDir}>
                                                     {feature.serviceCostType.toLowerCase()} —
                                                     <span translate="no">
                                                         {currency.symbol}
@@ -115,10 +115,10 @@ const ServiceDescriptionCard: React.FC<any> = ({
                                             </div>
                                             {isSelected ? (
                                                 <div className="quantity-container flex flex-wrap items-center gap-2 min-w-0">
-                                                    <label className="text-sm text-gray-600">Qty:</label>
+                                                    <label className="text-sm text-muted-foreground">Qty:</label>
                                                     <button
                                                         onClick={() => decrementQuantity(feature.id)}
-                                                        className="w-8 h-8 flex items-center justify-center border rounded-md text-gray-600 hover:bg-gray-100"
+                                                        className="w-8 h-8 flex items-center justify-center border rounded-md text-muted-foreground hover:bg-muted"
                                                     >
                                                         -
                                                     </button>
@@ -137,7 +137,7 @@ const ServiceDescriptionCard: React.FC<any> = ({
                                                     />
                                                     <button
                                                         onClick={() => incrementQuantity(feature.id)}
-                                                        className="w-8 h-8 flex items-center justify-center border rounded-md text-gray-600 hover:bg-gray-100"
+                                                        className="w-8 h-8 flex items-center justify-center border rounded-md text-muted-foreground hover:bg-muted"
                                                     >
                                                         +
                                                     </button>

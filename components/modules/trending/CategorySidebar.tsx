@@ -832,7 +832,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
       <div
         ref={columnRef}
         className={cn(
-          "flex-shrink-0 h-full overflow-y-auto bg-gray-50 border-r border-gray-200 custom-scrollbar",
+          "flex-shrink-0 h-full overflow-y-auto bg-muted border-r border-border custom-scrollbar",
           "w-[180px] sm:w-[200px] md:w-[240px]",
           isScrolling && "scrolling"
         )}
@@ -949,7 +949,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
       <div
         ref={columnRef}
         className={cn(
-          "flex-shrink-0 h-full overflow-y-auto border-r border-gray-200 bg-white custom-scrollbar",
+          "flex-shrink-0 h-full overflow-y-auto border-r border-border bg-card custom-scrollbar",
           "w-[180px] sm:w-[200px] md:w-[240px]",
           isScrolling && "scrolling"
         )}
@@ -975,7 +975,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
         }}
       >
         <div className="p-4">
-          <h3 className="text-sm font-semibold text-gray-900 mb-3 sticky top-0 bg-white pb-2 border-b border-gray-200 z-10 -mx-4 -mt-4 px-4 pt-4">
+          <h3 className="text-sm font-semibold text-foreground mb-3 sticky top-0 bg-card pb-2 border-b border-border z-10 -mx-4 -mt-4 px-4 pt-4">
             {translate(title)}
           </h3>
           <div className="space-y-1">
@@ -998,7 +998,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
                     hasChildren ? "cursor-default" : "cursor-pointer",
                     isSelected
                       ? "bg-primary/5 text-primary font-medium border border-primary/20"
-                      : "hover:bg-gray-50 text-gray-700",
+                      : "hover:bg-muted text-muted-foreground",
                   )}
                   onMouseEnter={(e) => {
                     // Only use hover on desktop
@@ -1048,14 +1048,14 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
                       className="object-contain flex-shrink-0"
                     />
                   ) : (
-                    <div className="h-5 w-5 flex-shrink-0 rounded bg-gray-200" />
+                    <div className="h-5 w-5 flex-shrink-0 rounded bg-muted" />
                   )}
                   <span className="text-sm flex-1 text-left line-clamp-1">
                     {translate(item.name)}
                   </span>
                   {hasChildren && (
                     <svg
-                      className="w-4 h-4 text-gray-400 flex-shrink-0"
+                      className="w-4 h-4 text-muted-foreground flex-shrink-0"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -1154,7 +1154,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
       <div
         ref={containerRef}
         className={cn(
-          "fixed right-0 left-0 z-[100] bg-white shadow-2xl",
+          "fixed right-0 left-0 z-[100] bg-card shadow-2xl",
           "transition-all duration-500 ease-out",
           // Mobile: full screen height, Desktop: fixed height for 3-panel layout
           "h-[calc(100vh-var(--header-height,116px))] md:h-[65vh] md:min-h-[350px] md:max-h-[75vh]",
@@ -1227,16 +1227,16 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
         }}
         dir={langDir}
       >
-        <div className="relative flex h-full w-full items-start justify-start bg-white">
+        <div className="relative flex h-full w-full items-start justify-start bg-card">
           {/* Mobile View - Drill-down navigation */}
           <div className="md:hidden flex flex-col h-full w-full">
             {/* Header with Back Button and Close Icon */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-white">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-card">
               {mobileNavStack.length > 0 ? (
                 <button
                   onClick={handleMobileBack}
                   className={cn(
-                    "flex items-center gap-2 text-gray-700 hover:text-gray-900 transition-colors",
+                    "flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors",
                     langDir === "rtl" ? "flex-row-reverse" : ""
                   )}
                 >
@@ -1254,8 +1254,8 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
 
             {/* Category Name Section */}
             {mobileNavStack.length > 0 && (
-              <div className="px-4 py-3 border-b border-gray-200 bg-white">
-                <span className="text-base font-semibold text-gray-900">
+              <div className="px-4 py-3 border-b border-border bg-card">
+                <span className="text-base font-semibold text-foreground">
                   {translate(mobileNavStack[mobileNavStack.length - 1].categoryName)}
                 </span>
               </div>
@@ -1278,7 +1278,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
                         key={category.id}
                         className={cn(
                           "flex items-center gap-3 px-4 py-3 mx-2 rounded-md transition-colors cursor-pointer",
-                          "hover:bg-gray-50 active:bg-gray-100"
+                          "hover:bg-muted active:bg-muted"
                         )}
                         onClick={() => {
                           // Calculate the level of the categories being shown
@@ -1299,13 +1299,13 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
                             className="object-contain flex-shrink-0"
                           />
                         ) : (
-                          <div className="h-6 w-6 flex-shrink-0 rounded bg-gray-200" />
+                          <div className="h-6 w-6 flex-shrink-0 rounded bg-muted" />
                         )}
-                        <span className="text-base flex-1 text-left text-gray-900">
+                        <span className="text-base flex-1 text-left text-foreground">
                           {translate(category.name)}
                         </span>
                         {hasChildren && (
-                          <ChevronLeft className={cn("h-5 w-5 text-gray-400 flex-shrink-0", langDir === "rtl" ? "" : "rotate-180")} />
+                          <ChevronLeft className={cn("h-5 w-5 text-muted-foreground flex-shrink-0", langDir === "rtl" ? "" : "rotate-180")} />
                         )}
                       </div>
                     );
@@ -1331,8 +1331,8 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
                           className={cn(
                             "flex cursor-pointer items-center gap-x-3 px-4 py-3 transition-colors",
                             {
-                              "bg-white font-medium": isMainActive,
-                              "hover:bg-gray-100": !isMainActive,
+                              "bg-card font-medium": isMainActive,
+                              "hover:bg-muted": !isMainActive,
                             },
                             langDir === "rtl"
                               ? {
@@ -1358,22 +1358,22 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
                               className="object-contain flex-shrink-0"
                             />
                           ) : (
-                            <div className="h-5 w-5 flex-shrink-0 rounded bg-gray-200" />
+                            <div className="h-5 w-5 flex-shrink-0 rounded bg-muted" />
                           )}
                           <span
                             className={cn(
                               "text-sm flex-1",
                               langDir === "rtl" ? "text-right" : "text-left",
                               isMainActive
-                                ? "text-gray-900 font-medium"
-                                : "text-gray-700",
+                                ? "text-foreground font-medium"
+                                : "text-muted-foreground",
                             )}
                           >
                             {translate(category.name)}
                           </span>
                           <svg
                             className={cn(
-                              "w-4 h-4 text-gray-400 flex-shrink-0",
+                              "w-4 h-4 text-muted-foreground flex-shrink-0",
                               langDir === "rtl" ? "rotate-180" : ""
                             )}
                             fill="none"
@@ -1398,7 +1398,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
             {/* Panel 2: Level 2 Subcategories (Middle Column) */}
             <div
               className={cn(
-                "flex-shrink-0 h-full overflow-y-auto custom-scrollbar border-r border-gray-200 bg-white",
+                "flex-shrink-0 h-full overflow-y-auto custom-scrollbar border-r border-border bg-card",
                 "w-[220px] lg:w-[260px]"
               )}
             >
@@ -1422,7 +1422,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
                           "flex cursor-pointer items-center gap-x-3 px-4 py-2.5 transition-colors",
                           isActive
                             ? "bg-warning/5 text-warning"
-                            : "hover:bg-gray-50 text-gray-700"
+                            : "hover:bg-muted text-muted-foreground"
                         )}
                         onMouseEnter={() => {
                           handleLevel2Hover(subcategory);
@@ -1438,7 +1438,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
                             className="object-contain flex-shrink-0"
                           />
                         ) : (
-                          <div className="h-[18px] w-[18px] flex-shrink-0 rounded bg-gray-200" />
+                          <div className="h-[18px] w-[18px] flex-shrink-0 rounded bg-muted" />
                         )}
                         <span
                           className={cn(
@@ -1453,7 +1453,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
                           <svg
                             className={cn(
                               "w-3.5 h-3.5 flex-shrink-0",
-                              isActive ? "text-warning" : "text-gray-400",
+                              isActive ? "text-warning" : "text-muted-foreground",
                               langDir === "rtl" ? "rotate-180" : ""
                             )}
                             fill="none"
@@ -1474,7 +1474,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
 
                   {/* View All link at bottom of Level 2 */}
                   {selectedLevels[0] && (
-                    <div className="px-4 py-3 mt-1 border-t border-gray-100">
+                    <div className="px-4 py-3 mt-1 border-t border-border">
                       <span
                         className="text-warning hover:text-warning font-medium cursor-pointer text-sm"
                         onClick={() => handleCategoryClick(selectedLevels[0]!)}
@@ -1491,7 +1491,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
                   )}
                 </div>
               ) : (
-                <div className="flex items-center justify-center h-full text-gray-400 text-sm px-4">
+                <div className="flex items-center justify-center h-full text-muted-foreground text-sm px-4">
                   {t("select_category") || "Hover a category"}
                 </div>
               )}
@@ -1500,7 +1500,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
             {/* Panel 3: Level 3 Items (Right Expanding Panel) */}
             {hoveredLevel2Id && (level3Categories.length > 0 || level3Loading) && (
               <div
-                className="flex-1 h-full overflow-y-auto custom-scrollbar bg-gray-50 p-5"
+                className="flex-1 h-full overflow-y-auto custom-scrollbar bg-muted p-5"
                 onMouseLeave={() => {
                   // Keep panel visible — it only changes when hovering a different Level 2 item
                 }}
@@ -1512,9 +1512,9 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
                 ) : (
                   <>
                     {/* Level 3 header: the hovered Level 2 category name */}
-                    <div className="mb-4 pb-2 border-b border-gray-200">
+                    <div className="mb-4 pb-2 border-b border-border">
                       <h3
-                        className="font-semibold text-base text-gray-900 cursor-pointer hover:text-warning transition-colors"
+                        className="font-semibold text-base text-foreground cursor-pointer hover:text-warning transition-colors"
                         onClick={() => handleCategoryClick(hoveredLevel2Id!)}
                       >
                         {translate(
@@ -1531,7 +1531,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
                           <div key={item.id} className="flex flex-col">
                             {/* Level 3 item */}
                             <div
-                              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-white hover:shadow-sm cursor-pointer transition-all group"
+                              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-card hover:shadow-sm cursor-pointer transition-all group"
                               onClick={() => handleCategoryClick(item.id)}
                             >
                               {item.icon ? (
@@ -1543,9 +1543,9 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
                                   className="object-contain flex-shrink-0"
                                 />
                               ) : (
-                                <div className="h-4 w-4 flex-shrink-0 rounded bg-gray-300" />
+                                <div className="h-4 w-4 flex-shrink-0 rounded bg-muted" />
                               )}
-                              <span className="text-sm font-medium text-gray-700 group-hover:text-warning transition-colors line-clamp-1">
+                              <span className="text-sm font-medium text-muted-foreground group-hover:text-warning transition-colors line-clamp-1">
                                 {translate(item.name)}
                               </span>
                             </div>
@@ -1555,7 +1555,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
                                 {level4Items.map((sub: any) => (
                                   <span
                                     key={sub.id}
-                                    className="text-xs text-gray-400 hover:text-warning cursor-pointer transition-colors line-clamp-1 py-0.5"
+                                    className="text-xs text-muted-foreground hover:text-warning cursor-pointer transition-colors line-clamp-1 py-0.5"
                                     onClick={() => handleCategoryClick(sub.id)}
                                   >
                                     {translate(sub.name)}
@@ -1569,7 +1569,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
                     </div>
 
                     {/* View All for this subcategory */}
-                    <div className="mt-4 pt-3 border-t border-gray-200">
+                    <div className="mt-4 pt-3 border-t border-border">
                       <span
                         className="text-warning hover:text-warning font-medium cursor-pointer text-sm"
                         onClick={() => handleCategoryClick(hoveredLevel2Id!)}
@@ -1588,7 +1588,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
 
             {/* Empty state: when no Level 2 is hovered, show a subtle hint */}
             {!hoveredLevel2Id && subcategoriesForGrid.length > 0 && (
-              <div className="flex-1 h-full flex items-center justify-center bg-gray-50 text-gray-400 text-sm">
+              <div className="flex-1 h-full flex items-center justify-center bg-muted text-muted-foreground text-sm">
                 <div className="text-center">
                   <svg className="w-10 h-10 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />

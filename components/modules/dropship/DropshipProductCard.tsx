@@ -64,10 +64,10 @@ const DropshipProductCard: React.FC<DropshipProductCardProps> = ({
   };
 
   return (
-    <Card className="group hover:shadow-lg transition-all duration-300 border border-gray-200 rounded-lg overflow-hidden">
+    <Card className="group hover:shadow-lg transition-all duration-300 border border-border rounded-lg overflow-hidden">
       <CardContent className="p-0">
         {/* Product Image */}
-        <div className="relative h-48 w-full overflow-hidden bg-gray-100">
+        <div className="relative h-48 w-full overflow-hidden bg-muted">
           {productImage && (validator.isURL(productImage) || productImage.startsWith('data:image/')) ? (
             // Check if the image is from an allowed domain (S3 bucket) or is a data URL
             productImage.includes('puremoon.s3.amazonaws.com') || productImage.startsWith('data:image/') ? (
@@ -113,13 +113,13 @@ const DropshipProductCard: React.FC<DropshipProductCardProps> = ({
           {haveAccessToken && (
             <button
               onClick={handleWishlist}
-              className="absolute top-3 right-3 p-2 bg-white/80 hover:bg-white rounded-full shadow-sm transition-colors"
+              className="absolute top-3 right-3 p-2 bg-card/80 hover:bg-card rounded-full shadow-sm transition-colors"
               aria-label={isInWishlist ? t("remove_from_wishlist") : t("add_to_wishlist")}
             >
               {isInWishlist ? (
                 <Heart className="h-4 w-4 text-destructive fill-current" />
               ) : (
-                <HeartOff className="h-4 w-4 text-gray-600" />
+                <HeartOff className="h-4 w-4 text-muted-foreground" />
               )}
             </button>
           )}
@@ -128,20 +128,20 @@ const DropshipProductCard: React.FC<DropshipProductCardProps> = ({
         {/* Product Details */}
         <div className="p-4">
           {/* Product Name */}
-          <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 text-sm leading-5">
+          <h3 className="font-semibold text-foreground mb-2 line-clamp-2 text-sm leading-5">
             {productName}
           </h3>
 
           {/* Brand and Category */}
-          <div className="flex items-center gap-2 mb-2 text-xs text-gray-600">
+          <div className="flex items-center gap-2 mb-2 text-xs text-muted-foreground">
             <Package className="h-3 w-3" />
             <span className="truncate">{brandName}</span>
-            <span className="text-gray-400">•</span>
+            <span className="text-muted-foreground">•</span>
             <span className="truncate">{categoryName}</span>
           </div>
 
           {/* Vendor Info */}
-          <div className="flex items-center gap-2 mb-3 text-xs text-gray-600">
+          <div className="flex items-center gap-2 mb-3 text-xs text-muted-foreground">
             <User className="h-3 w-3" />
             <span className="truncate">{vendorName}</span>
           </div>
@@ -163,7 +163,7 @@ const DropshipProductCard: React.FC<DropshipProductCardProps> = ({
 
           {/* Description Preview */}
           {productDescription && (
-            <p className="text-xs text-gray-600 mb-4 line-clamp-2">
+            <p className="text-xs text-muted-foreground mb-4 line-clamp-2">
               {productDescription.length > 100 
                 ? `${productDescription.substring(0, 100)}...` 
                 : productDescription
@@ -196,8 +196,8 @@ const DropshipProductCard: React.FC<DropshipProductCardProps> = ({
 
           {/* My Product Indicator */}
           {isCreatedByMe && (
-            <div className="mt-2 pt-2 border-t border-gray-100">
-              <Badge variant="secondary" className="text-xs bg-gray-100 text-gray-700">
+            <div className="mt-2 pt-2 border-t border-border">
+              <Badge variant="secondary" className="text-xs bg-muted text-muted-foreground">
                 {t("my_product")}
               </Badge>
             </div>

@@ -218,7 +218,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
         {/* Main Categories */}
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <h4 className="text-sm font-medium text-gray-700">{t("main_categories")}</h4>
+            <h4 className="text-sm font-medium text-muted-foreground">{t("main_categories")}</h4>
             <div className="flex gap-2">
               {focusedMainCategory && (
                 <Button
@@ -253,7 +253,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
               .map((category: CategoryProps) => (
               <div
                 key={category.id}
-                className="flex items-center space-x-2 p-2 hover:bg-gray-50 rounded"
+                className="flex items-center space-x-2 p-2 hover:bg-muted rounded"
               >
                 <Checkbox
                   id={`main-${category.id}`}
@@ -261,7 +261,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
                   onCheckedChange={(checked) => 
                     handleMainCategoryChange(checked as boolean, category)
                   }
-                  className="border border-gray-300 data-[state=checked]:bg-primary!"
+                  className="border border-border data-[state=checked]:bg-primary!"
                 />
                 <div className="flex items-center space-x-2 flex-1">
                   {category.icon ? (
@@ -309,8 +309,8 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
 
         {/* Sub Categories */}
         {expandedMainCategory && memoizedSubCategories.length > 0 && (
-          <div className="space-y-2 ml-4 border-l-2 border-gray-200 pl-4">
-            <h4 className="text-sm font-medium text-gray-700">{t("sub_categories")}</h4>
+          <div className="space-y-2 ml-4 border-l-2 border-border pl-4">
+            <h4 className="text-sm font-medium text-muted-foreground">{t("sub_categories")}</h4>
             <div className="max-h-40 overflow-y-auto space-y-1">
               {memoizedSubCategories
                 .filter((category: CategoryProps) => 
@@ -319,7 +319,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
                 .map((category: CategoryProps) => (
                 <div
                   key={category.id}
-                  className="flex items-center space-x-2 p-2 hover:bg-gray-50 rounded"
+                  className="flex items-center space-x-2 p-2 hover:bg-muted rounded"
                 >
                   <Checkbox
                     id={`sub-${category.id}`}
@@ -327,7 +327,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
                     onCheckedChange={(checked) => 
                       handleSubCategoryChange(checked as boolean, category)
                     }
-                    className="border border-gray-300 data-[state=checked]:bg-primary!"
+                    className="border border-border data-[state=checked]:bg-primary!"
                   />
                   <div className="flex items-center space-x-2 flex-1">
                     {category.icon ? (
@@ -375,13 +375,13 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
 
         {/* Sub-Sub Categories */}
         {expandedSubCategory && memoizedSubSubCategories.length > 0 && (
-          <div className="space-y-2 ml-8 border-l-2 border-gray-200 pl-4">
-            <h4 className="text-sm font-medium text-gray-700">{t("sub_sub_categories")}</h4>
+          <div className="space-y-2 ml-8 border-l-2 border-border pl-4">
+            <h4 className="text-sm font-medium text-muted-foreground">{t("sub_sub_categories")}</h4>
             <div className="max-h-40 overflow-y-auto space-y-1">
               {memoizedSubSubCategories.map((category: CategoryProps) => (
                 <div
                   key={category.id}
-                  className="flex items-center space-x-2 p-2 hover:bg-gray-50 rounded"
+                  className="flex items-center space-x-2 p-2 hover:bg-muted rounded"
                 >
                   <Checkbox
                     id={`subsub-${category.id}`}
@@ -389,7 +389,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
                     onCheckedChange={(checked) => 
                       handleSubSubCategoryChange(checked as boolean, category)
                     }
-                    className="border border-gray-300 data-[state=checked]:bg-primary!"
+                    className="border border-border data-[state=checked]:bg-primary!"
                   />
                   <div className="flex items-center space-x-2 flex-1">
                     {category.icon ? (

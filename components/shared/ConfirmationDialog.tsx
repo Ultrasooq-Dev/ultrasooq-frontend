@@ -47,7 +47,7 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold">{title}</DialogTitle>
-          <DialogDescription className="text-sm text-gray-600 mt-2">
+          <DialogDescription className="text-sm text-muted-foreground mt-2">
             {description}
           </DialogDescription>
         </DialogHeader>

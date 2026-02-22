@@ -90,7 +90,7 @@ const ProductWizard: React.FC<ProductWizardProps> = ({
       />
 
       {/* Wizard Stepper */}
-      <div className="rounded-2xl border border-gray-200 bg-white px-6 py-5 shadow-sm">
+      <div className="rounded-2xl border border-border bg-card px-6 py-5 shadow-sm">
         <WizardStepper
           currentStep={currentStep}
           completedSteps={completedSteps}
@@ -124,7 +124,7 @@ const ProductWizard: React.FC<ProductWizardProps> = ({
       </div>
 
       {/* Navigation Buttons */}
-      <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+      <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
         <div className="flex items-center justify-between">
           {/* Back button */}
           <div>
@@ -133,7 +133,7 @@ const ProductWizard: React.FC<ProductWizardProps> = ({
                 type="button"
                 variant="outline"
                 onClick={goBack}
-                className="gap-2 rounded-xl border-gray-300 px-6 py-3 text-gray-700 hover:bg-gray-50"
+                className="gap-2 rounded-xl border-border px-6 py-3 text-muted-foreground hover:bg-muted"
                 dir={langDir}
               >
                 <ArrowLeft className="h-4 w-4" />
@@ -146,7 +146,7 @@ const ProductWizard: React.FC<ProductWizardProps> = ({
           <div className="flex items-center gap-3">
             {/* Skip hint on Step 1 */}
             {currentStep === 1 && (
-              <span className="text-xs text-gray-400">
+              <span className="text-xs text-muted-foreground">
                 {t("skip_ai_hint") || "You can skip AI search"}
               </span>
             )}

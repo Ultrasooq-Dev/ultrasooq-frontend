@@ -145,7 +145,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
                             <div className="flex items-center gap-x-1">
                                 <Button
                                     variant="outline"
-                                    className="relative border border-solid border-gray-300 hover:shadow-xs"
+                                    className="relative border border-solid border-border hover:shadow-xs"
                                     onClick={() => {
                                         if (quantity - 1 > 0) {
                                             setQuantity(quantity - 1);
@@ -179,7 +179,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
                                 />
                                 <Button
                                     variant="outline"
-                                    className="relative border border-solid border-gray-300 hover:shadow-xs"
+                                    className="relative border border-solid border-border hover:shadow-xs"
                                     onClick={() => {
                                         setQuantity(quantity + 1);
                                         handleAddToCart(quantity + 1);
@@ -221,7 +221,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
                         <DialogTitle className="text-center text-xl text-dark-orange font-bold"></DialogTitle>
                         <Button
                             onClick={onCancelRemove}
-                            className={`${langDir == 'ltr' ? 'absolute' : ''} right-2 top-2 z-10 bg-white! text-black! shadow-none`}
+                            className={`${langDir == 'ltr' ? 'absolute' : ''} right-2 top-2 z-10 bg-card! text-foreground! shadow-none`}
                         >
                             <IoCloseSharp size={20} />
                         </Button>
@@ -232,7 +232,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
                         <div>
                             <Button
                                 type="button"
-                                className="bg-white text-destructive mr-2"
+                                className="bg-card text-destructive mr-2"
                                 onClick={onCancelRemove}
                             >
                                 Cancel

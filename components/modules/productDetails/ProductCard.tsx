@@ -192,7 +192,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   );
 
   return (
-    <div className="relative h-full w-full bg-white p-4">
+    <div className="relative h-full w-full bg-card p-4">
       <Link href={`/trending/${id}`}>
         {(() => {
           const { discount, discountType } = getApplicableDiscount();
@@ -209,7 +209,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         })()}
         
         {/* Product Image */}
-        <div className="relative mx-auto mb-3 h-48 w-full bg-white flex items-center justify-center">
+        <div className="relative mx-auto mb-3 h-48 w-full bg-card flex items-center justify-center">
           <Image
             src={
               productImages?.[0]?.image &&
@@ -228,7 +228,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       <div className="flex flex-col">
         <Link href={`/trending/${id}`}>
           <div>
-            <h4 className="mb-2 line-clamp-2 text-sm text-gray-900" title={productName}>
+            <h4 className="mb-2 line-clamp-2 text-sm text-foreground" title={productName}>
               {translate(productName)}
             </h4>
             
@@ -251,16 +251,16 @@ const ProductCard: React.FC<ProductCardProps> = ({
             {/* Price */}
             <div className="mb-2">
               {askForPrice === "true" ? (
-                <span className="text-sm font-medium text-gray-700">
+                <span className="text-sm font-medium text-muted-foreground">
                   {t("ask_for_price")}
                 </span>
               ) : (
                 <div className="flex items-center gap-2">
-                  <span className="text-xl font-medium text-gray-900">
+                  <span className="text-xl font-medium text-foreground">
                     {currency.symbol}{calculateDiscountedPrice()}
                   </span>
                   {productProductPrice && calculateDiscountedPrice() < Number(productProductPrice) && (
-                    <span className="text-sm text-gray-500 line-through">
+                    <span className="text-sm text-muted-foreground line-through">
                       {currency.symbol}{productProductPrice}
                     </span>
                   )}
@@ -270,7 +270,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
             {/* Short Description */}
             {shortDescription && shortDescription !== "-" && (
-              <p className="mb-2 line-clamp-2 text-xs text-gray-600" title={shortDescription}>
+              <p className="mb-2 line-clamp-2 text-xs text-muted-foreground" title={shortDescription}>
                 {shortDescription}
               </p>
             )}
@@ -297,7 +297,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           {askForPrice !== "true" ? (
             <Button
               onClick={onAdd}
-              className="flex-1 bg-warning px-4 py-2 text-xs font-medium text-gray-900 hover:bg-warning"
+              className="flex-1 bg-warning px-4 py-2 text-xs font-medium text-foreground hover:bg-warning"
             >
               {t("add_to_cart")}
             </Button>
@@ -318,12 +318,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
             <Button
               variant="outline"
               onClick={onWishlist}
-              className="h-9 w-9 border-0 bg-gray-100 p-0 hover:bg-gray-200"
+              className="h-9 w-9 border-0 bg-muted p-0 hover:bg-muted"
             >
               {inWishlist ? (
                 <FaHeart className="h-4 w-4 text-destructive" />
               ) : (
-                <FaRegHeart className="h-4 w-4 text-gray-600" />
+                <FaRegHeart className="h-4 w-4 text-muted-foreground" />
               )}
             </Button>
           ) : null}

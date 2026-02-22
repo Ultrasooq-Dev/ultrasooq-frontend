@@ -34,7 +34,7 @@ const WizardStepper: React.FC<WizardStepperProps> = ({
                       "h-full transition-colors duration-300",
                       isCompleted || step <= currentStep
                         ? "bg-warning"
-                        : "bg-gray-200"
+                        : "bg-muted"
                     )}
                   />
                 </div>
@@ -55,7 +55,7 @@ const WizardStepper: React.FC<WizardStepperProps> = ({
                       ? "bg-warning border-warning text-white shadow-lg shadow-orange-200"
                       : isCompleted
                       ? "bg-success border-success text-white"
-                      : "bg-white border-gray-300 text-gray-400"
+                      : "bg-card border-border text-muted-foreground"
                   )}
                 >
                   {isCompleted && !isActive ? (
@@ -71,7 +71,7 @@ const WizardStepper: React.FC<WizardStepperProps> = ({
                       ? "text-warning"
                       : isCompleted
                       ? "text-success"
-                      : "text-gray-400"
+                      : "text-muted-foreground"
                   )}
                 >
                   {label}
@@ -79,7 +79,7 @@ const WizardStepper: React.FC<WizardStepperProps> = ({
                 <span
                   className={cn(
                     "text-[10px] text-center whitespace-nowrap",
-                    isActive ? "text-gray-600" : "text-gray-400"
+                    isActive ? "text-muted-foreground" : "text-muted-foreground"
                   )}
                 >
                   {description}

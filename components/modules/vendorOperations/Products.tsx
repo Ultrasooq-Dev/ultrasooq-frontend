@@ -120,9 +120,9 @@ const Products: React.FC<ProductsProps> = ({ onSelectProduct, onSelectService })
   };
 
   return (
-    <div className="w-full border-r border-solid border-gray-300 lg:w-[18%]">
+    <div className="w-full border-r border-solid border-border lg:w-[18%]">
       <div
-        className="flex h-[55px] min-w-full items-center border-b border-solid border-gray-300 px-[10px] py-[10px] text-base font-normal text-foreground"
+        className="flex h-[55px] min-w-full items-center border-b border-solid border-border px-[10px] py-[10px] text-base font-normal text-foreground"
         dir={langDir}
       >
         <select value={productType} onChange={(e) => {
@@ -149,7 +149,7 @@ const Products: React.FC<ProductsProps> = ({ onSelectProduct, onSelectService })
           {!productsQuery?.isLoading && !productList?.length ? (
             <div className="my-2 space-y-2">
               <p
-                className="text-center text-sm font-normal text-gray-500"
+                className="text-center text-sm font-normal text-muted-foreground"
                 dir={langDir}
                 translate="no"
               >
@@ -204,7 +204,7 @@ const Products: React.FC<ProductsProps> = ({ onSelectProduct, onSelectService })
           {!servicesQuery?.isLoading && !productList?.length ? (
             <div className="my-2 space-y-2">
               <p
-                className="text-center text-sm font-normal text-gray-500"
+                className="text-center text-sm font-normal text-muted-foreground"
                 dir={langDir}
                 translate="no"
               >

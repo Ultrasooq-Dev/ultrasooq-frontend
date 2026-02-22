@@ -298,27 +298,27 @@ const RfqCartPage = () => {
   return (
     <>
       <div className="body-content-s1">
-        <div className="min-h-screen w-full bg-white px-4 sm:px-6 lg:px-12">
+        <div className="min-h-screen w-full bg-card px-4 sm:px-6 lg:px-12">
           {/* Header Section */}
-          {/* <div className="border-b border-gray-200 bg-white py-6 sm:py-8">
+          {/* <div className="border-b border-border bg-card py-6 sm:py-8">
             <div className="flex items-center gap-4">
               <button
                 type="button"
                 onClick={() => router.back()}
-                className="flex h-10 w-10 items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 transition-colors hover:border-gray-400 hover:bg-gray-50"
+                className="flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-card text-muted-foreground transition-colors hover:border-border hover:bg-muted"
               >
                 <MdOutlineChevronLeft className="h-6 w-6" />
               </button>
               <div>
                 <h1
-                  className="text-2xl font-bold text-gray-900 md:text-3xl"
+                  className="text-2xl font-bold text-foreground md:text-3xl"
                   dir={langDir}
                   translate="no"
                 >
                   {t("rfq_cart_items")}
                 </h1>
                 <p
-                  className="mt-1 text-sm text-gray-500"
+                  className="mt-1 text-sm text-muted-foreground"
                   dir={langDir}
                   translate="no"
                 >
@@ -335,10 +335,10 @@ const RfqCartPage = () => {
               {/* Left Column - Cart Items */}
               <div className="space-y-6 lg:col-span-2">
                 {/* Cart Items Section */}
-                <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-                  <div className="border-b border-gray-200 bg-white px-6 py-4">
+                <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+                  <div className="border-b border-border bg-card px-6 py-4">
                     <h2
-                      className="text-lg font-bold text-gray-900"
+                      className="text-lg font-bold text-foreground"
                       dir={langDir}
                       translate="no"
                     >
@@ -348,9 +348,9 @@ const RfqCartPage = () => {
                   <div className="p-6">
                     {!memoizedRfqCartList.length ? (
                       <div className="flex flex-col items-center justify-center py-16">
-                        <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-gray-100">
+                        <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-muted">
                           <svg
-                            className="h-10 w-10 text-gray-400"
+                            className="h-10 w-10 text-muted-foreground"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -364,14 +364,14 @@ const RfqCartPage = () => {
                           </svg>
                         </div>
                         <h3
-                          className="mb-2 text-lg font-semibold text-gray-900"
+                          className="mb-2 text-lg font-semibold text-foreground"
                           dir={langDir}
                           translate="no"
                         >
                           {t("no_cart_items")}
                         </h3>
                         <p
-                          className="text-center text-sm text-gray-500"
+                          className="text-center text-sm text-muted-foreground"
                           dir={langDir}
                           translate="no"
                         >
@@ -408,8 +408,8 @@ const RfqCartPage = () => {
               {/* Right Column - Delivery Information */}
               <div className="lg:col-span-1">
                 <div className="sticky top-6">
-                  <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-                    <div className="border-b border-gray-200 bg-white px-6 py-4">
+                  <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+                    <div className="border-b border-border bg-card px-6 py-4">
                       <div className="flex items-center gap-3">
                         <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-warning/10">
                           <svg
@@ -434,14 +434,14 @@ const RfqCartPage = () => {
                         </div>
                         <div>
                           <h3
-                            className="text-lg font-bold text-gray-900"
+                            className="text-lg font-bold text-foreground"
                             dir={langDir}
                             translate="no"
                           >
                             {t("select_location")}
                           </h3>
                           <p
-                            className="text-xs text-gray-500"
+                            className="text-xs text-muted-foreground"
                             dir={langDir}
                             translate="no"
                           >
@@ -459,7 +459,7 @@ const RfqCartPage = () => {
                             render={({ field }) => (
                               <FormItem>
                                 <FormLabel
-                                  className="text-sm font-semibold text-gray-700"
+                                  className="text-sm font-semibold text-muted-foreground"
                                   dir={langDir}
                                   translate="no"
                                 >
@@ -582,7 +582,7 @@ const RfqCartPage = () => {
                             render={({ field }) => (
                               <FormItem>
                                 <FormLabel
-                                  className="text-sm font-semibold text-gray-700"
+                                  className="text-sm font-semibold text-muted-foreground"
                                   dir={langDir}
                                   translate="no"
                                 >
@@ -619,7 +619,7 @@ const RfqCartPage = () => {
                             render={({ field }) => (
                               <FormItem>
                                 <FormLabel
-                                  className="text-sm font-semibold text-gray-700"
+                                  className="text-sm font-semibold text-muted-foreground"
                                   dir={langDir}
                                   translate="no"
                                 >
@@ -660,7 +660,7 @@ const RfqCartPage = () => {
                             render={({ field }) => (
                               <FormItem>
                                 <FormLabel
-                                  className="text-sm font-semibold text-gray-700"
+                                  className="text-sm font-semibold text-muted-foreground"
                                   dir={langDir}
                                   translate="no"
                                 >

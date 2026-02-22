@@ -73,13 +73,13 @@ export default function CompanyProfileDetailsPage() {
           <div className="flex flex-wrap">
             <div className="mb-6 sm:mb-8 lg:mb-10 w-full">
               <h2
-                className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900"
+                className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground"
                 dir={langDir}
                 translate="no"
               >
                 {t("my_profile")}
               </h2>
-              <p className="text-sm sm:text-base text-gray-600 mt-2">
+              <p className="text-sm sm:text-base text-muted-foreground mt-2">
                 {t("manage_your_profile_information")}
               </p>
             </div>
@@ -102,7 +102,7 @@ export default function CompanyProfileDetailsPage() {
                 <TabsList className="mb-0 flex h-auto grid-cols-3 flex-wrap justify-start gap-3 sm:gap-4 rounded-none bg-transparent px-0 pt-0 sm:mb-2">
                   <TabsTrigger
                     value="profile-info"
-                    className="w-auto sm:w-auto md:w-[180px] lg:w-[200px] rounded-t-xl rounded-b-none bg-gray-200 px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold text-gray-700 transition-all duration-200 data-[state=active]:bg-primary data-[state=active]:text-white"
+                    className="w-auto sm:w-auto md:w-[180px] lg:w-[200px] rounded-t-xl rounded-b-none bg-muted px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold text-muted-foreground transition-all duration-200 data-[state=active]:bg-primary data-[state=active]:text-white"
                     translate="no"
                   >
                     {t("profile_info")}
@@ -110,7 +110,7 @@ export default function CompanyProfileDetailsPage() {
 
                   <TabsTrigger
                     value="ratings"
-                    className="w-auto sm:w-auto md:w-[180px] lg:w-[200px] rounded-t-xl rounded-b-none bg-gray-200 px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold text-gray-700 transition-all duration-200 data-[state=active]:bg-primary data-[state=active]:text-white"
+                    className="w-auto sm:w-auto md:w-[180px] lg:w-[200px] rounded-t-xl rounded-b-none bg-muted px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold text-muted-foreground transition-all duration-200 data-[state=active]:bg-primary data-[state=active]:text-white"
                     translate="no"
                   >
                     {t("ratings_n_reviews")}
@@ -118,14 +118,14 @@ export default function CompanyProfileDetailsPage() {
 
                   <TabsTrigger
                     value="products"
-                    className="w-auto sm:w-auto md:w-[180px] lg:w-[200px] rounded-t-xl rounded-b-none bg-gray-200 px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold text-gray-700 transition-all duration-200 data-[state=active]:bg-primary data-[state=active]:text-white"
+                    className="w-auto sm:w-auto md:w-[180px] lg:w-[200px] rounded-t-xl rounded-b-none bg-muted px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold text-muted-foreground transition-all duration-200 data-[state=active]:bg-primary data-[state=active]:text-white"
                     translate="no"
                   >
                     {t("products")}
                   </TabsTrigger>
                 </TabsList>
                 <TabsContent value="profile-info" className="mt-0">
-                  <div className="w-full rounded-b-3xl rounded-tr-3xl border-2 border-primary/10 bg-white px-4 py-6 sm:px-8 sm:py-10 md:px-12 md:py-14">
+                  <div className="w-full rounded-b-3xl rounded-tr-3xl border-2 border-primary/10 bg-card px-4 py-6 sm:px-8 sm:py-10 md:px-12 md:py-14">
                     {/* Company Information Section */}
                     {!activeSellerId ? (
                       <InformationSection userDetails={me.data?.data} />
@@ -145,9 +145,9 @@ export default function CompanyProfileDetailsPage() {
                     ) : null}
 
                     {/* Branch Section */}
-                    <div className="mb-6 w-full pt-8 border-t-2 border-gray-100">
+                    <div className="mb-6 w-full pt-8 border-t-2 border-border">
                       <div className="flex items-center justify-between mb-6">
-                        <h3 className="text-xl sm:text-2xl font-bold text-gray-900">
+                        <h3 className="text-xl sm:text-2xl font-bold text-foreground">
                           {t("branches")}
                         </h3>
                         {/* Add button */}
@@ -167,21 +167,21 @@ export default function CompanyProfileDetailsPage() {
 
                       {/* Show "No Branch Exists" message if no branches */}
                       {!activeSellerId && (!me.data?.data?.userBranch || me.data?.data?.userBranch?.length === 0) ? (
-                        <div className="text-center py-12 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-300">
+                        <div className="text-center py-12 bg-muted rounded-2xl border-2 border-dashed border-border">
                           <div className="max-w-sm mx-auto">
-                            <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
-                              <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+                              <svg className="w-8 h-8 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                               </svg>
                             </div>
                             <p
-                              className="text-lg sm:text-xl font-semibold text-gray-700 mb-2"
+                              className="text-lg sm:text-xl font-semibold text-muted-foreground mb-2"
                               dir={langDir}
                               translate="no"
                             >
                               {t("no_branch_exists")}
                             </p>
-                            <p className="text-sm text-gray-500 mb-4">
+                            <p className="text-sm text-muted-foreground mb-4">
                               {t("add_your_first_branch_to_get_started")}
                             </p>
                             <Link
@@ -223,7 +223,7 @@ export default function CompanyProfileDetailsPage() {
                   </div>
                 </TabsContent>
                 <TabsContent value="ratings" className="mt-0">
-                  <div className="w-full rounded-b-3xl rounded-tr-3xl border-2 border-primary/10 bg-white px-4 py-6 sm:px-8 sm:py-10 md:px-12 md:py-14">
+                  <div className="w-full rounded-b-3xl rounded-tr-3xl border-2 border-primary/10 bg-card px-4 py-6 sm:px-8 sm:py-10 md:px-12 md:py-14">
                     {/* importing from freelancer details module */}
                     <div className="space-y-6">
                       <div className="flex items-center gap-3 mb-8">
@@ -233,8 +233,8 @@ export default function CompanyProfileDetailsPage() {
                           </svg>
                         </div>
                         <div>
-                          <h3 className="text-xl sm:text-2xl font-bold text-gray-900">{t("ratings_n_reviews")}</h3>
-                          <p className="text-sm text-gray-600">{t("see_what_others_are_saying")}</p>
+                          <h3 className="text-xl sm:text-2xl font-bold text-foreground">{t("ratings_n_reviews")}</h3>
+                          <p className="text-sm text-muted-foreground">{t("see_what_others_are_saying")}</p>
                         </div>
                       </div>
                       <ReviewSection
@@ -248,7 +248,7 @@ export default function CompanyProfileDetailsPage() {
                   </div>
                 </TabsContent>
                 <TabsContent value="products" className="mt-0">
-                  <div className="w-full rounded-b-3xl rounded-tr-3xl border-2 border-primary/10 bg-white px-4 py-6 sm:px-8 sm:py-10 md:px-12 md:py-14">
+                  <div className="w-full rounded-b-3xl rounded-tr-3xl border-2 border-primary/10 bg-card px-4 py-6 sm:px-8 sm:py-10 md:px-12 md:py-14">
                     {/* importing from freelancer details module */}
                     <div className="space-y-6">
                       <div className="flex items-center gap-3 mb-8">
@@ -258,8 +258,8 @@ export default function CompanyProfileDetailsPage() {
                           </svg>
                         </div>
                         <div>
-                          <h3 className="text-xl sm:text-2xl font-bold text-gray-900">{t("products")}</h3>
-                          <p className="text-sm text-gray-600">{t("browse_our_product_catalog")}</p>
+                          <h3 className="text-xl sm:text-2xl font-bold text-foreground">{t("products")}</h3>
+                          <p className="text-sm text-muted-foreground">{t("browse_our_product_catalog")}</p>
                         </div>
                       </div>
                       <ProductsSection sellerId={activeSellerId as string} />

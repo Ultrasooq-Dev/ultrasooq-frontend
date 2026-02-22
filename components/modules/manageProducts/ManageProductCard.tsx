@@ -456,7 +456,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
   };
 
   return (
-    <div className="mb-4 w-full rounded-lg border border-gray-200 bg-white shadow-xs">
+    <div className="mb-4 w-full rounded-lg border border-border bg-card shadow-xs">
       {/* Compact View - Always Visible */}
       <div className="flex items-center justify-between p-4">
         {/* Left Section - Product Info */}
@@ -466,7 +466,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
             <div className="flex flex-col items-center space-y-2">
               {!hideCheckbox && (
                 <Checkbox
-                  className="border border-solid border-gray-300 data-[state=checked]:bg-dark-orange!"
+                  className="border border-solid border-border data-[state=checked]:bg-dark-orange!"
                   checked={selectedIds?.includes(id)}
                   onCheckedChange={(checked) => {
                     onSelectedId?.(checked, id);
@@ -501,7 +501,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
               )}
               {!hideEyeIcon && (
                 <div
-                  className="cursor-pointer text-gray-500 hover:text-gray-700"
+                  className="cursor-pointer text-muted-foreground hover:text-muted-foreground"
                   onClick={() => updateStatus(status)}
                 >
                   {status === "ACTIVE" ? <IoIosEye size={20} /> : <IoIosEyeOff size={20} />}
@@ -511,7 +511,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
           )}
 
           {/* Product Image */}
-          <div className="relative h-24 w-24 overflow-hidden rounded-lg border border-gray-200">
+          <div className="relative h-24 w-24 overflow-hidden rounded-lg border border-border">
             {productImage && validator.isURL(productImage) ? (
               // Check if the image is from an allowed domain (S3 bucket)
               productImage.includes('puremoon.s3.amazonaws.com') ? (
@@ -551,7 +551,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
           {/* Product Details */}
           <div className="flex flex-col space-y-2">
             <div className="flex items-center space-x-2">
-              <h3 className="text-lg font-semibold text-gray-900">{productName || "-"}</h3>
+              <h3 className="text-lg font-semibold text-foreground">{productName || "-"}</h3>
               {/* Product Type Badges */}
               {/* {productType === 'D' && !isDropshipped && (
                 <span className="px-2 py-1 text-xs font-medium bg-info/10 text-info rounded-full">
@@ -566,7 +566,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
             </div>
             
             {/* Stock and Price Info */}
-            <div className="flex space-x-6 text-sm text-gray-600">
+            <div className="flex space-x-6 text-sm text-muted-foreground">
               <div className="flex items-center space-x-2">
                 <span className="font-medium">{t("stock")}:</span>
                 <span className="text-success font-semibold">
@@ -582,7 +582,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
             </div>
 
             {/* Additional Info */}
-            <div className="flex space-x-6 text-sm text-gray-500">
+            <div className="flex space-x-6 text-sm text-muted-foreground">
               <div className="flex items-center space-x-2">
                 <span>{t("condition")}:</span>
                 <span className="font-medium">{productCondition || "-"}</span>
@@ -628,7 +628,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
           {/* Expand/Collapse Button */}
           <button
             type="button"
-            className="flex h-10 w-10 items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 transition-colors"
+            className="flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-card text-muted-foreground hover:bg-muted transition-colors"
             onClick={() => setIsExpanded(!isExpanded)}
             title={isExpanded ? t("collapse") : t("expand")}
           >
@@ -639,7 +639,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
 
              {/* Expanded View - Editable Fields */}
        {isExpanded && (
-         <div className="border-t border-gray-200 bg-gray-50 p-4">
+         <div className="border-t border-border bg-muted p-4">
            <div className={`grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 ${disableFields ? 'pointer-events-none opacity-60' : ''}`}>
              {/* Stock Management - Always Visible */}
              <div className="space-y-1">
@@ -651,13 +651,13 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                    defaultChecked={askForStock === "false" || askForStock === "NO" || (askForStock as any) === false}
                    disabled={disableFields}
                  />
-                 <span className="text-xs text-gray-600">{t("manage_stock")}</span>
+                 <span className="text-xs text-muted-foreground">{t("manage_stock")}</span>
                </div>
                <div className="flex items-center space-x-1">
                  <button
                    type="button"
                    onClick={decreaseStock}
-                   className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                   className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                  >
                    -
                  </button>
@@ -666,12 +666,12 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                    value={stock}
                    onChange={(e) => setStock(Number(e.target.value))}
                    disabled={disableFields}
-                   className="h-6 w-12 rounded border border-gray-300 text-center text-xs"
+                   className="h-6 w-12 rounded border border-border text-center text-xs"
                  />
                  <button
                    type="button"
                    onClick={increaseStock}
-                   className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                   className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                  >
                    +
                  </button>
@@ -687,13 +687,13 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                    className="h-3 w-3"
                    defaultChecked={askForPrice === "false" || askForPrice === "NO" || (askForPrice as any) === false}
                  />
-                 <span className="text-xs text-gray-600">{t("manage_price")}</span>
+                 <span className="text-xs text-muted-foreground">{t("manage_price")}</span>
                </div>
                <div className="flex items-center space-x-1">
                  <button
                    type="button"
                    onClick={(e) => { e.preventDefault(); decreasePrice(); }}
-                   className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                   className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                  >
                    -
                  </button>
@@ -701,12 +701,12 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                    type="number"
                    value={productPrice}
                    onChange={(e) => setProductPrice(Number(e.target.value))}
-                   className="h-6 w-14 rounded border border-gray-300 text-center text-xs"
+                   className="h-6 w-14 rounded border border-border text-center text-xs"
                  />
                  <button
                    type="button"
                    onClick={(e) => { e.preventDefault(); increasePrice(); }}
-                   className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                   className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                  >
                    +
                  </button>
@@ -719,7 +719,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                <select
                  value={productCondition}
                  onChange={(e) => setCondition(e.target.value)}
-                 className="h-6 w-full rounded border border-gray-300 px-1 text-xs"
+                 className="h-6 w-full rounded border border-border px-1 text-xs"
                >
                  <option value="NEW">{t("new")}</option>
                  <option value="OLD">{t("old")}</option>
@@ -733,7 +733,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                <div className="flex items-center space-x-1">
                  <button
                   onClick={(e) => { e.preventDefault(); decreaseDeliveryDay() }}
-                   className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                   className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                  >
                    -
                  </button>
@@ -741,11 +741,11 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                    type="number"
                    value={deliveryAfter}
                    onChange={(e) => setDelivery(Number(e.target.value))}
-                   className="h-6 w-12 rounded border border-gray-300 text-center text-xs"
+                   className="h-6 w-12 rounded border border-border text-center text-xs"
                  />
                  <button
                    onClick={(e) => { e.preventDefault(); increaseDeliveryDay() }}
-                   className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                   className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                  >
                    +
                  </button>
@@ -759,7 +759,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                  value={consumerType}
                  onChange={(e) => setConsumer(e.target.value)}
                  disabled={false}
-                 className="h-6 w-full rounded border border-gray-300 px-1 text-xs"
+                 className="h-6 w-full rounded border border-border px-1 text-xs"
                >
                  <option value="CONSUMER">{t("consumer")}</option>
                  <option value="VENDORS">{t("vendor")}</option>
@@ -776,7 +776,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                    const newSellType = e.target.value;
                    setSell(newSellType);
                  }}
-                 className="h-6 w-full rounded border border-gray-300 px-1 text-xs"
+                 className="h-6 w-full rounded border border-border px-1 text-xs"
                >
                  <option value="NORMALSELL">{t("normal_sell")}</option>
                  <option value="BUYGROUP">{t("buy_group")}</option>
@@ -791,7 +791,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                <div className="flex items-center space-x-1">
                  <button
                    onClick={(e) => { e.preventDefault(); decreaseTimeOpen() }}
-                   className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                   className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                  >
                    -
                  </button>
@@ -799,11 +799,11 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                    type="number"
                    value={timeOpen}
                    onChange={(e) => setTimeOpen(Number(e.target.value))}
-                   className="h-6 w-12 rounded border border-gray-300 text-center text-xs"
+                   className="h-6 w-12 rounded border border-border text-center text-xs"
                  />
                  <button
                    onClick={(e) => { e.preventDefault(); increaseTimeOpen() }}
-                   className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                   className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                  >
                    +
                  </button>
@@ -816,7 +816,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                <div className="flex items-center space-x-1">
                  <button
                    onClick={(e) => { e.preventDefault(); decreaseTimeClose() }}
-                   className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                   className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                  >
                    -
                  </button>
@@ -824,11 +824,11 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                    type="number"
                    value={timeClose}
                    onChange={(e) => setTimeClose(Number(e.target.value))}
-                   className="h-6 w-12 rounded border border-gray-300 text-center text-xs"
+                   className="h-6 w-12 rounded border border-border text-center text-xs"
                  />
                  <button
                    onClick={(e) => { e.preventDefault(); increaseTimeClose() }}
-                   className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                   className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                  >
                    +
                  </button>
@@ -842,7 +842,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                  <div className="flex items-center space-x-1">
                    <button
                      onClick={(e) => { e.preventDefault(); decreaseVendorDiscount() }}
-                     className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                     className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                    >
                      -
                    </button>
@@ -850,11 +850,11 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                      type="number"
                      value={vendorDiscount}
                      onChange={(e) => setVendor(Number(e.target.value))}
-                     className="h-6 w-12 rounded border border-gray-300 text-center text-xs"
+                     className="h-6 w-12 rounded border border-border text-center text-xs"
                    />
                    <button
                      onClick={(e) => { e.preventDefault(); increaseVendorDiscount() }}
-                     className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                     className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                    >
                      +
                    </button>
@@ -869,7 +869,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                  <select
                    value={vendorDiscountType || ""}
                    onChange={(e) => setVendorDiscountType(e.target.value)}
-                   className="h-6 w-full rounded border border-gray-300 px-1 text-xs"
+                   className="h-6 w-full rounded border border-border px-1 text-xs"
                  >
                    {/* <option value="">{t("select_discount_type")}</option> */}
                    <option value="FLAT" dir={langDir}>{t("flat").toUpperCase()}</option>
@@ -885,7 +885,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                  <div className="flex items-center space-x-1">
                    <button
                      onClick={(e) => { e.preventDefault(); decreaseConsumerDiscount() }}
-                     className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                     className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                    >
                      -
                    </button>
@@ -893,11 +893,11 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                      type="number"
                      value={consumerDiscount}
                      onChange={(e) => setConsumerDiscount(Number(e.target.value))}
-                     className="h-6 w-12 rounded border border-gray-300 text-center text-xs"
+                     className="h-6 w-12 rounded border border-border text-center text-xs"
                    />
                    <button
                      onClick={(e) => { e.preventDefault(); increaseConsumerDiscount() }}
-                     className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                     className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                    >
                      +
                    </button>
@@ -912,7 +912,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                  <select
                    value={consumerDiscountType || ""}
                    onChange={(e) => setConsumerDiscountType(e.target.value)}
-                   className="h-6 w-full rounded border border-gray-300 px-1 text-xs"
+                   className="h-6 w-full rounded border border-border px-1 text-xs"
                  >
                    {/* <option value="">{t("select_discount_type")}</option>
                    <option value="PERCENTAGE">{t("percentage")}</option>
@@ -930,7 +930,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                  <div className="flex items-center space-x-1">
                    <button
                      onClick={(e) => { e.preventDefault(); decreaseMinQuantity() }}
-                     className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                     className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                    >
                      -
                    </button>
@@ -938,11 +938,11 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                      type="number"
                      value={minQuantity}
                      onChange={(e) => setMinQuantity(Number(e.target.value))}
-                     className="h-6 w-12 rounded border border-gray-300 text-center text-xs"
+                     className="h-6 w-12 rounded border border-border text-center text-xs"
                    />
                    <button
                      onClick={(e) => { e.preventDefault(); increaseMinQuantity() }}
-                     className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                     className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                    >
                      +
                    </button>
@@ -957,7 +957,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                  <div className="flex items-center space-x-1">
                    <button
                      onClick={(e) => { e.preventDefault(); decreaseMaxsQuantity() }}
-                     className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                     className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                    >
                      -
                    </button>
@@ -965,11 +965,11 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                      type="number"
                      value={maxQuantity}
                      onChange={(e) => setMaxQuantity(Number(e.target.value))}
-                     className="h-6 w-12 rounded border border-gray-300 text-center text-xs"
+                     className="h-6 w-12 rounded border border-border text-center text-xs"
                    />
                    <button
                      onClick={(e) => { e.preventDefault(); increaseMaxQuantity() }}
-                     className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                     className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                    >
                      +
                    </button>
@@ -984,7 +984,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                  <div className="flex items-center space-x-1">
                    <button
                      onClick={(e) => { e.preventDefault(); decreaseMinCustomer() }  }
-                     className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                     className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                    >
                      -
                    </button>
@@ -992,11 +992,11 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                      type="number"
                      value={minCustomer}
                      onChange={(e) => setMinCustomer(Number(e.target.value))}
-                     className="h-6 w-12 rounded border border-gray-300 text-center text-xs"
+                     className="h-6 w-12 rounded border border-border text-center text-xs"
                    />
                    <button
                      onClick={(e) => { e.preventDefault(); increaseMinCustomer() }}
-                     className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                     className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                    >
                      +
                    </button>
@@ -1011,7 +1011,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                  <div className="flex items-center space-x-1">
                    <button
                      onClick={(e) => { e.preventDefault(); decreaseMaxCustomer() }}
-                     className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                     className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                    >
                      -
                    </button>
@@ -1019,11 +1019,11 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                      type="number"
                      value={maxCustomer}
                      onChange={(e) => setMaxCustomer(Number(e.target.value))}
-                     className="h-6 w-12 rounded border border-gray-300 text-center text-xs"
+                     className="h-6 w-12 rounded border border-border text-center text-xs"
                    />
                    <button
                      onClick={(e) => { e.preventDefault(); increaseMaxCustomer() }}
-                     className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                     className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                    >
                      +
                    </button>
@@ -1038,7 +1038,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                  <div className="flex items-center space-x-1">
                    <button
                      onClick={(e) => { e.preventDefault(); decreaseMinQuantityCustomer() }}
-                     className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                     className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                    >
                      -
                    </button>
@@ -1046,11 +1046,11 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                      type="number"
                      value={minQuantityCustomer}
                      onChange={(e) => setMinQuantityCustomer(Number(e.target.value))}
-                     className="h-6 w-12 rounded border border-gray-300 text-center text-xs"
+                     className="h-6 w-12 rounded border border-border text-center text-xs"
                    />
                    <button
                      onClick={(e) => { e.preventDefault(); increaseMinQuantityCustomer() }}
-                     className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                     className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                    >
                      +
                    </button>
@@ -1065,7 +1065,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                  <div className="flex items-center space-x-1">
                    <button
                      onClick={(e) => { e.preventDefault(); decreaseMaxQuantityCustomer() }}
-                     className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                     className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                    >
                      -
                    </button>
@@ -1073,11 +1073,11 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                      type="number"
                      value={maxQuantityCustomer}
                      onChange={(e) => setMaxQuantityCustomer(Number(e.target.value))}
-                     className="h-6 w-12 rounded border border-gray-300 text-center text-xs"
+                     className="h-6 w-12 rounded border border-border text-center text-xs"
                    />
                    <button
                      onClick={(e) => { e.preventDefault(); increaseMaxQuantityCustomer() }}
-                     className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                     className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                    >
                      +
                    </button>
@@ -1095,7 +1095,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                      <div className="flex items-center space-x-1">
                        <button
                          onClick={(e) => { e.preventDefault(); decreaseVendorDiscount() }}
-                         className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                         className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                        >
                          -
                        </button>
@@ -1103,11 +1103,11 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                          type="number"
                          value={vendorDiscount}
                          onChange={(e) => setVendor(Number(e.target.value))}
-                         className="h-6 w-12 rounded border border-gray-300 text-center text-xs"
+                         className="h-6 w-12 rounded border border-border text-center text-xs"
                        />
                        <button
                          onClick={(e) => { e.preventDefault(); increaseVendorDiscount() }}
-                         className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                         className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                        >
                          +
                        </button>
@@ -1122,7 +1122,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                      <div className="flex items-center space-x-1">
                        <button
                          onClick={(e) => { e.preventDefault(); decreaseConsumerDiscount() }}
-                         className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                         className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                        >
                          -
                        </button>
@@ -1130,11 +1130,11 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                          type="number"
                          value={consumerDiscount}
                          onChange={(e) => setConsumerDiscount(Number(e.target.value))}
-                         className="h-6 w-12 rounded border border-gray-300 text-center text-xs"
+                         className="h-6 w-12 rounded border border-border text-center text-xs"
                        />
                        <button
                          onClick={(e) => { e.preventDefault(); increaseConsumerDiscount() }}
-                         className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                         className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                        >
                          +
                        </button>
@@ -1149,7 +1149,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                      <select
                        value={vendorDiscountType || ""}
                        onChange={(e) => setVendorDiscountType(e.target.value)}
-                       className="h-6 w-full rounded border border-gray-300 px-1 text-xs"
+                       className="h-6 w-full rounded border border-border px-1 text-xs"
                      >
                        <option value="FLAT" dir={langDir}>{t("flat").toUpperCase()}</option>
                        <option value="PERCENTAGE" dir={langDir}>{t("percentage").toUpperCase()}</option>
@@ -1164,7 +1164,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                      <select
                        value={consumerDiscountType || ""}
                        onChange={(e) => setConsumerDiscountType(e.target.value)}
-                       className="h-6 w-full rounded border border-gray-300 px-1 text-xs"
+                       className="h-6 w-full rounded border border-border px-1 text-xs"
                      >
                        <option value="FLAT" dir={langDir}>{t("flat").toUpperCase()}</option>
                        <option value="PERCENTAGE" dir={langDir}>{t("percentage").toUpperCase()}</option>
@@ -1178,7 +1178,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                    <div className="flex items-center space-x-1">
                      <button
                        onClick={(e) => { e.preventDefault(); decreaseMaxQuantityCustomer() }}
-                       className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                       className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                      >
                        -
                      </button>
@@ -1186,11 +1186,11 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                        type="number"
                        value={maxQuantityCustomer}
                        onChange={(e) => setMaxQuantityCustomer(Number(e.target.value))}
-                       className="h-6 w-12 rounded border border-gray-300 text-center text-xs"
+                       className="h-6 w-12 rounded border border-border text-center text-xs"
                      />
                      <button
                        onClick={(e) => { e.preventDefault(); increaseMaxQuantityCustomer() }}
-                       className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                       className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                      >
                        +
                      </button>
@@ -1209,7 +1209,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                      <div className="flex items-center space-x-1">
                        <button
                          onClick={(e) => { e.preventDefault(); decreaseVendorDiscount() }}
-                         className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                         className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                        >
                          -
                        </button>
@@ -1217,11 +1217,11 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                          type="number"
                          value={vendorDiscount}
                          onChange={(e) => setVendor(Number(e.target.value))}
-                         className="h-6 w-12 rounded border border-gray-300 text-center text-xs"
+                         className="h-6 w-12 rounded border border-border text-center text-xs"
                        />
                        <button
                          onClick={(e) => { e.preventDefault(); increaseVendorDiscount() }}
-                         className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                         className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                        >
                          +
                        </button>
@@ -1236,7 +1236,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                      <div className="flex items-center space-x-1">
                        <button
                          onClick={(e) => { e.preventDefault(); decreaseConsumerDiscount() }}
-                         className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                         className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                        >
                          -
                        </button>
@@ -1244,11 +1244,11 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                          type="number"
                          value={consumerDiscount}
                          onChange={(e) => setConsumerDiscount(Number(e.target.value))}
-                         className="h-6 w-12 rounded border border-gray-300 text-center text-xs"
+                         className="h-6 w-12 rounded border border-border text-center text-xs"
                        />
                        <button
                          onClick={(e) => { e.preventDefault(); increaseConsumerDiscount() }}
-                         className="flex h-6 w-6 items-center justify-center rounded border border-gray-300 bg-white text-gray-600 hover:bg-gray-50 text-xs"
+                         className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
                        >
                          +
                        </button>
@@ -1263,7 +1263,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                      <select
                        value={vendorDiscountType || ""}
                        onChange={(e) => setVendorDiscountType(e.target.value)}
-                       className="h-6 w-full rounded border border-gray-300 px-1 text-xs"
+                       className="h-6 w-full rounded border border-border px-1 text-xs"
                      >
                        <option value="FLAT" dir={langDir}>{t("flat").toUpperCase()}</option>
                        <option value="PERCENTAGE" dir={langDir}>{t("percentage").toUpperCase()}</option>
@@ -1278,7 +1278,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                      <select
                        value={consumerDiscountType || ""}
                        onChange={(e) => setConsumerDiscountType(e.target.value)}
-                       className="h-6 w-full rounded border border-gray-300 px-1 text-xs"
+                       className="h-6 w-full rounded border border-border px-1 text-xs"
                      >
                        <option value="FLAT" dir={langDir}>{t("flat").toUpperCase()}</option>
                        <option value="PERCENTAGE" dir={langDir}>{t("percentage").toUpperCase()}</option>
@@ -1293,7 +1293,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
 
            {/* Action Buttons Section */}
            {!hideActionButtons && (
-             <div className="mt-4 flex justify-center space-x-3 border-t border-gray-300 pt-4">
+             <div className="mt-4 flex justify-center space-x-3 border-t border-border pt-4">
                <button
                  type="button"
                  className="flex items-center justify-center rounded-lg bg-success px-4 py-2 text-sm text-white hover:bg-success transition-colors"

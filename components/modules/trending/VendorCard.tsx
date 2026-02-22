@@ -47,14 +47,14 @@ const VendorCard: React.FC<VendorCardProps> = ({
 
   if (isLoading) {
     return (
-      <div className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-6 shadow-md transition-all duration-300 hover:shadow-lg">
+      <div className="group relative overflow-hidden rounded-2xl border border-border bg-card p-6 shadow-md transition-all duration-300 hover:shadow-lg">
         <div className="animate-pulse">
           <div className="flex items-start space-x-4">
-            <div className="h-16 w-16 rounded-full bg-gray-300"></div>
+            <div className="h-16 w-16 rounded-full bg-muted"></div>
             <div className="flex-1 space-y-2">
-              <div className="h-4 w-3/4 rounded bg-gray-300"></div>
-              <div className="h-3 w-1/2 rounded bg-gray-300"></div>
-              <div className="h-3 w-1/4 rounded bg-gray-300"></div>
+              <div className="h-4 w-3/4 rounded bg-muted"></div>
+              <div className="h-3 w-1/2 rounded bg-muted"></div>
+              <div className="h-3 w-1/4 rounded bg-muted"></div>
             </div>
           </div>
         </div>
@@ -75,7 +75,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
   const businessTypes = getBusinessTypeTags();
 
   return (
-    <div className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-6 shadow-md transition-all duration-300 hover:shadow-lg hover:border-primary/30">
+    <div className="group relative overflow-hidden rounded-2xl border border-border bg-card p-6 shadow-md transition-all duration-300 hover:shadow-lg hover:border-primary/30">
       {/* Header */}
       <div className="flex items-start space-x-4">
         {/* Vendor Avatar */}
@@ -96,10 +96,10 @@ const VendorCard: React.FC<VendorCardProps> = ({
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between">
             <div className="min-w-0 flex-1">
-              <h3 className="text-lg font-semibold text-gray-900 truncate">
+              <h3 className="text-lg font-semibold text-foreground truncate">
                 {vendor.firstName} {vendor.lastName}
               </h3>
-              <p className="text-sm text-gray-500 capitalize">
+              <p className="text-sm text-muted-foreground capitalize">
                 {vendor.tradeRole.toLowerCase().replace('_', ' ')}
               </p>
             </div>
@@ -108,7 +108,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
             {vendor.averageRating && (
               <div className="flex items-center space-x-1">
                 <Star className="h-4 w-4 text-warning fill-current" />
-                <span className="text-sm font-medium text-gray-700">
+                <span className="text-sm font-medium text-muted-foreground">
                   {vendor.averageRating.toFixed(1)}
                 </span>
               </div>
@@ -118,19 +118,19 @@ const VendorCard: React.FC<VendorCardProps> = ({
           {/* Contact Info */}
           <div className="mt-3 space-y-1">
             {vendor.email && (
-              <div className="flex items-center space-x-2 text-sm text-gray-600">
+              <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                 <Mail className="h-3 w-3 shrink-0" />
                 <span className="truncate">{vendor.email}</span>
               </div>
             )}
             {vendor.phoneNumber && (
-              <div className="flex items-center space-x-2 text-sm text-gray-600">
+              <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                 <Phone className="h-3 w-3 shrink-0" />
                 <span>{vendor.phoneNumber}</span>
               </div>
             )}
             {vendor.location && (
-              <div className="flex items-center space-x-2 text-sm text-gray-600">
+              <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                 <MapPin className="h-3 w-3 shrink-0" />
                 <span className="truncate">{vendor.location}</span>
               </div>
@@ -163,7 +163,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
 
       {/* Stats */}
       <div className="mt-4 flex items-center justify-between">
-        <div className="flex items-center space-x-4 text-sm text-gray-600">
+        <div className="flex items-center space-x-4 text-sm text-muted-foreground">
           <div className="flex items-center space-x-1">
             <Package className="h-4 w-4" />
             <span>{vendor.productCount} products</span>
@@ -190,7 +190,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
                   ? `/freelancer-profile-details?userId=${vendor.id}`
                   : "#"
             }
-            className="p-2 text-gray-400 hover:text-primary transition-colors"
+            className="p-2 text-muted-foreground hover:text-primary transition-colors"
           >
             <ExternalLink className="h-4 w-4" />
           </Link>

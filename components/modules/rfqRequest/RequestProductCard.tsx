@@ -37,7 +37,7 @@ const RequestProductCard: React.FC<RequestProductCardProps> = ({
   return (
     <div
       className={cn(
-        "flex w-full flex-col gap-3 rounded-xl bg-gray-50 p-4 shadow-sm",
+        "flex w-full flex-col gap-3 rounded-xl bg-muted p-4 shadow-sm",
         isSelected ? "ring-dark-orange ring-2 ring-offset-2" : "",
       )}
       dir={langDir}
@@ -62,7 +62,7 @@ const RequestProductCard: React.FC<RequestProductCardProps> = ({
             </svg>
           </div>
           <div className="flex flex-col">
-            <span className="text-xs font-medium text-gray-500" translate="no">
+            <span className="text-xs font-medium text-muted-foreground" translate="no">
               {t("rfq_id")}
             </span>
             <span
@@ -96,7 +96,7 @@ const RequestProductCard: React.FC<RequestProductCardProps> = ({
             </div>
           ) : (
             // Multiple images - show first image next to RFQ ID
-            <div className="relative min-w-0 flex-1 overflow-hidden rounded-lg border border-gray-200 bg-gray-100">
+            <div className="relative min-w-0 flex-1 overflow-hidden rounded-lg border border-border bg-muted">
               <div className="relative aspect-[3/2] max-h-24 w-full">
                 <Image
                   src={
@@ -114,9 +114,9 @@ const RequestProductCard: React.FC<RequestProductCardProps> = ({
             </div>
           )
         ) : (
-          <div className="flex h-24 flex-1 items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50">
+          <div className="flex h-24 flex-1 items-center justify-center rounded-lg border-2 border-dashed border-border bg-muted">
             <svg
-              className="h-6 w-6 text-gray-400"
+              className="h-6 w-6 text-muted-foreground"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -138,7 +138,7 @@ const RequestProductCard: React.FC<RequestProductCardProps> = ({
           {productImages.slice(1, 5).map((ele: any, index: number) => (
             <div
               key={ele?.id || index + 1}
-              className="group hover:border-dark-orange relative aspect-square w-full overflow-hidden rounded-lg border border-gray-200 bg-gray-100 transition-all duration-200 hover:shadow-sm"
+              className="group hover:border-dark-orange relative aspect-square w-full overflow-hidden rounded-lg border border-border bg-muted transition-all duration-200 hover:shadow-sm"
             >
               <Image
                 src={
@@ -165,9 +165,9 @@ const RequestProductCard: React.FC<RequestProductCardProps> = ({
 
       {/* Message Info */}
       {messageInfo?.lastUnreadMessage?.createdAt && (
-        <div className="mt-2 rounded-lg border border-gray-200 bg-gray-50 p-3">
+        <div className="mt-2 rounded-lg border border-border bg-muted p-3">
           <div className="flex items-start justify-between gap-2">
-            <p className="line-clamp-2 flex-1 text-xs text-gray-600">
+            <p className="line-clamp-2 flex-1 text-xs text-muted-foreground">
               {messageInfo.lastUnreadMessage.content}
             </p>
             {messageInfo?.unreadMsgCount > 0 && (
@@ -179,7 +179,7 @@ const RequestProductCard: React.FC<RequestProductCardProps> = ({
             )}
           </div>
           {messageInfo?.lastUnreadMessage?.createdAt && (
-            <div className="mt-2 flex items-center gap-1 text-xs text-gray-400">
+            <div className="mt-2 flex items-center gap-1 text-xs text-muted-foreground">
               <svg
                 className="h-3 w-3"
                 fill="none"

@@ -23,7 +23,7 @@ const AddImageContent: React.FC<AddImageContentProps> = ({ description }) => {
         />
         <span>{description}</span>
         <span className="text-primary">browse</span>
-        <p className="text-normal mt-3 text-xs leading-4 text-gray-500" dir={langDir} translate="no">
+        <p className="text-normal mt-3 text-xs leading-4 text-muted-foreground" dir={langDir} translate="no">
           ({t("company_logo_spec")})
         </p>
       </div>

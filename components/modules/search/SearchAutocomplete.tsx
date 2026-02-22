@@ -121,13 +121,13 @@ const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({
     return (
         <div
             ref={dropdownRef}
-            className="absolute top-full left-0 right-0 z-50 mt-1 max-h-[400px] overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-xl"
+            className="absolute top-full left-0 right-0 z-50 mt-1 max-h-[400px] overflow-y-auto rounded-lg border border-border bg-card shadow-xl"
             dir={langDir}
         >
             {/* Recent Searches */}
             {suggestions?.recentSearches?.length > 0 && (
-                <div className="border-b border-gray-100 px-3 py-2">
-                    <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-gray-400">
+                <div className="border-b border-border px-3 py-2">
+                    <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                         Recent
                     </p>
                     {suggestions.recentSearches.map((item: any) => {
@@ -138,16 +138,16 @@ const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({
                                 key={`recent-${item.term}`}
                                 className={`flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm transition-colors ${
                                     activeIndex === idx
-                                        ? "bg-gray-100"
-                                        : "hover:bg-gray-50"
+                                        ? "bg-muted"
+                                        : "hover:bg-muted"
                                 }`}
                                 onClick={() => {
                                     onSelect(item.term);
                                     onClose();
                                 }}
                             >
-                                <Clock className="h-3.5 w-3.5 text-gray-400" />
-                                <span className="text-gray-700">{item.term}</span>
+                                <Clock className="h-3.5 w-3.5 text-muted-foreground" />
+                                <span className="text-muted-foreground">{item.term}</span>
                             </button>
                         );
                     })}
@@ -156,8 +156,8 @@ const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({
 
             {/* Popular Searches */}
             {suggestions?.popularSearches?.length > 0 && (
-                <div className="border-b border-gray-100 px-3 py-2">
-                    <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-gray-400">
+                <div className="border-b border-border px-3 py-2">
+                    <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                         Trending
                     </p>
                     {suggestions.popularSearches.map((item: any) => {
@@ -168,8 +168,8 @@ const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({
                                 key={`popular-${item.term}`}
                                 className={`flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm transition-colors ${
                                     activeIndex === idx
-                                        ? "bg-gray-100"
-                                        : "hover:bg-gray-50"
+                                        ? "bg-muted"
+                                        : "hover:bg-muted"
                                 }`}
                                 onClick={() => {
                                     onSelect(item.term);
@@ -177,8 +177,8 @@ const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({
                                 }}
                             >
                                 <TrendingUp className="h-3.5 w-3.5 text-warning/70" />
-                                <span className="text-gray-700">{item.term}</span>
-                                <span className="ml-auto text-xs text-gray-400">
+                                <span className="text-muted-foreground">{item.term}</span>
+                                <span className="ml-auto text-xs text-muted-foreground">
                                     {item.search_count}
                                 </span>
                             </button>
@@ -189,8 +189,8 @@ const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({
 
             {/* Product Matches */}
             {suggestions?.products?.length > 0 && (
-                <div className="border-b border-gray-100 px-3 py-2">
-                    <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-gray-400">
+                <div className="border-b border-border px-3 py-2">
+                    <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                         Products
                     </p>
                     {suggestions.products.map((item: any) => {
@@ -201,8 +201,8 @@ const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({
                                 key={`product-${item.id}`}
                                 className={`flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm transition-colors ${
                                     activeIndex === idx
-                                        ? "bg-gray-100"
-                                        : "hover:bg-gray-50"
+                                        ? "bg-muted"
+                                        : "hover:bg-muted"
                                 }`}
                                 onClick={() => {
                                     onSelect(item.name);
@@ -210,7 +210,7 @@ const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({
                                 }}
                             >
                                 <Package className="h-3.5 w-3.5 text-primary/70" />
-                                <span className="flex-1 truncate text-gray-700">
+                                <span className="flex-1 truncate text-muted-foreground">
                                     {item.name}
                                 </span>
                                 {item.price && (
@@ -227,7 +227,7 @@ const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({
             {/* Category Matches */}
             {suggestions?.categories?.length > 0 && (
                 <div className="px-3 py-2">
-                    <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-gray-400">
+                    <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                         Categories
                     </p>
                     {suggestions.categories.map((item: any) => {
@@ -238,8 +238,8 @@ const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({
                                 key={`cat-${item.id}`}
                                 className={`flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm transition-colors ${
                                     activeIndex === idx
-                                        ? "bg-gray-100"
-                                        : "hover:bg-gray-50"
+                                        ? "bg-muted"
+                                        : "hover:bg-muted"
                                 }`}
                                 onClick={() => {
                                     router.push(`/trending?categoryIds=${item.id}`);
@@ -247,7 +247,7 @@ const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({
                                 }}
                             >
                                 <FolderOpen className="h-3.5 w-3.5 text-purple-400" />
-                                <span className="text-gray-700">{item.name}</span>
+                                <span className="text-muted-foreground">{item.name}</span>
                             </button>
                         );
                     })}
