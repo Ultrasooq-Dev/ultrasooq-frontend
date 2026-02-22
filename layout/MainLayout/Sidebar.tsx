@@ -475,7 +475,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
         <aside
           aria-label="Sidebar navigation"
           className={cn(
-            "fixed top-0 z-[70] h-full bg-card shadow-xl",
+            "fixed top-0 z-[70] h-full bg-sidebar shadow-xl",
             // Position based on language direction
             langDir === "rtl" ? "right-0" : "left-0",
             // Mobile: slide in/out based on isOpen, full width when open
@@ -494,11 +494,11 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
             // Border based on language direction
             ...(langDir === "rtl"
               ? {
-                  borderLeft: "1px solid rgba(0, 0, 0, 0.05)",
+                  borderLeft: "1px solid var(--sidebar-border)",
                   borderRight: "none",
                 }
               : {
-                  borderRight: "1px solid rgba(0, 0, 0, 0.05)",
+                  borderRight: "1px solid var(--sidebar-border)",
                   borderLeft: "none",
                 }),
             // Optimize transitions - only transition width for better performance
@@ -521,7 +521,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
                 Total: ~96px md:~113px lg:~126px (increased slightly) */}
             <div
               className={cn(
-                "from-dark-cyan via-dark-cyan relative flex items-center justify-between overflow-hidden bg-gradient-to-br to-primary/80",
+                "relative flex items-center justify-between overflow-hidden bg-sidebar-primary",
                 // Match full header height including both welcome row and main content row (slightly decreased)
                 "h-[116px] md:h-[133px] lg:h-[146px]",
                 isHovered || isOpen ? "px-4" : "px-2",
@@ -532,11 +532,11 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
             >
               {/* Decorative background pattern */}
               <div className="absolute inset-0 opacity-10">
-                <div className="absolute top-0 right-0 -mt-16 -mr-16 h-32 w-32 rounded-full bg-card"></div>
-                <div className="absolute bottom-0 left-0 -mb-12 -ml-12 h-24 w-24 rounded-full bg-card"></div>
+                <div className="absolute top-0 right-0 -mt-16 -mr-16 h-32 w-32 rounded-full bg-sidebar-primary-foreground"></div>
+                <div className="absolute bottom-0 left-0 -mb-12 -ml-12 h-24 w-24 rounded-full bg-sidebar-primary-foreground"></div>
               </div>
               {isHovered || isOpen ? (
-                <div className="relative z-10 flex w-full items-center justify-center text-white">
+                <div className="relative z-10 flex w-full items-center justify-center text-sidebar-primary-foreground">
                   {/* Full ULTRASOOQ Logo - when sidebar is expanded */}
                   <Image
                     src="/images/logo1.png"
@@ -550,16 +550,16 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
                   <button
                     onClick={closeSidebar}
                     className={cn(
-                      "absolute flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-card/20 md:hidden",
+                      "absolute flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-sidebar-primary-foreground/20 md:hidden",
                       langDir === "rtl" ? "left-4" : "right-4",
                     )}
                     aria-label="Close menu"
                   >
-                    <XIcon className="h-5 w-5 text-white" />
+                    <XIcon className="h-5 w-5 text-sidebar-primary-foreground" />
                   </button>
                 </div>
               ) : (
-                <div className="relative z-10 flex w-full items-center justify-center text-white">
+                <div className="relative z-10 flex w-full items-center justify-center text-sidebar-primary-foreground">
                   {/* US Intertwined Logo - when sidebar is collapsed */}
                   <Image
                     src="/images/logoicon.png"
@@ -574,7 +574,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
             </div>
 
             {/* White Menu Items - starts at same level as bottom of header main content row */}
-            <div className="scrollbar-hide flex-1 overflow-x-visible overflow-y-auto bg-gradient-to-b from-gray-50 to-white">
+            <div className="scrollbar-hide flex-1 overflow-x-visible overflow-y-auto bg-sidebar">
               {/* No top padding needed - sidebar header height already matches full header height */}
               <div className="py-1">
                 {menuItems.map((item, index) => {
@@ -585,15 +585,15 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
                       className={cn(
                         "group relative flex cursor-pointer items-center transition-all duration-200",
                         isHovered || isOpen
-                          ? "mx-2 justify-between rounded-lg px-4 py-2 hover:bg-primary/5 hover:shadow-sm"
-                          : "mx-1 min-h-[64px] flex-col justify-center rounded-lg px-1 py-2.5 hover:bg-primary/5",
+                          ? "mx-2 justify-between rounded-lg px-4 py-2 hover:bg-sidebar-accent/10 hover:shadow-sm"
+                          : "mx-1 min-h-[64px] flex-col justify-center rounded-lg px-1 py-2.5 hover:bg-sidebar-accent/10",
                         isActive &&
                           (isHovered || isOpen) &&
-                          "bg-primary/10 shadow-sm",
+                          "bg-sidebar-accent/15 shadow-sm",
                         isActive &&
                           !(isHovered || isOpen) &&
-                          "rounded-lg bg-primary/20",
-                        item.isLogout && "mt-3 border-t-2 border-border pt-3",
+                          "rounded-lg bg-sidebar-accent/20",
+                        item.isLogout && "mt-3 border-t-2 border-sidebar-border pt-3",
                         langDir === "rtl" &&
                           (isHovered || isOpen) &&
                           "flex-row-reverse",
@@ -613,7 +613,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
                       {/* Active indicator line */}
                       <div
                         className={cn(
-                          "absolute top-1/2 h-0 w-1 -translate-y-1/2 bg-primary opacity-0 transition-all duration-200 group-hover:h-8 group-hover:opacity-100",
+                          "absolute top-1/2 h-0 w-1 -translate-y-1/2 bg-sidebar-primary opacity-0 transition-all duration-200 group-hover:h-8 group-hover:opacity-100",
                           langDir === "rtl"
                             ? "right-0 rounded-l-full"
                             : "left-0 rounded-r-full",
@@ -638,7 +638,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
                               ? "p-1.5"
                               : "min-h-[32px] min-w-[32px] p-2",
                             !(isHovered || isOpen) &&
-                              "group-hover:scale-110 group-hover:bg-primary/10",
+                              "group-hover:scale-110 group-hover:bg-sidebar-accent/10",
                           )}
                         >
                           <div
@@ -662,7 +662,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
                               : item.icon}
                           </div>
                           {item.isLogout && (
-                            <div className="absolute -top-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-white bg-destructive shadow-sm"></div>
+                            <div className="absolute -top-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-sidebar bg-destructive shadow-sm"></div>
                           )}
                         </div>
                         {!(isHovered || isOpen) && item.shortLabel && (
@@ -673,8 +673,8 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
                                 item.isLogout
                                   ? "text-destructive"
                                   : isActive
-                                    ? "text-primary"
-                                    : "text-muted-foreground",
+                                    ? "text-sidebar-primary"
+                                    : "text-sidebar-foreground/70",
                               )}
                               style={{
                                 maxWidth: "48px",
@@ -697,14 +697,14 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
                                 item.isLogout
                                   ? "text-destructive group-hover:text-destructive"
                                   : isActive
-                                    ? "font-semibold text-primary"
-                                    : "text-muted-foreground group-hover:text-primary",
+                                    ? "font-semibold text-sidebar-primary"
+                                    : "text-sidebar-foreground group-hover:text-sidebar-primary",
                               )}
                             >
                               {item.label}
                             </div>
                             {item.subLabel && (
-                              <div className="mt-0.5 text-xs whitespace-nowrap text-muted-foreground">
+                              <div className="mt-0.5 text-xs whitespace-nowrap text-sidebar-foreground/60">
                                 {item.subLabel}
                               </div>
                             )}
@@ -714,7 +714,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
                       {(isHovered || isOpen) && !item.isLogout && (
                         <ChevronRightIcon
                           className={cn(
-                            "h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 group-hover:text-primary",
+                            "h-4 w-4 shrink-0 text-sidebar-foreground/50 transition-transform duration-200 group-hover:text-sidebar-primary",
                             langDir === "rtl"
                               ? "rotate-180 group-hover:-translate-x-1"
                               : "group-hover:translate-x-1",
@@ -729,8 +729,8 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
 
             {/* Footer section - only visible when expanded */}
             {(isHovered || isOpen) && (
-              <div className="border-t border-border bg-gradient-to-b from-gray-50 to-white px-4 py-3">
-                <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
+              <div className="border-t border-sidebar-border bg-sidebar px-4 py-3">
+                <div className="flex items-center justify-center gap-2 text-xs text-sidebar-foreground/60">
                   <span>© 2024 Ultrasooq</span>
                 </div>
               </div>
