@@ -174,7 +174,7 @@ function HomePage() {
     page: 1,
     limit: 4,
     sort: "desc",
-    categoryIds: "203",
+    categoryIds: "496,513",
   });
 
   const memoizedHomeDecorProducts = useMemo(() => {
@@ -189,7 +189,7 @@ function HomePage() {
     page: 1,
     limit: 4,
     sort: "desc",
-    categoryIds: "258",
+    categoryIds: "477,482,488,499",
   });
 
   const memoizedFashionBeautyProducts = useMemo(() => {
@@ -204,7 +204,7 @@ function HomePage() {
     page: 1,
     limit: 4,
     sort: "desc",
-    categoryIds: "269,270",
+    categoryIds: "464,468,472",
   });
 
   const memoizedConsumerElectronicsProducts = useMemo(() => {
@@ -572,14 +572,13 @@ function HomePage() {
               <div className="z-10 md:col-span-6 lg:col-span-6">
                 <div className="space-y-5 sm:space-y-7" dir={langDir}>
                   <span className="inline-block rounded-full bg-white px-5 py-2 text-xs font-bold tracking-wide text-indigo-600 sm:text-sm">
-                    SPECIAL OFFER
+                    {t("special_offer")}
                   </span>
                   <h3 className="text-3xl leading-tight font-bold text-white sm:text-4xl lg:text-5xl xl:text-6xl">
-                    Contrary To Popular Belief, Lorem Ipsum Is Not..
+                    {t("promo_heading")}
                   </h3>
                   <p className="max-w-lg text-lg leading-relaxed text-white/80 sm:text-xl">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry.
+                    {t("promo_description")}
                   </p>
                 </div>
               </div>
@@ -589,7 +588,7 @@ function HomePage() {
                 <div className="rounded-3xl bg-white p-8 sm:p-10">
                   <div className="mb-6">
                     <p className="mb-2 text-sm font-medium text-gray-600">
-                      Original Price
+                      {t("original_price")}
                     </p>
                     <p
                       className="mb-4 text-2xl font-semibold text-gray-400 line-through"
@@ -598,7 +597,7 @@ function HomePage() {
                       {currency.symbol}332.38
                     </p>
                     <p className="mb-2 text-base font-bold text-gray-900">
-                      Special Price
+                      {t("special_price")}
                     </p>
                     <h4
                       className="mb-8 text-5xl font-bold text-indigo-600 sm:text-6xl lg:text-7xl"
@@ -611,7 +610,7 @@ function HomePage() {
                     href="#"
                     className="inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-indigo-600 px-8 py-5 text-base font-bold text-white sm:text-lg"
                   >
-                    Shop Now
+                    {t("shop_now")}
                     <ArrowRight className="h-5 w-5" />
                   </a>
                   <div className="mt-6 flex items-center justify-center gap-2 text-sm text-gray-600">
@@ -626,7 +625,7 @@ function HomePage() {
                         clipRule="evenodd"
                       />
                     </svg>
-                    Limited time offer - Hurry up!
+                    {t("limited_time_offer_hurry")}
                   </div>
                 </div>
               </div>
@@ -931,9 +930,9 @@ function HomePage() {
                 </a> */}
                   <a
                     onClick={() => {
-                      const categoryId = 269;
-                      const subCategoryId = 270;
-                      const categoryIds = "269,270";
+                      const categoryId = 464;
+                      const subCategoryId = 468;
+                      const categoryIds = "464,468,472";
                       const subCategoryIndex = memoizedCategories.findIndex(
                         (item: any) => item.id == categoryId,
                       );

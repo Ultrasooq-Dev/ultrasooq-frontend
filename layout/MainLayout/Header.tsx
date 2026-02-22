@@ -93,7 +93,7 @@ const ButtonLink: React.FC<ButtonLinkProps> = ({
     <Link href={href} onClick={onClick} {...props}>
       <button
         type="button"
-        className={`flex cursor-pointer text-sm uppercase md:px-8 md:py-10 md:text-sm lg:text-base xl:text-lg ${className}`}
+        className={`flex cursor-pointer text-sm uppercase md:px-3 md:py-1 md:text-sm lg:px-4 lg:text-base xl:text-lg ${className}`}
         style={style}
         onClick={onClick}
       >
@@ -1947,13 +1947,13 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
 
             <nav
               aria-label="Site navigation"
-              className={`me menu h-[36px] w-full px-3 md:flex md:px-0 ${isActive ? "show_menu" : ""}`}
+              className={`me menu w-full overflow-hidden px-3 md:flex md:h-auto md:px-0 ${isActive ? "show_menu" : ""}`}
             >
               <div className="close" onClick={handleClick} role="button" aria-label="Close menu">
                 <IoCloseOutline />
               </div>
               <div
-                className="flex w-full flex-col flex-wrap items-start justify-start gap-x-1 py-1 md:flex-row md:justify-between"
+                className="flex w-full flex-col items-start justify-start gap-x-1 py-1 md:flex-row md:flex-nowrap md:items-center md:justify-between"
                 dir={langDir}
               >
                 <ButtonLink

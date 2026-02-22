@@ -44,7 +44,8 @@ http.interceptors.response.use(
         const currentPath = window.location.pathname;
         if (currentPath !== "/login" && currentPath !== "/register") {
           // Clear stale token and redirect to login
-          document.cookie = "token=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+          document.cookie =
+            "puremoon_accessToken=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
           window.location.href = "/login";
         }
       }

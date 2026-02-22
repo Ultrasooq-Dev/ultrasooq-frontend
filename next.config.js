@@ -5,13 +5,13 @@ const withNextIntl = createNextIntlPlugin();
 const nextConfig = withNextIntl({
   output: "standalone",
   reactStrictMode: true,
+  serverExternalPackages: ["isomorphic-dompurify"],
   eslint: {
     ignoreDuringBuilds: true,
   },
   typescript: {
     ignoreBuildErrors: true,
   },
-  serverExternalPackages: ['isomorphic-dompurify'],
   allowedDevOrigins: ["192.168.29.205"],
   async headers() {
     return [

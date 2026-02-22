@@ -17,11 +17,13 @@ import { usePathname } from "next/navigation";
 
 type DescriptionAndSpecificationSectionProps = {
   activeProductType?: string;
+  /** When true, hides PriceSection and LocationSection (they live in Step 3 of the wizard) */
+  wizardMode?: boolean;
 };
 
 const DescriptionAndSpecificationSection: React.FC<
   DescriptionAndSpecificationSectionProps
-> = ({ activeProductType }) => {
+> = ({ activeProductType, wizardMode = false }) => {
   const t = useTranslations();
   const { langDir } = useAuth();
   const pathname = usePathname();
@@ -168,8 +170,8 @@ const DescriptionAndSpecificationSection: React.FC<
         </div>
       )}
 
-      {/* Product Location and Customization Section */}
-      {pathname == "/product" && (
+      {/* Product Location and Customization Section — hidden in wizard mode (lives in Step 3) */}
+      {pathname == "/product" && !wizardMode && (
         <div className="space-y-6">
           <div className="flex items-center gap-3 pb-4 border-b border-gray-100">
             <div className="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center">
@@ -181,7 +183,7 @@ const DescriptionAndSpecificationSection: React.FC<
               </h4>
             </div>
           </div>
-          
+
           <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
             <ProductLocationAndCustomizationSection
               activeProductType={activeProductType}
@@ -190,8 +192,8 @@ const DescriptionAndSpecificationSection: React.FC<
         </div>
       )}
 
-      {/* Price Section - positioned after Product Location and Customization */}
-      {pathname == "/product" && (
+      {/* Price Section — hidden in wizard mode (lives in Step 3) */}
+      {pathname == "/product" && !wizardMode && (
         <PriceSection activeProductType={activeProductType} />
       )}
     </div>

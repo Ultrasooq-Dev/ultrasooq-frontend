@@ -3,11 +3,13 @@ import React, { useMemo, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useActiveBanners } from "@/apis/queries/banner.queries";
 import { useTrackBannerView, useTrackBannerClick } from "@/apis/queries/banner.queries";
 import { IBanner } from "@/apis/requests/banner.requests";
 
 const HeroBanner: React.FC = () => {
+  const t = useTranslations();
   // Fetch banners for different positions (using backend enum values)
   const { data: mainBannersData, isLoading: mainLoading } = useActiveBanners('MAIN');
   const { data: sideTopBannersData, isLoading: sideTopLoading } = useActiveBanners('SIDE_TOP');
@@ -160,7 +162,7 @@ const BannerCarousel: React.FC<{
               onClick={handleBannerClick}
               className="inline-flex items-center gap-2 bg-white text-gray-900 px-8 sm:px-10 py-3.5 sm:py-4 rounded-full font-bold text-sm sm:text-base hover:bg-gray-100 transition-colors"
             >
-              {currentBanner.buttonText || "Shop Now"}
+              {currentBanner.buttonText || t("shop_now")}
               <ArrowRight className="h-5 w-5" />
             </Link>
           )}
@@ -265,7 +267,7 @@ const BannerCard: React.FC<{
           )}
           {banner.buttonText && (
             <span className="inline-flex items-center gap-2 text-white hover:text-yellow-300 transition-colors text-sm sm:text-base font-semibold cursor-pointer">
-              {banner.buttonText || "Shop Now"}
+              {banner.buttonText || t("shop_now")}
               <ArrowRight className="h-4 w-4" />
             </span>
           )}

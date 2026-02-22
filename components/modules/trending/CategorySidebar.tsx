@@ -546,7 +546,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
     setLevel3Categories([]);
   };
 
-  // Handle Level 2 subcategory hover — loads Level 3 children
+  // Handle Level 2 subcategory hover — loads Level 3 children (and Level 4 for each)
   const handleLevel2Hover = async (subcategory: any) => {
     const hasChildren =
       (subcategory.children && subcategory.children.length > 0) ||
@@ -572,8 +572,32 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
         subcategory.id,
         subcategory._originalChildren
       );
-      level3CacheRef.current.set(subcategory.id, children);
-      setLevel3Categories(children);
+
+      // Fetch level 4 children for each level 3 category
+      const childrenWithLevel4 = await Promise.all(
+        children.map(async (child: any) => {
+          const childHasChildren =
+            (child.children && child.children.length > 0) ||
+            child.hasChildren ||
+            (child._originalChildren && child._originalChildren.length > 0);
+
+          if (childHasChildren) {
+            try {
+              const level4 = await fetchCategoryChildren(
+                child.id,
+                child._originalChildren
+              );
+              return { ...child, children: level4 };
+            } catch {
+              return child;
+            }
+          }
+          return child;
+        })
+      );
+
+      level3CacheRef.current.set(subcategory.id, childrenWithLevel4);
+      setLevel3Categories(childrenWithLevel4);
     } catch {
       setLevel3Categories([]);
     }
@@ -1499,30 +1523,49 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
                       </h3>
                     </div>
 
-                    {/* Level 3 items in a grid */}
-                    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-                      {level3Categories.map((item: any) => (
-                        <div
-                          key={item.id}
-                          className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-white hover:shadow-sm cursor-pointer transition-all group"
-                          onClick={() => handleCategoryClick(item.id)}
-                        >
-                          {item.icon ? (
-                            <img
-                              src={item.icon}
-                              alt={item.name}
-                              height={16}
-                              width={16}
-                              className="object-contain flex-shrink-0"
-                            />
-                          ) : (
-                            <div className="h-4 w-4 flex-shrink-0 rounded bg-gray-300" />
-                          )}
-                          <span className="text-sm text-gray-600 group-hover:text-orange-600 transition-colors line-clamp-1">
-                            {translate(item.name)}
-                          </span>
-                        </div>
-                      ))}
+                    {/* Level 3 items in a grid with Level 4 sub-items */}
+                    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-3 gap-y-4">
+                      {level3Categories.map((item: any) => {
+                        const level4Items = item.children && Array.isArray(item.children) ? item.children.slice(0, 3) : [];
+                        return (
+                          <div key={item.id} className="flex flex-col">
+                            {/* Level 3 item */}
+                            <div
+                              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-white hover:shadow-sm cursor-pointer transition-all group"
+                              onClick={() => handleCategoryClick(item.id)}
+                            >
+                              {item.icon ? (
+                                <img
+                                  src={item.icon}
+                                  alt={item.name}
+                                  height={16}
+                                  width={16}
+                                  className="object-contain flex-shrink-0"
+                                />
+                              ) : (
+                                <div className="h-4 w-4 flex-shrink-0 rounded bg-gray-300" />
+                              )}
+                              <span className="text-sm font-medium text-gray-700 group-hover:text-orange-600 transition-colors line-clamp-1">
+                                {translate(item.name)}
+                              </span>
+                            </div>
+                            {/* Level 4 sub-items (max 3) */}
+                            {level4Items.length > 0 && (
+                              <div className="ml-9 flex flex-col gap-0.5">
+                                {level4Items.map((sub: any) => (
+                                  <span
+                                    key={sub.id}
+                                    className="text-xs text-gray-400 hover:text-orange-500 cursor-pointer transition-colors line-clamp-1 py-0.5"
+                                    onClick={() => handleCategoryClick(sub.id)}
+                                  >
+                                    {translate(sub.name)}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
                     </div>
 
                     {/* View All for this subcategory */}

@@ -1,9 +1,9 @@
-import BuyIcon from "@/public/images/menu-icon-buy.svg";
 import HomeIcon from "@/public/images/menu-icon-home.svg";
+import TrendingIcon from "@/public/images/menu-icon-trending.svg";
+import BuyIcon from "@/public/images/menu-icon-buy.svg";
 import PosIcon from "@/public/images/menu-icon-pos.svg";
 import RfqIcon from "@/public/images/menu-icon-rfq.svg";
 import ServiceIcon from "@/public/images/menu-icon-service.svg";
-import TrendingIcon from "@/public/images/menu-icon-trending.svg";
 
 export const PUREMOON_TOKEN_KEY: string = "puremoon_accessToken";
 export const PUREMOON_TEMP_TOKEN_KEY: string = "puremoon_temp_accessToken";
@@ -462,7 +462,7 @@ export const CURRENCIES = [
   {
     code: "OMR",
     symbol: "OMR", // English symbol
-    symbolAr: "ر.ع", // Arabic symbol
+    symbolAr: "يال عماني", // Arabic symbol
   },
 ];
 

@@ -70,6 +70,8 @@ type BasicInformationProps = {
   activeProductType?: string;
   selectedCategoryIds?: string[];
   copy: boolean;
+  /** When true, hides product name and images (they live in Step 1 of the wizard) */
+  wizardMode?: boolean;
 };
 
 const VideoPlayer = ({ item }: { item: any }) => (
@@ -98,6 +100,7 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
   activeProductType,
   selectedCategoryIds,
   copy,
+  wizardMode = false,
 }) => {
   const formContext = useFormContext();
   const { toast } = useToast();
@@ -446,8 +449,8 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
         </div>
       </div>
 
-      {/* Product Name Section */}
-      <div className="space-y-6">
+      {/* Product Name Section — hidden in wizard mode (lives in Step 1) */}
+      <div className={`space-y-6${wizardMode ? " hidden" : ""}`}>
         <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500">
             <span className="text-sm font-semibold text-white">2</span>
@@ -582,8 +585,8 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
       </div>
       */}
 
-      {/* Product Images Section */}
-      <div className="space-y-6">
+      {/* Product Images Section — hidden in wizard mode (lives in Step 1) */}
+      <div className={`space-y-6${wizardMode ? " hidden" : ""}`}>
         <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-pink-500">
             <span className="text-sm font-semibold text-white">5</span>

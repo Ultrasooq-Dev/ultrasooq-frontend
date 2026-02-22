@@ -8,6 +8,7 @@ import { z } from "zod";
 import { useTags } from "@/apis/queries/tags.queries";
 import BasicInformationSection from "@/components/modules/createProduct/BasicInformationSection";
 import ProductDetailsSection from "@/components/modules/createProduct/ProductDetailsSection";
+import ProductWizard from "@/components/modules/createProduct/wizard/ProductWizard";
 import dynamic from "next/dynamic";
 
 const DescriptionAndSpecificationSection = dynamic(
@@ -57,6 +58,10 @@ import { useTranslations } from "next-intl";
 import { useAuth } from "@/context/AuthContext";
 import { v4 as uuidv4 } from "uuid";
 import { fetchSubCategoriesById } from "@/apis/requests/category.requests";
+import {
+  buildCategoryPathFromLeaf,
+  populateFormWithAIData,
+} from "@/components/modules/createProduct/wizard/populateFormWithAIData";
 
 const baseProductPriceItemSchema = (t: any) => {
   return z.object({
@@ -337,6 +342,21 @@ const formSchemaForTypeP = (t: any) => {
           ),
         }),
       ),
+      variantPricingList: z
+        .array(
+          z.object({
+            combinationKey: z.string(),
+            combinationLabel: z.string(),
+            price: z
+              .union([z.coerce.number().min(0), z.literal("")])
+              .optional(),
+            stock: z
+              .union([z.coerce.number().int().min(0), z.literal("")])
+              .optional(),
+          }),
+        )
+        .optional()
+        .default([]),
     })
     .superRefine((data, ctx) => {
       data.productVariants.forEach((productVariant, index) => {
@@ -504,6 +524,21 @@ const formSchemaForTypeR = (t: any) => {
           ),
         }),
       ),
+      variantPricingList: z
+        .array(
+          z.object({
+            combinationKey: z.string(),
+            combinationLabel: z.string(),
+            price: z
+              .union([z.coerce.number().min(0), z.literal("")])
+              .optional(),
+            stock: z
+              .union([z.coerce.number().int().min(0), z.literal("")])
+              .optional(),
+          }),
+        )
+        .optional()
+        .default([]),
     })
     .superRefine((data, ctx) => {
       data.productVariants.forEach((productVariant, index) => {
@@ -616,6 +651,7 @@ const defaultValues: { [key: string]: any } = {
       ],
     },
   ],
+  variantPricingList: [],
 };
 
 const CreateProductPage = () => {
@@ -642,37 +678,6 @@ const CreateProductPage = () => {
   });
 
   // Ensure component only renders on client side
-  // Helper to build full category path (root -> ... -> leaf) from a leaf category ID
-  const buildCategoryPathFromLeaf = async (categoryId: number): Promise<number[]> => {
-    try {
-      const res = await fetchSubCategoriesById({
-        categoryId: String(categoryId),
-      });
-      const categoryData = res.data?.data;
-
-      // If categoryLocation exists in the data, we can trust it and just split it
-      if (categoryData?.categoryLocation) {
-        return categoryData.categoryLocation
-          .split(",")
-          .map((id: string) => Number(id.trim()))
-          .filter((id: number) => !Number.isNaN(id));
-      }
-
-      // If no parentId (or parentId equals id), this is the root category
-      if (!categoryData?.parentId || categoryData.parentId === categoryId) {
-        return [categoryId];
-      }
-
-      // Recursively fetch parent path, then append current categoryId
-      const parentPath = await buildCategoryPathFromLeaf(categoryData.parentId);
-      return [...parentPath, categoryId];
-    } catch (error) {
-      console.error("[AI Category] Error building category path from leaf:", error);
-      // Fallback: return just this categoryId
-      return [categoryId];
-    }
-  };
-
   useEffect(() => {
     setIsClient(true);
   }, []);
@@ -1267,14 +1272,19 @@ const CreateProductPage = () => {
         const categoryIds = categoryIdsParam.split(',').filter(Boolean);
         setSelectedCategoryIds(categoryIds);
       }
-      
+
       // Handle autoFill parameter and data
       if (searchParams.get("autoFill") === "true") {
         const dataParam = searchParams.get("data");
         if (dataParam) {
           try {
             const aiData = JSON.parse(decodeURIComponent(dataParam));
-            populateFormWithAIData(aiData);
+            populateFormWithAIData(form, aiData, setSelectedCategoryIds).then(() => {
+              toast({
+                title: t("product_data_loaded") || "Product Data Loaded",
+                description: t("ai_data_loaded_successfully") || "AI-generated data loaded successfully. Please review and complete the form.",
+              });
+            });
           } catch (error) {
             console.error("Error parsing AI data:", error);
             toast({
@@ -1287,103 +1297,6 @@ const CreateProductPage = () => {
       }
     }
   }, [isClient, searchParams, toast, t]);
-
-  const populateFormWithAIData = (aiData: any) => {
-    // Set product name
-    if (aiData.productName || aiData.name) {
-      form.setValue("productName", aiData.productName || aiData.name);
-    }
-
-    // Set description
-    if (aiData.description) {
-      form.setValue("description", aiData.description);
-      
-      // Also set descriptionJson for the rich text editor
-      // Try to parse as JSON first, if it fails, create proper Slate format
-      try {
-        const descriptionJson = JSON.parse(aiData.description);
-        if (Array.isArray(descriptionJson) && descriptionJson.length > 0) {
-          form.setValue("descriptionJson", descriptionJson);
-        } else {
-          // If it's not a proper Slate format, create one
-          form.setValue("descriptionJson", [
-            {
-              type: "p",
-              children: [{ text: aiData.description }]
-            }
-          ]);
-        }
-      } catch (e) {
-        // If parsing fails, treat as plain text and create proper Slate format
-        form.setValue("descriptionJson", [
-          {
-            type: "p",
-            children: [{ text: aiData.description }]
-          }
-        ]);
-      }
-    }
-
-    // Set short description
-    if (aiData.shortDescription) {
-      form.setValue("productShortDescriptionList", [
-        {
-          shortDescription: aiData.shortDescription,
-        },
-      ]);
-    }
-
-    // Set specifications
-    if (aiData.specifications && Array.isArray(aiData.specifications)) {
-      form.setValue(
-        "productSpecificationList",
-        aiData.specifications.map((spec: any) => ({
-          label: spec.label || "",
-          specification: spec.specification || "",
-        }))
-      );
-    }
-
-    // Set estimated price if available
-    if (aiData.estimatedPrice || aiData.price) {
-      const price = aiData.estimatedPrice || aiData.price;
-      form.setValue("productPrice", price.toString());
-    }
-
-    // Set matched category with full path (prefer leaf category path)
-    if (
-      aiData.matchedCategoryId &&
-      (aiData.categoryConfidence === "high" ||
-        aiData.categoryConfidence === "medium")
-    ) {
-      const matchedId = Number(aiData.matchedCategoryId);
-
-      (async () => {
-        let path: number[] | null = null;
-
-        if (aiData.categoryPath && Array.isArray(aiData.categoryPath) && aiData.categoryPath.length > 0) {
-          path = aiData.categoryPath
-            .map((id: any) => Number(id))
-            .filter((id: number) => !Number.isNaN(id));
-        } else {
-          // Build full path from the matched leaf category
-          path = await buildCategoryPathFromLeaf(matchedId);
-        }
-
-        if (path && path.length > 0) {
-          const leafId = path[path.length - 1];
-          form.setValue("categoryId", leafId);
-          setSelectedCategoryIds(path.map((id: number) => id.toString()));
-          form.setValue("categoryLocation", path.join(","));
-        }
-      })();
-    }
-
-    toast({
-      title: t("product_data_loaded") || "Product Data Loaded",
-      description: t("ai_data_loaded_successfully") || "AI-generated data loaded successfully. Please review and complete the form.",
-    });
-  };
 
   const populateFormWithProductData = (product: any) => {
     setActiveProductType(product.productType);
@@ -2020,6 +1933,23 @@ const CreateProductPage = () => {
 
     delete updatedFormData.productVariants;
 
+    // Merge per-variant pricing into the payload
+    if (
+      updatedFormData.variantPricingList &&
+      updatedFormData.variantPricingList.length > 0
+    ) {
+      updatedFormData.productVariantPricing =
+        updatedFormData.variantPricingList
+          .filter((vp: any) => vp.combinationKey)
+          .map((vp: any) => ({
+            combination: vp.combinationKey,
+            label: vp.combinationLabel,
+            price: Number(vp.price) || 0,
+            stock: Number(vp.stock) || 0,
+          }));
+    }
+    delete updatedFormData.variantPricingList;
+
     if (
       productQueryById?.data?.data &&
       searchParams?.get("copy") &&
@@ -2391,112 +2321,27 @@ const CreateProductPage = () => {
                   onSubmit={form.handleSubmit(onSubmit)}
                   className="space-y-8"
                 >
-                  {/* Basic Information Card */}
-                  <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-                    <div className="border-b border-gray-200 bg-blue-50 px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-500">
-                          <svg
-                            className="h-6 w-6 text-white"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
-                            />
-                          </svg>
-                        </div>
-                        <div>
-                          <h3 className="text-lg font-semibold text-gray-900">
-                            {t("basic_information")}
-                          </h3>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="p-6">
-                      <BasicInformationSection
-                        tagsList={memoizedTags}
-                        activeProductType={activeProductType}
-                        selectedCategoryIds={selectedCategoryIds}
-                        copy={
-                          searchParams?.get("copy") &&
-                          productQueryById?.data?.data
-                            ? true
-                            : false
-                        }
-                      />
-                    </div>
-                  </div>
-
-                  {/* Description and Specifications Card */}
-                  <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-                    <div className="border-b border-gray-200 bg-green-50 px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-green-500">
-                          <svg
-                            className="h-6 w-6 text-white"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                            />
-                          </svg>
-                        </div>
-                        <div>
-                          <h3 className="text-lg font-semibold text-gray-900">
-                            {t("description_and_specifications")}
-                          </h3>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="p-6">
-                      <DescriptionAndSpecificationSection
-                        activeProductType={activeProductType}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Action Buttons Card */}
-                  <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-                    <div className="flex items-center justify-end">
-                      <Button
-                        disabled={
-                          createProduct.isPending ||
-                          uploadMultiple.isPending ||
-                          updateProductFull.isPending ||
-                          updateProductPrice.isPending
-                        }
-                        type="submit"
-                        className="rounded-xl bg-orange-500 px-8 py-3 font-medium text-white shadow-lg transition-all duration-200 hover:bg-orange-600 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-50"
-                        dir={langDir}
-                        translate="no"
-                        onClick={() => {
-                          // Force trigger validation to see all errors
-                          form.trigger();
-                        }}
-                      >
-                        {createProduct.isPending ||
-                        uploadMultiple.isPending ||
-                        updateProductFull.isPending ||
-                        updateProductPrice.isPending ? (
-                          <LoaderWithMessage message={t("please_wait")} />
-                        ) : isEditMode ? (
-                          t("update_product")
-                        ) : (
-                          t("continue")
-                        )}
-                      </Button>
-                    </div>
-                  </div>
+                  <ProductWizard
+                    form={form}
+                    tagsList={memoizedTags}
+                    activeProductType={activeProductType}
+                    selectedCategoryIds={selectedCategoryIds}
+                    setSelectedCategoryIds={setSelectedCategoryIds}
+                    isEditMode={isEditMode}
+                    copy={
+                      searchParams?.get("copy") &&
+                      productQueryById?.data?.data
+                        ? true
+                        : false
+                    }
+                    isSubmitting={
+                      createProduct.isPending ||
+                      uploadMultiple.isPending ||
+                      updateProductFull.isPending ||
+                      updateProductPrice.isPending
+                    }
+                    onSubmit={() => form.trigger()}
+                  />
                 </form>
               </Form>
             )}
