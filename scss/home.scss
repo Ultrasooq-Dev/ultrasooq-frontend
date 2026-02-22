@@ -57,7 +57,7 @@
                         margin-bottom: 0;
                     }
                     h3 {
-                        color: #333;
+                        color: hsl(var(--foreground));
                         font-size: 35px;
                         font-style: normal;
                         font-weight: 500;
@@ -79,14 +79,14 @@
                         span {
                             width: 100%;
                             display: inline-block;
-                            color: #DB2302;
+                            color: hsl(var(--primary));
                         }
                     }
                     p {
                         margin: 0;
                     }
                     h5 {
-                        color: #669D03;
+                        color: hsl(var(--accent));
                         font-size: 18px;
                         font-style: normal;
                         font-weight: 600;
@@ -101,7 +101,7 @@
                         line-height: 24px;
                         border-radius: 2px;
                         padding: 12px 25px;
-                        background: #DF2100;
+                        background: hsl(var(--primary));
                         display: inline-block;
                         text-decoration: none;
                     }
@@ -198,7 +198,7 @@
             padding: 0 15px;
         }
         h3 {
-            color: #333;
+            color: hsl(var(--foreground));
             font-size: 22px;
             font-style: normal;
             font-weight: 400;
@@ -258,11 +258,11 @@
                     }
                     &.active, &:hover {
                         a {
-                            color: #DB2302;
-                            border-bottom-color: #DB2302;
+                            color: hsl(var(--primary));
+                            border-bottom-color: hsl(var(--primary));
                             svg {
                                 path {
-                                    fill: #DB2302;
+                                    fill: hsl(var(--primary));
                                 }
                             }
                         }
@@ -363,7 +363,7 @@
             align-items: center;
             align-content: center;
             h3 {
-                color: #333;
+                color: hsl(var(--foreground));
                 font-size: 35px;
                 font-style: normal;
                 font-weight: 400;
@@ -389,7 +389,7 @@
             align-items: center;
             align-content: center;
             h6 {
-                color: #333;
+                color: hsl(var(--foreground));
                 font-size: 16px;
                 font-style: normal;
                 font-weight: 500;
@@ -416,7 +416,7 @@
                 a {
                     padding: 10px 20px;
                     border-radius: 2px;
-                    background: #DF2100;
+                    background: hsl(var(--primary));
                     color: #FFF;
                     font-size: 14px;
                     font-style: normal;
@@ -466,7 +466,7 @@
                     justify-content: space-between;
                 }
                 h4 {
-                    color: #333;
+                    color: hsl(var(--foreground));
                     font-size: 22px;
                     font-style: normal;
                     font-weight: 400;
@@ -481,7 +481,7 @@
                     }
                 }
                 span {
-                    background: #DB2302;
+                    background: hsl(var(--primary));
                     border-radius: 4px;
                     padding: 10px 20px; 
                     color: #FFF;
@@ -542,7 +542,7 @@
                     width: 50%;
                 }
                 .product_discount {
-                    background: #DB2302;
+                    background: hsl(var(--primary));
                     border-radius: 4px;
                     padding: 7px 10px;
                     color: #FFF;
@@ -586,7 +586,7 @@
                     }
                     
                     h6 {
-                        color: #333;
+                        color: hsl(var(--foreground));
                         font-size: 12px;
                         font-style: normal;
                         font-weight: 400;
@@ -637,7 +637,7 @@
                         }
                         .new_price {
                             h5 {
-                                color: #DB2302;
+                                color: hsl(var(--primary));
                             }
                         }
                     }

@@ -845,7 +845,7 @@ const ManageProductAside: React.FC<ManageProductAsideProps> = ({
           <Button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-[#DF2100]!"
+            className="w-full bg-primary!"
             translate="no"
           >
             {isLoading ? (

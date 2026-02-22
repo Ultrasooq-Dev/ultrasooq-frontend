@@ -32,14 +32,14 @@
     h1 {
       font-size: 2.5rem;
       font-weight: 700;
-      color: #022335;
+      color: hsl(var(--secondary-foreground));
       margin-bottom: 15px;
       font-family: 'Work Sans', sans-serif;
     }
     
     p {
       font-size: 1.1rem;
-      color: #7b7b7b;
+      color: hsl(var(--muted-foreground));
       font-weight: 400;
     }
   }
@@ -67,15 +67,15 @@
       gap: 8px;
       font-weight: 500;
       font-family: 'Work Sans', sans-serif;
-      color: #7b7b7b;
+      color: hsl(var(--muted-foreground));
 
       &:hover {
         background: #f8f9fa;
-        color: #022335;
+        color: hsl(var(--secondary-foreground));
       }
 
       &.active {
-        background: #022335;
+        background: hsl(var(--secondary));
         color: white;
         font-weight: 600;
       }
@@ -97,7 +97,7 @@
 
 // Wallet Balance Card
 .wallet_balance_card {
-  background: #022335;
+  background: hsl(var(--secondary));
   color: white;
   border-radius: 12px;
   padding: 25px;
@@ -172,11 +172,11 @@
         font-family: 'Work Sans', sans-serif;
 
         &.available {
-          color: #4fd992;
+          color: hsl(var(--chart-2));
         }
 
         &.frozen {
-          color: #fcb800;
+          color: hsl(var(--chart-4));
         }
       }
     }
@@ -196,22 +196,22 @@
       font-family: 'Work Sans', sans-serif;
 
       &.active {
-        background: #4fd992;
+        background: hsl(var(--chart-2));
         color: white;
       }
 
       &.frozen {
-        background: #fcb800;
-        color: #022335;
+        background: hsl(var(--chart-4));
+        color: hsl(var(--secondary-foreground));
       }
 
       &.suspended {
-        background: #db2302;
+        background: hsl(var(--primary));
         color: white;
       }
 
       &.closed {
-        background: #7b7b7b;
+        background: hsl(var(--muted));
         color: white;
       }
     }
@@ -259,7 +259,7 @@
       }
 
       &.deposit_btn {
-        background: #4fd992;
+        background: hsl(var(--chart-2));
         color: white;
 
         &:hover:not(:disabled) {
@@ -268,7 +268,7 @@
       }
 
       &.withdraw_btn {
-        background: #db2302;
+        background: hsl(var(--primary));
         color: white;
 
         &:hover:not(:disabled) {
@@ -277,7 +277,7 @@
       }
 
       &.transfer_btn {
-        background: #1d77d1;
+        background: hsl(var(--ring));
         color: white;
         &:hover:not(:disabled) {
           background: #1666b8;
@@ -391,7 +391,7 @@
 
     h3 {
       margin: 0;
-      color: #022335;
+      color: hsl(var(--secondary-foreground));
       font-size: 1.4rem;
       font-weight: 600;
       font-family: 'Work Sans', sans-serif;
@@ -409,17 +409,17 @@
         cursor: pointer;
         font-family: 'Work Sans', sans-serif;
         font-weight: 500;
-        color: #022335;
+        color: hsl(var(--secondary-foreground));
         transition: all 0.3s ease;
 
         &:focus {
           outline: none;
-          border-color: #022335;
+          border-color: hsl(var(--secondary-foreground));
           box-shadow: 0 0 0 3px rgba(2, 35, 53, 0.1);
         }
 
         &:hover {
-          border-color: #1d77d1;
+          border-color: hsl(var(--ring));
         }
       }
     }
@@ -466,14 +466,14 @@
 
         .transaction_type {
           font-weight: 600;
-          color: #022335;
+          color: hsl(var(--secondary-foreground));
           margin-bottom: 8px;
           font-family: 'Work Sans', sans-serif;
           font-size: 1rem;
         }
 
         .transaction_description {
-          color: #7b7b7b;
+          color: hsl(var(--muted-foreground));
           font-size: 0.9rem;
           margin-bottom: 8px;
           font-family: 'Work Sans', sans-serif;
@@ -483,7 +483,7 @@
           display: flex;
           gap: 20px;
           font-size: 0.8rem;
-          color: #7b7b7b;
+          color: hsl(var(--muted-foreground));
           font-family: 'Work Sans', sans-serif;
 
           .reference {
@@ -505,15 +505,15 @@
           font-family: 'Work Sans', sans-serif;
 
           &.positive {
-            color: #4fd992;
+            color: hsl(var(--chart-2));
           }
 
           &.negative {
-            color: #db2302;
+            color: hsl(var(--primary));
           }
 
           &.neutral {
-            color: #7b7b7b;
+            color: hsl(var(--muted-foreground));
           }
         }
 
@@ -526,25 +526,25 @@
           font-family: 'Work Sans', sans-serif;
 
           &.success {
-            background: #4fd992;
+            background: hsl(var(--chart-2));
             color: white;
             box-shadow: 0 2px 8px rgba(79, 217, 146, 0.3);
           }
 
           &.warning {
-            background: #fcb800;
-            color: #022335;
+            background: hsl(var(--chart-4));
+            color: hsl(var(--secondary-foreground));
             box-shadow: 0 2px 8px rgba(252, 184, 0, 0.3);
           }
 
           &.danger {
-            background: #db2302;
+            background: hsl(var(--primary));
             color: white;
             box-shadow: 0 2px 8px rgba(219, 35, 2, 0.3);
           }
 
           &.neutral {
-            background: #7b7b7b;
+            background: hsl(var(--muted));
             color: white;
             box-shadow: 0 2px 8px rgba(123, 123, 123, 0.3);
           }
@@ -555,7 +555,7 @@
     .empty_state {
       text-align: center;
       padding: 80px 20px;
-      color: #7b7b7b;
+      color: hsl(var(--muted-foreground));
 
       .empty_icon {
         font-size: 4rem;
@@ -580,14 +580,14 @@
 
     h3 {
       margin: 0 0 15px 0;
-      color: #022335;
+      color: hsl(var(--secondary-foreground));
       font-size: 1.4rem;
       font-weight: 600;
       font-family: 'Work Sans', sans-serif;
     }
 
     p {
-      color: #7b7b7b;
+      color: hsl(var(--muted-foreground));
       margin: 0;
       font-family: 'Work Sans', sans-serif;
       font-size: 1rem;
@@ -599,7 +599,7 @@
       margin-bottom: 35px;
 
       h4 {
-        color: #022335;
+        color: hsl(var(--secondary-foreground));
         margin-bottom: 25px;
         padding-bottom: 12px;
         border-bottom: 2px solid #e9ecef;
@@ -630,7 +630,7 @@
 
           label {
             font-weight: 600;
-            color: #022335;
+            color: hsl(var(--secondary-foreground));
             margin-bottom: 8px;
             font-family: 'Work Sans', sans-serif;
             font-size: 1rem;
@@ -638,7 +638,7 @@
 
           .setting_description {
             font-size: 0.9rem;
-            color: #7b7b7b;
+            color: hsl(var(--muted-foreground));
             display: block;
             font-family: 'Work Sans', sans-serif;
           }
@@ -655,12 +655,12 @@
 
           &:focus {
             outline: none;
-            border-color: #022335;
+            border-color: hsl(var(--secondary-foreground));
             box-shadow: 0 0 0 3px rgba(2, 35, 53, 0.1);
           }
 
           &:hover {
-            border-color: #1d77d1;
+            border-color: hsl(var(--ring));
           }
         }
       }
@@ -683,13 +683,13 @@
         font-size: 1rem;
 
         &.save_btn {
-          background: #022335;
+          background: hsl(var(--secondary));
           color: white;
           border: none;
           box-shadow: 0 4px 15px rgba(2, 35, 53, 0.3);
 
           &:hover:not(:disabled) {
-            background: #1d77d1;
+            background: hsl(var(--ring));
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(2, 35, 53, 0.4);
           }
@@ -720,7 +720,7 @@
 
     h4 {
       margin: 0 0 20px 0;
-      color: #022335;
+      color: hsl(var(--secondary-foreground));
       font-size: 1.1rem;
       font-weight: 600;
       font-family: 'Work Sans', sans-serif;
@@ -744,10 +744,10 @@
         text-align: left;
         font-family: 'Work Sans', sans-serif;
         font-weight: 500;
-        color: #022335;
+        color: hsl(var(--secondary-foreground));
 
         &:hover {
-          background: #022335;
+          background: hsl(var(--secondary));
           color: white;
           transform: translateX(4px);
         }
@@ -771,7 +771,7 @@
         }
 
         .info_label {
-          color: #7b7b7b;
+          color: hsl(var(--muted-foreground));
           font-size: 0.8rem;
           font-weight: 500;
           font-family: 'Work Sans', sans-serif;
@@ -779,7 +779,7 @@
 
         .info_value {
           font-weight: 600;
-          color: #022335;
+          color: hsl(var(--secondary-foreground));
           font-family: 'Work Sans', sans-serif;
           font-size: 0.9rem;
 
@@ -791,22 +791,22 @@
             font-weight: 600;
 
             &.active {
-              background: #4fd992;
+              background: hsl(var(--chart-2));
               color: white;
             }
 
             &.frozen {
-              background: #fcb800;
-              color: #022335;
+              background: hsl(var(--chart-4));
+              color: hsl(var(--secondary-foreground));
             }
 
             &.suspended {
-              background: #db2302;
+              background: hsl(var(--primary));
               color: white;
             }
 
             &.closed {
-              background: #7b7b7b;
+              background: hsl(var(--muted));
               color: white;
             }
           }
@@ -855,7 +855,7 @@
       .stat_content {
         h4 {
           margin: 0 0 6px 0;
-          color: #7b7b7b;
+          color: hsl(var(--muted-foreground));
           font-size: 0.8rem;
           text-transform: uppercase;
           letter-spacing: 0.5px;
@@ -865,7 +865,7 @@
         .stat_value {
           font-size: 1.4rem;
           font-weight: 700;
-          color: #022335;
+          color: hsl(var(--secondary-foreground));
           margin: 0;
           font-family: 'Work Sans', sans-serif;
         }
@@ -876,7 +876,7 @@
   .recent_activity {
     h3 {
       margin: 0 0 25px 0;
-      color: #022335;
+      color: hsl(var(--secondary-foreground));
       font-size: 1.4rem;
       font-weight: 600;
       font-family: 'Work Sans', sans-serif;

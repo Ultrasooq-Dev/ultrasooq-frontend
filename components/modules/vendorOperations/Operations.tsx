@@ -46,7 +46,7 @@ const Operations: React.FC<OperationsProps> = ({ onSelect }) => {
   return (
     <div className="w-full border-r border-solid border-gray-300 lg:w-[15%]">
       <div
-        className="flex min-h-[55px] w-full items-center border-b border-solid border-gray-300 px-[10px] py-[10px] text-base font-normal text-[#333333]"
+        className="flex min-h-[55px] w-full items-center border-b border-solid border-gray-300 px-[10px] py-[10px] text-base font-normal text-foreground"
         dir={langDir}
       >
         <span translate="no">{t("vendor_operations")}</span>
@@ -67,7 +67,7 @@ const Operations: React.FC<OperationsProps> = ({ onSelect }) => {
           >
             <div className="flex w-[calc(100%-2.5rem)] flex-wrap items-center justify-start gap-y-1 whitespace-pre-wrap break-all lg:w-full xl:pl-3">
               <div className="flex w-full">
-                <h4 className="text-color-[#333333] text-left text-[13px] font-normal uppercase xl:text-[14px]">
+                <h4 className="text-foreground text-left text-[13px] font-normal uppercase xl:text-[14px]">
                   {operation.label}
                 </h4>
               </div>

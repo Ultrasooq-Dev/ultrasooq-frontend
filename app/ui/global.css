@@ -16,14 +16,14 @@ html[dir="rtl"] body * {
 }
 
 @theme {
-  --color-dark-orange: #db2302;
-  --color-dark-cyan: #022335;
-  --color-light-gray: #7b7b7b;
-  --color-olive-green: #669d03;
-  --color-color-dark: #333;
-  --color-color-blue: #1d77d1;
-  --color-color-yellow: #fcb800;
-  --color-light-green: #4fd992;
+  --color-dark-orange: hsl(var(--primary));
+  --color-dark-cyan: hsl(var(--secondary));
+  --color-light-gray: hsl(var(--muted-foreground));
+  --color-olive-green: hsl(var(--accent));
+  --color-color-dark: hsl(var(--foreground));
+  --color-color-blue: hsl(var(--ring));
+  --color-color-yellow: hsl(var(--chart-4));
+  --color-light-green: hsl(var(--chart-2));
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
@@ -258,7 +258,7 @@ html[dir="rtl"] body * {
   transition: all 0.5s !important;
 
   &:hover {
-    box-shadow: 1px 1px 11px #333;
+    box-shadow: 1px 1px 11px hsl(var(--foreground) / 0.3);
   }
 
   /* start: responsive */
@@ -1132,7 +1132,7 @@ html[dir="rtl"] body * {
   }
 
   & h4 {
-    @apply text-lg font-semibold leading-6 text-[#669D03];
+    @apply text-lg font-semibold leading-6 text-accent;
   }
 
   & .discount_text {
@@ -1470,7 +1470,7 @@ html[dir="rtl"] body * {
     font-weight: 400;
     line-height: 22px;
     margin-top: 6px;
-    color: #333333;
+    color: hsl(var(--foreground));
   }
 
   .import-pickup-type-selector-lists
@@ -2837,7 +2837,7 @@ html[dir="rtl"] body * {
   }
 
   &.type2 .brand_sold_info h5 span {
-    @apply capitalize text-[#DB2302];
+    @apply capitalize text-primary;
   }
 
   &.type2 .info-col.top-btm-border {
@@ -2865,7 +2865,7 @@ html[dir="rtl"] body * {
   }
 
   &.type2 .quantity-with-right-payment-info .right-payment-info ul li span {
-    @apply text-base font-normal leading-[21.11px] text-[#333333];
+    @apply text-base font-normal leading-[21.11px] text-foreground;
   }
 
   &.type2 .quantity-with-right-payment-info .right-payment-info ul li img {
@@ -3476,7 +3476,7 @@ html[dir="rtl"] body * {
   }
 
   &.product-view-s1-left-right .brand_sold_info h5 span {
-    @apply capitalize text-[#DB2302];
+    @apply capitalize text-primary;
   }
 
   &.product-view-s1-left-right .info-col.top-btm-border {
@@ -3518,7 +3518,7 @@ html[dir="rtl"] body * {
     ul
     li
     span {
-    @apply text-base font-normal leading-[21.11px] text-[#333333];
+    @apply text-base font-normal leading-[21.11px] text-foreground;
   }
 
   &.product-view-s1-left-right
@@ -3558,7 +3558,7 @@ html[dir="rtl"] body * {
   }
 
   .product-view-s1-left-right.type2 & h5 span {
-    @apply capitalize text-[#DB2302];
+    @apply capitalize text-primary;
   }
 
   /* start: responsive */
@@ -3612,7 +3612,7 @@ html[dir="rtl"] body * {
   }
 
   .product-view-s1-left-right.type2 & .right-payment-info ul li span {
-    @apply text-base font-normal leading-[21.11px] text-[#333333];
+    @apply text-base font-normal leading-[21.11px] text-foreground;
   }
 
   .product-view-s1-left-right.type2 & .right-payment-info ul li img {
@@ -3653,7 +3653,7 @@ html[dir="rtl"] body * {
     ul
     li
     span {
-    @apply text-base font-normal leading-[21.11px] text-[#333333];
+    @apply text-base font-normal leading-[21.11px] text-foreground;
   }
 
   .product-view-s1-left-right.type2
@@ -4164,7 +4164,7 @@ html[dir="rtl"] body * {
   }
 
   .my-order-lists .my-order-box .center-price-info &h4 {
-    @apply text-[#669d03];
+    @apply text-accent;
   }
 
   /* start: responsive */
@@ -4349,7 +4349,7 @@ html[dir="rtl"] body * {
   }
 
   .rfq-cart-wrapper & h3 {
-    @apply m-0 text-3xl font-semibold leading-10 text-[#333333];
+    @apply m-0 text-3xl font-semibold leading-10 text-foreground;
   }
 
   /* start: responsive */
@@ -4388,7 +4388,7 @@ html[dir="rtl"] body * {
   }
 
   .rfq-cart-wrapper & .add-delivery-card h3 {
-    @apply mb-4 text-xl font-normal leading-[25.81px] text-[#333333];
+    @apply mb-4 text-xl font-normal leading-[25.81px] text-foreground;
   }
 
   .rfq-cart-wrapper & .add-delivery-card .input-row {
@@ -6425,7 +6425,7 @@ html[dir="rtl"] body * {
   }
 
   & .my-order-box figure figcaption h3 {
-    @apply mb-2.5 text-base font-medium text-[#333333];
+    @apply mb-2.5 text-base font-medium text-foreground;
   }
 
   & .my-order-box figure figcaption h3 a {
@@ -6445,7 +6445,7 @@ html[dir="rtl"] body * {
   }
 
   & .my-order-box .center-price-info h4.success {
-    @apply text-[#669d03];
+    @apply text-accent;
   }
 
   & .my-order-box .right-info {
@@ -6609,7 +6609,7 @@ html[dir="rtl"] body * {
   }
 
   .my-order-lists & figure figcaption h3 {
-    @apply mb-2.5 text-base font-medium text-[#333333];
+    @apply mb-2.5 text-base font-medium text-foreground;
   }
 
   .my-order-lists & figure figcaption h3 a {
@@ -6629,7 +6629,7 @@ html[dir="rtl"] body * {
   }
 
   .my-order-lists & .center-price-info h4.success {
-    @apply text-[#669d03];
+    @apply text-accent;
   }
 
   .my-order-lists & .right-info {
@@ -6698,7 +6698,7 @@ html[dir="rtl"] body * {
   }
 
   .my-order-lists .my-order-box & h4.success {
-    @apply text-[#669d03];
+    @apply text-accent;
   }
 
   /* start: responsive */
@@ -7379,8 +7379,8 @@ html[dir="rtl"] body * {
     label.remember_checkbox
     input:checked
     ~ .checkmark {
-    @apply border-[#DB2302];
-    background: #db2302;
+    @apply border-primary;
+    background: hsl(var(--primary));
   }
 
   &
@@ -7474,7 +7474,7 @@ html[dir="rtl"] body * {
     .products_sec_top
     .products_sec_top_left
     h4 {
-    @apply text-[15.64px] font-normal capitalize leading-[18.35px] text-[#333333];
+    @apply text-[15.64px] font-normal capitalize leading-[18.35px] text-foreground;
   }
 
   &
@@ -7667,7 +7667,7 @@ html[dir="rtl"] body * {
     .product_list_content
     .quantity_wrap
     label {
-    @apply w-full text-xs font-normal uppercase leading-[14px] text-[#333333];
+    @apply w-full text-xs font-normal uppercase leading-[14px] text-foreground;
   }
 
   &
@@ -7773,7 +7773,7 @@ html[dir="rtl"] body * {
     .product_gray_n_box
     .pagination
     a.first_pagination {
-    @apply w-auto rounded-sm border-[#DF2100] px-[15px] py-[5px] font-semibold text-white;
+    @apply w-auto rounded-sm border-primary px-[15px] py-[5px] font-semibold text-white;
     background: #df2100;
   }
 
@@ -7793,7 +7793,7 @@ html[dir="rtl"] body * {
     .product_gray_n_box
     .pagination
     a.last_pagination {
-    @apply w-auto rounded-sm border-[#DF2100] px-[15px] py-[5px] font-semibold text-white;
+    @apply w-auto rounded-sm border-primary px-[15px] py-[5px] font-semibold text-white;
     background: #df2100;
   }
 
@@ -7820,12 +7820,12 @@ html[dir="rtl"] body * {
   }
 
   & .rfq_main_box .rfq_right .rfq_right_top h4 {
-    @apply mb-0.5 text-base font-normal leading-5 text-[#333333];
+    @apply mb-0.5 text-base font-normal leading-5 text-foreground;
   }
 
   & .rfq_main_box .rfq_right .rfq_right_top button {
     @apply mt-2.5 w-full rounded-sm border-[none] px-[15px] py-2.5 text-base font-bold leading-5 text-white focus:shadow-none;
-    background: #db2302;
+    background: hsl(var(--primary));
   }
 
   & .rfq_main_box .rfq_right .rfq_right_top button:focus {
@@ -7837,7 +7837,7 @@ html[dir="rtl"] body * {
   }
 
   & .rfq_main_box .rfq_right .rfq_right_bottom h4 {
-    @apply mb-[5px] text-base font-normal leading-5 text-[#333333];
+    @apply mb-[5px] text-base font-normal leading-5 text-foreground;
   }
 
   & .rfq_main_box .rfq_right .rfq_right_bottom .rfq_cart_wrap {
@@ -8176,8 +8176,8 @@ html[dir="rtl"] body * {
     label.remember_checkbox
     input:checked
     ~ .checkmark {
-    @apply border-[#DB2302];
-    background: #db2302;
+    @apply border-primary;
+    background: hsl(var(--primary));
   }
 
   .rfq_section
@@ -8271,7 +8271,7 @@ html[dir="rtl"] body * {
     .products_sec_top
     .products_sec_top_left
     h4 {
-    @apply text-[15.64px] font-normal capitalize leading-[18.35px] text-[#333333];
+    @apply text-[15.64px] font-normal capitalize leading-[18.35px] text-foreground;
   }
 
   .rfq_section
@@ -8464,7 +8464,7 @@ html[dir="rtl"] body * {
     .product_list_content
     .quantity_wrap
     label {
-    @apply w-full text-xs font-normal uppercase leading-[14px] text-[#333333];
+    @apply w-full text-xs font-normal uppercase leading-[14px] text-foreground;
   }
 
   .rfq_section
@@ -8570,7 +8570,7 @@ html[dir="rtl"] body * {
     .product_gray_n_box
     .pagination
     a.first_pagination {
-    @apply w-auto rounded-sm border-[#DF2100] px-[15px] py-[5px] font-semibold text-white;
+    @apply w-auto rounded-sm border-primary px-[15px] py-[5px] font-semibold text-white;
     background: #df2100;
   }
 
@@ -8585,7 +8585,7 @@ html[dir="rtl"] body * {
   }
 
   .rfq_section & .rfq_middle .product_gray_n_box .pagination a.last_pagination {
-    @apply w-auto rounded-sm border-[#DF2100] px-[15px] py-[5px] font-semibold text-white;
+    @apply w-auto rounded-sm border-primary px-[15px] py-[5px] font-semibold text-white;
     background: #df2100;
   }
 
@@ -8612,12 +8612,12 @@ html[dir="rtl"] body * {
   }
 
   .rfq_section & .rfq_right .rfq_right_top h4 {
-    @apply mb-0.5 text-base font-normal leading-5 text-[#333333];
+    @apply mb-0.5 text-base font-normal leading-5 text-foreground;
   }
 
   .rfq_section & .rfq_right .rfq_right_top button {
     @apply mt-2.5 w-full rounded-sm border-[none] px-[15px] py-2.5 text-base font-bold leading-5 text-white focus:shadow-none;
-    background: #db2302;
+    background: hsl(var(--primary));
   }
 
   .rfq_section & .rfq_right .rfq_right_top button:focus {
@@ -8629,7 +8629,7 @@ html[dir="rtl"] body * {
   }
 
   .rfq_section & .rfq_right .rfq_right_bottom h4 {
-    @apply mb-[5px] text-base font-normal leading-5 text-[#333333];
+    @apply mb-[5px] text-base font-normal leading-5 text-foreground;
   }
 
   .rfq_section & .rfq_right .rfq_right_bottom .rfq_cart_wrap {
@@ -8946,8 +8946,8 @@ html[dir="rtl"] body * {
     label.remember_checkbox
     input:checked
     ~ .checkmark {
-    @apply border-[#DB2302];
-    background: #db2302;
+    @apply border-primary;
+    background: hsl(var(--primary));
   }
 
   .rfq_section
@@ -9125,8 +9125,8 @@ html[dir="rtl"] body * {
     label.remember_checkbox
     input:checked
     ~ .checkmark {
-    @apply border-[#DB2302];
-    background: #db2302;
+    @apply border-primary;
+    background: hsl(var(--primary));
   }
 
   .rfq_section
@@ -9295,8 +9295,8 @@ html[dir="rtl"] body * {
     label.remember_checkbox
     input:checked
     ~ .checkmark {
-    @apply border-[#DB2302];
-    background: #db2302;
+    @apply border-primary;
+    background: hsl(var(--primary));
   }
 
   .rfq_section
@@ -9348,7 +9348,7 @@ html[dir="rtl"] body * {
   @apply text-center;
 
   & h3 {
-    @apply text-[#db2302]! font-bold! text-[40px]!;
+    @apply text-primary! font-bold! text-[40px]!;
   }
 
   & h6 {
@@ -9419,8 +9419,8 @@ html[dir="rtl"] body * {
     label.remember_checkbox
     input:checked
     ~ .checkmark {
-    @apply border-[#DB2302];
-    background: #db2302;
+    @apply border-primary;
+    background: hsl(var(--primary));
   }
 
   .rfq_section
@@ -9495,8 +9495,8 @@ html[dir="rtl"] body * {
     &label
     input:checked
     ~ .checkmark {
-    @apply border-[#DB2302];
-    background: #db2302;
+    @apply border-primary;
+    background: hsl(var(--primary));
   }
 
   .rfq_section
@@ -9550,8 +9550,8 @@ html[dir="rtl"] body * {
     label.remember_checkbox
     input:checked
     ~ & {
-    @apply border-[#DB2302];
-    background: #db2302;
+    @apply border-primary;
+    background: hsl(var(--primary));
   }
 
   .rfq_section
@@ -9657,7 +9657,7 @@ html[dir="rtl"] body * {
     .products_sec_top
     .products_sec_top_left
     h4 {
-    @apply text-[15.64px] font-normal capitalize leading-[18.35px] text-[#333333];
+    @apply text-[15.64px] font-normal capitalize leading-[18.35px] text-foreground;
   }
 
   .rfq_section
@@ -9850,7 +9850,7 @@ html[dir="rtl"] body * {
     .product_list_content
     .quantity_wrap
     label {
-    @apply w-full text-xs font-normal uppercase leading-[14px] text-[#333333];
+    @apply w-full text-xs font-normal uppercase leading-[14px] text-foreground;
   }
 
   .rfq_section
@@ -9956,7 +9956,7 @@ html[dir="rtl"] body * {
     .product_gray_n_box
     .pagination
     a.first_pagination {
-    @apply w-auto rounded-sm border-[#DF2100] px-[15px] py-[5px] font-semibold text-white;
+    @apply w-auto rounded-sm border-primary px-[15px] py-[5px] font-semibold text-white;
     background: #df2100;
   }
 
@@ -9976,7 +9976,7 @@ html[dir="rtl"] body * {
     .product_gray_n_box
     .pagination
     a.last_pagination {
-    @apply w-auto rounded-sm border-[#DF2100] px-[15px] py-[5px] font-semibold text-white;
+    @apply w-auto rounded-sm border-primary px-[15px] py-[5px] font-semibold text-white;
     background: #df2100;
   }
 
@@ -10107,7 +10107,7 @@ html[dir="rtl"] body * {
     .products_sec_top
     .products_sec_top_left
     h4 {
-    @apply text-[15.64px] font-normal capitalize leading-[18.35px] text-[#333333];
+    @apply text-[15.64px] font-normal capitalize leading-[18.35px] text-foreground;
   }
 
   .rfq_section
@@ -10300,7 +10300,7 @@ html[dir="rtl"] body * {
     .product_list_content
     .quantity_wrap
     label {
-    @apply w-full text-xs font-normal uppercase leading-[14px] text-[#333333];
+    @apply w-full text-xs font-normal uppercase leading-[14px] text-foreground;
   }
 
   .rfq_section
@@ -10401,7 +10401,7 @@ html[dir="rtl"] body * {
   }
 
   .rfq_section .rfq_main_box .rfq_middle & .pagination a.first_pagination {
-    @apply w-auto rounded-sm border-[#DF2100] px-[15px] py-[5px] font-semibold text-white;
+    @apply w-auto rounded-sm border-primary px-[15px] py-[5px] font-semibold text-white;
     background: #df2100;
   }
 
@@ -10410,7 +10410,7 @@ html[dir="rtl"] body * {
   }
 
   .rfq_section .rfq_main_box .rfq_middle & .pagination a.last_pagination {
-    @apply w-auto rounded-sm border-[#DF2100] px-[15px] py-[5px] font-semibold text-white;
+    @apply w-auto rounded-sm border-primary px-[15px] py-[5px] font-semibold text-white;
     background: #df2100;
   }
 
@@ -10435,7 +10435,7 @@ html[dir="rtl"] body * {
     &
     .products_sec_top_left
     h4 {
-    @apply text-[15.64px] font-normal capitalize leading-[18.35px] text-[#333333];
+    @apply text-[15.64px] font-normal capitalize leading-[18.35px] text-foreground;
   }
 
   .rfq_section
@@ -10529,7 +10529,7 @@ html[dir="rtl"] body * {
     .products_sec_top
     &
     h4 {
-    @apply text-[15.64px] font-normal capitalize leading-[18.35px] text-[#333333];
+    @apply text-[15.64px] font-normal capitalize leading-[18.35px] text-foreground;
   }
 
   /* start: responsive */
@@ -10815,7 +10815,7 @@ html[dir="rtl"] body * {
     .product_list_content
     .quantity_wrap
     label {
-    @apply w-full text-xs font-normal uppercase leading-[14px] text-[#333333];
+    @apply w-full text-xs font-normal uppercase leading-[14px] text-foreground;
   }
 
   .rfq_section
@@ -11021,7 +11021,7 @@ html[dir="rtl"] body * {
     .product_list_content
     .quantity_wrap
     label {
-    @apply w-full text-xs font-normal uppercase leading-[14px] text-[#333333];
+    @apply w-full text-xs font-normal uppercase leading-[14px] text-foreground;
   }
 
   .rfq_section
@@ -11231,7 +11231,7 @@ html[dir="rtl"] body * {
     &
     .quantity_wrap
     label {
-    @apply w-full text-xs font-normal uppercase leading-[14px] text-[#333333];
+    @apply w-full text-xs font-normal uppercase leading-[14px] text-foreground;
   }
 
   .rfq_section
@@ -11350,11 +11350,11 @@ html[dir="rtl"] body * {
     .product_list_content
     &
     label {
-    @apply w-full text-xs font-normal uppercase leading-[14px] text-[#333333];
+    @apply w-full text-xs font-normal uppercase leading-[14px] text-foreground;
   }
 
   & label {
-    @apply w-full text-xs font-normal uppercase leading-[14px] text-[#333333];
+    @apply w-full text-xs font-normal uppercase leading-[14px] text-foreground;
   }
 
   .rfq_section
@@ -11700,7 +11700,7 @@ html[dir="rtl"] body * {
     .product_gray_n_box
     &
     a.first_pagination {
-    @apply w-auto rounded-sm border-[#DF2100] px-[15px] py-[5px] font-semibold text-white;
+    @apply w-auto rounded-sm border-primary px-[15px] py-[5px] font-semibold text-white;
     background: #df2100;
   }
 
@@ -11720,7 +11720,7 @@ html[dir="rtl"] body * {
     .product_gray_n_box
     &
     a.last_pagination {
-    @apply w-auto rounded-sm border-[#DF2100] px-[15px] py-[5px] font-semibold text-white;
+    @apply w-auto rounded-sm border-primary px-[15px] py-[5px] font-semibold text-white;
     background: #df2100;
   }
 
@@ -11741,7 +11741,7 @@ html[dir="rtl"] body * {
 
 @utility first_pagination {
   .rfq_section .rfq_main_box .rfq_middle .product_gray_n_box .pagination &a {
-    @apply w-auto rounded-sm border-[#DF2100] px-[15px] py-[5px] font-semibold text-white;
+    @apply w-auto rounded-sm border-primary px-[15px] py-[5px] font-semibold text-white;
     background: #df2100;
   }
 
@@ -11762,7 +11762,7 @@ html[dir="rtl"] body * {
 
 @utility last_pagination {
   .rfq_section .rfq_main_box .rfq_middle .product_gray_n_box .pagination &a {
-    @apply w-auto rounded-sm border-[#DF2100] px-[15px] py-[5px] font-semibold text-white;
+    @apply w-auto rounded-sm border-primary px-[15px] py-[5px] font-semibold text-white;
     background: #df2100;
   }
 
@@ -11795,12 +11795,12 @@ html[dir="rtl"] body * {
   }
 
   .rfq_section .rfq_main_box & .rfq_right_top h4 {
-    @apply mb-0.5 text-base font-normal leading-5 text-[#333333];
+    @apply mb-0.5 text-base font-normal leading-5 text-foreground;
   }
 
   .rfq_section .rfq_main_box & .rfq_right_top button {
     @apply mt-2.5 w-full rounded-sm border-[none] px-[15px] py-2.5 text-base font-bold leading-5 text-white focus:shadow-none;
-    background: #db2302;
+    background: hsl(var(--primary));
   }
 
   .rfq_section .rfq_main_box & .rfq_right_top button:focus {
@@ -11812,7 +11812,7 @@ html[dir="rtl"] body * {
   }
 
   .rfq_section .rfq_main_box & .rfq_right_bottom h4 {
-    @apply mb-[5px] text-base font-normal leading-5 text-[#333333];
+    @apply mb-[5px] text-base font-normal leading-5 text-foreground;
   }
 
   .rfq_section .rfq_main_box & .rfq_right_bottom .rfq_cart_wrap {
@@ -11969,12 +11969,12 @@ html[dir="rtl"] body * {
   }
 
   .rfq_section .rfq_main_box .rfq_right & h4 {
-    @apply mb-0.5 text-base font-normal leading-5 text-[#333333];
+    @apply mb-0.5 text-base font-normal leading-5 text-foreground;
   }
 
   .rfq_section .rfq_main_box .rfq_right & button {
     @apply mt-2.5 w-full rounded-sm border-[none] px-[15px] py-2.5 text-base font-bold leading-5 text-white focus:shadow-none;
-    background: #db2302;
+    background: hsl(var(--primary));
   }
 
   .rfq_section .rfq_main_box .rfq_right & button:focus {
@@ -11992,7 +11992,7 @@ html[dir="rtl"] body * {
   }
 
   .rfq_section .rfq_main_box .rfq_right & h4 {
-    @apply mb-[5px] text-base font-normal leading-5 text-[#333333];
+    @apply mb-[5px] text-base font-normal leading-5 text-foreground;
   }
 
   .rfq_section .rfq_main_box .rfq_right & .rfq_cart_wrap {
@@ -12607,7 +12607,7 @@ html[dir="rtl"] body * {
   }
 
   & .headerPart h3 {
-    @apply m-0 text-3xl font-semibold leading-10 text-[#333333];
+    @apply m-0 text-3xl font-semibold leading-10 text-foreground;
   }
 
   & .bodyPart {
@@ -12620,7 +12620,7 @@ html[dir="rtl"] body * {
   }
 
   & .bodyPart .add-delivery-card h3 {
-    @apply mb-4 text-xl font-normal leading-[25.81px] text-[#333333];
+    @apply mb-4 text-xl font-normal leading-[25.81px] text-foreground;
   }
 
   & .bodyPart .add-delivery-card .input-row {
@@ -12661,7 +12661,7 @@ html[dir="rtl"] body * {
   }
 
   .rfq-cart-wrapper .bodyPart & h3 {
-    @apply mb-4 text-xl font-normal leading-[25.81px] text-[#333333];
+    @apply mb-4 text-xl font-normal leading-[25.81px] text-foreground;
   }
 
   .rfq-cart-wrapper .bodyPart & .input-row {
@@ -12705,7 +12705,7 @@ html[dir="rtl"] body * {
   @apply mx-0 mb-0 mt-6 border-t border-dashed border-t-[#DBDBDB] px-0 pb-0 pt-6;
 
   & h4 {
-    @apply text-[22px] font-normal leading-[25.81px] text-[#333333];
+    @apply text-[22px] font-normal leading-[25.81px] text-foreground;
   }
 
   /* start: responsive */
@@ -12742,7 +12742,7 @@ html[dir="rtl"] body * {
   }
 
   & .rfq-cart-item-li figure figcaption label {
-    @apply mb-2 block text-[11.73px] font-normal leading-[13.76px] text-[#333333];
+    @apply mb-2 block text-[11.73px] font-normal leading-[13.76px] text-foreground;
   }
 
   & .rfq-cart-item-li .qty-with-remove {
@@ -12770,7 +12770,7 @@ html[dir="rtl"] body * {
   }
 
   & .rfq-cart-item-li .price-info h5 {
-    @apply mb-2.5 text-[11.73px] font-normal leading-[13.76px] text-[#333333];
+    @apply mb-2.5 text-[11.73px] font-normal leading-[13.76px] text-foreground;
   }
 
   & .rfq-cart-item-li .price-info p {
@@ -12809,7 +12809,7 @@ html[dir="rtl"] body * {
   }
 
   .rfq-cart-item-ul & figure figcaption label {
-    @apply mb-2 block text-[11.73px] font-normal leading-[13.76px] text-[#333333];
+    @apply mb-2 block text-[11.73px] font-normal leading-[13.76px] text-foreground;
   }
 
   .rfq-cart-item-ul & .qty-with-remove {
@@ -12837,7 +12837,7 @@ html[dir="rtl"] body * {
   }
 
   .rfq-cart-item-ul & .price-info h5 {
-    @apply mb-2.5 text-[11.73px] font-normal leading-[13.76px] text-[#333333];
+    @apply mb-2.5 text-[11.73px] font-normal leading-[13.76px] text-foreground;
   }
 
   .rfq-cart-item-ul & .price-info p {
@@ -12869,7 +12869,7 @@ html[dir="rtl"] body * {
   }
 
   .rfq-cart-item-ul .rfq-cart-item-li & h5 {
-    @apply mb-2.5 text-[11.73px] font-normal leading-[13.76px] text-[#333333];
+    @apply mb-2.5 text-[11.73px] font-normal leading-[13.76px] text-foreground;
   }
 
   .rfq-cart-item-ul .rfq-cart-item-li & p {
@@ -13784,7 +13784,7 @@ html[dir="rtl"] body * {
   }
 
   table & .img-item .img-container span {
-    @apply absolute left-0 top-0 z-2 flex h-full w-full items-center justify-center bg-[#e6e6e680] text-center text-xl font-medium leading-[23.46px] text-[#333333];
+    @apply absolute left-0 top-0 z-2 flex h-full w-full items-center justify-center bg-[#e6e6e680] text-center text-xl font-medium leading-[23.46px] text-foreground;
   }
 
   /* start: responsive */
@@ -13806,7 +13806,7 @@ html[dir="rtl"] body * {
   }
 
   table .td-product-group-images & .img-container span {
-    @apply absolute left-0 top-0 z-2 flex h-full w-full items-center justify-center bg-[#e6e6e680] text-center text-xl font-medium leading-[23.46px] text-[#333333];
+    @apply absolute left-0 top-0 z-2 flex h-full w-full items-center justify-center bg-[#e6e6e680] text-center text-xl font-medium leading-[23.46px] text-foreground;
   }
 
   /* start: responsive */
@@ -13824,7 +13824,7 @@ html[dir="rtl"] body * {
   }
 
   table .td-product-group-images .img-item & span {
-    @apply absolute left-0 top-0 z-2 flex h-full w-full items-center justify-center bg-[#e6e6e680] text-center text-xl font-medium leading-[23.46px] text-[#333333];
+    @apply absolute left-0 top-0 z-2 flex h-full w-full items-center justify-center bg-[#e6e6e680] text-center text-xl font-medium leading-[23.46px] text-foreground;
   }
 
   /* start: responsive */
@@ -14162,7 +14162,7 @@ html[dir="rtl"] body * {
     font-weight: 400;
     line-height: 22px;
     margin-top: 6px;
-    color: #333333;
+    color: hsl(var(--foreground));
   }
 
   & .import-pickup-type-selector-item .select-controller {
@@ -14316,7 +14316,7 @@ html[dir="rtl"] body * {
     font-weight: 400;
     line-height: 22px;
     margin-top: 6px;
-    color: #333333;
+    color: hsl(var(--foreground));
   }
 
   .import-pickup-type-selector-lists & .select-controller {
@@ -14533,7 +14533,7 @@ html[dir="rtl"] body * {
     font-weight: 400;
     line-height: 22px;
     margin-top: 6px;
-    color: #333333;
+    color: hsl(var(--foreground));
   }
 
   .import-pickup-type-selector-lists
@@ -15757,7 +15757,7 @@ html[dir="rtl"] body * {
 
   & h2 {
     font-size: 16px;
-    color: #333;
+    color: hsl(var(--foreground));
     font-weight: 600;
     margin-bottom: 10px;
   }
@@ -16029,8 +16029,8 @@ html[dir="rtl"] body * {
 
     --radius: 0.5rem;
     /* theme colors */
-    --theme-primary-color: #db2302;
-    --theme-secondary-color: #022335;
+    --theme-primary-color: hsl(var(--primary));
+    --theme-secondary-color: hsl(var(--secondary));
     --theme-gray-light: #f3f3f3;
     --theme-gray-dark: #e8e8e8;
     --white-color: #fff;
@@ -16343,7 +16343,7 @@ html[dir="rtl"] body * {
   }
 
   .team_members_heading button {
-    @apply w-auto bg-[#db2302] rounded-sm p-3 text-center text-white capitalize font-semibold flex items-center justify-center;
+    @apply w-auto bg-primary rounded-sm p-3 text-center text-white capitalize font-semibold flex items-center justify-center;
   }
 
   .team_members_table {
@@ -16436,7 +16436,7 @@ html[dir="rtl"] body * {
 }
 
 .bg-dark-orange {
-    background-color: #DB2302 !important;
+    background-color: hsl(var(--primary)) !important;
 }
 
 .text-white {
@@ -16448,7 +16448,7 @@ html[dir="rtl"] body * {
 }
 
 .bg-dark-cyan {
-    background-color: #022335 !important;
+    background-color: hsl(var(--secondary)) !important;
 }
 
 .border-indigo-200 {
@@ -16553,7 +16553,7 @@ html[dir="rtl"] body * {
 }
 
 .bg-dark-cyan {
-    background-color: #022335 !important;
+    background-color: hsl(var(--secondary)) !important;
 }
 
 /* Dropdown menu styles */
@@ -16858,7 +16858,7 @@ html[dir="rtl"] body * {
     .accordion__item
     .accordion__heading
     .accordion__button {
-    @apply w-full bg-[#db2302] rounded-md p-3 text-center text-white capitalize font-medium;
+    @apply w-full bg-primary rounded-md p-3 text-center text-white capitalize font-medium;
   }
 
   .order_accordion .accordion .accordion__item .accordion__panel {

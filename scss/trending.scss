@@ -43,13 +43,13 @@
                         margin-right: 10px;
                         display: flex;
                         a {
-                            color: #DB2302;
+                            color: hsl(var(--primary));
                         }
                     }
                 }
             }
             h3 {
-                color: #333;
+                color: hsl(var(--foreground));
                 font-size: 35px;
                 font-style: normal;
                 font-weight: 400;
@@ -88,7 +88,7 @@
                     a {
                         padding: 10px 20px;
                         border-radius: 2px;
-                        background: #DF2100;
+                        background: hsl(var(--primary));
                         color: #FFF;
                         font-size: 14px;
                         font-style: normal;
@@ -189,7 +189,7 @@
                         line-height: 17px;
                         letter-spacing: 0em;
                         text-align: left;
-                        color: #333333;
+                        color: hsl(var(--foreground));
                     }
 
 
@@ -306,8 +306,8 @@
                                 display: block;
                             }
                             &:checked~.checkmark {
-                                background: #DB2302;
-                                border-color: #DB2302;
+                                background: hsl(var(--primary));
+                                border-color: hsl(var(--primary));
                             }
                         }
                         .checkmark {
@@ -454,8 +454,8 @@
                 }
                 a.first_pagination {
                     width: auto;
-                    background: #DF2100;
-                    border-color: #DF2100;
+                    background: hsl(var(--primary));
+                    border-color: hsl(var(--primary));
                     border-radius: 2px;
                     color: #fff;
                     font-weight: 600;
@@ -466,8 +466,8 @@
                 }
                 a.last_pagination {
                     width: auto;
-                    background: #DF2100;
-                    border-color: #DF2100;
+                    background: hsl(var(--primary));
+                    border-color: hsl(var(--primary));
                     border-radius: 2px;
                     color: #fff;
                     font-weight: 600;

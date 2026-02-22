@@ -135,7 +135,7 @@ export default async function RootLayout({
                     <main id="main-content" className="overflow-x-hidden">
                       <LocaleProvider initialMessages={messages} initialLocale={locale}>
                         <NotificationProvider>
-                          <NextTopLoader color="#DB2302" showSpinner={false} />
+                          <NextTopLoader color="hsl(var(--primary))" showSpinner={false} />
                           <ConditionalLayout locale={locale}>
                             {children}
                           </ConditionalLayout>

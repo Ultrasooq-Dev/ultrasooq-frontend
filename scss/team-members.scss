@@ -18,14 +18,14 @@
             font-size: 35px;
             font-weight: 600;
             line-height: 43px;
-            color: #333333;
+            color: hsl(var(--foreground));
             margin: 0;
             @media only screen and (min-width: 240px) and (max-width: 767px) {
                 font-size: 28px;
             }
         }   
         button {
-            background: #DB2302;
+            background: hsl(var(--primary));
             padding: 14px 22px;
             border-radius: 2px;
             font-size: 16px;
@@ -79,7 +79,7 @@
                         font-size: 14px;
                         font-weight: 500;
                         line-height: 16px;
-                        color: #333333;
+                        color: hsl(var(--foreground));
                         padding: 20px;
                         text-transform: capitalize;
                         position: relative;
@@ -200,8 +200,8 @@
             }
             a.first_pagination {
                 width: auto;
-                background: #DF2100;
-                border-color: #DF2100;
+                background: hsl(var(--primary));
+                border-color: hsl(var(--primary));
                 border-radius: 2px;
                 color: #fff;
                 font-weight: 600;
@@ -212,8 +212,8 @@
             }
             a.last_pagination {
                 width: auto;
-                background: #DF2100;
-                border-color: #DF2100;
+                background: hsl(var(--primary));
+                border-color: hsl(var(--primary));
                 border-radius: 2px;
                 color: #fff;
                 font-weight: 600;

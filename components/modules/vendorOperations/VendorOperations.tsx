@@ -30,7 +30,7 @@ const VendorOperations = () => {
 
         {selectedOperation == "admin_n_support" && selectedProduct ? (
           <div className="w-full border-r border-solid border-gray-300 lg:w-[67%]">
-            <div className="flex min-h-[55px] w-full items-center justify-between border-b border-solid border-gray-300 px-[10px] py-[10px] text-base font-normal text-[#333333]">
+            <div className="flex min-h-[55px] w-full items-center justify-between border-b border-solid border-gray-300 px-[10px] py-[10px] text-base font-normal text-foreground">
               <span>Admin & Support</span>
             </div>
           </div>
@@ -52,7 +52,7 @@ const VendorOperations = () => {
 
         {selectedOperation == "rate_n_review" && selectedProduct ? (
           <div className="w-full border-r border-solid border-gray-300 lg:w-[67%]">
-            <div className="flex min-h-[55px] w-full items-center justify-between border-b border-solid border-gray-300 px-[10px] py-[10px] text-base font-normal text-[#333333]">
+            <div className="flex min-h-[55px] w-full items-center justify-between border-b border-solid border-gray-300 px-[10px] py-[10px] text-base font-normal text-foreground">
               <span>Rate & Review</span>
             </div>
           </div>
@@ -60,7 +60,7 @@ const VendorOperations = () => {
 
         {selectedOperation == "complains" && selectedProduct ? (
           <div className="w-full border-r border-solid border-gray-300 lg:w-[67%]">
-            <div className="flex min-h-[55px] w-full items-center justify-between border-b border-solid border-gray-300 px-[10px] py-[10px] text-base font-normal text-[#333333]">
+            <div className="flex min-h-[55px] w-full items-center justify-between border-b border-solid border-gray-300 px-[10px] py-[10px] text-base font-normal text-foreground">
               <span>Complains</span>
             </div>
           </div>

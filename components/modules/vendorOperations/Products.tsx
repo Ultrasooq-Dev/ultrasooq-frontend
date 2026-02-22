@@ -122,7 +122,7 @@ const Products: React.FC<ProductsProps> = ({ onSelectProduct, onSelectService })
   return (
     <div className="w-full border-r border-solid border-gray-300 lg:w-[18%]">
       <div
-        className="flex h-[55px] min-w-full items-center border-b border-solid border-gray-300 px-[10px] py-[10px] text-base font-normal text-[#333333]"
+        className="flex h-[55px] min-w-full items-center border-b border-solid border-gray-300 px-[10px] py-[10px] text-base font-normal text-foreground"
         dir={langDir}
       >
         <select value={productType} onChange={(e) => {
@@ -180,7 +180,7 @@ const Products: React.FC<ProductsProps> = ({ onSelectProduct, onSelectService })
               </div>
               <div className="flex w-full flex-wrap items-center justify-start gap-y-1 whitespace-pre-wrap break-all xl:w-[calc(100%-2.5rem)] xl:pl-3">
                 <div className="flex w-full">
-                  <h4 className="text-color-[#333333] text-left text-[13px] font-normal uppercase xl:text-[14px]">
+                  <h4 className="text-foreground text-left text-[13px] font-normal uppercase xl:text-[14px]">
                     {item.productPrice_product?.productName}
                   </h4>
                 </div>
@@ -235,7 +235,7 @@ const Products: React.FC<ProductsProps> = ({ onSelectProduct, onSelectService })
               </div>
               <div className="flex w-full flex-wrap items-center justify-start gap-y-1 whitespace-pre-wrap break-all xl:w-[calc(100%-2.5rem)] xl:pl-3">
                 <div className="flex w-full">
-                  <h4 className="text-color-[#333333] text-left text-[13px] font-normal uppercase xl:text-[14px]">
+                  <h4 className="text-foreground text-left text-[13px] font-normal uppercase xl:text-[14px]">
                     {item.serviceName}
                   </h4>
                 </div>

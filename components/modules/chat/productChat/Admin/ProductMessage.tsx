@@ -44,7 +44,7 @@ const ProductMessage: React.FC<ProductMessageProps> = ({
       </div>
       <div className="flex w-[calc(100%-2.5rem)] flex-wrap items-center justify-start gap-y-1 pl-3">
         <div className="flex w-full">
-          <h4 className="text-color-[#333333] text-left text-[15px] font-normal uppercase">
+          <h4 className="text-foreground text-left text-[15px] font-normal uppercase">
             {(() => {
               const accountName = message.user.accountName;
               const cleanAccountName = accountName 

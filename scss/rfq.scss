@@ -109,8 +109,8 @@
                                     display: block;
                                 }
                                 &:checked~.checkmark {
-                                    background: #DB2302;
-                                    border-color: #DB2302;
+                                    background: hsl(var(--primary));
+                                    border-color: hsl(var(--primary));
                                 }
                             }
                             .checkmark {
@@ -220,7 +220,7 @@
                     button {
                         height: 40px;
                         padding: 10px 10px;
-                        background: #DF2100;
+                        background: hsl(var(--primary));
                         font-size: 14px;
                         font-weight: 600;
                         line-height: 20px;
@@ -310,7 +310,7 @@
                                     font-size: 12px;
                                     font-weight: 400;
                                     line-height: 14px;
-                                    color: #333333;
+                                    color: hsl(var(--foreground));
                                     text-transform: uppercase;
                                 }
                                 .quantity {
@@ -385,8 +385,8 @@
                     }
                     a.first_pagination {
                         width: auto;
-                        background: #DF2100;
-                        border-color: #DF2100;
+                        background: hsl(var(--primary));
+                        border-color: hsl(var(--primary));
                         border-radius: 2px;
                         color: #fff;
                         font-weight: 600;
@@ -397,8 +397,8 @@
                     }
                     a.last_pagination {
                         width: auto;
-                        background: #DF2100;
-                        border-color: #DF2100;
+                        background: hsl(var(--primary));
+                        border-color: hsl(var(--primary));
                         border-radius: 2px;
                         color: #fff;
                         font-weight: 600;
@@ -426,12 +426,12 @@
                     font-size: 16px;
                     font-weight: 400;
                     line-height: 20px;
-                    color: #333333;
+                    color: hsl(var(--foreground));
                     margin-bottom: 5px;
                 }
                 button {
                     width: 100%;
-                    background: #DB2302;
+                    background: hsl(var(--primary));
                     padding: 10px 15px;
                     font-size: 16px;
                     font-weight: 700;
@@ -452,7 +452,7 @@
                     font-size: 16px;
                     font-weight: 400;
                     line-height: 20px;
-                    color: #333333;
+                    color: hsl(var(--foreground));
                     margin-bottom: 5px;
                 }
                 .rfq_cart_wrap {

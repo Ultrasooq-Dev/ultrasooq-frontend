@@ -3,7 +3,7 @@
     width: 100%;
     .header_main {
         width: 100%;
-        background: #022335;
+        background: hsl(var(--secondary));
         .header_top {
             @media only screen and (min-width: 240px) and (max-width: 767px) {
                 display: none;
@@ -154,7 +154,7 @@
                             width: 100px;
                             max-width: 100px;
                             height: 100%;
-                            background: #DB2302;
+                            background: hsl(var(--primary));
                             padding: 10px 25px;
                             border-radius: 0;
                             color: #FFF;
@@ -221,7 +221,7 @@
                         display: flex;
                         active {
                             a {
-                                color: #DB2302;
+                                color: hsl(var(--primary));
                             }
                         }
                         a {
@@ -249,7 +249,7 @@
                                 width: 25px;
                                 height: 25px;
                                 border-radius: 50%;
-                                background: #DB2302;
+                                background: hsl(var(--primary));
                                 color: #FFF;
                                 font-size: 12px;
                                 font-style: normal;
@@ -322,7 +322,7 @@
             @media only screen and (min-width: 240px) and (max-width: 767px) {
                 width: 100%;
                 height: 100vh;
-                background: #022335;
+                background: hsl(var(--secondary));
                 position: fixed;
                 top: 0;
                 left: 0;
@@ -389,7 +389,7 @@
                     display: inline-flex;
                     align-items: center;
                     justify-content: flex-start;
-                    color: #333;
+                    color: hsl(var(--foreground));
                     font-size: 18px;
                     font-style: normal;
                     font-weight: 400;
@@ -449,7 +449,7 @@
                                     &:hover {
                                         font-weight: 600;
                                         & > a {
-                                            color: #DB2302;
+                                            color: hsl(var(--primary));
                                         }
                                     }
                                     ul {
@@ -470,10 +470,10 @@
                                             }
                                             &:hover {
                                                 a {
-                                                    color: #DB2302;
+                                                    color: hsl(var(--primary));
                                                     svg {
                                                         path {
-                                                            fill: #DB2302;
+                                                            fill: hsl(var(--primary));
                                                         }
                                                     }
                                                 }
@@ -518,7 +518,7 @@
                         column-gap: 8px;
                     }
                     li {
-                        color: #7B7B7B;
+                        color: hsl(var(--muted-foreground));
                         font-size: 18px;
                         font-style: normal;
                         font-weight: 400;
@@ -532,7 +532,7 @@
                             font-size: 13px;
                         }
                         a {
-                            color: #7B7B7B;
+                            color: hsl(var(--muted-foreground));
                             text-decoration: none;
                         }
                     }
@@ -557,7 +557,7 @@
                 margin-bottom: 30px;
             }
             h3 {
-                color: #333;
+                color: hsl(var(--foreground));
                 font-size: 18px;
                 font-style: normal;
                 font-weight: 600;

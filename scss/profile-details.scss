@@ -13,7 +13,7 @@
             font-size: 35px;
             font-weight: 600;
             line-height: 43px;
-            color: #333333;
+            color: hsl(var(--foreground));
         }
     }
     .profile_details_box {
@@ -95,14 +95,14 @@
                     font-size: 28px;
                     font-weight: 600;
                     line-height: 33px;
-                    color: #333333;
+                    color: hsl(var(--foreground));
                     text-transform: capitalize;
                     @media only screen and (min-width: 240px) and (max-width: 767px) {
                         font-size: 22px;
                     }
                 }
                 button {
-                    background: #DB2302;
+                    background: hsl(var(--primary));
                     padding: 8px 12px;
                     border-radius: 6px;
                     color: #fff;
@@ -133,12 +133,12 @@
                         font-size: 16px;
                         font-weight: 500;
                         line-height: 19px;
-                        color: #333333;
+                        color: hsl(var(--foreground));
                         img {
                             margin-right: 5px;
                         }
                         a {
-                            color: #333333;
+                            color: hsl(var(--foreground));
                         }
                     }
                 }
@@ -152,7 +152,7 @@
                     span {
                         background: #D9D9D9;
                         padding: 10px 16px;
-                        color: #022335;
+                        color: hsl(var(--secondary-foreground));
                         display: inline-block;
                         border-radius: 4px;
                         font-family: Work Sans;
@@ -188,7 +188,7 @@
                             font-size: 16px;
                             font-weight: 500;
                             line-height: 19px;
-                            color: #333333;
+                            color: hsl(var(--foreground));
                             margin-left: 10px;
                         }
                     }
@@ -264,7 +264,7 @@
                 }
                 li.active {
                     a {
-                        background: #DB2302;
+                        background: hsl(var(--primary));
                         color: #fff;
                     }
                 }
@@ -305,14 +305,14 @@
                             font-size: 26px;
                             font-weight: 600;
                             line-height: 33px;
-                            color: #333333;
+                            color: hsl(var(--foreground));
                             text-transform: capitalize;
                             @media only screen and (min-width: 240px) and (max-width: 767px) {
                                 font-size: 22px;
                             }
                         }
                         button {
-                            background: #DB2302;
+                            background: hsl(var(--primary));
                             padding: 8px 12px;
                             border-radius: 6px;
                             color: #fff;
@@ -347,19 +347,19 @@
                                 font-size: 16px;
                                 font-weight: 500;
                                 line-height: 22px;
-                                color: #333333;
+                                color: hsl(var(--foreground));
                                 label {
                                     font-size: 18px;
                                     font-weight: 600;
                                     line-height: 21px;
-                                    color: #333333;
+                                    color: hsl(var(--foreground));
                                     margin-bottom: 15px;
                                 }
                                 p {
                                     margin: 0;
                                     a {
                                         font-weight: 700;
-                                        color: #DB2302;
+                                        color: hsl(var(--primary));
                                     }
                                 }
                                 .tag {
@@ -369,7 +369,7 @@
                                         font-size: 16px;
                                         font-weight: 500;
                                         line-height: 19px;
-                                        color: #022335;
+                                        color: hsl(var(--secondary-foreground));
                                         display: inline-block;
                                         border-radius: 4px;
                                         margin: 0 10px 10px 0;
@@ -407,7 +407,7 @@
                             font-size: 26px;
                             font-weight: 600;
                             line-height: 30px;
-                            color: #333333;
+                            color: hsl(var(--foreground));
                             margin-right: 30px;
                             @media only screen and (min-width: 240px) and (max-width: 767px) {
                                 font-size: 22px;
@@ -422,7 +422,7 @@
                                 line-height: 28px;
                                 margin-right: 10px;
                                 margin-bottom: 0;
-                                color: #333333;
+                                color: hsl(var(--foreground));
                             }
                             span {
                                 margin-right: 5px;
@@ -444,7 +444,7 @@
                     }
                     .review_rating_box_top_right {
                         button {
-                            background: #DB2302;
+                            background: hsl(var(--primary));
                             padding: 12px 22px;
                             border-radius: 2px;
                             color: #fff;
@@ -484,7 +484,7 @@
                             font-size: 14px;
                             font-weight: 500;
                             line-height: 16px;
-                            color: #333333;
+                            color: hsl(var(--foreground));
                             @media only screen and (min-width: 240px) and (max-width: 767px) {
                                 margin-bottom: 8px;
                                 &:nth-child(1) {
@@ -575,7 +575,7 @@
                                             font-size: 18px;
                                             font-weight: 600;
                                             line-height: 21px;
-                                            color: #333333;
+                                            color: hsl(var(--foreground));
                                             margin: 0;
                                         }
                                     }
@@ -617,7 +617,7 @@
                         font-size: 16px;
                         font-weight: 700;
                         line-height: 22px;
-                        color: #DB2302;
+                        color: hsl(var(--primary));
                         display: flex;
                         align-items: center;
                         justify-content: center;
@@ -633,7 +633,7 @@
                                 position: absolute;
                                 width: 5px;
                                 height: 5px;
-                                background: #DB2302;
+                                background: hsl(var(--primary));
                                 border-radius: 50%;
                                 animation: lds-default 1.2s linear infinite;
                                 &:nth-child(1) {
@@ -751,7 +751,7 @@
                                     font-size: 18px;
                                     font-weight: 600;
                                     line-height: 22px;
-                                    color: #333333;
+                                    color: hsl(var(--foreground));
                                     ul {
                                         display: flex;
                                         align-items: center;
