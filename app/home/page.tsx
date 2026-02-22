@@ -578,7 +578,7 @@ function HomePage() {
                       className="text-muted-foreground mb-4 text-2xl font-semibold line-through"
                       translate="no"
                     >
-                      {currency.symbol}332.38
+                      332.38 {currency.symbol}
                     </p>
                     <p className="text-foreground mb-2 text-base font-bold">
                       {t("special_price")}
@@ -587,7 +587,7 @@ function HomePage() {
                       className="text-info mb-8 text-5xl font-bold sm:text-6xl lg:text-7xl"
                       translate="no"
                     >
-                      {currency.symbol}219.05
+                      219.05 {currency.symbol}
                     </h4>
                   </div>
                   <a
