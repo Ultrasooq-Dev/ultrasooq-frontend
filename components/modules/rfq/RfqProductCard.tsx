@@ -291,7 +291,7 @@ const RfqProductCard: React.FC<RfqProductCardProps> = ({
           ) : (
             <button
               type="button"
-              className="w-full bg-linear-to-r from-warning to-warning/90 hover:from-warning hover:to-warning/80 text-white font-semibold py-1.5 sm:py-2 px-2 sm:px-4 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-md disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-xs sm:text-sm"
+              className="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-1.5 sm:py-2 px-2 sm:px-4 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-md disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-xs sm:text-sm"
               onClick={() => onAdd(quantity || 1, id, "add", offerPriceFrom, offerPriceTo, productNote || "")}
               disabled={quantity == 0}
               dir={langDir}

@@ -1004,7 +1004,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                 {/* All Categories Icon Button - First in Arabic */}
                 <button
                   type="button"
-                  className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-r from-warning to-warning/90 text-white shadow-lg transition-all hover:from-warning hover:to-warning/80 active:scale-95 sm:h-10 sm:w-10 md:hidden"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-white shadow-lg transition-all hover:bg-primary/90 active:scale-95 sm:h-10 sm:w-10 md:hidden"
                   aria-label="Browse categories"
                   onClick={() => {
                     // On mobile, open the category sidebar
@@ -1020,7 +1020,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                 {/* Search Icon Button - Second in Arabic */}
                 <button
                   type="button"
-                  className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-r from-warning to-warning/90 text-white shadow-lg transition-all hover:from-warning hover:to-warning/80 active:scale-95 sm:h-10 sm:w-10"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-white shadow-lg transition-all hover:bg-primary/90 active:scale-95 sm:h-10 sm:w-10"
                   aria-label="Search"
                   onClick={() => updateURL(searchTerm)}
                 >
@@ -1032,7 +1032,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                 {/* Search Icon Button - First in English */}
                 <button
                   type="button"
-                  className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-r from-warning to-warning/90 text-white shadow-lg transition-all hover:from-warning hover:to-warning/80 active:scale-95 sm:h-10 sm:w-10"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-white shadow-lg transition-all hover:bg-primary/90 active:scale-95 sm:h-10 sm:w-10"
                   aria-label="Search"
                   onClick={() => updateURL(searchTerm)}
                 >
@@ -1041,7 +1041,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                 {/* All Categories Icon Button - Second in English */}
                 <button
                   type="button"
-                  className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-r from-warning to-warning/90 text-white shadow-lg transition-all hover:from-warning hover:to-warning/80 active:scale-95 sm:h-10 sm:w-10 md:hidden"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-white shadow-lg transition-all hover:bg-primary/90 active:scale-95 sm:h-10 sm:w-10 md:hidden"
                   aria-label="Browse categories"
                   onClick={() => {
                     // On mobile, open the category sidebar
@@ -1362,7 +1362,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                     {/* Search button - first in Arabic */}
                     <button
                       type="button"
-                      className="h-9 rounded-lg bg-gradient-to-r from-warning to-warning/90 px-4 text-sm font-semibold whitespace-nowrap text-white shadow-lg transition-all hover:from-warning hover:to-warning/80 active:scale-95 md:h-10 md:px-6 md:text-base lg:px-8"
+                      className="h-9 rounded-lg bg-primary px-4 text-sm font-semibold whitespace-nowrap text-white shadow-lg transition-all hover:bg-primary/90 active:scale-95 md:h-10 md:px-6 md:text-base lg:px-8"
                       onClick={() => updateURL(searchTerm)}
                       dir={langDir}
                       translate="no"
@@ -1415,7 +1415,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                     {mounted && (
                       <button
                         type="button"
-                        className="group relative hidden cursor-pointer items-center gap-2 rounded-lg bg-gradient-to-r from-warning to-warning/90 px-3 transition-all hover:from-warning hover:to-warning/80 active:scale-95 md:flex md:h-10 md:px-4"
+                        className="group relative hidden cursor-pointer items-center gap-2 rounded-lg bg-primary px-3 transition-all hover:bg-primary/90 active:scale-95 md:flex md:h-10 md:px-4"
                         aria-label="Browse categories"
                         onClick={() => {
                           const newState = !isCategorySidebarOpen;
@@ -1440,7 +1440,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                       </button>
                     )}
                     {!mounted && (
-                      <div className="group relative hidden h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-r from-warning to-warning/90 transition-all hover:from-warning hover:to-warning/80 active:scale-95 md:flex md:h-10 md:w-10">
+                      <div className="group relative hidden h-9 w-9 items-center justify-center rounded-lg bg-primary transition-all hover:bg-primary/90 active:scale-95 md:flex md:h-10 md:w-10">
                         <LayoutGrid className="h-6 w-6 text-white" />
                       </div>
                     )}
@@ -1451,7 +1451,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                     {mounted && (
                       <button
                         type="button"
-                        className="group relative hidden cursor-pointer items-center gap-2 rounded-lg bg-gradient-to-r from-warning to-warning/90 px-3 transition-all hover:from-warning hover:to-warning/80 active:scale-95 md:flex md:h-10 md:px-4"
+                        className="group relative hidden cursor-pointer items-center gap-2 rounded-lg bg-primary px-3 transition-all hover:bg-primary/90 active:scale-95 md:flex md:h-10 md:px-4"
                         aria-label="Browse categories"
                         onClick={() => {
                           const newState = !isCategorySidebarOpen;
@@ -1476,7 +1476,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                       </button>
                     )}
                     {!mounted && (
-                      <div className="group relative hidden h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-r from-warning to-warning/90 transition-all hover:from-warning hover:to-warning/80 active:scale-95 md:flex md:h-10 md:w-10">
+                      <div className="group relative hidden h-9 w-9 items-center justify-center rounded-lg bg-primary transition-all hover:bg-primary/90 active:scale-95 md:flex md:h-10 md:w-10">
                         <LayoutGrid className="h-6 w-6 text-white" />
                       </div>
                     )}
@@ -1525,7 +1525,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                     {/* Search button - last in English */}
                     <button
                       type="button"
-                      className="h-9 rounded-lg bg-gradient-to-r from-warning to-warning/90 px-4 text-sm font-semibold whitespace-nowrap text-white shadow-lg transition-all hover:from-warning hover:to-warning/80 active:scale-95 md:h-10 md:px-6 md:text-base lg:px-8"
+                      className="h-9 rounded-lg bg-primary px-4 text-sm font-semibold whitespace-nowrap text-white shadow-lg transition-all hover:bg-primary/90 active:scale-95 md:h-10 md:px-6 md:text-base lg:px-8"
                       onClick={() => updateURL(searchTerm)}
                       dir={langDir}
                       translate="no"

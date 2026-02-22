@@ -100,7 +100,7 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({
         {hasAccessToken && !isCreator && !reviewExists && (
           <Button
             onClick={handleToggleReviewModal}
-            className="rounded-lg bg-gradient-to-r from-warning to-warning/90 px-6 py-3 text-sm font-semibold text-white shadow-md transition-all hover:from-warning hover:to-warning/80 hover:shadow-lg"
+            className="rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-white shadow-md transition-all hover:bg-primary/90 hover:shadow-lg"
             dir={langDir}
             translate="no"
           >

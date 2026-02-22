@@ -227,7 +227,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ onClose, reviewId }) => {
             <Button
               disabled={addReview.isPending || updateReview.isPending}
               type="submit"
-              className="flex-1 rounded-lg bg-gradient-to-r from-warning to-warning/90 text-base font-semibold text-white shadow-md transition-all hover:from-warning hover:to-warning/80 hover:shadow-lg"
+              className="flex-1 rounded-lg bg-primary text-base font-semibold text-white shadow-md transition-all hover:bg-primary/90 hover:shadow-lg"
             >
               {addReview.isPending || updateReview.isPending ? (
                 <>

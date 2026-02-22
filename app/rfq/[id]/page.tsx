@@ -378,7 +378,7 @@ const ProductDetailsPage = () => {
                     <Button
                       type="button"
                       onClick={() => router.push(`/seller-rfq-request?product_id=${productDetails?.id}`)}
-                      className="flex-1 rounded-lg bg-gradient-to-r from-warning to-warning/90 py-3 text-base font-medium text-white shadow-lg transition-all hover:from-warning hover:to-warning/80 hover:shadow-xl active:scale-95"
+                      className="flex-1 rounded-lg bg-primary py-3 text-base font-medium text-white shadow-lg transition-all hover:bg-primary/90 hover:shadow-xl active:scale-95"
                       dir={langDir}
                       translate="no"
                     >
@@ -399,7 +399,7 @@ const ProductDetailsPage = () => {
                         );
                       }}
                       disabled={cartList?.find((item: any) => item.productId == productDetails?.id)}
-                      className="flex-1 rounded-lg bg-gradient-to-r from-success to-success/90 py-3 text-base font-medium text-white shadow-lg transition-all hover:from-success hover:to-success/80 hover:shadow-xl active:scale-95 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="flex-1 rounded-lg bg-gradient-to-r from-success to-success/90 py-3 text-base font-medium text-white shadow-lg transition-all hover:from-success hover:to-success/80 hover:shadow-xl active:scale-95 disabled:bg-muted-foreground disabled:cursor-not-allowed disabled:opacity-50"
                       translate="no"
                     >
                       {cartList?.find((item: any) => item.productId == productDetails?.id) 

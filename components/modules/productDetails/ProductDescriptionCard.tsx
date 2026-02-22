@@ -794,7 +794,7 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
             <Button
               onClick={onBuyNow || (() => onAdd(quantity || 1, "add"))}
               disabled={quantity === 0}
-              className="w-full rounded-lg bg-gradient-to-r from-warning to-warning/90 py-3 text-base font-medium text-white shadow-lg transition-all hover:from-warning hover:to-warning/80 hover:shadow-xl active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:from-gray-400 disabled:to-gray-400"
+              className="w-full rounded-lg bg-primary py-3 text-base font-medium text-white shadow-lg transition-all hover:bg-primary/90 hover:shadow-xl active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-muted-foreground"
               dir={langDir}
               translate="no"
             >
