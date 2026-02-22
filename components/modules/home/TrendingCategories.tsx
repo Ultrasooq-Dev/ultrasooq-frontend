@@ -232,13 +232,13 @@ const TrendingCategories: React.FC<TrendingCategoriesProps> = ({
                   <h3 className="text-base font-bold mb-2 drop-shadow-lg text-white group-hover:scale-105 transition-transform duration-300" data-dynamic="true">
                     {category.name}
                   </h3>
-                  <p className="text-xs text-muted-foreground mb-3 drop-shadow-sm" translate="no">
+                  <p className="text-xs text-white/70 mb-3 drop-shadow-sm" translate="no">
                     {category.children?.length || 0} {t("subcategories")}
                   </p>
-                  
+
                   {category.children && category.children.length > 0 && (
                     <div className="flex justify-center">
-                      <div className="rounded-full p-1.5 bg-card/20 text-white backdrop-blur-sm group-hover:bg-card/30 transition-colors">
+                      <div className="rounded-full p-1.5 bg-white/20 text-white backdrop-blur-sm group-hover:bg-white/30 transition-colors">
                         {expandedMainCategory === category.id ? (
                           <ChevronDown className="h-4 w-4" />
                         ) : (
@@ -300,13 +300,13 @@ const TrendingCategories: React.FC<TrendingCategoriesProps> = ({
                     <h3 className="text-xs sm:text-sm font-bold mb-1 sm:mb-2 drop-shadow-lg text-white line-clamp-2" data-dynamic="true">
                       {category.name}
                     </h3>
-                    <p className="text-[10px] sm:text-xs text-muted-foreground mb-2 drop-shadow-sm" translate="no">
+                    <p className="text-[10px] sm:text-xs text-white/70 mb-2 drop-shadow-sm" translate="no">
                       {category.children?.length || 0} {t("subcategories")}
                     </p>
-                    
+
                     {category.children && category.children.length > 0 && (
                       <div className="flex justify-center">
-                        <div className="rounded-full p-1 bg-card/20 text-white backdrop-blur-sm">
+                        <div className="rounded-full p-1 bg-white/20 text-white backdrop-blur-sm">
                           {expandedMainCategory === category.id ? (
                             <ChevronDown className="h-3 w-3" />
                           ) : (
@@ -375,7 +375,7 @@ const TrendingCategories: React.FC<TrendingCategoriesProps> = ({
                     
                     {subCategory.children && subCategory.children.length > 0 && (
                       <div className="flex justify-center">
-                        <div className="rounded-full p-1 bg-card/20 text-white backdrop-blur-sm group-hover:bg-card/30 transition-colors">
+                        <div className="rounded-full p-1 bg-white/20 text-white backdrop-blur-sm group-hover:bg-white/30 transition-colors">
                           {expandedSubCategory === subCategory.id ? (
                             <ChevronDown className="h-3 w-3" />
                           ) : (
@@ -423,7 +423,7 @@ const TrendingCategories: React.FC<TrendingCategoriesProps> = ({
                       
                       {subCategory.children && subCategory.children.length > 0 && (
                         <div className="flex justify-center">
-                          <div className="rounded-full p-0.5 bg-card/20 text-white backdrop-blur-sm">
+                          <div className="rounded-full p-0.5 bg-white/20 text-white backdrop-blur-sm">
                             {expandedSubCategory === subCategory.id ? (
                               <ChevronDown className="h-2.5 w-2.5" />
                             ) : (

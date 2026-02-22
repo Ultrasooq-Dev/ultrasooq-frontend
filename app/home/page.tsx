@@ -390,7 +390,7 @@ function HomePage() {
       <HeroBanner />
 
       {/* Categories Section */}
-      <section className="bg-card w-full px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+      <section className="bg-muted/50 w-full px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
         <div className="mx-auto w-full max-w-[1400px]">
           <div className="mb-8 sm:mb-12">
             <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-6">
@@ -410,7 +410,7 @@ function HomePage() {
               </div>
               <Link
                 href="/trending"
-                className="group border-foreground bg-foreground text-background inline-flex items-center gap-2 rounded-xl border px-6 py-3.5 text-sm font-semibold sm:px-8 sm:py-4 sm:text-base"
+                className="group border-primary bg-primary inline-flex items-center gap-2 rounded-xl border px-6 py-3.5 text-sm font-semibold text-white hover:bg-primary/90 transition-colors sm:px-8 sm:py-4 sm:text-base"
                 translate="no"
               >
                 <TrendingUp className="h-5 w-5" />
