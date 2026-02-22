@@ -16,14 +16,20 @@ html[dir="rtl"] body * {
 }
 
 @theme {
-  --color-dark-orange: hsl(var(--primary));
-  --color-dark-cyan: hsl(var(--secondary));
-  --color-light-gray: hsl(var(--muted-foreground));
-  --color-olive-green: hsl(var(--accent));
-  --color-color-dark: hsl(var(--foreground));
-  --color-color-blue: hsl(var(--ring));
-  --color-color-yellow: hsl(var(--chart-4));
-  --color-light-green: hsl(var(--chart-2));
+  --color-dark-orange: var(--primary);
+  --color-dark-cyan: var(--brand-dark);
+  --color-light-gray: var(--muted-foreground);
+  --color-olive-green: var(--brand-olive);
+  --color-color-dark: var(--foreground);
+  --color-color-blue: var(--brand-info);
+  --color-color-yellow: var(--brand-warning);
+  --color-light-green: var(--brand-success);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-dark-fg: var(--brand-dark-fg);
+  --color-brand-success: var(--brand-success);
+  --color-brand-warning: var(--brand-warning);
+  --color-brand-info: var(--brand-info);
+  --color-brand-olive: var(--brand-olive);
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
@@ -1132,7 +1138,7 @@ html[dir="rtl"] body * {
   }
 
   & h4 {
-    @apply text-lg font-semibold leading-6 text-accent;
+    @apply text-lg font-semibold leading-6 text-brand-olive;
   }
 
   & .discount_text {
@@ -4164,7 +4170,7 @@ html[dir="rtl"] body * {
   }
 
   .my-order-lists .my-order-box .center-price-info &h4 {
-    @apply text-accent;
+    @apply text-brand-olive;
   }
 
   /* start: responsive */
@@ -6445,7 +6451,7 @@ html[dir="rtl"] body * {
   }
 
   & .my-order-box .center-price-info h4.success {
-    @apply text-accent;
+    @apply text-brand-olive;
   }
 
   & .my-order-box .right-info {
@@ -6629,7 +6635,7 @@ html[dir="rtl"] body * {
   }
 
   .my-order-lists & .center-price-info h4.success {
-    @apply text-accent;
+    @apply text-brand-olive;
   }
 
   .my-order-lists & .right-info {
@@ -6698,7 +6704,7 @@ html[dir="rtl"] body * {
   }
 
   .my-order-lists .my-order-box & h4.success {
-    @apply text-accent;
+    @apply text-brand-olive;
   }
 
   /* start: responsive */
@@ -16030,7 +16036,7 @@ html[dir="rtl"] body * {
     --radius: 0.5rem;
     /* theme colors */
     --theme-primary-color: hsl(var(--primary));
-    --theme-secondary-color: hsl(var(--secondary));
+    --theme-secondary-color: var(--brand-dark);
     --theme-gray-light: #f3f3f3;
     --theme-gray-dark: #e8e8e8;
     --white-color: #fff;
@@ -16448,7 +16454,7 @@ html[dir="rtl"] body * {
 }
 
 .bg-dark-cyan {
-    background-color: hsl(var(--secondary)) !important;
+    background-color: var(--brand-dark) !important;
 }
 
 .border-indigo-200 {
@@ -16553,7 +16559,7 @@ html[dir="rtl"] body * {
 }
 
 .bg-dark-cyan {
-    background-color: hsl(var(--secondary)) !important;
+    background-color: var(--brand-dark) !important;
 }
 
 /* Dropdown menu styles */
@@ -17577,6 +17583,14 @@ html[dir="rtl"] body * {
   --sidebar-accent-foreground: oklch(0.969 0.015 12.422);
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.705 0.015 286.067);
+
+  /* Brand semantic colors — e-commerce specific */
+  --brand-dark: oklch(0.21 0.006 285.885);       /* zinc-900: dark backgrounds (header, sidebar) */
+  --brand-dark-fg: oklch(0.985 0 0);              /* white text on dark bg */
+  --brand-success: oklch(0.72 0.17 142);          /* green: completed, active */
+  --brand-warning: oklch(0.80 0.15 85);           /* amber: pending, caution */
+  --brand-info: oklch(0.62 0.14 250);             /* blue: info, links */
+  --brand-olive: oklch(0.62 0.15 130);            /* olive-green: special accents */
 }
 /*
   ---break---
