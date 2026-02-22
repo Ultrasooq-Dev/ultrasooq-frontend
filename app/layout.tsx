@@ -20,6 +20,7 @@ import { cookies } from "next/headers";
 import NextTopLoader from "nextjs-toploader";
 import { Geist, Noto_Sans_Arabic } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 const notoArabic = Noto_Sans_Arabic({ subsets: ["arabic"], variable: "--font-sans-arabic" });
@@ -110,8 +111,9 @@ export default async function RootLayout({
 
   return (
     <SessionWrapper>
-      <html lang={locale} dir={langDir} className={cn("h-full overflow-x-hidden", geist.variable, notoArabic.variable)}>
+      <html lang={locale} dir={langDir} className={cn("h-full overflow-x-hidden", geist.variable, notoArabic.variable)} suppressHydrationWarning>
         <body className={cn(langDir === "rtl" ? "font-arabic" : inter.className, "h-full overflow-x-hidden")}>
+          <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <DirectionProvider dir={langDir as "ltr" | "rtl"}>
             <a
               href="#main-content"
@@ -148,6 +150,7 @@ export default async function RootLayout({
               </AuthProvider>
             </ReactQueryProvider>
           </DirectionProvider>
+          </ThemeProvider>
         </body>
       </html>
     </SessionWrapper>

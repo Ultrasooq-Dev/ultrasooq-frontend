@@ -64,6 +64,7 @@ import { IoCloseOutline } from "react-icons/io5";
 import { MdOutlineImageNotSupported } from "react-icons/md";
 import { useClickOutside } from "use-events";
 import SearchAutocomplete from "@/components/modules/search/SearchAutocomplete";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 type CategoryProps = {
   id: number;
@@ -664,6 +665,9 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
             <div className="flex items-center gap-2 sm:gap-3">
               {/* Notifications */}
               {isLoggedIn && <NotificationBell />}
+
+              {/* Dark/Light Mode Toggle */}
+              <ThemeToggle />
 
               {/* Wishlist */}
               <Link
@@ -1550,6 +1554,9 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                       <NotificationBell />
                     </li>
                   ) : null}
+                  <li className="flex items-center">
+                    <ThemeToggle />
+                  </li>
                   <li className="relative">
                     <Link
                       href="/wishlist"
