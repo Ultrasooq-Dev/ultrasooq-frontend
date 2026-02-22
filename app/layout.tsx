@@ -3,6 +3,7 @@ import "@/app/ui/global.css";
 import "@/scss/main.scss";
 import SessionWrapper from "@/components/SessionWrapper";
 import { Toaster } from "@/components/ui/toaster";
+import { DirectionProvider } from "@/components/ui/direction";
 import { AuthProvider } from "@/context/AuthContext";
 import { SidebarProvider } from "@/context/SidebarContext";
 import { SocketProvider } from "@/context/SocketContext";
@@ -15,9 +16,13 @@ import { getUserLocale } from "@/src/services/locale";
 import { PUREMOON_TOKEN_KEY, LANGUAGES } from "@/utils/constants";
 import axios from "axios";
 import { Metadata } from "next";
-import { NextIntlClientProvider } from "next-intl";
 import { cookies } from "next/headers";
 import NextTopLoader from "nextjs-toploader";
+import { Geist, Noto_Sans_Arabic } from "next/font/google";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
+const notoArabic = Noto_Sans_Arabic({ subsets: ["arabic"], variable: "--font-sans-arabic" });
 
 export const metadata: Metadata = {
   title: {
@@ -105,42 +110,44 @@ export default async function RootLayout({
 
   return (
     <SessionWrapper>
-      <html lang={locale} dir={langDir} className="h-full overflow-x-hidden">
+      <html lang={locale} dir={langDir} className={cn("h-full overflow-x-hidden", geist.variable, notoArabic.variable)}>
         <body className={`${inter.className} h-full overflow-x-hidden`}>
-          <a
-            href="#main-content"
-            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded"
-          >
-            Skip to main content
-          </a>
-          {/* <DisableRouteAnnouncer /> */}
-          <ReactQueryProvider>
-            <AuthProvider
-              user={userObject}
-              permissions={[
-                ...(permissions?.data?.userRoleDetail?.userRolePermission ||
-                  []),
-              ]}
-              locale={locale}
+          <DirectionProvider dir={langDir as "ltr" | "rtl"}>
+            <a
+              href="#main-content"
+              className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded"
             >
-              <SocketProvider>
-                <SidebarProvider>
-                  <TitleProtection />
-                  <main id="main-content" className="overflow-x-hidden">
-                    <LocaleProvider messages={messages} initialLocale={locale}>
-                      <NotificationProvider>
-                        <NextTopLoader color="#DB2302" showSpinner={false} />
-                        <ConditionalLayout locale={locale}>
-                          {children}
-                        </ConditionalLayout>
-                        <Toaster />
-                      </NotificationProvider>
-                    </LocaleProvider>
-                  </main>
-                </SidebarProvider>
-              </SocketProvider>
-            </AuthProvider>
-          </ReactQueryProvider>
+              Skip to main content
+            </a>
+            {/* <DisableRouteAnnouncer /> */}
+            <ReactQueryProvider>
+              <AuthProvider
+                user={userObject}
+                permissions={[
+                  ...(permissions?.data?.userRoleDetail?.userRolePermission ||
+                    []),
+                ]}
+                locale={locale}
+              >
+                <SocketProvider>
+                  <SidebarProvider>
+                    <TitleProtection />
+                    <main id="main-content" className="overflow-x-hidden">
+                      <LocaleProvider initialMessages={messages} initialLocale={locale}>
+                        <NotificationProvider>
+                          <NextTopLoader color="#DB2302" showSpinner={false} />
+                          <ConditionalLayout locale={locale}>
+                            {children}
+                          </ConditionalLayout>
+                          <Toaster />
+                        </NotificationProvider>
+                      </LocaleProvider>
+                    </main>
+                  </SidebarProvider>
+                </SocketProvider>
+              </AuthProvider>
+            </ReactQueryProvider>
+          </DirectionProvider>
         </body>
       </html>
     </SessionWrapper>
