@@ -1,52 +1,36 @@
 "use client";
-import DealsCard from "@/components/modules/home/DealsCard";
-import ProductCardHome from "@/components/modules/home/ProductCard";
-import TrendingCard from "@/components/modules/home/TrendingCard";
-import TrendingOptionCard from "@/components/modules/home/TrendingOptionCard";
-import TrendingCategories from "@/components/modules/home/TrendingCategories";
-import ProductCard from "@/components/modules/trending/ProductCard";
-import Footer from "@/components/shared/Footer";
-import {
-  bestSellerList,
-  camerasVideosList,
-  computerTechnologyList,
-  dealsList,
-  homeElectronicsList,
-  trendingList,
-  trendingTopicList,
-} from "@/utils/dummyDatas";
-import Image from "next/image";
-import { v4 as uuidv4 } from "uuid";
-import HeadphoneImage from "@/public/images/big-headphone.png";
-import HeroBanner from "@/components/modules/home/HeroBanner";
-import { useAuth } from "@/context/AuthContext";
-import { useTranslations } from "next-intl";
-import Link from "next/link";
-import {
-  useAllBuyGroupProducts,
-  useAllProducts,
-} from "@/apis/queries/product.queries";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useMe } from "@/apis/queries/user.queries";
-import { TrendingProduct } from "@/utils/types/common.types";
-import { toast } from "@/components/ui/use-toast";
-import { useQueryClient } from "@tanstack/react-query";
-import {
-  useAddToWishList,
-  useDeleteFromWishList,
-} from "@/apis/queries/wishlist.queries";
-import { getCookie } from "cookies-next";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
 import {
   useCartListByDevice,
   useCartListByUserId,
 } from "@/apis/queries/cart.queries";
-import { getOrCreateDeviceId } from "@/utils/helper";
-import { useCategoryStore } from "@/lib/categoryStore";
-import { useRouter } from "next/navigation";
 import { useCategory } from "@/apis/queries/category.queries";
-import { TrendingUp, ArrowRight } from "lucide-react";
+import {
+  useAllBuyGroupProducts,
+  useAllProducts,
+} from "@/apis/queries/product.queries";
+import { useMe } from "@/apis/queries/user.queries";
+import {
+  useAddToWishList,
+  useDeleteFromWishList,
+} from "@/apis/queries/wishlist.queries";
+import HeroBanner from "@/components/modules/home/HeroBanner";
+import TrendingCategories from "@/components/modules/home/TrendingCategories";
 import CategorySidebar from "@/components/modules/trending/CategorySidebar";
+import ProductCard from "@/components/modules/trending/ProductCard";
+import Footer from "@/components/shared/Footer";
+import { toast } from "@/components/ui/use-toast";
+import { useAuth } from "@/context/AuthContext";
+import { useCategoryStore } from "@/lib/categoryStore";
+import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { getOrCreateDeviceId } from "@/utils/helper";
+import { TrendingProduct } from "@/utils/types/common.types";
+import { useQueryClient } from "@tanstack/react-query";
+import { getCookie } from "cookies-next";
+import { ArrowRight, TrendingUp } from "lucide-react";
+import { useTranslations } from "next-intl";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useMemo, useState } from "react";
 // import { Metadata } from "next";
 
 // export const metadata: Metadata = {
@@ -406,19 +390,19 @@ function HomePage() {
       <HeroBanner />
 
       {/* Categories Section */}
-      <section className="w-full bg-card px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+      <section className="bg-card w-full px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
         <div className="mx-auto w-full max-w-[1400px]">
-          <div className="mb-8 sm:mb-12" dir="ltr">
+          <div className="mb-8 sm:mb-12">
             <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-6">
               <div className="flex-1">
                 <h2
-                  className="mb-3 text-2xl font-bold text-foreground sm:text-3xl lg:text-4xl"
+                  className="text-foreground mb-3 text-2xl font-bold sm:text-3xl lg:text-4xl"
                   translate="no"
                 >
                   {t("explore_categories")}
                 </h2>
                 <p
-                  className="max-w-2xl text-sm text-muted-foreground sm:text-base"
+                  className="text-muted-foreground max-w-2xl text-sm sm:text-base"
                   translate="no"
                 >
                   {t("browse_categories_to_find_trending_products")}
@@ -426,7 +410,7 @@ function HomePage() {
               </div>
               <Link
                 href="/trending"
-                className="group inline-flex items-center gap-2 rounded-xl border border-foreground bg-foreground px-6 py-3.5 text-sm font-semibold text-background sm:px-8 sm:py-4 sm:text-base"
+                className="group border-foreground bg-foreground text-background inline-flex items-center gap-2 rounded-xl border px-6 py-3.5 text-sm font-semibold sm:px-8 sm:py-4 sm:text-base"
                 translate="no"
               >
                 <TrendingUp className="h-5 w-5" />
@@ -445,19 +429,19 @@ function HomePage() {
       </section>
 
       {memoizedBuyGroupProducts?.length > 0 ? (
-        <section className="w-full bg-gradient-to-b from-warning/5 to-card px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+        <section className="from-warning/5 to-card w-full bg-gradient-to-b px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
           <div className="mx-auto w-full max-w-[1400px]">
             <div className="mb-8 sm:mb-12">
               <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-6">
                 <div className="flex-1">
                   <h2
-                    className="mb-3 text-2xl font-bold text-foreground sm:text-3xl lg:text-4xl"
+                    className="text-foreground mb-3 text-2xl font-bold sm:text-3xl lg:text-4xl"
                     translate="no"
                   >
                     {t("deal_of_the_day")}
                   </h2>
                   <p
-                    className="max-w-2xl text-sm text-muted-foreground sm:text-base"
+                    className="text-muted-foreground max-w-2xl text-sm sm:text-base"
                     translate="no"
                   >
                     {t("explore_all_best_deals_for_limited_time")}
@@ -465,7 +449,7 @@ function HomePage() {
                 </div>
                 <Link
                   href="/buygroup"
-                  className="group inline-flex items-center gap-2 rounded-xl border border-warning bg-warning px-6 py-3.5 text-sm font-semibold text-white sm:px-8 sm:py-4 sm:text-base"
+                  className="group border-warning bg-warning inline-flex items-center gap-2 rounded-xl border px-6 py-3.5 text-sm font-semibold text-white sm:px-8 sm:py-4 sm:text-base"
                   translate="no"
                 >
                   {t("view_all")}
@@ -562,16 +546,16 @@ function HomePage() {
       </section> */}
 
       {/* Promotional Section */}
-      <section className="w-full bg-muted px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+      <section className="bg-muted w-full px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
         <div className="mx-auto w-full max-w-[1400px]">
-          <div className="relative overflow-hidden rounded-3xl border border-info bg-info">
+          <div className="border-info bg-info relative overflow-hidden rounded-3xl border">
             <div className="absolute inset-0 bg-black/5" />
 
             <div className="relative grid grid-cols-1 items-center gap-8 p-8 sm:p-12 md:grid-cols-12 lg:p-16">
               {/* Text Content */}
               <div className="z-10 md:col-span-6 lg:col-span-6">
                 <div className="space-y-5 sm:space-y-7" dir={langDir}>
-                  <span className="inline-block rounded-full bg-card px-5 py-2 text-xs font-bold tracking-wide text-info sm:text-sm">
+                  <span className="bg-card text-info inline-block rounded-full px-5 py-2 text-xs font-bold tracking-wide sm:text-sm">
                     {t("special_offer")}
                   </span>
                   <h3 className="text-3xl leading-tight font-bold text-white sm:text-4xl lg:text-5xl xl:text-6xl">
@@ -585,22 +569,22 @@ function HomePage() {
 
               {/* Price & CTA Section */}
               <div className="z-10 md:col-span-6 lg:col-span-6" dir={langDir}>
-                <div className="rounded-3xl bg-card p-8 sm:p-10">
+                <div className="bg-card rounded-3xl p-8 sm:p-10">
                   <div className="mb-6">
-                    <p className="mb-2 text-sm font-medium text-muted-foreground">
+                    <p className="text-muted-foreground mb-2 text-sm font-medium">
                       {t("original_price")}
                     </p>
                     <p
-                      className="mb-4 text-2xl font-semibold text-muted-foreground line-through"
+                      className="text-muted-foreground mb-4 text-2xl font-semibold line-through"
                       translate="no"
                     >
                       {currency.symbol}332.38
                     </p>
-                    <p className="mb-2 text-base font-bold text-foreground">
+                    <p className="text-foreground mb-2 text-base font-bold">
                       {t("special_price")}
                     </p>
                     <h4
-                      className="mb-8 text-5xl font-bold text-info sm:text-6xl lg:text-7xl"
+                      className="text-info mb-8 text-5xl font-bold sm:text-6xl lg:text-7xl"
                       translate="no"
                     >
                       {currency.symbol}219.05
@@ -608,14 +592,14 @@ function HomePage() {
                   </div>
                   <a
                     href="#"
-                    className="inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-info px-8 py-5 text-base font-bold text-white sm:text-lg"
+                    className="bg-info inline-flex w-full items-center justify-center gap-3 rounded-2xl px-8 py-5 text-base font-bold text-white sm:text-lg"
                   >
                     {t("shop_now")}
                     <ArrowRight className="h-5 w-5" />
                   </a>
-                  <div className="mt-6 flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                  <div className="text-muted-foreground mt-6 flex items-center justify-center gap-2 text-sm">
                     <svg
-                      className="h-5 w-5 text-success"
+                      className="text-success h-5 w-5"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -635,13 +619,13 @@ function HomePage() {
       </section>
 
       {memoizedHomeDecorProducts?.length > 0 ? (
-        <section className="w-full bg-card px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+        <section className="bg-card w-full px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
           <div className="mx-auto w-full max-w-[1400px]">
             <div className="mb-8 sm:mb-12">
               <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-6">
                 <div className="flex-1">
                   <h2
-                    className="text-2xl font-bold text-foreground sm:text-3xl lg:text-4xl"
+                    className="text-foreground text-2xl font-bold sm:text-3xl lg:text-4xl"
                     translate="no"
                   >
                     {t("home_decor")}
@@ -711,7 +695,7 @@ function HomePage() {
                       categoryStore.setCategoryIds(categoryId.toString());
                       router.push("/trending");
                     }}
-                    className="group inline-flex cursor-pointer items-center gap-2 rounded-xl border border-success bg-success px-6 py-3.5 text-sm font-semibold text-white sm:px-8 sm:py-4 sm:text-base"
+                    className="group border-success bg-success inline-flex cursor-pointer items-center gap-2 rounded-xl border px-6 py-3.5 text-sm font-semibold text-white sm:px-8 sm:py-4 sm:text-base"
                     translate="no"
                   >
                     {t("view_all")}
@@ -763,13 +747,13 @@ function HomePage() {
       ) : null}
 
       {memoizedFashionBeautyProducts?.length > 0 ? (
-        <section className="w-full bg-gradient-to-b from-primary/5 to-card px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+        <section className="from-primary/5 to-card w-full bg-gradient-to-b px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
           <div className="mx-auto w-full max-w-[1400px]">
             <div className="mb-8 sm:mb-12">
               <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-6">
                 <div className="flex-1">
                   <h2
-                    className="text-2xl font-bold text-foreground sm:text-3xl lg:text-4xl"
+                    className="text-foreground text-2xl font-bold sm:text-3xl lg:text-4xl"
                     translate="no"
                   >
                     {t("fashion_n_beauty")}
@@ -833,7 +817,7 @@ function HomePage() {
                       categoryStore.setCategoryIds(categoryId.toString());
                       router.push("/trending");
                     }}
-                    className="group inline-flex cursor-pointer items-center gap-2 rounded-xl border border-primary bg-primary px-6 py-3.5 text-sm font-semibold text-white sm:px-8 sm:py-4 sm:text-base"
+                    className="group border-primary bg-primary inline-flex cursor-pointer items-center gap-2 rounded-xl border px-6 py-3.5 text-sm font-semibold text-white sm:px-8 sm:py-4 sm:text-base"
                     translate="no"
                   >
                     {t("view_all")}
@@ -885,13 +869,13 @@ function HomePage() {
       ) : null}
 
       {memoizedConsumerElectronicsProducts.length > 0 ? (
-        <section className="w-full bg-card px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+        <section className="bg-card w-full px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
           <div className="mx-auto w-full max-w-[1400px]">
             <div className="mb-8 sm:mb-12">
               <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-6">
                 <div className="flex-1">
                   <h2
-                    className="text-2xl font-bold text-foreground sm:text-3xl lg:text-4xl"
+                    className="text-foreground text-2xl font-bold sm:text-3xl lg:text-4xl"
                     translate="no"
                   >
                     {t("consumer_electronics")}
@@ -962,7 +946,7 @@ function HomePage() {
                       categoryStore.setCategoryIds(categoryIds);
                       router.push("/trending");
                     }}
-                    className="group inline-flex cursor-pointer items-center gap-2 rounded-xl border border-primary bg-primary px-6 py-3.5 text-sm font-semibold text-white sm:px-8 sm:py-4 sm:text-base"
+                    className="group border-primary bg-primary inline-flex cursor-pointer items-center gap-2 rounded-xl border px-6 py-3.5 text-sm font-semibold text-white sm:px-8 sm:py-4 sm:text-base"
                     translate="no"
                   >
                     {t("view_all")}
@@ -1018,19 +1002,19 @@ function HomePage() {
 
       {/* Top Rated Products Section */}
       {memoizedTopRatedProducts?.length > 0 ? (
-        <section className="w-full bg-gradient-to-b from-warning/5 to-card px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+        <section className="from-warning/5 to-card w-full bg-gradient-to-b px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
           <div className="mx-auto w-full max-w-[1400px]">
             <div className="mb-8 sm:mb-12">
               <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-6">
                 <div className="flex-1">
                   <h2
-                    className="mb-3 text-2xl font-bold text-foreground sm:text-3xl lg:text-4xl"
+                    className="text-foreground mb-3 text-2xl font-bold sm:text-3xl lg:text-4xl"
                     translate="no"
                   >
                     Top Rated Products
                   </h2>
                   <p
-                    className="max-w-2xl text-sm text-muted-foreground sm:text-base"
+                    className="text-muted-foreground max-w-2xl text-sm sm:text-base"
                     translate="no"
                   >
                     Products with the highest customer ratings
@@ -1082,19 +1066,19 @@ function HomePage() {
 
       {/* Best Sellers Section */}
       {memoizedBestSellers?.length > 0 ? (
-        <section className="w-full bg-card px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+        <section className="bg-card w-full px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
           <div className="mx-auto w-full max-w-[1400px]">
             <div className="mb-8 sm:mb-12">
               <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-6">
                 <div className="flex-1">
                   <h2
-                    className="mb-3 text-2xl font-bold text-foreground sm:text-3xl lg:text-4xl"
+                    className="text-foreground mb-3 text-2xl font-bold sm:text-3xl lg:text-4xl"
                     translate="no"
                   >
                     {t("best_sellers")}
                   </h2>
                   <p
-                    className="max-w-2xl text-sm text-muted-foreground sm:text-base"
+                    className="text-muted-foreground max-w-2xl text-sm sm:text-base"
                     translate="no"
                   >
                     {t("most_popular_products")}
@@ -1147,19 +1131,19 @@ function HomePage() {
 
       {/* New Arrivals Section */}
       {memoizedNewArrivals?.length > 0 ? (
-        <section className="w-full bg-gradient-to-b from-success/5 to-card px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+        <section className="from-success/5 to-card w-full bg-gradient-to-b px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
           <div className="mx-auto w-full max-w-[1400px]">
             <div className="mb-8 sm:mb-12">
               <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-6">
                 <div className="flex-1">
                   <h2
-                    className="mb-3 text-2xl font-bold text-foreground sm:text-3xl lg:text-4xl"
+                    className="text-foreground mb-3 text-2xl font-bold sm:text-3xl lg:text-4xl"
                     translate="no"
                   >
                     {t("new_arrivals")}
                   </h2>
                   <p
-                    className="max-w-2xl text-sm text-muted-foreground sm:text-base"
+                    className="text-muted-foreground max-w-2xl text-sm sm:text-base"
                     translate="no"
                   >
                     {t("latest_products_added")}
@@ -1211,19 +1195,19 @@ function HomePage() {
 
       {/* Hot Deals Section */}
       {memoizedHotDeals?.length > 0 ? (
-        <section className="w-full bg-card px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+        <section className="bg-card w-full px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
           <div className="mx-auto w-full max-w-[1400px]">
             <div className="mb-8 sm:mb-12">
               <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-6">
                 <div className="flex-1">
                   <h2
-                    className="mb-3 text-2xl font-bold text-foreground sm:text-3xl lg:text-4xl"
+                    className="text-foreground mb-3 text-2xl font-bold sm:text-3xl lg:text-4xl"
                     translate="no"
                   >
                     {t("hot_deals")}
                   </h2>
                   <p
-                    className="max-w-2xl text-sm text-muted-foreground sm:text-base"
+                    className="text-muted-foreground max-w-2xl text-sm sm:text-base"
                     translate="no"
                   >
                     {t("best_discounts")}
@@ -1275,19 +1259,19 @@ function HomePage() {
 
       {/* Highly Reviewed Products Section */}
       {memoizedHighlyReviewed?.length > 0 ? (
-        <section className="w-full bg-gradient-to-b from-info/5 to-card px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+        <section className="from-info/5 to-card w-full bg-gradient-to-b px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
           <div className="mx-auto w-full max-w-[1400px]">
             <div className="mb-8 sm:mb-12">
               <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-6">
                 <div className="flex-1">
                   <h2
-                    className="mb-3 text-2xl font-bold text-foreground sm:text-3xl lg:text-4xl"
+                    className="text-foreground mb-3 text-2xl font-bold sm:text-3xl lg:text-4xl"
                     translate="no"
                   >
                     Highly Reviewed
                   </h2>
                   <p
-                    className="max-w-2xl text-sm text-muted-foreground sm:text-base"
+                    className="text-muted-foreground max-w-2xl text-sm sm:text-base"
                     translate="no"
                   >
                     Products with most customer reviews
