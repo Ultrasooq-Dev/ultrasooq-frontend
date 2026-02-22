@@ -103,7 +103,7 @@ const ProductSuggestionModal: React.FC<ProductSuggestionModalProps> = ({
         term: searchTerm || undefined,
       });
       if (response.data?.status === 200) {
-        let newProducts = response.data.data || [];
+        const newProducts = response.data.data || [];
         // Don't filter out products - show all products, including already-suggested ones
         if (resetProducts) {
           setProducts(newProducts);
@@ -111,7 +111,7 @@ const ProductSuggestionModal: React.FC<ProductSuggestionModalProps> = ({
           // Filter out duplicates based on product.id when appending
           setProducts((prev) => {
             const existingIds = new Set(prev.map(p => p.id));
-            const uniqueNewProducts = newProducts.filter(p => !existingIds.has(p.id));
+            const uniqueNewProducts = newProducts.filter((p: any) => !existingIds.has(p.id));
             return [...prev, ...uniqueNewProducts];
           });
         }

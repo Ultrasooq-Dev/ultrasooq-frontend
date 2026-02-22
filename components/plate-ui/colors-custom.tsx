@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+// @ts-expect-error -- plate package API mismatch
 import { useColorsCustom, useColorsCustomState } from '@udecode/plate-font';
 
 import { buttonVariants } from '@/components/plate-ui/button';
@@ -38,7 +39,7 @@ export function ColorsCustom({
       <ColorInput {...inputProps}>
         <DropdownMenuItem
           className={buttonVariants({
-            variant: 'outline-solid',
+            variant: 'outline' as any,
             isMenu: true,
           })}
           {...menuItemProps}

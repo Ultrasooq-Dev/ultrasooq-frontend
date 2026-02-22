@@ -1,11 +1,7 @@
 import React from 'react';
 import { DropdownMenuProps } from '@radix-ui/react-dropdown-menu';
-import {
-  focusEditor,
-  useEditorReadOnly,
-  useEditorRef,
-  usePlateStore,
-} from '@udecode/plate-common';
+// @ts-expect-error -- plate package API mismatch
+import { focusEditor, useEditorReadOnly, useEditorRef, usePlateStore } from '@udecode/plate-common';
 
 import { Icons } from '@/components/icons';
 

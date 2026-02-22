@@ -122,10 +122,10 @@ const ProductLocationAndCustomizationSection: React.FC<
     try {
       const response = await fetchStatesByCountry.mutateAsync({ countryId });
       setStates(
-        response.data.map((state: IState) => ({
+        (response.data as any[]).map((state: IState) => ({
           label: state.name,
           value: state.id,
-        })),
+        })) as any,
       );
     } catch (error) {
       // Silently handle errors
@@ -142,9 +142,9 @@ const ProductLocationAndCustomizationSection: React.FC<
   }, [selectedState]);
 
   useEffect(() => {
-    let ipInfo = JSON.parse(window.localStorage.ipInfo ?? "{}");
+    const ipInfo = JSON.parse(window.localStorage.ipInfo ?? "{}");
     if (ipInfo.country_name && countriesQuery?.data?.data) {
-      let country = countriesQuery?.data?.data?.find(
+      const country = countriesQuery?.data?.data?.find(
         (item: any) =>
           item.countryName.toLowerCase() == ipInfo.country_name.toLowerCase(),
       );
@@ -156,9 +156,9 @@ const ProductLocationAndCustomizationSection: React.FC<
   }, [countriesQuery?.data?.data?.length]);
 
   useEffect(() => {
-    let ipInfo = JSON.parse(window.localStorage.ipInfo ?? "{}");
+    const ipInfo = JSON.parse(window.localStorage.ipInfo ?? "{}");
     if (ipInfo.country_name && countriesNewQuery?.data?.data) {
-      let country = countriesNewQuery?.data?.data?.find(
+      const country = countriesNewQuery?.data?.data?.find(
         (item: any) =>
           item.name.toLowerCase() == ipInfo.country_name.toLowerCase(),
       );
@@ -225,10 +225,10 @@ const ProductLocationAndCustomizationSection: React.FC<
     try {
       const response = await fetchCitiesByState.mutateAsync({ stateId });
       setCities(
-        response.data.map((city: ICity) => ({
+        (response.data as any[]).map((city: ICity) => ({
           label: city.name,
           value: city.id,
-        })),
+        })) as any,
       );
     } catch (error) {
       // Silently handle errors
@@ -249,7 +249,7 @@ const ProductLocationAndCustomizationSection: React.FC<
         (error) => {
           // Silently handle geolocation errors
           try {
-            let ipInfo = JSON.parse(
+            const ipInfo = JSON.parse(
               window.localStorage.getItem("ipInfo") || "{}",
             );
             if (ipInfo.latitude && ipInfo.longitude) {
@@ -284,7 +284,7 @@ const ProductLocationAndCustomizationSection: React.FC<
           );
 
           responses.forEach(({ countryId, data }) => {
-            statesData[countryId] = data.map((state: any) => ({
+            statesData[countryId] = (data as any[]).map((state: any) => ({
               label: state.name,
               value: state.id,
             }));
@@ -318,7 +318,7 @@ const ProductLocationAndCustomizationSection: React.FC<
           );
 
           responses.forEach(({ stateId, data }) => {
-            citiesData[stateId] = data.map((city: any) => ({
+            citiesData[stateId] = (data as any[]).map((city: any) => ({
               label: city.name,
               value: city.id,
             }));

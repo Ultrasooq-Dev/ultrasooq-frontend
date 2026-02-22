@@ -1,10 +1,7 @@
 import React from 'react';
 import { withRef } from '@udecode/cn';
-import {
-  ListStyleType,
-  useIndentListToolbarButton,
-  useIndentListToolbarButtonState,
-} from '@udecode/plate-indent-list';
+// @ts-expect-error -- plate package API mismatch
+import { ListStyleType, useIndentListToolbarButton, useIndentListToolbarButtonState } from '@udecode/plate-indent-list';
 
 import { Icons } from '@/components/icons';
 

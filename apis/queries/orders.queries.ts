@@ -26,6 +26,15 @@ import {
   addOrderTracking,
 } from "../requests/orders.requests";
 import { APIResponseError, APIResponse } from "@/utils/types/common.types";
+import type {
+  OrderByIdResponse,
+  OrderBySellerIdResponse,
+  VendorOrderStatsData,
+  VendorRecentOrdersData,
+  CreateOrderData,
+  PaymentIntentData,
+  AmwalPayConfigData,
+} from "@/types/order";
 
 export const useOrders = (
   payload: {
@@ -77,13 +86,13 @@ export const useInfiniteOrders = (
 export const useCreateOrder = () => {
   const queryClient = useQueryClient();
   return useMutation<
-    APIResponse,
+    APIResponse<CreateOrderData>,
     APIResponseError,
     Record<string, unknown>
   >({
     mutationFn: async (payload) => {
       const res = await createOrder(payload);
-      return res.data as APIResponse;
+      return res.data as APIResponse<CreateOrderData>;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -104,13 +113,13 @@ export const useCreateOrder = () => {
 export const useCreateOrderUnAuth = () => {
   const queryClient = useQueryClient();
   return useMutation<
-    APIResponse,
+    APIResponse<CreateOrderData>,
     APIResponseError,
     Record<string, unknown>
   >({
     mutationFn: async (payload) => {
       const res = await createOrderUnAuth(payload);
-      return res.data as APIResponse;
+      return res.data as APIResponse<CreateOrderData>;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -130,13 +139,13 @@ export const useCreateOrderUnAuth = () => {
 
 export const useCreatePaymentIntent = () => {
   return useMutation<
-    APIResponse,
+    APIResponse<PaymentIntentData>,
     APIResponseError,
     Record<string, unknown>
   >({
     mutationFn: async (payload) => {
       const res = await createPaymentIntent(payload);
-      return res.data as APIResponse;
+      return res.data as APIResponse<PaymentIntentData>;
     },
     onSuccess: () => {
     },
@@ -181,13 +190,13 @@ export const useCreateEMIPayment = () => {
 
 export const useCreateAmwalPayConfig = () => {
   return useMutation<
-    APIResponse,
+    APIResponse<AmwalPayConfigData>,
     APIResponseError,
     Record<string, unknown>
   >({
     mutationFn: async (payload) => {
       const res = await createAmwalPayConfig(payload);
-      return res.data as APIResponse;
+      return res.data as APIResponse<AmwalPayConfigData>;
     },
     onSuccess: () => {
     },
@@ -206,7 +215,7 @@ export const useOrderById = (
     queryKey: ["order-by-id", payload],
     queryFn: async () => {
       const res = await fetchOrderById(payload);
-      return res.data as APIResponse & { otherData?: unknown };
+      return res.data as OrderByIdResponse;
     },
     enabled,
   });
@@ -221,7 +230,7 @@ export const useOrderBySellerId = (
     queryKey: ["order-by-seller-id", payload],
     queryFn: async () => {
       const res = await fetchOrderBySellerId(payload);
-      return res.data as APIResponse & { otherData?: unknown };
+      return res.data as OrderBySellerIdResponse;
     },
     enabled,
   });
@@ -340,7 +349,7 @@ export const useOrderByIdUnAuth = (
     queryKey: ["order-by-id", payload],
     queryFn: async () => {
       const res = await fetchOrderByIdUnAuth(payload);
-      return res.data as APIResponse;
+      return res.data as APIResponse<import("@/types/order").OrderRecord>;
     },
     enabled,
   });
@@ -351,7 +360,7 @@ export const useVendorOrderStats = (enabled = true) =>
     queryKey: ["vendor-order-stats"],
     queryFn: async () => {
       const res = await fetchVendorOrderStats();
-      return res.data as APIResponse;
+      return res.data as APIResponse<VendorOrderStatsData>;
     },
     enabled,
   });
@@ -371,7 +380,7 @@ export const useVendorRecentOrders = (
     queryKey: ["vendor-recent-orders", payload],
     queryFn: async () => {
       const res = await fetchVendorRecentOrders(payload);
-      return res.data as APIResponse;
+      return res.data as APIResponse<VendorRecentOrdersData>;
     },
     enabled,
   });

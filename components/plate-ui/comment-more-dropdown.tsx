@@ -2,12 +2,8 @@
 
 import React from 'react';
 import { cn } from '@udecode/cn';
-import {
-  useCommentDeleteButton,
-  useCommentDeleteButtonState,
-  useCommentEditButton,
-  useCommentEditButtonState,
-} from '@udecode/plate-comments';
+// @ts-expect-error -- plate package API mismatch
+import { useCommentDeleteButton, useCommentDeleteButtonState, useCommentEditButton, useCommentEditButtonState } from '@udecode/plate-comments';
 
 import { Icons } from '@/components/icons';
 

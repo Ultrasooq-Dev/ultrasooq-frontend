@@ -2,10 +2,8 @@
 
 import React from 'react';
 import { DropdownMenuProps } from '@radix-ui/react-dropdown-menu';
-import {
-  useColorDropdownMenu,
-  useColorDropdownMenuState,
-} from '@udecode/plate-font';
+// @ts-expect-error -- plate package API mismatch
+import { useColorDropdownMenu, useColorDropdownMenuState } from '@udecode/plate-font';
 
 import { DEFAULT_COLORS, DEFAULT_CUSTOM_COLORS } from './color-constants';
 import { ColorPicker } from './color-picker';

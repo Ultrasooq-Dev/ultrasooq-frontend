@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
 
 export type State = {
   orders: {
@@ -93,7 +93,7 @@ export const useOrderStore = create<State & Actions>()(
     }),
     {
       name: "order-storage", // Key to store in localStorage
-      getStorage: () => localStorage, // Use localStorage (or sessionStorage if needed)
+      storage: createJSONStorage(() => localStorage),
     }
   )
 );

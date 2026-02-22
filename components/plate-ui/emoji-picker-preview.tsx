@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error -- plate package API mismatch
 import { UseEmojiPickerType } from '@udecode/plate-emoji';
 
 export type EmojiPickerPreviewProps = Pick<

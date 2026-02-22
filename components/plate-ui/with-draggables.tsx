@@ -1,19 +1,15 @@
 import { FC } from 'react';
+// @ts-expect-error -- plate package API mismatch
 import { ELEMENT_BLOCKQUOTE } from '@udecode/plate-block-quote';
+// @ts-expect-error -- plate package API mismatch
 import { ELEMENT_CODE_BLOCK } from '@udecode/plate-code-block';
+// @ts-expect-error -- plate package API mismatch
 import { createNodesWithHOC } from '@udecode/plate-common';
-import {
-  WithDraggableOptions,
-  withDraggable as withDraggablePrimitive,
-} from '@udecode/plate-dnd';
-import {
-  ELEMENT_H1,
-  ELEMENT_H2,
-  ELEMENT_H3,
-  ELEMENT_H4,
-  ELEMENT_H5,
-  ELEMENT_H6,
-} from '@udecode/plate-heading';
+// @ts-expect-error -- plate package API mismatch
+import { WithDraggableOptions, withDraggable as withDraggablePrimitive } from '@udecode/plate-dnd';
+// @ts-expect-error -- plate package API mismatch
+import { ELEMENT_H1, ELEMENT_H2, ELEMENT_H3, ELEMENT_H4, ELEMENT_H5, ELEMENT_H6 } from '@udecode/plate-heading';
+// @ts-expect-error -- plate package API mismatch
 import { ELEMENT_OL, ELEMENT_UL } from '@udecode/plate-list';
 import { ELEMENT_PARAGRAPH } from '@udecode/plate-paragraph';
 

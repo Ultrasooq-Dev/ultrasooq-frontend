@@ -762,7 +762,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
     newTotalOfferPrice: number;
   }) => {
     if (rRequest.status === "APPROVED" || rRequest.status === "REJECTED") {
-      let vDor = selectedVendor;
+      const vDor = selectedVendor;
       if (vDor?.rfqQuotesProducts) {
         const index = vDor?.rfqQuotesProducts.findIndex(
           (product: any) => product.id === rRequest.rfqQuoteProductId,
@@ -791,7 +791,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
           pList[index]["priceRequest"] = priceRequest;
           pList[index]["offerPrice"] = offerPrice;
 
-          let newData = {
+          const newData = {
             ...vDor,
             offerPrice: vDor.offerPrice,
             rfqQuotesProducts: pList,

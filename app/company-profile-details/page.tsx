@@ -43,8 +43,8 @@ export default function CompanyProfileDetailsPage() {
 
   useEffect(() => {
     const params = new URLSearchParams(document.location.search);
-    let sellerId = params.get("userId");
-    let type = params.get("type");
+    const sellerId = params.get("userId");
+    const type = params.get("type");
 
     setActiveSellerId(sellerId);
     setActiveTab(type || "profile-info");
@@ -96,7 +96,7 @@ export default function CompanyProfileDetailsPage() {
               <Tabs
                 onValueChange={(e) => setActiveTab(e)}
                 value={activeTab}
-                // @ts-ignore
+                // @ts-expect-error - type mismatch
                 dir={langDir}
               >
                 <TabsList className="mb-0 flex h-auto grid-cols-3 flex-wrap justify-start gap-3 sm:gap-4 rounded-none bg-transparent px-0 pt-0 sm:mb-2">

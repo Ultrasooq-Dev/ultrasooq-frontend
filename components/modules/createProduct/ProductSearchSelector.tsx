@@ -163,7 +163,7 @@ const ProductSearchSelector: React.FC<ProductSearchSelectorProps> = ({
       {/* Search Results */}
       {products && products.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {products.map((product) => (
+          {products.map((product: any) => (
             <Card 
               key={product.id} 
               className={`cursor-pointer transition-all duration-200 hover:shadow-md ${

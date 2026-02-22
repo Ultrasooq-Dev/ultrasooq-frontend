@@ -563,7 +563,7 @@ const ProductChat: React.FC<ProductChatProps> = ({ productId, roomId }) => {
           {/* Message Input */}
           <div className="flex flex-1 items-end gap-2 rounded-lg border border-border bg-card px-3 py-2 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary">
             <textarea
-              ref={inputRef}
+              ref={inputRef as any}
               placeholder={t("type_your_message") || "Type your message..."}
               className="flex-1 resize-none border-0 bg-transparent text-sm text-foreground placeholder-muted-foreground focus:outline-none max-h-32 min-h-[36px]"
               value={message}

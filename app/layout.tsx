@@ -135,7 +135,7 @@ export default async function RootLayout({
                   <SidebarProvider>
                     <TitleProtection />
                     <main id="main-content" className="overflow-x-hidden">
-                      <LocaleProvider initialMessages={messages} initialLocale={locale}>
+                      <LocaleProvider {...{ initialMessages: messages, initialLocale: locale } as any}>
                         <NotificationProvider>
                           <NextTopLoader color="hsl(var(--primary))" showSpinner={false} />
                           <ConditionalLayout locale={locale}>

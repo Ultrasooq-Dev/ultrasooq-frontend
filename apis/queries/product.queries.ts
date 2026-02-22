@@ -176,9 +176,9 @@ export const useUpdateProduct = () => {
 
 export const useUpdateForCustomize = () => {
   const queryClient = useQueryClient();
-  return useMutation<APIResponseError>({
+  return useMutation<any, APIResponseError, Record<string, unknown>>({
     mutationFn: async (payload) => {
-      const res = await updateForCustomize(payload);
+      const res = await updateForCustomize(payload as any);
       return res.data;
     },
     onSuccess: () => {

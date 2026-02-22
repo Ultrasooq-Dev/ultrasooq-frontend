@@ -134,7 +134,7 @@ const ServiceDetailsPage = () => {
   };
 
   const decrementQuantity = (id: number) => {
-    let quantity =
+    const quantity =
       selectedFeatures.find((item: any) => item.id == id)?.quantity || 1;
     if (quantity - 1 >= 1) {
       setSelectedFeatures((prev) =>
@@ -245,7 +245,7 @@ const ServiceDetailsPage = () => {
     serviceFeatureId: number,
   ) => {
     const cartItem = memoizedCartList.find((item: any) => item.id == cartId);
-    let payload: any = { cartId };
+    const payload: any = { cartId };
     if (cartItem?.cartServiceFeatures?.length > 1) {
       payload.serviceFeatureId = serviceFeatureId;
     }
@@ -332,7 +332,7 @@ const ServiceDetailsPage = () => {
     };
     const response = await addToCartQuery.mutateAsync(payload);
     setIsUpdatingCart(false);
-    if (response.success) {
+    if ((response as any).success) {
       toast({
         title: t("service_added_to_cart"),
         description: response.message,
@@ -733,7 +733,7 @@ const ServiceDetailsPage = () => {
 
                 {memoizedCartList?.map((item: CartItem) => {
                   if (item.cartType == "DEFAULT") {
-                    let relatedCart = memoizedCartList
+                    const relatedCart = memoizedCartList
                       ?.filter(
                         (c: any) =>
                           c.serviceId && c.cartProductServices?.length,
@@ -799,7 +799,7 @@ const ServiceDetailsPage = () => {
                     }),
                   );
 
-                  let relatedCart: any = memoizedCartList
+                  const relatedCart: any = memoizedCartList
                     ?.filter(
                       (c: any) => c.productId && c.cartProductServices?.length,
                     )

@@ -229,7 +229,7 @@ const ServiceDetailsPage = () => {
         const minQuantity = productDetails?.product_productPrice?.length
           ? productDetails.product_productPrice[0]?.minQuantityPerCustomer
           : null;
-        let quantity = item?.quantity || minQuantity || 1;
+        const quantity = item?.quantity || minQuantity || 1;
         handleAddToCart(quantity, "add");
         setIsShareLinkProcessed(true);
       }

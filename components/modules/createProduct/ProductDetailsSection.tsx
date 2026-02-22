@@ -20,12 +20,12 @@ import ControlledCheckboxInput from "@/components/shared/Forms/ControlledCheckbo
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/context/AuthContext";
 
-type ProductDetailsSectionProps = {};
+type ProductDetailsSectionProps = Record<string, never>;
 
 type Field = {
   key: string;
   type: string;
-  field: JSX.Element;
+  field: React.JSX.Element;
   size?: string;
   isRequired?: boolean;
 };

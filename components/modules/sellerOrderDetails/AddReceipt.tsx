@@ -63,13 +63,13 @@ const AddReceipt: React.FC<AddReceiptProps> = ({
     };
 
     const onSubmit = async () => {
-        let data = form.getValues();
+        const data = form.getValues();
         data.receipt = (await uploadReceipt()) || '';
 
         const response = await updateOrderShippingStatus?.mutateAsync({
             ...{ orderShippingId },
             ...data
-        });
+        } as any);
 
         if (response?.status) {
             toast({

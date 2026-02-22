@@ -29,7 +29,7 @@ import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import type { CheckedState } from "radix-ui";
+import type { CheckedState } from "@radix-ui/react-checkbox";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -179,6 +179,8 @@ export default function LoginPage() {
         email: userData.email,
         tradeRole: "BUYER",
         loginType: getLoginType() || "GOOGLE",
+        provider: "",
+        token: "",
       });
       if (response?.status && response?.data) {
         toast({

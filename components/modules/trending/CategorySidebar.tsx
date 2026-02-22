@@ -470,7 +470,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
               children,
               1,
               level,
-              newSelectedLevels.slice(1, level + 1),
+              newSelectedLevels.slice(1, level + 1).filter((x): x is number => x !== null),
             );
             return { ...catItem, subcategories: updatedSubcategories };
           }

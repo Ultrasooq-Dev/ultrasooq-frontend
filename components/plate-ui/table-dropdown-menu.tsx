@@ -1,20 +1,9 @@
 import React from 'react';
 import { DropdownMenuProps } from '@radix-ui/react-dropdown-menu';
-import {
-  focusEditor,
-  someNode,
-  useEditorRef,
-  useEditorSelector,
-} from '@udecode/plate-common';
-import {
-  deleteColumn,
-  deleteRow,
-  deleteTable,
-  ELEMENT_TABLE,
-  insertTable,
-  insertTableColumn,
-  insertTableRow,
-} from '@udecode/plate-table';
+// @ts-expect-error -- plate package API mismatch
+import { focusEditor, someNode, useEditorRef, useEditorSelector } from '@udecode/plate-common';
+// @ts-expect-error -- plate package API mismatch
+import { deleteColumn, deleteRow, deleteTable, ELEMENT_TABLE, insertTable, insertTableColumn, insertTableRow } from '@udecode/plate-table';
 
 import { Icons, iconVariants } from '@/components/icons';
 
@@ -32,7 +21,7 @@ import { ToolbarButton } from './toolbar';
 
 export function TableDropdownMenu(props: DropdownMenuProps) {
   const tableSelected = useEditorSelector(
-    (editor) => someNode(editor, { match: { type: ELEMENT_TABLE } }),
+    (editor: any) => someNode(editor, { match: { type: ELEMENT_TABLE } }),
     []
   );
 

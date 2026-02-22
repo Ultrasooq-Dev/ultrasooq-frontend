@@ -44,13 +44,13 @@ interface ServicesPageProps {
 }
 
 const Services = (props: ServicesPageProps) => {
-    const searchParams = use(props.searchParams);
+    const searchParams = use(props.searchParams as any);
     const t = useTranslations();
     const { langDir } = useAuth();
     const router = useRouter();
     const deviceId = getOrCreateDeviceId() || "";
     const [viewType, setViewType] = useState<"grid" | "list">("grid");
-    const [searchTerm, setSearchTerm] = useState(searchParams?.term || "");
+    const [searchTerm, setSearchTerm] = useState((searchParams as any)?.term || "");
     const [sortBy, setSortBy] = useState("desc");
     const [page, setPage] = useState(1);
     const [limit] = useState(8);
@@ -143,7 +143,7 @@ const Services = (props: ServicesPageProps) => {
                                         placeholder={t("search_service")}
                                         className="search-box h-[40px] w-full sm:w-[160px] lg:w-80"
                                         onChange={handleSearchService}
-                                        defaultValue={searchParams?.term || ""}
+                                        defaultValue={(searchParams as any)?.term || ""}
                                         dir={langDir}
                                         translate="no"
                                     />

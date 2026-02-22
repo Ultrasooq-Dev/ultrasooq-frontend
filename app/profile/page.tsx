@@ -84,7 +84,7 @@ const formSchema = (t: any) => {
       .trim()
       .min(2, { message: t("gender_required") }),
     userName: z
-      .string({ invalid_type_error: t("username_required") })
+      .string({ error: t("username_required") })
       .trim()
       .min(5, { message: t("username_required") }),
     email: z
@@ -120,7 +120,7 @@ const formSchema = (t: any) => {
         link: z.string().trim(),
       }),
     ),
-    dateOfBirth: z.date({ required_error: t("dob_required") }),
+    dateOfBirth: z.date({ error: t("dob_required") }),
     userBusinessCategoryList: z.any().optional(),
   });
 };
@@ -183,8 +183,8 @@ export default function ProfilePage() {
   const { data: accountsData, refetch: refetchAccounts } = useMyAccounts();
 
   // Check if user has additional accounts (sub-accounts, excluding main account)
-  const allAccounts = accountsData?.data?.data?.allAccounts || [];
-  const mainAccount = accountsData?.data?.data?.mainAccount;
+  const allAccounts = accountsData?.data?.allAccounts || [];
+  const mainAccount = accountsData?.data?.mainAccount;
   const subAccounts = allAccounts.filter(
     (account: any) => account.id !== mainAccount?.id,
   );
@@ -878,10 +878,10 @@ export default function ProfilePage() {
                   {/* Show for COMPANY/FREELANCER accounts - subaccount check via multiple methods */}
                   {(me.data?.data?.tradeRole === "COMPANY" ||
                     me.data?.data?.tradeRole === "FREELANCER") &&
-                  (me.data?.data?.isSubAccount === true ||
-                    me.data?.data?.masterAccountId != null ||
-                    currentAccount?.data?.data?.isSubAccount === true ||
-                    currentAccount?.data?.data?.account?.isSubAccount ===
+                  ((me.data?.data as any)?.isSubAccount === true ||
+                    (me.data?.data as any)?.masterAccountId != null ||
+                    (currentAccount?.data?.data as any)?.isSubAccount === true ||
+                    (currentAccount?.data?.data?.account as any)?.isSubAccount ===
                       true ||
                     (currentAccount?.data?.data?.account &&
                       currentAccount.data.data.account.id !==

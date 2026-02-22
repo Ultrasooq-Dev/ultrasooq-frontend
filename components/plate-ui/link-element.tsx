@@ -1,6 +1,8 @@
 import React from 'react';
 import { cn, withRef } from '@udecode/cn';
+// @ts-expect-error -- plate package API mismatch
 import { PlateElement, useElement } from '@udecode/plate-common';
+// @ts-expect-error -- plate package API mismatch
 import { TLinkElement, useLink } from '@udecode/plate-link';
 
 export const LinkElement = withRef<typeof PlateElement>(

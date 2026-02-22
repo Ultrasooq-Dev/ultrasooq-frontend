@@ -41,7 +41,7 @@ const addFormSchema = (t: any) => {
   return z
     .object({
       fromPrice: z.coerce
-        .number({ invalid_type_error: t("offer_price_from_required") })
+        .number({ error: t("offer_price_from_required") })
         .min(1, {
           message: t("offer_price_from_required"),
         })
@@ -51,7 +51,7 @@ const addFormSchema = (t: any) => {
           }),
         }),
       toPrice: z.coerce
-        .number({ invalid_type_error: t("offer_price_to_required") })
+        .number({ error: t("offer_price_to_required") })
         .min(1, {
           message: t("offer_price_to_required"),
         })
@@ -115,7 +115,7 @@ const AddToCustomizeForm: React.FC<AddToCustomizeFormProps> = ({
   const { langDir } = useAuth();
   const { toast } = useToast();
   const form = useForm({
-    resolver: zodResolver(addFormSchema(t)),
+    resolver: zodResolver(addFormSchema(t)) as any,
     defaultValues: addDefaultValues,
   });
   const photosRef = useRef<HTMLInputElement>(null);
@@ -212,14 +212,14 @@ const AddToCustomizeForm: React.FC<AddToCustomizeFormProps> = ({
 
           if (extension) {
             if (videoExtensions.includes(extension)) {
-              const videoName: string = item?.path.split("/").pop()!;
+              const videoName = item?.path.split("/").pop() ?? "";
               return {
                 link: item?.path,
                 linkType: "video",
                 videoName,
               };
             } else if (imageExtensions.includes(extension)) {
-              const imageName: string = item?.path.split("/").pop()!;
+              const imageName = item?.path.split("/").pop() ?? "";
               return {
                 link: item?.path,
                 linktype: "image",
@@ -461,6 +461,7 @@ const AddToCustomizeForm: React.FC<AddToCustomizeFormProps> = ({
                                       width="100%"
                                       height="100%"
                                       controls
+                                      {...({} as any)}
                                     />
                                   </div>
                                   <Input

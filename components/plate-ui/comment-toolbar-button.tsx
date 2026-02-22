@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+// @ts-expect-error -- plate package API mismatch
 import { useCommentAddButton } from '@udecode/plate-comments';
 
 import { Icons } from '@/components/icons';

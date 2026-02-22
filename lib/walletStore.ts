@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
 import { IWallet, IWalletTransaction } from "@/utils/types/wallet.types";
 
 export type WalletState = {
@@ -80,12 +80,14 @@ export const useWalletStore = create<WalletState & WalletActions>()(
     }),
     {
       name: "wallet-storage",
-      getStorage: () => localStorage,
+      storage: createJSONStorage(() => localStorage),
       // Only persist essential data, not loading states
       partialize: (state) => ({
         wallet: state.wallet,
         transactions: state.transactions.slice(0, 50), // Keep only last 50 transactions
         lastUpdated: state.lastUpdated,
+        isLoading: false,
+        error: null,
       }),
     }
   )

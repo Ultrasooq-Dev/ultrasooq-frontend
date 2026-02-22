@@ -1,6 +1,8 @@
 import React from 'react';
 import { DropdownMenuProps } from '@radix-ui/react-dropdown-menu';
+// @ts-expect-error -- plate package API mismatch
 import { MARK_SUBSCRIPT, MARK_SUPERSCRIPT } from '@udecode/plate-basic-marks';
+// @ts-expect-error -- plate package API mismatch
 import { focusEditor, toggleMark, useEditorRef } from '@udecode/plate-common';
 
 import { Icons } from '@/components/icons';

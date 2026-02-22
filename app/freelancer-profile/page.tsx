@@ -49,7 +49,7 @@ const formSchema = z
         message: "Business Type is required",
       })
       .transform((value) => {
-        let temp: any = [];
+        const temp: any = [];
         value.forEach((item) => {
           temp.push({ businessTypeId: item.value });
         });
@@ -142,7 +142,7 @@ export default function FreelancerProfilePage() {
   const router = useRouter();
   const { toast } = useToast();
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema) as any,
     defaultValues: {
       aboutUs: "",
       aboutUsJson: undefined,
@@ -180,29 +180,6 @@ export default function FreelancerProfilePage() {
   const currentAccountData = currentAccount?.data?.data?.account;
   const currentTradeRole = currentAccountData?.tradeRole;
 
-  // Redirect if user is not on a FREELANCER account
-  React.useEffect(() => {
-    if (currentTradeRole && currentTradeRole !== 'FREELANCER') {
-      if (currentTradeRole === 'BUYER') {
-        router.replace("/buyer-profile-details");
-      } else if (currentTradeRole === 'COMPANY') {
-        router.replace("/company-profile");
-      }
-    }
-  }, [currentTradeRole, router]);
-
-  // Show loading while account data is being fetched
-  if (currentAccount.isLoading || !currentTradeRole) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900 mx-auto"></div>
-          <p className="mt-4 text-lg">Loading account information...</p>
-        </div>
-      </div>
-    );
-  }
-
   const memoizedCountries = useMemo(() => {
     return (
       countriesQuery?.data?.data.map((item: ICountries) => {
@@ -220,44 +197,16 @@ export default function FreelancerProfilePage() {
     );
   }, [tagsQuery?.data]);
 
-
-  const onSubmit = async (formData: any) => {
-    const data = {
-      aboutUs: formData.aboutUsJson.length
-        ? JSON.stringify(formData.aboutUsJson)
-        : undefined,
-      profileType: "FREELANCER",
-      branchList: [
-        {
-          ...formData,
-          profileType: "FREELANCER",
-          mainOffice: 1,
-        },
-      ],
-    };
-
-    delete data.branchList[0].aboutUs;
-    delete data.branchList[0].aboutUsJson;
-
-    // return;
-    const response = await createFreelancerProfile.mutateAsync(data);
-
-    if (response.status && response.data) {
-      toast({
-        title: t("profile_create_successful"),
-        description: response.message,
-        variant: "success",
-      });
-      form.reset();
-      router.push("/freelancer-profile-details");
-    } else {
-      toast({
-        title: t("profile_create_failed"),
-        description: response.message,
-        variant: "danger",
-      });
+  // Redirect if user is not on a FREELANCER account
+  React.useEffect(() => {
+    if (currentTradeRole && currentTradeRole !== 'FREELANCER') {
+      if (currentTradeRole === 'BUYER') {
+        router.replace("/buyer-profile-details");
+      } else if (currentTradeRole === 'COMPANY') {
+        router.replace("/company-profile");
+      }
     }
-  };
+  }, [currentTradeRole, router]);
 
   useEffect(() => {
     if (me.data?.data) {
@@ -328,6 +277,56 @@ export default function FreelancerProfilePage() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [me.data?.data, me.data?.status]);
+
+  // Show loading while account data is being fetched
+  if (currentAccount.isLoading || !currentTradeRole) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900 mx-auto"></div>
+          <p className="mt-4 text-lg">Loading account information...</p>
+        </div>
+      </div>
+    );
+  }
+
+  const onSubmit = async (formData: any) => {
+    const data = {
+      aboutUs: formData.aboutUsJson.length
+        ? JSON.stringify(formData.aboutUsJson)
+        : undefined,
+      profileType: "FREELANCER",
+      branchList: [
+        {
+          ...formData,
+          profileType: "FREELANCER",
+          mainOffice: 1,
+        },
+      ],
+    };
+
+    delete data.branchList[0].aboutUs;
+    delete data.branchList[0].aboutUsJson;
+
+    // return;
+    const response = await createFreelancerProfile.mutateAsync(data);
+
+    if (response.status && response.data) {
+      toast({
+        title: t("profile_create_successful"),
+        description: response.message,
+        variant: "success",
+      });
+      form.reset();
+      router.push("/freelancer-profile-details");
+    } else {
+      toast({
+        title: t("profile_create_failed"),
+        description: response.message,
+        variant: "danger",
+      });
+    }
+  };
 
   return (
     <section className="relative w-full py-7">

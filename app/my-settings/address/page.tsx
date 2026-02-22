@@ -16,7 +16,7 @@ import { IoMdAdd } from "react-icons/io";
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/context/AuthContext";
 
-type AddressPageProps = {};
+type AddressPageProps = Record<string, never>;
 
 const AddressPage: React.FC<AddressPageProps> = ({}) => {
   const t = useTranslations();

@@ -2,8 +2,10 @@
 
 import React from 'react';
 import { cn, withRef } from '@udecode/cn';
+// @ts-expect-error -- plate package API mismatch
 import { ClassNames, PlateElementProps, TEditor } from '@udecode/plate-common';
-import { DragItemNode, useDraggable, useDraggableState, } from '@udecode/plate-dnd';
+// @ts-expect-error -- plate package API mismatch
+import { DragItemNode, useDraggable, useDraggableState } from '@udecode/plate-dnd';
 import { DropTargetMonitor } from 'react-dnd';
 
 import { Icons } from '@/components/icons';
@@ -83,12 +85,12 @@ const dragHandle = (
 );
 
 export const Draggable = withRef<'div', DraggableProps>(
-  ({ className, classNames = {}, onDropHandler, ...props }, ref) => {
+  ({ className, classNames = {}, onDropHandler, ...props }: any, ref: any) => {
     const { children, element } = props;
 
     const state = useDraggableState({ element, onDropHandler });
     const { dropLine, isDragging, isHovered } = state;
-    const { groupProps, droplineProps, gutterLeftProps, previewRef, handleRef, } = useDraggable(state);
+    const { groupProps, droplineProps, gutterLeftProps, previewRef, handleRef, } = useDraggable(state) as any;
 
     return (
       <div

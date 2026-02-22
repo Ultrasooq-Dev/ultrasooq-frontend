@@ -38,8 +38,8 @@ export default function MemberProfileDetailsPage() {
 
     useEffect(() => {
         const params = new URLSearchParams(document.location.search);
-        let sellerId = params.get("userId");
-        let type = params.get("type");
+        const sellerId = params.get("userId");
+        const type = params.get("type");
 
         setActiveSellerId(sellerId);
         setActiveTab(type || "profile-info");

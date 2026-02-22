@@ -2,10 +2,8 @@
 
 import React from 'react';
 import { cn } from '@udecode/cn';
-import {
-  CommentResolveButton as CommentResolveButtonPrimitive,
-  useComment,
-} from '@udecode/plate-comments';
+// @ts-expect-error -- plate package API mismatch
+import { CommentResolveButton as CommentResolveButtonPrimitive, useComment } from '@udecode/plate-comments';
 
 import { Icons } from '@/components/icons';
 

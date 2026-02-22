@@ -52,19 +52,18 @@ const MyOrderDetailsPage = ({ }) => {
 
   const orderDetails = orderByIdQuery.data?.data;
   const shippingDetails =
-    orderByIdQuery.data?.data?.orderProduct_order?.order_orderAddress.find(
-      (item: { addressType: "SHIPPING" | "BILLING" }) =>
-        item?.addressType === "SHIPPING",
+    orderByIdQuery.data?.data?.orderProduct_order?.order_orderAddress?.find(
+      (item) => item?.addressType === "SHIPPING",
     );
   const billingDetails =
-    orderByIdQuery.data?.data?.orderProduct_order?.order_orderAddress.find(
-      (item: { addressType: "SHIPPING" | "BILLING" }) =>
-        item?.addressType === "BILLING",
+    orderByIdQuery.data?.data?.orderProduct_order?.order_orderAddress?.find(
+      (item) => item?.addressType === "BILLING",
     );
   const otherOrderDetails =
     orderByIdQuery.data?.otherData?.[0]?.order_orderProducts;
 
-  function formatDate(inputDate: string): string {
+  function formatDate(inputDate: string | undefined): string {
+    if (!inputDate) return "-";
     const dateObj = new Date(inputDate);
     const dayOfWeek = dateObj.toLocaleString("en", { weekday: "short" });
     const dayOfMonth = dateObj.getDate();
@@ -291,7 +290,7 @@ const MyOrderDetailsPage = ({ }) => {
                                 <h3>
                                   {
                                     orderDetails?.serviceFeatures
-                                      ?.serviceFeatures?.[0]?.name
+                                      ?.[0]?.serviceFeature?.name
                                   }
                                 </h3>
                                 {/* <p className="mt-1">
@@ -333,7 +332,7 @@ const MyOrderDetailsPage = ({ }) => {
                               <figcaption>
                                 <h3>
                                   {
-                                    orderDetails.orderProduct_productPrice
+                                    orderDetails?.orderProduct_productPrice
                                       ?.productPrice_product?.productName
                                   }
                                 </h3>
@@ -353,9 +352,9 @@ const MyOrderDetailsPage = ({ }) => {
                                   {orderDetails?.orderProduct_productPrice
                                     ?.offerPrice
                                     ? Number(
-                                      orderDetails?.orderProduct_productPrice
-                                        ?.offerPrice *
-                                      orderDetails?.orderQuantity,
+                                      (orderDetails?.orderProduct_productPrice
+                                        ?.offerPrice ?? 0) *
+                                      (orderDetails?.orderQuantity ?? 0),
                                     )
                                     : 0}
                                 </h4>
@@ -369,10 +368,10 @@ const MyOrderDetailsPage = ({ }) => {
                                 </p>
                                 {orderDetails?.orderProductType == 'PRODUCT' && orderDetails?.object ? (
                                   (() => {
-                                    let object = orderDetails?.object;
+                                    const object = orderDetails?.object as { type?: string; value?: string } | { type?: string; value?: string }[];
 
                                     if (Array.isArray(object)) {
-                                      return object.map((obj: any, index: number) => {
+                                      return object.map((obj, index: number) => {
                                         return (
                                           <p className="text-muted-foreground" dir={langDir} key={index}>
                                             {obj.type}: {obj.value}
@@ -690,13 +689,13 @@ const MyOrderDetailsPage = ({ }) => {
                       item?.orderProduct_productPrice?.orderQuantity
                     }
                     variant={item?.object}
-                    serviceFeature={item?.serviceFeatures?.serviceFeatures?.[0]}
+                    serviceFeature={item?.serviceFeatures?.[0]?.serviceFeature}
                     productImages={
                       item.orderProduct_productPrice?.productPrice_product
                         ?.productImages
                     }
                     sellerName={`${item?.orderProduct_productPrice?.adminDetail?.firstName} ${item?.orderProduct_productPrice?.adminDetail?.lastName}`}
-                    orderNo={orderDetails?.orderProduct_order?.orderNo}
+                    orderNo={orderDetails?.orderProduct_order?.orderNo ?? ""}
                     orderProductDate={item?.orderProductDate}
                     orderProductStatus={item?.orderProductStatus}
                     updatedAt={item?.updatedAt}
@@ -741,7 +740,7 @@ const MyOrderDetailsPage = ({ }) => {
 
             <AddReceipt
               orderProductId={Number(searchParams?.id)}
-              orderShippingId={orderDetails.orderShippingDetail.id}
+              orderShippingId={orderDetails.orderShippingDetail.id ?? 0}
               onClose={handleToggleAddReceiptModal}
             />
           </DialogContent>

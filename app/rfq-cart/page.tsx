@@ -159,7 +159,7 @@ const RfqCartPage = () => {
     try {
       const response = await fetchStatesByCountry.mutateAsync({ countryId });
       if (response.status && response.data) {
-        setStates(response.data);
+        setStates(response.data as any[]);
       }
     } catch (error) {
       console.error("Error fetching states:", error);
@@ -170,7 +170,7 @@ const RfqCartPage = () => {
     try {
       const response = await fetchCitiesByState.mutateAsync({ stateId });
       if (response.status && response.data) {
-        setCities(response.data);
+        setCities(response.data as any[]);
       }
     } catch (error) {
       console.error("Error fetching cities:", error);

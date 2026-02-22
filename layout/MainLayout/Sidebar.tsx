@@ -78,7 +78,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
 
   // Get current user's trade role - matching Header's logic
   const currentTradeRole =
-    currentAccountData?.data?.data?.account?.tradeRole ||
+    currentAccountData?.data?.account?.tradeRole ||
     me?.data?.data?.tradeRole ||
     "BUYER";
 
@@ -367,7 +367,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
           // Get the current trade role at click time to avoid closure issues
           // Match Header's logic exactly: currentAccount?.data?.data?.account?.tradeRole || me?.data?.data?.tradeRole
           const tradeRole =
-            currentAccountData?.data?.data?.account?.tradeRole ||
+            currentAccountData?.data?.account?.tradeRole ||
             me?.data?.data?.tradeRole ||
             "BUYER";
 

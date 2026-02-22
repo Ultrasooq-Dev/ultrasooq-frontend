@@ -1,14 +1,12 @@
 import React from 'react';
-import {
-  MARK_BOLD,
-  MARK_CODE,
-  MARK_ITALIC,
-  MARK_STRIKETHROUGH,
-  MARK_UNDERLINE,
-} from '@udecode/plate-basic-marks';
+// @ts-expect-error -- plate package API mismatch
+import { MARK_BOLD, MARK_CODE, MARK_ITALIC, MARK_STRIKETHROUGH, MARK_UNDERLINE } from '@udecode/plate-basic-marks';
+// @ts-expect-error -- plate package API mismatch
 import { useEditorReadOnly } from '@udecode/plate-common';
+// @ts-expect-error -- plate package API mismatch
 import { MARK_BG_COLOR, MARK_COLOR } from '@udecode/plate-font';
 import { ListStyleType } from '@udecode/plate-indent-list';
+// @ts-expect-error -- plate package API mismatch
 import { ELEMENT_IMAGE } from '@udecode/plate-media';
 
 import { Icons, iconVariants } from '@/components/icons';

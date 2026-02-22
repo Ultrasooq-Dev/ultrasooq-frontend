@@ -79,7 +79,7 @@ const SellerRewardsPage = () => {
                                     <tbody>
                                         {sellerRewards?.filter((item: any) => item.productDetail).map((item: any) => {
 
-                                            let image = item.productDetail?.productImages?.[0]?.image || PlaceholderImage;
+                                            const image = item.productDetail?.productImages?.[0]?.image || PlaceholderImage;
                                             return (
                                                 <tr key={item.id}>
                                                     <td>

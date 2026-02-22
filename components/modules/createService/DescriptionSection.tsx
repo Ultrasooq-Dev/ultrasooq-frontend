@@ -64,7 +64,7 @@ const DescriptionSection = () => {
                   }
                 />
                 <p className="text-[13px] font-medium text-destructive" dir={langDir}>
-                  {/* @ts-ignore */}
+                  {/* @ts-expect-error - dynamic field error access */}
                   {formContext?.formState?.errors?.productShortDescriptionList?.[index]?.shortDescription?.message || ''}
                 </p>
               </div>

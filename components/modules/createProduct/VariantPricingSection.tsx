@@ -60,7 +60,7 @@ const VariantPricingSection: React.FC = () => {
         .map((v: any) => ({ type: vt.type.trim(), value: v.value.trim() })),
     );
 
-    const product = cartesianProduct(valueArrays);
+    const product = cartesianProduct<{ type: string; value: string }>(valueArrays);
 
     return product.map((combo) => ({
       combinationKey: combo.map((c) => c.value).join("|"),
@@ -88,7 +88,7 @@ const VariantPricingSection: React.FC = () => {
     }
 
     const currentFields = form.getValues("variantPricingList") || [];
-    const currentMap = new Map(
+    const currentMap = new Map<string, any>(
       currentFields.map((f: any) => [f.combinationKey, f]),
     );
 

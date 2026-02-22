@@ -73,7 +73,7 @@ const CompleteOrderPage = () => {
 
     const makePayment = async () => {
         const address = orderDetails?.order_orderAddress?.find((item: any) => item.addressType == 'BILLING');
-        let data: { [key: string]: any } = {
+        const data: { [key: string]: any } = {
             amount: paymentType == "ADVANCE" ? advanceAmount * 1000 : total * 1000,
             billing_data: {
                 first_name: address?.firstName || 'NA',
@@ -92,7 +92,7 @@ const CompleteOrderPage = () => {
                 orderId: orderDetails?.id,
                 paymentType: paymentType,
             },
-            special_reference: referenceOrderId(orderDetails?.id)
+            special_reference: referenceOrderId(orderDetails?.id ?? 0)
         };
 
         const response = await createPaymentIntent.mutateAsync(data);
@@ -269,7 +269,7 @@ const CompleteOrderPage = () => {
                                                         province,
                                                         postCode,
                                                         country
-                                                    } = orderDetails?.order_orderAddress?.find((item: any) => item.addressType == 'BILLING')
+                                                    } = orderDetails?.order_orderAddress?.find((item: any) => item.addressType == 'BILLING') ?? {} as any
                                                     return (
                                                         <div className="selected-address-item flex gap-x-3">
                                                             <div dir={langDir}>
@@ -332,7 +332,7 @@ const CompleteOrderPage = () => {
                                                         state,
                                                         postCode,
                                                         country
-                                                    } = orderDetails?.order_orderAddress?.find((item: any) => item.addressType == 'SHIPPING')
+                                                    } = orderDetails?.order_orderAddress?.find((item: any) => item.addressType == 'SHIPPING') ?? {} as any
                                                     return (
                                                         <div className="selected-address-item flex gap-x-3">
                                                             <div dir={langDir}>
@@ -357,7 +357,7 @@ const CompleteOrderPage = () => {
                                                                                             <Image src={LocationIcon} alt="location-icon" />
                                                                                         </span>
                                                                                         <span className="text-container">
-                                                                                            {[address, town, city?.name, state?.name, postCode, country?.name].filter(el => el).join(', ')}
+                                                                                            {[address, town, (city as any)?.name, (state as any)?.name, postCode, (country as any)?.name].filter(el => el).join(', ')}
                                                                                         </span>
                                                                                     </p>
                                                                                 </li>

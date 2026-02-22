@@ -331,7 +331,7 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
   useEffect(() => {
     if (productVariantTypes.length > 0 && productVariants.length > 0) {
       if (!selectedProductVariant) {
-        let selectedVariants: any = [];
+        const selectedVariants: any = [];
         productVariantTypes.forEach((variantType, index) => {
           selectedVariants.push(
             productVariants.find((variant: any) => variant.type == variantType),
@@ -463,7 +463,7 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
         return;
       }
 
-      let ms = endTimestamp - now;
+      const ms = endTimestamp - now;
       if (ms <= 0) {
         setTimeLeft("Expired");
         return;
@@ -634,7 +634,7 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
 
       {/* Product Variants */}
       {productVariantTypes?.map((type: string, index: number) => {
-        let selectedVariant = !Array.isArray(selectedProductVariant)
+        const selectedVariant = !Array.isArray(selectedProductVariant)
           ? [selectedProductVariant]
           : selectedProductVariant;
         return (
@@ -650,8 +650,8 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
               }
               onChange={(e) => {
                 let selectedVariants = [];
-                let value = e.target.value;
-                let type = e.target.dataset.type;
+                const value = e.target.value;
+                const type = e.target.dataset.type;
                 const selected = productVariants.find(
                   (variant: any) =>
                     variant.type == type && variant.value == value,

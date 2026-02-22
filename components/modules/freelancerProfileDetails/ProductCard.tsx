@@ -101,12 +101,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   useEffect(() => {
     if (productVariants.length > 0) {
-      // @ts-ignore
       const variantTypes: string[] = [...new Set(productVariants.map((variant: any) => variant.type))];
       setProductVariantTypes(variantTypes);
 
       if (!productVariant) {
-        let selectedVariant: any[] = [];
+        const selectedVariant: any[] = [];
         variantTypes.forEach((variantType, index) => {
           selectedVariant.push(productVariants.find((variant: any) => variant.type == variantType));
         });
@@ -550,7 +549,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 value={selectedProductVariant?.find((variant: any) => variant.type == variantType)?.value}
                 onChange={(e) => {
                   let selectedVariants = [];
-                  let value = e.target.value;
+                  const value = e.target.value;
                   const selected = productVariants.find(
                     (variant: any) => variant.type == variantType && variant.value == value
                   );

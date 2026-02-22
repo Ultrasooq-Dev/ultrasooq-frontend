@@ -1,12 +1,8 @@
 import React from 'react';
 import { cn } from '@udecode/cn';
+// @ts-expect-error -- plate package API mismatch
 import { createZustandStore } from '@udecode/plate-common';
-import {
-  CursorData,
-  CursorOverlay as CursorOverlayPrimitive,
-  CursorOverlayProps,
-  CursorProps,
-} from '@udecode/plate-cursor';
+import { CursorData, CursorOverlay as CursorOverlayPrimitive, CursorOverlayProps, CursorProps } from '@udecode/plate-cursor';
 
 export const cursorStore = createZustandStore('cursor')({
   cursors: {},

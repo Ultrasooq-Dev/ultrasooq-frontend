@@ -240,8 +240,7 @@ const formSchemaForTypeP = (t: any) => {
       categoryLocation: z.string().trim().optional(),
       typeOfProduct: z
         .string({
-          required_error: t("provide_you_product_type"),
-          message: t("provide_you_product_type"),
+          error: t("provide_you_product_type"),
         })
         .trim(),
       brandId: z.number().min(1, { message: t("brand_is_required") }),
@@ -387,7 +386,7 @@ const formSchemaForTypeP = (t: any) => {
           .safeParse(data.productPriceList);
 
         if (!result.success) {
-          result.error.issues.forEach((issue) => ctx.addIssue(issue));
+          result.error.issues.forEach((issue) => ctx.addIssue(issue as any));
         }
       } else {
         data.productPrice = 0;
@@ -431,8 +430,7 @@ const formSchemaForTypeR = (t: any) => {
       categoryLocation: z.string().trim().optional(),
       typeOfProduct: z
         .string({
-          required_error: t("provide_you_product_type"),
-          message: t("provide_you_product_type"),
+          error: t("provide_you_product_type"),
         })
         .trim(),
       brandId: z.number().min(1, { message: t("brand_is_required") }),
@@ -449,7 +447,7 @@ const formSchemaForTypeR = (t: any) => {
           if (!value || value.length === 0) {
             return [];
           }
-          let temp: any = [];
+          const temp: any = [];
           value.forEach((item) => {
             temp.push({ tagId: item.value });
           });
@@ -673,7 +671,7 @@ const CreateProductPage = () => {
   const form = useForm({
     resolver: zodResolver(
       activeProductType === "R" ? formSchemaForTypeR(t) : formSchemaForTypeP(t),
-    ),
+    ) as any,
     defaultValues,
   });
 
@@ -1143,13 +1141,12 @@ const CreateProductPage = () => {
           ? product?.productImages
           : [];
 
-      // @ts-ignore
-      let variantTypes = [
+      const variantTypes = [
         ...new Set(variants.map((variant: any) => variant.type)),
       ];
       form.setValue(
         "productVariants",
-        variantTypes.map((type: string) => {
+        variantTypes.map((type: any) => {
           return {
             type: type,
             variants: variants
@@ -1168,7 +1165,7 @@ const CreateProductPage = () => {
                 };
               }),
           };
-        }),
+        }) as any,
       );
     }
   };
@@ -1836,9 +1833,9 @@ const CreateProductPage = () => {
     }
 
     updatedFormData.productVariant = [];
-    for (let productVariant of updatedFormData.productVariants) {
+    for (const productVariant of updatedFormData.productVariants) {
       if (productVariant.type) {
-        for (let variant of productVariant.variants) {
+        for (const variant of productVariant.variants) {
           if (variant.value) {
             updatedFormData.productVariant.push({
               type: productVariant.type,
@@ -1850,9 +1847,9 @@ const CreateProductPage = () => {
     }
 
     let productVariantImages = [];
-    for (let productVariant of updatedFormData.productVariants) {
+    for (const productVariant of updatedFormData.productVariants) {
       if (productVariant.type) {
-        for (let variant of productVariant.variants) {
+        for (const variant of productVariant.variants) {
           if (variant.image && variant.value) {
             productVariantImages.push({
               path: variant.image,
@@ -1869,7 +1866,7 @@ const CreateProductPage = () => {
           (item: any) => typeof item.path === "object",
         ),
       );
-      let updatedProductVariantImagesArray: any[] = [];
+      const updatedProductVariantImagesArray: any[] = [];
       let i = 0;
       productVariantImages.forEach((item: any) => {
         if (typeof item.path === "object") {
@@ -1889,11 +1886,11 @@ const CreateProductPage = () => {
           },
         );
 
-        for (let productVariant of updatedFormData.productVariants) {
+        for (const productVariant of updatedFormData.productVariants) {
           if (productVariant.type) {
-            for (let variant of productVariant.variants) {
+            for (const variant of productVariant.variants) {
               if (variant.image && variant.value) {
-                let variantImage = productVariantImages.find(
+                const variantImage = productVariantImages.find(
                   (image: any) =>
                     image.id == `${productVariant.type}-${variant.value}`,
                 );
@@ -2212,7 +2209,7 @@ const CreateProductPage = () => {
 
   useEffect(() => {
     const params = new URLSearchParams(document.location.search);
-    let activeProductType = params.get("productType");
+    const activeProductType = params.get("productType");
 
     if (activeProductType) {
       setActiveProductType(activeProductType);

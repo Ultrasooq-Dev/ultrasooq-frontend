@@ -42,7 +42,7 @@ export const getCurrentDay = () => {
 };
 
 export const countryObjs = countryCodes?.customList?.(
-  // @ts-ignore
+  // @ts-expect-error - type mismatch
   "countryNameEn" as CountryProperty.countryNameEn,
   "+{countryCallingCode}",
 ) || {};
@@ -97,7 +97,8 @@ export const stripHTML = (text: string) => {
 export const generateRandomSkuNoWithTimeStamp = () => new Date().getTime();
 
 // FORMAT EG: Jun 10, 2024
-export const formatDate = (isoString: string): string => {
+export const formatDate = (isoString: string | undefined): string => {
+  if (!isoString) return "-";
   const date = new Date(isoString);
 
   if (!date || date.toString() === "Invalid Date") return "-";
@@ -167,7 +168,7 @@ export const generateUniqueNumber = () => {
   return timestamp + randomNum;
 }
 
-export const convertDateTime = (dateString: string) => {
+export const convertDateTime = (dateString: string | undefined) => {
   if (!dateString) {
     return "-";
   }
@@ -185,7 +186,7 @@ export const convertDateTime = (dateString: string) => {
   return formattedDate;
 };
 
-export const convertDate = (dateString: string) => {
+export const convertDate = (dateString: string | undefined) => {
   if (!dateString) {
     return "-";
   }
@@ -199,7 +200,7 @@ export const convertDate = (dateString: string) => {
   return formattedDate;
 };
 
-export const convertTime = (dateString: string) => {
+export const convertTime = (dateString: string | undefined) => {
   if (!dateString) {
     return "-";
   }

@@ -1,12 +1,6 @@
-import {
-  MARK_BOLD,
-  MARK_CODE,
-  MARK_ITALIC,
-  MARK_STRIKETHROUGH,
-  MARK_SUBSCRIPT,
-  MARK_SUPERSCRIPT,
-  MARK_UNDERLINE,
-} from '@udecode/plate-basic-marks';
+// @ts-expect-error -- plate package API mismatch
+import { MARK_BOLD, MARK_CODE, MARK_ITALIC, MARK_STRIKETHROUGH, MARK_SUBSCRIPT, MARK_SUPERSCRIPT, MARK_UNDERLINE } from '@udecode/plate-basic-marks';
+// @ts-expect-error -- plate package API mismatch
 import { MARK_HIGHLIGHT } from '@udecode/plate-highlight';
 
 import { MyAutoformatRule } from '@/lib/plate/plate-types';

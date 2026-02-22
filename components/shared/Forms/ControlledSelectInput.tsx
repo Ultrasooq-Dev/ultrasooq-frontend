@@ -50,7 +50,7 @@ const ControlledSelectInput: React.FC<ControlledSelectInputProps> = ({
             }} 
             value={field.value} 
             {...props} 
-            // @ts-ignore
+            // @ts-expect-error - type mismatch
             dir={langDir}
           >
             <FormControl>

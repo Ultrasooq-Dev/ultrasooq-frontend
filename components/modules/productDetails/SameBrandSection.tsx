@@ -264,8 +264,8 @@ const SameBrandSection: React.FC<SameBrandSectionProps> = ({
 
   const calculateDiscountedPrice = (item: any) => {
     const price = item?.productProductPrice ? Number(item.productProductPrice) : 0;
-    let discount = item?.consumerDiscount || 0;
-    let discountType = item?.consumerDiscountType;
+    const discount = item?.consumerDiscount || 0;
+    const discountType = item?.consumerDiscountType;
     
     if (discountType === 'PERCENTAGE') {
       return Number((price - (price * discount) / 100).toFixed(2));
@@ -430,7 +430,7 @@ const SameBrandSection: React.FC<SameBrandSectionProps> = ({
 
                 <div className="flex items-center gap-2">
                   <div className="flex items-center gap-1">
-                    {memoizedSameBrandProductList.map((_, index) => (
+                    {memoizedSameBrandProductList.map((_: unknown, index: number) => (
                       <div
                         key={index}
                         className={`h-2 w-2 rounded-full transition-colors ${

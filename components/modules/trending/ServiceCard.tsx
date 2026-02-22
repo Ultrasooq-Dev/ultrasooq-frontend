@@ -414,7 +414,7 @@ const ServiceCard: React.FC<any> = ({
         return;
       }
 
-      let ms = endTimestamp - now;
+      const ms = endTimestamp - now;
       if (ms <= 0) {
         setTimeLeft(t("expired"));
         return;

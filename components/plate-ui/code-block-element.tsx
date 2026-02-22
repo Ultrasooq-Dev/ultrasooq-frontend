@@ -4,7 +4,9 @@ import './code-block-element.css';
 
 import React from 'react';
 import { cn, withRef } from '@udecode/cn';
+// @ts-expect-error -- plate package API mismatch
 import { useCodeBlockElementState } from '@udecode/plate-code-block';
+// @ts-expect-error -- plate package API mismatch
 import { PlateElement } from '@udecode/plate-common';
 
 import { CodeBlockCombobox } from './code-block-combobox';

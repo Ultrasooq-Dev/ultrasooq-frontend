@@ -6,7 +6,7 @@ export const autoformatIndentLists: AutoformatRule[] = [
     mode: 'block',
     type: 'list',
     match: ['* ', '- '],
-    format: (editor) => {
+    format: (editor: any) => {
       toggleIndentList(editor, {
         listStyleType: ListStyleType.Disc,
       });
@@ -16,7 +16,7 @@ export const autoformatIndentLists: AutoformatRule[] = [
     mode: 'block',
     type: 'list',
     match: ['1. ', '1) '],
-    format: (editor) =>
+    format: (editor: any) =>
       toggleIndentList(editor, {
         listStyleType: ListStyleType.Decimal,
       }),

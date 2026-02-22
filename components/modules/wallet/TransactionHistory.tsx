@@ -230,9 +230,11 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({
       {pagination && pagination.total > pagination.limit && (
         <div className="mt-6 pt-4 border-t border-border">
           <Pagination
-            currentPage={pagination.page}
-            totalPages={Math.ceil(pagination.total / pagination.limit)}
-            onPageChange={pagination.setPage}
+            {...{
+              currentPage: pagination.page,
+              totalPages: Math.ceil(pagination.total / pagination.limit),
+              onPageChange: pagination.setPage,
+            } as any}
           />
         </div>
       )}

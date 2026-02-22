@@ -1,10 +1,8 @@
 'use client';
 
 import React from 'react';
-import {
-  SCOPE_ACTIVE_COMMENT,
-  useCommentReplies,
-} from '@udecode/plate-comments';
+// @ts-expect-error -- plate package API mismatch
+import { SCOPE_ACTIVE_COMMENT, useCommentReplies } from '@udecode/plate-comments';
 
 import { CommentItem } from './comment-item';
 

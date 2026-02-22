@@ -2,7 +2,9 @@
 
 import React from 'react';
 import { cn, withRef } from '@udecode/cn';
+// @ts-expect-error -- plate package API mismatch
 import { useComposedRef } from '@udecode/plate-common';
+// @ts-expect-error -- plate package API mismatch
 import { useColorInput } from '@udecode/plate-font';
 
 export const ColorInput = withRef<'input'>(

@@ -181,7 +181,7 @@ const MyOrdersPage = () => {
             <div className="flex items-center gap-4">
               <Badge variant="outline" className="flex items-center gap-2">
                 <TrendingUp className="h-4 w-4" />
-                {ordersQuery?.data?.totalCount || 0} Orders
+                {(ordersQuery?.data as any)?.totalCount || 0} Orders
               </Badge>
             </div>
           </div>
@@ -403,7 +403,7 @@ const MyOrdersPage = () => {
                     </div>
                   </Card>
                 ))
-              ) : !ordersQuery?.data?.data?.length ? (
+              ) : !(ordersQuery?.data?.data as any)?.length ? (
                 <Card className="p-12 text-center">
                   <Package className="mx-auto mb-4 h-16 w-16 text-muted-foreground" />
                   <h3 className="mb-2 text-lg font-semibold text-foreground">
@@ -414,7 +414,7 @@ const MyOrdersPage = () => {
                   </p>
                 </Card>
               ) : (
-                ordersQuery?.data?.data?.map((item: any) => (
+                (ordersQuery?.data?.data as any)?.map((item: any) => (
                   <Link key={item.id} href={`/my-orders/${item.id}`}>
                     <Card className="mb-2 cursor-pointer transition-shadow duration-200 hover:shadow-lg">
                       <CardContent className="p-6">
@@ -512,12 +512,12 @@ const MyOrdersPage = () => {
             </div>
 
             {/* Pagination */}
-            {ordersQuery?.data?.totalCount > limit && (
+            {(ordersQuery?.data as any)?.totalCount > limit && (
               <div className="mt-8">
                 <Pagination
                   page={page}
                   setPage={setPage}
-                  totalCount={ordersQuery?.data?.totalCount}
+                  totalCount={(ordersQuery?.data as any)?.totalCount}
                   limit={limit}
                 />
               </div>

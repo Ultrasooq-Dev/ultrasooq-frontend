@@ -21,7 +21,7 @@ function ReactQueryProvider({ children }: React.PropsWithChildren) {
 
   return (
     <QueryClientProvider client={client}>
-      <HydrationBoundary>{children}</HydrationBoundary>
+      <HydrationBoundary state={undefined}>{children}</HydrationBoundary>
     </QueryClientProvider>
   );
 }

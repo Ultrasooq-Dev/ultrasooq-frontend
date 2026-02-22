@@ -101,7 +101,7 @@ export default function ResetPasswordPage() {
 
   useEffect(() => {
     const params = new URLSearchParams(document.location.search);
-    let accessToken = params.get("token");
+    const accessToken = params.get("token");
     if (accessToken) {
       // setCookie(PUREMOON_TOKEN_KEY, accessToken);
       setCookie(PUREMOON_TOKEN_KEY, accessToken, {

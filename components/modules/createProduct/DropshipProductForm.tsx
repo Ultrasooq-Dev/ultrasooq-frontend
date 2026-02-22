@@ -28,7 +28,7 @@ const dropshipFormSchema = (t: any) => {
   });
 };
 
-interface DropshipProductFormProps {}
+type DropshipProductFormProps = Record<string, never>;
 
 const DropshipProductForm: React.FC<DropshipProductFormProps> = () => {
   const t = useTranslations();

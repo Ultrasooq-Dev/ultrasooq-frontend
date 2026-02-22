@@ -41,8 +41,8 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({ sellerId }) => {
   useEffect(() => {
     const params = new URLSearchParams(document.location.search);
 
-    let productPriceId = params.get("productPriceId");
-    let productId = params.get("productId");
+    const productPriceId = params.get("productPriceId");
+    const productId = params.get("productId");
 
     setActiveProductPriceId(productPriceId);
     setActiveProductId(productId);

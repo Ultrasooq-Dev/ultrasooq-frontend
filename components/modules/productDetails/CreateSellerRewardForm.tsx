@@ -21,9 +21,9 @@ import ControlledTimePicker from "@/components/shared/Forms/ControlledTimePicker
 const addFormSchema = (t: any) => {
     return z.object({
         productId: z.string().min(1, t("product_required")),
-        startDate: z.date({ required_error: t("start_date_required") }),
+        startDate: z.date({ error: t("start_date_required") }),
         startTime: z.string().min(2, { message: t("start_time_required") }),
-        endDate: z.date({ required_error: t("end_date_required") }),
+        endDate: z.date({ error: t("end_date_required") }),
         endTime: z.string().min(2, { message: t("end_time_required") }),
         rewardPercentage: z.coerce.number().min(1, { message: t("minimum_value_must_be_n", { n: 1 }) }),
         rewardFixAmount: z.coerce.number().min(1, { message: t("minimum_value_must_be_n", { n: 1 }) }),
@@ -81,8 +81,8 @@ const CreateSellerRewardForm: React.FC<CreateSellerRewardFormProps> = ({ onClose
     }, [productsQuery?.data?.data]);
 
     const onSubmit = async (values: typeof addDefaultValues) => {
-        let startDateTime = values.startDate;
-        let endDateTime = values.endDate;
+        const startDateTime = values.startDate;
+        const endDateTime = values.endDate;
 
         if (startDateTime.getTime() > endDateTime.getTime()) {
             toast({
@@ -102,11 +102,11 @@ const CreateSellerRewardForm: React.FC<CreateSellerRewardFormProps> = ({ onClose
             return;
         }
 
-        let startTime = values.startTime.split(':');
+        const startTime = values.startTime.split(':');
         startDateTime.setHours(Number(startTime[0]));
         startDateTime.setMinutes(Number(startTime[1]));
 
-        let endTime = values.endTime.split(':');
+        const endTime = values.endTime.split(':');
         endDateTime.setHours(Number(endTime[0]));
         endDateTime.setMinutes(Number(endTime[1]));
 
@@ -207,7 +207,7 @@ const CreateSellerRewardForm: React.FC<CreateSellerRewardFormProps> = ({ onClose
                                     <Input
                                         type="number"
                                         className="h-[48px]! rounded border-border focus-visible:ring-0!"
-                                        {...field}
+                                        {...(field as any)}
                                         dir={langDir}
                                     />
                                 </FormControl>
@@ -226,7 +226,7 @@ const CreateSellerRewardForm: React.FC<CreateSellerRewardFormProps> = ({ onClose
                                     <Input
                                         type="number"
                                         className="h-[48px]! rounded border-border focus-visible:ring-0!"
-                                        {...field}
+                                        {...(field as any)}
                                         dir={langDir}
                                     />
                                 </FormControl>
@@ -245,7 +245,7 @@ const CreateSellerRewardForm: React.FC<CreateSellerRewardFormProps> = ({ onClose
                                     <Input
                                         type="number"
                                         className="h-[48px]! rounded border-border focus-visible:ring-0!"
-                                        {...field}
+                                        {...(field as any)}
                                         dir={langDir}
                                     />
                                 </FormControl>
@@ -264,7 +264,7 @@ const CreateSellerRewardForm: React.FC<CreateSellerRewardFormProps> = ({ onClose
                                     <Input
                                         type="number"
                                         className="h-[48px]! rounded border-border focus-visible:ring-0!"
-                                        {...field}
+                                        {...(field as any)}
                                         dir={langDir}
                                     />
                                 </FormControl>

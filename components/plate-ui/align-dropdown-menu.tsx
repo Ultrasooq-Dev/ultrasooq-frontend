@@ -2,10 +2,8 @@
 
 import React from 'react';
 import { DropdownMenuProps } from '@radix-ui/react-dropdown-menu';
-import {
-  useAlignDropdownMenu,
-  useAlignDropdownMenuState,
-} from '@udecode/plate-alignment';
+// @ts-expect-error -- plate package API mismatch
+import { useAlignDropdownMenu, useAlignDropdownMenuState } from '@udecode/plate-alignment';
 
 import { Icons, iconVariants } from '@/components/icons';
 

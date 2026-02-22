@@ -1,6 +1,8 @@
 import React from 'react';
 import { cn, withRef } from '@udecode/cn';
+// @ts-expect-error -- plate package API mismatch
 import { getHandler, PlateElement, useElement } from '@udecode/plate-common';
+// @ts-expect-error -- plate package API mismatch
 import { TMentionElement } from '@udecode/plate-mention';
 import { useFocused, useSelected } from 'slate-react';
 

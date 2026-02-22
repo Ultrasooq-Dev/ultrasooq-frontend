@@ -75,17 +75,17 @@ const HeroBanner: React.FC = () => {
           {/* Main Banner Carousel */}
           {mainBanners.length > 0 && (
             <div className="lg:col-span-1 order-1">
-              <BannerCarousel banners={mainBanners} onBannerClick={trackClick} />
+              <BannerCarousel banners={mainBanners} onBannerClick={trackClick.mutate} />
             </div>
           )}
 
           {/* Side Banners */}
           <div className="lg:col-span-1 order-2 flex flex-col gap-5 sm:gap-6 lg:gap-8">
             {sideTopBanners.length > 0 && (
-              <BannerList banners={sideTopBanners} onBannerClick={trackClick} />
+              <BannerList banners={sideTopBanners} onBannerClick={trackClick.mutate} />
             )}
             {sideBottomBanners.length > 0 && (
-              <BannerList banners={sideBottomBanners} onBannerClick={trackClick} />
+              <BannerList banners={sideBottomBanners} onBannerClick={trackClick.mutate} />
             )}
           </div>
         </div>
@@ -95,10 +95,11 @@ const HeroBanner: React.FC = () => {
 };
 
 // Carousel for main banners
-const BannerCarousel: React.FC<{ 
+const BannerCarousel: React.FC<{
   banners: IBanner[];
   onBannerClick: (id: number) => void;
 }> = ({ banners, onBannerClick }) => {
+  const t = useTranslations();
   const [currentIndex, setCurrentIndex] = useState(0);
   
   useEffect(() => {
@@ -227,10 +228,11 @@ const BannerList: React.FC<{
 };
 
 // Single banner card
-const BannerCard: React.FC<{ 
+const BannerCard: React.FC<{
   banner: IBanner;
   onBannerClick: (id: number) => void;
 }> = ({ banner, onBannerClick }) => {
+  const t = useTranslations();
   const handleClick = () => {
     if (banner.link && banner.id) {
       onBannerClick(banner.id);

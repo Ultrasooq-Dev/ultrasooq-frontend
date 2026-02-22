@@ -296,12 +296,12 @@ export const STATUS_LIST: { label: string; value: string }[] = [
   },
 ];
 
-export const formattedDate = (formatDate: string) =>
-  new Date(formatDate).toLocaleDateString("en-US", {
+export const formattedDate = (formatDate: string | undefined) =>
+  formatDate ? new Date(formatDate).toLocaleDateString("en-US", {
     day: "numeric",
     month: "short",
     year: "numeric",
-  });
+  }) : "-";
 
 export const videoExtensions: string[] = ["mp4", "mkv", "avi", "mov", "wmv"];
 export const imageExtensions: string[] = [

@@ -1,4 +1,5 @@
-const createNextIntlPlugin = require("next-intl/plugin");
+import createNextIntlPlugin from "next-intl/plugin";
+
 const withNextIntl = createNextIntlPlugin();
 
 /** @type {import('next').NextConfig} */
@@ -6,13 +7,7 @@ const nextConfig = withNextIntl({
   output: "standalone",
   reactStrictMode: true,
   serverExternalPackages: ["isomorphic-dompurify"],
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  allowedDevOrigins: ["192.168.29.205"],
+  allowedDevOrigins: ["192.168.29.205", "127.0.0.1", "localhost"],
   async headers() {
     return [
       {
@@ -71,4 +66,4 @@ const nextConfig = withNextIntl({
   },
 });
 
-module.exports = nextConfig;
+export default nextConfig;

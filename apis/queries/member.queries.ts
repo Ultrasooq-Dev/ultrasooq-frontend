@@ -7,7 +7,8 @@ export const useCreateMember = () => {
   const queryClient = useQueryClient();
     return useMutation<
       APIResponse,
-      APIResponseError
+      APIResponseError,
+      Record<string, unknown>
     >({
       mutationFn: async (payload) => {
         const res = await createMember(payload);
@@ -27,7 +28,8 @@ export const useCreateMember = () => {
     const queryClient = useQueryClient();
       return useMutation<
         APIResponse,
-        APIResponseError
+        APIResponseError,
+        Record<string, unknown>
       >({
         mutationFn: async (payload) => {
           const res = await updateMember(payload);
@@ -70,7 +72,8 @@ export const useCreateMember = () => {
       const queryClient = useQueryClient();
       return useMutation<
         APIResponse,
-        APIResponseError
+        APIResponseError,
+        Record<string, unknown>
       >({
         mutationFn: async (payload) => {
           const res = await setPermission(payload);
@@ -100,7 +103,8 @@ export const useCreateMember = () => {
     const queryClient = useQueryClient();
     return useMutation<
       APIResponse,
-      APIResponseError
+      APIResponseError,
+      Record<string, unknown>
     >({
       mutationFn: async (payload) => {
         const res = await updatePermission(payload);

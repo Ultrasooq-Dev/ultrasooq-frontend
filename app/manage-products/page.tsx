@@ -515,7 +515,7 @@ const ManageProductsPage = () => {
   };
 
   const form = useForm({
-    resolver: zodResolver(schema(t)),
+    resolver: zodResolver(schema(t)) as any,
     defaultValues,
   });
 
@@ -934,9 +934,9 @@ const ManageProductsPage = () => {
                       {(() => {
                         const account = currentAccount?.data?.account;
                         if (currentAccount?.data?.isMainAccount) {
-                          return account?.firstName || account?.name || "Main Account";
+                          return (account as any)?.firstName || (account as any)?.name || "Main Account";
                         } else {
-                          return account?.accountName || account?.companyName || "Account";
+                          return (account as any)?.accountName || (account as any)?.companyName || "Account";
                         }
                       })()}
                     </h1>
@@ -1436,6 +1436,10 @@ const ManageProductsPage = () => {
                                video: string | null;
                              }[];
                              productName: string;
+                             productPrice?: string;
+                             offerPrice?: string;
+                             productType?: string;
+                             isDropshipped?: boolean;
                            };
                            productPrice_productSellerImage: {
                              id: number;
@@ -1845,7 +1849,7 @@ const ManageProductsPage = () => {
                           productId={product.id}
                           status={product.status}
                           productImage={
-                            product.productImages?.find(img => 
+                            product.productImages?.find((img: any) =>
                               img.variant?.type === 'marketing'
                             )?.image || product.productImages?.[0]?.image
                           }

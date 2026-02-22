@@ -551,7 +551,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
       user: {
         firstName: user?.firstName,
         lastName: user?.lastName,
-        accountName: user?.accountName,
+        accountName: (user as any)?.accountName,
       },
       rfqQuotesUserId: null,
       attachments: attach,
@@ -611,7 +611,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
         user: {
           firstName: user?.firstName,
           lastName: user?.lastName,
-          accountName: user?.accountName,
+          accountName: (user as any)?.accountName,
         },
         rfqQuotesUserId: null,
         attachments: attach,

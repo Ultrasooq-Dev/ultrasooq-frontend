@@ -22,8 +22,8 @@ export const useVendorBusinessCategories = () => {
   // Method 2: Try useUniqueUser with account/user ID
   // Get the user ID from current account (for subaccounts) or fallback to main user
   const account = currentAccount?.data?.data?.account;
-  const userId = account?.userId 
-    ? Number(account.userId)
+  const userId = (account as any)?.userId
+    ? Number((account as any).userId)
     : (account?.id && !currentAccount?.data?.data?.isMainAccount)
       ? Number(account.id) // For sub-accounts, use account id if userId is not available
       : (user?.id ? Number(user.id) : undefined);

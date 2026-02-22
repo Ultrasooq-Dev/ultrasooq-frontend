@@ -1,10 +1,9 @@
 import React from 'react';
 import { cn, withRef } from '@udecode/cn';
+// @ts-expect-error -- plate package API mismatch
 import { PlateElement } from '@udecode/plate-common';
-import {
-  useTodoListElement,
-  useTodoListElementState,
-} from '@udecode/plate-list';
+// @ts-expect-error -- plate package API mismatch
+import { useTodoListElement, useTodoListElementState } from '@udecode/plate-list';
 
 import { Checkbox } from './checkbox';
 

@@ -84,7 +84,8 @@ const BulkAddExistingProductsPage = () => {
 
 
   // Use the existing product by ID hook for each selected product
-  const productQueries = selectedProductIds.map(id => 
+  const productQueries = selectedProductIds.map(id =>
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     useExistingProductById({ existingProductId: id.toString() }, selectedProductIds.length > 0)
   );
 

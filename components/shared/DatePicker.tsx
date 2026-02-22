@@ -22,7 +22,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ placeholder }) => {
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          variant={"outline-solid"}
+          variant={"outline"}
           className={cn(
             "h-12! justify-start rounded border-border pl-3 text-left font-normal focus-visible:ring-0!",
             !date && "text-muted-foreground",

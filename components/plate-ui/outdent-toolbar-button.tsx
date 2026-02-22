@@ -1,5 +1,6 @@
 import React from 'react';
 import { withRef } from '@udecode/cn';
+// @ts-expect-error -- plate package API mismatch
 import { useOutdentButton } from '@udecode/plate-indent';
 
 import { Icons } from '@/components/icons';

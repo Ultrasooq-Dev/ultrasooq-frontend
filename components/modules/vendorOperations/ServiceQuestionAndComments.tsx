@@ -42,7 +42,7 @@ const ServiceQuestionAndAnswers: React.FC<QuestionAndAnswersProps> = ({
   const memoizedQuestions = useMemo(() => {
     return (
       questionQuery?.data?.data?.map((item: any) => {
-        let question: { [key: string]: any } = {
+        const question: { [key: string]: any } = {
           id: item.id,
           question: item.question,
           questionByUserId: item.questionByUserId,
@@ -55,7 +55,7 @@ const ServiceQuestionAndAnswers: React.FC<QuestionAndAnswersProps> = ({
 
         if (item.productQuestionAnswerDetail.length > 0) {
           item.productQuestionAnswerDetail.forEach((elem: any, i: number) => {
-            let answer: { [key: string]: any } = {
+            const answer: { [key: string]: any } = {
               id: elem.id,
               answer: elem.answer,
               answeredBy: "",

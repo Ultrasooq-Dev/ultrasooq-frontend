@@ -429,6 +429,7 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
                                                   height="100%"
                                                   // playing
                                                   controls
+                                                  {...({} as any)}
                                                 />
                                               </div>
 

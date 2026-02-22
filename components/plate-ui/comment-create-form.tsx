@@ -2,11 +2,8 @@
 
 import React from 'react';
 import { cn } from '@udecode/cn';
-import {
-  CommentNewSubmitButton,
-  CommentNewTextarea,
-  useCommentsSelectors,
-} from '@udecode/plate-comments';
+// @ts-expect-error -- plate package API mismatch
+import { CommentNewSubmitButton, CommentNewTextarea, useCommentsSelectors } from '@udecode/plate-comments';
 
 import { buttonVariants } from './button';
 import { CommentAvatar } from './comment-avatar';

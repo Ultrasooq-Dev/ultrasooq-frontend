@@ -130,7 +130,7 @@ const OrdersPage = () => {
            setClearCard(true);  
           return;
         }
-         let data: Record<string, any> = { ...orders.orders }; // Using Record<string, any> to allow dynamic properties
+         const data: Record<string, any> = { ...orders.orders }; // Using Record<string, any> to allow dynamic properties
        
          data.paymentMethod = paymentType;
          if (paymentIntentId )  data.paymentIntentId = paymentIntentId;
@@ -150,7 +150,7 @@ const OrdersPage = () => {
       }
     } else {
       if (orders.orders) {
-        let data: Record<string, any> = { ...orders.orders }; // Using Record<string, any> to allow dynamic properties
+        const data: Record<string, any> = { ...orders.orders }; // Using Record<string, any> to allow dynamic properties
        
          data.paymentMethod = paymentType;
          if (paymentIntentId )  data.paymentIntentId = paymentIntentId;

@@ -173,7 +173,7 @@ const CompleteOrderPage = () => {
           }
         }
 
-        let data: {[key: string]: any} = { ...orderStore.orders };
+        const data: {[key: string]: any} = { ...orderStore.orders };
         
         // If this is an RFQ order, load RFQ data from sessionStorage
         if (isRfqOrder && rfqQuoteData) {
@@ -261,7 +261,7 @@ const CompleteOrderPage = () => {
     }
 
     // For ADVANCE payment, continue with Paymob
-    let data: { [key: string]: any } = {
+    const data: { [key: string]: any } = {
       amount: advanceAmount * 1000,
       billing_data: {
         first_name: orderStore.orders.firstName,
@@ -288,7 +288,7 @@ const CompleteOrderPage = () => {
     if (response?.status) {
       setIsRedirectingToPaymob(true);
       window.location.assign(
-        `${process.env.NEXT_PUBLIC_PAYMOB_PAYMENT_URL}?publicKey=${process.env.NEXT_PUBLIC_PAYMOB_PUBLIC_KEY}&clientSecret=${response.data.client_secret}`,
+        `${process.env.NEXT_PUBLIC_PAYMOB_PAYMENT_URL}?publicKey=${process.env.NEXT_PUBLIC_PAYMOB_PUBLIC_KEY}&clientSecret=${(response.data as any).client_secret}`,
       );
     } else {
       toast({
@@ -458,7 +458,7 @@ const CompleteOrderPage = () => {
   };
 
   const handleCreateEmiPayment = async (orderId: number) => {
-    let data: { [key: string]: any } = {
+    const data: { [key: string]: any } = {
       amount: emiAmount * 1000,
       billing_data: {
         first_name: orderStore.orders.firstName,
@@ -485,7 +485,7 @@ const CompleteOrderPage = () => {
     if (response?.status) {
       setIsRedirectingToPaymob(true);
       window.location.assign(
-        `${process.env.NEXT_PUBLIC_PAYMOB_PAYMENT_URL}?publicKey=${process.env.NEXT_PUBLIC_PAYMOB_PUBLIC_KEY}&clientSecret=${response.data.client_secret}`,
+        `${process.env.NEXT_PUBLIC_PAYMOB_PAYMENT_URL}?publicKey=${process.env.NEXT_PUBLIC_PAYMOB_PUBLIC_KEY}&clientSecret=${(response.data as any).client_secret}`,
       );
     } else {
       toast({

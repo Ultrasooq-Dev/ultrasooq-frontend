@@ -1,10 +1,7 @@
 import React from 'react';
 import { cn } from '@udecode/cn';
-import {
-  EmojiCategoryList,
-  IEmojiFloatingLibrary,
-  UseEmojiPickerType,
-} from '@udecode/plate-emoji';
+// @ts-expect-error -- plate package API mismatch
+import { EmojiCategoryList, IEmojiFloatingLibrary, UseEmojiPickerType } from '@udecode/plate-emoji';
 
 export type EmojiPickerNavigationProps = Pick<
   UseEmojiPickerType,
@@ -47,7 +44,7 @@ export function EmojiPickerNavigation({
         {emojiLibrary
           .getGrid()
           .sections()
-          .map(({ id }) => (
+          .map(({ id }: any) => (
             <button
               key={id}
               aria-label={i18n.categories[id]}

@@ -77,13 +77,13 @@ const formSchema = (t: any) => {
         message: t("address_must_be_less_than_n_chars", { n: 50 }),
       }),
     countryId: z.coerce
-      .number({ required_error: t("province_required") })
+      .number({ error: t("province_required") })
       .min(1, { message: t("country_required") }),
     stateId: z.coerce
-      .number({ required_error: t("province_required") })
+      .number({ error: t("province_required") })
       .min(1, { message: t("province_required") }),
     cityId: z.coerce
-      .number({ required_error: t("province_required") })
+      .number({ error: t("province_required") })
       .min(1, { message: t("city_required") }),
     town: z
       .string()
@@ -151,11 +151,11 @@ const AddressForm: React.FC<AddressFormProps> = ({ addressId, onClose }) => {
 
   const fetchStatesByCountry = async () => {
     if (selectedCountryId) {
-      let data = await statesQuery.mutateAsync({
+      const data = await statesQuery.mutateAsync({
         countryId: selectedCountryId,
       });
       setStates(
-        data?.data?.map((state: any) => {
+        (data?.data as any[])?.map((state: any) => {
           return { label: state.name, value: state.id };
         }) || [],
       );
@@ -168,9 +168,9 @@ const AddressForm: React.FC<AddressFormProps> = ({ addressId, onClose }) => {
 
   const fetchCitiesByState = async () => {
     if (selectedStateId) {
-      let data = await citiesQuery.mutateAsync({ stateId: selectedStateId });
+      const data = await citiesQuery.mutateAsync({ stateId: selectedStateId });
       setCities(
-        data?.data?.map((city: any) => {
+        (data?.data as any[])?.map((city: any) => {
           return { label: city.name, value: city.id };
         }) || [],
       );
@@ -266,7 +266,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ addressId, onClose }) => {
       </div>
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit(onSubmit as any)}
           className="card-item card-payment-form px-5 pb-5 pt-3"
         >
           <input type="text" name="countryId" style={{ display: "none" }} />
@@ -332,7 +332,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ addressId, onClose }) => {
                     placeholder={t("select")}
                     styles={customStyles}
                     isRtl={langDir == "rtl"}
-                    // @ts-ignore
+                    // @ts-expect-error - type mismatch
                     onFocus={(e) => (e.target.autocomplete = "none")}
                   />
                 )}
@@ -349,9 +349,9 @@ const AddressForm: React.FC<AddressFormProps> = ({ addressId, onClose }) => {
                 control={form.control}
                 render={({ field }) => (
                   <Select
-                    // @ts-ignore
+                    // @ts-expect-error - type mismatch
                     options={states}
-                    // @ts-ignore
+                    // @ts-expect-error - type mismatch
                     value={states.find((state) => state.value == field.value)}
                     onChange={(
                       selectedOption: SingleValue<{
@@ -366,7 +366,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ addressId, onClose }) => {
                     placeholder={t("select")}
                     styles={customStyles}
                     isRtl={langDir == "rtl"}
-                    // @ts-ignore
+                    // @ts-expect-error - type mismatch
                     onFocus={(e) => (e.target.autocomplete = "none")}
                   />
                 )}
@@ -385,9 +385,9 @@ const AddressForm: React.FC<AddressFormProps> = ({ addressId, onClose }) => {
                 control={form.control}
                 render={({ field }) => (
                   <Select
-                    // @ts-ignore
+                    // @ts-expect-error - type mismatch
                     options={cities}
-                    // @ts-ignore
+                    // @ts-expect-error - type mismatch
                     value={cities.find((city) => city.value == field.value)}
                     onChange={(
                       selectedOption: SingleValue<{
@@ -399,7 +399,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ addressId, onClose }) => {
                     placeholder={t("select")}
                     styles={customStyles}
                     isRtl={langDir == "rtl"}
-                    // @ts-ignore
+                    // @ts-expect-error - type mismatch
                     onFocus={(e) => (e.target.autocomplete = "none")}
                   />
                 )}

@@ -674,7 +674,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
             });
             
             if (response?.data) {
-              newStatesByCountry[country.value] = response.data.map((state: any) => ({
+              newStatesByCountry[country.value] = (response.data as any[]).map((state: any) => ({
                 label: state.name,
                 value: state.id.toString(),
               }));
@@ -707,7 +707,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
             });
             
             if (response?.data) {
-              newCitiesByState[state.value] = response.data.map((city: any) => ({
+              newCitiesByState[state.value] = (response.data as any[]).map((city: any) => ({
                 label: city.name,
                 value: city.id.toString(),
               }));

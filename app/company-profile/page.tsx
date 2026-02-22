@@ -51,7 +51,7 @@ const formSchema = (t: any) => {
       .min(2, { message: t("company_name_required") })
       .max(50, { message: t("company_name_must_be_less_than_50_chars") }),
     businessTypeList: z
-      .string({ required_error: t("business_type_required") })
+      .string({ error: t("business_type_required") })
       .transform((value) => [{ businessTypeId: Number(value) }]),
     annualPurchasingVolume: z
       .string()
@@ -102,14 +102,14 @@ const formSchema = (t: any) => {
                 value: z.number(),
               }),
               {
-                required_error: t("business_type_required"),
+                error: t("business_type_required"),
               },
             )
             .min(1, {
               message: t("business_type_required"),
             })
             .transform((value) => {
-              let temp: any = [];
+              const temp: any = [];
               value.forEach((item) => {
                 temp.push({ businessTypeId: item.value });
               });
@@ -211,7 +211,7 @@ export default function CompanyProfilePage() {
   const router = useRouter();
   const { toast } = useToast();
   const form = useForm({
-    resolver: zodResolver(formSchema(t)),
+    resolver: zodResolver(formSchema(t)) as any,
     defaultValues: {
       uploadImage: undefined,
       logo: "",
@@ -270,6 +270,33 @@ export default function CompanyProfilePage() {
   const currentAccountData = currentAccount?.data?.data?.account;
   const currentTradeRole = currentAccountData?.tradeRole;
 
+  const fieldArray = useFieldArray({
+    control: form.control,
+    name: "branchList",
+  });
+
+  const memoizedCountries = useMemo(() => {
+    return (
+      countriesQuery?.data?.data.map((item: ICountries) => {
+        return { label: item.countryName, value: item.countryName };
+      }) || []
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [countriesQuery?.data?.data?.length]);
+
+  const memoizedTags = useMemo(() => {
+    return (
+      tagsQuery?.data?.data.map((item: { id: string; tagName: string }) => {
+        return { label: item.tagName, value: item.id };
+      }) || []
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tagsQuery?.data?.data?.length]);
+
+  const memoizedLastTwoHundredYears = useMemo(() => {
+    return getLastTwoHundredYears() || [];
+  }, []);
+
   // Redirect if user is not on a COMPANY account
   React.useEffect(() => {
     if (currentTradeRole && currentTradeRole !== 'COMPANY') {
@@ -292,11 +319,6 @@ export default function CompanyProfilePage() {
       </div>
     );
   }
-
-  const fieldArray = useFieldArray({
-    control: form.control,
-    name: "branchList",
-  });
 
   const appendBranchList = () =>
     fieldArray.append({
@@ -329,28 +351,6 @@ export default function CompanyProfilePage() {
 
   const removeBranchList = (index: number) => fieldArray.remove(index);
 
-  const memoizedCountries = useMemo(() => {
-    return (
-      countriesQuery?.data?.data.map((item: ICountries) => {
-        return { label: item.countryName, value: item.countryName };
-      }) || []
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [countriesQuery?.data?.data?.length]);
-
-  const memoizedTags = useMemo(() => {
-    return (
-      tagsQuery?.data?.data.map((item: { id: string; tagName: string }) => {
-        return { label: item.tagName, value: item.id };
-      }) || []
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tagsQuery?.data?.data?.length]);
-
-  const memoizedLastTwoHundredYears = useMemo(() => {
-    return getLastTwoHundredYears() || [];
-  }, []);
-
   const handleUploadedFile = async (files: FileList | null) => {
     if (files) {
       const formData = new FormData();
@@ -363,7 +363,7 @@ export default function CompanyProfilePage() {
   };
 
   const onSubmit = async (formData: any) => {
-    let data = {
+    const data = {
       ...formData,
       aboutUs: formData.aboutUsJson?.length
         ? JSON.stringify(formData.aboutUsJson)

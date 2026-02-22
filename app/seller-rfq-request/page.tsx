@@ -55,7 +55,7 @@ const SellerRfqRequestPage = () => {
     }
 
     const params = new URLSearchParams(document.location.search);
-    let pId = params.get("product_id");
+    const pId = params.get("product_id");
     if (pId) {
       setProductId(parseInt(pId));
       setCurrentTab("MSG");
@@ -154,7 +154,7 @@ const SellerRfqRequestPage = () => {
                   className={cn(
                     "flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left transition-colors",
                     isSidebarCollapsed && "justify-center px-2",
-                    currentTab === "RFQ"
+                    (currentTab as string) === "RFQ"
                       ? "bg-destructive/5 text-destructive"
                       : "text-muted-foreground hover:bg-muted"
                   )}
@@ -162,7 +162,7 @@ const SellerRfqRequestPage = () => {
                 >
                   <div className={cn(
                     "h-4 w-4 rounded flex-shrink-0",
-                    currentTab === "RFQ" ? "bg-destructive" : "bg-muted-foreground"
+                    (currentTab as string) === "RFQ" ? "bg-destructive" : "bg-muted-foreground"
                   )}></div>
                   {!isSidebarCollapsed && (
                     <span className="font-medium">RFQ</span>
@@ -173,7 +173,7 @@ const SellerRfqRequestPage = () => {
                   className={cn(
                     "flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left transition-colors",
                     isSidebarCollapsed && "justify-center px-2",
-                    currentTab === "Product Messages"
+                    (currentTab as string) === "Product Messages"
                       ? "bg-destructive/5 text-destructive"
                       : "text-muted-foreground hover:bg-muted"
                   )}
@@ -181,7 +181,7 @@ const SellerRfqRequestPage = () => {
                 >
                   <div className={cn(
                     "h-4 w-4 rounded flex-shrink-0",
-                    currentTab === "Product Messages" ? "bg-destructive" : "bg-muted-foreground"
+                    (currentTab as string) === "Product Messages" ? "bg-destructive" : "bg-muted-foreground"
                   )}></div>
                   {!isSidebarCollapsed && (
                     <span className="font-medium">Message System</span>
@@ -461,7 +461,7 @@ const SellerRfqRequestPage = () => {
                   className={cn(
                     "flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left transition-colors",
                     isSidebarCollapsed && "justify-center px-2",
-                    currentTab === "RFQ"
+                    (currentTab as string) === "RFQ"
                       ? "bg-destructive/5 text-destructive"
                       : "text-muted-foreground hover:bg-muted"
                   )}
@@ -469,7 +469,7 @@ const SellerRfqRequestPage = () => {
                 >
                   <div className={cn(
                     "h-4 w-4 rounded flex-shrink-0",
-                    currentTab === "RFQ" ? "bg-destructive" : "bg-muted-foreground"
+                    (currentTab as string) === "RFQ" ? "bg-destructive" : "bg-muted-foreground"
                   )}></div>
                   {!isSidebarCollapsed && (
                     <span className="font-medium">RFQ</span>
@@ -480,7 +480,7 @@ const SellerRfqRequestPage = () => {
                   className={cn(
                     "flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left transition-colors",
                     isSidebarCollapsed && "justify-center px-2",
-                    currentTab === "Product Messages"
+                    (currentTab as string) === "Product Messages"
                       ? "bg-destructive/5 text-destructive"
                       : "text-muted-foreground hover:bg-muted"
                   )}
@@ -488,7 +488,7 @@ const SellerRfqRequestPage = () => {
                 >
                   <div className={cn(
                     "h-4 w-4 rounded flex-shrink-0",
-                    currentTab === "Product Messages" ? "bg-destructive" : "bg-muted-foreground"
+                    (currentTab as string) === "Product Messages" ? "bg-destructive" : "bg-muted-foreground"
                   )}></div>
                   {!isSidebarCollapsed && (
                     <span className="font-medium">Message System</span>

@@ -105,8 +105,8 @@ const ReactSelectInput: React.FC<{
         description: response.message,
         variant: "success",
       });
-      setValue({ label: response.data.brandName, value: response.data.id });
-      formContext.setValue("brandId", response.data.id);
+      setValue({ label: (response.data as any).brandName, value: (response.data as any).id });
+      formContext.setValue("brandId", (response.data as any).id);
     } else {
       toast({
         title: t("brand_create_failed"),

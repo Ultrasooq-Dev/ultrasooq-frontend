@@ -8,7 +8,7 @@ import {
 } from "../requests/upload.requests";
 
 export const useUploadFile = () =>
-  useMutation<IUploadFile, APIResponseError, {}>({
+  useMutation<IUploadFile, APIResponseError, FormData>({
     mutationFn: async (payload) => {
       const res = await uploadFile(payload);
       return res.data;
@@ -19,7 +19,7 @@ export const useUploadFile = () =>
   });
 
 export const useUploadMultipleFile = () =>
-  useMutation<IUploadFile, APIResponseError, {}>({
+  useMutation<IUploadFile, APIResponseError, FormData>({
     mutationFn: async (payload) => {
       const res = await uploadMultipleFile(payload);
       return res.data;
@@ -34,7 +34,8 @@ export const useDeleteFile = () =>
     IUploadFile,
     APIResponseError,
     {
-      key: string;
+      fileName: string;
+      [key: string]: unknown;
     }
   >({
     mutationFn: async (payload) => {

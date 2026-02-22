@@ -32,7 +32,7 @@ const SellerOrdersPage = () => {
 
   // Read term from URL query parameter on mount
   useEffect(() => {
-    const termFromUrl = searchParams.get("term");
+    const termFromUrl = searchParams?.get("term");
     if (termFromUrl && searchRef.current) {
       setSearchTerm(termFromUrl);
       searchRef.current.value = termFromUrl;
@@ -276,7 +276,7 @@ const SellerOrdersPage = () => {
                 : null}
 
               {!ordersBySellerIdQuery.isLoading &&
-              !ordersBySellerIdQuery?.data?.data?.length ? (
+              !(ordersBySellerIdQuery?.data?.data as any)?.length ? (
                 <div className="w-full p-3">
                   <p className="text-center text-lg font-semibold" dir={langDir} translate="no">
                     {t("no_orders_found")}
@@ -284,7 +284,7 @@ const SellerOrdersPage = () => {
                 </div>
               ) : null}
 
-              {ordersBySellerIdQuery?.data?.data?.map(
+              {(ordersBySellerIdQuery?.data?.data as any)?.map(
                 (item: {
                   id: number;
                   orderProductType?: string;
@@ -340,11 +340,11 @@ const SellerOrdersPage = () => {
                 ),
               )}
 
-              {ordersBySellerIdQuery?.data?.totalCount > limit ? (
+              {(ordersBySellerIdQuery?.data as any)?.totalCount > limit ? (
                 <Pagination
                   page={page}
                   setPage={setPage}
-                  totalCount={ordersBySellerIdQuery?.data?.totalCount}
+                  totalCount={(ordersBySellerIdQuery?.data as any)?.totalCount}
                   limit={limit}
                 />
               ) : null}

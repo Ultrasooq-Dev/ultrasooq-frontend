@@ -31,7 +31,7 @@ const CreateDropshipableProductPage = () => {
   const [isRedirecting, setIsRedirecting] = useState(false);
 
   // Get productId from URL params
-  const productId = searchParams.get('productId');
+  const productId = searchParams?.get('productId');
 
   const { data: searchData, refetch: searchProducts, isError, error } = useExistingProduct(
     {

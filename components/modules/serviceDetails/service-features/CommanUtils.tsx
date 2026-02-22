@@ -23,7 +23,7 @@ export const DatePicker = ({
         <Popover open={datePopoverOpen} onOpenChange={setDatePopoverOpen}>
             <PopoverTrigger asChild>
                 <Button
-                    variant={"outline-solid"}
+                    variant={"outline" as any}
                     className={cn(
                         "h-12! rounded border-border pl-3 text-left font-normal focus-visible:ring-0!",
                         !selectedFeature?.date && "text-muted-foreground",
@@ -79,7 +79,7 @@ export const TimePicker = ({
         <Popover open={timePopoverOpen} onOpenChange={setTimePopoverOpen}>
             <PopoverTrigger asChild>
                 <Button
-                    variant={"outline-solid"}
+                    variant={"outline" as any}
                     className={cn(
                         "h-12! rounded border-border pl-3 text-left font-normal focus-visible:ring-0!",
                         !selectedFeature?.time && "text-muted-foreground",
@@ -113,8 +113,8 @@ export const TimePicker = ({
                         {t("select_time")}
                     </option>
                     {timeOptions.map((time) => (
-                        <option key={time} value={time}>
-                            {time}
+                        <option key={time.value} value={time.value}>
+                            {time.label}
                         </option>
                     ))}
                 </select>

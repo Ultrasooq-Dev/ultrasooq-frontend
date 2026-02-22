@@ -1,13 +1,11 @@
 import React from 'react';
 import { cn, withRef } from '@udecode/cn';
+// @ts-expect-error -- plate package API mismatch
 import { PlateElement, withHOC } from '@udecode/plate-common';
-import {
-  ELEMENT_MEDIA_EMBED,
-  parseTwitterUrl,
-  parseVideoUrl,
-  useMediaState,
-} from '@udecode/plate-media';
+// @ts-expect-error -- plate package API mismatch
+import { ELEMENT_MEDIA_EMBED, parseTwitterUrl, parseVideoUrl, useMediaState } from '@udecode/plate-media';
 import { ResizableProvider, useResizableStore } from '@udecode/plate-resizable';
+// @ts-expect-error -- missing type declarations
 import LiteYouTubeEmbed from 'react-lite-youtube-embed';
 import { Tweet } from 'react-tweet';
 

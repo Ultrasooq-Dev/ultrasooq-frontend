@@ -89,7 +89,7 @@ const ControlledRichTextEditor: React.FC<ControlledRichTextEditorProps> = ({
           
           return (
             <SimpleRichTextEditor
-              onChange={(newValue) => {
+              onChange={(newValue: any) => {
                 if (onChange) {
                   onChange(newValue);
                 } else {

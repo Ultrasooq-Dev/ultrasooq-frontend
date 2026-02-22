@@ -117,7 +117,7 @@ const DropshipProductCard: React.FC<DropshipProductCardProps> = ({
   const t = useTranslations();
   const { toast } = useToast();
   const router = useRouter();
-  const { currentAccountData } = useAuth();
+  const { currentAccountData } = useAuth() as any;
 
   // State management
   const [status] = useState<string>(initialStatus);

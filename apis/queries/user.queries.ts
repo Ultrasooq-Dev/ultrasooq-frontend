@@ -17,7 +17,7 @@ export const useUpdateProfile = () => {
     IBuyerRequest | { tradeRole: string }
   >({
     mutationFn: async (payload) => {
-      const res = await updateUserProfile(payload);
+      const res = await updateUserProfile(payload as any);
       return res.data;
     },
     onSuccess: () => {

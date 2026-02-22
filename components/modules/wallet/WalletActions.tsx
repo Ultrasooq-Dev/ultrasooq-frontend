@@ -6,6 +6,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useDepositToWallet, useWithdrawFromWallet, useTransferToUser, useCreateAmwalPayWalletConfig, useVerifyAmwalPayWalletPayment } from "@/apis/queries/wallet.queries";
 import { useQueryClient } from "@tanstack/react-query";
 import { IWallet } from "@/utils/types/wallet.types";
+import { AmwalPayConfigData } from "@/types/order";
 
 // Declare SmartBox global type
 declare global {
@@ -123,7 +124,7 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
       });
 
       if (response?.status && response?.data) {
-        const config = response.data;
+        const config = response.data as AmwalPayConfigData;
 
         if (!window.SmartBox || !window.SmartBox.Checkout) {
           setIsProcessingPayment(false);

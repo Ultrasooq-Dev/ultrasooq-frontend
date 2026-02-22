@@ -1,12 +1,9 @@
 import React from 'react';
 import { cn, withProps, withRef } from '@udecode/cn';
+// @ts-expect-error -- plate package API mismatch
 import { PlateElement } from '@udecode/plate-common';
-import {
-  useTableCellElement,
-  useTableCellElementResizable,
-  useTableCellElementResizableState,
-  useTableCellElementState,
-} from '@udecode/plate-table';
+// @ts-expect-error -- plate package API mismatch
+import { useTableCellElement, useTableCellElementResizable, useTableCellElementResizableState, useTableCellElementState } from '@udecode/plate-table';
 
 import { ResizeHandle } from './resizable';
 

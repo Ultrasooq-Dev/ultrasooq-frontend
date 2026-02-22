@@ -35,7 +35,7 @@ const PricingCalculator: React.FC<PricingCalculatorProps> = ({
 
   const handlePercentageChange = (percentage: string) => {
     const numPercentage = parseFloat(percentage) || 0;
-    const calculatedMarkup = (originalPrice * numPercentage) / 100;
+    const calculatedMarkup = ((Number(originalPrice) || 0) * numPercentage) / 100;
     onMarkupChange(calculatedMarkup);
   };
 

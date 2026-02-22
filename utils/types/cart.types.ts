@@ -19,7 +19,20 @@ export interface CartItem {
     maxQuantityPerCustomer?: number;
   };
   serviceId: number;
-  cartServiceFeatures: { id: number; featureId: number; featureName?: string; featurePrice?: number }[];
+  cartServiceFeatures: {
+    id: number;
+    featureId: number;
+    featureName?: string;
+    featurePrice?: number;
+    serviceFeatureId?: number;
+    serviceFeature?: {
+      name?: string;
+      serviceCost?: string | number;
+      serviceCostType?: string;
+      [key: string]: unknown;
+    };
+    quantity?: number;
+  }[];
   quantity: number;
   object: Record<string, unknown> | null;
 }

@@ -500,7 +500,6 @@ const CheckoutPage = () => {
               }
             },
           ) => {
-            // @ts-ignore
             const productId = curr.productId;
             const isInvalidProduct =
               typeof productId === "number" && invalidProducts.includes(productId);
@@ -519,7 +518,7 @@ const CheckoutPage = () => {
             if (!curr.cartServiceFeatures?.length) return acc;
 
             let amount = 0;
-            for (let feature of curr.cartServiceFeatures) {
+            for (const feature of curr.cartServiceFeatures) {
               if (feature.serviceFeature?.serviceCostType == "FLAT") {
                 amount += Number(feature.serviceFeature?.serviceCost || '') * (feature.quantity || 1);
               } else {
@@ -551,7 +550,6 @@ const CheckoutPage = () => {
               }
             },
           ) => {
-            // @ts-ignore
             const productId = curr.productId;
             const isInvalidProduct =
               typeof productId === "number" && invalidProducts.includes(productId);
@@ -573,7 +571,7 @@ const CheckoutPage = () => {
             if (!curr.cartServiceFeatures?.length) return acc;
 
             let amount = 0;
-            for (let feature of curr.cartServiceFeatures) {
+            for (const feature of curr.cartServiceFeatures) {
               if (feature.serviceFeature?.serviceCostType == "FLAT") {
                 amount += Number(feature.serviceFeature?.serviceCost || '') * (feature.quantity || 1);
               } else {
@@ -667,7 +665,7 @@ const CheckoutPage = () => {
 
   const handleRemoveServiceFromCart = async (cartId: number, serviceFeatureId: number) => {
     const cartItem = memoizedCartList.find((item: any) => item.id == cartId);
-    let payload: any = { cartId };
+    const payload: any = { cartId };
     if (cartItem?.cartServiceFeatures?.length > 1) {
       payload.serviceFeatureId = serviceFeatureId;
     }
@@ -799,7 +797,7 @@ const CheckoutPage = () => {
   );
 
   const calculateFees = async () => {
-    const response = await preOrderCalculation.mutateAsync({
+    const response: any = await preOrderCalculation.mutateAsync({
       cartIds: memoizedCartList.filter((item: any) => item.productId)?.map((item: any) => item.id),
       serviceCartIds: memoizedCartList.filter((item: any) => item.serviceId)?.map((item: any) => item.id),
       userAddressId: Number(selectedShippingAddressId),
@@ -831,7 +829,6 @@ const CheckoutPage = () => {
       let userIds = memoizedCartList.filter((item: any) => item.productPriceDetails)?.map((item: any) => {
         return item.productPriceDetails.adminId;
       }) || [];
-      // @ts-ignore
       userIds = [...new Set(userIds)];
 
       setSellerIds(userIds);
@@ -893,7 +890,7 @@ const CheckoutPage = () => {
 
   useEffect(() => {
     let charge = 0;
-    for (let info of shippingInfo) {
+    for (const info of shippingInfo) {
       charge += info.info?.shippingCharge || 0;
     }
     setShippingCharge(charge);
@@ -901,9 +898,9 @@ const CheckoutPage = () => {
 
   const validateShippingInfo = (): boolean => {
     let count = 0;
-    let errors = shippingErrors;
+    const errors = shippingErrors;
     let i = 0;
-    for (let info of shippingInfo) {
+    for (const info of shippingInfo) {
       errors[i].errors = {};
 
       if (info.shippingType == "SELLERDROP") {
@@ -923,9 +920,9 @@ const CheckoutPage = () => {
   };
 
   const prepareShippingInfo = () => {
-    let data: any[] = [];
+    const data: any[] = [];
     let i = 0;
-    for (let info of shippingInfo) {
+    for (const info of shippingInfo) {
       data[i] = {
         sellerId: info.sellerId,
         orderShippingType: info.shippingType,
@@ -947,7 +944,7 @@ const CheckoutPage = () => {
     const serviceSellerIds = memoizedCartList.filter((item: any) => item.serviceId)
       ?.map((item: any) => item.service.sellerId) || [];
 
-    for (let sellerId of serviceSellerIds) {
+    for (const sellerId of serviceSellerIds) {
       if (!data.find((item: any) => item.sellerId == sellerId)) {
         data[i] = {
           sellerId: sellerId,
@@ -1291,7 +1288,7 @@ const CheckoutPage = () => {
                             )}
                             <div className="flex-1">
                               <h4 className="font-semibold text-foreground mb-1">
-                                {translate(product?.rfqProductDetails?.productName || "Product")}
+                                {product?.rfqProductDetails?.productName || "Product"}
                               </h4>
                               <p className="text-sm text-muted-foreground mb-2">
                                 {t("quantity")}: {quoteProduct?.quantity || product.quantity || 1}
@@ -1406,7 +1403,7 @@ const CheckoutPage = () => {
                                         }),
                                       }}
                                       onChange={(newValue: any) => {
-                                        let data = shippingInfo;
+                                        const data = shippingInfo;
                                         data[index].shippingType = newValue?.value;
                                         data[index].info.serviceId = null;
                                         data[index].info.serviceName = null;
@@ -1496,7 +1493,7 @@ const CheckoutPage = () => {
                           quantity: feature.quantity
                         }));
 
-                        let relatedCart: any = memoizedCartList
+                        const relatedCart: any = memoizedCartList
                           ?.filter((c: any) => c.productId && c.cartProductServices?.length)
                           .find((c: any) => {
                               return !!c.cartProductServices

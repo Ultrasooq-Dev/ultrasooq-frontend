@@ -180,7 +180,7 @@ function CarouselPrevious({
   return (
     <Button
       data-slot="carousel-previous"
-      variant={variant}
+      variant={variant as any}
       size={size}
       className={cn(
         "rounded-full absolute touch-manipulation",
@@ -210,7 +210,7 @@ function CarouselNext({
   return (
     <Button
       data-slot="carousel-next"
-      variant={variant}
+      variant={variant as any}
       size={size}
       className={cn(
         "rounded-full absolute touch-manipulation",

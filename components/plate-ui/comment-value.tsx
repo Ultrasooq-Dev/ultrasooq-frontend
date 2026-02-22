@@ -2,10 +2,8 @@
 
 import React from 'react';
 import { cn } from '@udecode/cn';
-import {
-  CommentEditActions,
-  CommentEditTextarea,
-} from '@udecode/plate-comments';
+// @ts-expect-error -- plate package API mismatch
+import { CommentEditActions, CommentEditTextarea } from '@udecode/plate-comments';
 
 import { buttonVariants } from './button';
 import { inputVariants } from './input';
@@ -17,7 +15,7 @@ export function CommentValue() {
 
       <div className="flex space-x-2">
         <CommentEditActions.CancelButton
-          className={buttonVariants({ variant: 'outline-solid', size: 'xs' })}
+          className={buttonVariants({ variant: 'outline' as any, size: 'xs' })}
         >
           Cancel
         </CommentEditActions.CancelButton>

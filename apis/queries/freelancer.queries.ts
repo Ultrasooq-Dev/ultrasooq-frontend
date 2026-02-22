@@ -20,7 +20,7 @@ export const useCreateFreelancerProfile = () => {
   const queryClient = useQueryClient();
   return useMutation<IFreelancer, APIResponseError, IFreelancerRequest>({
     mutationFn: async (payload) => {
-      const res = await createFreelancerProfile(payload);
+      const res = await createFreelancerProfile(payload as any);
       return res.data;
     },
     onSuccess: () => {
@@ -41,7 +41,7 @@ export const useUpdateFreelancerProfile = () => {
     IEditFreelancerProfileRequest
   >({
     mutationFn: async (payload) => {
-      const res = await updateFreelancerProfile(payload);
+      const res = await updateFreelancerProfile(payload as any);
       return res.data;
     },
     onSuccess: () => {
@@ -62,7 +62,7 @@ export const useUpdateFreelancerBranch = () => {
     TUnionEditFreelancerBranchRequest
   >({
     mutationFn: async (payload) => {
-      const res = await updateFreelancerBranch(payload);
+      const res = await updateFreelancerBranch(payload as any);
       return res.data;
     },
     onSuccess: () => {

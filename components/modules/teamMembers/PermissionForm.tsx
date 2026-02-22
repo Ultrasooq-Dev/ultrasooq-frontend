@@ -35,7 +35,7 @@ const addFormSchema = (t: any) => {
         message: t("permission_type_required"),
       })
       .transform((value) => {
-        let temp: any = [];
+        const temp: any = [];
         value.forEach((item) => {
           temp.push({ permissionId: item.value });
         });

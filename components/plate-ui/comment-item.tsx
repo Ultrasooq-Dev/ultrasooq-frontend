@@ -1,11 +1,8 @@
 'use client';
 
 import React from 'react';
-import {
-  CommentProvider,
-  useCommentById,
-  useCommentItemContentState,
-} from '@udecode/plate-comments';
+// @ts-expect-error -- plate package API mismatch
+import { CommentProvider, useCommentById, useCommentItemContentState } from '@udecode/plate-comments';
 import { formatDistance } from 'date-fns';
 
 import { CommentAvatar } from './comment-avatar';

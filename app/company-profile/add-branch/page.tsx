@@ -58,7 +58,7 @@ const formSchema = (t: any) => {
           message: t("business_type_required"),
         })
         .transform((value) => {
-          let temp: any = [];
+          const temp: any = [];
           value.forEach((item) => {
             temp.push({ businessTypeId: item.value });
           });
@@ -156,7 +156,7 @@ const AddBranchPage = () => {
   const router = useRouter();
   const { toast } = useToast();
   const form = useForm({
-    resolver: zodResolver(formSchema(t)),
+    resolver: zodResolver(formSchema(t)) as any,
     defaultValues: {
       uploadBranchImage: undefined,
       uploadProofOfAddress: undefined,
@@ -227,7 +227,7 @@ const AddBranchPage = () => {
   };
 
   const onSubmit = async (formData: any) => {
-    let data = {
+    const data = {
       ...formData,
       profileType: "COMPANY",
       userProfileId: me.data?.data?.userProfile?.[0]?.id as number,

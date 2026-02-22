@@ -1,3 +1,4 @@
+// @ts-expect-error -- plate package API mismatch
 import { findEventRange, PlatePlugin } from '@udecode/plate-common';
 
 import { cursorStore } from '@/components/plate-ui/cursor-overlay';
@@ -7,7 +8,7 @@ export const KEY_DRAG_OVER_CURSOR = 'dragOverCursor';
 export const dragOverCursorPlugin: PlatePlugin = {
   key: KEY_DRAG_OVER_CURSOR,
   handlers: {
-    onDragOver: (editor) => (event) => {
+    onDragOver: (editor: any) => (event: any) => {
       if (editor.isDragging) return;
 
       const range = findEventRange(editor, event);

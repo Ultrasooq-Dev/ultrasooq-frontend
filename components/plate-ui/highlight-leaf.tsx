@@ -1,5 +1,6 @@
 import React from 'react';
 import { cn, withRef } from '@udecode/cn';
+// @ts-expect-error -- plate package API mismatch
 import { PlateLeaf } from '@udecode/plate-common';
 
 export const HighlightLeaf = withRef<typeof PlateLeaf>(

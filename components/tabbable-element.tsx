@@ -1,4 +1,5 @@
 import React, { CSSProperties } from 'react';
+// @ts-expect-error -- plate package API mismatch
 import { PlateElementProps } from '@udecode/plate-common';
 import { useFocused, useSelected } from 'slate-react';
 

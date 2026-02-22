@@ -37,7 +37,7 @@ const formSchema = (t: any) => {
   return z.object({
     address: z.string().trim().min(1, { message: t("address_required") }),
     factoriesDate: z
-      .date({ required_error: t("delivery_date_required") })
+      .date({ error: t("delivery_date_required") })
       .transform((val) => val.toISOString()),
   });
 };
@@ -52,7 +52,7 @@ const FactoriesCartPage = () => {
     resolver: zodResolver(formSchema(t)),
     defaultValues: {
       address: "",
-      factoriesDate: undefined as unknown as string,
+      factoriesDate: undefined as unknown as Date,
     },
   });
 

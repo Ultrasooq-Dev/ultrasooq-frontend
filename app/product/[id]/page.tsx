@@ -137,7 +137,7 @@ const EditProductPage = () => {
   const searchQuery = useSearchParams();
   const { toast } = useToast();
   const form = useForm({
-    resolver: zodResolver(formSchema(t)),
+    resolver: zodResolver(formSchema(t)) as any,
     defaultValues,
   });
   const productPriceId = searchQuery?.get("productPriceId");
@@ -205,13 +205,13 @@ const EditProductPage = () => {
 
           if (extension) {
             if (videoExtensions.includes(extension)) {
-              const videoName: string = item?.path.split("/").pop()!;
+              const videoName = item?.path.split("/").pop() ?? "";
               return {
                 video: item?.path,
                 videoName,
               };
             } else if (imageExtensions.includes(extension)) {
-              const imageName: string = item?.path.split("/").pop()!;
+              const imageName = item?.path.split("/").pop() ?? "";
               return {
                 image: item?.path,
                 imageName,

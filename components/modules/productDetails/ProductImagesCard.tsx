@@ -282,6 +282,7 @@ const ProductImagesCard: React.FC<ProductImagesCardProps> = ({
                             width="100%"
                             height="100%"
                             controls
+                            {...({} as any)}
                           />
                         </div>
                       ) : null}

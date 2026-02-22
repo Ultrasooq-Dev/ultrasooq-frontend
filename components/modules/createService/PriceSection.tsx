@@ -174,10 +174,10 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
     try {
       const response = await fetchStatesByCountry.mutateAsync({ countryId }); // Call your API
       setStates(
-        response.data.map((state: IState) => ({
+        (response.data as any[]).map((state: IState) => ({
           label: state.name,
           value: state.id,
-        })),
+        })) as any,
       );
     } catch (error) {
     }
@@ -194,17 +194,17 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
   }, [selectedState]);
 
   useEffect(() => {
-    let ipInfo = JSON.parse(window.localStorage.ipInfo ?? "{}");
+    const ipInfo = JSON.parse(window.localStorage.ipInfo ?? "{}");
     if (ipInfo.country_name) {
-      let country = countriesQuery?.data?.data?.find((item: any) => item.countryName.toLowerCase() == ipInfo.country_name.toLowerCase());
+      const country = countriesQuery?.data?.data?.find((item: any) => item.countryName.toLowerCase() == ipInfo.country_name.toLowerCase());
       formContext.setValue('placeOfOriginId', country?.id);
     }
   }, [countriesQuery?.data?.data]);
 
   useEffect(() => {
-    let ipInfo = JSON.parse(window.localStorage.ipInfo ?? "{}");
+    const ipInfo = JSON.parse(window.localStorage.ipInfo ?? "{}");
     if (ipInfo.country_name) {
-      let country = countriesNewQuery?.data?.data?.find((item: any) => item.name.toLowerCase() == ipInfo.country_name.toLowerCase());
+      const country = countriesNewQuery?.data?.data?.find((item: any) => item.name.toLowerCase() == ipInfo.country_name.toLowerCase());
       if (activeProductType != "R") {
         formContext.setValue('productCountryId', country?.id);
         setSelectedCountry(country?.id);
@@ -226,10 +226,10 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
     try {
       const response = await fetchCitiesByState.mutateAsync({ stateId }); // ✅ Pass as an object
       setCities(
-        response.data.map((city: ICity) => ({
+        (response.data as any[]).map((city: ICity) => ({
           label: city.name,
           value: city.id,
-        })),
+        })) as any,
       );
     } catch (error) {
     }
@@ -271,7 +271,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
           );
 
           responses.forEach(({ countryId, data }) => {
-            statesData[countryId] = data.map((state: any) => ({
+            statesData[countryId] = (data as any[]).map((state: any) => ({
               label: state.name,
               value: state.id,
             }));
@@ -304,7 +304,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
           );
 
           responses.forEach(({ stateId, data }) => {
-            citiesData[stateId] = data.map((city: any) => ({
+            citiesData[stateId] = (data as any[]).map((city: any) => ({
               label: city.name,
               value: city.id,
             }));

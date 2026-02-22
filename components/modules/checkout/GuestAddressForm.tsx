@@ -137,8 +137,8 @@ const GuestAddressForm: React.FC<GuestAddressFormProps> = ({
 
   const fetchStatesByCountry = async () => {
     if (selectedCountryId) {
-      let data = await statesQuery.mutateAsync({ countryId: selectedCountryId });
-      setStates(data?.data?.map((state: any) => {
+      const data = await statesQuery.mutateAsync({ countryId: selectedCountryId });
+      setStates((data?.data as any[])?.map((state: any) => {
         return { label: state.name, value: state.id };
       }) || []);
     }
@@ -150,8 +150,8 @@ const GuestAddressForm: React.FC<GuestAddressFormProps> = ({
 
   const fetchCitiesByState = async () => {
     if (selectedStateId) {
-      let data = await citiesQuery.mutateAsync({ stateId: selectedStateId });
-      setCities(data?.data?.map((city: any) => {
+      const data = await citiesQuery.mutateAsync({ stateId: selectedStateId });
+      setCities((data?.data as any[])?.map((city: any) => {
         return { label: city.name, value: city.id };
       }) || []);
     }
@@ -171,7 +171,7 @@ const GuestAddressForm: React.FC<GuestAddressFormProps> = ({
   }, []);
 
   const onSubmit = async (formData: typeof defaultValues) => {
-    let data: {[key: string]: any} = formData;
+    const data: {[key: string]: any} = formData;
     data.country = memoizedCountries.find((country: any) => country.value == formData.countryId)?.label || '';
     data.state = states.find((state: any) => state.value == formData.stateId)?.label || '';
     data.city = cities.find((city: any) => city.value == formData.cityId)?.label || '';
@@ -209,7 +209,7 @@ const GuestAddressForm: React.FC<GuestAddressFormProps> = ({
       </div>
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit(onSubmit as any)}
           className="card-item card-payment-form px-5 pb-5 pt-3"
         >
           <div className="grid w-full grid-cols-1 gap-5 md:grid-cols-2">
@@ -267,7 +267,7 @@ const GuestAddressForm: React.FC<GuestAddressFormProps> = ({
                     placeholder={t("select")}
                     styles={customStyles}
                     isRtl={langDir == 'rtl'}
-                    // @ts-ignore
+                    // @ts-expect-error - type mismatch
                     onFocus={(e) => e.target.autocomplete = 'none'}
                   />
                 )}
@@ -284,9 +284,9 @@ const GuestAddressForm: React.FC<GuestAddressFormProps> = ({
                 control={form.control}
                 render={({ field }) => (
                   <Select
-                    // @ts-ignore
+                    // @ts-expect-error - type mismatch
                     options={states}
-                    // @ts-ignore
+                    // @ts-expect-error - type mismatch
                     value={states.find(state => state.value == field.value)}
                     onChange={(selectedOption: SingleValue<{ label: string, value: string }>) => {
                       field.onChange(selectedOption?.value);
@@ -296,7 +296,7 @@ const GuestAddressForm: React.FC<GuestAddressFormProps> = ({
                     placeholder={t("select")}
                     styles={customStyles}
                     isRtl={langDir == 'rtl'}
-                    // @ts-ignore
+                    // @ts-expect-error - type mismatch
                     onFocus={(e) => e.target.autocomplete = 'none'}
                   />
                 )}
@@ -315,9 +315,9 @@ const GuestAddressForm: React.FC<GuestAddressFormProps> = ({
                 control={form.control}
                 render={({ field }) => (
                   <Select
-                    // @ts-ignore
+                    // @ts-expect-error - type mismatch
                     options={cities}
-                    // @ts-ignore
+                    // @ts-expect-error - type mismatch
                     value={cities.find(city => city.value == field.value)}
                     onChange={(selectedOption: SingleValue<{ label: string, value: string }>) =>
                       field.onChange(selectedOption?.value)
@@ -326,7 +326,7 @@ const GuestAddressForm: React.FC<GuestAddressFormProps> = ({
                     placeholder={t("select")}
                     styles={customStyles}
                     isRtl={langDir == 'rtl'}
-                    // @ts-ignore
+                    // @ts-expect-error - type mismatch
                     onFocus={(e) => e.target.autocomplete = 'none'}
                   />
                 )}

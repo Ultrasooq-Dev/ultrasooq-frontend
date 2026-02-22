@@ -217,7 +217,7 @@ const ProductPreview: React.FC<ProductPreviewProps> = ({
           {customContent.additionalImages.length > 0 && (
             <li>• {t("additional_images_added")} ({customContent.additionalImages.length})</li>
           )}
-          <li>• {t("price_updated")}: ${originalProduct.productPrice} → ${finalPrice.toFixed(2)}</li>
+          <li>• {t("price_updated")}: ${originalProduct.productPrice} → ${Number(finalPrice ?? 0).toFixed(2)}</li>
         </ul>
       </div>
     </div>

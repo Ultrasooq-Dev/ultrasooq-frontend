@@ -394,7 +394,7 @@ const RfqPage = (props: RfqPageProps) => {
     setMaxPriceInput("");
     setMinPriceInput("");
     setPriceRange([]);
-    setSelectedCategoryIds([]);
+    // setSelectedCategoryIds([]);
 
     if (searchInputRef?.current) searchInputRef.current.value = "";
     if (minPriceInputRef.current) minPriceInputRef.current.value = "";
@@ -541,17 +541,17 @@ const RfqPage = (props: RfqPageProps) => {
                             trackClassName="example-track"
                             defaultValue={[0, 500]}
                             ariaLabel={["Lower thumb", "Upper thumb"]}
-                            ariaValuetext={(state) =>
+                            ariaValuetext={(state: { valueNow: number }) =>
                               `Thumb value ${state.valueNow}`
                             }
-                            renderThumb={(props, state) => (
+                            renderThumb={(props: any, state: { valueNow: number }) => (
                               <div {...props} key={props.key}>
                                 {state.valueNow}
                               </div>
                             )}
                             pearling
                             minDistance={10}
-                            onChange={(value) => handlePriceDebounce(value)}
+                            onChange={(value: number | number[]) => handlePriceDebounce(value)}
                             max={500}
                             min={0}
                           />
@@ -961,17 +961,17 @@ const RfqPage = (props: RfqPageProps) => {
                           trackClassName="example-track"
                           defaultValue={[0, 500]}
                           ariaLabel={["Lower thumb", "Upper thumb"]}
-                          ariaValuetext={(state) =>
+                          ariaValuetext={(state: { valueNow: number }) =>
                             `Thumb value ${state.valueNow}`
                           }
-                          renderThumb={(props, state) => (
+                          renderThumb={(props: any, state: { valueNow: number }) => (
                             <div {...props} key={props.key}>
                               {state.valueNow}
                             </div>
                           )}
                           pearling
                           minDistance={10}
-                          onChange={(value) => handlePriceDebounce(value)}
+                          onChange={(value: number | number[]) => handlePriceDebounce(value)}
                           max={500}
                           min={0}
                         />

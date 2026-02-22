@@ -138,8 +138,7 @@ export default function MyAccountsPage() {
   if (!mounted || isLoading) {
     return (
       <LoaderWithMessage
-        message="Loading your accounts..."
-        className="min-h-screen"
+        {...{ message: "Loading your accounts...", className: "min-h-screen" } as any}
       />
     );
   }

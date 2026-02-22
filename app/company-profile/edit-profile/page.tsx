@@ -67,7 +67,7 @@ export default function EditProfilePage() {
   const { toast } = useToast();
 
   const form = useForm({
-    resolver: zodResolver(formSchema(t)),
+    resolver: zodResolver(formSchema(t)) as any,
     defaultValues: {
       cc: "",
       phoneNumber: "",
@@ -140,7 +140,7 @@ export default function EditProfilePage() {
     
     const existingProfile = uniqueUser.data?.data?.userProfile?.[0];
     
-    let data = { ...formData, aboutUs: JSON.stringify(formData.aboutUsJson || ''), profileType: "COMPANY" };
+    const data = { ...formData, aboutUs: JSON.stringify(formData.aboutUsJson || ''), profileType: "COMPANY" };
     
     // Clean up empty strings and convert them to null for the backend
     Object.keys(data).forEach(key => {
@@ -201,7 +201,7 @@ export default function EditProfilePage() {
 
   useEffect(() => {
     const params = new URLSearchParams(document.location.search);
-    let userId = params.get("userId");
+    const userId = params.get("userId");
     setActiveUserId(userId);
   }, []);
 

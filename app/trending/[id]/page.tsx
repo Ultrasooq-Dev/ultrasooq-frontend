@@ -208,7 +208,7 @@ const ProductDetailsPage = () => {
     serviceFeatureId: number,
   ) => {
     const cartItem = memoizedCartList.find((item: any) => item.id == cartId);
-    let payload: any = { cartId };
+    const payload: any = { cartId };
     if (cartItem?.cartServiceFeatures?.length > 1) {
       payload.serviceFeatureId = serviceFeatureId;
     }
@@ -275,7 +275,7 @@ const ProductDetailsPage = () => {
         const minQuantity = productDetails?.product_productPrice?.length
           ? productDetails.product_productPrice[0]?.minQuantityPerCustomer
           : null;
-        let quantity = item?.quantity || minQuantity || 1;
+        const quantity = item?.quantity || minQuantity || 1;
         handleAddToCart(quantity, "add");
         setIsShareLinkProcessed(true);
       }

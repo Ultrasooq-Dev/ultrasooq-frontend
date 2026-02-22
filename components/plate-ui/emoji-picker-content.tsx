@@ -1,11 +1,7 @@
 import React, { memo, useCallback } from 'react';
 import { cn } from '@udecode/cn';
-import {
-  Emoji,
-  EmojiSettings,
-  GridRow,
-  UseEmojiPickerType,
-} from '@udecode/plate-emoji';
+// @ts-expect-error -- plate package API mismatch
+import { Emoji, EmojiSettings, GridRow, UseEmojiPickerType } from '@udecode/plate-emoji';
 
 export type EmojiPickerContentProps = Pick<
   UseEmojiPickerType,
@@ -103,7 +99,7 @@ export function EmojiPickerContent({
     return emojiLibrary
       .getGrid()
       .sections()
-      .map(({ id: categoryId }) => {
+      .map(({ id: categoryId }: any) => {
         const section = emojiLibrary.getGrid().section(categoryId);
         const { buttonSize } = settings;
 
@@ -124,7 +120,7 @@ export function EmojiPickerContent({
               {isCategoryVisible(categoryId) &&
                 section
                   .getRows()
-                  .map((row: GridRow, index) => (
+                  .map((row: GridRow, index: number) => (
                     <RowOfButtons
                       key={index}
                       emojiLibrary={emojiLibrary}

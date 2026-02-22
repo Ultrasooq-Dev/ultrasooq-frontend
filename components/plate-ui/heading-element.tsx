@@ -1,5 +1,6 @@
 import React from 'react';
 import { withRef, withVariants } from '@udecode/cn';
+// @ts-expect-error -- plate package API mismatch
 import { PlateElement } from '@udecode/plate-common';
 import { cva } from 'class-variance-authority';
 

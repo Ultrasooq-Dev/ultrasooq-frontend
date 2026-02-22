@@ -106,7 +106,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
                 })
             }
             const response = await addServiceToCart.mutateAsync(payload);
-            if (response.success) {
+            if ((response as any).success) {
                 toast({
                     title: t("service_added_to_cart"),
                     description: response.message,

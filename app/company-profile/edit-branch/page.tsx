@@ -70,7 +70,7 @@ const formSchema = z
         message: "Business Type is required",
       })
       .transform((value) => {
-        let temp: any = [];
+        const temp: any = [];
         value.forEach((item) => {
           temp.push({ businessTypeId: item.value });
         });
@@ -151,7 +151,7 @@ export default function EditBranchPage() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema) as any,
     defaultValues: {
       uploadBranchImage: undefined,
       uploadProofOfAddress: undefined,
@@ -225,7 +225,7 @@ export default function EditBranchPage() {
   };
 
   const onSubmit = async (formData: any) => {
-    let data = {
+    const data = {
       ...formData,
       profileType: "COMPANY",
       branchId: Number(activeBranchId),
@@ -280,7 +280,7 @@ export default function EditBranchPage() {
 
   useEffect(() => {
     const params = new URLSearchParams(document.location.search);
-    let branchId = params.get("branchId");
+    const branchId = params.get("branchId");
     setActiveBranchId(branchId);
   }, []);
 

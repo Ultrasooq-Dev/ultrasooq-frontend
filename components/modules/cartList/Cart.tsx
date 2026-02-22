@@ -56,7 +56,7 @@ const Cart: React.FC<CartProps> = ({
         serviceFeatureId: number,
     ) => {
         const cartItem = cartItems.find((item: any) => item.id == cartId);
-        let payload: any = { cartId };
+        const payload: any = { cartId };
         if (cartItem?.cartServiceFeatures?.length > 1) {
             payload.serviceFeatureId = serviceFeatureId;
         }
@@ -128,7 +128,7 @@ const Cart: React.FC<CartProps> = ({
 
                 {cartItems?.map((item: CartItem) => {
                     if (item.cartType == "DEFAULT") {
-                        let relatedCart = cartItems
+                        const relatedCart = cartItems
                             ?.filter((c: any) => c.serviceId && c.cartProductServices?.length)
                             .find((c: any) => {
                                 return !!c.cartProductServices
@@ -185,7 +185,7 @@ const Cart: React.FC<CartProps> = ({
                         }),
                     );
 
-                    let relatedCart: any = cartItems
+                    const relatedCart: any = cartItems
                         ?.filter((c: any) => c.productId && c.cartProductServices?.length)
                         .find((c: any) => {
                             return !!c.cartProductServices

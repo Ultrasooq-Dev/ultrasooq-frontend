@@ -76,7 +76,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
     const response = await createIntent.mutateAsync(data);
 
     if (response?.status && response?.data) {
-      onCreateOrder(selectedPaymentType, response?.data?.id);
+      onCreateOrder(selectedPaymentType, response?.data?.id as string);
     } else {
       toast({
         title: t("payment_error"),

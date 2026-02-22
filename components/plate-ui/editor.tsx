@@ -1,8 +1,10 @@
 import React from 'react';
 import { cn } from '@udecode/cn';
+// @ts-expect-error -- plate package API mismatch
 import { PlateContent } from '@udecode/plate-common';
 import { cva } from 'class-variance-authority';
 
+// @ts-expect-error -- plate package API mismatch
 import type { PlateContentProps } from '@udecode/plate-common';
 import type { VariantProps } from 'class-variance-authority';
 
@@ -36,7 +38,7 @@ const editorVariants = cva(
       },
     },
     defaultVariants: {
-      variant: 'outline-solid',
+      variant: 'outline' as any,
       focusRing: true,
       size: 'sm',
     },

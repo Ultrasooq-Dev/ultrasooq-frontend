@@ -141,6 +141,7 @@ const ProductImagesCard: React.FC<ProductImagesCardProps> = ({
                               height="100%"
                               // playing
                               controls
+                              {...({} as any)}
                             />
                           </div>
                         ) : null}

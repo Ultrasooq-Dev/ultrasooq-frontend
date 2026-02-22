@@ -15,4 +15,7 @@ function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
   )
 }
 
+type TextareaProps = React.ComponentProps<"textarea">
+
 export { Textarea }
+export type { TextareaProps }

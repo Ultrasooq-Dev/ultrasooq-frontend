@@ -128,6 +128,7 @@ export interface IChangeEmail {
   message: string;
   status: boolean;
   data: null;
+  otp?: string;
 }
 
 export interface IChangeEmailVerifyRequest {
@@ -152,6 +153,10 @@ export interface IUserAccount {
   createdAt: string;
   updatedAt: string;
   isCurrentAccount?: boolean;
+
+  // Name fields (may come from API)
+  firstName?: string;
+  lastName?: string;
 
   // Company-specific fields
   companyName?: string;
@@ -183,6 +188,9 @@ export interface IMainAccount {
   accountName: string;
   isMainAccount: boolean;
   isCurrentAccount?: boolean;
+
+  // Company-specific fields (may come from API)
+  companyName?: string;
 
   // Account statistics and status
   messages?: number;

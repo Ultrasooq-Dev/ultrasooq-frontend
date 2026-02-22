@@ -27,7 +27,7 @@ export default function ConditionalLayout({
 }: ConditionalLayoutProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const isAuthPage = authPages.includes(pathname);
+  const isAuthPage = authPages.includes(pathname ?? "");
   const [isCategorySidebarOpen, setIsCategorySidebarOpen] = useState(false);
 
   // Listen for category sidebar open/close events from header (hover-based)

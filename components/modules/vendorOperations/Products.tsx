@@ -61,7 +61,7 @@ const Products: React.FC<ProductsProps> = ({ onSelectProduct, onSelectService })
 
   useEffect(() => {
     const products = (productsQuery?.data?.data || []).map((item: any) => {
-      let product = item.productPrice_product;
+      const product = item.productPrice_product;
       item.image = null;
       if (product?.productImages?.length > 0) {
         item.image = product?.productImages[0].image;
@@ -126,7 +126,7 @@ const Products: React.FC<ProductsProps> = ({ onSelectProduct, onSelectService })
         dir={langDir}
       >
         <select value={productType} onChange={(e) => {
-          // @ts-ignore
+          // @ts-expect-error - type mismatch
           setProductType(e.target.value)
         }}>
           <option value="PRODUCT">{t("product")}</option>

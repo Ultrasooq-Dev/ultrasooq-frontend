@@ -1,11 +1,8 @@
 import React from 'react';
 import { cn } from '@udecode/cn';
-import {
-  createNodeHOC,
-  createNodesHOC,
-  PlaceholderProps,
-  usePlaceholderState,
-} from '@udecode/plate-common';
+// @ts-expect-error -- plate package API mismatch
+import { createNodeHOC, createNodesHOC, PlaceholderProps, usePlaceholderState } from '@udecode/plate-common';
+// @ts-expect-error -- plate package API mismatch
 import { ELEMENT_H1 } from '@udecode/plate-heading';
 import { ELEMENT_PARAGRAPH } from '@udecode/plate-paragraph';
 

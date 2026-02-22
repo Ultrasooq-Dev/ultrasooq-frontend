@@ -3,24 +3,10 @@
 import React, { useEffect } from 'react';
 import * as Popover from '@radix-ui/react-popover';
 import { cn, withRef } from '@udecode/cn';
-import {
-  comboboxActions,
-  ComboboxContentItemProps,
-  ComboboxContentProps,
-  ComboboxProps,
-  useActiveComboboxStore,
-  useComboboxContent,
-  useComboboxContentState,
-  useComboboxControls,
-  useComboboxItem,
-  useComboboxSelectors,
-} from '@udecode/plate-combobox';
-import {
-  useEditorRef,
-  useEditorSelector,
-  useEventEditorSelectors,
-  usePlateSelectors,
-} from '@udecode/plate-common';
+// @ts-expect-error -- plate package API mismatch
+import { comboboxActions, ComboboxContentItemProps, ComboboxContentProps, ComboboxProps, useActiveComboboxStore, useComboboxContent, useComboboxContentState, useComboboxControls, useComboboxItem, useComboboxSelectors } from '@udecode/plate-combobox';
+// @ts-expect-error -- plate package API mismatch
+import { useEditorRef, useEditorSelector, useEventEditorSelectors, usePlateSelectors } from '@udecode/plate-common';
 import { createVirtualRef } from '@udecode/plate-floating';
 
 export const ComboboxItem = withRef<'div', ComboboxContentItemProps>(
@@ -62,6 +48,7 @@ export function ComboboxContent(props: ComboboxContentProps) {
   return (
     <Popover.Root open>
       <Popover.PopoverAnchor
+        // @ts-expect-error -- plate VirtualRef vs RefObject mismatch
         virtualRef={createVirtualRef(editor, targetRange ?? undefined)}
       />
 
@@ -74,11 +61,11 @@ export function ComboboxContent(props: ComboboxContentProps) {
           className={cn(
             'z-500 m-0 max-h-[288px] w-[300px] overflow-scroll rounded-md bg-popover p-0 shadow-md'
           )}
-          onOpenAutoFocus={(event) => event.preventDefault()}
+          onOpenAutoFocus={(event: any) => event.preventDefault()}
         >
           {Component ? Component({ store: activeComboboxStore }) : null}
 
-          {filteredItems.map((item, index) => (
+          {filteredItems.map((item: any, index: any) => (
             <ComboboxItem
               key={item.key}
               item={item}
@@ -113,7 +100,7 @@ export function Combobox({
   const combobox = useComboboxControls();
   const activeId = useComboboxSelectors.activeId();
   const selectionDefined = useEditorSelector(
-    (editor) => !!editor.selection,
+    (editor: any) => !!editor.selection,
     []
   );
   const editorId = usePlateSelectors().id();

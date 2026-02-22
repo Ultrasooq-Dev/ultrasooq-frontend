@@ -2,10 +2,8 @@
 
 import React from 'react';
 import { withRef } from '@udecode/cn';
-import {
-  useMarkToolbarButton,
-  useMarkToolbarButtonState,
-} from '@udecode/plate-common';
+// @ts-expect-error -- plate package API mismatch
+import { useMarkToolbarButton, useMarkToolbarButtonState } from '@udecode/plate-common';
 
 import { ToolbarButton } from './toolbar';
 

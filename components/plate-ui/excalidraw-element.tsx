@@ -1,6 +1,8 @@
 import React from 'react';
 import { withRef } from '@udecode/cn';
+// @ts-expect-error -- plate package API mismatch
 import { PlateElement } from '@udecode/plate-common';
+// @ts-expect-error -- plate package API mismatch
 import { useExcalidrawElement } from '@udecode/plate-excalidraw';
 
 export const ExcalidrawElement = withRef<typeof PlateElement>(

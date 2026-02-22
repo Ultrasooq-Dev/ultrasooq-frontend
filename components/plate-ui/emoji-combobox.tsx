@@ -1,11 +1,8 @@
 import React from 'react';
+// @ts-expect-error - type mismatch
 import { ComboboxItemProps } from '@udecode/plate-combobox';
-import {
-  EmojiItemData,
-  KEY_EMOJI,
-  TEmojiCombobox,
-  useEmojiComboboxState,
-} from '@udecode/plate-emoji';
+// @ts-expect-error - plate-emoji API changed in newer versions
+import { EmojiItemData, KEY_EMOJI, TEmojiCombobox, useEmojiComboboxState } from '@udecode/plate-emoji';
 
 import { Combobox } from './combobox';
 

@@ -72,14 +72,12 @@ const MyOrderDetailsPage = () => {
   );
   const orderDetails = orderByIdQuery.data?.data;
   const shippingDetails =
-    orderByIdQuery.data?.data?.orderProduct_order?.order_orderAddress.find(
-      (item: { addressType: "SHIPPING" | "BILLING" }) =>
-        item?.addressType === "SHIPPING",
+    orderByIdQuery.data?.data?.orderProduct_order?.order_orderAddress?.find(
+      (item) => item?.addressType === "SHIPPING",
     );
   const billingDetails =
-    orderByIdQuery.data?.data?.orderProduct_order?.order_orderAddress.find(
-      (item: { addressType: "SHIPPING" | "BILLING" }) =>
-        item?.addressType === "BILLING",
+    orderByIdQuery.data?.data?.orderProduct_order?.order_orderAddress?.find(
+      (item) => item?.addressType === "BILLING",
     );
   const otherOrderDetails =
     orderByIdQuery.data?.otherData?.[0]?.order_orderProducts;
@@ -384,7 +382,7 @@ const MyOrderDetailsPage = () => {
                       {orderDetails.orderProduct_order.totalPrice || 0}
                     </p>
                   </div>
-                  {orderDetails.orderProduct_order.totalDiscount > 0 && (
+                  {(orderDetails.orderProduct_order.totalDiscount ?? 0) > 0 && (
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-muted-foreground">
                         Discount
@@ -405,7 +403,7 @@ const MyOrderDetailsPage = () => {
                     </p>
                   </div>
                   {orderDetails.orderProduct_order.paymentType !== 'DIRECT' && 
-                   orderDetails.orderProduct_order.dueAmount > 0 && (
+                   (orderDetails.orderProduct_order.dueAmount ?? 0) > 0 && (
                     <>
                       <div className="space-y-2">
                         <label className="text-sm font-medium text-muted-foreground">
@@ -563,7 +561,7 @@ const MyOrderDetailsPage = () => {
                         <h3 className="mb-2 text-xl font-bold text-foreground">
                           {orderDetails?.orderProductType === "SERVICE"
                             ? orderDetails?.serviceFeatures
-                                ?.serviceFeatures?.[0]?.name
+                                ?.[0]?.serviceFeature?.name
                             : orderDetails?.orderProduct_productPrice
                                 ?.productPrice_product?.productName ||
                               orderDetails?.orderProduct_product?.productName ||
@@ -587,22 +585,22 @@ const MyOrderDetailsPage = () => {
                           {currency.symbol}
                           {orderDetails?.orderProductType === "SERVICE"
                             ? Number(orderDetails?.purchasePrice || 0) *
-                              (orderDetails?.orderQuantity || 0)
+                              (orderDetails?.orderQuantity ?? 0)
                             : orderDetails?.orderProduct_productPrice
                                   ?.offerPrice
                               ? Number(
                                   orderDetails?.orderProduct_productPrice
-                                    ?.offerPrice * orderDetails?.orderQuantity,
+                                    ?.offerPrice * (orderDetails?.orderQuantity ?? 0),
                                 )
                               : orderDetails?.purchasePrice
                                 ? Number(
                                     orderDetails?.purchasePrice *
-                                      orderDetails?.orderQuantity,
+                                      (orderDetails?.orderQuantity ?? 0),
                                   )
                                 : orderDetails?.salePrice
                                   ? Number(
                                       orderDetails?.salePrice *
-                                        orderDetails?.orderQuantity,
+                                        (orderDetails?.orderQuantity ?? 0),
                                     )
                                   : 0}
                         </div>
@@ -633,9 +631,10 @@ const MyOrderDetailsPage = () => {
                 </CardHeader>
                 <CardContent className="p-8">
                   {(() => {
-                    const tracking =
-                      (orderDetails as any)?.breakdown?.tracking ||
-                      (orderDetails as any)?.tracking;
+                    const tracking = (
+                      orderDetails?.breakdown?.tracking ||
+                      (orderDetails as Record<string, unknown>)?.tracking
+                    ) as import("@/types/order").OrderTrackingInfo | undefined;
                     const showTracking = [
                       "SHIPPED",
                       "OFD",
@@ -813,7 +812,7 @@ const MyOrderDetailsPage = () => {
                               "OFD",
                               "SHIPPED",
                             ].includes(orderDetails?.orderProductStatus || "")
-                              ? formatDate(orderDetails?.updatedAt)
+                              ? formatDate(orderDetails?.updatedAt ?? "")
                               : "Pending"}
                           </p>
                         </div>
@@ -847,7 +846,7 @@ const MyOrderDetailsPage = () => {
                             {["CANCELLED", "DELIVERED", "OFD"].includes(
                               orderDetails?.orderProductStatus || "",
                             )
-                              ? formatDate(orderDetails?.updatedAt)
+                              ? formatDate(orderDetails?.updatedAt ?? "")
                               : "Pending"}
                           </p>
                         </div>
@@ -889,7 +888,7 @@ const MyOrderDetailsPage = () => {
                             {["CANCELLED", "DELIVERED"].includes(
                               orderDetails?.orderProductStatus || "",
                             )
-                              ? formatDate(orderDetails?.updatedAt)
+                              ? formatDate(orderDetails?.updatedAt ?? "")
                               : "Pending"}
                           </p>
                           {orderDetails?.orderProductStatus === "CANCELLED" &&

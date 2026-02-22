@@ -260,13 +260,13 @@ const AddToRfqForm: React.FC<AddToRfqFormProps> = ({
 
           if (extension) {
             if (videoExtensions.includes(extension)) {
-              const videoName: string = item?.path.split("/").pop()!;
+              const videoName = item?.path.split("/").pop() ?? "";
               return {
                 video: item?.path,
                 videoName,
               };
             } else if (imageExtensions.includes(extension)) {
-              const imageName: string = item?.path.split("/").pop()!;
+              const imageName = item?.path.split("/").pop() ?? "";
               return {
                 image: item?.path,
                 imageName,
@@ -651,6 +651,7 @@ const AddToRfqForm: React.FC<AddToRfqFormProps> = ({
                                         height="100%"
                                         // playing
                                         controls
+                                        {...({} as any)}
                                       />
                                     </div>
 
@@ -766,7 +767,7 @@ const AddToRfqForm: React.FC<AddToRfqFormProps> = ({
 
               <p className="text-[13px] text-destructive!" dir={langDir}>
                 {!watchProductImages?.length
-                  ? form.formState.errors?.productImages?.message
+                  ? (form.formState.errors?.productImages?.message as any)
                   : ""}
               </p>
             </div>
@@ -873,7 +874,7 @@ const AddToRfqForm: React.FC<AddToRfqFormProps> = ({
                           value={field.value || "SIMILAR"}
                           onValueChange={field.onChange}
                           className="flex flex-row gap-6"
-                          dir={langDir}
+                          dir={langDir as any}
                         >
                           <div className="flex items-center space-x-2">
                             <RadioGroupItem value="SAME" id="same-product" />

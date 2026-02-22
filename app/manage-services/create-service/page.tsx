@@ -56,11 +56,11 @@ const formSchema = (t: any) =>
         .min(1, { message: t("service_name_is_required") }),
 
       description: z
-        .array(z.any(), { required_error: t("description_is_required") })
+        .array(z.any(), { error: t("description_is_required") })
         .min(1, { message: t("description_is_required") }),
 
       categoryId: z
-        .number({ required_error: t("category_is_required") })
+        .number({ error: t("category_is_required") })
         .positive({ message: t("category_id_must_be_positive") }),
 
       categoryLocation: z.string().trim().optional(),
@@ -83,10 +83,10 @@ const formSchema = (t: any) =>
 
       shippingType: z.enum(["DIRECTION", "RANG"]).optional(),
       countryId: z
-        .number({ invalid_type_error: t("country_is_required") })
+        .number({ error: t("country_is_required") })
         .min(1, { message: t("country_is_required") }),
       stateId: z
-        .number({ invalid_type_error: t("state_is_required") })
+        .number({ error: t("state_is_required") })
         .min(1, { message: t("state_is_required") }),
       fromCityId: z.number().positive().nullable().optional(),
       toCityId: z.number().positive().nullable().optional(),
@@ -102,7 +102,7 @@ const formSchema = (t: any) =>
         .max(100, { message: t("customer_per_period_must_be_less_than_or_equal_to_100") }),
 
       serviceType: z.enum(["BOOKING", "MOVING"], {
-        required_error: t("service_type_is_required"),
+        error: t("service_type_is_required"),
       }),
 
       serviceConfirmType: z.enum(["AUTO", "MANUAL"]).optional(),
@@ -128,10 +128,10 @@ const formSchema = (t: any) =>
               .trim()
               .min(1, { message: t("feature_name_required") }),
             serviceCostType: z.enum(["FLAT", "HOURLY"], {
-              required_error: t("cost_type_required"),
+              error: t("cost_type_required"),
             }),
             serviceCost: z.coerce
-              .number({ invalid_type_error: t("cost_required") })
+              .number({ error: t("cost_required") })
               .positive({ message: t("cost_required") }),
           }),
         )
@@ -281,7 +281,7 @@ const CreateServicePage = () => {
   const [states, setStates] = useState<IOption[]>([]);
   const [cities, setCities] = useState<IOption[]>([]);
   const form = useForm({
-    resolver: zodResolver(formSchema(t)),
+    resolver: zodResolver(formSchema(t)) as any,
     defaultValues: defaultServiceValues,
   });
   const fetchCitiesByState = useFetchCitiesByState();
@@ -322,7 +322,7 @@ const CreateServicePage = () => {
     try {
       const response = await fetchStatesByCountry.mutateAsync({ countryId }); // Call your API
       setStates(
-        response.data.map((state: IState) => ({
+        (response.data as any).map((state: IState) => ({
           label: state.name,
           value: state.id,
         })),
@@ -335,7 +335,7 @@ const CreateServicePage = () => {
     try {
       const response = await fetchCitiesByState.mutateAsync({ stateId }); // ✅ Pass as an object
       setCities(
-        response.data.map((city: ICity) => ({
+        (response.data as any).map((city: ICity) => ({
           label: city.name,
           value: city.id,
         })),
@@ -382,7 +382,7 @@ const CreateServicePage = () => {
     }
 
     try {
-      let updatedFormData = {
+      const updatedFormData = {
         ...formData,
         openTime: convertTimeToISO(formData?.openTime),
         closeTime: convertTimeToISO(formData?.closeTime),

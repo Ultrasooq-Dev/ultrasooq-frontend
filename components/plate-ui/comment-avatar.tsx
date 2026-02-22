@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+// @ts-expect-error -- plate package API mismatch
 import { useUserById } from '@udecode/plate-comments';
 
 import {

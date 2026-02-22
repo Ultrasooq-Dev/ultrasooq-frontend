@@ -125,7 +125,7 @@ const QuestionsAnswersSection: React.FC<QuestionsAnswersSectionProps> = ({
               },
               index: number,
             ) => {
-              let answers: {
+              const answers: {
                 id: number;
                 answer: string;
                 userName?: string;

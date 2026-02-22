@@ -57,7 +57,7 @@ const createAccountSchema = z.object({
       },
     ),
   tradeRole: z.enum(["COMPANY", "FREELANCER"], {
-    required_error: "Please select a trade role",
+    error: "Please select a trade role",
   }),
 
   // Company-specific fields (only for COMPANY role)
@@ -203,13 +203,13 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
             await updateProfile.mutateAsync({
               identityProof,
               identityProofBack,
-            });
+            } as any);
           } else {
             // Fallback: try updating current account profile
             await updateProfile.mutateAsync({
               identityProof,
               identityProofBack,
-            });
+            } as any);
           }
         } catch (profileError: any) {
           // Log error but don't fail the account creation
@@ -221,7 +221,7 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
             title: "Account Created",
             description:
               "Account created successfully. However, identity card update failed. Please update your profile manually from the profile page.",
-            variant: "warning",
+            variant: "warning" as any,
           });
         }
 

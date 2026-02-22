@@ -20,8 +20,8 @@ export function withTooltip<
   T extends React.ComponentType<any> | keyof HTMLElementTagNameMap,
 >(Component: T) {
   return React.forwardRef<
-    React.ElementRef<T>,
-    React.ComponentPropsWithoutRef<T> & {
+    any,
+    any & {
       tooltip?: React.ReactNode;
       tooltipContentProps?: Omit<
         React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>,

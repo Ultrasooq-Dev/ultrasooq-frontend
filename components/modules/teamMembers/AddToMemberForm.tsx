@@ -54,7 +54,7 @@ const addFormSchema = (t: any) => {
       .min(2, { message: t("email_is_required") })
       .email({ message: t("invalid_email_address") }),
 
-    userRoleId: z.number({ required_error: t("user_role_required") })
+    userRoleId: z.number({ error: t("user_role_required") })
       .min(1, { message: t("user_role_required") }), // Ensure it stays a number
 
     tradeRole: z.string().optional(),
@@ -105,8 +105,8 @@ const AddToMemberForm: React.FC<AddToMemberFormProps> = ({
         description: response.message,
         variant: "success",
       });
-      setValue({ label: response.data.userRoleName, value: response.data.id });
-      form.setValue("userRoleId", response.data.id);
+      setValue({ label: (response.data as any).userRoleName, value: (response.data as any).id });
+      form.setValue("userRoleId", (response.data as any).id);
     } else {
       toast({
         title: t("user_role_create_failed"),
@@ -128,7 +128,7 @@ const AddToMemberForm: React.FC<AddToMemberFormProps> = ({
   };
 
   const form = useForm({
-    resolver: zodResolver(addFormSchema(t)),
+    resolver: zodResolver(addFormSchema(t)) as any,
     defaultValues: addDefaultValues,
   });
 

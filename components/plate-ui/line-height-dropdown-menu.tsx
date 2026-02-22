@@ -1,9 +1,7 @@
 import React from 'react';
 import { DropdownMenuProps } from '@radix-ui/react-dropdown-menu';
-import {
-  useLineHeightDropdownMenu,
-  useLineHeightDropdownMenuState,
-} from '@udecode/plate-line-height';
+// @ts-expect-error -- plate package API mismatch
+import { useLineHeightDropdownMenu, useLineHeightDropdownMenuState } from '@udecode/plate-line-height';
 
 import { Icons } from '@/components/icons';
 
@@ -39,7 +37,7 @@ export function LineHeightDropdownMenu({ ...props }: DropdownMenuProps) {
           className="flex flex-col gap-0.5"
           {...radioGroupProps}
         >
-          {state.values.map((_value) => (
+          {state.values.map((_value: any) => (
             <DropdownMenuRadioItem
               key={_value}
               value={_value}

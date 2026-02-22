@@ -190,7 +190,7 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
 
       try {
         const pathIds = selectedCategoryIds.map((id) => Number(id));
-        let levels: { categories: any[]; selectedId: number | null }[] = [];
+        const levels: { categories: any[]; selectedId: number | null }[] = [];
         let currentCategories = categoryQuery.data.data.children;
 
         for (let i = 0; i < pathIds.length; i++) {
@@ -291,7 +291,8 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
         description: response.message,
         variant: "success",
       });
-      return { label: response.data.tagName, value: response.data.id };
+      const tagData = response.data as any;
+      return { label: tagData.tagName, value: tagData.id };
     } else {
       toast({
         title: t("tag_create_failed"),

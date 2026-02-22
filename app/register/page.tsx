@@ -227,6 +227,8 @@ export default function RegisterPage() {
         email: userData.email,
         tradeRole: "BUYER",
         loginType: getLoginType() || "GOOGLE",
+        provider: "",
+        token: "",
       });
 
       if (response?.status && response?.data) {

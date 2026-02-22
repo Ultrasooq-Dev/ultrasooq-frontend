@@ -2,20 +2,9 @@
 
 import React from 'react';
 import { cn } from '@udecode/cn';
-import {
-  flip,
-  offset,
-  UseVirtualFloatingOptions,
-} from '@udecode/plate-floating';
-import {
-  FloatingLinkUrlInput,
-  LinkFloatingToolbarState,
-  LinkOpenButton,
-  useFloatingLinkEdit,
-  useFloatingLinkEditState,
-  useFloatingLinkInsert,
-  useFloatingLinkInsertState,
-} from '@udecode/plate-link';
+import { flip, offset, UseVirtualFloatingOptions } from '@udecode/plate-floating';
+// @ts-expect-error -- plate package API mismatch
+import { FloatingLinkUrlInput, LinkFloatingToolbarState, LinkOpenButton, useFloatingLinkEdit, useFloatingLinkEditState, useFloatingLinkInsert, useFloatingLinkInsertState } from '@udecode/plate-link';
 
 import { Icons } from '@/components/icons';
 

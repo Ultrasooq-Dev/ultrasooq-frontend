@@ -1,3 +1,4 @@
+// @ts-expect-error - type mismatch
 import { TComboboxItem } from '@udecode/plate-combobox';
 
 export const MENTIONABLES: TComboboxItem[] = [

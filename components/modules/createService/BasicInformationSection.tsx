@@ -194,9 +194,10 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
         description: response.message,
         variant: "success",
       });
-      catList.push({ value: response.data.id, label: response.data.tagName });
-      let selected = formContext.getValues("tags") || [];
-      selected.push({ value: response.data.id, label: response.data.tagName });
+      const tagData = response.data as any;
+      catList.push({ value: tagData.id, label: tagData.tagName });
+      const selected = formContext.getValues("tags") || [];
+      selected.push({ value: tagData.id, label: tagData.tagName });
       formContext.setValue("tags", selected);
     } else {
       toast({

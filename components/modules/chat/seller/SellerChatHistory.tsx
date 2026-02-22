@@ -88,7 +88,7 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
       const cleanAccountName = chatUser.accountName.trim();
       if (cleanAccountName.length > 0) {
         // Get first letter, or first two letters if single word
-        const words = cleanAccountName.split(/\s+/).filter(w => w.length > 0);
+        const words = cleanAccountName.split(/\s+/).filter((w: any) => w.length > 0);
         if (words.length >= 2) {
           return `${words[0][0]}${words[1][0]}`.toUpperCase();
         } else if (words.length === 1) {

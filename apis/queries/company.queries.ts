@@ -48,7 +48,7 @@ export const useUpdateCompanyProfile = () => {
     IEditCompanyProfileRequest
   >({
     mutationFn: async (payload) => {
-      const res = await updateCompanyProfile(payload);
+      const res = await updateCompanyProfile(payload as any);
       return res.data;
     },
     onSuccess: () => {
@@ -77,7 +77,7 @@ export const useUpdateCompanyBranch = () => {
     IEditCompanyBranchRequest
   >({
     mutationFn: async (payload) => {
-      const res = await updateCompanyBranch(payload);
+      const res = await updateCompanyBranch(payload as any);
       return res.data;
     },
     onSuccess: () => {
@@ -101,7 +101,7 @@ export const useCreateCompanyBranch = () => {
     ICreateCompanyBranchRequest
   >({
     mutationFn: async (payload) => {
-      const res = await createCompanyBranch(payload);
+      const res = await createCompanyBranch(payload as any);
       return res.data;
     },
     onSuccess: () => {

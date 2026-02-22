@@ -67,7 +67,7 @@ interface SocketContextType {
   newRoom: {
     roomId: number,
     creatorId: number,
-  };
+  } | null;
   newAttachment: newAttachmentType | null;
   cratePrivateRoom: (newRoom: {
     participants: number[];

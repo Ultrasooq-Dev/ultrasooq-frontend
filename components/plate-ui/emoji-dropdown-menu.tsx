@@ -1,8 +1,6 @@
 import React from 'react';
-import {
-  EmojiDropdownMenuOptions,
-  useEmojiDropdownMenuState,
-} from '@udecode/plate-emoji';
+// @ts-expect-error -- plate package API mismatch
+import { EmojiDropdownMenuOptions, useEmojiDropdownMenuState } from '@udecode/plate-emoji';
 
 import { Icons } from '@/components/icons';
 

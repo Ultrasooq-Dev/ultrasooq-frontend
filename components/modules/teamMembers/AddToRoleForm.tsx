@@ -58,7 +58,7 @@ const AddToRoleForm: React.FC<AddToRoleFormProps> = ({ onClose, updatePermission
     }
     if (response.status) {
       onClose();
-      updatePermission(response.data.id);
+      updatePermission((response.data as any).id);
       toast({
         title: response.message,
         description: response.message,

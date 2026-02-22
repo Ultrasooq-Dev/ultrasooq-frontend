@@ -1,9 +1,7 @@
 import React from 'react';
 import { withRef } from '@udecode/cn';
-import {
-  useLinkToolbarButton,
-  useLinkToolbarButtonState,
-} from '@udecode/plate-link';
+// @ts-expect-error -- plate package API mismatch
+import { useLinkToolbarButton, useLinkToolbarButtonState } from '@udecode/plate-link';
 
 import { Icons } from '@/components/icons';
 

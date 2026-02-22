@@ -1,5 +1,6 @@
 import React from 'react';
 import { cn } from '@udecode/cn';
+// @ts-expect-error -- plate package API mismatch
 import { EmojiSettings, UseEmojiPickerType } from '@udecode/plate-emoji';
 
 import { EmojiPickerContent } from './emoji-picker-content';

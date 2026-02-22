@@ -499,7 +499,7 @@ const CartListPage = () => {
 
           let amount = 0;
           const cartItemAny = curr as any;
-          for (let feature of curr.cartServiceFeatures) {
+          for (const feature of curr.cartServiceFeatures) {
             if (feature.serviceFeature?.serviceCostType == "FLAT") {
               amount +=
                 Number(feature.serviceFeature?.serviceCost || "") *
@@ -570,7 +570,7 @@ const CartListPage = () => {
 
           let amount = 0;
           const cartItemAny = curr as any;
-          for (let feature of curr.cartServiceFeatures) {
+          for (const feature of curr.cartServiceFeatures) {
             if (feature.serviceFeature?.serviceCostType == "FLAT") {
               amount +=
                 Number(feature.serviceFeature?.serviceCost || "") *
@@ -615,7 +615,7 @@ const CartListPage = () => {
     serviceFeatureId: number,
   ) => {
     const cartItem = memoizedCartList.find((item: any) => item.id == cartId);
-    let payload: any = { cartId };
+    const payload: any = { cartId };
     if (cartItem?.cartServiceFeatures?.length > 1) {
       payload.serviceFeatureId = serviceFeatureId;
     }
@@ -895,7 +895,7 @@ const CartListPage = () => {
                   <div className="space-y-4">
                     {memoizedCartList?.map((item: CartItem) => {
                       if (item.cartType == "DEFAULT") {
-                        let relatedCart = memoizedCartList
+                        const relatedCart = memoizedCartList
                           ?.filter(
                             (c: any) =>
                               c.serviceId && c.cartProductServices?.length,
@@ -929,7 +929,7 @@ const CartListPage = () => {
                         }),
                       );
 
-                      let relatedCart: any = memoizedCartList
+                      const relatedCart: any = memoizedCartList
                         ?.filter(
                           (c: any) =>
                             c.productId && c.cartProductServices?.length,

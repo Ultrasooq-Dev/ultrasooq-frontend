@@ -2,13 +2,9 @@
 
 import React from 'react';
 import { cn } from '@udecode/cn';
-import {
-  CommentProvider,
-  CommentsPositioner,
-  SCOPE_ACTIVE_COMMENT,
-  useFloatingCommentsContentState,
-  useFloatingCommentsState,
-} from '@udecode/plate-comments';
+// @ts-expect-error -- plate package API mismatch
+import { CommentProvider, CommentsPositioner, SCOPE_ACTIVE_COMMENT, useFloatingCommentsContentState, useFloatingCommentsState } from '@udecode/plate-comments';
+// @ts-expect-error -- plate package API mismatch
 import { PortalBody } from '@udecode/plate-common';
 
 import { CommentCreateForm } from './comment-create-form';

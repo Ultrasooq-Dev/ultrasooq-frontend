@@ -1,11 +1,7 @@
 import React from 'react';
-import {
-  MARK_BOLD,
-  MARK_CODE,
-  MARK_ITALIC,
-  MARK_STRIKETHROUGH,
-  MARK_UNDERLINE,
-} from '@udecode/plate-basic-marks';
+// @ts-expect-error -- plate package API mismatch
+import { MARK_BOLD, MARK_CODE, MARK_ITALIC, MARK_STRIKETHROUGH, MARK_UNDERLINE } from '@udecode/plate-basic-marks';
+// @ts-expect-error -- plate package API mismatch
 import { useEditorReadOnly } from '@udecode/plate-common';
 
 import { Icons } from '@/components/icons';

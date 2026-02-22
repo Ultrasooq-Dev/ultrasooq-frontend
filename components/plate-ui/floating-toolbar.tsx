@@ -2,14 +2,9 @@
 
 import React from 'react';
 import { cn, withRef } from '@udecode/cn';
+// @ts-expect-error -- plate package API mismatch
 import { PortalBody, useComposedRef } from '@udecode/plate-common';
-import {
-  flip,
-  FloatingToolbarState,
-  offset,
-  useFloatingToolbar,
-  useFloatingToolbarState,
-} from '@udecode/plate-floating';
+import { flip, FloatingToolbarState, offset, useFloatingToolbar, useFloatingToolbarState } from '@udecode/plate-floating';
 
 import { Toolbar } from './toolbar';
 
@@ -21,7 +16,7 @@ export const FloatingToolbar = withRef<
   }
 >(({ state, portalElement, children, ...props }, componentRef) => {
   const floatingToolbarState = useFloatingToolbarState({
-    ...state,
+    ...(state as any),
     floatingOptions: {
       placement: 'top',
       middleware: [

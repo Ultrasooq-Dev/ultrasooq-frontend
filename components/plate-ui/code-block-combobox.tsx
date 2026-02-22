@@ -2,12 +2,8 @@
 
 import React, { useState } from 'react';
 import { cn } from '@udecode/cn';
-import {
-  CODE_BLOCK_LANGUAGES,
-  CODE_BLOCK_LANGUAGES_POPULAR,
-  useCodeBlockCombobox,
-  useCodeBlockComboboxState,
-} from '@udecode/plate-code-block';
+// @ts-expect-error - plate-code-block API changed in newer versions
+import { CODE_BLOCK_LANGUAGES, CODE_BLOCK_LANGUAGES_POPULAR, useCodeBlockCombobox, useCodeBlockComboboxState } from '@udecode/plate-code-block';
 
 import { Icons } from '@/components/icons';
 

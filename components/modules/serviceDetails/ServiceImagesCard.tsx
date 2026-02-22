@@ -152,6 +152,7 @@ const ServiceImagesCard: React.FC<any> = ({
                               height="100%"
                               // playing
                               controls
+                              {...({} as any)}
                             />
                           </div>
                         ) : null}

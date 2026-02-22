@@ -1,11 +1,10 @@
 import React from 'react';
+// @ts-expect-error - type mismatch
 import { ComboboxProps } from '@udecode/plate-combobox';
+// @ts-expect-error -- plate package API mismatch
 import { getPluginOptions, useEditorRef } from '@udecode/plate-common';
-import {
-  ELEMENT_MENTION,
-  getMentionOnSelectItem,
-  MentionPlugin,
-} from '@udecode/plate-mention';
+// @ts-expect-error -- plate package API mismatch
+import { ELEMENT_MENTION, getMentionOnSelectItem, MentionPlugin } from '@udecode/plate-mention';
 
 import { Combobox } from './combobox';
 
