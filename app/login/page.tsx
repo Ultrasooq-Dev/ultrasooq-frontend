@@ -29,7 +29,7 @@ import LoaderPrimaryIcon from "@/public/images/load-primary.png";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
-import { CheckedState } from "@radix-ui/react-checkbox";
+import type { CheckedState } from "radix-ui";
 import LoaderWithMessage from "@/components/shared/LoaderWithMessage";
 import { fetchUserPermissions } from "@/apis/requests/user.requests";
 import { useTranslations } from "next-intl";

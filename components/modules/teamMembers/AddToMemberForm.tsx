@@ -19,7 +19,7 @@ import {
   useCreateMember,
   useUpdateMember,
 } from "@/apis/queries/member.queries";
-import { Label } from "@radix-ui/react-dropdown-menu";
+import { Label } from "@/components/ui/label";
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/context/AuthContext";
 

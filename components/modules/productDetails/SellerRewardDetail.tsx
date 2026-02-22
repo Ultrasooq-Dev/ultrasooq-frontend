@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { DialogTitle } from "@radix-ui/react-dialog";
+import { DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { IoCloseSharp } from "react-icons/io5";
 import { Input } from "@/components/ui/input";

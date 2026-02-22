@@ -25,7 +25,7 @@ import { useDynamicTranslation } from "@/hooks/useDynamicTranslation";
 import { useProductVariant } from "@/apis/queries/product.queries";
 import { Label } from "@/components/ui/label";
 import { Select, SelectItem } from "@/components/ui/select";
-import { SelectContent } from "@radix-ui/react-select";
+import { SelectContent } from "@/components/ui/select";
 import { useVendorBusinessCategories } from "@/hooks/useVendorBusinessCategories";
 import { checkCategoryConnection } from "@/utils/categoryConnection";
 import { useCategory } from "@/apis/queries/category.queries";

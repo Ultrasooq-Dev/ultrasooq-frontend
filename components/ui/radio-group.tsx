@@ -3,7 +3,7 @@
 import * as React from "react";
 import { CheckIcon } from "@radix-ui/react-icons";
 import { Circle } from "lucide-react";
-import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
+import { RadioGroup as RadioGroupPrimitive } from "radix-ui";
 import { FaCircle } from "react-icons/fa";
 import { cn } from "@/lib/utils";
 

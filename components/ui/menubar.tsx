@@ -6,7 +6,7 @@ import {
   ChevronRightIcon,
   DotFilledIcon,
 } from "@radix-ui/react-icons"
-import * as MenubarPrimitive from "@radix-ui/react-menubar"
+import { Menubar as MenubarPrimitive } from "radix-ui"
 
 import { cn } from "@/lib/utils"
 
