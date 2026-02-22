@@ -375,7 +375,7 @@ const AddBranchPage = () => {
                                       browse
                                     </span>
                                     <p
-                                      className="text-normal mt-3 text-xs leading-4 text-gray-300"
+                                      className="text-normal mt-3 text-xs leading-4 text-muted-foreground"
                                       translate="no"
                                     >
                                       ({t("branch_front_picture_spec")})
@@ -462,7 +462,7 @@ const AddBranchPage = () => {
                                       browse
                                     </span>
                                     <p
-                                      className="text-normal mt-3 text-xs leading-4 text-gray-300"
+                                      className="text-normal mt-3 text-xs leading-4 text-muted-foreground"
                                       translate="no"
                                     >
                                       ({t("address_proof_spec")})

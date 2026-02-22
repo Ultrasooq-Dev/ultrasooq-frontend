@@ -255,7 +255,7 @@ const CreateDropshipableProductPage = () => {
                         type="button"
                         onClick={handleSearch}
                         disabled={!searchTerm.trim() || isSearching}
-                        className="h-12 px-6 bg-primary hover:bg-primary/90 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-2"
+                        className="h-12 px-6 bg-primary hover:bg-primary/90 disabled:bg-muted-foreground disabled:cursor-not-allowed flex items-center gap-2"
                       >
                         <Search className="w-4 h-4" />
                         {isSearching ? t("searching") : t("search")}

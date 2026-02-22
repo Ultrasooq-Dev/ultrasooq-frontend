@@ -464,7 +464,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
                             onClick={handleBrandSearch}
                             disabled={!searchTermBrand.trim()}
                             size="sm"
-                            className="h-9 bg-primary px-4 text-xs font-medium hover:bg-primary/90 disabled:cursor-not-allowed disabled:bg-gray-400"
+                            className="h-9 bg-primary px-4 text-xs font-medium hover:bg-primary/90 disabled:cursor-not-allowed disabled:bg-muted-foreground"
                           >
                             {t("search")}
                           </Button>
@@ -632,7 +632,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
                           onClick={handleBrandSearch}
                           disabled={!searchTermBrand.trim()}
                           size="sm"
-                          className="h-8 px-3 bg-primary hover:bg-primary/90 disabled:bg-gray-400 disabled:cursor-not-allowed text-xs"
+                          className="h-8 px-3 bg-primary hover:bg-primary/90 disabled:bg-muted-foreground disabled:cursor-not-allowed text-xs"
                         >
                           {t("search")}
                         </Button>

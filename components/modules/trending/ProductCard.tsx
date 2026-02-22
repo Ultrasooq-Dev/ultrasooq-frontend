@@ -662,7 +662,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       ) : null}
       {outOfStockActive ? (
         <div className="absolute left-1.5 sm:left-3 top-1.5 sm:top-3 z-20">
-          <div className="px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold bg-gray-800 text-white">
+          <div className="px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold bg-foreground/90 text-white">
             {t("out_of_stock")}
           </div>
         </div>

@@ -619,7 +619,7 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
             <ul className="space-y-2">
               {productShortDescription?.map((item) => (
                 <li key={item?.id} className="flex items-start gap-2 text-sm text-muted-foreground">
-                  <span className="mt-1 h-1 w-1 rounded-full bg-gray-400 flex-shrink-0" />
+                  <span className="mt-1 h-1 w-1 rounded-full bg-muted-foreground flex-shrink-0" />
                   {item?.shortDescription}
                 </li>
               ))}
@@ -771,7 +771,7 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
                 isAddedToCart && quantity === 0
                   ? "bg-gradient-to-r from-destructive to-destructive/90 text-white hover:from-destructive hover:to-destructive/80"
                   : saleNotStarted || saleExpired
-                  ? "bg-gray-400 text-white"
+                  ? "bg-muted-foreground text-white"
                   : "bg-gradient-to-r from-yellow-400 to-yellow-500 text-foreground hover:from-yellow-500 hover:to-yellow-600"
               }`}
               dir={langDir}

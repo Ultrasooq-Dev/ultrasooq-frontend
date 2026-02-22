@@ -162,7 +162,7 @@ const SellerRfqRequestPage = () => {
                 >
                   <div className={cn(
                     "h-4 w-4 rounded flex-shrink-0",
-                    currentTab === "RFQ" ? "bg-destructive" : "bg-gray-400"
+                    currentTab === "RFQ" ? "bg-destructive" : "bg-muted-foreground"
                   )}></div>
                   {!isSidebarCollapsed && (
                     <span className="font-medium">RFQ</span>
@@ -181,7 +181,7 @@ const SellerRfqRequestPage = () => {
                 >
                   <div className={cn(
                     "h-4 w-4 rounded flex-shrink-0",
-                    currentTab === "Product Messages" ? "bg-destructive" : "bg-gray-400"
+                    currentTab === "Product Messages" ? "bg-destructive" : "bg-muted-foreground"
                   )}></div>
                   {!isSidebarCollapsed && (
                     <span className="font-medium">Message System</span>
@@ -469,7 +469,7 @@ const SellerRfqRequestPage = () => {
                 >
                   <div className={cn(
                     "h-4 w-4 rounded flex-shrink-0",
-                    currentTab === "RFQ" ? "bg-destructive" : "bg-gray-400"
+                    currentTab === "RFQ" ? "bg-destructive" : "bg-muted-foreground"
                   )}></div>
                   {!isSidebarCollapsed && (
                     <span className="font-medium">RFQ</span>
@@ -488,7 +488,7 @@ const SellerRfqRequestPage = () => {
                 >
                   <div className={cn(
                     "h-4 w-4 rounded flex-shrink-0",
-                    currentTab === "Product Messages" ? "bg-destructive" : "bg-gray-400"
+                    currentTab === "Product Messages" ? "bg-destructive" : "bg-muted-foreground"
                   )}></div>
                   {!isSidebarCollapsed && (
                     <span className="font-medium">Message System</span>

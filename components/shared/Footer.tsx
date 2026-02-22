@@ -87,7 +87,7 @@ const Footer = () => {
   const onSubmit = (data: typeof defaultValues) => {};
 
   return (
-    <footer className="mt-16 w-full bg-gray-900 text-gray-300">
+    <footer className="mt-16 w-full bg-[var(--brand-dark)] text-[var(--brand-dark-fg)]/70">
       {/* Main Footer Content */}
       <div className="container mx-auto px-4 py-12 sm:px-6 md:py-16 lg:px-8">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-12 lg:gap-12">
@@ -105,7 +105,7 @@ const Footer = () => {
               <a
                 href="#"
                 aria-label="Facebook"
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 text-muted-foreground transition-colors duration-200"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--brand-dark)]/80 text-muted-foreground transition-colors duration-200"
               >
                 <svg
                   className="h-5 w-5"
@@ -119,7 +119,7 @@ const Footer = () => {
               <a
                 href="#"
                 aria-label="Twitter"
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 text-muted-foreground transition-colors duration-200"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--brand-dark)]/80 text-muted-foreground transition-colors duration-200"
               >
                 <svg
                   className="h-5 w-5"
@@ -133,7 +133,7 @@ const Footer = () => {
               <a
                 href="#"
                 aria-label="Instagram"
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 text-muted-foreground transition-colors duration-200"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--brand-dark)]/80 text-muted-foreground transition-colors duration-200"
               >
                 <svg
                   className="h-5 w-5"
@@ -147,7 +147,7 @@ const Footer = () => {
               <a
                 href="#"
                 aria-label="LinkedIn"
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 text-muted-foreground transition-colors duration-200"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--brand-dark)]/80 text-muted-foreground transition-colors duration-200"
               >
                 <svg
                   className="h-5 w-5"
@@ -358,7 +358,7 @@ const Footer = () => {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-gray-800">
+      <div className="border-t border-[var(--brand-dark)]/80">
         <div className="container mx-auto px-4 py-6 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
             {/* Copyright */}

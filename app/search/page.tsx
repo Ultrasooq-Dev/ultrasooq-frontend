@@ -123,7 +123,7 @@ const SearchPage = (props: SearchPageProps) => {
                 {/* Search Header with Sort + AI Toggle */}
                 <div className="mb-6">
                     <div className="flex items-center gap-3 mb-4">
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${aiMode ? 'bg-violet-600' : 'bg-gray-900'}`}>
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${aiMode ? 'bg-violet-600' : 'bg-foreground'}`}>
                             {aiMode ? (
                                 <Sparkles className="h-5 w-5 text-white" />
                             ) : (

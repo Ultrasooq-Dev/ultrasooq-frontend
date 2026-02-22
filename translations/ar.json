@@ -1648,5 +1648,12 @@
   "skip_loading": "تخطي التحميل",
   "product_data_loaded": "تم تحميل بيانات المنتج",
   "ai_data_loaded_successfully": "تم تحميل البيانات التي تم إنشاؤها بواسطة الذكاء الاصطناعي بنجاح. يرجى مراجعتها وإكمال النموذج.",
-  "product_location_and_customization": "موقع المنتج والتخصيص"
+  "product_location_and_customization": "موقع المنتج والتخصيص",
+  "special_offer": "عرض خاص",
+  "special_price": "السعر الخاص",
+  "shop_now": "تسوق الآن",
+  "limited_time_offer_hurry": "عرض لفترة محدودة - أسرع!",
+  "promo_heading": "اكتشف عروضاً مذهلة على أفضل المنتجات",
+  "promo_description": "تصفح مجموعتنا المختارة من المنتجات المميزة بأسعار لا تُقاوَم.",
+  "browse_categories_to_find_trending_products": "تصفح الفئات للعثور على المنتجات الرائجة"
 }

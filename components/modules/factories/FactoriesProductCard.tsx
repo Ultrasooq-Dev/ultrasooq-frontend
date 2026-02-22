@@ -613,7 +613,7 @@ const FactoriesProductCard: React.FC<RfqProductCardProps> = ({
             {onAdd && (
               <Button
                 onClick={onAdd}
-                className="w-full mt-3 bg-primary hover:bg-primary/90 text-white font-medium py-2 rounded-lg transition-colors duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                className="w-full mt-3 bg-primary hover:bg-primary/90 text-white font-medium py-2 rounded-lg transition-colors duration-200 disabled:bg-muted-foreground disabled:cursor-not-allowed"
                 disabled={isAddedToFactoryCart || quantity === 0}
               >
                 {isAddedToFactoryCart ? (

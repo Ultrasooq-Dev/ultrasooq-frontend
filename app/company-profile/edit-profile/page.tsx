@@ -320,7 +320,7 @@ export default function EditProfilePage() {
                                     <span className="text-primary">
                                       browse
                                     </span>
-                                    <p className="text-normal mt-3 text-xs leading-4 text-gray-300" translate="no">
+                                    <p className="text-normal mt-3 text-xs leading-4 text-muted-foreground" translate="no">
                                       ({t("company_logo_spec")})
                                     </p>
                                   </div>

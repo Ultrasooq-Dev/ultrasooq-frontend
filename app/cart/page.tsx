@@ -1214,7 +1214,7 @@ const CartListPage = () => {
                                                           starValue <=
                                                           Math.round(rating)
                                                             ? "text-warning/70"
-                                                            : "text-gray-300"
+                                                            : "text-muted-foreground"
                                                         }`}
                                                       />
                                                     );

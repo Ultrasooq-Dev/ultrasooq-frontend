@@ -824,7 +824,7 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
               aiProductModels.length === 0 &&
               !isAIGenerating && (
                 <div className="py-6 text-center">
-                  <Search className="mx-auto mb-2 h-8 w-8 text-gray-300" />
+                  <Search className="mx-auto mb-2 h-8 w-8 text-muted-foreground" />
                   <p className="text-sm font-medium text-muted-foreground" dir={langDir}>
                     {t("no_results_found") || "No Results Found"}
                   </p>

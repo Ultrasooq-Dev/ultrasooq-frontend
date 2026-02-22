@@ -1590,7 +1590,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
             {!hoveredLevel2Id && subcategoriesForGrid.length > 0 && (
               <div className="flex-1 h-full flex items-center justify-center bg-muted text-muted-foreground text-sm">
                 <div className="text-center">
-                  <svg className="w-10 h-10 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-10 h-10 mx-auto mb-2 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
                   </svg>
                   <p>{"Hover a subcategory to explore"}</p>

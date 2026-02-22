@@ -480,7 +480,7 @@ const RfqPage = (props: RfqPageProps) => {
                               onClick={handleBrandSearch}
                               disabled={!searchTermBrand.trim()}
                               size="sm"
-                              className="h-9 bg-primary px-4 text-xs font-medium hover:bg-primary/90 disabled:cursor-not-allowed disabled:bg-gray-400"
+                              className="h-9 bg-primary px-4 text-xs font-medium hover:bg-primary/90 disabled:cursor-not-allowed disabled:bg-muted-foreground"
                             >
                               {t("search")}
                             </Button>
@@ -908,7 +908,7 @@ const RfqPage = (props: RfqPageProps) => {
                           onClick={handleBrandSearch}
                           disabled={!searchTermBrand.trim()}
                           size="sm"
-                          className="h-8 bg-primary px-3 text-xs hover:bg-primary/90 disabled:cursor-not-allowed disabled:bg-gray-400"
+                          className="h-8 bg-primary px-3 text-xs hover:bg-primary/90 disabled:cursor-not-allowed disabled:bg-muted-foreground"
                         >
                           {t("search")}
                         </Button>

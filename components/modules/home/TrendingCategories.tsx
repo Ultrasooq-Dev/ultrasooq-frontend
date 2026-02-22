@@ -164,7 +164,7 @@ const TrendingCategories: React.FC<TrendingCategoriesProps> = ({
   if (mainCategoriesQuery.isLoading) {
     return (
       <div className="flex items-center justify-center py-8">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-border border-t-blue-600"></div>
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-border border-t-primary"></div>
       </div>
     );
   }
@@ -232,7 +232,7 @@ const TrendingCategories: React.FC<TrendingCategoriesProps> = ({
                   <h3 className="text-base font-bold mb-2 drop-shadow-lg text-white group-hover:scale-105 transition-transform duration-300" data-dynamic="true">
                     {category.name}
                   </h3>
-                  <p className="text-xs text-gray-200 mb-3 drop-shadow-sm" translate="no">
+                  <p className="text-xs text-muted-foreground mb-3 drop-shadow-sm" translate="no">
                     {category.children?.length || 0} {t("subcategories")}
                   </p>
                   
@@ -300,7 +300,7 @@ const TrendingCategories: React.FC<TrendingCategoriesProps> = ({
                     <h3 className="text-xs sm:text-sm font-bold mb-1 sm:mb-2 drop-shadow-lg text-white line-clamp-2" data-dynamic="true">
                       {category.name}
                     </h3>
-                    <p className="text-[10px] sm:text-xs text-gray-200 mb-2 drop-shadow-sm" translate="no">
+                    <p className="text-[10px] sm:text-xs text-muted-foreground mb-2 drop-shadow-sm" translate="no">
                       {category.children?.length || 0} {t("subcategories")}
                     </p>
                     

@@ -29,7 +29,7 @@ const StatusDisplay: React.FC<StatusDisplayProps> = ({
   if (!userData?.data) {
     return (
       <div className={`flex items-center space-x-2 ${className}`}>
-        <div className="w-4 h-4 bg-gray-400 rounded-full"></div>
+        <div className="w-4 h-4 bg-muted-foreground rounded-full"></div>
         <span className="text-sm text-muted-foreground">Not logged in</span>
       </div>
     );

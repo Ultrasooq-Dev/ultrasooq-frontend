@@ -510,7 +510,7 @@ export default function CompanyProfilePage() {
                                       browse
                                     </span>
                                     <p
-                                      className="text-normal mt-3 text-xs leading-4 text-gray-300"
+                                      className="text-normal mt-3 text-xs leading-4 text-muted-foreground"
                                       dir={langDir}
                                       translate="no"
                                     >
@@ -763,7 +763,7 @@ export default function CompanyProfilePage() {
                                     <span className="text-primary">
                                       browse
                                     </span>
-                                    <p className="text-normal mt-3 text-xs leading-4 text-gray-300" translate="no">
+                                    <p className="text-normal mt-3 text-xs leading-4 text-muted-foreground" translate="no">
                                       ({t("branch_front_picture_spec")})
                                     </p>
                                   </div>
@@ -847,7 +847,7 @@ export default function CompanyProfilePage() {
                                     <span className="text-primary">
                                       browse
                                     </span>
-                                    <p className="text-normal mt-3 text-xs leading-4 text-gray-300" translate="no">
+                                    <p className="text-normal mt-3 text-xs leading-4 text-muted-foreground" translate="no">
                                       ({t("address_proof_spec")})
                                     </p>
                                   </div>

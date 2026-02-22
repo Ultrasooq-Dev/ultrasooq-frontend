@@ -329,7 +329,7 @@ const ProductSuggestionModal: React.FC<ProductSuggestionModalProps> = ({
                           className={`flex h-4 w-4 items-center justify-center rounded border text-[10px] ${
                             isSelected
                               ? "border-primary bg-primary text-white"
-                              : "border-gray-400 bg-card text-transparent"
+                              : "border-border bg-card text-transparent"
                           }`}
                         >
                           ✓

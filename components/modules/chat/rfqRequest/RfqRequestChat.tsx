@@ -1802,7 +1802,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
               type="button"
               disabled={!message.trim() && attachments.length === 0}
               className={cn(
-                "bg-dark-orange flex h-8 w-8 items-center justify-center rounded-lg text-white shadow-sm transition-all hover:shadow-md disabled:cursor-not-allowed disabled:bg-gray-400",
+                "bg-dark-orange flex h-8 w-8 items-center justify-center rounded-lg text-white shadow-sm transition-all hover:shadow-md disabled:cursor-not-allowed disabled:bg-muted-foreground",
               )}
             >
               <Image src={SendIcon} alt="send-icon" className="h-4 w-4" />
@@ -2467,7 +2467,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
                 type="button"
                 disabled={!message.trim() && attachments.length === 0}
                 className={cn(
-                  "bg-dark-orange flex h-10 w-10 items-center justify-center rounded-lg text-white shadow-md transition-all hover:scale-105 hover:shadow-lg disabled:cursor-not-allowed disabled:bg-gray-400 disabled:hover:scale-100",
+                  "bg-dark-orange flex h-10 w-10 items-center justify-center rounded-lg text-white shadow-md transition-all hover:scale-105 hover:shadow-lg disabled:cursor-not-allowed disabled:bg-muted-foreground disabled:hover:scale-100",
                 )}
               >
                 <Image src={SendIcon} alt="send-icon" className="h-5 w-5" />

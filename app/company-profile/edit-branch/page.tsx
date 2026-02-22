@@ -440,7 +440,7 @@ export default function EditBranchPage() {
                                     {t("drop_your_branch_front_picture")}{" "}
                                   </span>
                                   <span className="text-primary">browse</span>
-                                  <p className="text-normal mt-3 text-xs leading-4 text-gray-300" translate="no">
+                                  <p className="text-normal mt-3 text-xs leading-4 text-muted-foreground" translate="no">
                                     ({t("branch_front_picture_spec")})
                                   </p>
                                 </div>
@@ -515,7 +515,7 @@ export default function EditBranchPage() {
                                     {t("drop_your_address_proof")}{" "}
                                   </span>
                                   <span className="text-primary">browse</span>
-                                  <p className="text-normal mt-3 text-xs leading-4 text-gray-300" translate="no">
+                                  <p className="text-normal mt-3 text-xs leading-4 text-muted-foreground" translate="no">
                                     ({t("address_proof_spec")})
                                   </p>
                                 </div>

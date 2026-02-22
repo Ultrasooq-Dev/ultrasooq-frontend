@@ -406,7 +406,7 @@ function HomePage() {
       <HeroBanner />
 
       {/* Categories Section */}
-      {/* <section className="w-full bg-card px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+      <section className="w-full bg-card px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
         <div className="mx-auto w-full max-w-[1400px]">
           <div className="mb-8 sm:mb-12" dir="ltr">
             <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-6">
@@ -426,7 +426,7 @@ function HomePage() {
               </div>
               <Link
                 href="/trending"
-                className="group inline-flex items-center gap-2 rounded-xl border border-gray-900 bg-gray-900 px-6 py-3.5 text-sm font-semibold text-white sm:px-8 sm:py-4 sm:text-base"
+                className="group inline-flex items-center gap-2 rounded-xl border border-foreground bg-foreground px-6 py-3.5 text-sm font-semibold text-background sm:px-8 sm:py-4 sm:text-base"
                 translate="no"
               >
                 <TrendingUp className="h-5 w-5" />
@@ -442,10 +442,10 @@ function HomePage() {
             <TrendingCategories />
           </div>
         </div>
-      </section> */}
+      </section>
 
       {memoizedBuyGroupProducts?.length > 0 ? (
-        <section className="w-full bg-gradient-to-b from-warning/5 to-white px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+        <section className="w-full bg-gradient-to-b from-warning/5 to-card px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
           <div className="mx-auto w-full max-w-[1400px]">
             <div className="mb-8 sm:mb-12">
               <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-6">
@@ -564,7 +564,7 @@ function HomePage() {
       {/* Promotional Section */}
       <section className="w-full bg-muted px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
         <div className="mx-auto w-full max-w-[1400px]">
-          <div className="relative overflow-hidden rounded-3xl border border-indigo-700 bg-info">
+          <div className="relative overflow-hidden rounded-3xl border border-info bg-info">
             <div className="absolute inset-0 bg-black/5" />
 
             <div className="relative grid grid-cols-1 items-center gap-8 p-8 sm:p-12 md:grid-cols-12 lg:p-16">
@@ -763,7 +763,7 @@ function HomePage() {
       ) : null}
 
       {memoizedFashionBeautyProducts?.length > 0 ? (
-        <section className="w-full bg-gradient-to-b from-pink-50 to-white px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+        <section className="w-full bg-gradient-to-b from-primary/5 to-card px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
           <div className="mx-auto w-full max-w-[1400px]">
             <div className="mb-8 sm:mb-12">
               <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-6">
@@ -833,7 +833,7 @@ function HomePage() {
                       categoryStore.setCategoryIds(categoryId.toString());
                       router.push("/trending");
                     }}
-                    className="group inline-flex cursor-pointer items-center gap-2 rounded-xl border border-pink-600 bg-pink-600 px-6 py-3.5 text-sm font-semibold text-white sm:px-8 sm:py-4 sm:text-base"
+                    className="group inline-flex cursor-pointer items-center gap-2 rounded-xl border border-primary bg-primary px-6 py-3.5 text-sm font-semibold text-white sm:px-8 sm:py-4 sm:text-base"
                     translate="no"
                   >
                     {t("view_all")}
@@ -1018,7 +1018,7 @@ function HomePage() {
 
       {/* Top Rated Products Section */}
       {memoizedTopRatedProducts?.length > 0 ? (
-        <section className="w-full bg-gradient-to-b from-yellow-50 to-white px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+        <section className="w-full bg-gradient-to-b from-warning/5 to-card px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
           <div className="mx-auto w-full max-w-[1400px]">
             <div className="mb-8 sm:mb-12">
               <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-6">
@@ -1147,7 +1147,7 @@ function HomePage() {
 
       {/* New Arrivals Section */}
       {memoizedNewArrivals?.length > 0 ? (
-        <section className="w-full bg-gradient-to-b from-green-50 to-white px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+        <section className="w-full bg-gradient-to-b from-success/5 to-card px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
           <div className="mx-auto w-full max-w-[1400px]">
             <div className="mb-8 sm:mb-12">
               <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-6">
@@ -1275,7 +1275,7 @@ function HomePage() {
 
       {/* Highly Reviewed Products Section */}
       {memoizedHighlyReviewed?.length > 0 ? (
-        <section className="w-full bg-gradient-to-b from-purple-50 to-white px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+        <section className="w-full bg-gradient-to-b from-info/5 to-card px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
           <div className="mx-auto w-full max-w-[1400px]">
             <div className="mb-8 sm:mb-12">
               <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-6">
