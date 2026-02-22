@@ -486,12 +486,12 @@ const ProductChat: React.FC<ProductChatProps> = ({ productId, roomId }) => {
 
       {/* Connection Status */}
       {!connected && (
-        <div className="flex-shrink-0 mx-4 mt-4 rounded-lg bg-yellow-50 border border-yellow-200 p-3">
+        <div className="flex-shrink-0 mx-4 mt-4 rounded-lg bg-warning/5 border border-warning/20 p-3">
           <div className="flex items-center gap-2">
-            <svg className="h-4 w-4 text-yellow-600 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="h-4 w-4 text-warning animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
-            <p className="text-xs font-medium text-yellow-800">
+            <p className="text-xs font-medium text-warning">
               {t("connecting_to_server") || "Connecting to server..."}
             </p>
           </div>
@@ -531,7 +531,7 @@ const ProductChat: React.FC<ProductChatProps> = ({ productId, roomId }) => {
                 </span>
                 <button
                   onClick={() => removeFile(index)}
-                  className="flex h-5 w-5 items-center justify-center rounded-full bg-red-100 text-red-600 hover:bg-red-200"
+                  className="flex h-5 w-5 items-center justify-center rounded-full bg-destructive/10 text-destructive hover:bg-destructive/20"
                 >
                   <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -561,7 +561,7 @@ const ProductChat: React.FC<ProductChatProps> = ({ productId, roomId }) => {
           </button>
 
           {/* Message Input */}
-          <div className="flex flex-1 items-end gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2 focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500">
+          <div className="flex flex-1 items-end gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary">
             <textarea
               ref={inputRef}
               placeholder={t("type_your_message") || "Type your message..."}
@@ -585,7 +585,7 @@ const ProductChat: React.FC<ProductChatProps> = ({ productId, roomId }) => {
             type="button"
             onClick={handleSendMessage}
             disabled={(!message.trim() && attachments.length === 0) || !connected}
-            className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+            className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary text-white hover:bg-primary/90 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
           >
             {connected ? (
               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

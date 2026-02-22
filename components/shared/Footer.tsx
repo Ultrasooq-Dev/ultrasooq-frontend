@@ -345,7 +345,7 @@ const Footer = () => {
                 </div>
                 <button
                   type="submit"
-                  className="w-full rounded-lg bg-blue-600 px-4 py-3 text-sm font-medium text-white transition-colors duration-200"
+                  className="w-full rounded-lg bg-primary px-4 py-3 text-sm font-medium text-white transition-colors duration-200"
                   dir={langDir}
                   translate="no"
                 >
@@ -373,7 +373,7 @@ const Footer = () => {
             <Button
               variant="link"
               onClick={handleWhatsAppHelp}
-              className="flex items-center gap-2 text-sm font-normal text-gray-400 transition-colors duration-200 hover:text-green-500"
+              className="flex items-center gap-2 text-sm font-normal text-gray-400 transition-colors duration-200 hover:text-success"
               translate="no"
             >
               <MessageCircle className="h-4 w-4" />
@@ -442,7 +442,7 @@ const Footer = () => {
             {/* For Buyers Option */}
             <button
               onClick={() => handleOptionSelect("buyer")}
-              className="flex w-full max-w-[200px] flex-col items-center justify-center gap-4 rounded-lg border-2 border-gray-200 bg-white p-6 transition-all hover:border-blue-500 hover:bg-blue-50 hover:shadow-md sm:w-auto sm:flex-1"
+              className="flex w-full max-w-[200px] flex-col items-center justify-center gap-4 rounded-lg border-2 border-gray-200 bg-white p-6 transition-all hover:border-primary hover:bg-primary/5 hover:shadow-md sm:w-auto sm:flex-1"
               dir={langDir}
               translate="no"
             >
@@ -457,7 +457,7 @@ const Footer = () => {
             {/* For Suppliers Option */}
             <button
               onClick={() => handleOptionSelect("supplier")}
-              className="flex w-full max-w-[200px] flex-col items-center justify-center gap-4 rounded-lg border-2 border-gray-200 bg-white p-6 transition-all hover:border-blue-500 hover:bg-blue-50 hover:shadow-md sm:w-auto sm:flex-1"
+              className="flex w-full max-w-[200px] flex-col items-center justify-center gap-4 rounded-lg border-2 border-gray-200 bg-white p-6 transition-all hover:border-primary hover:bg-primary/5 hover:shadow-md sm:w-auto sm:flex-1"
               dir={langDir}
               translate="no"
             >

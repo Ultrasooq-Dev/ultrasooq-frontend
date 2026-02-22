@@ -100,7 +100,7 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({
         {hasAccessToken && !isCreator && !reviewExists && (
           <Button
             onClick={handleToggleReviewModal}
-            className="rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-3 text-sm font-semibold text-white shadow-md transition-all hover:from-orange-600 hover:to-orange-700 hover:shadow-lg"
+            className="rounded-lg bg-gradient-to-r from-warning to-warning/90 px-6 py-3 text-sm font-semibold text-white shadow-md transition-all hover:from-warning hover:to-warning/80 hover:shadow-lg"
             dir={langDir}
             translate="no"
           >
@@ -128,7 +128,7 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({
               onClick={() => setSortType("newest")}
               className={`rounded-full px-4 text-sm font-medium transition-all ${
                 sortType === "newest"
-                  ? "bg-orange-500 text-white hover:bg-orange-600"
+                  ? "bg-warning text-white hover:bg-warning"
                   : "border-gray-300 text-gray-700 hover:bg-gray-50"
               }`}
               dir={langDir}
@@ -142,7 +142,7 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({
               onClick={() => setSortType("highest")}
               className={`rounded-full px-4 text-sm font-medium transition-all ${
                 sortType === "highest"
-                  ? "bg-orange-500 text-white hover:bg-orange-600"
+                  ? "bg-warning text-white hover:bg-warning"
                   : "border-gray-300 text-gray-700 hover:bg-gray-50"
               }`}
               dir={langDir}
@@ -156,7 +156,7 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({
               onClick={() => setSortType("lowest")}
               className={`rounded-full px-4 text-sm font-medium transition-all ${
                 sortType === "lowest"
-                  ? "bg-orange-500 text-white hover:bg-orange-600"
+                  ? "bg-warning text-white hover:bg-warning"
                   : "border-gray-300 text-gray-700 hover:bg-gray-50"
               }`}
               dir={langDir}

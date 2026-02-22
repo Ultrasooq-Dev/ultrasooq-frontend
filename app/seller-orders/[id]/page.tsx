@@ -145,7 +145,7 @@ const MyOrderDetailsPage = ({ }) => {
                           </address>
                           <p dir={langDir}>
                             <span translate="no">{t("phone_number")} </span>
-                            <span className="text-red-500!" dir={langDir}>
+                            <span className="text-destructive!" dir={langDir}>
                               {shippingDetails?.phone}
                             </span>
                           </p>
@@ -162,7 +162,7 @@ const MyOrderDetailsPage = ({ }) => {
                           </address>
                           <p>
                             <span translate="no">{t("phone_number")} </span>
-                            <span className="text-red-500!" dir={langDir}>
+                            <span className="text-destructive!" dir={langDir}>
                               {billingDetails?.phone}
                             </span>
                           </p>
@@ -186,7 +186,7 @@ const MyOrderDetailsPage = ({ }) => {
                             <figure className="downloadInvoice mt-4">
                               <figcaption>
                                 <Link
-                                  className="text-red-500"
+                                  className="text-destructive"
                                   href={orderDetails?.orderShippingDetail?.receipt}
                                   target="_blank"
                                   translate="no"
@@ -529,7 +529,7 @@ const MyOrderDetailsPage = ({ }) => {
                                     className={cn(
                                       orderDetails?.orderProductStatus ===
                                         "CANCELLED"
-                                        ? "bg-red-500!"
+                                        ? "bg-destructive!"
                                         : "",
                                     )}
                                   ></small>

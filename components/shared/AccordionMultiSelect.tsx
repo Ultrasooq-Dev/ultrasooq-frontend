@@ -133,7 +133,7 @@ const AccordionMultiSelect = ({
         </AccordionItem>
       </Accordion>
 
-      <p className="text-[13px] text-red-500" dir={langDir}>
+      <p className="text-[13px] text-destructive" dir={langDir}>
         {error}
       </p>
     </>

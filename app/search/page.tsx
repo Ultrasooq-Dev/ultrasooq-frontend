@@ -193,18 +193,18 @@ const SearchPage = (props: SearchPageProps) => {
                                     </span>
                                 )}
                                 {parsedQuery.categoryHint && (
-                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
+                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-primary/10 text-primary text-xs font-medium rounded-full">
                                         <Tag className="h-3 w-3" />
                                         {parsedQuery.categoryHint}
                                     </span>
                                 )}
                                 {parsedQuery.priceRange?.min != null && (
-                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
+                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-success/10 text-success text-xs font-medium rounded-full">
                                         Min: ${parsedQuery.priceRange.min}
                                     </span>
                                 )}
                                 {parsedQuery.priceRange?.max != null && (
-                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
+                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-success/10 text-success text-xs font-medium rounded-full">
                                         Max: ${parsedQuery.priceRange.max}
                                     </span>
                                 )}
@@ -240,16 +240,16 @@ const SearchPage = (props: SearchPageProps) => {
 
                     {/* Auto-correction banner (standard mode - when search was automatically corrected) */}
                     {!aiMode && autoCorrection && (
-                        <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                            <p className="text-sm text-blue-800">
+                        <div className="mt-2 p-3 bg-primary/5 border border-primary/20 rounded-lg">
+                            <p className="text-sm text-primary">
                                 Showing results for{" "}
-                                <span className="font-semibold text-blue-900">
+                                <span className="font-semibold text-primary">
                                     &ldquo;{autoCorrection.to}&rdquo;
                                 </span>
                                 .{" "}
                                 <button
                                     onClick={() => handleDidYouMeanClick(autoCorrection.from)}
-                                    className="text-blue-600 underline hover:text-blue-800"
+                                    className="text-primary underline hover:text-primary"
                                 >
                                     Search instead for &ldquo;{autoCorrection.from}&rdquo;
                                 </button>

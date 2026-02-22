@@ -328,7 +328,7 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
       {/* Category Selection Section */}
       <div className="space-y-6">
         <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-500">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-info">
             <span className="text-sm font-semibold text-white">1</span>
           </div>
           <div>
@@ -385,7 +385,7 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
                 </Label>
                 <div className="relative">
                   <select
-                    className="h-12 w-full cursor-pointer appearance-none rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 transition-all duration-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-500"
+                    className="h-12 w-full cursor-pointer appearance-none rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 transition-all duration-200 focus:border-warning focus:ring-2 focus:ring-warning"
                     value={level.selectedId?.toString() || ""}
                     onChange={(e) =>
                       handleCategoryChange(levelIndex, e.target.value)
@@ -427,7 +427,7 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
           })}
           {formContext.formState.errors["categoryId"] && (
             <p
-              className="mt-1 flex items-center gap-1 text-sm text-red-500"
+              className="mt-1 flex items-center gap-1 text-sm text-destructive"
               dir={langDir}
             >
               <svg
@@ -452,7 +452,7 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
       {/* Product Name Section — hidden in wizard mode (lives in Step 1) */}
       <div className={`space-y-6${wizardMode ? " hidden" : ""}`}>
         <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
             <span className="text-sm font-semibold text-white">2</span>
           </div>
           <div>
@@ -475,7 +475,7 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
       {/* Product Details Section */}
       <div className="space-y-6">
         <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-green-500">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-success">
             <span className="text-sm font-semibold text-white">3</span>
           </div>
           <div>
@@ -533,7 +533,7 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
             />
             {formContext.formState.errors["productCondition"] && (
               <p
-                className="mt-1 flex items-center gap-1 text-sm text-red-500"
+                className="mt-1 flex items-center gap-1 text-sm text-destructive"
                 dir={langDir}
               >
                 <svg
@@ -563,7 +563,7 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
       {/*
       <div className="space-y-6">
         <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-yellow-500">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-warning">
             <span className="text-sm font-semibold text-white">4</span>
           </div>
           <div>
@@ -624,7 +624,7 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
             {watchProductImages?.map((item: any) => (
               <div
                 key={item.id}
-                className="group relative aspect-square overflow-hidden rounded-xl border-2 border-gray-200 bg-gray-50 transition-colors duration-200 hover:border-orange-300"
+                className="group relative aspect-square overflow-hidden rounded-xl border-2 border-gray-200 bg-gray-50 transition-colors duration-200 hover:border-warning/30"
               >
                 {isImage(item.path) ? (
                   <Image
@@ -691,7 +691,7 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
                   <button
                     type="button"
                     onClick={() => handleRemovePreviewImage(item.id)}
-                    className="rounded-full bg-red-500 p-2 transition-colors hover:bg-red-600"
+                    className="rounded-full bg-destructive p-2 transition-colors hover:bg-destructive"
                     title={t("remove_image")}
                   >
                     <svg
@@ -713,12 +713,12 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
             ))}
 
             {/* Add Image Button */}
-            <div className="group flex aspect-square cursor-pointer items-center justify-center rounded-xl border-2 border-dashed border-gray-300 transition-colors duration-200 hover:border-orange-400 hover:bg-orange-50">
+            <div className="group flex aspect-square cursor-pointer items-center justify-center rounded-xl border-2 border-dashed border-gray-300 transition-colors duration-200 hover:border-warning/70 hover:bg-warning/5">
               <label
                 htmlFor="productImages"
-                className="flex cursor-pointer flex-col items-center justify-center text-gray-500 group-hover:text-orange-600"
+                className="flex cursor-pointer flex-col items-center justify-center text-gray-500 group-hover:text-warning"
               >
-                <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 transition-colors duration-200 group-hover:bg-orange-100">
+                <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 transition-colors duration-200 group-hover:bg-warning/10">
                   <IoMdAdd className="h-6 w-6" />
                 </div>
                 <span className="text-sm font-medium">{t("add_image")}</span>
@@ -753,7 +753,7 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
 
           {formContext.formState.errors["productImages"] && (
             <p
-              className="mt-2 flex items-center gap-1 text-sm text-red-500"
+              className="mt-2 flex items-center gap-1 text-sm text-destructive"
               dir={langDir}
             >
               <svg

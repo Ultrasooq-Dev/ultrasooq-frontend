@@ -117,7 +117,7 @@ const BuyerProductSelectionModal: React.FC<BuyerProductSelectionModalProps> = ({
                     key={s.id}
                     className={`border rounded-lg p-3 cursor-pointer transition-all ${
                       isSelected
-                        ? "border-blue-500 bg-blue-50"
+                        ? "border-primary bg-primary/5"
                         : "border-gray-200 hover:border-gray-300"
                     }`}
                     onClick={() => handleToggleSelection(s.id)}
@@ -128,7 +128,7 @@ const BuyerProductSelectionModal: React.FC<BuyerProductSelectionModalProps> = ({
                         <div
                           className={`w-5 h-5 rounded border-2 flex items-center justify-center ${
                             isSelected
-                              ? "bg-blue-500 border-blue-500"
+                              ? "bg-primary border-primary"
                               : "border-gray-300"
                           }`}
                         >
@@ -199,7 +199,7 @@ const BuyerProductSelectionModal: React.FC<BuyerProductSelectionModalProps> = ({
           </button>
           <button
             onClick={handleSubmit}
-            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700 transition-colors"
+            className="px-4 py-2 text-sm font-medium text-white bg-primary rounded hover:bg-primary/90 transition-colors"
           >
             {t("confirm") || "Confirm Selection"}
           </button>

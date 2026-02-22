@@ -54,7 +54,7 @@ const MySettingsLayout = ({ children }: { children: React.ReactNode }) => {
                         className="rounded-full object-cover ring-2 ring-gray-100"
                       />
                     ) : (
-                      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 via-blue-600 to-purple-600 text-xl font-bold text-white shadow-lg ring-2 ring-white">
+                      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-primary via-blue-600 to-info/90 text-xl font-bold text-white shadow-lg ring-2 ring-white">
                         {memoizedInitials}
                       </div>
                     )}
@@ -88,14 +88,14 @@ const MySettingsLayout = ({ children }: { children: React.ReactNode }) => {
                   </li>
                   <li>
                     <div className="space-y-0">
-                      <div className="flex items-center gap-3 border-b border-gray-100 px-4 py-3 text-sm font-semibold text-gray-900 bg-gradient-to-r from-blue-50 to-indigo-50">
-                        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
+                      <div className="flex items-center gap-3 border-b border-gray-100 px-4 py-3 text-sm font-semibold text-gray-900 bg-gradient-to-r from-primary/5 to-info/5">
+                        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
                           <UserIcon />
                         </span>
                         <span className="flex-1" translate="no">
                           {t("account_settings")}
                         </span>
-                        <span className="flex h-5 w-5 items-center justify-center text-blue-600">
+                        <span className="flex h-5 w-5 items-center justify-center text-primary">
                           <span className="h-4 w-4">
                             <ChevronDownIcon />
                           </span>
@@ -108,14 +108,14 @@ const MySettingsLayout = ({ children }: { children: React.ReactNode }) => {
                             "relative block px-4 py-3 pl-12 pr-4 text-sm font-medium transition-all",
                             langDir === 'rtl' && "pl-4 pr-12",
                             isActivePath("/my-settings/address")
-                              ? "bg-blue-50 text-blue-700"
+                              ? "bg-primary/5 text-primary"
                               : "text-gray-600 hover:bg-white hover:text-gray-900"
                           )}
                           translate="no"
                         >
                           {isActivePath("/my-settings/address") && (
                             <span className={cn(
-                              "absolute top-0 h-full w-1 bg-blue-600",
+                              "absolute top-0 h-full w-1 bg-primary",
                               langDir === 'rtl' ? 'right-0' : 'left-0'
                             )} />
                           )}
@@ -129,14 +129,14 @@ const MySettingsLayout = ({ children }: { children: React.ReactNode }) => {
                                 "relative block px-4 py-3 pl-12 pr-4 text-sm font-medium transition-all",
                                 langDir === 'rtl' && "pl-4 pr-12",
                                 isActivePath("/my-settings/change-password")
-                                  ? "bg-blue-50 text-blue-700"
+                                  ? "bg-primary/5 text-primary"
                                   : "text-gray-600 hover:bg-white hover:text-gray-900"
                               )}
                               translate="no"
                             >
                               {isActivePath("/my-settings/change-password") && (
                                 <span className={cn(
-                                  "absolute top-0 h-full w-1 bg-blue-600",
+                                  "absolute top-0 h-full w-1 bg-primary",
                                   langDir === 'rtl' ? 'right-0' : 'left-0'
                                 )} />
                               )}
@@ -148,14 +148,14 @@ const MySettingsLayout = ({ children }: { children: React.ReactNode }) => {
                                 "relative block px-4 py-3 pl-12 pr-4 text-sm font-medium transition-all",
                                 langDir === 'rtl' && "pl-4 pr-12",
                                 isActivePath("/my-settings/change-email")
-                                  ? "bg-blue-50 text-blue-700"
+                                  ? "bg-primary/5 text-primary"
                                   : "text-gray-600 hover:bg-white hover:text-gray-900"
                               )}
                               translate="no"
                             >
                               {isActivePath("/my-settings/change-email") && (
                                 <span className={cn(
-                                  "absolute top-0 h-full w-1 bg-blue-600",
+                                  "absolute top-0 h-full w-1 bg-primary",
                                   langDir === 'rtl' ? 'right-0' : 'left-0'
                                 )} />
                               )}

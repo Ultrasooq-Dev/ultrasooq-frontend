@@ -249,7 +249,7 @@ const AddToMemberForm: React.FC<AddToMemberFormProps> = ({
                 />
                 {/* Validation Error Message */}
                 {form.formState.errors.userRoleId ? (
-                  <p className="text-sm text-red-500" dir={langDir}>
+                  <p className="text-sm text-destructive" dir={langDir}>
                     {form.formState.errors.userRoleId.message}
                   </p>
                 ) : null}

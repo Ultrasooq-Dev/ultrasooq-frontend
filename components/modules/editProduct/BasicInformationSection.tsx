@@ -205,7 +205,7 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
                           )}
                         />
                         <p
-                          className="text-[13px] font-medium text-red-500"
+                          className="text-[13px] font-medium text-destructive"
                           dir={langDir}
                         >
                           {
@@ -298,7 +298,7 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
                           )}
                         />
 
-                        <p className="text-[13px] text-red-500" dir={langDir}>
+                        <p className="text-[13px] text-destructive" dir={langDir}>
                           {
                             formContext.formState.errors["productCondition"]
                               ?.message as string

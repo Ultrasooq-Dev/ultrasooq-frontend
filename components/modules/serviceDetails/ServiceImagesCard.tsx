@@ -195,7 +195,7 @@ const ServiceImagesCard: React.FC<any> = ({
                 variant="ghost"
                 className={cn(
                   previewImages[currentImageIndex] === item?.url
-                    ? "border-2 border-red-500"
+                    ? "border-2 border-destructive"
                     : "",
                   "relative h-28 w-28 rounded-none bg-gray-100",
                 )}

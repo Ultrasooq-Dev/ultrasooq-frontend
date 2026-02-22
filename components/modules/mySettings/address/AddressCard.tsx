@@ -82,7 +82,7 @@ const AddressCard: React.FC<AddressCardProps> = ({
             <DropdownMenuTrigger asChild>
               <button
                 type="button"
-                className="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-gray-400 transition-all hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-gray-400 transition-all hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                 aria-label="Address options"
               >
                 <MoreVertical className="h-5 w-5" />
@@ -105,7 +105,7 @@ const AddressCard: React.FC<AddressCardProps> = ({
                   e.preventDefault();
                   onDelete();
                 }}
-                className="cursor-pointer text-red-600 focus:bg-red-50 focus:text-red-600"
+                className="cursor-pointer text-destructive focus:bg-destructive/5 focus:text-destructive"
               >
                 <Trash2 className="mr-2 h-4 w-4" />
                 Delete
@@ -119,7 +119,7 @@ const AddressCard: React.FC<AddressCardProps> = ({
       <div className="mt-4 space-y-3" dir={langDir}>
         {/* Phone Number */}
         <div className="flex items-start gap-3">
-          <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded bg-blue-100 text-blue-600">
+          <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded bg-primary/10 text-primary">
             <Image
               src={PhoneIcon}
               alt="phone-icon"
@@ -137,7 +137,7 @@ const AddressCard: React.FC<AddressCardProps> = ({
 
         {/* Address */}
         <div className="flex items-start gap-3">
-          <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded bg-green-100 text-green-600">
+          <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded bg-success/10 text-success">
             <Image
               src={LocationIcon}
               alt="location-icon"
@@ -155,7 +155,7 @@ const AddressCard: React.FC<AddressCardProps> = ({
       </div>
 
       {/* Hover Effect Border */}
-      <div className="pointer-events-none absolute inset-0 rounded-xl border-2 border-blue-500 opacity-0 transition-opacity group-hover:opacity-5" />
+      <div className="pointer-events-none absolute inset-0 rounded-xl border-2 border-primary opacity-0 transition-opacity group-hover:opacity-5" />
     </div>
   );
 };

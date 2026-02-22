@@ -197,7 +197,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         {(() => {
           const { discount, discountType } = getApplicableDiscount();
           return askForPrice !== "true" && discount > 0 && discountType ? (
-            <div className="absolute left-2 top-2 z-10 inline-flex items-center bg-red-600 px-2 py-0.5 text-xs font-medium text-white">
+            <div className="absolute left-2 top-2 z-10 inline-flex items-center bg-destructive px-2 py-0.5 text-xs font-medium text-white">
               <span>
                 {discountType === "PERCENTAGE" 
                   ? `-${discount}%` 
@@ -245,7 +245,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                   </span>
                 ))}
               </div>
-              <span className="text-xs text-blue-600">({productReview?.length})</span>
+              <span className="text-xs text-primary">({productReview?.length})</span>
             </div>
             
             {/* Price */}
@@ -280,7 +280,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
               const { discount, discountType } = getApplicableDiscount();
               return askForPrice !== "true" && discount > 0 && discountType && (
                 <div className="mb-2 flex items-center gap-1">
-                  <span className="text-xs font-medium text-red-600">
+                  <span className="text-xs font-medium text-destructive">
                     Save {discountType === "PERCENTAGE" 
                       ? `${discount}%` 
                       : `${currency.symbol}${discount}`
@@ -297,7 +297,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           {askForPrice !== "true" ? (
             <Button
               onClick={onAdd}
-              className="flex-1 bg-yellow-400 px-4 py-2 text-xs font-medium text-gray-900 hover:bg-yellow-500"
+              className="flex-1 bg-warning px-4 py-2 text-xs font-medium text-gray-900 hover:bg-warning"
             >
               {t("add_to_cart")}
             </Button>
@@ -305,7 +305,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             <Link href={`/seller-rfq-request?product_id=${id}`} className="flex-1">
               <button
                 type="button"
-                className="w-full bg-blue-500 px-4 py-2 text-xs font-medium text-white hover:bg-blue-600"
+                className="w-full bg-primary px-4 py-2 text-xs font-medium text-white hover:bg-primary"
                 dir={langDir}
                 translate="no"
               >
@@ -321,7 +321,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
               className="h-9 w-9 border-0 bg-gray-100 p-0 hover:bg-gray-200"
             >
               {inWishlist ? (
-                <FaHeart className="h-4 w-4 text-red-500" />
+                <FaHeart className="h-4 w-4 text-destructive" />
               ) : (
                 <FaRegHeart className="h-4 w-4 text-gray-600" />
               )}

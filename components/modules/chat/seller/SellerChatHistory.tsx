@@ -117,9 +117,9 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
       {/* Chat Header - Reduced Size */}
       <div className="flex items-center border-b border-gray-200 bg-white px-3 py-2 shadow-sm flex-shrink-0">
         <div className="flex items-center gap-2">
-          <div className="flex h-6 w-6 items-center justify-center rounded bg-blue-100">
+          <div className="flex h-6 w-6 items-center justify-center rounded bg-primary/10">
             <svg
-              className="h-3.5 w-3.5 text-blue-600"
+              className="h-3.5 w-3.5 text-primary"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -207,7 +207,7 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
                         </div>
                       ) : null}
                       {chat?.content ? (
-                        <div className="rounded-xl rounded-br-sm bg-blue-600 px-3 py-2 text-xs text-white shadow-md ring-1 ring-blue-700/20">
+                        <div className="rounded-xl rounded-br-sm bg-primary px-3 py-2 text-xs text-white shadow-md ring-1 ring-blue-700/20">
                           <p
                             dangerouslySetInnerHTML={{
                               __html: sanitizeHtml(chat?.content || ''),
@@ -215,9 +215,9 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
                           />
 
                           {chat?.rfqProductPriceRequest ? (
-                            <div className="mt-2 space-y-1.5 rounded-lg bg-blue-700/40 p-2 ring-1 ring-blue-500/30">
+                            <div className="mt-2 space-y-1.5 rounded-lg bg-primary/90/40 p-2 ring-1 ring-primary/30">
                               <div className="flex items-center gap-1.5">
-                                <div className="flex h-5 w-5 items-center justify-center rounded bg-blue-500/50">
+                                <div className="flex h-5 w-5 items-center justify-center rounded bg-primary/50">
                                   <svg
                                     className="h-3 w-3 text-white"
                                     fill="none"
@@ -246,7 +246,7 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
                                 </span>
                                 {chat.rfqProductPriceRequest?.status ===
                                 "APPROVED" ? (
-                                  <span className="inline-flex items-center gap-0.5 rounded-full bg-green-500/90 px-2 py-0.5 text-[10px] font-semibold text-white ring-1 ring-green-400/50" translate="no">
+                                  <span className="inline-flex items-center gap-0.5 rounded-full bg-success/90 px-2 py-0.5 text-[10px] font-semibold text-white ring-1 ring-green-400/50" translate="no">
                                     <svg className="h-2.5 w-2.5" fill="currentColor" viewBox="0 0 20 20">
                                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                                     </svg>
@@ -254,7 +254,7 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
                                   </span>
                                 ) : chat.rfqProductPriceRequest?.status ===
                                   "REJECTED" ? (
-                                  <span className="inline-flex items-center gap-0.5 rounded-full bg-red-500/90 px-2 py-0.5 text-[10px] font-semibold text-white ring-1 ring-red-400/50" translate="no">
+                                  <span className="inline-flex items-center gap-0.5 rounded-full bg-destructive/90 px-2 py-0.5 text-[10px] font-semibold text-white ring-1 ring-red-400/50" translate="no">
                                     <svg className="h-2.5 w-2.5" fill="currentColor" viewBox="0 0 20 20">
                                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                                     </svg>
@@ -274,9 +274,9 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
 
                           {/* NEW: Display Suggested Products */}
                           {chat?.rfqSuggestedProducts && chat.rfqSuggestedProducts.length > 0 && (
-                            <div className="mt-2 space-y-2 rounded-lg bg-purple-50 p-2.5 border border-purple-200">
+                            <div className="mt-2 space-y-2 rounded-lg bg-info/5 p-2.5 border border-info/20">
                               <div className="flex items-center gap-1.5 mb-2">
-                                <svg className="h-4 w-4 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg className="h-4 w-4 text-info" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                                 <p className="text-[10px] font-semibold text-purple-900" translate="no">
@@ -300,7 +300,7 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
                                     <div
                                       key={suggestion.id}
                                       className={`p-2 rounded-lg border transition-all ${
-                                        isSelected ? "border-green-500 bg-green-50" : "border-gray-300 bg-white"
+                                        isSelected ? "border-success bg-success/5" : "border-gray-300 bg-white"
                                       }`}
                                     >
                                       <div className="flex gap-2 items-start">
@@ -319,7 +319,7 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
                                             {suggestion.quantity > 1 && ` × ${suggestion.quantity}`}
                                           </p>
                                           {isSelected && (
-                                            <span className="inline-flex items-center gap-0.5 mt-1 px-1.5 py-0.5 rounded-full bg-green-100 text-green-700 text-[9px]">
+                                            <span className="inline-flex items-center gap-0.5 mt-1 px-1.5 py-0.5 rounded-full bg-success/10 text-success text-[9px]">
                                               <svg className="h-2.5 w-2.5" fill="currentColor" viewBox="0 0 20 20">
                                                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                                               </svg>
@@ -352,7 +352,7 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
                       </div>
                     </div>
                     {/* Avatar */}
-                    <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-blue-700 text-xs font-semibold text-white shadow-md ring-2 ring-white">
+                    <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary/80 text-xs font-semibold text-white shadow-md ring-2 ring-white">
                       {getUserInitials(chat?.user)}
                     </div>
                   </div>
@@ -360,7 +360,7 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
                   (chat?.attachments?.length > 0 || chat?.content) ? (
                     <div className="mb-2 flex w-full items-start gap-2">
                       {/* Avatar */}
-                      <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-blue-600 text-xs font-semibold text-white shadow-md ring-2 ring-white">
+                      <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-primary/90 text-xs font-semibold text-white shadow-md ring-2 ring-white">
                         {getUserInitials(chat?.user)}
                       </div>
                       
@@ -434,9 +434,9 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
                               {/* Price Request Details */}
                               <div className="bg-gradient-to-br from-gray-50 to-white p-3">
                                 <div className="mb-2 flex items-center gap-1.5">
-                                  <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-100">
+                                  <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-primary/10">
                                     <svg
-                                      className="h-4 w-4 text-blue-600"
+                                      className="h-4 w-4 text-primary"
                                       fill="none"
                                       viewBox="0 0 24 24"
                                       stroke="currentColor"
@@ -471,7 +471,7 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
                                     </span>
                                     {chat.rfqProductPriceRequest?.status ===
                                     "APPROVED" ? (
-                                      <span className="inline-flex items-center gap-0.5 rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-semibold text-green-700 ring-1 ring-green-200" translate="no">
+                                      <span className="inline-flex items-center gap-0.5 rounded-full bg-success/10 px-2 py-0.5 text-[10px] font-semibold text-success ring-1 ring-green-200" translate="no">
                                         <svg className="h-2.5 w-2.5" fill="currentColor" viewBox="0 0 20 20">
                                           <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                                         </svg>
@@ -479,7 +479,7 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
                                       </span>
                                     ) : chat.rfqProductPriceRequest?.status ===
                                       "REJECTED" ? (
-                                      <span className="inline-flex items-center gap-0.5 rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-semibold text-red-700 ring-1 ring-red-200" translate="no">
+                                      <span className="inline-flex items-center gap-0.5 rounded-full bg-destructive/10 px-2 py-0.5 text-[10px] font-semibold text-destructive ring-1 ring-red-200" translate="no">
                                         <svg className="h-2.5 w-2.5" fill="currentColor" viewBox="0 0 20 20">
                                           <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                                         </svg>
@@ -510,7 +510,7 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
                                           )
                                         }
                                         type="button"
-                                        className="flex items-center gap-1 rounded-lg bg-green-600 px-3 py-1.5 text-[10px] font-semibold text-white shadow-sm transition-all hover:bg-green-700 hover:shadow-md"
+                                        className="flex items-center gap-1 rounded-lg bg-success px-3 py-1.5 text-[10px] font-semibold text-white shadow-sm transition-all hover:bg-success/90 hover:shadow-md"
                                         translate="no"
                                       >
                                         <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -526,7 +526,7 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
                                           )
                                         }
                                         type="button"
-                                        className="flex items-center gap-1 rounded-lg bg-red-600 px-3 py-1.5 text-[10px] font-semibold text-white shadow-sm transition-all hover:bg-red-700 hover:shadow-md"
+                                        className="flex items-center gap-1 rounded-lg bg-destructive px-3 py-1.5 text-[10px] font-semibold text-white shadow-sm transition-all hover:bg-destructive/90 hover:shadow-md"
                                         translate="no"
                                       >
                                         <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -553,9 +553,9 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
 
                         {/* NEW: Display Suggested Products (from buyer messages) */}
                         {chat?.rfqSuggestedProducts && chat.rfqSuggestedProducts.length > 0 && (
-                          <div className="mt-2 space-y-2 rounded-lg bg-purple-50 p-2.5 border border-purple-200">
+                          <div className="mt-2 space-y-2 rounded-lg bg-info/5 p-2.5 border border-info/20">
                             <div className="flex items-center gap-1.5 mb-2">
-                              <svg className="h-4 w-4 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <svg className="h-4 w-4 text-info" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                               </svg>
                               <p className="text-[10px] font-semibold text-purple-900" translate="no">
@@ -577,7 +577,7 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
                                   <div
                                     key={suggestion.id}
                                     className={`p-2 rounded-lg border transition-all ${
-                                      isSelected ? "border-green-500 bg-green-50" : "border-gray-300 bg-white"
+                                      isSelected ? "border-success bg-success/5" : "border-gray-300 bg-white"
                                     }`}
                                   >
                                     <div className="flex gap-2 items-start">
@@ -596,7 +596,7 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
                                           {suggestion.quantity > 1 && ` × ${suggestion.quantity}`}
                                         </p>
                                         {isSelected && (
-                                          <span className="inline-flex items-center gap-0.5 mt-1 px-1.5 py-0.5 rounded-full bg-green-100 text-green-700 text-[9px]">
+                                          <span className="inline-flex items-center gap-0.5 mt-1 px-1.5 py-0.5 rounded-full bg-success/10 text-success text-[9px]">
                                             <svg className="h-2.5 w-2.5" fill="currentColor" viewBox="0 0 20 20">
                                               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                                             </svg>

@@ -195,10 +195,10 @@ const ProductTable: React.FC<ProductTableProps> = ({
       <div className="mt-1">
         <span className={`text-xs font-medium px-2 py-1 rounded inline-block ${
           isExpired 
-            ? "bg-red-100 text-red-700" 
+            ? "bg-destructive/10 text-destructive" 
             : isNotStarted
-            ? "bg-orange-100 text-orange-700"
-            : "bg-red-500 text-white"
+            ? "bg-warning/10 text-warning"
+            : "bg-destructive text-white"
         }`}>
           {timeLeft}
         </span>
@@ -272,7 +272,7 @@ const ProductTable: React.FC<ProductTableProps> = ({
                           </div>
                           {/* Discount Badge */}
                           {priceData.discount > 0 && (
-                            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                            <span className="absolute -top-2 -right-2 bg-destructive text-white text-xs font-bold px-2 py-0.5 rounded-full">
                               {priceData.discountType === "PERCENTAGE" 
                                 ? `-${priceData.discount}%`
                                 : `-${currency.symbol}${priceData.discount}`}
@@ -280,14 +280,14 @@ const ProductTable: React.FC<ProductTableProps> = ({
                           )}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-gray-900 text-sm sm:text-base mb-1 line-clamp-2 group-hover/link:text-blue-600 transition-colors">
+                          <h3 className="font-semibold text-gray-900 text-sm sm:text-base mb-1 line-clamp-2 group-hover/link:text-primary transition-colors">
                             {translate(item?.productName)}
                           </h3>
                           {/* Rating */}
                           {rating > 0 && (
                             <div className="flex items-center gap-1 mb-1">
                               {[...Array(5)].map((_, i) => (
-                                <span key={i} className="text-yellow-400">
+                                <span key={i} className="text-warning">
                                   {i < Math.floor(rating) ? (
                                     <FaStar size={12} />
                                   ) : (
@@ -304,8 +304,8 @@ const ProductTable: React.FC<ProductTableProps> = ({
                           {item.askForPrice !== "true" && stock !== null && (
                             <span className={`text-xs font-medium ${
                               isInStock 
-                                ? "text-green-600" 
-                                : "text-red-600"
+                                ? "text-success" 
+                                : "text-destructive"
                             }`}>
                               {isInStock 
                                 ? `${t("in_stock") || "In Stock"}` 
@@ -336,7 +336,7 @@ const ProductTable: React.FC<ProductTableProps> = ({
                         <Link href={`/seller-rfq-request?product_id=${item?.id}`}>
                           <Button
                             size="sm"
-                            className="bg-yellow-500 hover:bg-yellow-600 text-white text-xs px-3 py-1"
+                            className="bg-warning hover:bg-warning text-white text-xs px-3 py-1"
                             dir={langDir}
                             translate="no"
                           >
@@ -356,7 +356,7 @@ const ProductTable: React.FC<ProductTableProps> = ({
                             )}
                           </div>
                           {priceData.discount > 0 && (
-                            <span className="text-xs text-green-600 font-medium">
+                            <span className="text-xs text-success font-medium">
                               {t("save") || "Save"} {priceData.discountType === "PERCENTAGE" 
                                 ? `${priceData.discount}%`
                                 : `${currency.symbol}${priceData.discount}`}
@@ -376,7 +376,7 @@ const ProductTable: React.FC<ProductTableProps> = ({
                           <Button
                             variant="outline"
                             size="sm"
-                            className="h-9 w-9 p-0 border-gray-300 hover:bg-blue-50 hover:border-blue-500 hover:text-blue-600 transition-colors"
+                            className="h-9 w-9 p-0 border-gray-300 hover:bg-primary/5 hover:border-primary hover:text-primary transition-colors"
                             onClick={() => onAddToCart?.(item, 1, "add", undefined, cartItem?.cartId)}
                             title={t("add_to_cart")}
                           >
@@ -401,12 +401,12 @@ const ProductTable: React.FC<ProductTableProps> = ({
                           <Button
                             variant="outline"
                             size="sm"
-                            className="h-9 w-9 p-0 border-gray-300 hover:bg-red-50 hover:border-red-500 transition-colors"
+                            className="h-9 w-9 p-0 border-gray-300 hover:bg-destructive/5 hover:border-destructive transition-colors"
                             onClick={() => onWishlist?.(item.id, item?.productWishlist)}
                             title={t("wishlist") || "Wishlist"}
                           >
                             {inWishlist ? (
-                              <FaHeart size={16} className="text-red-500" />
+                              <FaHeart size={16} className="text-destructive" />
                             ) : (
                               <FaRegHeart size={16} className="text-gray-600" />
                             )}

@@ -222,7 +222,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
         type="button"
         variant="ghost"
         size="icon"
-        className="absolute right-2 top-2 z-10 h-8 w-8 rounded-full bg-white/90 text-gray-400 shadow-sm opacity-0 backdrop-blur-sm transition-all hover:bg-red-50 hover:text-red-600 group-hover:opacity-100"
+        className="absolute right-2 top-2 z-10 h-8 w-8 rounded-full bg-white/90 text-gray-400 shadow-sm opacity-0 backdrop-blur-sm transition-all hover:bg-destructive/5 hover:text-destructive group-hover:opacity-100"
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -252,13 +252,13 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
           />
           {/* Not Started Badge for Buygroup */}
           {saleNotStarted && (
-            <div className="absolute left-2 top-2 rounded-md bg-yellow-500 px-2 py-1 text-xs font-semibold text-white shadow-sm">
+            <div className="absolute left-2 top-2 rounded-md bg-warning px-2 py-1 text-xs font-semibold text-white shadow-sm">
               {t("not_started")}
             </div>
           )}
           {/* Discount Badge - Only show if sale has started */}
           {!saleNotStarted && hasDiscount && discountPercentage > 0 && (
-            <div className="absolute left-2 top-2 rounded-md bg-red-500 px-2 py-1 text-xs font-semibold text-white shadow-sm">
+            <div className="absolute left-2 top-2 rounded-md bg-destructive px-2 py-1 text-xs font-semibold text-white shadow-sm">
               -{discountPercentage}%
             </div>
           )}
@@ -268,7 +268,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
       {/* Product Info */}
       <div className="p-4">
         <Link href={`/trending/${wishlistData?.id}`}>
-          <h3 className="mb-2 line-clamp-2 min-h-[2.5rem] text-sm font-semibold text-gray-900 transition-colors hover:text-blue-600">
+          <h3 className="mb-2 line-clamp-2 min-h-[2.5rem] text-sm font-semibold text-gray-900 transition-colors hover:text-primary">
             {wishlistData?.productName}
           </h3>
         </Link>
@@ -322,7 +322,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
               <Button
                 type="button"
                 disabled
-                className="w-full rounded-lg bg-yellow-500 text-xs font-semibold text-white shadow-sm cursor-not-allowed"
+                className="w-full rounded-lg bg-warning text-xs font-semibold text-white shadow-sm cursor-not-allowed"
                 dir={langDir}
                 translate="no"
               >
@@ -337,7 +337,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
           ) : (
             <div className="flex flex-col gap-1">
               <div className="flex items-baseline gap-2">
-                <span className="text-lg font-bold text-blue-600">
+                <span className="text-lg font-bold text-primary">
                   {currency.symbol}
                   {discountedPrice.toFixed(2)}
                 </span>
@@ -349,7 +349,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
                 )}
               </div>
               {hasDiscount && originalPrice > 0 && (
-                <span className="text-xs font-medium text-red-600">
+                <span className="text-xs font-medium text-destructive">
                   {t("save")} {currency.symbol}
                   {(originalPrice - discountedPrice).toFixed(2)}
                 </span>
@@ -360,7 +360,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
       </div>
 
       {/* Hover Effect Border */}
-      <div className="absolute inset-0 rounded-xl border-2 border-blue-500 opacity-0 transition-opacity group-hover:opacity-5" />
+      <div className="absolute inset-0 rounded-xl border-2 border-primary opacity-0 transition-opacity group-hover:opacity-5" />
     </div>
   );
 };

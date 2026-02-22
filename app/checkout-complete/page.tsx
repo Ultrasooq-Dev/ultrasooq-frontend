@@ -67,8 +67,8 @@ const CheckoutCompletePage = () => {
             <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
                 <div className="max-w-2xl w-full bg-white rounded-lg shadow-lg p-8 text-center">
                     <div className="flex justify-center mb-6">
-                        <div className="rounded-full bg-red-100 p-4">
-                            <XCircle className="h-16 w-16 text-red-500" />
+                        <div className="rounded-full bg-destructive/10 p-4">
+                            <XCircle className="h-16 w-16 text-destructive" />
                         </div>
                     </div>
                     <h1 className="text-3xl font-bold text-gray-900 mb-4" dir={langDir} translate="no">
@@ -94,7 +94,7 @@ const CheckoutCompletePage = () => {
                     <div className="mt-8 flex gap-4 justify-center">
                         <Button
                             onClick={() => router.push("/trending")}
-                            className="bg-yellow-400 hover:bg-yellow-500 text-gray-900"
+                            className="bg-warning hover:bg-warning text-gray-900"
                         >
                             {t("continue_shopping") || "Continue Shopping"}
                         </Button>
@@ -117,8 +117,8 @@ const CheckoutCompletePage = () => {
                 <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 mb-6">
                     <div className="flex items-start gap-6">
                         <div className="flex-shrink-0">
-                            <div className="rounded-full bg-green-100 p-3">
-                                <CheckCircle2 className="h-12 w-12 text-green-600" />
+                            <div className="rounded-full bg-success/10 p-3">
+                                <CheckCircle2 className="h-12 w-12 text-success" />
                             </div>
                         </div>
                         <div className="flex-1">
@@ -148,7 +148,7 @@ const CheckoutCompletePage = () => {
                                                 onClick={() => copyToClipboard(orderId, 'order')}
                                                 className="h-8 w-8 p-0"
                                             >
-                                                <Copy className={`h-4 w-4 ${copiedId === 'order' ? 'text-green-600' : 'text-gray-400'}`} />
+                                                <Copy className={`h-4 w-4 ${copiedId === 'order' ? 'text-success' : 'text-gray-400'}`} />
                                             </Button>
                                         </div>
                                     </div>
@@ -170,15 +170,15 @@ const CheckoutCompletePage = () => {
                                                 onClick={() => copyToClipboard(transactionId, 'transaction')}
                                                 className="h-8 w-8 p-0"
                                             >
-                                                <Copy className={`h-4 w-4 ${copiedId === 'transaction' ? 'text-green-600' : 'text-gray-400'}`} />
+                                                <Copy className={`h-4 w-4 ${copiedId === 'transaction' ? 'text-success' : 'text-gray-400'}`} />
                                             </Button>
                                         </div>
                                     </div>
                                 )}
                             </div>
 
-                            <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                                <p className="text-sm text-blue-800" dir={langDir} translate="no">
+                            <div className="mt-4 p-3 bg-primary/5 border border-primary/20 rounded-lg">
+                                <p className="text-sm text-primary" dir={langDir} translate="no">
                                     <strong>{t("important") || "Important:"}</strong> {t("transaction_note") || "Please keep the order ID & transaction ID for future reference."}
                                 </p>
                             </div>
@@ -192,7 +192,7 @@ const CheckoutCompletePage = () => {
                         {haveAccessToken ? (
                             <Button
                                 asChild
-                                className="flex-1 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-medium"
+                                className="flex-1 bg-warning hover:bg-warning text-gray-900 font-medium"
                             >
                                 <Link href="/my-orders">
                                     {t("track_your_order") || "Track Your Order"}
@@ -225,7 +225,7 @@ const CheckoutCompletePage = () => {
                     </p>
                     <Link
                         href="/help-center"
-                        className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                        className="text-sm text-primary hover:text-primary font-medium"
                     >
                         {t("contact_support") || "Contact Support"}
                     </Link>

@@ -311,7 +311,7 @@ const BulkAddExistingProductsPage = () => {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
           <p className="text-gray-600">{t("loading_products")}</p>
         </div>
       </div>
@@ -345,7 +345,7 @@ const BulkAddExistingProductsPage = () => {
               <Button
                 onClick={handleBulkAdd}
                 disabled={loading || selectedProducts.length === 0}
-                className="bg-blue-600 hover:bg-blue-700 text-white"
+                className="bg-primary hover:bg-primary/90 text-white"
               >
                 <Plus className="h-4 w-4 mr-2" />
                 {loading ? t("adding_products") : t("add_all_products")}
@@ -427,7 +427,7 @@ const BulkAddExistingProductsPage = () => {
                       ...prev,
                       productCondition: e.target.value
                     }))}
-                    className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                    className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-hidden focus:ring-2 focus:ring-primary"
                   >
                     <option value="NEW">{t("new")}</option>
                     <option value="OLD">{t("old")}</option>
@@ -443,7 +443,7 @@ const BulkAddExistingProductsPage = () => {
                       ...prev,
                       consumerType: e.target.value
                     }))}
-                    className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                    className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-hidden focus:ring-2 focus:ring-primary"
                   >
                     <option value="CONSUMER">{t("consumer")}</option>
                     <option value="BUSINESS">{t("business")}</option>
@@ -459,7 +459,7 @@ const BulkAddExistingProductsPage = () => {
                       ...prev,
                       sellType: e.target.value
                     }))}
-                    className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                    className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-hidden focus:ring-2 focus:ring-primary"
                   >
                     <option value="NORMALSELL">{t("normal_sell")}</option>
                     <option value="BUYGROUP">{t("buy_group")}</option>
@@ -538,7 +538,7 @@ const BulkAddExistingProductsPage = () => {
                         variant="outline"
                         size="sm"
                         onClick={() => handleRemoveProduct(product.id)}
-                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                        className="text-destructive hover:text-destructive hover:bg-destructive/5"
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>

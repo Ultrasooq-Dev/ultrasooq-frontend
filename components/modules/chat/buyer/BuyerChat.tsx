@@ -119,7 +119,7 @@ const BuyerChat: React.FC<BuyerChatProps> = ({
                   className={cn(
                     "cursor-pointer rounded-lg border-2 p-3 transition-all hover:shadow-md",
                     selectedRfqId === item?.id
-                      ? "border-orange-500 bg-orange-50"
+                      ? "border-warning bg-warning/5"
                       : "border-gray-200 bg-white hover:border-gray-300",
                   )}
                 >
@@ -145,7 +145,7 @@ const BuyerChat: React.FC<BuyerChatProps> = ({
                     </div>
                     {selectedRfqId === item?.id && (
                       <div className="flex-shrink-0">
-                        <div className="h-2 w-2 rounded-full bg-orange-500"></div>
+                        <div className="h-2 w-2 rounded-full bg-warning"></div>
                       </div>
                     )}
                   </div>

@@ -501,7 +501,7 @@ const ProductLocationAndCustomizationSection: React.FC<
                   />
                 )}
               />
-              <p className="text-[13px] text-red-500" dir={langDir}>
+              <p className="text-[13px] text-destructive" dir={langDir}>
                 {
                   formContext.formState.errors["productCountryId"]
                     ?.message as string
@@ -535,7 +535,7 @@ const ProductLocationAndCustomizationSection: React.FC<
                       />
                     )}
                   />
-                  <p className="text-[13px] text-red-500" dir={langDir}>
+                  <p className="text-[13px] text-destructive" dir={langDir}>
                     {
                       formContext.formState.errors["productStateId"]
                         ?.message as string
@@ -570,7 +570,7 @@ const ProductLocationAndCustomizationSection: React.FC<
                       />
                     )}
                   />
-                  <p className="text-[13px] text-red-500" dir={langDir}>
+                  <p className="text-[13px] text-destructive" dir={langDir}>
                     {
                       formContext.formState.errors["productCityId"]
                         ?.message as string
@@ -762,7 +762,7 @@ const ProductLocationAndCustomizationSection: React.FC<
             )}
           />
 
-          <p className="text-[13px] text-red-500" dir={langDir}>
+          <p className="text-[13px] text-destructive" dir={langDir}>
             {formContext.formState.errors["placeOfOriginId"]?.message as string}
           </p>
         </div>

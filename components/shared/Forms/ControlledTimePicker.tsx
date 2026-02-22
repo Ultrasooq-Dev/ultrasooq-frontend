@@ -67,7 +67,7 @@ const ControlledTimePicker: React.FC<ControlledTimePickerProps> = ({
                 <Button
                   variant="outline"
                   className={cn(
-                    "w-full h-12 px-4 py-3 bg-white border border-gray-300 rounded-xl text-sm text-left font-normal hover:bg-gray-50 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200",
+                    "w-full h-12 px-4 py-3 bg-white border border-gray-300 rounded-xl text-sm text-left font-normal hover:bg-gray-50 focus:ring-2 focus:ring-warning focus:border-warning transition-all duration-200",
                     !field.value && "text-gray-500"
                   )}
                   dir={langDir}
@@ -92,7 +92,7 @@ const ControlledTimePicker: React.FC<ControlledTimePickerProps> = ({
             >
               <div className="p-4">
                 <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-orange-500" />
+                  <Clock className="h-4 w-4 text-warning" />
                   {t("select_time")}
                 </h4>
                 <ScrollArea className="h-64">
@@ -103,9 +103,9 @@ const ControlledTimePicker: React.FC<ControlledTimePickerProps> = ({
                         type="button"
                         onClick={() => field.onChange(option.value)}
                         className={cn(
-                          "w-full px-3 py-2 text-left text-sm rounded-lg transition-colors hover:bg-orange-50 hover:text-orange-900",
+                          "w-full px-3 py-2 text-left text-sm rounded-lg transition-colors hover:bg-warning/5 hover:text-warning",
                           field.value === option.value
-                            ? "bg-orange-500 text-white hover:bg-orange-600 hover:text-white"
+                            ? "bg-warning text-white hover:bg-warning hover:text-white"
                             : "text-gray-700"
                         )}
                       >
@@ -120,7 +120,7 @@ const ControlledTimePicker: React.FC<ControlledTimePickerProps> = ({
               </div>
             </PopoverContent>
           </Popover>
-          <FormMessage className="text-sm text-red-500" />
+          <FormMessage className="text-sm text-destructive" />
         </FormItem>
       )}
     />

@@ -72,7 +72,7 @@ const ExistingProductCard: React.FC<ExistingProductCardProps> = ({
           {productType !== "R" && !isDropshipPage && onSelectedId && (
             <div className="flex flex-col items-center space-y-2">
               <Checkbox
-                className="border border-solid border-gray-300 data-[state=checked]:bg-blue-600!"
+                className="border border-solid border-gray-300 data-[state=checked]:bg-primary!"
                 checked={selectedIds?.includes(id)}
                 onCheckedChange={(checked) => {
                   onSelectedId?.(checked, id);
@@ -127,7 +127,7 @@ const ExistingProductCard: React.FC<ExistingProductCardProps> = ({
             <div className="flex space-x-6 text-sm text-gray-600">
               <div className="flex items-center space-x-2">
                 <span className="font-medium">{t("price")}:</span>
-                <span className="text-blue-600 font-semibold">
+                <span className="text-primary font-semibold">
                   ${productPrice || 0}
                 </span>
               </div>
@@ -168,7 +168,7 @@ const ExistingProductCard: React.FC<ExistingProductCardProps> = ({
           {isDropshipPage ? (
             <Button
               onClick={handleAddToDropship}
-              className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 text-sm flex items-center gap-2"
+              className="bg-info hover:bg-info/90 text-white px-4 py-2 text-sm flex items-center gap-2"
               dir={langDir}
             >
               <IoMdAdd size={16} />
@@ -177,7 +177,7 @@ const ExistingProductCard: React.FC<ExistingProductCardProps> = ({
           ) : productType === "R" ? (
             <Button
               onClick={handleAddToRfqProducts}
-              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 text-sm flex items-center gap-2"
+              className="bg-success hover:bg-success/90 text-white px-4 py-2 text-sm flex items-center gap-2"
               dir={langDir}
             >
               <IoMdAdd size={16} />
@@ -186,7 +186,7 @@ const ExistingProductCard: React.FC<ExistingProductCardProps> = ({
           ) : (
             <Button
               onClick={handleAddToMyProducts}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 text-sm flex items-center gap-2"
+              className="bg-primary hover:bg-primary/90 text-white px-4 py-2 text-sm flex items-center gap-2"
               dir={langDir}
             >
               <IoMdAdd size={16} />

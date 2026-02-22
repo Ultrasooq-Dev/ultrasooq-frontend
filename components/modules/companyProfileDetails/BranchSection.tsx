@@ -45,7 +45,7 @@ const BranchSection: React.FC<BranchSectionProps> = ({ branchDetails }) => {
           <p
             className={cn(
               branchDetails?.mainOffice === 1
-                ? "text-red-600"
+                ? "text-destructive"
                 : "text-dark-cyan",
               "text-base font-semibold leading-5",
             )}

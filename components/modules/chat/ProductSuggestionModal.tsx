@@ -276,7 +276,7 @@ const ProductSuggestionModal: React.FC<ProductSuggestionModalProps> = ({
             placeholder="Search products..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
             dir={langDir}
           />
         </div>
@@ -318,7 +318,7 @@ const ProductSuggestionModal: React.FC<ProductSuggestionModalProps> = ({
                       key={uniqueKey}
                       className={`flex items-center justify-between rounded-lg border px-3 py-2 text-xs transition-all ${
                         isSelected
-                          ? "border-blue-500 bg-blue-50"
+                          ? "border-primary bg-primary/5"
                           : "border-gray-200 bg-white hover:border-gray-300"
                       }`}
                       onClick={() => toggleProductSelection(product.id, defaultPrice)}
@@ -328,7 +328,7 @@ const ProductSuggestionModal: React.FC<ProductSuggestionModalProps> = ({
                         <div
                           className={`flex h-4 w-4 items-center justify-center rounded border text-[10px] ${
                             isSelected
-                              ? "border-blue-600 bg-blue-600 text-white"
+                              ? "border-primary bg-primary text-white"
                               : "border-gray-400 bg-white text-transparent"
                           }`}
                         >
@@ -371,7 +371,7 @@ const ProductSuggestionModal: React.FC<ProductSuggestionModalProps> = ({
                                 onChange={(e) =>
                                   updateProductPrice(product.id, e.target.value)
                                 }
-                                className="w-24 rounded border border-gray-300 px-2 py-1 text-[10px] focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                className="w-24 rounded border border-gray-300 px-2 py-1 text-[10px] focus:outline-none focus:ring-1 focus:ring-primary"
                                 step="0.01"
                                 min="0"
                               />
@@ -387,7 +387,7 @@ const ProductSuggestionModal: React.FC<ProductSuggestionModalProps> = ({
                                 onChange={(e) =>
                                   updateProductQuantity(product.id, e.target.value)
                                 }
-                                className="w-16 rounded border border-gray-300 px-2 py-1 text-[10px] focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                className="w-16 rounded border border-gray-300 px-2 py-1 text-[10px] focus:outline-none focus:ring-1 focus:ring-primary"
                                 min="1"
                               />
                             </div>
@@ -430,7 +430,7 @@ const ProductSuggestionModal: React.FC<ProductSuggestionModalProps> = ({
             <button
               onClick={handleSubmit}
               disabled={selectedProducts.size === 0}
-              className="px-3 py-1.5 text-xs bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+              className="px-3 py-1.5 text-xs bg-primary text-white rounded-lg hover:bg-primary/90 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
               type="button"
             >
               {t("suggest_products") || "Suggest Products"} ({selectedProducts.size})

@@ -162,7 +162,7 @@ const DropshipProductCard: React.FC<DropshipProductCardProps> = ({
 
   return (
     <Card className={`relative group transition-all duration-200 hover:shadow-lg ${
-      isSelected ? 'ring-2 ring-blue-500 bg-blue-50' : ''
+      isSelected ? 'ring-2 ring-primary bg-primary/5' : ''
     }`}>
       <CardContent className="p-6">
         {/* Collapsible Header */}
@@ -197,7 +197,7 @@ const DropshipProductCard: React.FC<DropshipProductCardProps> = ({
                 />
               )}
               {productImages.length > 1 && (
-                <div className="absolute top-1 right-1 bg-blue-600 text-white text-xs px-1.5 py-0.5 rounded-md font-medium">
+                <div className="absolute top-1 right-1 bg-primary text-white text-xs px-1.5 py-0.5 rounded-md font-medium">
                   +{productImages.length - 1}
                 </div>
               )}
@@ -218,7 +218,7 @@ const DropshipProductCard: React.FC<DropshipProductCardProps> = ({
                     variant={isActive ? "default" : "secondary"}
                     className={`text-xs px-2 py-1 ${
                       isActive 
-                        ? 'bg-green-100 text-green-800 border-green-200' 
+                        ? 'bg-success/10 text-success border-success/20' 
                         : 'bg-gray-100 text-gray-800 border-gray-200'
                     }`}
                   >
@@ -247,11 +247,11 @@ const DropshipProductCard: React.FC<DropshipProductCardProps> = ({
               {/* Pricing and Stock Info */}
               <div className="space-y-1">
                 <div className="flex items-center gap-3">
-                  <span className="text-lg font-bold text-green-600">
+                  <span className="text-lg font-bold text-success">
                     ${Number(initialPrice).toFixed(2)}
                   </span>
                   {Number(dropshipMarkup) > 0 && (
-                    <span className="text-sm font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded">
+                    <span className="text-sm font-medium text-primary bg-primary/5 px-2 py-1 rounded">
                       +${Number(dropshipMarkup).toFixed(2)} {t("markup")}
                     </span>
                   )}
@@ -271,7 +271,7 @@ const DropshipProductCard: React.FC<DropshipProductCardProps> = ({
               <div className="flex space-x-2">
                 <button
                   type="button"
-                  className="flex h-10 w-10 items-center justify-center rounded-lg bg-red-500 text-white hover:bg-red-600 transition-colors shadow-sm"
+                  className="flex h-10 w-10 items-center justify-center rounded-lg bg-destructive text-white hover:bg-destructive transition-colors shadow-sm"
                   onClick={handleRemove}
                   title={t("remove")}
                 >
@@ -303,7 +303,7 @@ const DropshipProductCard: React.FC<DropshipProductCardProps> = ({
                 <div className="space-y-3">
                   <div className="flex justify-between items-center py-2 px-3 bg-white rounded-md border">
                     <span className="text-sm font-medium text-gray-700">{t("selling_price")}:</span>
-                    <span className="font-bold text-lg text-green-600">
+                    <span className="font-bold text-lg text-success">
                       ${Number(initialPrice).toFixed(2)}
                     </span>
                   </div>
@@ -311,7 +311,7 @@ const DropshipProductCard: React.FC<DropshipProductCardProps> = ({
                   {Number(dropshipMarkup) > 0 && (
                     <div className="flex justify-between items-center py-2 px-3 bg-white rounded-md border">
                       <span className="text-sm font-medium text-gray-700">{t("markup")}:</span>
-                      <span className="text-blue-600 font-bold text-sm bg-blue-50 px-2 py-1 rounded">
+                      <span className="text-primary font-bold text-sm bg-primary/5 px-2 py-1 rounded">
                         +${Number(dropshipMarkup).toFixed(2)}
                       </span>
                     </div>
@@ -358,11 +358,11 @@ const DropshipProductCard: React.FC<DropshipProductCardProps> = ({
 
             {/* Marketing Content Preview */}
             {customMarketingContent?.marketingText && customMarketingContent.marketingText.trim() && (
-              <div className="mt-6 p-4 bg-yellow-50 border-2 border-yellow-200 rounded-lg">
-                <h4 className="font-semibold text-yellow-800 mb-3 text-base">
+              <div className="mt-6 p-4 bg-warning/5 border-2 border-warning/20 rounded-lg">
+                <h4 className="font-semibold text-warning mb-3 text-base">
                   {t("marketing_text")}:
                 </h4>
-                <div className="text-sm text-yellow-800 leading-relaxed">
+                <div className="text-sm text-warning leading-relaxed">
                   {customMarketingContent.marketingText}
                 </div>
               </div>
@@ -373,7 +373,7 @@ const DropshipProductCard: React.FC<DropshipProductCardProps> = ({
               <div className="mt-6 flex justify-center space-x-3 border-t border-gray-300 pt-4">
                 <button
                   type="button"
-                  className="flex items-center justify-center rounded-lg bg-green-500 px-6 py-2 text-sm font-medium text-white hover:bg-green-600 transition-colors shadow-sm"
+                  className="flex items-center justify-center rounded-lg bg-success px-6 py-2 text-sm font-medium text-white hover:bg-success transition-colors shadow-sm"
                   onClick={handleEdit}
                 >
                   <IoMdEdit size={16} className="mr-2" />

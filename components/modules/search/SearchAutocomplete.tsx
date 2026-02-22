@@ -176,7 +176,7 @@ const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({
                                     onClose();
                                 }}
                             >
-                                <TrendingUp className="h-3.5 w-3.5 text-orange-400" />
+                                <TrendingUp className="h-3.5 w-3.5 text-warning/70" />
                                 <span className="text-gray-700">{item.term}</span>
                                 <span className="ml-auto text-xs text-gray-400">
                                     {item.search_count}
@@ -209,12 +209,12 @@ const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({
                                     onClose();
                                 }}
                             >
-                                <Package className="h-3.5 w-3.5 text-blue-400" />
+                                <Package className="h-3.5 w-3.5 text-primary/70" />
                                 <span className="flex-1 truncate text-gray-700">
                                     {item.name}
                                 </span>
                                 {item.price && (
-                                    <span className="text-xs font-medium text-green-600">
+                                    <span className="text-xs font-medium text-success">
                                         ${Number(item.price).toFixed(2)}
                                     </span>
                                 )}

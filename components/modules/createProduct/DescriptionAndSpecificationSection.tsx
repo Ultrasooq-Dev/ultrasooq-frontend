@@ -47,7 +47,7 @@ const DescriptionAndSpecificationSection: React.FC<
       {/* Description Section */}
       <div className="space-y-6">
         <div className="flex items-center gap-3 pb-4 border-b border-gray-100">
-          <div className="w-8 h-8 bg-indigo-500 rounded-lg flex items-center justify-center">
+          <div className="w-8 h-8 bg-info rounded-lg flex items-center justify-center">
             <span className="text-white text-sm font-semibold">1</span>
           </div>
           <div>
@@ -83,7 +83,7 @@ const DescriptionAndSpecificationSection: React.FC<
           <Button
             type="button"
             onClick={appendSpecification}
-                className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
+                className="flex items-center gap-2 bg-warning hover:bg-warning text-white px-4 py-2 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
             dir={langDir}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -137,7 +137,7 @@ const DescriptionAndSpecificationSection: React.FC<
                 <button
                   type="button"
                   onClick={() => removeSpecification(index)}
-                  className="absolute top-2 right-2 p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors duration-200"
+                  className="absolute top-2 right-2 p-2 text-gray-400 hover:text-destructive hover:bg-destructive/5 rounded-lg transition-colors duration-200"
                   title={t("remove_specification")}
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

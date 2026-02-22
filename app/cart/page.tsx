@@ -773,7 +773,7 @@ const CartListPage = () => {
           {/* Left Column - Cart Items */}
           <div className="lg:col-span-8">
             {/* My Cart Items Section - Clearly Labeled */}
-            <div className="mb-6 rounded-lg border-2 border-blue-200 bg-blue-50/30 p-4">
+            <div className="mb-6 rounded-lg border-2 border-primary/20 bg-primary/5/30 p-4">
               <div className="mb-4 flex items-center justify-between">
                 <div>
                   <h2
@@ -793,8 +793,8 @@ const CartListPage = () => {
                     added by you
                   </p>
                 </div>
-                <div className="rounded-full bg-blue-100 px-3 py-1">
-                  <span className="text-sm font-semibold text-blue-700">
+                <div className="rounded-full bg-primary/10 px-3 py-1">
+                  <span className="text-sm font-semibold text-primary">
                     {memoizedCartList.length}
                   </span>
                 </div>
@@ -820,7 +820,7 @@ const CartListPage = () => {
                     </p>
                     <Button
                       onClick={() => router.push("/trending")}
-                      className="bg-blue-600 px-6 py-2 text-white hover:bg-blue-700"
+                      className="bg-primary px-6 py-2 text-white hover:bg-primary/90"
                     >
                       Continue Shopping
                     </Button>
@@ -845,7 +845,7 @@ const CartListPage = () => {
                     </p>
                     <Button
                       onClick={() => router.push("/trending")}
-                      className="bg-blue-600 px-6 py-2 text-white hover:bg-blue-700"
+                      className="bg-primary px-6 py-2 text-white hover:bg-primary/90"
                     >
                       Continue Shopping
                     </Button>
@@ -1028,7 +1028,7 @@ const CartListPage = () => {
                   <Button
                     onClick={() => router.push("/checkout")}
                     disabled={!memoizedCartList?.length}
-                    className="w-full rounded-md bg-yellow-400 px-4 py-2.5 font-medium text-gray-900 shadow-sm transition-colors hover:bg-yellow-500 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500"
+                    className="w-full rounded-md bg-warning px-4 py-2.5 font-medium text-gray-900 shadow-sm transition-colors hover:bg-warning disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500"
                     dir={langDir}
                     translate="no"
                   >
@@ -1110,7 +1110,7 @@ const CartListPage = () => {
                   {/* <div className="flex items-center gap-2 text-xs text-gray-600">
                     <span translate="no">Page 1 of 1</span>
                     <button
-                      className="text-blue-600 hover:text-blue-800 hover:underline"
+                      className="text-primary hover:text-primary hover:underline"
                       translate="no"
                     >
                       Start over
@@ -1187,7 +1187,7 @@ const CartListPage = () => {
                                     <div className="flex flex-1 flex-col space-y-2">
                                       {/* Product Title */}
                                       <h3
-                                        className="line-clamp-2 cursor-pointer text-sm leading-tight text-gray-900 group-hover/product:text-blue-600"
+                                        className="line-clamp-2 cursor-pointer text-sm leading-tight text-gray-900 group-hover/product:text-primary"
                                         dir={langDir}
                                         onClick={() =>
                                           router.push(`/trending/${product.id}`)
@@ -1213,7 +1213,7 @@ const CartListPage = () => {
                                                         className={`h-3 w-3 ${
                                                           starValue <=
                                                           Math.round(rating)
-                                                            ? "text-orange-400"
+                                                            ? "text-warning/70"
                                                             : "text-gray-300"
                                                         }`}
                                                       />
@@ -1280,7 +1280,7 @@ const CartListPage = () => {
                                               product.productProductPriceId,
                                             )
                                           }
-                                          className="w-full rounded-md bg-yellow-400 px-3 py-1.5 text-xs font-medium text-gray-900 shadow-sm transition-colors hover:bg-yellow-500"
+                                          className="w-full rounded-md bg-warning px-3 py-1.5 text-xs font-medium text-gray-900 shadow-sm transition-colors hover:bg-warning"
                                           translate="no"
                                         >
                                           Add to Cart

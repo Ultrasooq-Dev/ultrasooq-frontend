@@ -266,7 +266,7 @@ const BannerCard: React.FC<{
             </p>
           )}
           {banner.buttonText && (
-            <span className="inline-flex items-center gap-2 text-white hover:text-yellow-300 transition-colors text-sm sm:text-base font-semibold cursor-pointer">
+            <span className="inline-flex items-center gap-2 text-white hover:text-warning transition-colors text-sm sm:text-base font-semibold cursor-pointer">
               {banner.buttonText || t("shop_now")}
               <ArrowRight className="h-4 w-4" />
             </span>

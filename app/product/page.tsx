@@ -2245,7 +2245,7 @@ const CreateProductPage = () => {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="text-center">
-          <h2 className="mb-2 text-xl font-semibold text-red-600">
+          <h2 className="mb-2 text-xl font-semibold text-destructive">
             {t("error_loading_product")}
           </h2>
           <p className="mb-4 text-gray-600">
@@ -2287,7 +2287,7 @@ const CreateProductPage = () => {
                     type="button"
                     className={`rounded-lg px-6 py-3 text-sm font-medium transition-all duration-200 ${
                       activeTab === "create"
-                        ? "bg-orange-500 text-white shadow-md"
+                        ? "bg-warning text-white shadow-md"
                         : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                     }`}
                     onClick={() => setActiveTab("create")}
@@ -2298,7 +2298,7 @@ const CreateProductPage = () => {
                     type="button"
                     className={`rounded-lg px-6 py-3 text-sm font-medium transition-all duration-200 ${
                       activeTab === "dropship"
-                        ? "bg-orange-500 text-white shadow-md"
+                        ? "bg-warning text-white shadow-md"
                         : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                     }`}
                     onClick={() => setActiveTab("dropship")}

@@ -368,7 +368,7 @@ const VendorWithProducts: React.FC<{
                 <span>{vendor.productCount} {t("products")}</span>
               </div>
               <div className="flex items-center gap-1">
-                <Star className="h-3 w-3 sm:h-4 sm:w-4 text-yellow-400" />
+                <Star className="h-3 w-3 sm:h-4 sm:w-4 text-warning" />
                 <span>{(vendor.averageRating || 0).toFixed(1)}</span>
               </div>
             </div>

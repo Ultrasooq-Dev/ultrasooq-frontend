@@ -753,7 +753,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
     <aside className="h-fit">
       <div className="bg-white rounded-lg shadow-xs border border-gray-200 overflow-hidden">
         {/* Header */}
-        <div className="bg-linear-to-r from-blue-50 to-indigo-50 px-6 py-4 border-b border-gray-200">
+        <div className="bg-linear-to-r from-primary/5 to-info/5 px-6 py-4 border-b border-gray-200">
           <h2 className="text-xl font-semibold text-gray-900" dir={langDir} translate="no">
             {t("bulk_edit")}
           </h2>
@@ -770,7 +770,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
               onClick={() => setActiveTab('warehouse-location')}
               className={`py-2 px-2 border-b-2 font-medium text-sm whitespace-nowrap ${
                 activeTab === 'warehouse-location'
-                  ? 'border-blue-500 text-blue-600'
+                  ? 'border-primary text-primary'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               } transition-colors`}
             >
@@ -781,7 +781,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
               onClick={() => setActiveTab('product-basic')}
               className={`py-2 px-2 border-b-2 font-medium text-sm whitespace-nowrap ${
                 activeTab === 'product-basic'
-                  ? 'border-blue-500 text-blue-600'
+                  ? 'border-primary text-primary'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               } transition-colors`}
             >
@@ -792,7 +792,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
               onClick={() => setActiveTab('ask-for')}
               className={`py-2 px-2 border-b-2 font-medium text-sm whitespace-nowrap ${
                 activeTab === 'ask-for'
-                  ? 'border-blue-500 text-blue-600'
+                  ? 'border-primary text-primary'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               } transition-colors`}
             >
@@ -803,7 +803,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
               onClick={() => setActiveTab('discounts')}
               className={`py-2 px-2 border-b-2 font-medium text-sm whitespace-nowrap ${
                 activeTab === 'discounts'
-                  ? 'border-blue-500 text-blue-600'
+                  ? 'border-primary text-primary'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               } transition-colors`}
             >
@@ -834,7 +834,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                       onBlur={field.onBlur}
                       name={field.name}
                       ref={field.ref}
-                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
                     />
                   )}
                 />
@@ -859,7 +859,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                     <select
                       {...field}
                       disabled={!watchUpdateWarehouse}
-                      className="w-full h-8 capitalize rounded border border-gray-300 px-2 text-xs focus:outline-hidden focus:ring-1 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                      className="w-full h-8 capitalize rounded border border-gray-300 px-2 text-xs focus:outline-hidden focus:ring-1 focus:ring-primary focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
                     >
                       <option value="">{t("select")}</option>
                       {memoizedBranches.map((branch: IOption) => (
@@ -890,7 +890,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                       onBlur={field.onBlur}
                       name={field.name}
                       ref={field.ref}
-                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
                     />
                   )}
                 />
@@ -1069,7 +1069,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                   disabled={!watchUpdateWhereToSell || (!selectedCountries.length && !selectedStates.length && !selectedCities.length)}
                   className={`w-full px-3 py-1.5 text-xs font-medium rounded focus:outline-hidden focus:ring-1 focus:ring-offset-1 transition-colors ${
                     watchUpdateWhereToSell && (selectedCountries.length > 0 || selectedStates.length > 0 || selectedCities.length > 0)
-                      ? 'bg-purple-600 text-white hover:bg-purple-700 focus:ring-purple-500'
+                      ? 'bg-info text-white hover:bg-info/90 focus:ring-info'
                       : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                   }`}
                 >
@@ -1108,7 +1108,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                   render={({ field }) => (
                     <select
                       {...field}
-                      className="w-full h-10 rounded-md border border-gray-300 px-3 text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full h-10 rounded-md border border-gray-300 px-3 text-sm focus:outline-hidden focus:ring-2 focus:ring-primary focus:border-transparent"
                     >
                       <option value="">{t("select")}</option>
                       {productConditions().map((option) => (
@@ -1125,7 +1125,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                   disabled={!watchProductCondition}
                   className={`w-full px-4 py-2 text-xs font-medium rounded-md focus:outline-hidden focus:ring-2 focus:ring-offset-2 transition-colors ${
                     watchProductCondition
-                      ? 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500'
+                      ? 'bg-primary text-white hover:bg-primary/90 focus:ring-primary'
                       : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                   }`}
                 >
@@ -1157,14 +1157,14 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                   <button
                     type="button"
                     onClick={() => showConfirmation(true)}
-                    className="flex-1 px-3 py-2 bg-red-600 text-white text-xs font-medium rounded hover:bg-red-700 focus:outline-hidden focus:ring-1 focus:ring-red-500 focus:ring-offset-1 transition-colors"
+                    className="flex-1 px-3 py-2 bg-destructive text-white text-xs font-medium rounded hover:bg-destructive/90 focus:outline-hidden focus:ring-1 focus:ring-destructive focus:ring-offset-1 transition-colors"
                   >
                     ⚠️ Hide from Customers
                   </button>
                   <button
                     type="button"
                     onClick={() => showConfirmation(false)}
-                    className="flex-1 px-3 py-2 bg-green-600 text-white text-xs font-medium rounded hover:bg-green-700 focus:outline-hidden focus:ring-1 focus:ring-green-500 focus:ring-offset-1 transition-colors"
+                    className="flex-1 px-3 py-2 bg-success text-white text-xs font-medium rounded hover:bg-success/90 focus:outline-hidden focus:ring-1 focus:ring-success focus:ring-offset-1 transition-colors"
                   >
                     ✅ Show to Customers
                   </button>
@@ -1189,7 +1189,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                       onBlur={field.onBlur}
                       name={field.name}
                       ref={field.ref}
-                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
                     />
                   )}
                 />
@@ -1217,7 +1217,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                         name={field.name}
                         ref={field.ref}
                         disabled={!watchUpdateBasic}
-                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed"
                       />
                     )}
                   />
@@ -1251,7 +1251,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                       onBlur={field.onBlur}
                       name={field.name}
                       ref={field.ref}
-                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
                     />
                   )}
                 />
@@ -1276,7 +1276,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                     <select
                       {...field}
                       disabled={!watchUpdateAskFor}
-                      className="w-full h-8 capitalize rounded border border-gray-300 px-2 text-xs focus:outline-hidden focus:ring-1 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                      className="w-full h-8 capitalize rounded border border-gray-300 px-2 text-xs focus:outline-hidden focus:ring-1 focus:ring-primary focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
                     >
                       <option value="">Select</option>
                       <option value="true">Yes</option>
@@ -1298,7 +1298,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                     <select
                       {...field}
                       disabled={!watchUpdateAskFor}
-                      className="w-full h-8 capitalize rounded border border-gray-300 px-2 text-xs focus:outline-hidden focus:ring-1 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                      className="w-full h-8 capitalize rounded border border-gray-300 px-2 text-xs focus:outline-hidden focus:ring-1 focus:ring-primary focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
                     >
                       <option value="">Select</option>
                       <option value="true">Yes</option>
@@ -1316,7 +1316,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                   disabled={!watchUpdateAskFor || (!watchAskForPrice && !watchAskForStock) || (watchAskForPrice === "" && watchAskForStock === "")}
                   className={`w-full px-3 py-1.5 text-xs font-medium rounded focus:outline-hidden focus:ring-1 focus:ring-offset-1 transition-colors ${
                     watchUpdateAskFor && (watchAskForPrice && watchAskForPrice !== "" || watchAskForStock && watchAskForStock !== "")
-                      ? 'bg-orange-600 text-white hover:bg-orange-700 focus:ring-orange-500'
+                      ? 'bg-warning text-white hover:bg-warning/90 focus:ring-warning'
                       : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                   }`}
                 >
@@ -1347,7 +1347,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                       onBlur={field.onBlur}
                       name={field.name}
                       ref={field.ref}
-                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
                     />
                   )}
                 />
@@ -1372,7 +1372,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                     disabled={!watchUpdateDiscounts}
                     className={`w-full h-10 rounded-md border px-3 text-sm focus:outline-hidden focus:ring-2 focus:border-transparent ${
                       watchUpdateDiscounts 
-                        ? 'border-gray-300 focus:ring-blue-500' 
+                        ? 'border-gray-300 focus:ring-primary' 
                         : 'border-gray-300 bg-gray-100 cursor-not-allowed'
                     }`}
                   >
@@ -1401,7 +1401,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                     disabled={!watchUpdateDiscounts}
                     className={`w-full h-10 rounded-md border px-3 text-sm focus:outline-hidden focus:ring-2 focus:border-transparent ${
                       watchUpdateDiscounts 
-                        ? 'border-gray-300 focus:ring-blue-500' 
+                        ? 'border-gray-300 focus:ring-primary' 
                         : 'border-gray-300 bg-gray-100 cursor-not-allowed'
                     }`}
                   >
@@ -1927,7 +1927,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                         onChange={field.onChange}
                         onBlur={field.onBlur}
                         name={field.name}
-                        className="w-full h-10 rounded-md border border-gray-300 px-3 text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full h-10 rounded-md border border-gray-300 px-3 text-sm focus:outline-hidden focus:ring-2 focus:ring-primary focus:border-transparent"
                       >
                         <option value="">Select Type</option>
                         {discountTypes().map((option) => (
@@ -1956,7 +1956,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                         onChange={field.onChange}
                         onBlur={field.onBlur}
                         name={field.name}
-                        className="w-full h-10 rounded-md border border-gray-300 px-3 text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full h-10 rounded-md border border-gray-300 px-3 text-sm focus:outline-hidden focus:ring-2 focus:ring-primary focus:border-transparent"
                       >
                         <option value="">Select Type</option>
                         {discountTypes().map((option) => (
@@ -2026,11 +2026,11 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
               /* Show message only when Consumer Type/Sell Type is not selected (section is enabled) */
               watchUpdateDiscounts && (
                 <div className="p-6 text-center">
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <div className="text-blue-600 text-sm font-medium mb-2">
+                  <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
+                    <div className="text-primary text-sm font-medium mb-2">
                       {t("select_consumer_type_and_sell_type")}
                     </div>
-                    <div className="text-blue-500 text-xs">
+                    <div className="text-primary text-xs">
                       {t("choose_consumer_type_and_sell_type_to_see_options")}
                     </div>
                   </div>
@@ -2044,7 +2044,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                 <button
                   type="button"
                   onClick={() => handleBulkDiscountUpdate()}
-                  className="w-full px-4 py-2 bg-green-600 text-white text-xs font-medium rounded-md hover:bg-green-700 focus:outline-hidden focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors"
+                  className="w-full px-4 py-2 bg-success text-white text-xs font-medium rounded-md hover:bg-success/90 focus:outline-hidden focus:ring-2 focus:ring-success focus:ring-offset-2 transition-colors"
                 >
                   Update Discounts
                 </button>
@@ -2059,7 +2059,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium py-3 rounded-lg transition-all duration-200 shadow-xs hover:shadow-md"
+              className="w-full bg-linear-to-r from-primary to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium py-3 rounded-lg transition-all duration-200 shadow-xs hover:shadow-md"
               translate="no"
             >
               {isLoading ? (
@@ -2088,8 +2088,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
               <div className="flex items-center mb-3">
                 <div className={`w-6 h-6 rounded-full flex items-center justify-center mr-2 ${
                   confirmAction.type === 'hide' 
-                    ? 'bg-red-100 text-red-600' 
-                    : 'bg-green-100 text-green-600'
+                    ? 'bg-destructive/10 text-destructive' 
+                    : 'bg-success/10 text-success'
                 }`}>
                   {confirmAction.type === 'hide' ? '⚠️' : '✅'}
                 </div>
@@ -2118,8 +2118,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                   onClick={confirmAction.onConfirm}
                   className={`px-3 py-1.5 text-xs text-white rounded focus:outline-hidden focus:ring-1 transition-colors ${
                     confirmAction.type === 'hide'
-                      ? 'bg-red-600 hover:bg-red-700 focus:ring-red-500'
-                      : 'bg-green-600 hover:bg-green-700 focus:ring-green-500'
+                      ? 'bg-destructive hover:bg-destructive/90 focus:ring-destructive'
+                      : 'bg-success hover:bg-success/90 focus:ring-success'
                   }`}
                 >
                   {confirmAction.type === 'hide' ? 'Hide Products' : 'Show Products'}

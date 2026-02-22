@@ -476,7 +476,7 @@ export default function FreelancerProfilePage() {
                         </select>
                       )}
                     />
-                    <p className="text-[13px] text-red-500" dir={langDir}>
+                    <p className="text-[13px] text-destructive" dir={langDir}>
                       {form.formState.errors.startTime?.message}
                     </p>
                   </div>
@@ -503,7 +503,7 @@ export default function FreelancerProfilePage() {
                         </select>
                       )}
                     />
-                    <p className="text-[13px] text-red-500" dir={langDir}>
+                    <p className="text-[13px] text-destructive" dir={langDir}>
                       {form.formState.errors.endTime?.message}
                     </p>
                   </div>
@@ -545,7 +545,7 @@ export default function FreelancerProfilePage() {
                   </div>
 
                   {form.formState.errors.workingDays?.message ? (
-                    <p className="text-[13px] text-red-500" dir={langDir}>
+                    <p className="text-[13px] text-destructive" dir={langDir}>
                       Working Day is required
                     </p>
                   ) : null}

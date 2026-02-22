@@ -206,7 +206,7 @@ const UpdateProductStatusForm: React.FC<UpdateProductStatusFormProps> = ({
               </select>
             )}
           />
-          <p className="text-[13px] text-red-500" dir={langDir}>
+          <p className="text-[13px] text-destructive" dir={langDir}>
             {form.formState.errors.status?.message}
           </p>
           <div className="mb-4"></div>

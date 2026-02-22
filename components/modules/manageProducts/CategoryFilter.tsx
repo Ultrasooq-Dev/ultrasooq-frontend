@@ -261,7 +261,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
                   onCheckedChange={(checked) => 
                     handleMainCategoryChange(checked as boolean, category)
                   }
-                  className="border border-gray-300 data-[state=checked]:bg-blue-600!"
+                  className="border border-gray-300 data-[state=checked]:bg-primary!"
                 />
                 <div className="flex items-center space-x-2 flex-1">
                   {category.icon ? (
@@ -327,7 +327,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
                     onCheckedChange={(checked) => 
                       handleSubCategoryChange(checked as boolean, category)
                     }
-                    className="border border-gray-300 data-[state=checked]:bg-blue-600!"
+                    className="border border-gray-300 data-[state=checked]:bg-primary!"
                   />
                   <div className="flex items-center space-x-2 flex-1">
                     {category.icon ? (
@@ -389,7 +389,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
                     onCheckedChange={(checked) => 
                       handleSubSubCategoryChange(checked as boolean, category)
                     }
-                    className="border border-gray-300 data-[state=checked]:bg-blue-600!"
+                    className="border border-gray-300 data-[state=checked]:bg-primary!"
                   />
                   <div className="flex items-center space-x-2 flex-1">
                     {category.icon ? (
@@ -418,15 +418,15 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
 
       {/* Selected Categories Summary */}
       {selectedCategoryIds.length > 0 && (
-        <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-          <p className="text-sm font-medium text-blue-800 mb-2">
+        <div className="mt-4 p-3 bg-primary/5 rounded-lg">
+          <p className="text-sm font-medium text-primary mb-2">
             {t("selected_categories")} ({selectedCategoryIds.length})
           </p>
           <div className="flex flex-wrap gap-1">
             {selectedMainCategories.map(category => (
               <span
                 key={`main-${category.id}`}
-                className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800"
+                className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-primary/10 text-primary"
               >
                 {category.name}
               </span>
@@ -434,7 +434,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
             {selectedSubCategories.map(category => (
               <span
                 key={`sub-${category.id}`}
-                className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-green-100 text-green-800"
+                className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-success/10 text-success"
               >
                 {category.name}
               </span>
@@ -442,7 +442,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
             {selectedSubSubCategories.map(category => (
               <span
                 key={`subsub-${category.id}`}
-                className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-purple-100 text-purple-800"
+                className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-info/10 text-info"
               >
                 {category.name}
               </span>

@@ -155,14 +155,14 @@ const SellerRfqRequestPage = () => {
                     "flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left transition-colors",
                     isSidebarCollapsed && "justify-center px-2",
                     currentTab === "RFQ"
-                      ? "bg-red-50 text-red-600"
+                      ? "bg-destructive/5 text-destructive"
                       : "text-gray-600 hover:bg-gray-50"
                   )}
                   title={isSidebarCollapsed ? "RFQ" : undefined}
                 >
                   <div className={cn(
                     "h-4 w-4 rounded flex-shrink-0",
-                    currentTab === "RFQ" ? "bg-red-600" : "bg-gray-400"
+                    currentTab === "RFQ" ? "bg-destructive" : "bg-gray-400"
                   )}></div>
                   {!isSidebarCollapsed && (
                     <span className="font-medium">RFQ</span>
@@ -174,14 +174,14 @@ const SellerRfqRequestPage = () => {
                     "flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left transition-colors",
                     isSidebarCollapsed && "justify-center px-2",
                     currentTab === "Product Messages"
-                      ? "bg-red-50 text-red-600"
+                      ? "bg-destructive/5 text-destructive"
                       : "text-gray-600 hover:bg-gray-50"
                   )}
                   title={isSidebarCollapsed ? "Message System" : undefined}
                 >
                   <div className={cn(
                     "h-4 w-4 rounded flex-shrink-0",
-                    currentTab === "Product Messages" ? "bg-red-600" : "bg-gray-400"
+                    currentTab === "Product Messages" ? "bg-destructive" : "bg-gray-400"
                   )}></div>
                   {!isSidebarCollapsed && (
                     <span className="font-medium">Message System</span>
@@ -243,7 +243,7 @@ const SellerRfqRequestPage = () => {
                     
                     if (rfqGroup.length === 0) {
                       return (
-                        <div className="relative w-full aspect-square rounded-lg overflow-hidden border-2 border-red-600 bg-gray-100">
+                        <div className="relative w-full aspect-square rounded-lg overflow-hidden border-2 border-destructive bg-gray-100">
                           <Image
                             src={PlaceholderImage}
                             alt="No product image"
@@ -290,7 +290,7 @@ const SellerRfqRequestPage = () => {
                     // If no images found, show placeholder
                     if (productImages.length === 0) {
                       return (
-                        <div className="relative w-full aspect-square rounded-lg overflow-hidden border-2 border-red-600 bg-gray-100">
+                        <div className="relative w-full aspect-square rounded-lg overflow-hidden border-2 border-destructive bg-gray-100">
                           <Image
                             src={PlaceholderImage}
                             alt="No product image"
@@ -310,7 +310,7 @@ const SellerRfqRequestPage = () => {
                       return (
                         <div 
                           key={item.id || `product-${index}`}
-                          className="relative w-full aspect-square rounded-lg overflow-hidden border-2 border-red-600 bg-red-50 transition-all"
+                          className="relative w-full aspect-square rounded-lg overflow-hidden border-2 border-destructive bg-destructive/5 transition-all"
                         >
                           <Image
                             src={imageUrl}
@@ -462,14 +462,14 @@ const SellerRfqRequestPage = () => {
                     "flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left transition-colors",
                     isSidebarCollapsed && "justify-center px-2",
                     currentTab === "RFQ"
-                      ? "bg-red-50 text-red-600"
+                      ? "bg-destructive/5 text-destructive"
                       : "text-gray-600 hover:bg-gray-50"
                   )}
                   title={isSidebarCollapsed ? "RFQ" : undefined}
                 >
                   <div className={cn(
                     "h-4 w-4 rounded flex-shrink-0",
-                    currentTab === "RFQ" ? "bg-red-600" : "bg-gray-400"
+                    currentTab === "RFQ" ? "bg-destructive" : "bg-gray-400"
                   )}></div>
                   {!isSidebarCollapsed && (
                     <span className="font-medium">RFQ</span>
@@ -481,14 +481,14 @@ const SellerRfqRequestPage = () => {
                     "flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left transition-colors",
                     isSidebarCollapsed && "justify-center px-2",
                     currentTab === "Product Messages"
-                      ? "bg-red-50 text-red-600"
+                      ? "bg-destructive/5 text-destructive"
                       : "text-gray-600 hover:bg-gray-50"
                   )}
                   title={isSidebarCollapsed ? "Message System" : undefined}
                 >
                   <div className={cn(
                     "h-4 w-4 rounded flex-shrink-0",
-                    currentTab === "Product Messages" ? "bg-red-600" : "bg-gray-400"
+                    currentTab === "Product Messages" ? "bg-destructive" : "bg-gray-400"
                   )}></div>
                   {!isSidebarCollapsed && (
                     <span className="font-medium">Message System</span>
@@ -595,7 +595,7 @@ const SellerRfqRequestPage = () => {
                     className={cn(
                       "group relative flex items-center gap-2 border-b-2 px-6 py-4 text-sm font-medium whitespace-nowrap transition-all duration-200",
                       isActive
-                        ? "border-dark-orange text-dark-orange bg-orange-50/50"
+                        ? "border-dark-orange text-dark-orange bg-warning/5/50"
                         : "border-transparent text-gray-600 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-900",
                     )}
                     translate="no"

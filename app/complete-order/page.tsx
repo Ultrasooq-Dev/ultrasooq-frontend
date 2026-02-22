@@ -529,14 +529,14 @@ const CompleteOrderPage = () => {
                 {/* Direct Payment Option */}
                 <div className={`border-2 rounded-lg p-6 transition-all duration-200 cursor-pointer ${
                   paymentType === "DIRECT" 
-                    ? "border-blue-500 bg-blue-50 shadow-md" 
+                    ? "border-primary bg-primary/5 shadow-md" 
                     : "border-gray-200 hover:border-gray-300 hover:shadow-sm"
                 }`}>
                   <div className="flex items-center space-x-4">
                     <RadioGroupItem 
                       value="DIRECT" 
                       id="direct-payment"
-                      className="text-blue-600 border-blue-600"
+                      className="text-primary border-primary"
                     />
                     <div className="flex-1">
                       <Label 
@@ -558,14 +558,14 @@ const CompleteOrderPage = () => {
                 {/* Advance Payment Option */}
                 <div className={`border-2 rounded-lg p-6 transition-all duration-200 cursor-pointer ${
                   paymentType === "ADVANCE" 
-                    ? "border-blue-500 bg-blue-50 shadow-md" 
+                    ? "border-primary bg-primary/5 shadow-md" 
                     : "border-gray-200 hover:border-gray-300 hover:shadow-sm"
                 }`}>
                   <div className="flex items-center space-x-4">
                     <RadioGroupItem 
                       value="ADVANCE" 
                       id="advance-payment"
-                      className="text-blue-600 border-blue-600"
+                      className="text-primary border-primary"
                     />
                     <div className="flex-1">
                       <Label 
@@ -608,14 +608,14 @@ const CompleteOrderPage = () => {
                 {user && walletData?.data && (
                   <div className={`border-2 rounded-lg p-6 transition-all duration-200 cursor-pointer ${
                     paymentType === "WALLET" 
-                      ? "border-blue-500 bg-blue-50 shadow-md" 
+                      ? "border-primary bg-primary/5 shadow-md" 
                       : "border-gray-200 hover:border-gray-300 hover:shadow-sm"
                   }`}>
                     <div className="flex items-center space-x-4">
                       <RadioGroupItem 
                         value="WALLET" 
                         id="wallet-payment"
-                        className="text-blue-600 border-blue-600"
+                        className="text-primary border-primary"
                       />
                       <div className="flex-1">
                         <Label 
@@ -648,7 +648,7 @@ const CompleteOrderPage = () => {
                           <div className="border-t border-gray-300 pt-3">
                             <div className="flex justify-between items-center">
                               <span className="text-sm font-medium text-gray-700">{t("remaining_after_payment")}:</span>
-                              <span className={`font-semibold ${(Number(walletData.data.balance || 0) - Number(orderStore.total || 0)) < 0 ? 'text-red-600' : 'text-green-600'}`}>
+                              <span className={`font-semibold ${(Number(walletData.data.balance || 0) - Number(orderStore.total || 0)) < 0 ? 'text-destructive' : 'text-success'}`}>
                                 {currency.symbol}{(Number(walletData.data.balance || 0) - Number(orderStore.total || 0)).toFixed(2)}
                               </span>
                             </div>
@@ -662,14 +662,14 @@ const CompleteOrderPage = () => {
                 {/* Payment Link Option */}
                 <div className={`border-2 rounded-lg p-6 transition-all duration-200 cursor-pointer ${
                   paymentType === "PAYMENTLINK" 
-                    ? "border-blue-500 bg-blue-50 shadow-md" 
+                    ? "border-primary bg-primary/5 shadow-md" 
                     : "border-gray-200 hover:border-gray-300 hover:shadow-sm"
                 }`}>
                   <div className="flex items-center space-x-4">
                     <RadioGroupItem 
                       value="PAYMENTLINK" 
                       id="payment-link"
-                      className="text-blue-600 border-blue-600"
+                      className="text-primary border-primary"
                     />
                     <div className="flex-1">
                       <Label 
@@ -695,7 +695,7 @@ const CompleteOrderPage = () => {
                           <Button 
                             type="button" 
                             onClick={copyPaymentLink} 
-                            className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                            className="w-full bg-primary hover:bg-primary/90 text-white"
                             translate="no"
                           >
                             {t("copy_payment_link")}
@@ -746,7 +746,7 @@ const CompleteOrderPage = () => {
                         <span className="text-gray-600" dir={langDir} translate="no">
                           {t("shipping")}
                         </span>
-                        <span className="text-green-600 font-medium">{t("free")}</span>
+                        <span className="text-success font-medium">{t("free")}</span>
                       </div>
                     </>
                   )}
@@ -774,12 +774,12 @@ const CompleteOrderPage = () => {
                   </div>
                   
                   {advanceAmount > 0 && (
-                    <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
+                    <div className="bg-warning/5 border border-warning/20 rounded-lg p-3">
                       <div className="flex justify-between items-center">
-                        <span className="text-sm font-medium text-orange-800" dir={langDir} translate="no">
+                        <span className="text-sm font-medium text-warning" dir={langDir} translate="no">
                           {t("due_balance")}
                         </span>
-                        <span className="font-semibold text-orange-800">
+                        <span className="font-semibold text-warning">
                           {currency.symbol}{(orderStore.total - advanceAmount).toFixed(2)}
                         </span>
                       </div>
@@ -787,12 +787,12 @@ const CompleteOrderPage = () => {
                   )}
                   
                   {paymentType == "WALLET" && walletData?.data && (
-                    <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                    <div className="bg-success/5 border border-success/20 rounded-lg p-3">
                       <div className="flex justify-between items-center">
-                        <span className="text-sm font-medium text-green-800" dir={langDir} translate="no">
+                        <span className="text-sm font-medium text-success" dir={langDir} translate="no">
                           {t("remaining_after_payment")}
                         </span>
-                        <span className={`font-semibold ${(Number(walletData.data.balance || 0) - Number(orderStore.total || 0)) < 0 ? 'text-red-600' : 'text-green-600'}`}>
+                        <span className={`font-semibold ${(Number(walletData.data.balance || 0) - Number(orderStore.total || 0)) < 0 ? 'text-destructive' : 'text-success'}`}>
                           {currency.symbol}{(Number(walletData.data.balance || 0) - Number(orderStore.total || 0)).toFixed(2)}
                         </span>
                       </div>
@@ -800,12 +800,12 @@ const CompleteOrderPage = () => {
                   )}
                   
                   {paymentType == "EMI" && (
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                    <div className="bg-primary/5 border border-primary/20 rounded-lg p-3">
                       <div className="flex justify-between items-center">
-                        <span className="text-sm font-medium text-blue-800" dir={langDir} translate="no">
+                        <span className="text-sm font-medium text-primary" dir={langDir} translate="no">
                           {t("emi_amount")}
                         </span>
-                        <span className="font-semibold text-blue-800">
+                        <span className="font-semibold text-primary">
                           {currency.symbol}{emiAmount}
                         </span>
                       </div>
@@ -821,7 +821,7 @@ const CompleteOrderPage = () => {
                       createEMIPayment?.isPending || 
                       isRedirectingToPaymob
                     }
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-colors duration-200"
+                    className="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 rounded-lg transition-colors duration-200"
                     translate="no"
                   >
                     {createOrder?.isPending ? (

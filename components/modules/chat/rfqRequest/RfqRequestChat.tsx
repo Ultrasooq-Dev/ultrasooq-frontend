@@ -1145,7 +1145,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
                   className={cn(
                     "cursor-pointer rounded-lg border-2 p-1.5 transition-all hover:shadow-md",
                     isSelected
-                      ? "border-orange-500 bg-orange-50"
+                      ? "border-warning bg-warning/5"
                       : "border-gray-200 bg-white hover:border-gray-300",
                   )}
                 >
@@ -1166,7 +1166,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
                         {getVendorName()}
                       </h4>
                       {getVendorOfferPrice() && getVendorOfferPrice() !== "-" ? (
-                        <p className="mt-0.5 text-[10px] font-bold text-green-600">
+                        <p className="mt-0.5 text-[10px] font-bold text-success">
                           {t("offer_price")}: {currency.symbol}
                           {getVendorOfferPrice()}
                         </p>
@@ -1177,7 +1177,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
                       )}
                       {item.unreadMsgCount > 0 && (
                         <div className="mt-0.5 flex items-center gap-1">
-                          <span className="text-[9px] text-blue-600 font-medium">
+                          <span className="text-[9px] text-primary font-medium">
                             {item.unreadMsgCount} {t("unread_messages")}
                           </span>
                         </div>
@@ -1185,7 +1185,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
                     </div>
                     {isSelected && (
                       <div className="flex-shrink-0">
-                        <div className="h-1.5 w-1.5 rounded-full bg-orange-500"></div>
+                        <div className="h-1.5 w-1.5 rounded-full bg-warning"></div>
                       </div>
                     )}
                   </div>
@@ -1218,7 +1218,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
             {/* Vendor Info */}
             <div className="flex items-center gap-2">
               {selectedVendor?.sellerIDDetail?.profilePicture && (
-                <div className="relative h-8 w-8 overflow-hidden rounded-full border border-orange-200 shadow-sm">
+                <div className="relative h-8 w-8 overflow-hidden rounded-full border border-warning/20 shadow-sm">
                   <Image
                     src={selectedVendor.sellerIDDetail.profilePicture}
                     alt="Vendor"
@@ -1242,8 +1242,8 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
 
             {/* Price and Checkout */}
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-              <div className="flex items-center gap-2 rounded-lg border border-green-100 bg-green-50 px-3 py-1.5">
-                <div className="flex h-6 w-6 items-center justify-center rounded bg-green-500 shadow-sm">
+              <div className="flex items-center gap-2 rounded-lg border border-green-100 bg-success/5 px-3 py-1.5">
+                <div className="flex h-6 w-6 items-center justify-center rounded bg-success shadow-sm">
                   <svg
                     className="h-3 w-3 text-white"
                     fill="none"
@@ -1510,7 +1510,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
                                 return (
                                   <button
                                     onClick={() => handleOpenProductSelectionModal(item.id, selectedVendor?.id || 0)}
-                                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded bg-blue-600 text-white text-[10px] font-medium hover:bg-blue-700 transition-colors"
+                                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded bg-primary text-white text-[10px] font-medium hover:bg-primary/90 transition-colors"
                                     translate="no"
                                   >
                                     <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1612,7 +1612,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
                                     {/* Selection column - show selected badge */}
                                     <div className="flex justify-center">
                                       {isSelected && (
-                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-green-100 text-green-800 text-[9px] font-medium">
+                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-success/10 text-success text-[9px] font-medium">
                                           <svg className="h-2.5 w-2.5" fill="currentColor" viewBox="0 0 20 20">
                                             <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                                           </svg>
@@ -1661,7 +1661,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
               </button>
               <button
                 onClick={handleSendUpdateToVendor}
-                className="px-4 py-1.5 text-xs font-medium text-white bg-blue-600 rounded hover:bg-blue-700 transition-colors"
+                className="px-4 py-1.5 text-xs font-medium text-white bg-primary rounded hover:bg-primary/90 transition-colors"
               >
                 {"Send Update"}
               </button>
@@ -1706,7 +1706,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
               {attachments.map((file: any, index: any) => (
                 <div
                   key={index}
-                  className="group flex items-center gap-1.5 rounded-lg border border-gray-300 bg-white px-2 py-1 shadow-sm transition-all hover:border-red-300 hover:bg-red-50"
+                  className="group flex items-center gap-1.5 rounded-lg border border-gray-300 bg-white px-2 py-1 shadow-sm transition-all hover:border-destructive/30 hover:bg-destructive/5"
                 >
                   <svg
                     className="h-3 w-3 text-gray-500"
@@ -1726,7 +1726,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
                   </span>
                   <button
                     onClick={() => removeFile(index)}
-                    className="ml-0.5 rounded-full p-0.5 text-red-500 transition-colors hover:bg-red-100"
+                    className="ml-0.5 rounded-full p-0.5 text-destructive transition-colors hover:bg-destructive/10"
                   >
                     <svg
                       className="h-3 w-3"
@@ -1757,7 +1757,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
           {/* Input Area */}
           <div className="flex items-end gap-2">
             {/* File Attachment Button */}
-            <label className="hover:border-dark-orange hover:text-dark-orange flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-600 transition-all hover:bg-orange-50">
+            <label className="hover:border-dark-orange hover:text-dark-orange flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-600 transition-all hover:bg-warning/5">
               <input
                 type="file"
                 className="hidden"
@@ -1788,9 +1788,9 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
               type="button"
               onClick={() => setShowEmoji(!showEmoji)}
               className={cn(
-                "hover:border-dark-orange hover:text-dark-orange flex h-8 w-8 items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-600 transition-all hover:bg-orange-50",
+                "hover:border-dark-orange hover:text-dark-orange flex h-8 w-8 items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-600 transition-all hover:bg-warning/5",
                 showEmoji &&
-                  "border-dark-orange text-dark-orange bg-orange-50",
+                  "border-dark-orange text-dark-orange bg-warning/5",
               )}
             >
               <Image src={SmileIcon} alt="smile-icon" className="h-4 w-4" />
@@ -1863,9 +1863,9 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
       <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-lg shadow-gray-200/50">
         <div className="flex min-h-[50px] w-full items-center justify-between border-b border-gray-100 bg-white px-3 py-2">
           <div className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-orange-100">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-warning/10">
               <svg
-                className="h-4 w-4 text-orange-600"
+                className="h-4 w-4 text-warning"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -1894,7 +1894,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
           </div>
           {vendorList?.length > 0 && (
             <div className="flex items-center gap-2">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-orange-500 text-[10px] font-bold text-white shadow-md">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-warning text-[10px] font-bold text-white shadow-md">
                 {vendorList.length}
               </span>
             </div>
@@ -2076,7 +2076,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
               {/* Vendor Info */}
               <div className="flex items-center gap-4">
                 {selectedVendor?.sellerIDDetail?.profilePicture && (
-                  <div className="relative h-14 w-14 overflow-hidden rounded-full border-2 border-orange-200 shadow-md">
+                  <div className="relative h-14 w-14 overflow-hidden rounded-full border-2 border-warning/20 shadow-md">
                     <Image
                       src={selectedVendor.sellerIDDetail.profilePicture}
                       alt="Vendor"
@@ -2100,8 +2100,8 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
 
               {/* Price and Checkout */}
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                <div className="flex items-center gap-3 rounded-xl border border-green-100 bg-green-50 px-5 py-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-500 shadow-md">
+                <div className="flex items-center gap-3 rounded-xl border border-green-100 bg-success/5 px-5 py-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-success shadow-md">
                     <svg
                       className="h-5 w-5 text-white"
                       fill="none"
@@ -2371,7 +2371,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
                 {attachments.map((file: any, index: any) => (
                   <div
                     key={index}
-                    className="group flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2 shadow-sm transition-all hover:border-red-300 hover:bg-red-50"
+                    className="group flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2 shadow-sm transition-all hover:border-destructive/30 hover:bg-destructive/5"
                   >
                     <svg
                       className="h-4 w-4 text-gray-500"
@@ -2391,7 +2391,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
                     </span>
                     <button
                       onClick={() => removeFile(index)}
-                      className="ml-1 rounded-full p-1 text-red-500 transition-colors hover:bg-red-100"
+                      className="ml-1 rounded-full p-1 text-destructive transition-colors hover:bg-destructive/10"
                     >
                       <svg
                         className="h-4 w-4"
@@ -2422,7 +2422,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
             {/* Input Area */}
             <div className="flex items-end gap-3">
               {/* File Attachment Button */}
-              <label className="hover:border-dark-orange hover:text-dark-orange flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-600 transition-all hover:bg-orange-50">
+              <label className="hover:border-dark-orange hover:text-dark-orange flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-600 transition-all hover:bg-warning/5">
                 <input
                   type="file"
                   className="hidden"
@@ -2453,9 +2453,9 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
                 type="button"
                 onClick={() => setShowEmoji(!showEmoji)}
                 className={cn(
-                  "hover:border-dark-orange hover:text-dark-orange flex h-10 w-10 items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-600 transition-all hover:bg-orange-50",
+                  "hover:border-dark-orange hover:text-dark-orange flex h-10 w-10 items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-600 transition-all hover:bg-warning/5",
                   showEmoji &&
-                    "border-dark-orange text-dark-orange bg-orange-50",
+                    "border-dark-orange text-dark-orange bg-warning/5",
                 )}
               >
                 <Image src={SmileIcon} alt="smile-icon" className="h-5 w-5" />

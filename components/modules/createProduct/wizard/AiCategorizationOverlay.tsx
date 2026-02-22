@@ -13,26 +13,26 @@ const STATUS_CONFIG = {
   analyzing: {
     icon: Sparkles,
     label: "Analyzing product name...",
-    color: "text-orange-500",
-    bgColor: "bg-orange-50",
+    color: "text-warning",
+    bgColor: "bg-warning/5",
   },
   matching: {
     icon: Tag,
     label: "Matching tags & categories...",
-    color: "text-blue-500",
-    bgColor: "bg-blue-50",
+    color: "text-primary",
+    bgColor: "bg-primary/5",
   },
   done: {
     icon: FolderTree,
     label: "Categories found!",
-    color: "text-green-500",
-    bgColor: "bg-green-50",
+    color: "text-success",
+    bgColor: "bg-success/5",
   },
   error: {
     icon: Sparkles,
     label: "Could not auto-detect. Please select manually.",
-    color: "text-red-500",
-    bgColor: "bg-red-50",
+    color: "text-destructive",
+    bgColor: "bg-destructive/5",
   },
 };
 
@@ -52,10 +52,10 @@ const AiCategorizationOverlay: React.FC<AiCategorizationOverlayProps> = ({
       <div
         className={cn(
           "mx-4 flex max-w-md flex-col items-center gap-4 rounded-2xl border bg-white p-8 shadow-2xl transition-all duration-300",
-          config.bgColor === "bg-orange-50" && "border-orange-200",
-          config.bgColor === "bg-blue-50" && "border-blue-200",
-          config.bgColor === "bg-green-50" && "border-green-200",
-          config.bgColor === "bg-red-50" && "border-red-200"
+          config.bgColor === "bg-warning/5" && "border-warning/20",
+          config.bgColor === "bg-primary/5" && "border-primary/20",
+          config.bgColor === "bg-success/5" && "border-success/20",
+          config.bgColor === "bg-destructive/5" && "border-destructive/20"
         )}
       >
         {/* Animated icon area */}
@@ -94,9 +94,9 @@ const AiCategorizationOverlay: React.FC<AiCategorizationOverlayProps> = ({
         {/* Progress dots */}
         {isLoading && (
           <div className="flex gap-1.5">
-            <div className="h-2 w-2 animate-bounce rounded-full bg-orange-400 [animation-delay:0ms]" />
-            <div className="h-2 w-2 animate-bounce rounded-full bg-orange-400 [animation-delay:150ms]" />
-            <div className="h-2 w-2 animate-bounce rounded-full bg-orange-400 [animation-delay:300ms]" />
+            <div className="h-2 w-2 animate-bounce rounded-full bg-warning [animation-delay:0ms]" />
+            <div className="h-2 w-2 animate-bounce rounded-full bg-warning [animation-delay:150ms]" />
+            <div className="h-2 w-2 animate-bounce rounded-full bg-warning [animation-delay:300ms]" />
           </div>
         )}
       </div>

@@ -73,7 +73,7 @@ const AddressPage: React.FC<AddressPageProps> = ({}) => {
             </p>
           </div>
           <button
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-blue-700 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:scale-95"
+            className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary/90 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 active:scale-95"
             type="button"
             onClick={() => handleToggleAddModal()}
             translate="no"
@@ -132,7 +132,7 @@ const AddressPage: React.FC<AddressPageProps> = ({}) => {
           <div className="mt-6">
             <button
               onClick={() => handleToggleAddModal()}
-              className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-blue-700 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:scale-95"
+              className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary/90 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 active:scale-95"
               translate="no"
             >
               <IoMdAdd size={20} className="shrink-0" /> {t("add_new_address")}

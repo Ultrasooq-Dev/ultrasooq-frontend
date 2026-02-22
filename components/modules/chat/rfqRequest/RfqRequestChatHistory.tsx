@@ -208,7 +208,7 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
                             : ""}
                         </span>
                         {chat?.content ? (
-                          <div className="inline-block w-auto rounded-xl bg-blue-600 p-3 text-right text-sm text-white shadow-md">
+                          <div className="inline-block w-auto rounded-xl bg-primary p-3 text-right text-sm text-white shadow-md">
                             <p
                               dangerouslySetInnerHTML={{
                                 __html: sanitizeHtml(chat?.content || ''),
@@ -221,7 +221,7 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
                           <div className="mt-3 rounded-xl border-2 border-gray-200 bg-gray-50 p-4 shadow-md">
                             <div className="mb-3 flex items-center justify-between">
                               <div className="flex items-center gap-2">
-                                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-green-600 shadow-sm">
+                                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-success shadow-sm">
                                   <svg
                                     className="h-4 w-4 text-white"
                                     fill="none"
@@ -257,7 +257,7 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
                               </div>
                               {chat.rfqProductPriceRequest?.status ===
                               "APPROVED" ? (
-                                <div className="inline-flex items-center gap-1.5 rounded-full bg-green-600 px-3 py-1.5 shadow-lg shadow-green-500/30">
+                                <div className="inline-flex items-center gap-1.5 rounded-full bg-success px-3 py-1.5 shadow-lg shadow-green-500/30">
                                   <svg
                                     className="h-4 w-4 text-white"
                                     fill="currentColor"
@@ -278,7 +278,7 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
                                 </div>
                               ) : chat.rfqProductPriceRequest?.status ===
                                 "REJECTED" ? (
-                                <div className="inline-flex items-center gap-1.5 rounded-full bg-red-600 px-3 py-1.5 shadow-lg shadow-red-500/30">
+                                <div className="inline-flex items-center gap-1.5 rounded-full bg-destructive px-3 py-1.5 shadow-lg shadow-red-500/30">
                                   <svg
                                     className="h-4 w-4 text-white"
                                     fill="currentColor"
@@ -324,9 +324,9 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
 
                         {/* NEW: Display Suggested Products (from vendor messages) */}
                         {chat?.rfqSuggestedProducts && chat.rfqSuggestedProducts.length > 0 && (
-                          <div className="mt-3 rounded-xl border-2 border-purple-200 bg-purple-50 p-3 shadow-md">
+                          <div className="mt-3 rounded-xl border-2 border-info/20 bg-info/5 p-3 shadow-md">
                             <div className="flex items-center gap-2 mb-3">
-                              <svg className="h-5 w-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <svg className="h-5 w-5 text-info" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                               </svg>
                               <p className="text-xs font-semibold text-purple-900" translate="no">
@@ -410,7 +410,7 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
                                               }
                                             }}
                                             disabled={isSelecting}
-                                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-green-600 text-white text-xs font-medium hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-success text-white text-xs font-medium hover:bg-success/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                             translate="no"
                                           >
                                             <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
@@ -432,7 +432,7 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
                                               }
                                             }}
                                             disabled={isSelecting}
-                                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-white text-xs font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                             translate="no"
                                           >
                                             {isSelecting ? (
@@ -554,7 +554,7 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
                           <div className="mt-3 rounded-xl border-2 border-gray-200 bg-gray-50 p-4 shadow-md">
                             <div className="mb-3 flex items-center justify-between">
                               <div className="flex items-center gap-2">
-                                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-green-600 shadow-sm">
+                                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-success shadow-sm">
                                   <svg
                                     className="h-4 w-4 text-white"
                                     fill="none"
@@ -590,7 +590,7 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
                               </div>
                               {chat.rfqProductPriceRequest?.status ===
                               "APPROVED" ? (
-                                <div className="inline-flex items-center gap-1.5 rounded-full bg-green-600 px-3 py-1.5 shadow-lg shadow-green-500/30">
+                                <div className="inline-flex items-center gap-1.5 rounded-full bg-success px-3 py-1.5 shadow-lg shadow-green-500/30">
                                   <svg
                                     className="h-4 w-4 text-white"
                                     fill="currentColor"
@@ -611,7 +611,7 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
                                 </div>
                               ) : chat.rfqProductPriceRequest?.status ===
                                 "REJECTED" ? (
-                                <div className="inline-flex items-center gap-1.5 rounded-full bg-red-600 px-3 py-1.5 shadow-lg shadow-red-500/30">
+                                <div className="inline-flex items-center gap-1.5 rounded-full bg-destructive px-3 py-1.5 shadow-lg shadow-red-500/30">
                                   <svg
                                     className="h-4 w-4 text-white"
                                     fill="currentColor"
@@ -667,7 +667,7 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
                                     )
                                   }
                                   type="button"
-                                  className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-green-600 px-4 py-2.5 text-sm font-bold text-white shadow-md transition-all hover:scale-105 hover:shadow-lg"
+                                  className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-success px-4 py-2.5 text-sm font-bold text-white shadow-md transition-all hover:scale-105 hover:shadow-lg"
                                 >
                                   <svg
                                     className="h-4 w-4"
@@ -690,7 +690,7 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
                                     )
                                   }
                                   type="button"
-                                  className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-red-600 px-4 py-2.5 text-sm font-bold text-white shadow-md transition-all hover:scale-105 hover:shadow-lg"
+                                  className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-destructive px-4 py-2.5 text-sm font-bold text-white shadow-md transition-all hover:scale-105 hover:shadow-lg"
                                 >
                                   <svg
                                     className="h-4 w-4"
@@ -712,9 +712,9 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
 
                         {/* NEW: Display Suggested Products (from vendor messages) - Buyer can select */}
                         {chat?.rfqSuggestedProducts && chat.rfqSuggestedProducts.length > 0 && (
-                          <div className="mt-3 rounded-xl border-2 border-purple-200 bg-purple-50 p-3 shadow-md">
+                          <div className="mt-3 rounded-xl border-2 border-info/20 bg-info/5 p-3 shadow-md">
                             <div className="flex items-center gap-2 mb-3">
-                              <svg className="h-5 w-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <svg className="h-5 w-5 text-info" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                               </svg>
                               <p className="text-xs font-semibold text-purple-900" translate="no">
@@ -796,7 +796,7 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
                                               }
                                             }}
                                             disabled={isSelecting}
-                                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-green-600 text-white text-xs font-medium hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-success text-white text-xs font-medium hover:bg-success/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                             translate="no"
                                           >
                                             <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
@@ -818,7 +818,7 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
                                               }
                                             }}
                                             disabled={isSelecting}
-                                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-white text-xs font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                             translate="no"
                                           >
                                             {isSelecting ? (

@@ -170,9 +170,9 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({
                   <div className="flex items-center space-x-4 flex-1">
                     <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
                       getTransactionColor(transaction.transactionType) === "positive" 
-                        ? "bg-green-50" 
+                        ? "bg-success/5" 
                         : getTransactionColor(transaction.transactionType) === "negative"
-                        ? "bg-red-50"
+                        ? "bg-destructive/5"
                         : "bg-gray-50"
                     }`}>
                       <span className="text-lg">{getTransactionIcon(transaction.transactionType)}</span>
@@ -185,11 +185,11 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({
                         </span>
                         <span className={`px-2 py-0.5 text-xs font-medium rounded ${
                           getStatusColor(transaction.status) === "success"
-                            ? "bg-green-100 text-green-800"
+                            ? "bg-success/10 text-success"
                             : getStatusColor(transaction.status) === "warning"
-                            ? "bg-yellow-100 text-yellow-800"
+                            ? "bg-warning/10 text-warning"
                             : getStatusColor(transaction.status) === "danger"
-                            ? "bg-red-100 text-red-800"
+                            ? "bg-destructive/10 text-destructive"
                             : "bg-gray-100 text-gray-800"
                         }`}>
                           {t(transaction.status.toLowerCase())}
@@ -211,9 +211,9 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({
                   <div className="text-right ml-4">
                     <div className={`text-sm font-semibold ${
                       getTransactionColor(transaction.transactionType) === "positive"
-                        ? "text-green-600"
+                        ? "text-success"
                         : getTransactionColor(transaction.transactionType) === "negative"
-                        ? "text-red-600"
+                        ? "text-destructive"
                         : "text-gray-900"
                     }`}>
                       {getTransactionColor(transaction.transactionType) === "positive" ? "+" : "-"}
@@ -253,9 +253,9 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({
                 <div className="flex items-center gap-3">
                   <div className={`w-12 h-12 rounded-full flex items-center justify-center text-2xl ${
                     getTransactionColor(selectedTransaction.transactionType) === "positive" 
-                      ? "bg-green-50" 
+                      ? "bg-success/5" 
                       : getTransactionColor(selectedTransaction.transactionType) === "negative"
-                      ? "bg-red-50"
+                      ? "bg-destructive/5"
                       : "bg-gray-50"
                   }`}>
                     {getTransactionIcon(selectedTransaction.transactionType)}
@@ -266,11 +266,11 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({
                     </h3>
                     <span className={`px-3 py-1 text-xs font-medium rounded ${
                       getStatusColor(selectedTransaction.status) === "success"
-                        ? "bg-green-100 text-green-800"
+                        ? "bg-success/10 text-success"
                         : getStatusColor(selectedTransaction.status) === "warning"
-                        ? "bg-yellow-100 text-yellow-800"
+                        ? "bg-warning/10 text-warning"
                         : getStatusColor(selectedTransaction.status) === "danger"
-                        ? "bg-red-100 text-red-800"
+                        ? "bg-destructive/10 text-destructive"
                         : "bg-gray-100 text-gray-800"
                     }`}>
                       {t(selectedTransaction.status.toLowerCase())}
@@ -279,9 +279,9 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({
                 </div>
                 <div className={`text-2xl font-bold ${
                   getTransactionColor(selectedTransaction.transactionType) === "positive"
-                    ? "text-green-600"
+                    ? "text-success"
                     : getTransactionColor(selectedTransaction.transactionType) === "negative"
-                    ? "text-red-600"
+                    ? "text-destructive"
                     : "text-gray-900"
                 }`}>
                   {getTransactionColor(selectedTransaction.transactionType) === "positive" ? "+" : "-"}
@@ -315,9 +315,9 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({
                   </div>
                   <div className={`text-sm font-semibold ${
                     getTransactionColor(selectedTransaction.transactionType) === "positive"
-                      ? "text-green-600"
+                      ? "text-success"
                       : getTransactionColor(selectedTransaction.transactionType) === "negative"
-                      ? "text-red-600"
+                      ? "text-destructive"
                       : "text-gray-900"
                   }`}>
                     {getTransactionColor(selectedTransaction.transactionType) === "positive" ? "+" : "-"}
@@ -332,11 +332,11 @@ const TransactionHistory: React.FC<TransactionHistoryProps> = ({
                   <div>
                     <span className={`px-2 py-1 text-xs font-medium rounded ${
                       getStatusColor(selectedTransaction.status) === "success"
-                        ? "bg-green-100 text-green-800"
+                        ? "bg-success/10 text-success"
                         : getStatusColor(selectedTransaction.status) === "warning"
-                        ? "bg-yellow-100 text-yellow-800"
+                        ? "bg-warning/10 text-warning"
                         : getStatusColor(selectedTransaction.status) === "danger"
-                        ? "bg-red-100 text-red-800"
+                        ? "bg-destructive/10 text-destructive"
                         : "bg-gray-100 text-gray-800"
                     }`}>
                       {t(selectedTransaction.status.toLowerCase())}

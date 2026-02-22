@@ -125,7 +125,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
       <div
         className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
           isDragOver
-            ? 'border-blue-400 bg-blue-50'
+            ? 'border-primary/70 bg-primary/5'
             : 'border-gray-300 hover:border-gray-400'
         }`}
         onDrop={handleDrop}

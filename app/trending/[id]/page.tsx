@@ -836,7 +836,7 @@ const ProductDetailsPage = () => {
                   <TabsList className="flex w-full items-center justify-start gap-1 bg-transparent p-0">
                     <TabsTrigger
                       value="description"
-                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold whitespace-nowrap text-gray-600 transition-all duration-300 hover:border-b-gray-300 hover:bg-gray-50 hover:text-gray-800 data-[state=active]:border-0 data-[state=active]:border-b-orange-500 data-[state=active]:bg-orange-50/30 data-[state=active]:font-bold data-[state=active]:text-orange-500 sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
+                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold whitespace-nowrap text-gray-600 transition-all duration-300 hover:border-b-gray-300 hover:bg-gray-50 hover:text-gray-800 data-[state=active]:border-0 data-[state=active]:border-b-orange-500 data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:text-warning sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
                       dir={langDir}
                       translate="no"
                     >
@@ -862,7 +862,7 @@ const ProductDetailsPage = () => {
                     </TabsTrigger>
                     <TabsTrigger
                       value="specification"
-                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold whitespace-nowrap text-gray-600 transition-all duration-300 hover:border-b-gray-300 hover:bg-gray-50 hover:text-gray-800 data-[state=active]:border-0 data-[state=active]:border-b-orange-500 data-[state=active]:bg-orange-50/30 data-[state=active]:font-bold data-[state=active]:text-orange-500 sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
+                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold whitespace-nowrap text-gray-600 transition-all duration-300 hover:border-b-gray-300 hover:bg-gray-50 hover:text-gray-800 data-[state=active]:border-0 data-[state=active]:border-b-orange-500 data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:text-warning sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
                       dir={langDir}
                       translate="no"
                     >
@@ -888,7 +888,7 @@ const ProductDetailsPage = () => {
                     </TabsTrigger>
                     <TabsTrigger
                       value="reviews"
-                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold whitespace-nowrap text-gray-600 transition-all duration-300 hover:border-b-gray-300 hover:bg-gray-50 hover:text-gray-800 data-[state=active]:border-0 data-[state=active]:border-b-orange-500 data-[state=active]:bg-orange-50/30 data-[state=active]:font-bold data-[state=active]:text-orange-500 sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
+                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold whitespace-nowrap text-gray-600 transition-all duration-300 hover:border-b-gray-300 hover:bg-gray-50 hover:text-gray-800 data-[state=active]:border-0 data-[state=active]:border-b-orange-500 data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:text-warning sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
                       dir={langDir}
                       translate="no"
                     >
@@ -912,7 +912,7 @@ const ProductDetailsPage = () => {
                     </TabsTrigger>
                     <TabsTrigger
                       value="qanda"
-                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold whitespace-nowrap text-gray-600 transition-all duration-300 hover:border-b-gray-300 hover:bg-gray-50 hover:text-gray-800 data-[state=active]:border-0 data-[state=active]:border-b-orange-500 data-[state=active]:bg-orange-50/30 data-[state=active]:font-bold data-[state=active]:text-orange-500 sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
+                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold whitespace-nowrap text-gray-600 transition-all duration-300 hover:border-b-gray-300 hover:bg-gray-50 hover:text-gray-800 data-[state=active]:border-0 data-[state=active]:border-b-orange-500 data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:text-warning sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
                       dir={langDir}
                       translate="no"
                     >
@@ -938,7 +938,7 @@ const ProductDetailsPage = () => {
                     </TabsTrigger>
                     <TabsTrigger
                       value="vendor"
-                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold whitespace-nowrap text-gray-600 transition-all duration-300 hover:border-b-gray-300 hover:bg-gray-50 hover:text-gray-800 data-[state=active]:border-0 data-[state=active]:border-b-orange-500 data-[state=active]:bg-orange-50/30 data-[state=active]:font-bold data-[state=active]:text-orange-500 sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
+                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold whitespace-nowrap text-gray-600 transition-all duration-300 hover:border-b-gray-300 hover:bg-gray-50 hover:text-gray-800 data-[state=active]:border-0 data-[state=active]:border-b-orange-500 data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:text-warning sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
                       dir={langDir}
                       translate="no"
                     >
@@ -962,7 +962,7 @@ const ProductDetailsPage = () => {
                     </TabsTrigger>
                     <TabsTrigger
                       value="services"
-                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold whitespace-nowrap text-gray-600 transition-all duration-300 hover:border-b-gray-300 hover:bg-gray-50 hover:text-gray-800 data-[state=active]:border-0 data-[state=active]:border-b-orange-500 data-[state=active]:bg-orange-50/30 data-[state=active]:font-bold data-[state=active]:text-orange-500 sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
+                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold whitespace-nowrap text-gray-600 transition-all duration-300 hover:border-b-gray-300 hover:bg-gray-50 hover:text-gray-800 data-[state=active]:border-0 data-[state=active]:border-b-orange-500 data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:text-warning sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
                       dir={langDir}
                       translate="no"
                     >
@@ -1350,8 +1350,8 @@ const ProductDetailsPage = () => {
                 <div className="rounded-xl bg-white border border-gray-200 shadow-sm">
                   <div className="border-b border-gray-100 px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-100">
-                        <svg className="h-4 w-4 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-warning/10">
+                        <svg className="h-4 w-4 text-warning" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                         </svg>
             </div>
@@ -1396,7 +1396,7 @@ const ProductDetailsPage = () => {
                     translate="no"
                   >
                     <svg
-                      className="h-5 w-5 text-blue-600"
+                      className="h-5 w-5 text-primary"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -1440,7 +1440,7 @@ const ProductDetailsPage = () => {
           >
             <DialogTitle className="flex items-center gap-2 text-lg font-semibold text-gray-900">
               <svg
-                className="h-5 w-5 text-red-500"
+                className="h-5 w-5 text-destructive"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -1485,7 +1485,7 @@ const ProductDetailsPage = () => {
               <Button
                 type="button"
                 onClick={onConfirmRemove}
-                className="min-w-[120px] rounded-lg bg-gradient-to-r from-red-500 to-red-600 px-6 py-2.5 font-medium text-white shadow-md transition-all hover:from-red-600 hover:to-red-700 hover:shadow-lg active:scale-95"
+                className="min-w-[120px] rounded-lg bg-gradient-to-r from-destructive to-destructive/90 px-6 py-2.5 font-medium text-white shadow-md transition-all hover:from-destructive hover:to-destructive/80 hover:shadow-lg active:scale-95"
                 dir={langDir}
                 translate="no"
               >

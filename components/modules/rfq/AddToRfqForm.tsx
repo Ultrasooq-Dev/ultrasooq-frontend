@@ -764,7 +764,7 @@ const AddToRfqForm: React.FC<AddToRfqFormProps> = ({
                 </div>
               </div>
 
-              <p className="text-[13px] text-red-500!" dir={langDir}>
+              <p className="text-[13px] text-destructive!" dir={langDir}>
                 {!watchProductImages?.length
                   ? form.formState.errors?.productImages?.message
                   : ""}
@@ -841,7 +841,7 @@ const AddToRfqForm: React.FC<AddToRfqFormProps> = ({
                       </FormControl>
                       {(form.formState.errors as any).quantity && (
                         <p
-                          className="mt-1 text-[13px] text-red-500!"
+                          className="mt-1 text-[13px] text-destructive!"
                           dir={langDir}
                         >
                           {String(
@@ -901,7 +901,7 @@ const AddToRfqForm: React.FC<AddToRfqFormProps> = ({
                       </FormControl>
                       {(form.formState.errors as any).productType && (
                         <p
-                          className="mt-1 text-[13px] text-red-500!"
+                          className="mt-1 text-[13px] text-destructive!"
                           dir={langDir}
                         >
                           {String(

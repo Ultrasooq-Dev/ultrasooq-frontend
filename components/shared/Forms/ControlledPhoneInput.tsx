@@ -62,7 +62,7 @@ const ControlledPhoneInput: React.FC<ControlledPhoneInputProps> = ({
           />
         )}
       />
-      <p className="text-[13px] font-medium text-red-500" dir={langDir}>
+      <p className="text-[13px] font-medium text-destructive" dir={langDir}>
         {getError() as string}
       </p>
     </div>

@@ -452,8 +452,8 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
   const getRoleBasedHeaderOptions = () => {
     const getActiveClass = (href: string) => {
       return pathname === href || pathname?.startsWith(href + "/")
-        ? "text-blue-600 font-semibold"
-        : "text-light-gray hover:text-blue-400";
+        ? "text-primary font-semibold"
+        : "text-light-gray hover:text-primary/70";
     };
 
     switch (currentTradeRole) {
@@ -578,7 +578,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
             <li className="py-1.5 text-sm font-normal capitalize sm:text-base md:text-lg">
               <a
                 href="#"
-                className="text-light-gray hover:text-blue-400"
+                className="text-light-gray hover:text-primary/70"
                 translate="no"
               >
                 {t("buyer_central")}
@@ -685,7 +685,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                 {wishlistCount.data?.data > 0 && (
                   <div
                     className={cn(
-                      "absolute top-0 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white shadow-lg sm:h-5 sm:w-5 sm:text-xs",
+                      "absolute top-0 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-bold text-white shadow-lg sm:h-5 sm:w-5 sm:text-xs",
                       langDir === "rtl" ? "left-0" : "right-0",
                     )}
                   >
@@ -717,7 +717,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                     cartCountWithoutLogin.data?.data > 0)) && (
                   <div
                     className={cn(
-                      "absolute top-0 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white shadow-lg sm:h-5 sm:w-5 sm:text-xs",
+                      "absolute top-0 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-bold text-white shadow-lg sm:h-5 sm:w-5 sm:text-xs",
                       langDir === "rtl" ? "left-0" : "right-0",
                     )}
                   >
@@ -748,7 +748,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                           className="h-full w-full rounded-full border-2 border-white/20 object-cover"
                         />
                       ) : (
-                        <div className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-white/20 bg-gradient-to-br from-blue-500 to-blue-600 shadow-lg sm:h-10 sm:w-10">
+                        <div className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-white/20 bg-gradient-to-br from-primary to-primary/90 shadow-lg sm:h-10 sm:w-10">
                           <p className="text-xs font-bold text-white sm:text-sm">
                             {memoizedInitials}
                           </p>
@@ -760,11 +760,11 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                             "border-dark-cyan absolute -top-0.5 h-3 w-3 rounded-full border-2 sm:h-3.5 sm:w-3.5",
                             langDir === "rtl" ? "-left-0.5" : "-right-0.5",
                             userStatus === "INACTIVE"
-                              ? "bg-red-500"
+                              ? "bg-destructive"
                               : userStatus === "WAITING"
-                                ? "bg-yellow-500"
+                                ? "bg-warning"
                                 : userStatus === "REJECT"
-                                  ? "bg-red-600"
+                                  ? "bg-destructive"
                                   : "bg-gray-500",
                           )}
                         />
@@ -961,7 +961,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
             <div className="relative flex-1">
               <input
                 type="text"
-                className={`h-9 w-full rounded-lg border-2 border-white/20 bg-white/95 text-sm transition-all placeholder:text-gray-400 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none sm:h-10 sm:text-base ${
+                className={`h-9 w-full rounded-lg border-2 border-white/20 bg-white/95 text-sm transition-all placeholder:text-gray-400 focus:border-transparent focus:ring-2 focus:ring-primary focus:outline-none sm:h-10 sm:text-base ${
                   langDir === "rtl" ? "pr-3 pl-10" : "pr-10 pl-3"
                 }`}
                 placeholder={t("global_search_placeholder")}
@@ -1004,7 +1004,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                 {/* All Categories Icon Button - First in Arabic */}
                 <button
                   type="button"
-                  className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg transition-all hover:from-orange-600 hover:to-orange-700 active:scale-95 sm:h-10 sm:w-10 md:hidden"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-r from-warning to-warning/90 text-white shadow-lg transition-all hover:from-warning hover:to-warning/80 active:scale-95 sm:h-10 sm:w-10 md:hidden"
                   aria-label="Browse categories"
                   onClick={() => {
                     // On mobile, open the category sidebar
@@ -1020,7 +1020,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                 {/* Search Icon Button - Second in Arabic */}
                 <button
                   type="button"
-                  className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg transition-all hover:from-orange-600 hover:to-orange-700 active:scale-95 sm:h-10 sm:w-10"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-r from-warning to-warning/90 text-white shadow-lg transition-all hover:from-warning hover:to-warning/80 active:scale-95 sm:h-10 sm:w-10"
                   aria-label="Search"
                   onClick={() => updateURL(searchTerm)}
                 >
@@ -1032,7 +1032,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                 {/* Search Icon Button - First in English */}
                 <button
                   type="button"
-                  className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg transition-all hover:from-orange-600 hover:to-orange-700 active:scale-95 sm:h-10 sm:w-10"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-r from-warning to-warning/90 text-white shadow-lg transition-all hover:from-warning hover:to-warning/80 active:scale-95 sm:h-10 sm:w-10"
                   aria-label="Search"
                   onClick={() => updateURL(searchTerm)}
                 >
@@ -1041,7 +1041,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                 {/* All Categories Icon Button - Second in English */}
                 <button
                   type="button"
-                  className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg transition-all hover:from-orange-600 hover:to-orange-700 active:scale-95 sm:h-10 sm:w-10 md:hidden"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-r from-warning to-warning/90 text-white shadow-lg transition-all hover:from-warning hover:to-warning/80 active:scale-95 sm:h-10 sm:w-10 md:hidden"
                   aria-label="Browse categories"
                   onClick={() => {
                     // On mobile, open the category sidebar
@@ -1066,7 +1066,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                 onClick={() => {
                   router.push("/home");
                 }}
-                className={`flex items-center gap-1.5 rounded-lg px-3 py-2 whitespace-nowrap transition-all sm:gap-2 sm:px-4 sm:py-2.5 ${pathname === "/home" ? "bg-white font-semibold text-blue-600 shadow-md" : "bg-white/10 text-white hover:bg-white/20 active:scale-95"}`}
+                className={`flex items-center gap-1.5 rounded-lg px-3 py-2 whitespace-nowrap transition-all sm:gap-2 sm:px-4 sm:py-2.5 ${pathname === "/home" ? "bg-white font-semibold text-primary shadow-md" : "bg-white/10 text-white hover:bg-white/20 active:scale-95"}`}
               >
                 {langDir === "rtl" ? (
                   <>
@@ -1117,7 +1117,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                     <Link
                       key={item.id}
                       href={item.href}
-                      className={`flex items-center gap-1.5 rounded-lg px-3 py-2 whitespace-nowrap transition-all sm:gap-2 sm:px-4 sm:py-2.5 ${isActiveNav ? "bg-white font-semibold text-blue-600 shadow-md" : "bg-white/10 text-white hover:bg-white/20 active:scale-95"}`}
+                      className={`flex items-center gap-1.5 rounded-lg px-3 py-2 whitespace-nowrap transition-all sm:gap-2 sm:px-4 sm:py-2.5 ${isActiveNav ? "bg-white font-semibold text-primary shadow-md" : "bg-white/10 text-white hover:bg-white/20 active:scale-95"}`}
                     >
                       {langDir === "rtl" ? (
                         <>
@@ -1362,7 +1362,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                     {/* Search button - first in Arabic */}
                     <button
                       type="button"
-                      className="h-9 rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 px-4 text-sm font-semibold whitespace-nowrap text-white shadow-lg transition-all hover:from-orange-600 hover:to-orange-700 active:scale-95 md:h-10 md:px-6 md:text-base lg:px-8"
+                      className="h-9 rounded-lg bg-gradient-to-r from-warning to-warning/90 px-4 text-sm font-semibold whitespace-nowrap text-white shadow-lg transition-all hover:from-warning hover:to-warning/80 active:scale-95 md:h-10 md:px-6 md:text-base lg:px-8"
                       onClick={() => updateURL(searchTerm)}
                       dir={langDir}
                       translate="no"
@@ -1373,7 +1373,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                     <div className="relative max-w-[55%] flex-1 md:max-w-[50%] lg:max-w-[65%] xl:max-w-[75%]">
                       <input
                         type="text"
-                        className={`form-control h-9 w-full rounded-lg border-2 border-white/20 text-sm text-black transition-all placeholder:text-gray-400 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none md:h-10 md:text-base ${
+                        className={`form-control h-9 w-full rounded-lg border-2 border-white/20 text-sm text-black transition-all placeholder:text-gray-400 focus:border-transparent focus:ring-2 focus:ring-primary focus:outline-none md:h-10 md:text-base ${
                           langDir === "rtl" ? "pr-4 pl-12" : "pr-12 pl-4"
                         }`}
                         placeholder={t("global_search_placeholder")}
@@ -1415,7 +1415,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                     {mounted && (
                       <button
                         type="button"
-                        className="group relative hidden cursor-pointer items-center gap-2 rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 px-3 transition-all hover:from-orange-600 hover:to-orange-700 active:scale-95 md:flex md:h-10 md:px-4"
+                        className="group relative hidden cursor-pointer items-center gap-2 rounded-lg bg-gradient-to-r from-warning to-warning/90 px-3 transition-all hover:from-warning hover:to-warning/80 active:scale-95 md:flex md:h-10 md:px-4"
                         aria-label="Browse categories"
                         onClick={() => {
                           const newState = !isCategorySidebarOpen;
@@ -1440,7 +1440,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                       </button>
                     )}
                     {!mounted && (
-                      <div className="group relative hidden h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 transition-all hover:from-orange-600 hover:to-orange-700 active:scale-95 md:flex md:h-10 md:w-10">
+                      <div className="group relative hidden h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-r from-warning to-warning/90 transition-all hover:from-warning hover:to-warning/80 active:scale-95 md:flex md:h-10 md:w-10">
                         <LayoutGrid className="h-6 w-6 text-white" />
                       </div>
                     )}
@@ -1451,7 +1451,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                     {mounted && (
                       <button
                         type="button"
-                        className="group relative hidden cursor-pointer items-center gap-2 rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 px-3 transition-all hover:from-orange-600 hover:to-orange-700 active:scale-95 md:flex md:h-10 md:px-4"
+                        className="group relative hidden cursor-pointer items-center gap-2 rounded-lg bg-gradient-to-r from-warning to-warning/90 px-3 transition-all hover:from-warning hover:to-warning/80 active:scale-95 md:flex md:h-10 md:px-4"
                         aria-label="Browse categories"
                         onClick={() => {
                           const newState = !isCategorySidebarOpen;
@@ -1476,7 +1476,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                       </button>
                     )}
                     {!mounted && (
-                      <div className="group relative hidden h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 transition-all hover:from-orange-600 hover:to-orange-700 active:scale-95 md:flex md:h-10 md:w-10">
+                      <div className="group relative hidden h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-r from-warning to-warning/90 transition-all hover:from-warning hover:to-warning/80 active:scale-95 md:flex md:h-10 md:w-10">
                         <LayoutGrid className="h-6 w-6 text-white" />
                       </div>
                     )}
@@ -1484,7 +1484,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                     <div className="relative max-w-[55%] flex-1 md:max-w-[50%] lg:max-w-[65%] xl:max-w-[75%]">
                       <input
                         type="text"
-                        className={`form-control h-9 w-full rounded-lg border-2 border-white/20 text-sm text-black transition-all placeholder:text-gray-400 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none md:h-10 md:text-base ${
+                        className={`form-control h-9 w-full rounded-lg border-2 border-white/20 text-sm text-black transition-all placeholder:text-gray-400 focus:border-transparent focus:ring-2 focus:ring-primary focus:outline-none md:h-10 md:text-base ${
                           langDir === "rtl" ? "pr-4 pl-12" : "pr-12 pl-4"
                         }`}
                         placeholder={t("global_search_placeholder")}
@@ -1525,7 +1525,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                     {/* Search button - last in English */}
                     <button
                       type="button"
-                      className="h-9 rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 px-4 text-sm font-semibold whitespace-nowrap text-white shadow-lg transition-all hover:from-orange-600 hover:to-orange-700 active:scale-95 md:h-10 md:px-6 md:text-base lg:px-8"
+                      className="h-9 rounded-lg bg-gradient-to-r from-warning to-warning/90 px-4 text-sm font-semibold whitespace-nowrap text-white shadow-lg transition-all hover:from-warning hover:to-warning/80 active:scale-95 md:h-10 md:px-6 md:text-base lg:px-8"
                       onClick={() => updateURL(searchTerm)}
                       dir={langDir}
                       translate="no"
@@ -1573,7 +1573,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                       {wishlistCount.data?.data > 0 && (
                         <div
                           className={cn(
-                            "absolute -top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white shadow-lg",
+                            "absolute -top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-destructive text-[10px] font-bold text-white shadow-lg",
                             langDir === "rtl" ? "-left-0.5" : "-right-0.5",
                           )}
                         >
@@ -1605,7 +1605,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                           cartCountWithoutLogin.data?.data > 0)) && (
                         <div
                           className={cn(
-                            "absolute -top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white shadow-lg",
+                            "absolute -top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-destructive text-[10px] font-bold text-white shadow-lg",
                             langDir === "rtl" ? "-left-0.5" : "-right-0.5",
                           )}
                         >
@@ -1636,7 +1636,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                                 className="h-full w-full rounded-full border-2 border-white/20 object-cover shadow-lg"
                               />
                             ) : (
-                              <div className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-white/20 bg-gradient-to-br from-blue-500 to-blue-600 shadow-lg md:h-10 md:w-10">
+                              <div className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-white/20 bg-gradient-to-br from-primary to-primary/90 shadow-lg md:h-10 md:w-10">
                                 <p className="text-xs font-bold text-white md:text-sm">
                                   {memoizedInitials}
                                 </p>
@@ -1651,11 +1651,11 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                                     ? "-left-0.5"
                                     : "-right-0.5",
                                   userStatus === "INACTIVE"
-                                    ? "bg-red-500"
+                                    ? "bg-destructive"
                                     : userStatus === "WAITING"
-                                      ? "bg-yellow-500"
+                                      ? "bg-warning"
                                       : userStatus === "REJECT"
-                                        ? "bg-red-600"
+                                        ? "bg-destructive"
                                         : "bg-gray-500",
                                 )}
                                 title={`Status: ${userStatus}`}
@@ -1682,11 +1682,11 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                                 <span
                                   className={`font-medium ${
                                     userStatus === "INACTIVE"
-                                      ? "text-red-600"
+                                      ? "text-destructive"
                                       : userStatus === "WAITING"
-                                        ? "text-yellow-600"
+                                        ? "text-warning"
                                         : userStatus === "REJECT"
-                                          ? "text-red-700"
+                                          ? "text-destructive"
                                           : "text-gray-600"
                                   }`}
                                 >
@@ -1938,7 +1938,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                         </Link>
                         <Link
                           href="/register"
-                          className="flex items-center justify-center rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 shadow-lg transition-all hover:from-blue-600 hover:to-blue-700 active:scale-95"
+                          className="flex items-center justify-center rounded-lg bg-gradient-to-r from-primary to-primary/90 px-4 py-2 shadow-lg transition-all hover:from-primary hover:to-primary/80 active:scale-95"
                           translate="no"
                         >
                           <span className="text-sm leading-none font-semibold text-white">
@@ -2330,7 +2330,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                     {/* <li className="py-1.5 text-sm font-normal capitalize sm:text-base md:text-lg">
                     <a
                       href="#"
-                      className="text-light-gray transition-colors hover:text-blue-400"
+                      className="text-light-gray transition-colors hover:text-primary/70"
                       onClick={handleToggleQueryModal}
                       translate="no"
                     >

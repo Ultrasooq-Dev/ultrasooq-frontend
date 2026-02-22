@@ -103,7 +103,7 @@ const DropshipProductCard: React.FC<DropshipProductCardProps> = ({
           <div className="absolute top-3 left-3">
             <Badge 
               variant={product?.status === 'ACTIVE' ? 'default' : 'secondary'}
-              className="bg-green-100 text-green-800 border-green-200"
+              className="bg-success/10 text-success border-success/20"
             >
               {product?.status === 'ACTIVE' ? t("active") : t("inactive")}
             </Badge>
@@ -117,7 +117,7 @@ const DropshipProductCard: React.FC<DropshipProductCardProps> = ({
               aria-label={isInWishlist ? t("remove_from_wishlist") : t("add_to_wishlist")}
             >
               {isInWishlist ? (
-                <Heart className="h-4 w-4 text-red-500 fill-current" />
+                <Heart className="h-4 w-4 text-destructive fill-current" />
               ) : (
                 <HeartOff className="h-4 w-4 text-gray-600" />
               )}
@@ -149,14 +149,14 @@ const DropshipProductCard: React.FC<DropshipProductCardProps> = ({
           {/* Price */}
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-1">
-              <DollarSign className="h-4 w-4 text-green-600" />
-              <span className="text-lg font-bold text-green-600">
+              <DollarSign className="h-4 w-4 text-success" />
+              <span className="text-lg font-bold text-success">
                 ${productPrice.toFixed(2)}
               </span>
             </div>
             
             {/* Dropship Badge */}
-            <Badge variant="outline" className="text-xs bg-blue-50 text-blue-700 border-blue-200">
+            <Badge variant="outline" className="text-xs bg-primary/5 text-primary border-primary/20">
               {t("dropshipable")}
             </Badge>
           </div>
@@ -175,7 +175,7 @@ const DropshipProductCard: React.FC<DropshipProductCardProps> = ({
           <div className="flex gap-2">
             <Button
               onClick={handleSelect}
-              className="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-sm py-2"
+              className="flex-1 bg-primary hover:bg-primary/90 text-white text-sm py-2"
               size="sm"
             >
               <Package className="h-4 w-4 mr-2" />

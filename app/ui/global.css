@@ -30,6 +30,15 @@ html[dir="rtl"] body * {
   --color-brand-warning: var(--brand-warning);
   --color-brand-info: var(--brand-info);
   --color-brand-olive: var(--brand-olive);
+
+  /* Semantic color tokens for Tailwind utility classes */
+  --color-success: var(--brand-success);
+  --color-success-foreground: oklch(1 0 0);
+  --color-warning: var(--brand-warning);
+  --color-warning-foreground: oklch(0.2 0 0);
+  --color-info: var(--brand-info);
+  --color-info-foreground: oklch(1 0 0);
+
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
@@ -955,7 +964,7 @@ html[dir="rtl"] body * {
   }
 
   .order-delivery-progess-s1 ul &li .orderStatusCancelledText {
-    @apply text-red-500;
+    @apply text-destructive;
   }
 
   .order-delivery-progess-s1 ul &li .orderStatusText {
@@ -6980,15 +6989,15 @@ html[dir="rtl"] body * {
   }
 
   & ul li.complted .orderStatusCancelledText {
-    @apply text-red-500;
+    @apply text-destructive;
   }
 
   & ul li.current .orderStatusCancelledText {
-    @apply text-red-500;
+    @apply text-destructive;
   }
 
   & ul li.complted .dot-cancelled {
-    @apply bg-red-500;
+    @apply bg-destructive;
   }
 
   & ul li.complted .orderStatusText {
@@ -7048,11 +7057,11 @@ html[dir="rtl"] body * {
   }
 
   .order-delivery-progess-s1 ul li.complted & {
-    @apply text-red-500;
+    @apply text-destructive;
   }
 
   .order-delivery-progess-s1 ul li.current & {
-    @apply text-red-500;
+    @apply text-destructive;
   }
 
   /* start: responsive */
@@ -7122,11 +7131,11 @@ html[dir="rtl"] body * {
 
 @utility complted {
   .order-delivery-progess-s1 ul &li .orderStatusCancelledText {
-    @apply text-red-500;
+    @apply text-destructive;
   }
 
   .order-delivery-progess-s1 ul &li .dot-cancelled {
-    @apply bg-red-500;
+    @apply bg-destructive;
   }
 
   .order-delivery-progess-s1 ul &li .orderStatusText {
@@ -7148,7 +7157,7 @@ html[dir="rtl"] body * {
 
 @utility dot-cancelled {
   .order-delivery-progess-s1 ul li.complted & {
-    @apply bg-red-500;
+    @apply bg-destructive;
   }
 
   /* start: responsive */
@@ -16796,27 +16805,27 @@ html[dir="rtl"] body * {
     color: #ffffff !important;
 }
 
-.me.menu .text-red-600 {
+.me.menu .text-destructive {
     color: #ffffff !important;
 }
 
-.me.menu .text-red-700 {
+.me.menu .text-destructive {
     color: #ffffff !important;
 }
 
-.me.menu .text-orange-600 {
+.me.menu .text-warning {
     color: #ffffff !important;
 }
 
-.me.menu .text-orange-700 {
+.me.menu .text-warning {
     color: #ffffff !important;
 }
 
-.me.menu .text-blue-600 {
+.me.menu .text-primary {
     color: #ffffff !important;
 }
 
-.me.menu .text-blue-700 {
+.me.menu .text-primary {
     color: #ffffff !important;
 }
 
@@ -17468,8 +17477,8 @@ html[dir="rtl"] body * {
 }
 
 /* FINAL OVERRIDE - Active navigation state (highest priority) */
-.me.menu button.text-blue-600,
-.me.menu button.\!text-blue-600 {
+.me.menu button.text-primary,
+.me.menu button.\!text-primary {
     color: #2563eb !important;
 }
 

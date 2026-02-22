@@ -393,7 +393,7 @@ const queryParams = {
                 <Clock className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-orange-600">
+                <div className="text-2xl font-bold text-warning">
                   {statsLoading ? "..." : orderStats?.data?.pendingOrders || 0}
                 </div>
               </CardContent>
@@ -407,7 +407,7 @@ const queryParams = {
                 <CheckCircle className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-green-600">
+                <div className="text-2xl font-bold text-success">
                   {statsLoading ? "..." : orderStats?.data?.completedOrders || 0}
                 </div>
               </CardContent>
@@ -421,7 +421,7 @@ const queryParams = {
                 <DollarSign className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-green-600">
+                <div className="text-2xl font-bold text-success">
                   {statsLoading ? "..." : `${currency.symbol}${orderStats?.data?.totalRevenue || 0}`}
                 </div>
               </CardContent>
@@ -433,14 +433,14 @@ const queryParams = {
             <div className="inline-flex rounded-lg bg-white shadow-sm border border-gray-200 overflow-hidden">
               <button
                 type="button"
-                className={`px-4 py-2 text-sm font-medium transition-colors ${orderTypeTab === "ALL" ? "bg-blue-600 text-white" : "text-gray-700 hover:bg-gray-50"}`}
+                className={`px-4 py-2 text-sm font-medium transition-colors ${orderTypeTab === "ALL" ? "bg-primary text-white" : "text-gray-700 hover:bg-gray-50"}`}
                 onClick={() => setOrderTypeTab("ALL")}
               >
                 {t("all")}
               </button>
               <button
                 type="button"
-                className={`px-4 py-2 text-sm font-medium transition-colors ${orderTypeTab === "BUYGROUP" ? "bg-blue-600 text-white" : "text-gray-700 hover:bg-gray-50"}`}
+                className={`px-4 py-2 text-sm font-medium transition-colors ${orderTypeTab === "BUYGROUP" ? "bg-primary text-white" : "text-gray-700 hover:bg-gray-50"}`}
                 onClick={() => setOrderTypeTab("BUYGROUP")}
               >
                 {t("buygroup")}
@@ -577,7 +577,7 @@ const queryParams = {
                             </div>
                           </div>
                         </div>
-                        <span className="text-sm text-blue-600 font-medium">{expandedProductIds[group.productId] ? t("hide") : t("show")}</span>
+                        <span className="text-sm text-primary font-medium">{expandedProductIds[group.productId] ? t("hide") : t("show")}</span>
                       </button>
                       {expandedProductIds[group.productId] ? (
                         <div className="divide-y">

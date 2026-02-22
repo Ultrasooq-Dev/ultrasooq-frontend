@@ -142,7 +142,7 @@ const RfqProductCard: React.FC<RfqProductCardProps> = ({
                 type="button"
                 variant="ghost"
                 size="sm"
-                className="ml-auto text-xs text-red-600 hover:bg-red-50 hover:text-red-700"
+                className="ml-auto text-xs text-destructive hover:bg-destructive/5 hover:text-destructive"
                 onClick={() => {
                   onRemove(id);
                 }}
@@ -199,8 +199,8 @@ const RfqProductCard: React.FC<RfqProductCardProps> = ({
 
           {/* Note */}
           {note && (
-            <div className="rounded-lg border border-blue-100 bg-blue-50 p-2">
-              <p className="text-xs font-medium text-blue-900" dir={langDir}>
+            <div className="rounded-lg border border-primary/10 bg-primary/5 p-2">
+              <p className="text-xs font-medium text-primary" dir={langDir}>
                 <span translate="no">{t("note")}:</span>{" "}
                 <span className="font-normal">{note}</span>
               </p>

@@ -102,7 +102,7 @@ export default function ChangeEmailPage() {
                     <Input
                       type="email"
                       placeholder={t("enter_email")}
-                      className="h-12 rounded-lg border-gray-300 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-0"
+                      className="h-12 rounded-lg border-gray-300 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-0"
                       {...field}
                       dir={langDir}
                       translate="no"
@@ -120,7 +120,7 @@ export default function ChangeEmailPage() {
               <Button
                 disabled={changeEmail.isPending}
                 type="submit"
-                className="h-12 flex-1 rounded-lg bg-blue-600 text-base font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 sm:flex-none sm:px-8"
+                className="h-12 flex-1 rounded-lg bg-primary text-base font-semibold text-white shadow-sm transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 sm:flex-none sm:px-8"
                 translate="no"
               >
                 {changeEmail.isPending ? (
@@ -144,10 +144,10 @@ export default function ChangeEmailPage() {
       </div>
 
       {/* Info Section */}
-      <div className="overflow-hidden rounded-xl border border-blue-200 bg-blue-50 p-4 shadow-sm">
+      <div className="overflow-hidden rounded-xl border border-primary/20 bg-primary/5 p-4 shadow-sm">
         <div className="flex gap-3">
           <svg
-            className="h-5 w-5 flex-shrink-0 text-blue-600"
+            className="h-5 w-5 flex-shrink-0 text-primary"
             fill="currentColor"
             viewBox="0 0 20 20"
           >
@@ -158,10 +158,10 @@ export default function ChangeEmailPage() {
             />
           </svg>
           <div className="flex-1">
-            <h3 className="text-sm font-medium text-blue-900" translate="no">
+            <h3 className="text-sm font-medium text-primary" translate="no">
               {t("important_information")}
             </h3>
-            <p className="mt-1 text-sm text-blue-700" translate="no">
+            <p className="mt-1 text-sm text-primary" translate="no">
               {t("after_changing_your_email_you_will_need_to_verify_it")}
             </p>
           </div>

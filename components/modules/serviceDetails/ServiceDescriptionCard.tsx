@@ -81,7 +81,7 @@ const ServiceDescriptionCard: React.FC<any> = ({
                                     >
                                         <div
                                             className={`import-pickup-type-selector-box flex flex-wrap items-center gap-3 p-4 border rounded-xl cursor-pointer ${isSelected
-                                                ? "bg-green-50 border-green-500"
+                                                ? "bg-success/5 border-success"
                                                 : "bg-white border-gray-200"
                                                 }`}
                                             style={{
@@ -99,7 +99,7 @@ const ServiceDescriptionCard: React.FC<any> = ({
                                                 onChange={(e) =>
                                                     toggleFeature(feature.id, quantity, e.target.checked)
                                                 }
-                                                className="h-5 w-5 text-green-600 focus:ring-green-500"
+                                                className="h-5 w-5 text-success focus:ring-success"
                                             />
                                             <div className="text-container flex-1 min-w-0">
                                                 <h5 dir={langDir} className="text-sm text-gray-800 truncate">

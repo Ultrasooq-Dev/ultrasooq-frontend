@@ -156,7 +156,7 @@ const RfqProductCard: React.FC<RfqProductCardProps> = ({
       {/* Product Information */}
       <div className="p-2 sm:p-4 space-y-1 sm:space-y-3 flex-1 flex flex-col">
         <Link href={`/rfq/${id}`} className="block group flex-1">
-          <h3 className="font-semibold text-gray-900 text-xs sm:text-base leading-tight line-clamp-2 group-hover:text-blue-600 transition-colors duration-200 mb-1 sm:mb-2" dir={langDir}>
+          <h3 className="font-semibold text-gray-900 text-xs sm:text-base leading-tight line-clamp-2 group-hover:text-primary transition-colors duration-200 mb-1 sm:mb-2" dir={langDir}>
             {translate(productName)}
           </h3>
           <p className="text-gray-600 text-xs sm:text-sm line-clamp-1 mb-1 sm:mb-2" title={shortDescription}>
@@ -178,7 +178,7 @@ const RfqProductCard: React.FC<RfqProductCardProps> = ({
         <div className="space-y-1 sm:space-y-2 mb-2 sm:mb-3">
           <div className="space-y-1" suppressHydrationWarning>
             <div className="flex items-center gap-2">
-              <span className="text-sm sm:text-lg font-bold text-blue-600" dir={langDir}>
+              <span className="text-sm sm:text-lg font-bold text-primary" dir={langDir}>
                 {t("ask_for_price")}
               </span>
             </div>
@@ -217,7 +217,7 @@ const RfqProductCard: React.FC<RfqProductCardProps> = ({
             <input
               type="text"
               value={quantity}
-              className="h-6 w-12 sm:h-8 sm:w-16 text-center text-xs sm:text-sm font-medium border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="h-6 w-12 sm:h-8 sm:w-16 text-center text-xs sm:text-sm font-medium border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
               onChange={(e) => {
                 const value = Number(e.target.value);
                 const newQuantity = isNaN(value) || value < 0 ? 0 : value;
@@ -279,7 +279,7 @@ const RfqProductCard: React.FC<RfqProductCardProps> = ({
           {isAddedToCart ? (
             <button
               type="button"
-              className="w-full flex items-center justify-center gap-1 sm:gap-2 py-1.5 sm:py-2 px-2 sm:px-4 rounded-lg border-2 border-green-200 bg-green-50 text-green-700 font-semibold text-xs sm:text-sm transition-all duration-200"
+              className="w-full flex items-center justify-center gap-1 sm:gap-2 py-1.5 sm:py-2 px-2 sm:px-4 rounded-lg border-2 border-success/20 bg-success/5 text-success font-semibold text-xs sm:text-sm transition-all duration-200"
               disabled={false}
               dir={langDir}
               translate="no"
@@ -291,7 +291,7 @@ const RfqProductCard: React.FC<RfqProductCardProps> = ({
           ) : (
             <button
               type="button"
-              className="w-full bg-linear-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold py-1.5 sm:py-2 px-2 sm:px-4 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-md disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-xs sm:text-sm"
+              className="w-full bg-linear-to-r from-warning to-warning/90 hover:from-warning hover:to-warning/80 text-white font-semibold py-1.5 sm:py-2 px-2 sm:px-4 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-md disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-xs sm:text-sm"
               onClick={() => onAdd(quantity || 1, id, "add", offerPriceFrom, offerPriceTo, productNote || "")}
               disabled={quantity == 0}
               dir={langDir}

@@ -1147,9 +1147,9 @@ const SellerChat: React.FC<SellerChatProps> = ({
                         }
                       }}
                       className={cn(
-                        "cursor-pointer rounded-lg border-2 bg-white p-4 transition-all hover:border-red-600 hover:bg-red-50",
+                        "cursor-pointer rounded-lg border-2 bg-white p-4 transition-all hover:border-destructive hover:bg-destructive/5",
                         selectedRfqId === mainQuote.rfqQuotesId
-                          ? "border-red-600 bg-red-50"
+                          ? "border-destructive bg-destructive/5"
                           : "border-gray-200"
                       )}
                     >
@@ -1224,9 +1224,9 @@ const SellerChat: React.FC<SellerChatProps> = ({
                         }
                       }}
                       className={cn(
-                        "cursor-pointer rounded-lg border-2 bg-white p-4 transition-all hover:border-red-600 hover:bg-red-50",
+                        "cursor-pointer rounded-lg border-2 bg-white p-4 transition-all hover:border-destructive hover:bg-destructive/5",
                         selectedCustomerId === customer.id
-                          ? "border-red-600 bg-red-50"
+                          ? "border-destructive bg-destructive/5"
                           : "border-gray-200"
                       )}
                     >
@@ -1344,9 +1344,9 @@ const SellerChat: React.FC<SellerChatProps> = ({
           {/* Header Section - Reduced Size */}
           <div className="flex w-full items-center justify-between border-b border-gray-200 bg-gray-50 px-4 py-2">
             <div className="flex items-center gap-2">
-              <div className="flex h-7 w-7 items-center justify-center rounded bg-green-100">
+              <div className="flex h-7 w-7 items-center justify-center rounded bg-success/10">
                 <svg
-                  className="h-4 w-4 text-green-600"
+                  className="h-4 w-4 text-success"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -1368,7 +1368,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                   {t("offering_price")}
                 </p>
                 <p
-                  className="text-base font-bold text-green-600"
+                  className="text-base font-bold text-success"
                   dir={langDir}
                   translate="no"
                 >
@@ -1526,7 +1526,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                                   setSuggestingForProductQuantity(item.quantity || 1);
                                   setShowProductSuggestionModal(true);
                                 }}
-                                className="inline-flex items-center gap-1 rounded bg-blue-600 px-3 py-1.5 text-[11px] font-semibold text-white hover:bg-blue-700"
+                                className="inline-flex items-center gap-1 rounded bg-primary px-3 py-1.5 text-[11px] font-semibold text-white hover:bg-primary/90"
                                 dir={langDir}
                                 translate="no"
                               >
@@ -1554,12 +1554,12 @@ const SellerChat: React.FC<SellerChatProps> = ({
                                   onChange={(e) =>
                                     setEditingPriceValue(e.target.value)
                                   }
-                                  className="w-20 rounded border border-gray-300 px-1 py-0.5 text-[10px] focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                  className="w-20 rounded border border-gray-300 px-1 py-0.5 text-[10px] focus:outline-none focus:ring-1 focus:ring-primary"
                                 />
                                 <div className="flex gap-1">
                                   <button
                                     type="button"
-                                    className="text-[9px] text-blue-600"
+                                    className="text-[9px] text-primary"
                                     onClick={() => {
                                       const price = parseFloat(editingPriceValue);
                                       if (!isNaN(price) && price > 0) {
@@ -1601,7 +1601,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                                 </span>
                                 <button
                                   type="button"
-                                  className="text-[9px] text-blue-600"
+                                  className="text-[9px] text-primary"
                                   onClick={() => {
                                     setEditingPriceProductId(item.id);
                                     // Show pending price if available, otherwise show original offerPrice
@@ -1651,7 +1651,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                                 <div
                                   key={s.id || `suggestion-${s.suggestedProductId}`}
                                   className={`grid grid-cols-4 items-center gap-2 py-1.5 pl-8 text-[11px] ${
-                                    isSelected ? "bg-green-50 border-l-4 border-l-green-500" : ""
+                                    isSelected ? "bg-success/5 border-l-4 border-l-green-500" : ""
                                   }`}
                                 >
                                   {/* Component column */}
@@ -1679,7 +1679,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                                   {/* Selection column */}
                                   <div className="flex justify-center">
                                     {isSelected && (
-                                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-green-100 text-green-800 text-[9px] font-medium">
+                                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-success/10 text-success text-[9px] font-medium">
                                         <svg className="h-2.5 w-2.5" fill="currentColor" viewBox="0 0 20 20">
                                           <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                                         </svg>
@@ -1732,7 +1732,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                     disabled={!hasPendingUpdates}
                     className={`px-4 py-1.5 text-xs font-medium rounded transition-colors ${
                       hasPendingUpdates
-                        ? "bg-blue-600 text-white hover:bg-blue-700"
+                        ? "bg-primary text-white hover:bg-primary/90"
                         : "bg-gray-300 text-gray-500 cursor-not-allowed"
                     }`}
                     dir={langDir}
@@ -1806,7 +1806,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                   <button
                     onClick={handleSendMessage}
                     type="button"
-                    className="bg-dark-orange flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg transition-colors hover:bg-orange-600"
+                    className="bg-dark-orange flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg transition-colors hover:bg-warning"
                   >
                     <Image src={SendIcon} alt="send-icon" className="h-4 w-4" />
                   </button>
@@ -1849,7 +1849,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                         </span>
                         <button
                           onClick={() => removeFile(index)}
-                          className="flex h-4 w-4 items-center justify-center rounded-full bg-red-100 text-red-600 transition-colors hover:bg-red-200"
+                          className="flex h-4 w-4 items-center justify-center rounded-full bg-destructive/10 text-destructive transition-colors hover:bg-destructive/20"
                           type="button"
                         >
                           <svg
@@ -2042,7 +2042,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
               className={cn(
                 "flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition-all",
                 isSelectMode
-                  ? "border-dark-orange bg-orange-50 text-dark-orange hover:bg-orange-100"
+                  ? "border-dark-orange bg-warning/5 text-dark-orange hover:bg-warning/10"
                   : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50",
               )}
               translate="no"
@@ -2318,9 +2318,9 @@ const SellerChat: React.FC<SellerChatProps> = ({
                       ? "cursor-pointer"
                       : "hover:border-dark-orange cursor-pointer hover:shadow-md",
                   isSelected && displayMode === "list"
-                    ? "bg-orange-50 border-l-4 border-l-dark-orange"
+                    ? "bg-warning/5 border-l-4 border-l-dark-orange"
                     : isSelected
-                      ? "border-dark-orange bg-orange-50"
+                      ? "border-dark-orange bg-warning/5"
                       : displayMode === "list"
                         ? ""
                         : "border-gray-200",
@@ -2460,7 +2460,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                     {/* Unread Count & Actions Section */}
                     <div className="flex items-center gap-3 justify-start lg:justify-end w-full lg:w-auto">
                       {totalUnreadMessages > 0 && !showHiddenRequests && (
-                        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-blue-600 text-xs font-bold text-white shadow-lg ring-2 ring-blue-100">
+                        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary/90 text-xs font-bold text-white shadow-lg ring-2 ring-blue-100">
                           {totalUnreadMessages > 9 ? "9+" : totalUnreadMessages}
                         </div>
                       )}
@@ -2473,7 +2473,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                                 handleUnhideRequest(e, mainQuote.id);
                               }}
                               disabled={hideRfqRequestMutation.isPending}
-                              className="flex items-center gap-1.5 rounded-lg border border-green-300 bg-green-50 px-3 py-1.5 text-xs font-medium text-green-700 transition-all hover:bg-green-100 hover:border-green-400 disabled:cursor-not-allowed disabled:opacity-50 shadow-sm"
+                              className="flex items-center gap-1.5 rounded-lg border border-success/30 bg-success/5 px-3 py-1.5 text-xs font-medium text-success transition-all hover:bg-success/10 hover:border-green-400 disabled:cursor-not-allowed disabled:opacity-50 shadow-sm"
                               title="Unhide Request"
                               type="button"
                             >
@@ -2585,7 +2585,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                   </div>
                   <div className="flex items-center gap-2">
                     {totalUnreadMessages > 0 && !showHiddenRequests && (
-                      <div className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-xs font-bold text-white shadow-md">
+                      <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-xs font-bold text-white shadow-md">
                         {totalUnreadMessages > 9 ? "9+" : totalUnreadMessages}
                       </div>
                     )}
@@ -2595,7 +2595,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
                           <button
                             onClick={(e) => handleUnhideRequest(e, mainQuote.id)}
                             disabled={hideRfqRequestMutation.isPending}
-                            className="flex items-center gap-1.5 rounded-lg border border-green-300 bg-green-50 px-2 py-1.5 text-green-600 transition-all hover:bg-green-100 hover:text-green-700 disabled:cursor-not-allowed disabled:opacity-50"
+                            className="flex items-center gap-1.5 rounded-lg border border-success/30 bg-success/5 px-2 py-1.5 text-success transition-all hover:bg-success/10 hover:text-success disabled:cursor-not-allowed disabled:opacity-50"
                             title="Unhide Request"
                             type="button"
                           >

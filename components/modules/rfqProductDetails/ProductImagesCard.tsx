@@ -187,7 +187,7 @@ const ProductImagesCard: React.FC<ProductImagesCardProps> = ({
                 className={cn(
                   previewImages[currentImageIndex] === item?.image ||
                     previewImages[currentImageIndex] === item?.video
-                    ? "border-2 border-red-500"
+                    ? "border-2 border-destructive"
                     : "",
                   "relative h-28 w-28 rounded-none bg-gray-100",
                 )}

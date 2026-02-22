@@ -154,7 +154,7 @@ const ReactSelectInput: React.FC<{
             />
           )}
         />
-        <p className="text-[13px] text-red-500" dir={langDir}>
+        <p className="text-[13px] text-destructive" dir={langDir}>
           {formContext.formState.errors["typeOfProduct"]?.message as string}
         </p>
       </div>
@@ -202,7 +202,7 @@ const ReactSelectInput: React.FC<{
             );
           }}
         />
-        <p className="text-[13px] text-red-500" dir={langDir}>
+        <p className="text-[13px] text-destructive" dir={langDir}>
           {formContext.formState.errors["brandId"]?.message as string}
         </p>
       </div>

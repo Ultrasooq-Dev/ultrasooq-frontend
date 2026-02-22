@@ -2,7 +2,7 @@ export default function LoginLoading() {
   return (
     <div className="flex min-h-screen w-full animate-pulse bg-white">
       {/* Left Panel Skeleton (Desktop Only) */}
-      <div className="hidden lg:flex lg:w-[48%] xl:w-[50%] bg-gradient-to-br from-orange-400 via-orange-300 to-amber-300">
+      <div className="hidden lg:flex lg:w-[48%] xl:w-[50%] bg-gradient-to-br from-warning via-warning/70 to-warning/60">
         <div className="flex flex-col justify-between w-full p-10 xl:p-14">
           {/* Logo skeleton */}
           <div className="flex items-center gap-3">

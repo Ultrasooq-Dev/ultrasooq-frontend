@@ -188,7 +188,7 @@ const NotificationsPage = () => {
                 </div>
                 <button
                   onClick={() => handleDelete(notification.id)}
-                  className="flex-shrink-0 text-gray-400 hover:text-red-600"
+                  className="flex-shrink-0 text-gray-400 hover:text-destructive"
                   aria-label={t("delete") || "Delete"}
                 >
                   <svg

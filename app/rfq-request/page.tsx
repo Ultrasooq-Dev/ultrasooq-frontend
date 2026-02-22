@@ -137,7 +137,7 @@ const RfqRequestPage = () => {
                     const productImages = getSelectedRfqProductImages();
                     if (productImages.length === 0) {
                       return (
-                        <div className="relative w-full aspect-square rounded-lg overflow-hidden border-2 border-orange-500 bg-gray-100">
+                        <div className="relative w-full aspect-square rounded-lg overflow-hidden border-2 border-warning bg-gray-100">
                           <Image
                             src={PlaceholderImage}
                             alt="No product image"
@@ -155,7 +155,7 @@ const RfqRequestPage = () => {
                       return (
                         <div
                           key={index}
-                          className="relative w-full aspect-square rounded-lg overflow-hidden border-2 border-orange-500 bg-orange-50 transition-all"
+                          className="relative w-full aspect-square rounded-lg overflow-hidden border-2 border-warning bg-warning/5 transition-all"
                         >
                           <Image
                             src={imageUrl}

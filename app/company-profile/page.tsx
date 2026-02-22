@@ -506,7 +506,7 @@ export default function CompanyProfilePage() {
                                     <span dir={langDir} translate="no">
                                       {t("drop_your_company_logo")}{" "}
                                     </span>
-                                    <span className="text-blue-500">
+                                    <span className="text-primary">
                                       browse
                                     </span>
                                     <p
@@ -760,7 +760,7 @@ export default function CompanyProfilePage() {
                                     <span translate="no">
                                       {t("drop_your_branch_front_picture")}{" "}
                                     </span>
-                                    <span className="text-blue-500">
+                                    <span className="text-primary">
                                       browse
                                     </span>
                                     <p className="text-normal mt-3 text-xs leading-4 text-gray-300" translate="no">
@@ -844,7 +844,7 @@ export default function CompanyProfilePage() {
                                       alt="camera"
                                     />
                                     <span translate="no">{t("drop_your_address_proof")}</span>
-                                    <span className="text-blue-500">
+                                    <span className="text-primary">
                                       browse
                                     </span>
                                     <p className="text-normal mt-3 text-xs leading-4 text-gray-300" translate="no">
@@ -1021,7 +1021,7 @@ export default function CompanyProfilePage() {
                             </select>
                           )}
                         />
-                        <p className="text-[13px] text-red-500" dir={langDir}>
+                        <p className="text-[13px] text-destructive" dir={langDir}>
                           {
                             form.formState.errors.branchList?.[index]?.startTime
                               ?.message
@@ -1063,7 +1063,7 @@ export default function CompanyProfilePage() {
                             </select>
                           )}
                         />
-                        <p className="text-[13px] text-red-500" dir={langDir}>
+                        <p className="text-[13px] text-destructive" dir={langDir}>
                           {
                             form.formState.errors.branchList?.[index]?.endTime
                               ?.message
@@ -1109,7 +1109,7 @@ export default function CompanyProfilePage() {
                     </div>
                     {form.formState.errors.branchList?.[index]?.workingDays
                       ?.message ? (
-                      <p className="text-[13px] text-red-500" dir={langDir} translate="no">
+                      <p className="text-[13px] text-destructive" dir={langDir} translate="no">
                         {t("working_day_required")}
                       </p>
                     ) : null}

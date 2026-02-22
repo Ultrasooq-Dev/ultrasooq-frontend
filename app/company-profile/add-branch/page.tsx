@@ -371,7 +371,7 @@ const AddBranchPage = () => {
                                     <span translate="no">
                                       {t("drop_your_branch_front_picture")}{" "}
                                     </span>
-                                    <span className="text-blue-500">
+                                    <span className="text-primary">
                                       browse
                                     </span>
                                     <p
@@ -458,7 +458,7 @@ const AddBranchPage = () => {
                                     <span translate="no">
                                       {t("drop_your_address_proof")}{" "}
                                     </span>
-                                    <span className="text-blue-500">
+                                    <span className="text-primary">
                                       browse
                                     </span>
                                     <p
@@ -630,7 +630,7 @@ const AddBranchPage = () => {
                             </select>
                           )}
                         />
-                        <p className="text-[13px] text-red-500" dir={langDir}>
+                        <p className="text-[13px] text-destructive" dir={langDir}>
                           {form.formState.errors.startTime?.message}
                         </p>
                       </div>
@@ -669,7 +669,7 @@ const AddBranchPage = () => {
                             </select>
                           )}
                         />
-                        <p className="text-[13px] text-red-500" dir={langDir}>
+                        <p className="text-[13px] text-destructive" dir={langDir}>
                           {form.formState.errors.endTime?.message}
                         </p>
                       </div>
@@ -712,7 +712,7 @@ const AddBranchPage = () => {
                     </div>
                     {form.formState.errors.workingDays?.message ? (
                       <p
-                        className="text-[13px] text-red-500"
+                        className="text-[13px] text-destructive"
                         dir={langDir}
                         translate="no"
                       >

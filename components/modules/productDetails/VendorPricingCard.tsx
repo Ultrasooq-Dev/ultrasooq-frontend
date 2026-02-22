@@ -131,7 +131,7 @@ export function VendorPricingCard({
               )}
             </div>
             {vendorPricing.consumerDiscount && (
-              <p className="text-xs text-green-600">
+              <p className="text-xs text-success">
                 Extra {vendorPricing.consumerDiscount}
                 {vendorPricing.consumerDiscountType === "PERCENTAGE" ? "%" : currency} off for consumers
               </p>
@@ -143,7 +143,7 @@ export function VendorPricingCard({
             {vendorPricing.stock !== null && vendorPricing.stock !== undefined && (
               <div className="flex items-center gap-1.5">
                 <Package className="h-4 w-4 text-muted-foreground" />
-                <span className={vendorPricing.stock > 0 ? "text-green-600" : "text-destructive"}>
+                <span className={vendorPricing.stock > 0 ? "text-success" : "text-destructive"}>
                   {vendorPricing.stock > 0 ? `${vendorPricing.stock} in stock` : "Out of stock"}
                 </span>
               </div>

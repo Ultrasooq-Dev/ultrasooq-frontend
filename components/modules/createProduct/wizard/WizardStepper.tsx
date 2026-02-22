@@ -33,7 +33,7 @@ const WizardStepper: React.FC<WizardStepperProps> = ({
                     className={cn(
                       "h-full transition-colors duration-300",
                       isCompleted || step <= currentStep
-                        ? "bg-orange-500"
+                        ? "bg-warning"
                         : "bg-gray-200"
                     )}
                   />
@@ -52,9 +52,9 @@ const WizardStepper: React.FC<WizardStepperProps> = ({
                   className={cn(
                     "w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-300 border-2",
                     isActive
-                      ? "bg-orange-500 border-orange-500 text-white shadow-lg shadow-orange-200"
+                      ? "bg-warning border-warning text-white shadow-lg shadow-orange-200"
                       : isCompleted
-                      ? "bg-green-500 border-green-500 text-white"
+                      ? "bg-success border-success text-white"
                       : "bg-white border-gray-300 text-gray-400"
                   )}
                 >
@@ -68,9 +68,9 @@ const WizardStepper: React.FC<WizardStepperProps> = ({
                   className={cn(
                     "mt-2 text-xs font-medium text-center whitespace-nowrap",
                     isActive
-                      ? "text-orange-600"
+                      ? "text-warning"
                       : isCompleted
-                      ? "text-green-600"
+                      ? "text-success"
                       : "text-gray-400"
                   )}
                 >

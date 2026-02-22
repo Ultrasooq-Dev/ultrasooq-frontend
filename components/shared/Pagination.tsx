@@ -75,7 +75,7 @@ const Pagination: React.FC<PaginationProps> = ({
           pageClassName="flex"
           pageLinkClassName="flex items-center justify-center h-8 w-8 sm:h-10 sm:w-10 rounded-md sm:rounded-lg border border-gray-300 bg-white text-gray-700 font-medium text-xs sm:text-sm hover:bg-gray-50 hover:border-gray-400 transition-colors"
           activeClassName="active"
-          activeLinkClassName="!bg-orange-600 !text-white !border-orange-600 hover:!bg-orange-700"
+          activeLinkClassName="!bg-warning !text-white !border-warning hover:!bg-warning/90"
           previousClassName="hidden"
           nextClassName="hidden"
         />

@@ -366,7 +366,7 @@ const ProductDetailsPage = () => {
                         handleToggleAddModal();
                         setSelectedProductId(productDetails?.id);
                       }}
-                      className="w-full rounded-lg bg-blue-600 py-3 text-base font-medium text-white shadow-lg transition-all hover:bg-blue-700 hover:shadow-xl active:scale-95"
+                      className="w-full rounded-lg bg-primary py-3 text-base font-medium text-white shadow-lg transition-all hover:bg-primary/90 hover:shadow-xl active:scale-95"
                       dir={langDir}
                       translate="no"
                     >
@@ -378,7 +378,7 @@ const ProductDetailsPage = () => {
                     <Button
                       type="button"
                       onClick={() => router.push(`/seller-rfq-request?product_id=${productDetails?.id}`)}
-                      className="flex-1 rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 py-3 text-base font-medium text-white shadow-lg transition-all hover:from-orange-600 hover:to-orange-700 hover:shadow-xl active:scale-95"
+                      className="flex-1 rounded-lg bg-gradient-to-r from-warning to-warning/90 py-3 text-base font-medium text-white shadow-lg transition-all hover:from-warning hover:to-warning/80 hover:shadow-xl active:scale-95"
                       dir={langDir}
                       translate="no"
                     >
@@ -399,7 +399,7 @@ const ProductDetailsPage = () => {
                         );
                       }}
                       disabled={cartList?.find((item: any) => item.productId == productDetails?.id)}
-                      className="flex-1 rounded-lg bg-gradient-to-r from-green-500 to-green-600 py-3 text-base font-medium text-white shadow-lg transition-all hover:from-green-600 hover:to-green-700 hover:shadow-xl active:scale-95 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="flex-1 rounded-lg bg-gradient-to-r from-success to-success/90 py-3 text-base font-medium text-white shadow-lg transition-all hover:from-success hover:to-success/80 hover:shadow-xl active:scale-95 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed disabled:opacity-50"
                       translate="no"
                     >
                       {cartList?.find((item: any) => item.productId == productDetails?.id) 
@@ -424,7 +424,7 @@ const ProductDetailsPage = () => {
                   <TabsList className="flex w-full items-center justify-start gap-1 bg-transparent p-0">
                     <TabsTrigger
                       value="description"
-                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold text-gray-600 transition-all duration-300 hover:bg-gray-50 hover:text-gray-800 hover:border-b-gray-300 data-[state=active]:border-b-orange-500 data-[state=active]:text-orange-500 data-[state=active]:bg-orange-50/30 data-[state=active]:font-bold data-[state=active]:border-0 whitespace-nowrap sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
+                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold text-gray-600 transition-all duration-300 hover:bg-gray-50 hover:text-gray-800 hover:border-b-gray-300 data-[state=active]:border-b-orange-500 data-[state=active]:text-warning data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:border-0 whitespace-nowrap sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
                       dir={langDir}
                       translate="no"
                     >
@@ -438,7 +438,7 @@ const ProductDetailsPage = () => {
                     </TabsTrigger>
                     <TabsTrigger
                       value="specification"
-                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold text-gray-600 transition-all duration-300 hover:bg-gray-50 hover:text-gray-800 hover:border-b-gray-300 data-[state=active]:border-b-orange-500 data-[state=active]:text-orange-500 data-[state=active]:bg-orange-50/30 data-[state=active]:font-bold data-[state=active]:border-0 whitespace-nowrap sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
+                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold text-gray-600 transition-all duration-300 hover:bg-gray-50 hover:text-gray-800 hover:border-b-gray-300 data-[state=active]:border-b-orange-500 data-[state=active]:text-warning data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:border-0 whitespace-nowrap sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
                       dir={langDir}
                       translate="no"
                     >
@@ -452,7 +452,7 @@ const ProductDetailsPage = () => {
                     </TabsTrigger>
                     <TabsTrigger
                       value="reviews"
-                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold text-gray-600 transition-all duration-300 hover:bg-gray-50 hover:text-gray-800 hover:border-b-gray-300 data-[state=active]:border-b-orange-500 data-[state=active]:text-orange-500 data-[state=active]:bg-orange-50/30 data-[state=active]:font-bold data-[state=active]:border-0 whitespace-nowrap sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
+                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold text-gray-600 transition-all duration-300 hover:bg-gray-50 hover:text-gray-800 hover:border-b-gray-300 data-[state=active]:border-b-orange-500 data-[state=active]:text-warning data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:border-0 whitespace-nowrap sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
                       dir={langDir}
                       translate="no"
                     >
@@ -466,7 +466,7 @@ const ProductDetailsPage = () => {
                     </TabsTrigger>
                     <TabsTrigger
                       value="qanda"
-                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold text-gray-600 transition-all duration-300 hover:bg-gray-50 hover:text-gray-800 hover:border-b-gray-300 data-[state=active]:border-b-orange-500 data-[state=active]:text-orange-500 data-[state=active]:bg-orange-50/30 data-[state=active]:font-bold data-[state=active]:border-0 whitespace-nowrap sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
+                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold text-gray-600 transition-all duration-300 hover:bg-gray-50 hover:text-gray-800 hover:border-b-gray-300 data-[state=active]:border-b-orange-500 data-[state=active]:text-warning data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:border-0 whitespace-nowrap sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
                       dir={langDir}
                       translate="no"
                     >
@@ -480,7 +480,7 @@ const ProductDetailsPage = () => {
                     </TabsTrigger>
                     <TabsTrigger
                       value="vendor"
-                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold text-gray-600 transition-all duration-300 hover:bg-gray-50 hover:text-gray-800 hover:border-b-gray-300 data-[state=active]:border-b-orange-500 data-[state=active]:text-orange-500 data-[state=active]:bg-orange-50/30 data-[state=active]:font-bold data-[state=active]:border-0 whitespace-nowrap sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
+                      className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold text-gray-600 transition-all duration-300 hover:bg-gray-50 hover:text-gray-800 hover:border-b-gray-300 data-[state=active]:border-b-orange-500 data-[state=active]:text-warning data-[state=active]:bg-warning/5/30 data-[state=active]:font-bold data-[state=active]:border-0 whitespace-nowrap sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 lg:text-lg"
                       dir={langDir}
                       translate="no"
                     >

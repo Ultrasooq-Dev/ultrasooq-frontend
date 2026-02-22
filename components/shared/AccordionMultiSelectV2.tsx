@@ -186,7 +186,7 @@ const AccordionMultiSelectV2: React.FC<AccordionMultiSelectV2Props> = ({
           </AccordionContent>
         </AccordionItem>
       </Accordion>
-      <p className="mb-3 text-sm text-red-500" dir={langDir}>
+      <p className="mb-3 text-sm text-destructive" dir={langDir}>
         {error}
       </p>
     </>

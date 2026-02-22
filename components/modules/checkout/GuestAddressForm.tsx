@@ -272,7 +272,7 @@ const GuestAddressForm: React.FC<GuestAddressFormProps> = ({
                   />
                 )}
               />
-              <p className="text-[13px] text-red-500" dir={langDir}>
+              <p className="text-[13px] text-destructive" dir={langDir}>
                 {form.formState.errors?.countryId?.message || ''}
               </p>
             </div>
@@ -301,7 +301,7 @@ const GuestAddressForm: React.FC<GuestAddressFormProps> = ({
                   />
                 )}
               />
-              <p className="text-[13px] text-red-500" dir={langDir}>
+              <p className="text-[13px] text-destructive" dir={langDir}>
                 {form.formState.errors?.stateId?.message || ''}
               </p>
             </div>
@@ -331,7 +331,7 @@ const GuestAddressForm: React.FC<GuestAddressFormProps> = ({
                   />
                 )}
               />
-              <p className="text-[13px] text-red-500" dir={langDir}>
+              <p className="text-[13px] text-destructive" dir={langDir}>
                 {form.formState.errors?.cityId?.message || ''}
               </p>
             </div>

@@ -64,7 +64,7 @@ const DropshipProductsModal: React.FC<DropshipProductsModalProps> = ({
             </div>
           ) : error ? (
             <div className="text-center py-8">
-              <p className="text-red-500">{t("error_loading_dropship_products")}</p>
+              <p className="text-destructive">{t("error_loading_dropship_products")}</p>
             </div>
           ) : dropshipProducts.length === 0 ? (
             <div className="text-center py-8">
@@ -160,18 +160,18 @@ const DropshipProductsModal: React.FC<DropshipProductsModalProps> = ({
 
                   {/* Price Info */}
                   <div className="text-right">
-                    <p className="font-semibold text-blue-600 text-lg">
+                    <p className="font-semibold text-primary text-lg">
                       ${product.product_productPrice?.[0]?.productPrice || '0'}
                     </p>
                     {product.product_productPrice?.[0]?.offerPrice && 
                      product.product_productPrice?.[0]?.offerPrice !== '0' && (
-                      <p className="text-sm text-orange-600">
+                      <p className="text-sm text-warning">
                         {t("offer")}: ${product.product_productPrice?.[0]?.offerPrice}
                       </p>
                     )}
                     <button
                       onClick={() => window.open(`/product/${product.id}`, '_blank')}
-                      className="mt-2 px-3 py-1 bg-blue-100 text-blue-700 rounded text-sm hover:bg-blue-200 transition-colors"
+                      className="mt-2 px-3 py-1 bg-primary/10 text-primary rounded text-sm hover:bg-primary/20 transition-colors"
                     >
                       {t("view_product")}
                     </button>

@@ -648,7 +648,7 @@ const CreateServicePage = () => {
                               ))}
                             </div>
                             {form.formState.errors.workingDays ? (
-                              <p className="mt-1 text-sm text-red-500">
+                              <p className="mt-1 text-sm text-destructive">
                                 {form.formState.errors.workingDays.message}
                               </p>
                             ) : null}
@@ -713,7 +713,7 @@ const CreateServicePage = () => {
                                         e.target.value,
                                       )
                                     }
-                                    className="h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500"
+                                    className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                   />
                                   <label
                                     htmlFor="me"
@@ -738,7 +738,7 @@ const CreateServicePage = () => {
                                         e.target.value,
                                       )
                                     }
-                                    className="h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500"
+                                    className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                   />
                                   <label
                                     htmlFor="everyone"
@@ -771,7 +771,7 @@ const CreateServicePage = () => {
                               </div>
                             </div>
                             {form.formState.errors.serviceType ? (
-                              <p className="mt-1 text-sm text-red-500">
+                              <p className="mt-1 text-sm text-destructive">
                                 {form.formState.errors.serviceType.message}
                               </p>
                             ) : null}
@@ -796,7 +796,7 @@ const CreateServicePage = () => {
                                         e.target.value,
                                       )
                                     }
-                                    className="h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500"
+                                    className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                   />
                                   <label
                                     htmlFor="auto"
@@ -822,7 +822,7 @@ const CreateServicePage = () => {
                                         e.target.value,
                                       )
                                     }
-                                    className="h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500"
+                                    className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                   />
                                   <label
                                     htmlFor="manual"
@@ -849,7 +849,7 @@ const CreateServicePage = () => {
                                       form.watch("renewEveryWeek") === true
                                     }
                                     onChange={handleRenewFun}
-                                    className="h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500"
+                                    className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                   />
                                   <label
                                     htmlFor="auto"
@@ -867,7 +867,7 @@ const CreateServicePage = () => {
                                     value="one_time"
                                     checked={form.watch("oneTime") === true}
                                     onChange={handleRenewFun}
-                                    className="h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500"
+                                    className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                   />
                                   <label
                                     htmlFor="manual"
@@ -900,7 +900,7 @@ const CreateServicePage = () => {
                                               e.target.value
                                             )
                                           }
-                                          className="h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500"
+                                          className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                         />
                                         <label
                                           htmlFor="direction"
@@ -925,7 +925,7 @@ const CreateServicePage = () => {
                                               e.target.value,
                                             )
                                           }
-                                          className="h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500"
+                                          className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
                                           translate="no"
                                         />
                                         <label
@@ -963,7 +963,7 @@ const CreateServicePage = () => {
                                     instanceId="countryId"
                                     placeholder={t("select")}
                                   />
-                                  <p className="text-[13px] text-red-500" dir={langDir} translate="no">
+                                  <p className="text-[13px] text-destructive" dir={langDir} translate="no">
                                     {
                                       form.formState.errors["countryId"]?.message || ''
                                     }
@@ -997,7 +997,7 @@ const CreateServicePage = () => {
                                         instanceId="stateId"
                                         placeholder={t("select")}
                                       />
-                                      <p className="text-[13px] text-red-500" dir={langDir} translate="no">
+                                      <p className="text-[13px] text-destructive" dir={langDir} translate="no">
                                         {
                                           form.formState.errors["stateId"]?.message || ''
                                         }
@@ -1032,7 +1032,7 @@ const CreateServicePage = () => {
                                           placeholder={t("select")}
                                         />
                                         {form.formState.errors.fromCityId ? (
-                                          <p className="mt-1 text-sm text-red-500" dir={langDir} translate="no">
+                                          <p className="mt-1 text-sm text-destructive" dir={langDir} translate="no">
                                             {
                                               form.formState.errors.fromCityId.message || ''
                                             }
@@ -1064,7 +1064,7 @@ const CreateServicePage = () => {
                                           placeholder={t("select")}
                                         />
                                         {form.formState.errors.toCityId ? (
-                                          <p className="mt-1 text-sm text-red-500" dir={langDir} translate="no">
+                                          <p className="mt-1 text-sm text-destructive" dir={langDir} translate="no">
                                             {
                                               form.formState.errors.toCityId.message || ''
                                             }
@@ -1097,7 +1097,7 @@ const CreateServicePage = () => {
                                         placeholder={t("select")}
                                       />
                                       {form.formState.errors.rangeCityId ? (
-                                        <p className="mt-1 text-sm text-red-500" dir={langDir} translate="no">
+                                        <p className="mt-1 text-sm text-destructive" dir={langDir} translate="no">
                                           {
                                             form.formState.errors.rangeCityId.message || ''
                                           }
@@ -1138,7 +1138,7 @@ const CreateServicePage = () => {
                                   translate="no"
                                 />
                                 {form.formState.errors.eachCustomerTime ? (
-                                  <p className="mt-1 text-sm text-red-500">
+                                  <p className="mt-1 text-sm text-destructive">
                                     {
                                       form.formState.errors.eachCustomerTime
                                         .message
@@ -1177,7 +1177,7 @@ const CreateServicePage = () => {
                                   translate="no"
                                 />
                                 {form.formState.errors.customerPerPeiod ? (
-                                  <p className="mt-1 text-sm text-red-500">
+                                  <p className="mt-1 text-sm text-destructive">
                                     {
                                       form.formState.errors.customerPerPeiod
                                         .message
@@ -1193,7 +1193,7 @@ const CreateServicePage = () => {
                                   name="openTime"
                                 />
                                 {form.formState.errors.openTime ? (
-                                  <p className="mt-1 text-sm text-red-500">
+                                  <p className="mt-1 text-sm text-destructive">
                                     {form.formState.errors.openTime.message}
                                   </p>
                                 ) : null}
@@ -1204,7 +1204,7 @@ const CreateServicePage = () => {
                                   name="closeTime"
                                 />
                                 {form.formState.errors.closeTime ? (
-                                  <p className="mt-1 text-sm text-red-500">
+                                  <p className="mt-1 text-sm text-destructive">
                                     {form.formState.errors.closeTime.message}
                                   </p>
                                 ) : null}
@@ -1215,7 +1215,7 @@ const CreateServicePage = () => {
                                   name="breakTimeFrom"
                                 />
                                 {form.formState.errors.breakTimeFrom ? (
-                                  <p className="mt-1 text-sm text-red-500">
+                                  <p className="mt-1 text-sm text-destructive">
                                     {
                                       form.formState.errors.breakTimeFrom
                                         .message
@@ -1229,7 +1229,7 @@ const CreateServicePage = () => {
                                   name="breakTimeTo"
                                 />
                                 {form.formState.errors.breakTimeTo ? (
-                                  <p className="mt-1 text-sm text-red-500">
+                                  <p className="mt-1 text-sm text-destructive">
                                     {form.formState.errors.breakTimeTo.message}
                                   </p>
                                 ) : null}

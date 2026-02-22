@@ -562,8 +562,8 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
           ) : (
             <div className="space-y-2">
               {askForPrice === "true" ? (
-                <div className="inline-flex items-center rounded-lg bg-orange-100 px-4 py-2">
-                  <span className="text-sm font-semibold text-orange-800" dir={langDir} translate="no">
+                <div className="inline-flex items-center rounded-lg bg-warning/10 px-4 py-2">
+                  <span className="text-sm font-semibold text-warning" dir={langDir} translate="no">
                     {t("ask_for_price")}
                   </span>
                 </div>
@@ -578,7 +578,7 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
                     </span>
                   )}
                   {Number(productProductPrice) > calculateDiscountedPrice() && (
-                    <span className="text-sm font-medium text-green-600">
+                    <span className="text-sm font-medium text-success">
                       {(() => {
                         const originalPrice = Number(productProductPrice);
                         const discountedPrice = calculateDiscountedPrice();
@@ -738,11 +738,11 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
         <div className="space-y-3">
           {/* Sale Status Banner for Buygroup */}
           {isBuygroup && saleNotStarted && (
-            <div className="rounded-lg border-2 border-yellow-300 bg-yellow-50 p-4 text-center">
-              <p className="mb-1 text-sm font-semibold text-yellow-800" dir={langDir} translate="no">
+            <div className="rounded-lg border-2 border-warning/30 bg-warning/5 p-4 text-center">
+              <p className="mb-1 text-sm font-semibold text-warning" dir={langDir} translate="no">
                 {t("sale_not_started_yet")}
               </p>
-              <p className="text-xs text-yellow-700" dir={langDir} translate="no">
+              <p className="text-xs text-warning" dir={langDir} translate="no">
                 {t("sale_starts_on")}: {getSaleStartLabel(dateOpen, startTime) || "TBA"}
               </p>
             </div>
@@ -769,7 +769,7 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
               disabled={(!isAddedToCart && quantity === 0) || saleNotStarted || saleExpired}
               className={`w-full rounded-lg py-3 text-base font-medium shadow-lg transition-all hover:shadow-xl active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed ${
                 isAddedToCart && quantity === 0
-                  ? "bg-gradient-to-r from-red-500 to-red-600 text-white hover:from-red-600 hover:to-red-700"
+                  ? "bg-gradient-to-r from-destructive to-destructive/90 text-white hover:from-destructive hover:to-destructive/80"
                   : saleNotStarted || saleExpired
                   ? "bg-gray-400 text-white"
                   : "bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-900 hover:from-yellow-500 hover:to-yellow-600"
@@ -794,7 +794,7 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
             <Button
               onClick={onBuyNow || (() => onAdd(quantity || 1, "add"))}
               disabled={quantity === 0}
-              className="w-full rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 py-3 text-base font-medium text-white shadow-lg transition-all hover:from-orange-600 hover:to-orange-700 hover:shadow-xl active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:from-gray-400 disabled:to-gray-400"
+              className="w-full rounded-lg bg-gradient-to-r from-warning to-warning/90 py-3 text-base font-medium text-white shadow-lg transition-all hover:from-warning hover:to-warning/80 hover:shadow-xl active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:from-gray-400 disabled:to-gray-400"
               dir={langDir}
               translate="no"
             >
@@ -807,7 +807,7 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
             <Button
               onClick={onOpenChat}
               variant="outline"
-              className="w-full rounded-lg border-2 border-blue-500 bg-white py-3 text-base font-medium text-blue-600 shadow-md transition-all hover:bg-blue-50 hover:shadow-lg active:scale-95"
+              className="w-full rounded-lg border-2 border-primary bg-white py-3 text-base font-medium text-primary shadow-md transition-all hover:bg-primary/5 hover:shadow-lg active:scale-95"
               dir={langDir}
               translate="no"
             >
@@ -830,28 +830,28 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
         <div className="space-y-4">
           {/* Group Buy Timer - Only show if sale is active (not started or expired) */}
           {productPriceArr?.[0]?.sellType === "BUYGROUP" && !saleNotStarted && !saleExpired && (
-            <div className="rounded-lg border border-orange-200 bg-orange-50 p-4">
+            <div className="rounded-lg border border-warning/20 bg-warning/5 p-4">
               {timeLeft !== "NotStarted" && timeLeft !== "Expired" ? (
                 <div className="mb-3" dir={langDir}>
-                  <h4 className="mb-3 text-sm font-semibold text-orange-800" translate="no">
+                  <h4 className="mb-3 text-sm font-semibold text-warning" translate="no">
                     {t("time_left")}
                   </h4>
                   <div className="grid grid-cols-4 gap-3">
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-orange-900" translate="no">{timeLeft.split(":")[0]}</div>
-                      <div className="text-xs text-orange-700" translate="no">Days</div>
+                      <div className="text-2xl font-bold text-warning" translate="no">{timeLeft.split(":")[0]}</div>
+                      <div className="text-xs text-warning" translate="no">Days</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-orange-900" translate="no">{timeLeft.split(":")[1]}</div>
-                      <div className="text-xs text-orange-700" translate="no">Hours</div>
+                      <div className="text-2xl font-bold text-warning" translate="no">{timeLeft.split(":")[1]}</div>
+                      <div className="text-xs text-warning" translate="no">Hours</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-orange-900" translate="no">{timeLeft.split(":")[2]}</div>
-                      <div className="text-xs text-orange-700" translate="no">Minutes</div>
+                      <div className="text-2xl font-bold text-warning" translate="no">{timeLeft.split(":")[2]}</div>
+                      <div className="text-xs text-warning" translate="no">Minutes</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-orange-900" translate="no">{timeLeft.split(":")[3]}</div>
-                      <div className="text-xs text-orange-700" translate="no">Seconds</div>
+                      <div className="text-2xl font-bold text-warning" translate="no">{timeLeft.split(":")[3]}</div>
+                      <div className="text-xs text-warning" translate="no">Seconds</div>
                     </div>
                   </div>
                 </div>
@@ -859,10 +859,10 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
               
               <div className="space-y-2 text-sm">
                 <p>
-                  <span className="font-medium text-orange-800" dir={langDir} translate="no">
+                  <span className="font-medium text-warning" dir={langDir} translate="no">
                     {t("group_buy_deal_ends")}:
                   </span>{" "}
-                  <span className="text-orange-700">
+                  <span className="text-warning">
                     {formatDateTimeWithTimezone(
                       productPriceArr?.[0]?.dateClose,
                       productPriceArr?.[0]?.endTime,
@@ -870,10 +870,10 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
                   </span>
                 </p>
                 <p>
-                  <span className="font-medium text-orange-800" dir={langDir} translate="no">
+                  <span className="font-medium text-warning" dir={langDir} translate="no">
                     {t("timezone")}:
                   </span>{" "}
-                  <span className="text-orange-700">
+                  <span className="text-warning">
                     {getUTCOffset()} ({userTimezone})
                   </span>
                 </p>
@@ -957,7 +957,7 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
             >
               <Button
                 variant="outline"
-                className="text-red-600 border-red-200 hover:bg-red-50"
+                className="text-destructive border-destructive/20 hover:bg-destructive/5"
                 onClick={() => setIsDrawerOpen(true)}
                 translate="no"
               >

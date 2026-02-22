@@ -61,7 +61,7 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
           {unreadCount > 0 && (
             <button
               onClick={handleMarkAllAsRead}
-              className="text-xs font-medium text-blue-600 hover:text-blue-700"
+              className="text-xs font-medium text-primary hover:text-primary"
             >
               {t("mark_all_as_read") || "Mark all as read"}
             </button>
@@ -129,7 +129,7 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
         <div className="border-t border-gray-200 px-4 py-3">
           <button
             onClick={handleViewAll}
-            className="w-full rounded-lg bg-blue-50 px-4 py-2 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-100"
+            className="w-full rounded-lg bg-primary/5 px-4 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
           >
             {t("view_all_notifications") || "View all notifications"}
           </button>

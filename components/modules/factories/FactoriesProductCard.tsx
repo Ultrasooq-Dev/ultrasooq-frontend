@@ -416,7 +416,7 @@ const FactoriesProductCard: React.FC<RfqProductCardProps> = ({
           {(() => {
             const { discount, discountType } = getApplicableDiscount();
             return discount > 0 && discountType ? (
-              <div className="absolute right-3 top-3 z-20 bg-gradient-to-r from-orange-500 to-red-500 text-white px-2 py-1 rounded-full text-xs font-bold shadow-lg">
+              <div className="absolute right-3 top-3 z-20 bg-gradient-to-r from-warning to-red-500 text-white px-2 py-1 rounded-full text-xs font-bold shadow-lg">
                 {discountType === "PERCENTAGE" 
                   ? `${discount}%` 
                   : `${currency.symbol}${discount}`
@@ -468,7 +468,7 @@ const FactoriesProductCard: React.FC<RfqProductCardProps> = ({
             onClick={onWishlist}
           >
             {inWishlist ? (
-              <FaHeart className="h-4 w-4 text-red-500" />
+              <FaHeart className="h-4 w-4 text-destructive" />
             ) : (
               <FaRegHeart className="h-4 w-4" />
             )}
@@ -478,14 +478,14 @@ const FactoriesProductCard: React.FC<RfqProductCardProps> = ({
         {/* Product Info */}
         <div className="p-3 sm:p-4 flex flex-col flex-1">
           <Link href={`/factories/${id}`}>
-            <h3 className="text-sm sm:text-base font-medium text-gray-900 line-clamp-2 mb-2 hover:text-blue-600 transition-colors" dir={langDir}>
+            <h3 className="text-sm sm:text-base font-medium text-gray-900 line-clamp-2 mb-2 hover:text-primary transition-colors" dir={langDir}>
               {productName}
             </h3>
           </Link>
 
           {/* Product Type Badge */}
           <div className="mb-2">
-            <span className="inline-block px-2 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded">
+            <span className="inline-block px-2 py-1 bg-primary/10 text-primary text-xs font-medium rounded">
               {productType === "F" ? t("factory_product") : t("product")}
             </span>
           </div>
@@ -501,7 +501,7 @@ const FactoriesProductCard: React.FC<RfqProductCardProps> = ({
           {productPrices?.[0]?.offerPrice ? (
             <div className="mb-3" dir={langDir}>
               <div className="flex items-center gap-2">
-                <span className="text-lg sm:text-xl font-bold text-blue-600">
+                <span className="text-lg sm:text-xl font-bold text-primary">
                   {currency.symbol}{calculateDiscountedPrice()}
                 </span>
                 {(() => {
@@ -527,7 +527,7 @@ const FactoriesProductCard: React.FC<RfqProductCardProps> = ({
                 <div key={index} dir={langDir}>
                   <label className="text-xs text-gray-600 mb-1 block">{variantType}</label>
                   <select
-                    className="w-full text-sm border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full text-sm border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-primary"
                     value={selectedProductVariant?.find((variant: any) => variant.type == variantType)?.value}
                     onChange={(e) => {
                       let selectedVariants = [];
@@ -603,7 +603,7 @@ const FactoriesProductCard: React.FC<RfqProductCardProps> = ({
 
             {/* Cart Status */}
             {isAddedToFactoryCart && (
-              <div className="flex items-center gap-1 mt-2 text-xs text-green-600">
+              <div className="flex items-center gap-1 mt-2 text-xs text-success">
                 <FaCircleCheck />
                 <span>{t("added_to_factory_cart")}</span>
               </div>
@@ -613,7 +613,7 @@ const FactoriesProductCard: React.FC<RfqProductCardProps> = ({
             {onAdd && (
               <Button
                 onClick={onAdd}
-                className="w-full mt-3 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg transition-colors duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                className="w-full mt-3 bg-primary hover:bg-primary/90 text-white font-medium py-2 rounded-lg transition-colors duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"
                 disabled={isAddedToFactoryCart || quantity === 0}
               >
                 {isAddedToFactoryCart ? (

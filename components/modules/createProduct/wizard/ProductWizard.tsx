@@ -154,7 +154,7 @@ const ProductWizard: React.FC<ProductWizardProps> = ({
               <Button
                 type="button"
                 onClick={goNext}
-                className="gap-2 rounded-xl bg-orange-500 px-8 py-3 font-medium text-white shadow-lg shadow-orange-200 hover:bg-orange-600"
+                className="gap-2 rounded-xl bg-warning px-8 py-3 font-medium text-white shadow-lg shadow-orange-200 hover:bg-warning"
                 dir={langDir}
               >
                 {t("next")}
@@ -168,7 +168,7 @@ const ProductWizard: React.FC<ProductWizardProps> = ({
                   form.trigger();
                   onSubmit();
                 }}
-                className="gap-2 rounded-xl bg-orange-500 px-8 py-3 font-medium text-white shadow-lg shadow-orange-200 hover:bg-orange-600 disabled:opacity-50"
+                className="gap-2 rounded-xl bg-warning px-8 py-3 font-medium text-white shadow-lg shadow-orange-200 hover:bg-warning disabled:opacity-50"
                 dir={langDir}
               >
                 {isSubmitting ? (

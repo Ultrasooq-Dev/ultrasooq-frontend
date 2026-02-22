@@ -181,8 +181,8 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
     <div className="space-y-8">
       {/* Price Section Header */}
       <div className="flex items-center gap-3 pb-4 border-b border-gray-100">
-        <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
-          <span className="text-orange-600 text-sm font-semibold">6</span>
+        <div className="w-8 h-8 bg-warning/10 rounded-lg flex items-center justify-center">
+          <span className="text-warning text-sm font-semibold">6</span>
         </div>
         <div>
           <h4 className="text-lg font-semibold text-gray-900">
@@ -204,7 +204,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                   <Checkbox
                     checked={field.value}
                     onCheckedChange={field.onChange}
-                    className="border-2 border-gray-300 data-[state=checked]:bg-orange-500 data-[state=checked]:border-orange-500"
+                    className="border-2 border-gray-300 data-[state=checked]:bg-warning data-[state=checked]:border-warning"
                   />
                 </FormControl>
                 <div className="space-y-1 leading-none">
@@ -277,7 +277,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                     )}
                   />
                   {!watchConsumerType && consumerTypeMessage ? (
-                    <p className="text-sm text-red-500 flex items-center gap-1" dir={langDir}>
+                    <p className="text-sm text-destructive flex items-center gap-1" dir={langDir}>
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
@@ -340,7 +340,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                   />
 
                   {!watchSellType && sellTypeMessage ? (
-                    <p className="text-sm text-red-500 flex items-center gap-1" dir={langDir}>
+                    <p className="text-sm text-destructive flex items-center gap-1" dir={langDir}>
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
@@ -387,7 +387,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                         render={({ field }) => (
                           <select
                             {...field}
-                            className="w-full h-12 px-4 py-3 bg-white border border-gray-300 rounded-xl text-sm text-gray-900 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 appearance-none cursor-pointer"
+                            className="w-full h-12 px-4 py-3 bg-white border border-gray-300 rounded-xl text-sm text-gray-900 focus:ring-2 focus:ring-warning focus:border-warning transition-all duration-200 appearance-none cursor-pointer"
                           >
                             <option value="" dir={langDir}></option>
                             <option value="FLAT" dir={langDir}>
@@ -434,7 +434,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                         render={({ field }) => (
                           <select
                             {...field}
-                            className="w-full h-12 px-4 py-3 bg-white border border-gray-300 rounded-xl text-sm text-gray-900 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 appearance-none cursor-pointer"
+                            className="w-full h-12 px-4 py-3 bg-white border border-gray-300 rounded-xl text-sm text-gray-900 focus:ring-2 focus:ring-warning focus:border-warning transition-all duration-200 appearance-none cursor-pointer"
                           >
                             <option value="" dir={langDir}></option>
                             <option value="FLAT" dir={langDir} translate="no">

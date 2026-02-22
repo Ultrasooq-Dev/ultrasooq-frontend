@@ -39,7 +39,7 @@ const SuggestedProductsListCard = () => {
           <div className="flex h-auto w-[32px] justify-end">
             <a
               href="#"
-              className="flex h-[28px] w-[28px] items-center justify-center rounded-md bg-red-200"
+              className="flex h-[28px] w-[28px] items-center justify-center rounded-md bg-destructive/20"
             >
               <Image src={ExportIcon} alt="export-icon" />
             </a>
@@ -69,7 +69,7 @@ const SuggestedProductsListCard = () => {
           <div className="flex h-auto w-[32px] justify-end">
             <a
               href="#"
-              className="flex h-[28px] w-[28px] items-center justify-center rounded-md bg-red-200"
+              className="flex h-[28px] w-[28px] items-center justify-center rounded-md bg-destructive/20"
             >
               <Image src={ExportIcon} alt="export-icon" />
             </a>
@@ -99,7 +99,7 @@ const SuggestedProductsListCard = () => {
           <div className="flex h-auto w-[32px] justify-end">
             <a
               href="#"
-              className="flex h-[28px] w-[28px] items-center justify-center rounded-md bg-red-200"
+              className="flex h-[28px] w-[28px] items-center justify-center rounded-md bg-destructive/20"
             >
               <Image src={ExportIcon} alt="export-icon" />
             </a>
@@ -129,7 +129,7 @@ const SuggestedProductsListCard = () => {
           <div className="flex h-auto w-[32px] justify-end">
             <a
               href="#"
-              className="flex h-[28px] w-[28px] items-center justify-center rounded-md bg-red-200"
+              className="flex h-[28px] w-[28px] items-center justify-center rounded-md bg-destructive/20"
             >
               <Image src={ExportIcon} alt="export-icon" />
             </a>
@@ -159,7 +159,7 @@ const SuggestedProductsListCard = () => {
           <div className="flex h-auto w-[32px] justify-end">
             <a
               href="#"
-              className="flex h-[28px] w-[28px] items-center justify-center rounded-md bg-red-200"
+              className="flex h-[28px] w-[28px] items-center justify-center rounded-md bg-destructive/20"
             >
               <Image src={ExportIcon} alt="export-icon" />
             </a>

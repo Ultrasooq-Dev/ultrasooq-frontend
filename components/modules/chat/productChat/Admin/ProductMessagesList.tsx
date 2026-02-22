@@ -157,8 +157,8 @@ const ProductMessageItem: React.FC<ProductMessageItemProps> = ({ item, onSelect,
       onClick={onSelect}
       className={`group relative flex w-full items-center gap-4 rounded-xl border-2 bg-white p-5 text-left transition-all duration-200 active:scale-[0.99] ${
         isSelected
-          ? "border-red-600 bg-red-50 hover:border-red-600 hover:bg-red-50"
-          : "border-gray-200 hover:border-red-600 hover:bg-red-50 hover:shadow-lg hover:shadow-gray-100"
+          ? "border-destructive bg-destructive/5 hover:border-destructive hover:bg-destructive/5"
+          : "border-gray-200 hover:border-destructive hover:bg-destructive/5 hover:shadow-lg hover:shadow-gray-100"
       }`}
     >
       {/* Product Image */}
@@ -190,7 +190,7 @@ const ProductMessageItem: React.FC<ProductMessageItemProps> = ({ item, onSelect,
           </div>
           {item.unreadMsgCount > 0 && (
             <div className="flex shrink-0 items-center">
-              <span className="flex h-6 min-w-[24px] items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-blue-600 px-2.5 text-xs font-bold text-white shadow-md shadow-blue-500/30">
+              <span className="flex h-6 min-w-[24px] items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary/90 px-2.5 text-xs font-bold text-white shadow-md shadow-blue-500/30">
                 {item.unreadMsgCount > 99 ? "99+" : item.unreadMsgCount}
               </span>
             </div>

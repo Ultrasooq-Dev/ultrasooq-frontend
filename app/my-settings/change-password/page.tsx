@@ -127,7 +127,7 @@ export default function ChangePasswordPage() {
       </div>
 
       {showSuccess ? (
-        <div className="overflow-hidden rounded-xl border border-green-200 bg-white p-8 shadow-sm">
+        <div className="overflow-hidden rounded-xl border border-success/20 bg-white p-8 shadow-sm">
           <PasswordChangeSuccessContent />
         </div>
       ) : (
@@ -151,7 +151,7 @@ export default function ChangePasswordPage() {
                         <Input
                           type="password"
                           placeholder="**********"
-                          className="h-12 rounded-lg border-gray-300 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-0"
+                          className="h-12 rounded-lg border-gray-300 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-0"
                           {...field}
                           dir={langDir}
                         />
@@ -173,7 +173,7 @@ export default function ChangePasswordPage() {
                         <Input
                           type="password"
                           placeholder="**********"
-                          className="h-12 rounded-lg border-gray-300 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-0"
+                          className="h-12 rounded-lg border-gray-300 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-0"
                           {...field}
                           dir={langDir}
                         />
@@ -198,7 +198,7 @@ export default function ChangePasswordPage() {
                         <Input
                           type="password"
                           placeholder="**********"
-                          className="h-12 rounded-lg border-gray-300 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-0"
+                          className="h-12 rounded-lg border-gray-300 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-0"
                           {...field}
                           dir={langDir}
                         />
@@ -212,7 +212,7 @@ export default function ChangePasswordPage() {
                   <Button
                     disabled={changePassword.isPending}
                     type="submit"
-                    className="h-12 flex-1 rounded-lg bg-blue-600 text-base font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 sm:flex-none sm:px-8"
+                    className="h-12 flex-1 rounded-lg bg-primary text-base font-semibold text-white shadow-sm transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 sm:flex-none sm:px-8"
                     translate="no"
                   >
                     {changePassword.isPending ? (

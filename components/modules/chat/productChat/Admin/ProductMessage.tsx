@@ -66,7 +66,7 @@ const ProductMessage: React.FC<ProductMessageProps> = ({
                   {message.content}
                 </div>
                 {message?.unreadMsgCount ? (
-                  <div className="flex items-center justify-center h-5 w-5 text-xs font-semibold text-white bg-blue-500 rounded-full">
+                  <div className="flex items-center justify-center h-5 w-5 text-xs font-semibold text-white bg-primary rounded-full">
                     {message?.unreadMsgCount}
                   </div>
                 ) : ""}

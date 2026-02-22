@@ -327,8 +327,8 @@ const TrendingCategories: React.FC<TrendingCategoriesProps> = ({
       {expandedMainCategory && (
         <div className="mt-8 sm:mt-12 animate-in slide-in-from-top-4 duration-700">
           <div className="mb-6 sm:mb-8 flex justify-center">
-            <div className="inline-flex items-center gap-2 sm:gap-3 rounded-xl bg-blue-50 border border-blue-100 px-4 sm:px-6 py-2 sm:py-3 shadow-sm">
-              <div className="rounded-full bg-blue-600 p-1.5 sm:p-2">
+            <div className="inline-flex items-center gap-2 sm:gap-3 rounded-xl bg-primary/5 border border-primary/10 px-4 sm:px-6 py-2 sm:py-3 shadow-sm">
+              <div className="rounded-full bg-primary p-1.5 sm:p-2">
                 <Grid3X3 className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
               </div>
               <div className="text-left">
@@ -444,8 +444,8 @@ const TrendingCategories: React.FC<TrendingCategoriesProps> = ({
       {expandedSubCategory && (
         <div className="mt-6 sm:mt-8 animate-in slide-in-from-top-4 duration-500">
           <div className="mb-4 sm:mb-6 flex justify-center">
-            <div className="inline-flex items-center gap-2 sm:gap-3 rounded-xl bg-purple-50 border border-purple-100 px-4 sm:px-6 py-2 sm:py-3 shadow-sm">
-              <div className="rounded-full bg-purple-600 p-1.5 sm:p-2">
+            <div className="inline-flex items-center gap-2 sm:gap-3 rounded-xl bg-info/5 border border-info/10 px-4 sm:px-6 py-2 sm:py-3 shadow-sm">
+              <div className="rounded-full bg-info p-1.5 sm:p-2">
                 <Layers className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
               </div>
               <div className="text-left">

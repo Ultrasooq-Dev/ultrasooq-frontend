@@ -997,7 +997,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
                     "flex items-center gap-3 px-3 py-2 rounded-md transition-colors",
                     hasChildren ? "cursor-default" : "cursor-pointer",
                     isSelected
-                      ? "bg-blue-50 text-blue-700 font-medium border border-blue-200"
+                      ? "bg-primary/5 text-primary font-medium border border-primary/20"
                       : "hover:bg-gray-50 text-gray-700",
                   )}
                   onMouseEnter={(e) => {
@@ -1336,10 +1336,10 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
                             },
                             langDir === "rtl"
                               ? {
-                                  "border-l-2 border-orange-500": isMainActive,
+                                  "border-l-2 border-warning": isMainActive,
                                 }
                               : {
-                                  "border-r-2 border-orange-500": isMainActive,
+                                  "border-r-2 border-warning": isMainActive,
                                 }
                           )}
                           onMouseEnter={() => {
@@ -1404,7 +1404,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
             >
               {gridLoading ? (
                 <div className="flex items-center justify-center h-full">
-                  <div className="animate-spin rounded-full h-6 w-6 border-2 border-orange-500 border-t-transparent" />
+                  <div className="animate-spin rounded-full h-6 w-6 border-2 border-warning border-t-transparent" />
                 </div>
               ) : subcategoriesForGrid.length > 0 ? (
                 <div className="py-2">
@@ -1421,7 +1421,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
                         className={cn(
                           "flex cursor-pointer items-center gap-x-3 px-4 py-2.5 transition-colors",
                           isActive
-                            ? "bg-orange-50 text-orange-700"
+                            ? "bg-warning/5 text-warning"
                             : "hover:bg-gray-50 text-gray-700"
                         )}
                         onMouseEnter={() => {
@@ -1453,7 +1453,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
                           <svg
                             className={cn(
                               "w-3.5 h-3.5 flex-shrink-0",
-                              isActive ? "text-orange-500" : "text-gray-400",
+                              isActive ? "text-warning" : "text-gray-400",
                               langDir === "rtl" ? "rotate-180" : ""
                             )}
                             fill="none"
@@ -1476,7 +1476,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
                   {selectedLevels[0] && (
                     <div className="px-4 py-3 mt-1 border-t border-gray-100">
                       <span
-                        className="text-orange-600 hover:text-orange-700 font-medium cursor-pointer text-sm"
+                        className="text-warning hover:text-warning font-medium cursor-pointer text-sm"
                         onClick={() => handleCategoryClick(selectedLevels[0]!)}
                       >
                         {t("view_all") || "View All"}{" "}
@@ -1507,14 +1507,14 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
               >
                 {level3Loading ? (
                   <div className="flex items-center justify-center h-full">
-                    <div className="animate-spin rounded-full h-6 w-6 border-2 border-orange-500 border-t-transparent" />
+                    <div className="animate-spin rounded-full h-6 w-6 border-2 border-warning border-t-transparent" />
                   </div>
                 ) : (
                   <>
                     {/* Level 3 header: the hovered Level 2 category name */}
                     <div className="mb-4 pb-2 border-b border-gray-200">
                       <h3
-                        className="font-semibold text-base text-gray-900 cursor-pointer hover:text-orange-600 transition-colors"
+                        className="font-semibold text-base text-gray-900 cursor-pointer hover:text-warning transition-colors"
                         onClick={() => handleCategoryClick(hoveredLevel2Id!)}
                       >
                         {translate(
@@ -1545,7 +1545,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
                               ) : (
                                 <div className="h-4 w-4 flex-shrink-0 rounded bg-gray-300" />
                               )}
-                              <span className="text-sm font-medium text-gray-700 group-hover:text-orange-600 transition-colors line-clamp-1">
+                              <span className="text-sm font-medium text-gray-700 group-hover:text-warning transition-colors line-clamp-1">
                                 {translate(item.name)}
                               </span>
                             </div>
@@ -1555,7 +1555,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
                                 {level4Items.map((sub: any) => (
                                   <span
                                     key={sub.id}
-                                    className="text-xs text-gray-400 hover:text-orange-500 cursor-pointer transition-colors line-clamp-1 py-0.5"
+                                    className="text-xs text-gray-400 hover:text-warning cursor-pointer transition-colors line-clamp-1 py-0.5"
                                     onClick={() => handleCategoryClick(sub.id)}
                                   >
                                     {translate(sub.name)}
@@ -1571,7 +1571,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
                     {/* View All for this subcategory */}
                     <div className="mt-4 pt-3 border-t border-gray-200">
                       <span
-                        className="text-orange-600 hover:text-orange-700 font-medium cursor-pointer text-sm"
+                        className="text-warning hover:text-warning font-medium cursor-pointer text-sm"
                         onClick={() => handleCategoryClick(hoveredLevel2Id!)}
                       >
                         {t("view_all") || "View All"}{" "}

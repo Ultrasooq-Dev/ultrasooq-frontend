@@ -261,17 +261,17 @@ const DropshipProductManageCard: React.FC<DropshipProductManageCardProps> = ({
               <h3 className="text-lg font-semibold text-gray-900">{productName || "-"}</h3>
               {/* Product Type Badges */}
               {productType === 'D' && !isDropshipped && (
-                <span className="px-2 py-1 text-xs font-medium bg-purple-100 text-purple-700 rounded-full">
+                <span className="px-2 py-1 text-xs font-medium bg-info/10 text-info rounded-full">
                   {t("dropshipable_product")}
                 </span>
               )}
               {productType === 'P' && (
-                <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded-full">
+                <span className="px-2 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full">
                   {t("regular_product")}
                 </span>
               )}
               {isDropshipped && (
-                <span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-700 rounded-full">
+                <span className="px-2 py-1 text-xs font-medium bg-success/10 text-success rounded-full">
                   {t("dropship_product")}
                 </span>
               )}
@@ -281,20 +281,20 @@ const DropshipProductManageCard: React.FC<DropshipProductManageCardProps> = ({
             <div className="flex space-x-6 text-sm text-gray-600">
               <div className="flex items-center space-x-2">
                 <span className="font-medium">{t("stock")}:</span>
-                <span className="text-green-600 font-semibold">
+                <span className="text-success font-semibold">
                   {askForStock === "false" || askForStock === "NO" || (askForStock as any) === false ? stock : t("ask_for_the_stock")}
                 </span>
               </div>
               <div className="flex items-center space-x-2">
                 <span className="font-medium">{t("price")}:</span>
-                <span className="text-blue-600 font-semibold">
+                <span className="text-primary font-semibold">
                   {askForPrice === "false" || askForPrice === "NO" || (askForPrice as any) === false ? `$${productPrice}` : t("ask_for_the_price")}
                 </span>
               </div>
               {offerPrice && offerPrice !== "0" && (
                 <div className="flex items-center space-x-2">
                   <span className="font-medium">{t("offer_price")}:</span>
-                  <span className="text-orange-600 font-semibold">${offerPrice}</span>
+                  <span className="text-warning font-semibold">${offerPrice}</span>
                 </div>
               )}
             </div>
@@ -318,8 +318,8 @@ const DropshipProductManageCard: React.FC<DropshipProductManageCardProps> = ({
             <div className="flex items-center space-x-2">
               <span className={`px-2 py-1 text-xs font-medium rounded-full ${
                 status === "ACTIVE" 
-                  ? "bg-green-100 text-green-700" 
-                  : "bg-red-100 text-red-700"
+                  ? "bg-success/10 text-success" 
+                  : "bg-destructive/10 text-destructive"
               }`}>
                 {status === "ACTIVE" ? t("active") : t("inactive")}
               </span>
@@ -335,8 +335,8 @@ const DropshipProductManageCard: React.FC<DropshipProductManageCardProps> = ({
               onClick={handleWishlistToggle}
               className={`p-2 rounded-lg border transition-colors ${
                 inWishlist 
-                  ? "bg-red-50 border-red-200 text-red-600" 
-                  : "bg-gray-50 border-gray-200 text-gray-600 hover:bg-red-50 hover:border-red-200 hover:text-red-600"
+                  ? "bg-destructive/5 border-destructive/20 text-destructive" 
+                  : "bg-gray-50 border-gray-200 text-gray-600 hover:bg-destructive/5 hover:border-destructive/20 hover:text-destructive"
               }`}
               title={inWishlist ? t("remove_from_wishlist") : t("add_to_wishlist")}
             >
@@ -354,7 +354,7 @@ const DropshipProductManageCard: React.FC<DropshipProductManageCardProps> = ({
               {productType === 'D' && !isDropshipped && (
                 <button
                   onClick={() => setShowDropshipModal(true)}
-                  className="px-3 py-1 bg-purple-100 text-purple-700 rounded text-xs hover:bg-purple-200 transition-colors"
+                  className="px-3 py-1 bg-info/10 text-info rounded text-xs hover:bg-info/20 transition-colors"
                   title={t("view_dropship_products")}
                 >
                   {t("view_dropship_products")}
@@ -363,7 +363,7 @@ const DropshipProductManageCard: React.FC<DropshipProductManageCardProps> = ({
 
               <button
                 onClick={handleEdit}
-                className="p-2 text-gray-500 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                className="p-2 text-gray-500 hover:text-success hover:bg-success/5 rounded-lg transition-colors"
                 title={t("edit_product")}
               >
                 <IoMdEdit size={18} />
@@ -371,7 +371,7 @@ const DropshipProductManageCard: React.FC<DropshipProductManageCardProps> = ({
 
               <button
                 onClick={handleRemove}
-                className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                className="p-2 text-gray-500 hover:text-destructive hover:bg-destructive/5 rounded-lg transition-colors"
                 title={t("delete_product")}
               >
                 <IoMdTrash size={18} />

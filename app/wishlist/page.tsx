@@ -88,7 +88,7 @@ const WishlistPage = () => {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <svg
-                        className="h-5 w-5 text-blue-600"
+                        className="h-5 w-5 text-primary"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -119,9 +119,9 @@ const WishlistPage = () => {
               {/* Empty State */}
               {!wishlistQuery.isLoading && !wishlistQuery.data?.data?.length ? (
                 <div className="overflow-hidden rounded-xl border-2 border-dashed border-gray-300 bg-white p-12 text-center shadow-sm">
-                  <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-red-50">
+                  <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-destructive/5">
                     <svg
-                      className="h-10 w-10 text-red-400"
+                      className="h-10 w-10 text-destructive/70"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -144,7 +144,7 @@ const WishlistPage = () => {
                   <div className="mt-6">
                     <Button
                       onClick={() => router.push("/home")}
-                      className="rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700"
+                      className="rounded-lg bg-primary px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary/90"
                       translate="no"
                     >
                       {t("browse_products")}

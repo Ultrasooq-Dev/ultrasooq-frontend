@@ -75,7 +75,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
   const businessTypes = getBusinessTypeTags();
 
   return (
-    <div className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-6 shadow-md transition-all duration-300 hover:shadow-lg hover:border-blue-300">
+    <div className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-6 shadow-md transition-all duration-300 hover:shadow-lg hover:border-primary/30">
       {/* Header */}
       <div className="flex items-start space-x-4">
         {/* Vendor Avatar */}
@@ -87,7 +87,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
             className="rounded-full object-cover"
             sizes="64px"
           />
-          <div className="absolute -bottom-1 -right-1 rounded-full bg-blue-600 p-1">
+          <div className="absolute -bottom-1 -right-1 rounded-full bg-primary p-1">
             <Building2 className="h-3 w-3 text-white" />
           </div>
         </div>
@@ -107,7 +107,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
             {/* Rating */}
             {vendor.averageRating && (
               <div className="flex items-center space-x-1">
-                <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                <Star className="h-4 w-4 text-warning fill-current" />
                 <span className="text-sm font-medium text-gray-700">
                   {vendor.averageRating.toFixed(1)}
                 </span>
@@ -176,7 +176,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
             variant="outline"
             size="sm"
             onClick={() => onViewProducts(vendor.id)}
-            className="group/btn flex items-center space-x-1 text-blue-600 border-blue-200 hover:bg-blue-50 hover:border-blue-300"
+            className="group/btn flex items-center space-x-1 text-primary border-primary/20 hover:bg-primary/5 hover:border-primary/30"
           >
             <span>View Products</span>
             <ChevronRight className="h-3 w-3 transition-transform group-hover/btn:translate-x-0.5" />
@@ -190,7 +190,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
                   ? `/freelancer-profile-details?userId=${vendor.id}`
                   : "#"
             }
-            className="p-2 text-gray-400 hover:text-blue-600 transition-colors"
+            className="p-2 text-gray-400 hover:text-primary transition-colors"
           >
             <ExternalLink className="h-4 w-4" />
           </Link>
@@ -198,7 +198,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
       </div>
 
       {/* Hover Effect */}
-      <div className="absolute inset-0 rounded-2xl bg-linear-to-r from-blue-500/5 via-purple-500/5 to-pink-500/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+      <div className="absolute inset-0 rounded-2xl bg-linear-to-r from-primary/5 via-purple-500/5 to-pink-500/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
     </div>
   );
 };

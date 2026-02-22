@@ -25,9 +25,9 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
     switch (notification.type) {
       case NotificationType.ORDER:
         return (
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-success/10">
             <svg
-              className="h-5 w-5 text-green-600"
+              className="h-5 w-5 text-success"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -43,9 +43,9 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
         );
       case NotificationType.MESSAGE:
         return (
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
             <svg
-              className="h-5 w-5 text-blue-600"
+              className="h-5 w-5 text-primary"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -61,9 +61,9 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
         );
       case NotificationType.RFQ:
         return (
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-100">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-info/10">
             <svg
-              className="h-5 w-5 text-purple-600"
+              className="h-5 w-5 text-info"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -79,9 +79,9 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
         );
       case NotificationType.REVIEW:
         return (
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-yellow-100">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-warning/10">
             <svg
-              className="h-5 w-5 text-yellow-600"
+              className="h-5 w-5 text-warning"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -115,9 +115,9 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
         );
       case NotificationType.SHIPMENT:
         return (
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-100">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-info/10">
             <svg
-              className="h-5 w-5 text-indigo-600"
+              className="h-5 w-5 text-info"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -173,7 +173,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
     <div
       onClick={handleClick}
       className={`flex cursor-pointer gap-3 rounded-lg p-3 transition-colors hover:bg-gray-50 ${
-        !notification.read ? "bg-blue-50/50" : "bg-white"
+        !notification.read ? "bg-primary/5/50" : "bg-white"
       }`}
       dir={langDir}
     >
@@ -197,7 +197,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
           </div>
           {!notification.read && (
             <div className="flex-shrink-0">
-              <div className="h-2 w-2 rounded-full bg-blue-600"></div>
+              <div className="h-2 w-2 rounded-full bg-primary"></div>
             </div>
           )}
         </div>

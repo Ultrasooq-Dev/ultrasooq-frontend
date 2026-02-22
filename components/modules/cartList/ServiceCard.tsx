@@ -232,14 +232,14 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
                         <div>
                             <Button
                                 type="button"
-                                className="bg-white text-red-500 mr-2"
+                                className="bg-white text-destructive mr-2"
                                 onClick={onCancelRemove}
                             >
                                 Cancel
                             </Button>
                             <Button
                                 type="button"
-                                className="bg-red-500"
+                                className="bg-destructive"
                                 onClick={onConfirmRemove}
                             >
                                 Remove

@@ -411,9 +411,9 @@ const RfqCartPage = () => {
                   <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
                     <div className="border-b border-gray-200 bg-white px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-orange-100">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-warning/10">
                           <svg
-                            className="h-6 w-6 text-orange-600"
+                            className="h-6 w-6 text-warning"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -562,7 +562,7 @@ const RfqCartPage = () => {
                                               setShowNewAddressInput(false);
                                               field.onChange("");
                                             }}
-                                            className="text-sm font-medium text-orange-600 hover:text-orange-800"
+                                            className="text-sm font-medium text-warning hover:text-warning"
                                           >
                                             {t("select_from_saved_addresses") ||
                                               "Select from saved addresses"}

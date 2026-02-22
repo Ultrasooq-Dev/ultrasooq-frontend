@@ -110,8 +110,8 @@ const Step1NameAndPictures: React.FC<Step1Props> = ({
       {/* Product Name + AI Search Button */}
       <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
         <div className="mb-4 flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-orange-100">
-            <Package className="h-5 w-5 text-orange-600" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-warning/10">
+            <Package className="h-5 w-5 text-warning" />
           </div>
           <div className="flex-1">
             <h3 className="text-lg font-semibold text-gray-800">
@@ -134,8 +134,8 @@ const Step1NameAndPictures: React.FC<Step1Props> = ({
                     {...field}
                     placeholder={t("enter_product_name")}
                     className={cn(
-                      "h-12 flex-1 rounded-lg border-gray-300 text-base focus:border-orange-500 focus:ring-orange-500",
-                      fieldState.error && "border-red-400",
+                      "h-12 flex-1 rounded-lg border-gray-300 text-base focus:border-warning focus:ring-warning",
+                      fieldState.error && "border-destructive/70",
                     )}
                     disabled={copy}
                     dir={langDir}
@@ -150,7 +150,7 @@ const Step1NameAndPictures: React.FC<Step1Props> = ({
                     <Button
                       type="button"
                       onClick={handleAiTextSearch}
-                      className="h-12 gap-2 rounded-lg bg-purple-600 px-4 text-white hover:bg-purple-700"
+                      className="h-12 gap-2 rounded-lg bg-info px-4 text-white hover:bg-info/90"
                     >
                       <Sparkles className="h-4 w-4" />
                       <span className="hidden sm:inline">
@@ -162,7 +162,7 @@ const Step1NameAndPictures: React.FC<Step1Props> = ({
                 </div>
               </FormControl>
               {fieldState.error && (
-                <p className="mt-1 text-sm text-red-500">
+                <p className="mt-1 text-sm text-destructive">
                   {fieldState.error.message}
                 </p>
               )}
@@ -174,8 +174,8 @@ const Step1NameAndPictures: React.FC<Step1Props> = ({
       {/* Product Images & Videos + AI Scan Button */}
       <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
         <div className="mb-4 flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100">
-            <Camera className="h-5 w-5 text-blue-600" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+            <Camera className="h-5 w-5 text-primary" />
           </div>
           <div className="flex-1">
             <h3 className="text-lg font-semibold text-gray-800">
@@ -199,7 +199,7 @@ const Step1NameAndPictures: React.FC<Step1Props> = ({
                 type="button"
                 variant="outline"
                 onClick={() => aiScanFileRef.current?.click()}
-                className="gap-2 border-purple-300 text-purple-600 hover:bg-purple-50 hover:text-purple-700"
+                className="gap-2 border-purple-300 text-info hover:bg-info/5 hover:text-info"
               >
                 <Sparkles className="h-4 w-4" />
                 {t("scan_with_ai") || "Scan with AI"}
@@ -266,7 +266,7 @@ const Step1NameAndPictures: React.FC<Step1Props> = ({
                   <button
                     type="button"
                     onClick={() => handleRemoveImage(index)}
-                    className="rounded-full bg-red-500 px-3 py-1.5 text-xs font-medium text-white shadow hover:bg-red-600"
+                    className="rounded-full bg-destructive px-3 py-1.5 text-xs font-medium text-white shadow hover:bg-destructive"
                   >
                     Remove
                   </button>
@@ -274,7 +274,7 @@ const Step1NameAndPictures: React.FC<Step1Props> = ({
 
                 {/* Index badge */}
                 {index === 0 && (
-                  <div className="absolute left-2 top-2 rounded bg-orange-500 px-2 py-0.5 text-xs font-bold text-white">
+                  <div className="absolute left-2 top-2 rounded bg-warning px-2 py-0.5 text-xs font-bold text-white">
                     Main
                   </div>
                 )}
@@ -286,7 +286,7 @@ const Step1NameAndPictures: React.FC<Step1Props> = ({
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="flex aspect-square flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 transition-colors hover:border-orange-400 hover:bg-orange-50"
+            className="flex aspect-square flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 transition-colors hover:border-warning/70 hover:bg-warning/5"
           >
             <IoMdAdd className="h-8 w-8 text-gray-400" />
             <span className="text-xs font-medium text-gray-500">

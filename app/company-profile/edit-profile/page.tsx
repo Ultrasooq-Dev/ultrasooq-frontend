@@ -317,7 +317,7 @@ export default function EditProfilePage() {
                                     <span translate="no">
                                       {t("drop_your_company_logo")}{" "}
                                     </span>
-                                    <span className="text-blue-500">
+                                    <span className="text-primary">
                                       browse
                                     </span>
                                     <p className="text-normal mt-3 text-xs leading-4 text-gray-300" translate="no">

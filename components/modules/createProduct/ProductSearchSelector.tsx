@@ -125,7 +125,7 @@ const ProductSearchSelector: React.FC<ProductSearchSelectorProps> = ({
           />
         </div>
         <div className="text-center py-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
         </div>
       </div>
     );
@@ -156,7 +156,7 @@ const ProductSearchSelector: React.FC<ProductSearchSelectorProps> = ({
       {/* Loading State */}
       {isLoading && (
         <div className="flex items-center justify-center py-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
         </div>
       )}
 
@@ -168,7 +168,7 @@ const ProductSearchSelector: React.FC<ProductSearchSelectorProps> = ({
               key={product.id} 
               className={`cursor-pointer transition-all duration-200 hover:shadow-md ${
                 selectedProduct?.id === product.id 
-                  ? 'ring-2 ring-blue-500 border-blue-500' 
+                  ? 'ring-2 ring-primary border-primary' 
                   : 'hover:border-gray-300'
               }`}
               onClick={() => handleProductSelect(product)}
@@ -202,7 +202,7 @@ const ProductSearchSelector: React.FC<ProductSearchSelectorProps> = ({
 
                   {/* Pricing */}
                   <div className="flex items-center gap-2">
-                    <span className="text-lg font-semibold text-green-600">
+                    <span className="text-lg font-semibold text-success">
                       ${Number(product.productPrice).toFixed(2)}
                     </span>
                     {product.offerPrice && Number(product.offerPrice) < Number(product.productPrice) && (
@@ -238,7 +238,7 @@ const ProductSearchSelector: React.FC<ProductSearchSelectorProps> = ({
                   size="sm"
                   className={`w-full mt-3 ${
                     selectedProduct?.id === product.id
-                      ? 'bg-blue-600 hover:bg-blue-700'
+                      ? 'bg-primary hover:bg-primary/90'
                       : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
                   }`}
                   onClick={(e) => {

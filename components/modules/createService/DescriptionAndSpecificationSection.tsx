@@ -54,7 +54,7 @@ const DescriptionAndSpecificationSection = () => {
             name="description"
             height={400}
           />
-          <p className="text-red-500 text-sm mt-1">
+          <p className="text-destructive text-sm mt-1">
             {typeof descriptionError?.message === "string" ? descriptionError.message : null}
           </p>
         </div>

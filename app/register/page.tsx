@@ -324,12 +324,12 @@ export default function RegisterPage() {
           {/* Register Card */}
           <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl">
             {/* Decorative Header */}
-            <div className="from-dark-orange via-dark-orange h-1.5 bg-gradient-to-r to-orange-600"></div>
+            <div className="from-dark-orange via-dark-orange h-1.5 bg-gradient-to-r to-warning/90"></div>
 
             <div className="p-6 sm:p-8">
               {/* Header Section */}
               <div className="mb-6 text-center">
-                <div className="from-dark-orange mb-3 inline-flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br to-orange-600 shadow-md">
+                <div className="from-dark-orange mb-3 inline-flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br to-warning/90 shadow-md">
                   <svg
                     className="h-6 w-6 text-white"
                     fill="none"
@@ -364,7 +364,7 @@ export default function RegisterPage() {
               <div className="mb-5">
                 <Button
                   variant="outline"
-                  className="h-10 w-full rounded-lg border-2 border-gray-200 text-xs font-semibold text-gray-700 shadow-sm transition-all duration-200 hover:border-red-500 hover:bg-red-50 hover:text-red-700 hover:shadow-md sm:h-11 sm:text-sm"
+                  className="h-10 w-full rounded-lg border-2 border-gray-200 text-xs font-semibold text-gray-700 shadow-sm transition-all duration-200 hover:border-destructive hover:bg-destructive/5 hover:text-destructive hover:shadow-md sm:h-11 sm:text-sm"
                   onClick={() => {
                     setIsGoogleLoading(true);
                     localStorage.setItem("loginType", "GOOGLE");
@@ -512,7 +512,7 @@ export default function RegisterPage() {
                                 <Button
                                   onClick={handleToggleTermsModal}
                                   type="button"
-                                  className="text-dark-orange h-auto bg-transparent p-0 text-xs font-semibold underline-offset-2 shadow-none transition-colors duration-200 hover:bg-transparent hover:text-orange-700 hover:underline sm:text-sm"
+                                  className="text-dark-orange h-auto bg-transparent p-0 text-xs font-semibold underline-offset-2 shadow-none transition-colors duration-200 hover:bg-transparent hover:text-warning hover:underline sm:text-sm"
                                   dir={langDir}
                                   translate="no"
                                 >
@@ -522,7 +522,7 @@ export default function RegisterPage() {
                                 <Button
                                   onClick={handleTogglePrivacyModal}
                                   type="button"
-                                  className="text-dark-orange h-auto bg-transparent p-0 text-xs font-semibold underline-offset-2 shadow-none transition-colors duration-200 hover:bg-transparent hover:text-orange-700 hover:underline sm:text-sm"
+                                  className="text-dark-orange h-auto bg-transparent p-0 text-xs font-semibold underline-offset-2 shadow-none transition-colors duration-200 hover:bg-transparent hover:text-warning hover:underline sm:text-sm"
                                   dir={langDir}
                                   translate="no"
                                 >
@@ -540,7 +540,7 @@ export default function RegisterPage() {
                     <Button
                       disabled={register.isPending}
                       type="submit"
-                      className="from-dark-orange hover:to-dark-orange h-11 w-full transform rounded-lg bg-gradient-to-r to-orange-600 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:from-orange-700 hover:shadow-xl active:scale-[0.98] disabled:transform-none disabled:cursor-not-allowed disabled:opacity-70 sm:h-12 sm:text-base"
+                      className="from-dark-orange hover:to-primary h-11 w-full transform rounded-lg bg-gradient-to-r to-warning/90 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:from-warning/90 hover:shadow-xl active:scale-[0.98] disabled:transform-none disabled:cursor-not-allowed disabled:opacity-70 sm:h-12 sm:text-base"
                       dir={langDir}
                       translate="no"
                     >
@@ -578,7 +578,7 @@ export default function RegisterPage() {
                     {t("already_have_an_account")}{" "}
                     <Link
                       href="/login"
-                      className="text-dark-orange font-semibold underline-offset-2 transition-colors duration-200 hover:text-orange-700 hover:underline"
+                      className="text-dark-orange font-semibold underline-offset-2 transition-colors duration-200 hover:text-warning hover:underline"
                       dir={langDir}
                     >
                       {t("sign_in")}

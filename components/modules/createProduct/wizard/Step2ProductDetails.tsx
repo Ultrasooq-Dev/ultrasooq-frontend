@@ -30,11 +30,11 @@ const Step2ProductDetails: React.FC<Step2Props> = ({
     <div className="space-y-6">
       {/* Category, Brand, Condition, Tags */}
       <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-        <div className="border-b border-gray-200 bg-blue-50 px-6 py-4">
+        <div className="border-b border-gray-200 bg-primary/5 px-6 py-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-100">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10">
               <svg
-                className="h-5 w-5 text-blue-600"
+                className="h-5 w-5 text-primary"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -70,11 +70,11 @@ const Step2ProductDetails: React.FC<Step2Props> = ({
 
       {/* Description, Specifications, Variants */}
       <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-        <div className="border-b border-gray-200 bg-green-50 px-6 py-4">
+        <div className="border-b border-gray-200 bg-success/5 px-6 py-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-green-100">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-success/10">
               <svg
-                className="h-5 w-5 text-green-600"
+                className="h-5 w-5 text-success"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"

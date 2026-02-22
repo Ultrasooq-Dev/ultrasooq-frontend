@@ -303,7 +303,7 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
             <div className="absolute inset-0 z-50 flex items-center justify-center rounded-lg bg-white/80 backdrop-blur-sm">
               <div className="flex flex-col items-center gap-3">
                 <svg
-                  className="h-8 w-8 animate-spin text-blue-600"
+                  className="h-8 w-8 animate-spin text-primary"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -398,11 +398,11 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
 
               {/* Personal information is inherited from Master Account */}
               <div className="space-y-3 border-t border-gray-200 pt-4">
-                <div className="rounded-lg border border-blue-200 bg-blue-50 p-3">
+                <div className="rounded-lg border border-primary/20 bg-primary/5 p-3">
                   <div className="flex items-start space-x-2">
                     <div className="shrink-0">
                       <svg
-                        className="mt-0.5 h-5 w-5 text-blue-600"
+                        className="mt-0.5 h-5 w-5 text-primary"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -415,11 +415,11 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
                         />
                       </svg>
                     </div>
-                    <div className="text-sm text-blue-800">
+                    <div className="text-sm text-primary">
                       <p className="font-medium">
                         {t("personal_information_inherited")}
                       </p>
-                      <p className="text-blue-600">
+                      <p className="text-primary">
                         {t("personal_information_inherited_description")}
                       </p>
                     </div>
@@ -430,7 +430,7 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
               {/* Identity Card Upload - Mandatory for COMPANY and FREELANCER */}
               <div className="space-y-3 border-t border-gray-200 pt-4">
                 <h4 className="text-dark-cyan text-sm font-medium">
-                  {t("identity_card")} <span className="text-red-500">*</span>
+                  {t("identity_card")} <span className="text-destructive">*</span>
                 </h4>
                 <p className="text-xs text-gray-600">
                   {t("identity_card_description")}
@@ -445,7 +445,7 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
                       <FormItem>
                         <FormLabel className="text-dark-cyan text-xs font-medium">
                           {t("front_side")}{" "}
-                          <span className="text-red-500">*</span>
+                          <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
                           <div className="relative w-full overflow-hidden rounded-lg border-2 border-dashed border-gray-300">
@@ -454,7 +454,7 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
                                 <>
                                   <button
                                     type="button"
-                                    className="absolute top-2 right-2 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-red-500 transition-colors hover:bg-red-600"
+                                    className="absolute top-2 right-2 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-destructive transition-colors hover:bg-destructive"
                                     onClick={(e) => {
                                       e.stopPropagation();
                                       setIdentityFrontImageFile(null);
@@ -540,7 +540,7 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
                       <FormItem>
                         <FormLabel className="text-dark-cyan text-xs font-medium">
                           {t("back_side")}{" "}
-                          <span className="text-red-500">*</span>
+                          <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
                           <div className="relative w-full overflow-hidden rounded-lg border-2 border-dashed border-gray-300">
@@ -549,7 +549,7 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
                                 <>
                                   <button
                                     type="button"
-                                    className="absolute top-2 right-2 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-red-500 transition-colors hover:bg-red-600"
+                                    className="absolute top-2 right-2 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-destructive transition-colors hover:bg-destructive"
                                     onClick={(e) => {
                                       e.stopPropagation();
                                       setIdentityBackImageFile(null);
@@ -747,11 +747,11 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
 
               {/* Status Information */}
               <div className="space-y-3 border-t border-gray-200 pt-4">
-                <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-3">
+                <div className="rounded-lg border border-warning/20 bg-warning/5 p-3">
                   <div className="flex items-start space-x-2">
                     <div className="shrink-0">
                       <svg
-                        className="mt-0.5 h-5 w-5 text-yellow-600"
+                        className="mt-0.5 h-5 w-5 text-warning"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -764,9 +764,9 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
                         />
                       </svg>
                     </div>
-                    <div className="text-sm text-yellow-800">
+                    <div className="text-sm text-warning">
                       <p className="font-medium">{t("account_status")}</p>
-                      <p className="text-yellow-600">
+                      <p className="text-warning">
                         {t("account_status_description")}
                       </p>
                     </div>
@@ -798,7 +798,7 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
               createAccount.isPending ||
               updateProfile.isPending
             }
-            className="bg-blue-600 hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+            className="bg-primary hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isCreatingAccount ||
             createAccount.isPending ||

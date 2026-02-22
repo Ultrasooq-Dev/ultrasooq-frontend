@@ -49,7 +49,7 @@ const CompactVendorInfo: React.FC<CompactVendorInfoProps> = ({ adminId }) => {
                   ? `/freelancer-profile-details?userId=${adminId}`
                   : "#"
             }
-            className="text-base font-semibold text-gray-900 hover:text-blue-600 transition-colors"
+            className="text-base font-semibold text-gray-900 hover:text-primary transition-colors"
           >
             {vendor?.accountName || 
              vendor?.userProfile?.[0]?.companyName || 
@@ -61,7 +61,7 @@ const CompactVendorInfo: React.FC<CompactVendorInfoProps> = ({ adminId }) => {
           <span className="text-sm font-medium text-gray-600">Email:</span>
           <a 
             href={`mailto:${vendor?.masterAccount?.email || vendor?.email || 'test@gmail.com'}`}
-            className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-blue-600 transition-colors"
+            className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-primary transition-colors"
           >
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -72,7 +72,7 @@ const CompactVendorInfo: React.FC<CompactVendorInfoProps> = ({ adminId }) => {
       </div>
 
       {/* Verified Badge */}
-      <div className="flex items-center gap-1 text-xs text-green-600 flex-shrink-0">
+      <div className="flex items-center gap-1 text-xs text-success flex-shrink-0">
         <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>

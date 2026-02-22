@@ -439,7 +439,7 @@ export default function EditBranchPage() {
                                   <span translate="no">
                                     {t("drop_your_branch_front_picture")}{" "}
                                   </span>
-                                  <span className="text-blue-500">browse</span>
+                                  <span className="text-primary">browse</span>
                                   <p className="text-normal mt-3 text-xs leading-4 text-gray-300" translate="no">
                                     ({t("branch_front_picture_spec")})
                                   </p>
@@ -514,7 +514,7 @@ export default function EditBranchPage() {
                                   <span translate="no">
                                     {t("drop_your_address_proof")}{" "}
                                   </span>
-                                  <span className="text-blue-500">browse</span>
+                                  <span className="text-primary">browse</span>
                                   <p className="text-normal mt-3 text-xs leading-4 text-gray-300" translate="no">
                                     ({t("address_proof_spec")})
                                   </p>
@@ -685,7 +685,7 @@ export default function EditBranchPage() {
                           </select>
                         )}
                       />
-                      <p className="text-[13px] text-red-500" dir={langDir}>
+                      <p className="text-[13px] text-destructive" dir={langDir}>
                         {form.formState.errors.startTime?.message}
                       </p>
                     </div>
@@ -713,7 +713,7 @@ export default function EditBranchPage() {
                           </select>
                         )}
                       />
-                      <p className="text-[13px] text-red-500" dir={langDir}>
+                      <p className="text-[13px] text-destructive" dir={langDir}>
                         {form.formState.errors.endTime?.message}
                       </p>
                     </div>
@@ -755,7 +755,7 @@ export default function EditBranchPage() {
                     ))}
                   </div>
                   {form.formState.errors.workingDays?.message ? (
-                    <p className="text-[13px] text-red-500" dir={langDir} translate="no">
+                    <p className="text-[13px] text-destructive" dir={langDir} translate="no">
                       {t("working_day_required")}
                     </p>
                   ) : null}

@@ -365,8 +365,8 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
               <h4 className="text-sm font-medium text-gray-900 mb-1">{t("deposit")}</h4>
               <p className="text-xs text-gray-500">{t("add_funds_to_wallet")}</p>
             </div>
-            <div className="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center">
-              <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-10 h-10 bg-success/5 rounded-full flex items-center justify-center">
+              <svg className="w-5 h-5 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
             </div>
@@ -422,8 +422,8 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
               <h4 className="text-sm font-medium text-gray-900 mb-1">{t("withdraw")}</h4>
               <p className="text-xs text-gray-500">{t("withdraw_funds_from_wallet")}</p>
             </div>
-            <div className="w-10 h-10 bg-red-50 rounded-full flex items-center justify-center">
-              <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-10 h-10 bg-destructive/5 rounded-full flex items-center justify-center">
+              <svg className="w-5 h-5 text-destructive" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
               </svg>
             </div>
@@ -480,8 +480,8 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
               <h4 className="text-sm font-medium text-gray-900 mb-1">{t("transfer")}</h4>
               <p className="text-xs text-gray-500">{t("transfer_funds_to_user")}</p>
             </div>
-            <div className="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center">
-              <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-10 h-10 bg-primary/5 rounded-full flex items-center justify-center">
+              <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
               </svg>
             </div>

@@ -108,7 +108,7 @@ const OfferPriceCard: React.FC<OfferPriceCardProps> = ({
         <div className="flex-shrink-0 px-0.5">
           {productType === "SAME" ? (
             <div className="flex flex-col gap-0" dir={langDir}>
-              <span className="text-xs font-semibold text-blue-600 leading-tight" translate="no">
+              <span className="text-xs font-semibold text-primary leading-tight" translate="no">
                 {t("same_product")}
               </span>
               <span className="text-[10px] text-gray-500 leading-tight" translate="no">
@@ -117,7 +117,7 @@ const OfferPriceCard: React.FC<OfferPriceCardProps> = ({
             </div>
           ) : productType === "SIMILAR" ? (
             <div className="flex flex-col gap-0" dir={langDir}>
-              <span className="text-xs font-semibold text-green-600 leading-tight" translate="no">
+              <span className="text-xs font-semibold text-success leading-tight" translate="no">
                 {t("similar_product")}
               </span>
               <span className="text-[10px] text-gray-500 leading-tight" translate="no">
@@ -156,14 +156,14 @@ const OfferPriceCard: React.FC<OfferPriceCardProps> = ({
                 <button
                   onClick={handleSaveClick}
                   disabled={isEditDisabled}
-                  className="text-[10px] text-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="text-[10px] text-primary disabled:cursor-not-allowed disabled:opacity-50"
                   translate="no"
                 >
                   {t("save")}
                 </button>
                 <button
                   onClick={handleCancelClick}
-                  className="text-[10px] text-red-500"
+                  className="text-[10px] text-destructive"
                   translate="no"
                 >
                   {t("cancel")}
@@ -178,7 +178,7 @@ const OfferPriceCard: React.FC<OfferPriceCardProps> = ({
                   <div className="text-gray-600 mb-0.5" translate="no">
                     {t("budget")}:
                   </div>
-                  <div className="font-semibold text-green-600 leading-tight">
+                  <div className="font-semibold text-success leading-tight">
                     {currency.symbol}{offerPriceFrom} - {currency.symbol}{offerPriceTo}
                   </div>
                   <div className="mt-0.5 text-gray-500 text-[10px] leading-tight" translate="no">
@@ -194,7 +194,7 @@ const OfferPriceCard: React.FC<OfferPriceCardProps> = ({
                 {!isEditDisabled && (
                   <button
                     onClick={handleEditClick}
-                    className="text-[10px] text-blue-500 leading-tight self-start"
+                    className="text-[10px] text-primary leading-tight self-start"
                     translate="no"
                   >
                     {t("edit")}

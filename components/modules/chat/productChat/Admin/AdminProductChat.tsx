@@ -488,7 +488,7 @@ const AdminProductChat: React.FC<AdminProductChatProps> = ({ productId, productD
                 {attachments.map((file: any, index: any) => (
                   <div key={index} className="flex items-center border border-gray-300 p-2 rounded-md">
                     <span className="mr-2">{file.name}</span>
-                    <button onClick={() => removeFile(index)} className="text-red-500">X</button>
+                    <button onClick={() => removeFile(index)} className="text-destructive">X</button>
                   </div>
                 ))}
               </div>

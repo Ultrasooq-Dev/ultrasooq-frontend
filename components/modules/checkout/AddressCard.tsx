@@ -123,7 +123,7 @@ const AddressCard: React.FC<AddressCardProps> = ({
                 <DropdownMenuSeparator />
                 <DropdownMenuItem 
                   onClick={onDelete}
-                  className="cursor-pointer hover:bg-gray-50 text-red-600 focus:text-red-600"
+                  className="cursor-pointer hover:bg-gray-50 text-destructive focus:text-destructive"
                 >
                   Delete Address
                 </DropdownMenuItem>

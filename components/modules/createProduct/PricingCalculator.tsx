@@ -65,14 +65,14 @@ const PricingCalculator: React.FC<PricingCalculatorProps> = ({
             </div>
 
             {/* Markup */}
-            <div className="text-center p-4 bg-blue-50 rounded-lg">
+            <div className="text-center p-4 bg-primary/5 rounded-lg">
               <div className="flex items-center justify-center gap-2 mb-2">
-                <TrendingUp className="h-4 w-4 text-blue-600" />
-                <span className="text-sm font-medium text-blue-600">
+                <TrendingUp className="h-4 w-4 text-primary" />
+                <span className="text-sm font-medium text-primary">
                   {t("your_markup")}
                 </span>
               </div>
-              <div className="text-2xl font-bold text-blue-900">
+              <div className="text-2xl font-bold text-primary">
                 ${safeMarkup.toFixed(2)}
               </div>
               <Badge variant="secondary" className="mt-1">
@@ -81,17 +81,17 @@ const PricingCalculator: React.FC<PricingCalculatorProps> = ({
             </div>
 
             {/* Final Price */}
-            <div className="text-center p-4 bg-green-50 rounded-lg">
+            <div className="text-center p-4 bg-success/5 rounded-lg">
               <div className="flex items-center justify-center gap-2 mb-2">
-                <DollarSign className="h-4 w-4 text-green-600" />
-                <span className="text-sm font-medium text-green-600">
+                <DollarSign className="h-4 w-4 text-success" />
+                <span className="text-sm font-medium text-success">
                   {t("final_price")}
                 </span>
               </div>
-              <div className="text-2xl font-bold text-green-900">
+              <div className="text-2xl font-bold text-success">
                 ${finalPrice.toFixed(2)}
               </div>
-              <Badge variant="default" className="mt-1 bg-green-600">
+              <Badge variant="default" className="mt-1 bg-success">
                 {profitMargin.toFixed(1)}% {t("profit_margin")}
               </Badge>
             </div>
@@ -175,19 +175,19 @@ const PricingCalculator: React.FC<PricingCalculatorProps> = ({
           <div className="space-y-3">
             <div className="flex justify-between items-center">
               <span className="text-sm text-gray-600">{t("profit_per_unit")}</span>
-              <span className="font-semibold text-green-600">
+              <span className="font-semibold text-success">
                 ${safeMarkup.toFixed(2)}
               </span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-sm text-gray-600">{t("profit_margin")}</span>
-              <span className="font-semibold text-green-600">
+              <span className="font-semibold text-success">
                 {profitMargin.toFixed(1)}%
               </span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-sm text-gray-600">{t("markup_percentage")}</span>
-              <span className="font-semibold text-blue-600">
+              <span className="font-semibold text-primary">
                 {markupPercentage.toFixed(1)}%
               </span>
             </div>

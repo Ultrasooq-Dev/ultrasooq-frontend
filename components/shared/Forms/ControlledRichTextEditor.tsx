@@ -24,8 +24,8 @@ const SimpleRichTextEditor = ({
         maxLength={maxLength}
         className={`w-full min-h-[120px] p-3 border rounded-md resize-vertical focus:ring-2 focus:border-transparent ${
           isOverLimit 
-            ? 'border-red-300 focus:ring-red-500' 
-            : 'border-gray-300 focus:ring-blue-500'
+            ? 'border-destructive/30 focus:ring-destructive' 
+            : 'border-gray-300 focus:ring-primary'
         }`}
         placeholder="Enter description..."
         {...props}
@@ -37,7 +37,7 @@ const SimpleRichTextEditor = ({
           </div>
         )}
         {maxLength && (
-          <div className={`text-xs ${isOverLimit ? 'text-red-500' : 'text-gray-400'}`}>
+          <div className={`text-xs ${isOverLimit ? 'text-destructive' : 'text-gray-400'}`}>
             {currentLength}/{maxLength} characters
           </div>
         )}

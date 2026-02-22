@@ -109,15 +109,15 @@ const MyOrderDetailsPage = () => {
       case "PLACED":
         return "bg-gray-100 text-gray-800";
       case "CONFIRMED":
-        return "bg-blue-100 text-blue-800";
+        return "bg-primary/10 text-primary";
       case "SHIPPED":
-        return "bg-purple-100 text-purple-800";
+        return "bg-info/10 text-info";
       case "OFD":
-        return "bg-orange-100 text-orange-800";
+        return "bg-warning/10 text-warning";
       case "DELIVERED":
-        return "bg-green-100 text-green-800";
+        return "bg-success/10 text-success";
       case "CANCELLED":
-        return "bg-red-100 text-red-800";
+        return "bg-destructive/10 text-destructive";
       default:
         return "bg-gray-100 text-gray-800";
     }
@@ -190,7 +190,7 @@ const MyOrderDetailsPage = () => {
           <div className="mb-8">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="flex items-center gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg">
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-indigo-600 shadow-lg">
                   <ShoppingBag className="h-6 w-6 text-white" />
                 </div>
                 <div>
@@ -228,9 +228,9 @@ const MyOrderDetailsPage = () => {
             <div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
               {/* Shipping Address */}
               <Card className="shadow-md transition-shadow hover:shadow-lg">
-                <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50">
+                <CardHeader className="bg-gradient-to-r from-primary/5 to-info/5">
                   <CardTitle className="flex items-center gap-2">
-                    <MapPin className="h-5 w-5 text-blue-600" />
+                    <MapPin className="h-5 w-5 text-primary" />
                     Delivery Address
                   </CardTitle>
                 </CardHeader>
@@ -264,7 +264,7 @@ const MyOrderDetailsPage = () => {
               <Card className="shadow-md transition-shadow hover:shadow-lg">
                 <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50">
                   <CardTitle className="flex items-center gap-2">
-                    <CreditCard className="h-5 w-5 text-green-600" />
+                    <CreditCard className="h-5 w-5 text-success" />
                     Billing Address
                   </CardTitle>
                 </CardHeader>
@@ -298,7 +298,7 @@ const MyOrderDetailsPage = () => {
               <Card className="shadow-md transition-shadow hover:shadow-lg">
                 <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50">
                   <CardTitle className="flex items-center gap-2">
-                    <FileText className="h-5 w-5 text-purple-600" />
+                    <FileText className="h-5 w-5 text-info" />
                     Actions
                   </CardTitle>
                 </CardHeader>
@@ -339,9 +339,9 @@ const MyOrderDetailsPage = () => {
           {/* Order Summary Section */}
           {orderDetails?.orderProduct_order && (
             <Card className="mb-8 shadow-md">
-              <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50">
+              <CardHeader className="bg-gradient-to-r from-primary/5 to-info/5">
                 <CardTitle className="flex items-center gap-2">
-                  <FileText className="h-5 w-5 text-blue-600" />
+                  <FileText className="h-5 w-5 text-primary" />
                   Order Summary
                 </CardTitle>
               </CardHeader>
@@ -389,7 +389,7 @@ const MyOrderDetailsPage = () => {
                       <label className="text-sm font-medium text-gray-600">
                         Discount
                       </label>
-                      <p className="text-lg font-semibold text-green-600">
+                      <p className="text-lg font-semibold text-success">
                         -{currency.symbol}
                         {orderDetails.orderProduct_order.totalDiscount || 0}
                       </p>
@@ -399,7 +399,7 @@ const MyOrderDetailsPage = () => {
                     <label className="text-sm font-medium text-gray-600">
                       Total Amount
                     </label>
-                    <p className="text-xl font-bold text-blue-600">
+                    <p className="text-xl font-bold text-primary">
                       {currency.symbol}
                       {orderDetails.orderProduct_order.totalCustomerPay || 0}
                     </p>
@@ -420,7 +420,7 @@ const MyOrderDetailsPage = () => {
                         <label className="text-sm font-medium text-gray-600">
                           Remaining Due
                         </label>
-                        <p className="text-lg font-semibold text-orange-600">
+                        <p className="text-lg font-semibold text-warning">
                           {currency.symbol}
                           {orderDetails.orderProduct_order.dueAmount || 0}
                         </p>
@@ -438,9 +438,9 @@ const MyOrderDetailsPage = () => {
             {orderDetails?.orderShippingDetail &&
               orderDetails?.orderProductType != "SERVICE" && (
                 <Card className="shadow-md">
-                  <CardHeader className="bg-gradient-to-r from-orange-50 to-amber-50">
+                  <CardHeader className="bg-gradient-to-r from-warning/5 to-warning/5">
                     <CardTitle className="flex items-center gap-2">
-                      <Truck className="h-5 w-5 text-orange-600" />
+                      <Truck className="h-5 w-5 text-warning" />
                       Shipping Details
                     </CardTitle>
                   </CardHeader>
@@ -583,7 +583,7 @@ const MyOrderDetailsPage = () => {
                                 : "-"}
                           </span>
                         </div>
-                        <div className="text-2xl font-bold text-blue-600">
+                        <div className="text-2xl font-bold text-primary">
                           {currency.symbol}
                           {orderDetails?.orderProductType === "SERVICE"
                             ? Number(orderDetails?.purchasePrice || 0) *
@@ -627,7 +627,7 @@ const MyOrderDetailsPage = () => {
               <Card className="border-0 shadow-lg">
                 <CardHeader className="border-b bg-gradient-to-r from-green-50 to-emerald-50">
                   <CardTitle className="flex items-center gap-2">
-                    <RotateCcw className="h-5 w-5 text-green-600" />
+                    <RotateCcw className="h-5 w-5 text-success" />
                     Order Tracking
                   </CardTitle>
                 </CardHeader>
@@ -701,8 +701,8 @@ const MyOrderDetailsPage = () => {
                     <div className="space-y-6">
                       {/* Order Placed */}
                       <div className="relative flex items-start gap-6">
-                        <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full bg-green-100 shadow-md">
-                          <CheckCircle className="h-6 w-6 text-green-600" />
+                        <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full bg-success/10 shadow-md">
+                          <CheckCircle className="h-6 w-6 text-success" />
                         </div>
                         <div className="flex-1 pt-1">
                           <h4 className="mb-1 font-semibold text-gray-900">
@@ -734,7 +734,7 @@ const MyOrderDetailsPage = () => {
                               "SHIPPED",
                               "CONFIRMED",
                             ].includes(orderDetails?.orderProductStatus || "")
-                              ? "bg-blue-100"
+                              ? "bg-primary/10"
                               : "bg-gray-100",
                           )}
                         >
@@ -745,7 +745,7 @@ const MyOrderDetailsPage = () => {
                             "SHIPPED",
                             "CONFIRMED",
                           ].includes(orderDetails?.orderProductStatus || "") ? (
-                            <CheckCircle className="h-6 w-6 text-blue-600" />
+                            <CheckCircle className="h-6 w-6 text-primary" />
                           ) : (
                             <Clock className="h-6 w-6 text-gray-400" />
                           )}
@@ -787,7 +787,7 @@ const MyOrderDetailsPage = () => {
                               "OFD",
                               "SHIPPED",
                             ].includes(orderDetails?.orderProductStatus || "")
-                              ? "bg-purple-100"
+                              ? "bg-info/10"
                               : "bg-gray-100",
                           )}
                         >
@@ -797,7 +797,7 @@ const MyOrderDetailsPage = () => {
                             "OFD",
                             "SHIPPED",
                           ].includes(orderDetails?.orderProductStatus || "") ? (
-                            <Truck className="h-6 w-6 text-purple-600" />
+                            <Truck className="h-6 w-6 text-info" />
                           ) : (
                             <Clock className="h-6 w-6 text-gray-400" />
                           )}
@@ -827,14 +827,14 @@ const MyOrderDetailsPage = () => {
                             ["CANCELLED", "DELIVERED", "OFD"].includes(
                               orderDetails?.orderProductStatus || "",
                             )
-                              ? "bg-orange-100"
+                              ? "bg-warning/10"
                               : "bg-gray-100",
                           )}
                         >
                           {["CANCELLED", "DELIVERED", "OFD"].includes(
                             orderDetails?.orderProductStatus || "",
                           ) ? (
-                            <Truck className="h-6 w-6 text-orange-600" />
+                            <Truck className="h-6 w-6 text-warning" />
                           ) : (
                             <Clock className="h-6 w-6 text-gray-400" />
                           )}
@@ -862,8 +862,8 @@ const MyOrderDetailsPage = () => {
                               orderDetails?.orderProductStatus || "",
                             )
                               ? orderDetails?.orderProductStatus === "CANCELLED"
-                                ? "bg-red-100"
-                                : "bg-green-100"
+                                ? "bg-destructive/10"
+                                : "bg-success/10"
                               : "bg-gray-100",
                           )}
                         >
@@ -871,9 +871,9 @@ const MyOrderDetailsPage = () => {
                             orderDetails?.orderProductStatus || "",
                           ) ? (
                             orderDetails?.orderProductStatus === "CANCELLED" ? (
-                              <XCircle className="h-6 w-6 text-red-600" />
+                              <XCircle className="h-6 w-6 text-destructive" />
                             ) : (
-                              <CheckCircle className="h-6 w-6 text-green-600" />
+                              <CheckCircle className="h-6 w-6 text-success" />
                             )
                           ) : (
                             <Clock className="h-6 w-6 text-gray-400" />
@@ -894,11 +894,11 @@ const MyOrderDetailsPage = () => {
                           </p>
                           {orderDetails?.orderProductStatus === "CANCELLED" &&
                             orderDetails?.cancelReason && (
-                              <div className="mt-2 rounded-lg border border-red-200 bg-red-50 p-3">
-                                <p className="mb-1 text-xs font-medium text-red-800">
+                              <div className="mt-2 rounded-lg border border-destructive/20 bg-destructive/5 p-3">
+                                <p className="mb-1 text-xs font-medium text-destructive">
                                   Cancellation Reason:
                                 </p>
-                                <p className="text-sm text-red-700">
+                                <p className="text-sm text-destructive">
                                   {orderDetails.cancelReason}
                                 </p>
                               </div>
@@ -914,9 +914,9 @@ const MyOrderDetailsPage = () => {
             {/* Other Order Items */}
             {otherOrderDetails && otherOrderDetails.length > 0 && (
               <Card className="overflow-hidden border-0 shadow-lg">
-                <CardHeader className="border-b bg-gradient-to-r from-indigo-50 to-purple-50">
+                <CardHeader className="border-b bg-gradient-to-r from-indigo-50 to-info/5">
                   <CardTitle className="flex items-center gap-2">
-                    <Package className="h-5 w-5 text-indigo-600" />
+                    <Package className="h-5 w-5 text-info" />
                     Other Items in This Order
                   </CardTitle>
                 </CardHeader>
@@ -986,7 +986,7 @@ const MyOrderDetailsPage = () => {
                             </span>
                           </div>
                           <div className="flex items-center justify-between">
-                            <div className="text-xl font-bold text-blue-600">
+                            <div className="text-xl font-bold text-primary">
                               {currency.symbol}
                               {item?.orderProductType === "SERVICE"
                                 ? Number(item?.purchasePrice || 0) *

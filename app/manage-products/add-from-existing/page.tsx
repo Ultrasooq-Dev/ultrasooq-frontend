@@ -883,7 +883,7 @@ const AddFromExistingProductPage = () => {
             {/* Add New Product Button */}
             <Button
               onClick={handleAddNewProduct}
-              className="bg-blue-600 hover:bg-blue-700 text-white"
+              className="bg-primary hover:bg-primary/90 text-white"
             >
               <Plus className="h-4 w-4 mr-2" />
               {/* Updated label per request */}
@@ -993,7 +993,7 @@ const AddFromExistingProductPage = () => {
                 <div className="flex justify-center pt-4 border-t border-gray-200">
                   <Button
                     onClick={() => handleAIGenerate(searchTerm || '', 'text')}
-                    className="bg-purple-600 hover:bg-purple-700 text-white"
+                    className="bg-info hover:bg-info/90 text-white"
                     disabled={!searchTerm.trim()}
                   >
                     <Sparkles className="h-4 w-4 mr-2" />
@@ -1005,7 +1005,7 @@ const AddFromExistingProductPage = () => {
               {/* Show loading state if AI is generating */}
               {isAIGenerating && (
                 <div className="flex flex-col items-center gap-2 pt-4 border-t border-gray-200">
-                  <Button disabled className="bg-purple-600 text-white">
+                  <Button disabled className="bg-info text-white">
                     <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                     {t("generating") || "Generating..."}
                   </Button>
@@ -1026,7 +1026,7 @@ const AddFromExistingProductPage = () => {
                 <div className="space-y-3 mt-6">
                   <div className="flex items-center justify-between">
                     <h4 className="font-medium text-gray-900 flex items-center gap-2" dir={langDir}>
-                      <Sparkles className="h-5 w-5 text-purple-600" />
+                      <Sparkles className="h-5 w-5 text-info" />
                       {t("product_models_found") || "Product Models Found"}
                     </h4>
                     <Button
@@ -1034,7 +1034,7 @@ const AddFromExistingProductPage = () => {
                       size="sm"
                       onClick={() => handleAIGenerate(searchTerm || '', 'text')}
                       disabled={isAIGenerating || !searchTerm.trim()}
-                      className="text-purple-600 hover:text-purple-700 hover:bg-purple-50"
+                      className="text-info hover:text-info hover:bg-info/5"
                     >
                       {isAIGenerating ? (
                         <Loader2 className="h-4 w-4 animate-spin" />
@@ -1085,7 +1085,7 @@ const AddFromExistingProductPage = () => {
                               size="sm"
                               onClick={() => handleSelectModel(model)}
                               disabled={checkingModel || processingProductIndex === idx}
-                              className="bg-purple-600 hover:bg-purple-700 text-white flex-shrink-0 ml-4"
+                              className="bg-info hover:bg-info/90 text-white flex-shrink-0 ml-4"
                             >
                               {checkingModel && processingProductIndex === idx ? (
                                 <>
@@ -1120,7 +1120,7 @@ const AddFromExistingProductPage = () => {
                   {!isAIGenerating && (
                     <Button
                       onClick={() => handleAIGenerate(searchTerm || '', 'text')}
-                      className="bg-purple-600 hover:bg-purple-700 text-white"
+                      className="bg-info hover:bg-info/90 text-white"
                       disabled={!searchTerm.trim()}
                     >
                       <Sparkles className="h-4 w-4 mr-2" />
@@ -1129,7 +1129,7 @@ const AddFromExistingProductPage = () => {
                   )}
                   {isAIGenerating && (
                     <div className="flex flex-col items-center gap-2">
-                      <Button disabled className="bg-purple-600 text-white">
+                      <Button disabled className="bg-info text-white">
                         <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                         {t("generating") || "Generating..."}
                       </Button>
@@ -1229,7 +1229,7 @@ const AddFromExistingProductPage = () => {
                   <Button
                     onClick={handleImageRecognition}
                     disabled={isAIGenerating}
-                    className="w-full bg-purple-600 hover:bg-purple-700 text-white"
+                    className="w-full bg-info hover:bg-info/90 text-white"
                   >
                     {isAIGenerating ? (
                       <>
@@ -1250,7 +1250,7 @@ const AddFromExistingProductPage = () => {
                   <div className="space-y-3 mt-6">
                     <div className="flex items-center justify-between">
                       <h4 className="font-medium text-gray-900 flex items-center gap-2" dir={langDir}>
-                        <Sparkles className="h-5 w-5 text-purple-600" />
+                        <Sparkles className="h-5 w-5 text-info" />
                         {t("product_suggestions_from_web") || "Product Suggestions from Web"}
                       </h4>
                       <Button
@@ -1264,7 +1264,7 @@ const AddFromExistingProductPage = () => {
                           }
                         }}
                         disabled={isAIGenerating || (!selectedImage && !searchTerm.trim())}
-                        className="text-purple-600 hover:text-purple-700 hover:bg-purple-50"
+                        className="text-info hover:text-info hover:bg-info/5"
                       >
                         {isAIGenerating ? (
                           <Loader2 className="h-4 w-4 animate-spin" />
@@ -1289,7 +1289,7 @@ const AddFromExistingProductPage = () => {
                                   size="sm"
                                   onClick={() => handleSelectSuggestion(product, idx)}
                                   disabled={processingProductIndex === idx}
-                                  className="bg-purple-600 hover:bg-purple-700 text-white"
+                                  className="bg-info hover:bg-info/90 text-white"
                                 >
                                   {processingProductIndex === idx ? (
                                     <>
@@ -1305,7 +1305,7 @@ const AddFromExistingProductPage = () => {
                               {/* Source Information */}
                               <div className="flex items-center gap-2 mb-2">
                                 <LinkIcon className="h-4 w-4 text-gray-400" />
-                                <span className="text-xs font-medium text-purple-600">
+                                <span className="text-xs font-medium text-info">
                                   {product.sourceName || "Unknown Source"}
                                 </span>
                               </div>
@@ -1339,7 +1339,7 @@ const AddFromExistingProductPage = () => {
                         className="font-medium text-gray-900 flex items-center gap-2"
                         dir={langDir}
                       >
-                        <Sparkles className="h-5 w-5 text-purple-600" />
+                        <Sparkles className="h-5 w-5 text-info" />
                         {t("product_models_found") || "Product Models Found"}
                       </h4>
                     </div>
@@ -1398,7 +1398,7 @@ const AddFromExistingProductPage = () => {
                                 disabled={
                                   checkingModel || processingProductIndex === idx
                                 }
-                                className="bg-purple-600 hover:bg-purple-700 text-white flex-shrink-0 ml-4"
+                                className="bg-info hover:bg-info/90 text-white flex-shrink-0 ml-4"
                               >
                                 {checkingModel &&
                                 processingProductIndex === idx ? (
@@ -1447,7 +1447,7 @@ const AddFromExistingProductPage = () => {
                   <Button
                     onClick={handleImportFromUrl}
                     disabled={!productUrl || isAIGenerating}
-                    className="bg-purple-600 hover:bg-purple-700 text-white"
+                    className="bg-info hover:bg-info/90 text-white"
                   >
                     {isAIGenerating ? (
                       <>
@@ -1464,8 +1464,8 @@ const AddFromExistingProductPage = () => {
                 </div>
 
                 {/* Info */}
-                <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
-                  <p className="text-xs text-purple-700" dir={langDir}>
+                <div className="bg-info/5 border border-info/20 rounded-lg p-3">
+                  <p className="text-xs text-info" dir={langDir}>
                     {t("ai_will_scrape_url_and_extract_product_information") || "AI will scrape URL and extract product information"}
                   </p>
                 </div>
@@ -1652,7 +1652,7 @@ const AddFromExistingProductPage = () => {
                   closeProductPopup();
                   handleSelectProduct(selectedProduct);
                 }}
-                className="bg-blue-600 hover:bg-blue-700 text-white"
+                className="bg-primary hover:bg-primary/90 text-white"
               >
                 <Copy className="h-4 w-4 mr-2" />
                 {t("select")}
@@ -1713,10 +1713,10 @@ const AddFromExistingProductPage = () => {
                       {previewData.matchedCategoryId ? (
                         <p className={`text-xs mt-1 flex items-center gap-1 ${
                           previewData.categoryConfidence === 'high' 
-                            ? 'text-green-600' 
+                            ? 'text-success' 
                             : previewData.categoryConfidence === 'medium'
-                            ? 'text-blue-600'
-                            : 'text-yellow-600'
+                            ? 'text-primary'
+                            : 'text-warning'
                         }`}>
                           <CheckCircle2 className="h-3 w-3" />
                           {previewData.categoryConfidence === 'high' 
@@ -1727,7 +1727,7 @@ const AddFromExistingProductPage = () => {
                           }
                         </p>
                       ) : (
-                        <p className="text-xs text-yellow-600 mt-1 flex items-center gap-1">
+                        <p className="text-xs text-warning mt-1 flex items-center gap-1">
                           <X className="h-3 w-3" />
                           {t("category_not_matched") || "Category not found - please select manually"}
                         </p>
@@ -1769,13 +1769,13 @@ const AddFromExistingProductPage = () => {
                 {previewData.modelExists !== null && (
                   <div className={`col-span-2 p-3 rounded-lg ${
                     previewData.modelExists 
-                      ? 'bg-yellow-50 border border-yellow-200' 
-                      : 'bg-green-50 border border-green-200'
+                      ? 'bg-warning/5 border border-warning/20' 
+                      : 'bg-success/5 border border-success/20'
                   }`}>
                     <p className={`text-sm font-medium ${
                       previewData.modelExists 
-                        ? 'text-yellow-800' 
-                        : 'text-green-800'
+                        ? 'text-warning' 
+                        : 'text-success'
                     }`}>
                       {previewData.modelExists 
                         ? t("model_exists_in_system") || "⚠️ This model already exists in your product catalog"
@@ -1790,7 +1790,7 @@ const AddFromExistingProductPage = () => {
               <Button variant="outline" onClick={() => setShowPreviewModal(false)}>
                 {t("cancel")}
               </Button>
-              <Button onClick={handleUsePreviewData} className="bg-purple-600 hover:bg-purple-700 text-white">
+              <Button onClick={handleUsePreviewData} className="bg-info hover:bg-info/90 text-white">
                 {t("use_this_data") || "Use This Data"}
               </Button>
             </div>

@@ -175,8 +175,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
     <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-200">
       {/* Error Messages */}
       {(invalidProduct || cannotBuy) && (
-        <div className="bg-red-50 border-b border-red-200 px-4 py-3">
-          <p className="text-sm text-red-600 font-medium" translate="no">
+        <div className="bg-destructive/5 border-b border-destructive/20 px-4 py-3">
+          <p className="text-sm text-destructive font-medium" translate="no">
             {invalidProduct ? t("you_cant_buy_this_product") : t("product_not_available_for_your_location")}
           </p>
         </div>
@@ -260,7 +260,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-red-600 hover:text-red-700 hover:bg-red-50 px-2 flex items-center space-x-1"
+                className="text-destructive hover:text-destructive hover:bg-destructive/5 px-2 flex items-center space-x-1"
                 onClick={() => onRemove(cartId)}
                 dir={langDir}
                 translate="no"
@@ -272,7 +272,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-2 flex items-center space-x-1"
+                  className="text-primary hover:text-primary hover:bg-primary/5 px-2 flex items-center space-x-1"
                   onClick={() => onWishlist(productId)}
                   dir={langDir}
                   translate="no"
@@ -299,7 +299,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
               )}
             </div>
             {invalidProduct || cannotBuy ? (
-              <div className="text-sm text-red-600 font-medium mt-1" dir={langDir} translate="no">
+              <div className="text-sm text-destructive font-medium mt-1" dir={langDir} translate="no">
                 Not Available
               </div>
             ) : null}

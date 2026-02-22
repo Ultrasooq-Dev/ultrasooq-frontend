@@ -407,7 +407,7 @@ const RfqQuoteCard: React.FC<RfqQuoteCardProps> = ({
               >
                 RFQ{String(item?.id || "").padStart(5, "0")}
               </Link>
-              <span className="rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-semibold text-blue-700">
+              <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-semibold text-primary">
                 {item?.productCount} {t("products")}
               </span>
             </div>
@@ -463,7 +463,7 @@ const RfqQuoteCard: React.FC<RfqQuoteCardProps> = ({
                       />
                     </svg>
                     <span
-                      className={`font-medium ${totalUnreadMessages > 0 ? "text-blue-600" : "text-gray-500"}`}
+                      className={`font-medium ${totalUnreadMessages > 0 ? "text-primary" : "text-gray-500"}`}
                     >
                       {totalUnreadMessages} {t("unread_messages")}
                     </span>
@@ -483,7 +483,7 @@ const RfqQuoteCard: React.FC<RfqQuoteCardProps> = ({
                           d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                         />
                       </svg>
-                      <span className="font-medium text-green-600">
+                      <span className="font-medium text-success">
                         {vendorsWithOffersCount} {t("offers")}
                       </span>
                     </div>
@@ -523,7 +523,7 @@ const RfqQuoteCard: React.FC<RfqQuoteCardProps> = ({
             <button
               type="button"
               onClick={onDelete}
-              className="inline-flex items-center gap-2 rounded-lg border border-red-300 bg-white px-4 py-2 text-sm font-medium text-red-600 transition-all hover:bg-red-50"
+              className="inline-flex items-center gap-2 rounded-lg border border-destructive/30 bg-white px-4 py-2 text-sm font-medium text-destructive transition-all hover:bg-destructive/5"
             >
               <svg
                 className="h-4 w-4"
@@ -577,9 +577,9 @@ const RfqQuoteCard: React.FC<RfqQuoteCardProps> = ({
                   {vendorsWithOffersCount})
                 </h3>
                 {totalUnreadMessages > 0 && (
-                  <div className="flex items-center gap-2 rounded-full bg-blue-100 px-3 py-1">
+                  <div className="flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1">
                     <svg
-                      className="h-4 w-4 text-blue-600"
+                      className="h-4 w-4 text-primary"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -591,7 +591,7 @@ const RfqQuoteCard: React.FC<RfqQuoteCardProps> = ({
                         d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                       />
                     </svg>
-                    <span className="text-sm font-bold text-blue-600">
+                    <span className="text-sm font-bold text-primary">
                       {totalUnreadMessages}{" "}
                       {t("unread_messages") || "Unread Messages"}
                     </span>
@@ -626,7 +626,7 @@ const RfqQuoteCard: React.FC<RfqQuoteCardProps> = ({
                           </h4>
                           {vendor.calculatedOfferPrice &&
                           vendor.calculatedOfferPrice !== "-" ? (
-                            <p className="mt-1 text-sm font-bold text-green-600">
+                            <p className="mt-1 text-sm font-bold text-success">
                               {t("offer_price")}: {currency.symbol}
                               {vendor.calculatedOfferPrice}
                             </p>
@@ -638,7 +638,7 @@ const RfqQuoteCard: React.FC<RfqQuoteCardProps> = ({
                         </div>
                       </div>
                       {vendor.unreadMsgCount > 0 && (
-                        <div className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-xs font-bold text-white">
+                        <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">
                           {vendor.unreadMsgCount > 9
                             ? "9+"
                             : vendor.unreadMsgCount}

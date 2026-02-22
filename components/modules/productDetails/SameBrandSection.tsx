@@ -363,7 +363,7 @@ const SameBrandSection: React.FC<SameBrandSectionProps> = ({
                   {/* Price */}
                   <div className="mb-4">
                     {currentProduct?.askForPrice === "true" ? (
-                      <span className="text-sm text-blue-600 font-semibold">
+                      <span className="text-sm text-primary font-semibold">
                         {t("ask_for_price")}
                       </span>
                     ) : (
@@ -392,7 +392,7 @@ const SameBrandSection: React.FC<SameBrandSectionProps> = ({
                     {currentProduct?.askForPrice !== "true" && (
                       <button
                         onClick={() => handleAddToCart(1, currentProduct.productProductPriceId)}
-                        className="flex items-center gap-1.5 rounded-lg bg-orange-500 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-orange-600"
+                        className="flex items-center gap-1.5 rounded-lg bg-warning px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-warning"
                       >
                         <ShoppingIcon />
                         {t("add_to_cart")}
@@ -420,7 +420,7 @@ const SameBrandSection: React.FC<SameBrandSectionProps> = ({
               <div className="flex items-center justify-between px-2">
                 <button
                   onClick={prevProduct}
-                  className="flex h-11 w-11 items-center justify-center rounded-full bg-white border-2 border-gray-200 shadow-sm transition-all hover:shadow-md hover:border-orange-300 hover:bg-orange-50"
+                  className="flex h-11 w-11 items-center justify-center rounded-full bg-white border-2 border-gray-200 shadow-sm transition-all hover:shadow-md hover:border-warning/30 hover:bg-warning/5"
                   aria-label="Previous product"
                 >
                   <svg className="h-5 w-5 text-gray-600 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -434,7 +434,7 @@ const SameBrandSection: React.FC<SameBrandSectionProps> = ({
                       <div
                         key={index}
                         className={`h-2 w-2 rounded-full transition-colors ${
-                          index === currentIndex ? 'bg-orange-500' : 'bg-gray-300'
+                          index === currentIndex ? 'bg-warning' : 'bg-gray-300'
                         }`}
                       />
                     ))}
@@ -446,7 +446,7 @@ const SameBrandSection: React.FC<SameBrandSectionProps> = ({
 
                 <button
                   onClick={nextProduct}
-                  className="flex h-11 w-11 items-center justify-center rounded-full bg-white border-2 border-gray-200 shadow-sm transition-all hover:shadow-md hover:border-orange-300 hover:bg-orange-50"
+                  className="flex h-11 w-11 items-center justify-center rounded-full bg-white border-2 border-gray-200 shadow-sm transition-all hover:shadow-md hover:border-warning/30 hover:bg-warning/5"
                   aria-label="Next product"
                 >
                   <svg className="h-5 w-5 text-gray-600 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">

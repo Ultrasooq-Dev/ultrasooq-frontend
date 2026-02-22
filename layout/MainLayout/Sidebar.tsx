@@ -140,7 +140,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
   const getMenuItems = (): MenuItem[] => {
     const baseItems: MenuItem[] = [
       {
-        icon: <UserIcon className="h-5 w-5 text-blue-600" />,
+        icon: <UserIcon className="h-5 w-5 text-primary" />,
         label: t("my_accounts"),
         translationKey: "my_accounts",
         shortLabel: getShortLabel("my_accounts"),
@@ -155,7 +155,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
     if (currentTradeRole === "BUYER") {
       baseItems.push(
         {
-          icon: <ShoppingBagIcon className="h-5 w-5 text-indigo-600" />,
+          icon: <ShoppingBagIcon className="h-5 w-5 text-info" />,
           label: t("my_orders"),
           translationKey: "my_orders",
           shortLabel: getShortLabel("my_orders"),
@@ -165,7 +165,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
           },
         },
         {
-          icon: <FileSearchIcon className="h-5 w-5 text-purple-600" />,
+          icon: <FileSearchIcon className="h-5 w-5 text-info" />,
           label: t("rfq_requests"),
           translationKey: "rfq_requests",
           shortLabel: getShortLabel("rfq_requests"),
@@ -175,7 +175,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
           },
         },
         {
-          icon: <ShoppingCartIcon className="h-5 w-5 text-orange-600" />,
+          icon: <ShoppingCartIcon className="h-5 w-5 text-warning" />,
           label: t("cart"),
           translationKey: "cart",
           shortLabel: getShortLabel("cart"),
@@ -201,7 +201,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
     if (currentTradeRole === "FREELANCER") {
       baseItems.push(
         {
-          icon: <PackageIcon className="h-5 w-5 text-blue-600" />,
+          icon: <PackageIcon className="h-5 w-5 text-primary" />,
           label: t("my_products"),
           translationKey: "my_products",
           shortLabel: getShortLabel("my_products"),
@@ -221,7 +221,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
           },
         },
         {
-          icon: <FileSearchIcon className="h-5 w-5 text-purple-600" />,
+          icon: <FileSearchIcon className="h-5 w-5 text-info" />,
           label: t("rfq_quotes"),
           translationKey: "rfq_quotes",
           shortLabel: getShortLabel("rfq_quotes"),
@@ -231,7 +231,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
           },
         },
         {
-          icon: <ShoppingCartIcon className="h-5 w-5 text-orange-600" />,
+          icon: <ShoppingCartIcon className="h-5 w-5 text-warning" />,
           label: t("orders"),
           translationKey: "orders",
           shortLabel: getShortLabel("orders"),
@@ -261,7 +261,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
           },
         },
         {
-          icon: <BarChart3Icon className="h-5 w-5 text-green-600" />,
+          icon: <BarChart3Icon className="h-5 w-5 text-success" />,
           label: t("analytics"),
           translationKey: "analytics",
           shortLabel: getShortLabel("analytics"),
@@ -277,7 +277,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
     if (currentTradeRole === "COMPANY") {
       baseItems.push(
         {
-          icon: <PackageIcon className="h-5 w-5 text-blue-600" />,
+          icon: <PackageIcon className="h-5 w-5 text-primary" />,
           label: t("my_products"),
           translationKey: "my_products",
           shortLabel: getShortLabel("my_products"),
@@ -297,7 +297,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
           },
         },
         {
-          icon: <FileSearchIcon className="h-5 w-5 text-purple-600" />,
+          icon: <FileSearchIcon className="h-5 w-5 text-info" />,
           label: t("rfq_quotes"),
           translationKey: "rfq_quotes",
           shortLabel: getShortLabel("rfq_quotes"),
@@ -307,7 +307,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
           },
         },
         {
-          icon: <ShoppingCartIcon className="h-5 w-5 text-orange-600" />,
+          icon: <ShoppingCartIcon className="h-5 w-5 text-warning" />,
           label: t("orders"),
           translationKey: "orders",
           shortLabel: getShortLabel("orders"),
@@ -317,7 +317,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
           },
         },
         {
-          icon: <PackageIcon className="h-5 w-5 text-indigo-600" />,
+          icon: <PackageIcon className="h-5 w-5 text-info" />,
           label: t("dropshipping"),
           translationKey: "dropshipping",
           shortLabel: getShortLabel("dropshipping"),
@@ -337,7 +337,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
           },
         },
         {
-          icon: <BarChart3Icon className="h-5 w-5 text-green-600" />,
+          icon: <BarChart3Icon className="h-5 w-5 text-success" />,
           label: t("analytics"),
           translationKey: "analytics",
           shortLabel: getShortLabel("analytics"),
@@ -352,7 +352,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
     // Common items for all roles
     baseItems.push(
       {
-        icon: <UserCheckIcon className="h-5 w-5 text-blue-600" />,
+        icon: <UserCheckIcon className="h-5 w-5 text-primary" />,
         label: t("profile"),
         translationKey: "profile",
         shortLabel: getShortLabel("profile"),
@@ -406,7 +406,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
         },
       },
       {
-        icon: <LogOutIcon className="h-5 w-5 text-red-500" />,
+        icon: <LogOutIcon className="h-5 w-5 text-destructive" />,
         label: t("logout"),
         translationKey: "logout",
         shortLabel: getShortLabel("logout"),
@@ -521,7 +521,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
                 Total: ~96px md:~113px lg:~126px (increased slightly) */}
             <div
               className={cn(
-                "from-dark-cyan via-dark-cyan relative flex items-center justify-between overflow-hidden bg-gradient-to-br to-blue-700",
+                "from-dark-cyan via-dark-cyan relative flex items-center justify-between overflow-hidden bg-gradient-to-br to-primary/80",
                 // Match full header height including both welcome row and main content row (slightly decreased)
                 "h-[116px] md:h-[133px] lg:h-[146px]",
                 isHovered || isOpen ? "px-4" : "px-2",
@@ -585,14 +585,14 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
                       className={cn(
                         "group relative flex cursor-pointer items-center transition-all duration-200",
                         isHovered || isOpen
-                          ? "mx-2 justify-between rounded-lg px-4 py-2 hover:bg-blue-50 hover:shadow-sm"
-                          : "mx-1 min-h-[64px] flex-col justify-center rounded-lg px-1 py-2.5 hover:bg-blue-50",
+                          ? "mx-2 justify-between rounded-lg px-4 py-2 hover:bg-primary/5 hover:shadow-sm"
+                          : "mx-1 min-h-[64px] flex-col justify-center rounded-lg px-1 py-2.5 hover:bg-primary/5",
                         isActive &&
                           (isHovered || isOpen) &&
-                          "bg-blue-500/10 shadow-sm",
+                          "bg-primary/10 shadow-sm",
                         isActive &&
                           !(isHovered || isOpen) &&
-                          "rounded-lg bg-blue-500/20",
+                          "rounded-lg bg-primary/20",
                         item.isLogout && "mt-3 border-t-2 border-gray-200 pt-3",
                         langDir === "rtl" &&
                           (isHovered || isOpen) &&
@@ -613,7 +613,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
                       {/* Active indicator line */}
                       <div
                         className={cn(
-                          "absolute top-1/2 h-0 w-1 -translate-y-1/2 bg-blue-600 opacity-0 transition-all duration-200 group-hover:h-8 group-hover:opacity-100",
+                          "absolute top-1/2 h-0 w-1 -translate-y-1/2 bg-primary opacity-0 transition-all duration-200 group-hover:h-8 group-hover:opacity-100",
                           langDir === "rtl"
                             ? "right-0 rounded-l-full"
                             : "left-0 rounded-r-full",
@@ -638,7 +638,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
                               ? "p-1.5"
                               : "min-h-[32px] min-w-[32px] p-2",
                             !(isHovered || isOpen) &&
-                              "group-hover:scale-110 group-hover:bg-blue-100",
+                              "group-hover:scale-110 group-hover:bg-primary/10",
                           )}
                         >
                           <div
@@ -662,7 +662,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
                               : item.icon}
                           </div>
                           {item.isLogout && (
-                            <div className="absolute -top-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-white bg-red-500 shadow-sm"></div>
+                            <div className="absolute -top-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-white bg-destructive shadow-sm"></div>
                           )}
                         </div>
                         {!(isHovered || isOpen) && item.shortLabel && (
@@ -671,9 +671,9 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
                               className={cn(
                                 "text-center text-[10px] leading-tight font-semibold transition-colors duration-200",
                                 item.isLogout
-                                  ? "text-red-600"
+                                  ? "text-destructive"
                                   : isActive
-                                    ? "text-blue-700"
+                                    ? "text-primary"
                                     : "text-gray-700",
                               )}
                               style={{
@@ -695,10 +695,10 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
                               className={cn(
                                 "text-sm font-medium whitespace-nowrap transition-colors duration-200",
                                 item.isLogout
-                                  ? "text-red-600 group-hover:text-red-700"
+                                  ? "text-destructive group-hover:text-destructive"
                                   : isActive
-                                    ? "font-semibold text-blue-700"
-                                    : "text-gray-700 group-hover:text-blue-600",
+                                    ? "font-semibold text-primary"
+                                    : "text-gray-700 group-hover:text-primary",
                               )}
                             >
                               {item.label}
@@ -714,7 +714,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
                       {(isHovered || isOpen) && !item.isLogout && (
                         <ChevronRightIcon
                           className={cn(
-                            "h-4 w-4 shrink-0 text-gray-400 transition-transform duration-200 group-hover:text-blue-600",
+                            "h-4 w-4 shrink-0 text-gray-400 transition-transform duration-200 group-hover:text-primary",
                             langDir === "rtl"
                               ? "rotate-180 group-hover:-translate-x-1"
                               : "group-hover:translate-x-1",

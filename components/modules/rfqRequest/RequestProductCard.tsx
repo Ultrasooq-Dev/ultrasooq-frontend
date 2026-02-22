@@ -171,7 +171,7 @@ const RequestProductCard: React.FC<RequestProductCardProps> = ({
               {messageInfo.lastUnreadMessage.content}
             </p>
             {messageInfo?.unreadMsgCount > 0 && (
-              <div className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-blue-600 px-1.5 text-xs font-bold text-white shadow-sm">
+              <div className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-primary px-1.5 text-xs font-bold text-white shadow-sm">
                 {messageInfo.unreadMsgCount > 9
                   ? "9+"
                   : messageInfo.unreadMsgCount}

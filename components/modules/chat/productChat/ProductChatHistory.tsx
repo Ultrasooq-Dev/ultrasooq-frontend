@@ -63,7 +63,7 @@ const ProductChatHistory: React.FC<ProductChatHistoryProps> = ({
                 {chat?.userId === user?.id ? (
                   <div className="flex w-full items-end justify-end gap-3">
                     <div className="flex max-w-[75%] flex-col items-end">
-                      <div className="mb-1.5 inline-block w-auto rounded-2xl rounded-tr-sm bg-gradient-to-br from-blue-500 to-blue-600 px-5 py-3 text-sm text-white shadow-lg shadow-blue-500/30">
+                      <div className="mb-1.5 inline-block w-auto rounded-2xl rounded-tr-sm bg-gradient-to-br from-primary to-primary/90 px-5 py-3 text-sm text-white shadow-lg shadow-blue-500/30">
                         {chat?.attachments?.length > 0 && (
                           <div className="mb-2 w-full space-y-2">
                             {chat?.attachments.map((file: any, index: any) => (
@@ -143,7 +143,7 @@ const ProductChatHistory: React.FC<ProductChatHistoryProps> = ({
                           className="rounded-full object-cover"
                         />
                       ) : (
-                        <span className="text-sm font-bold text-blue-700">
+                        <span className="text-sm font-bold text-primary">
                           {chat?.user?.accountName?.[0]?.toUpperCase() || 
                            chat?.user?.firstName?.[0]?.toUpperCase() || 
                            chat?.user?.email?.[0]?.toUpperCase() || 

@@ -150,8 +150,8 @@ const ProductPreview: React.FC<ProductPreviewProps> = ({
 
             {/* Marketing Text */}
             {customContent.marketingText && (
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-                <p className="text-sm text-yellow-800 font-medium">
+              <div className="bg-warning/5 border border-warning/20 rounded-lg p-3">
+                <p className="text-sm text-warning font-medium">
                   {customContent.marketingText}
                 </p>
               </div>
@@ -159,7 +159,7 @@ const ProductPreview: React.FC<ProductPreviewProps> = ({
 
             {/* Pricing */}
             <div className="flex items-center gap-2">
-              <span className="text-2xl font-bold text-green-600">
+              <span className="text-2xl font-bold text-success">
                 ${safeFinalPrice.toFixed(2)}
               </span>
               {Number(originalProduct.offerPrice) < Number(originalProduct.productPrice) && (
@@ -179,7 +179,7 @@ const ProductPreview: React.FC<ProductPreviewProps> = ({
             <div className="flex items-center gap-1">
               <div className="flex">
                 {[1, 2, 3, 4, 5].map((star) => (
-                  <Star key={star} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                  <Star key={star} className="h-4 w-4 fill-yellow-400 text-warning" />
                 ))}
               </div>
               <span className="text-xs text-gray-500">(4.8)</span>
@@ -187,7 +187,7 @@ const ProductPreview: React.FC<ProductPreviewProps> = ({
 
             {/* Action Buttons */}
             <div className="flex gap-2 pt-2">
-              <Button className="flex-1 bg-blue-600 hover:bg-blue-700">
+              <Button className="flex-1 bg-primary hover:bg-primary/90">
                 <ShoppingCart className="h-4 w-4 mr-2" />
                 {t("add_to_cart")}
               </Button>

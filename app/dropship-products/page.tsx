@@ -417,8 +417,8 @@ const DropshipProductsPage = (props: DropshipProductsPageProps) => {
             <div className="flex items-center justify-between">
               <div>
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                    <Truck className="w-6 h-6 text-blue-600" />
+                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                    <Truck className="w-6 h-6 text-primary" />
                   </div>
                   <div>
                     <h1 className="text-xl font-semibold text-gray-900 capitalize">
@@ -454,7 +454,7 @@ const DropshipProductsPage = (props: DropshipProductsPageProps) => {
                       type="button"
                       onClick={handleDropshipSearch}
                       disabled={!searchDropshipTerm.trim()}
-                      className="h-10 px-4 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                      className="h-10 px-4 bg-primary hover:bg-primary/90 disabled:bg-gray-400 disabled:cursor-not-allowed"
                     >
                       {t("search")}
                     </Button>
@@ -475,7 +475,7 @@ const DropshipProductsPage = (props: DropshipProductsPageProps) => {
                       type="button"
                       onClick={handleExistingProductsSearch}
                       disabled={!existingProductsSearchTerm.trim()}
-                      className="h-10 px-4 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                      className="h-10 px-4 bg-primary hover:bg-primary/90 disabled:bg-gray-400 disabled:cursor-not-allowed"
                     >
                       {t("search")}
                     </Button>
@@ -503,7 +503,7 @@ const DropshipProductsPage = (props: DropshipProductsPageProps) => {
                   onClick={() => setActiveTab('dropshipable-products')}
                   className={`py-2 px-1 border-b-2 font-medium text-sm ${
                     activeTab === 'dropshipable-products'
-                      ? 'border-blue-500 text-blue-600'
+                      ? 'border-primary text-primary'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                   }`}
                 >
@@ -513,7 +513,7 @@ const DropshipProductsPage = (props: DropshipProductsPageProps) => {
                   onClick={() => setActiveTab('existing-products')}
                   className={`py-2 px-1 border-b-2 font-medium text-sm ${
                     activeTab === 'existing-products'
-                      ? 'border-blue-500 text-blue-600'
+                      ? 'border-primary text-primary'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                   }`}
                 >
@@ -534,7 +534,7 @@ const DropshipProductsPage = (props: DropshipProductsPageProps) => {
                       <button 
                         type="button" 
                         onClick={selectAll}
-                        className="px-3 py-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition-colors text-sm"
+                        className="px-3 py-2 bg-primary/10 text-primary rounded hover:bg-primary/20 transition-colors text-sm"
                       >
                         {t("select_all")}
                       </button>
@@ -594,7 +594,7 @@ const DropshipProductsPage = (props: DropshipProductsPageProps) => {
                               onClick={handleBrandSearch}
                               disabled={!searchTermBrand.trim()}
                               size="sm"
-                              className="h-8 px-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-xs"
+                              className="h-8 px-3 bg-primary hover:bg-primary/90 disabled:bg-gray-400 disabled:cursor-not-allowed text-xs"
                             >
                               {t("search")}
                             </Button>
@@ -610,7 +610,7 @@ const DropshipProductsPage = (props: DropshipProductsPageProps) => {
                             <div key={item.value} className="flex items-center space-x-2">
                               <Checkbox
                                 id={item.label}
-                                className="border border-gray-300 data-[state=checked]:bg-blue-600!"
+                                className="border border-gray-300 data-[state=checked]:bg-primary!"
                                 onCheckedChange={(checked) =>
                                   handleBrandChange(checked, item)
                                 }
@@ -754,7 +754,7 @@ const DropshipProductsPage = (props: DropshipProductsPageProps) => {
                             categoriesQuery?.data?.data?.children?.map((item: any) => item.id) || []
                           );
                         }}
-                        className="px-3 py-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition-colors text-sm"
+                        className="px-3 py-2 bg-primary/10 text-primary rounded hover:bg-primary/20 transition-colors text-sm"
                       >
                         {t("select_all")}
                       </button>
@@ -821,7 +821,7 @@ const DropshipProductsPage = (props: DropshipProductsPageProps) => {
                               onClick={handleBrandSearch}
                               disabled={!searchTermBrand.trim()}
                               size="sm"
-                              className="h-8 px-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-xs"
+                              className="h-8 px-3 bg-primary hover:bg-primary/90 disabled:bg-gray-400 disabled:cursor-not-allowed text-xs"
                             >
                               {t("search")}
                             </Button>
@@ -837,7 +837,7 @@ const DropshipProductsPage = (props: DropshipProductsPageProps) => {
                             <div key={item.value} className="flex items-center space-x-2">
                               <Checkbox
                                 id={`existing-${item.label}`}
-                                className="border border-gray-300 data-[state=checked]:bg-blue-600!"
+                                className="border border-gray-300 data-[state=checked]:bg-primary!"
                                 onCheckedChange={(checked) =>
                                   handleExistingProductsBrandChange(checked, item)
                                 }
@@ -871,7 +871,7 @@ const DropshipProductsPage = (props: DropshipProductsPageProps) => {
                           <div className="flex items-center space-x-2">
                             <Checkbox
                               id="existing-type-p"
-                              className="border border-gray-300 data-[state=checked]:bg-blue-600!"
+                              className="border border-gray-300 data-[state=checked]:bg-primary!"
                               onCheckedChange={(checked) => {
                                 if (checked) {
                                   setExistingProductsSelectedType("P");
@@ -891,7 +891,7 @@ const DropshipProductsPage = (props: DropshipProductsPageProps) => {
                           <div className="flex items-center space-x-2">
                             <Checkbox
                               id="existing-type-r"
-                              className="border border-gray-300 data-[state=checked]:bg-blue-600!"
+                              className="border border-gray-300 data-[state=checked]:bg-primary!"
                               onCheckedChange={(checked) => {
                                 if (checked) {
                                   setExistingProductsSelectedType("R");

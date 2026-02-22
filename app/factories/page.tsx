@@ -419,7 +419,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
                   <button
                     type="button"
                     onClick={selectAll}
-                    className="flex-1 rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+                    className="flex-1 rounded-lg bg-primary px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-primary/90"
                   >
                     {t("select_all")}
                   </button>
@@ -453,7 +453,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
                           <Input
                             type="text"
                             placeholder={t("search_brand")}
-                            className="h-9 flex-1 border-gray-300 text-sm focus:border-blue-500 focus:ring-blue-500"
+                            className="h-9 flex-1 border-gray-300 text-sm focus:border-primary focus:ring-primary"
                             value={searchTermBrand}
                             onChange={handleBrandSearchChange}
                             dir={langDir}
@@ -464,7 +464,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
                             onClick={handleBrandSearch}
                             disabled={!searchTermBrand.trim()}
                             size="sm"
-                            className="h-9 bg-blue-600 px-4 text-xs font-medium hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-gray-400"
+                            className="h-9 bg-primary px-4 text-xs font-medium hover:bg-primary/90 disabled:cursor-not-allowed disabled:bg-gray-400"
                           >
                             {t("search")}
                           </Button>
@@ -483,7 +483,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
                           >
                             <Checkbox
                               id={item.label}
-                              className="border border-gray-300 data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600"
+                              className="border border-gray-300 data-[state=checked]:border-primary data-[state=checked]:bg-primary"
                               onCheckedChange={(checked) =>
                                 handleBrandChange(checked, item)
                               }
@@ -555,7 +555,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
                         <Input
                           type="number"
                           placeholder={`${currency.symbol}0`}
-                          className="custom-form-control-s1 rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                          className="custom-form-control-s1 rounded-lg border-gray-300 focus:border-primary focus:ring-primary"
                           value={minPriceInput}
                           onChange={handleMinPriceChange}
                           onWheel={(e) => e.currentTarget.blur()}
@@ -565,7 +565,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
                         <Input
                           type="number"
                           placeholder={`${currency.symbol}500`}
-                          className="custom-form-control-s1 rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                          className="custom-form-control-s1 rounded-lg border-gray-300 focus:border-primary focus:ring-primary"
                           value={maxPriceInput}
                           onChange={handleMaxPriceChange}
                           onWheel={(e) => e.currentTarget.blur()}
@@ -591,7 +591,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
                   <button 
                     type="button" 
                     onClick={selectAll}
-                    className="px-3 py-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition-colors text-sm"
+                    className="px-3 py-2 bg-primary/10 text-primary rounded hover:bg-primary/20 transition-colors text-sm"
                   >
                     {t("select_all")}
                   </button>
@@ -632,7 +632,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
                           onClick={handleBrandSearch}
                           disabled={!searchTermBrand.trim()}
                           size="sm"
-                          className="h-8 px-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-xs"
+                          className="h-8 px-3 bg-primary hover:bg-primary/90 disabled:bg-gray-400 disabled:cursor-not-allowed text-xs"
                         >
                           {t("search")}
                         </Button>
@@ -648,7 +648,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
                         <div key={item.value} className="flex items-center space-x-2">
                           <Checkbox
                             id={`mobile-${item.label}`}
-                            className="border border-gray-300 data-[state=checked]:bg-blue-600!"
+                            className="border border-gray-300 data-[state=checked]:bg-primary!"
                             onCheckedChange={(checked) =>
                               handleBrandChange(checked, item)
                             }
@@ -768,7 +768,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
                 >
                   <ShoppingCart className="h-5 w-5" />
                   {factoriesCartList.length > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    <span className="absolute -top-1 -right-1 bg-destructive text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                       {factoriesCartList.length}
                     </span>
                   )}
@@ -819,7 +819,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
                     type="button"
                     className={`p-2 rounded transition-colors ${
                       viewType === "grid" 
-                        ? "bg-blue-600 text-white" 
+                        ? "bg-primary text-white" 
                         : "text-gray-600 hover:bg-gray-100"
                     }`}
                     onClick={() => setViewType("grid")}
@@ -830,7 +830,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
                     type="button"
                     className={`p-2 rounded transition-colors ${
                       viewType === "list" 
-                        ? "bg-blue-600 text-white" 
+                        ? "bg-primary text-white" 
                         : "text-gray-600 hover:bg-gray-100"
                     }`}
                     onClick={() => setViewType("list")}
@@ -982,7 +982,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
                       >
                         {t("factory_cart")}
                       </span>
-                      <span className="text-sm font-bold text-red-600">
+                      <span className="text-sm font-bold text-destructive">
                         {factoriesCartList.length}
                       </span>
                     </div>
@@ -990,7 +990,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
                       onClick={() => {
                         window.location.href = "/factories-cart";
                       }}
-                      className="mt-3 flex w-full items-center justify-center space-x-1.5 rounded-lg bg-yellow-400 px-3 py-2 text-xs font-medium text-gray-900 shadow-sm transition-colors duration-200 hover:bg-yellow-500"
+                      className="mt-3 flex w-full items-center justify-center space-x-1.5 rounded-lg bg-warning px-3 py-2 text-xs font-medium text-gray-900 shadow-sm transition-colors duration-200 hover:bg-warning"
                     >
                       <Package className="h-3 w-3" />
                       <span>{t("go_to_cart")}</span>
@@ -1046,7 +1046,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
 
                             {/* Customized Badge */}
                             <div className="mb-2">
-                              <span className="inline-block rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-medium text-green-700">
+                              <span className="inline-block rounded-full bg-success/10 px-2 py-0.5 text-[10px] font-medium text-success">
                                 {t("customized")}
                               </span>
                             </div>

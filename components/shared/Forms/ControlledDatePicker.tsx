@@ -104,7 +104,7 @@ const ControlledDatePicker: React.FC<ControlledDatePickerProps> = ({
                 placeholder={placeholder || t("enter") + " " + (label || t("date"))}
                 className={cn(
                   "w-full h-12 px-4 py-3 pr-12 bg-white border border-gray-300 rounded-xl text-sm font-normal",
-                  "hover:bg-gray-50 focus:ring-2 focus:ring-orange-500 focus:border-orange-500",
+                  "hover:bg-gray-50 focus:ring-2 focus:ring-warning focus:border-warning",
                   "transition-all duration-200 outline-none",
                   "text-gray-900",
                   !field.value && "text-gray-500",
@@ -123,7 +123,7 @@ const ControlledDatePicker: React.FC<ControlledDatePickerProps> = ({
               />
             </div>
           </FormControl>
-          <FormMessage className="text-sm text-red-500" />
+          <FormMessage className="text-sm text-destructive" />
         </FormItem>
       )}
     />

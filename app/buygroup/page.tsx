@@ -257,15 +257,15 @@ const TrendingPage = (props0: TrendingPageProps) => {
                         {translate(p.productName)}
                       </h3>
                       <div className="flex items-center gap-1.5 sm:gap-2">
-                        <span className="rounded-full bg-orange-500 px-1.5 py-0.5 text-[9px] font-bold text-white shadow sm:px-2 sm:text-[10px] md:text-xs">
+                        <span className="rounded-full bg-warning px-1.5 py-0.5 text-[9px] font-bold text-white shadow sm:px-2 sm:text-[10px] md:text-xs">
                           {t("sale_starts_on")}
                         </span>
-                        <span className="rounded-full bg-blue-600 px-1.5 py-0.5 text-[9px] font-semibold text-white shadow sm:px-2 sm:text-[10px] md:text-xs">
+                        <span className="rounded-full bg-primary px-1.5 py-0.5 text-[9px] font-semibold text-white shadow sm:px-2 sm:text-[10px] md:text-xs">
                           {startLabel}
                         </span>
                       </div>
                     </div>
-                    <span className="rounded-full bg-yellow-500 px-2 py-0.5 text-[10px] font-bold text-white shadow sm:px-3 sm:py-1 sm:text-xs md:text-sm">
+                    <span className="rounded-full bg-warning px-2 py-0.5 text-[10px] font-bold text-white shadow sm:px-3 sm:py-1 sm:text-xs md:text-sm">
                       {t("coming_soon")}
                     </span>
                   </div>
@@ -723,7 +723,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                     <button
                       type="button"
                       onClick={selectAll}
-                      className="flex-1 rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+                      className="flex-1 rounded-lg bg-primary px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-primary/90"
                     >
                       {t("select_all")}
                     </button>
@@ -788,7 +788,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                           <Input
                             type="text"
                             placeholder={t("search_brand")}
-                            className="h-9 w-full border-gray-300 text-sm focus:border-blue-500 focus:ring-blue-500"
+                            className="h-9 w-full border-gray-300 text-sm focus:border-primary focus:ring-primary"
                             onChange={handleDebounce}
                             dir={langDir}
                             translate="no"
@@ -807,7 +807,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                             >
                               <Checkbox
                                 id={item.label}
-                                className="border border-gray-300 data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600"
+                                className="border border-gray-300 data-[state=checked]:border-primary data-[state=checked]:bg-primary"
                                 onCheckedChange={(checked) =>
                                   handleBrandChange(checked, item)
                                 }
@@ -879,7 +879,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                           <Input
                             type="number"
                             placeholder={`${currency.symbol}0`}
-                            className="custom-form-control-s1 rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                            className="custom-form-control-s1 rounded-lg border-gray-300 focus:border-primary focus:ring-primary"
                             onChange={handleMinPriceChange}
                             onWheel={(e) => e.currentTarget.blur()}
                             ref={minPriceInputRef}
@@ -888,7 +888,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                           <Input
                             type="number"
                             placeholder={`${currency.symbol}500`}
-                            className="custom-form-control-s1 rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                            className="custom-form-control-s1 rounded-lg border-gray-300 focus:border-primary focus:ring-primary"
                             onChange={handleMaxPriceChange}
                             onWheel={(e) => e.currentTarget.blur()}
                             ref={maxPriceInputRef}
@@ -936,7 +936,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                     >
                       <ShoppingCart className="h-5 w-5" />
                       {cartList.length > 0 && (
-                        <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
+                        <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-destructive text-xs text-white">
                           {cartList.length}
                         </span>
                       )}
@@ -983,7 +983,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                         type="button"
                         className={`rounded p-2 transition-colors ${
                           viewType === "grid"
-                            ? "bg-blue-600 text-white"
+                            ? "bg-primary text-white"
                             : "text-gray-600 hover:bg-gray-100"
                         }`}
                         onClick={() => setViewType("grid")}
@@ -994,7 +994,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                         type="button"
                         className={`rounded p-2 transition-colors ${
                           viewType === "list"
-                            ? "bg-blue-600 text-white"
+                            ? "bg-primary text-white"
                             : "text-gray-600 hover:bg-gray-100"
                         }`}
                         onClick={() => setViewType("list")}
@@ -1181,7 +1181,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                         >
                           {t("subtotal")}
                         </span>
-                        <span className="text-sm font-bold text-red-600">
+                        <span className="text-sm font-bold text-destructive">
                           {currency.symbol}
                           {cartSubtotal.toFixed(2)}
                         </span>
@@ -1190,7 +1190,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                         onClick={() => {
                           window.location.href = "/cart";
                         }}
-                        className="mt-3 flex w-full items-center justify-center space-x-1.5 rounded-lg bg-yellow-400 px-3 py-2 text-xs font-medium text-gray-900 shadow-sm transition-colors duration-200 hover:bg-yellow-500"
+                        className="mt-3 flex w-full items-center justify-center space-x-1.5 rounded-lg bg-warning px-3 py-2 text-xs font-medium text-gray-900 shadow-sm transition-colors duration-200 hover:bg-warning"
                       >
                         <Package className="h-3 w-3" />
                         <span>{t("go_to_cart")}</span>
@@ -1276,7 +1276,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                                       updateCartWithLogin.isPending ||
                                       updateCartByDevice.isPending
                                     }
-                                    className="px-1.5 py-1 transition-colors hover:bg-yellow-50 disabled:cursor-not-allowed disabled:opacity-50"
+                                    className="px-1.5 py-1 transition-colors hover:bg-warning/5 disabled:cursor-not-allowed disabled:opacity-50"
                                     aria-label={t("decrease_quantity")}
                                   >
                                     <Trash2 className="h-3 w-3 text-gray-600" />
@@ -1300,7 +1300,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                                       updateCartWithLogin.isPending ||
                                       updateCartByDevice.isPending
                                     }
-                                    className="px-1.5 py-1 transition-colors hover:bg-yellow-50 disabled:cursor-not-allowed disabled:opacity-50"
+                                    className="px-1.5 py-1 transition-colors hover:bg-warning/5 disabled:cursor-not-allowed disabled:opacity-50"
                                     aria-label={t("increase_quantity")}
                                   >
                                     <span className="text-sm font-semibold text-gray-600">
@@ -1317,7 +1317,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                                     handleRemoveItemFromCart(cartItem.id)
                                   }
                                   disabled={deleteCartItem.isPending}
-                                  className="text-xs text-blue-600 underline hover:text-blue-800 disabled:cursor-not-allowed disabled:opacity-50"
+                                  className="text-xs text-primary underline hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
                                   aria-label={t("remove_from_cart")}
                                 >
                                   {t("remove")}
@@ -1353,7 +1353,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                   <button
                     type="button"
                     onClick={selectAll}
-                    className="rounded bg-blue-100 px-3 py-2 text-sm text-blue-700 transition-colors hover:bg-blue-200"
+                    className="rounded bg-primary/10 px-3 py-2 text-sm text-primary transition-colors hover:bg-primary/20"
                   >
                     {t("select_all")}
                   </button>
@@ -1429,7 +1429,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                         >
                           <Checkbox
                             id={`mobile-${item.label}`}
-                            className="border border-gray-300 data-[state=checked]:bg-blue-600!"
+                            className="border border-gray-300 data-[state=checked]:bg-primary!"
                             onCheckedChange={(checked) =>
                               handleBrandChange(checked, item)
                             }
@@ -1601,7 +1601,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                               <p className="text-xs text-gray-500">
                                 Qty: {quantity}
                               </p>
-                              <p className="text-sm font-semibold text-green-600">
+                              <p className="text-sm font-semibold text-success">
                                 {currency.symbol}
                                 {totalPrice.toFixed(2)}
                               </p>
@@ -1627,7 +1627,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
                 <div className="border-t border-gray-200 bg-gray-50 p-4">
                   <button
                     onClick={() => router.push("/cart")}
-                    className="flex w-full items-center justify-center space-x-2 rounded-lg bg-blue-600 px-4 py-2 font-medium text-white transition-colors duration-200 hover:bg-blue-700"
+                    className="flex w-full items-center justify-center space-x-2 rounded-lg bg-primary px-4 py-2 font-medium text-white transition-colors duration-200 hover:bg-primary/90"
                   >
                     <Package className="h-4 w-4" />
                     <span>{t("go_to_cart")}</span>

@@ -193,7 +193,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ userDetails }) => {
               <span
                 className={cn(
                   "mr-2.5 text-sm font-bold leading-6",
-                  isOnlineToday ? "text-light-green" : "text-red-500",
+                  isOnlineToday ? "text-light-green" : "text-destructive",
                 )}
               >
                 {isOnlineToday ? "Online" : "Offline"}

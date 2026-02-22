@@ -31,11 +31,11 @@ const Step3VendorDetails: React.FC<Step3Props> = ({ activeProductType }) => {
     <div className="space-y-6">
       {/* Pricing Section */}
       <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-        <div className="border-b border-gray-200 bg-orange-50 px-6 py-4">
+        <div className="border-b border-gray-200 bg-warning/5 px-6 py-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-orange-100">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-warning/10">
               <svg
-                className="h-5 w-5 text-orange-600"
+                className="h-5 w-5 text-warning"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -66,11 +66,11 @@ const Step3VendorDetails: React.FC<Step3Props> = ({ activeProductType }) => {
       {/* Variant Pricing Section — only visible when variants are defined in Step 2 */}
       {hasVariants && (
         <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-          <div className="border-b border-gray-200 bg-purple-50 px-6 py-4">
+          <div className="border-b border-gray-200 bg-info/5 px-6 py-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-purple-100">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-info/10">
                 <svg
-                  className="h-5 w-5 text-purple-600"
+                  className="h-5 w-5 text-info"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"

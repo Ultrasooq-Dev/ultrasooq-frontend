@@ -170,8 +170,8 @@ const CreateDropshipableProductPage = () => {
                 <div className="rfq_middle">
                   <div className="bg-white p-8 rounded-lg shadow-sm text-center">
                     <div className="flex flex-col items-center justify-center space-y-4">
-                      <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
-                        <Truck className="w-8 h-8 text-blue-600 animate-pulse" />
+                      <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+                        <Truck className="w-8 h-8 text-primary animate-pulse" />
                       </div>
                       <h2 className="text-xl font-semibold text-gray-900">
                         {t("redirecting_to_form")}
@@ -180,9 +180,9 @@ const CreateDropshipableProductPage = () => {
                         {t("preparing_dropship_form")}
                       </p>
                       <div className="flex items-center space-x-2">
-                        <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce"></div>
-                        <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                        <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
+                        <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                        <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                       </div>
                     </div>
                   </div>
@@ -221,8 +221,8 @@ const CreateDropshipableProductPage = () => {
                         <ArrowLeft className="w-5 h-5" />
                       </button>
                       <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                          <Truck className="w-6 h-6 text-blue-600" />
+                        <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                          <Truck className="w-6 h-6 text-primary" />
                         </div>
                         <div>
                           <h1 className="text-xl font-semibold text-gray-900">
@@ -255,7 +255,7 @@ const CreateDropshipableProductPage = () => {
                         type="button"
                         onClick={handleSearch}
                         disabled={!searchTerm.trim() || isSearching}
-                        className="h-12 px-6 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-2"
+                        className="h-12 px-6 bg-primary hover:bg-primary/90 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-2"
                       >
                         <Search className="w-4 h-4" />
                         {isSearching ? t("searching") : t("search")}
@@ -268,7 +268,7 @@ const CreateDropshipableProductPage = () => {
                         type="button"
                         onClick={handleCreateFromScratch}
                         variant="outline"
-                        className="h-12 px-6 border-blue-600 text-blue-600 hover:bg-blue-50 flex items-center gap-2"
+                        className="h-12 px-6 border-primary text-primary hover:bg-primary/5 flex items-center gap-2"
                       >
                         <Plus className="w-4 h-4" />
 {t("add_dropshipable_product")}
@@ -286,7 +286,7 @@ const CreateDropshipableProductPage = () => {
                         {searchResults.map((product: any) => (
                           <div
                             key={product.id}
-                            className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-blue-300 transition-colors"
+                            className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-primary/30 transition-colors"
                           >
                             <div className="flex items-center gap-4">
                               <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden relative">
@@ -355,7 +355,7 @@ const CreateDropshipableProductPage = () => {
                                 variant="default"
                                 size="sm"
                                 onClick={() => handleSelectProduct(product)}
-                                className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700"
+                                className="flex items-center gap-1 bg-primary hover:bg-primary/90"
                               >
                                 <Plus className="w-4 h-4" />
                                 {t("select")}
@@ -468,7 +468,7 @@ const CreateDropshipableProductPage = () => {
                   {viewProduct.offerPrice && viewProduct.offerPrice !== viewProduct.productPrice && (
                     <div>
                       <span className="font-medium text-gray-700">{t("offer_price")}:</span>
-                      <p className="text-green-600 font-medium">${viewProduct.offerPrice}</p>
+                      <p className="text-success font-medium">${viewProduct.offerPrice}</p>
                     </div>
                   )}
                   
@@ -529,7 +529,7 @@ const CreateDropshipableProductPage = () => {
                   });
                   router.push(`/product?${queryParams.toString()}`);
                 }}
-                className="bg-blue-600 hover:bg-blue-700 flex items-center gap-2"
+                className="bg-primary hover:bg-primary/90 flex items-center gap-2"
               >
                 <Plus className="w-4 h-4" />
                 {t("select_this_product")}

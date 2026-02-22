@@ -359,7 +359,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           <Button
             variant="ghost"
             size="sm"
-            className="text-red-600 hover:text-red-700 hover:bg-red-50 px-2 flex items-center space-x-1"
+            className="text-destructive hover:text-destructive hover:bg-destructive/5 px-2 flex items-center space-x-1"
             onClick={() => setIsConfirmDialogOpen(true)}
             dir={langDir}
             translate="no"
@@ -371,7 +371,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             <Button
               variant="ghost"
               size="sm"
-              className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-0"
+              className="text-primary hover:text-primary hover:bg-primary/5 px-0"
               onClick={() => onWishlist(productId)}
               dir={langDir}
               translate="no"
@@ -411,14 +411,14 @@ const ProductCard: React.FC<ProductCardProps> = ({
             <div>
               <Button
                 type="button"
-                className="bg-white text-red-500 mr-2"
+                className="bg-white text-destructive mr-2"
                 onClick={onCancelRemove}
               >
                 Cancel
               </Button>
               <Button
                 type="button"
-                className="bg-red-500"
+                className="bg-destructive"
                 onClick={onConfirmRemove}
               >
                 Remove

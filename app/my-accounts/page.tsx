@@ -271,9 +271,9 @@ export default function MyAccountsPage() {
                       (("orders" in currentAccount
                         ? currentAccount.orders
                         : 0) || 0) > 0 && (
-                        <div className="flex items-center gap-1.5 rounded-md bg-blue-100 px-2.5 py-1.5">
+                        <div className="flex items-center gap-1.5 rounded-md bg-primary/10 px-2.5 py-1.5">
                           <svg
-                            className="h-4 w-4 text-blue-600"
+                            className="h-4 w-4 text-primary"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -285,7 +285,7 @@ export default function MyAccountsPage() {
                               d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
                             />
                           </svg>
-                          <span className="text-xs font-semibold text-blue-700">
+                          <span className="text-xs font-semibold text-primary">
                             {t("new_orders")}:{" "}
                             {("orders" in currentAccount
                               ? currentAccount.orders
@@ -298,9 +298,9 @@ export default function MyAccountsPage() {
                     {(("messages" in currentAccount
                       ? currentAccount.messages
                       : 0) || 0) > 0 && (
-                      <div className="flex items-center gap-1.5 rounded-md bg-green-100 px-2.5 py-1.5">
+                      <div className="flex items-center gap-1.5 rounded-md bg-success/10 px-2.5 py-1.5">
                         <svg
-                          className="h-4 w-4 text-green-600"
+                          className="h-4 w-4 text-success"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -312,7 +312,7 @@ export default function MyAccountsPage() {
                             d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
                           />
                         </svg>
-                        <span className="text-xs font-semibold text-green-700">
+                        <span className="text-xs font-semibold text-success">
                           {t("new_messages")}:{" "}
                           {("messages" in currentAccount
                             ? currentAccount.messages
@@ -325,8 +325,8 @@ export default function MyAccountsPage() {
               )}
 
               {/* Status Description */}
-              <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-3">
-                <p className="text-sm text-blue-800">
+              <div className="mt-4 rounded-lg border border-primary/20 bg-primary/5 p-3">
+                <p className="text-sm text-primary">
                   {getStatusDescription(
                     getStatusInfo(currentAccount).status,
                     getStatusInfo(currentAccount).statusNote,
@@ -334,11 +334,11 @@ export default function MyAccountsPage() {
                 </p>
                 {/* Show Status Note if available */}
                 {getStatusInfo(currentAccount).statusNote && (
-                  <div className="mt-3 rounded-lg border border-yellow-200 bg-yellow-50 p-3">
+                  <div className="mt-3 rounded-lg border border-warning/20 bg-warning/5 p-3">
                     <div className="flex items-start space-x-2">
                       <div className="shrink-0">
                         <svg
-                          className="h-5 w-5 text-yellow-600"
+                          className="h-5 w-5 text-warning"
                           fill="currentColor"
                           viewBox="0 0 20 20"
                         >
@@ -350,10 +350,10 @@ export default function MyAccountsPage() {
                         </svg>
                       </div>
                       <div className="flex-1">
-                        <h4 className="text-sm font-medium text-yellow-800">
+                        <h4 className="text-sm font-medium text-warning">
                           {t("admin_note")}:
                         </h4>
-                        <p className="mt-1 text-sm text-yellow-700">
+                        <p className="mt-1 text-sm text-warning">
                           {getStatusInfo(currentAccount).statusNote}
                         </p>
                       </div>
@@ -399,7 +399,7 @@ export default function MyAccountsPage() {
             <div className="flex justify-end">
               <Button
                 onClick={() => setShowCreateForm(true)}
-                className="bg-blue-600 hover:bg-blue-700"
+                className="bg-primary hover:bg-primary/90"
               >
                 {t("create_new_account")}
               </Button>
@@ -452,9 +452,9 @@ export default function MyAccountsPage() {
                             {/* Orders Count - Only for COMPANY and FREELANCER */}
                             {isCompanyOrFreelancer &&
                               (account.orders || 0) > 0 && (
-                                <div className="flex items-center gap-1.5 rounded-md bg-blue-100 px-2.5 py-1.5">
+                                <div className="flex items-center gap-1.5 rounded-md bg-primary/10 px-2.5 py-1.5">
                                   <svg
-                                    className="h-4 w-4 text-blue-600"
+                                    className="h-4 w-4 text-primary"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -466,7 +466,7 @@ export default function MyAccountsPage() {
                                       d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
                                     />
                                   </svg>
-                                  <span className="text-xs font-semibold text-blue-700">
+                                  <span className="text-xs font-semibold text-primary">
                                     {t("new_orders")}: {account.orders || 0}
                                   </span>
                                 </div>
@@ -474,9 +474,9 @@ export default function MyAccountsPage() {
 
                             {/* Messages Count - For all account types */}
                             {(account.messages || 0) > 0 && (
-                              <div className="flex items-center gap-1.5 rounded-md bg-green-100 px-2.5 py-1.5">
+                              <div className="flex items-center gap-1.5 rounded-md bg-success/10 px-2.5 py-1.5">
                                 <svg
-                                  className="h-4 w-4 text-green-600"
+                                  className="h-4 w-4 text-success"
                                   fill="none"
                                   stroke="currentColor"
                                   viewBox="0 0 24 24"
@@ -488,7 +488,7 @@ export default function MyAccountsPage() {
                                     d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
                                   />
                                 </svg>
-                                <span className="text-xs font-semibold text-green-700">
+                                <span className="text-xs font-semibold text-success">
                                   {t("new_messages")}: {account.messages || 0}
                                 </span>
                               </div>
@@ -500,11 +500,11 @@ export default function MyAccountsPage() {
                       {statusInfo.statusNote &&
                         (statusInfo.status === "REJECT" ||
                           statusInfo.status === "INACTIVE") && (
-                          <div className="rounded-lg border border-red-200 bg-red-50 p-3">
+                          <div className="rounded-lg border border-destructive/20 bg-destructive/5 p-3">
                             <div className="flex items-start space-x-2">
                               <div className="shrink-0">
                                 <svg
-                                  className="mt-0.5 h-4 w-4 text-red-600"
+                                  className="mt-0.5 h-4 w-4 text-destructive"
                                   fill="currentColor"
                                   viewBox="0 0 20 20"
                                 >
@@ -516,10 +516,10 @@ export default function MyAccountsPage() {
                                 </svg>
                               </div>
                               <div className="flex-1">
-                                <h4 className="text-xs font-medium text-red-800">
+                                <h4 className="text-xs font-medium text-destructive">
                                   {t("admin_note")}:
                                 </h4>
-                                <p className="mt-1 text-xs text-red-700">
+                                <p className="mt-1 text-xs text-destructive">
                                   {statusInfo.statusNote}
                                 </p>
                               </div>
@@ -595,9 +595,9 @@ export default function MyAccountsPage() {
                             <div className="flex flex-wrap gap-2">
                               {/* Orders Count */}
                               {(account.orders || 0) > 0 && (
-                                <div className="flex items-center gap-1.5 rounded-md bg-blue-100 px-2.5 py-1.5">
+                                <div className="flex items-center gap-1.5 rounded-md bg-primary/10 px-2.5 py-1.5">
                                   <svg
-                                    className="h-4 w-4 text-blue-600"
+                                    className="h-4 w-4 text-primary"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -609,7 +609,7 @@ export default function MyAccountsPage() {
                                       d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
                                     />
                                   </svg>
-                                  <span className="text-xs font-semibold text-blue-700">
+                                  <span className="text-xs font-semibold text-primary">
                                     {t("new_orders")}: {account.orders || 0}
                                   </span>
                                 </div>
@@ -617,9 +617,9 @@ export default function MyAccountsPage() {
 
                               {/* Messages Count */}
                               {(account.messages || 0) > 0 && (
-                                <div className="flex items-center gap-1.5 rounded-md bg-green-100 px-2.5 py-1.5">
+                                <div className="flex items-center gap-1.5 rounded-md bg-success/10 px-2.5 py-1.5">
                                   <svg
-                                    className="h-4 w-4 text-green-600"
+                                    className="h-4 w-4 text-success"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -631,7 +631,7 @@ export default function MyAccountsPage() {
                                       d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
                                     />
                                   </svg>
-                                  <span className="text-xs font-semibold text-green-700">
+                                  <span className="text-xs font-semibold text-success">
                                     {t("new_messages")}: {account.messages || 0}
                                   </span>
                                 </div>
@@ -643,11 +643,11 @@ export default function MyAccountsPage() {
                         {statusInfo.statusNote &&
                           (statusInfo.status === "REJECT" ||
                             statusInfo.status === "INACTIVE") && (
-                            <div className="rounded-lg border border-red-200 bg-red-50 p-3">
+                            <div className="rounded-lg border border-destructive/20 bg-destructive/5 p-3">
                               <div className="flex items-start space-x-2">
                                 <div className="shrink-0">
                                   <svg
-                                    className="mt-0.5 h-4 w-4 text-red-600"
+                                    className="mt-0.5 h-4 w-4 text-destructive"
                                     fill="currentColor"
                                     viewBox="0 0 20 20"
                                   >
@@ -659,10 +659,10 @@ export default function MyAccountsPage() {
                                   </svg>
                                 </div>
                                 <div className="flex-1">
-                                  <h4 className="text-xs font-medium text-red-800">
+                                  <h4 className="text-xs font-medium text-destructive">
                                     {t("admin_note")}:
                                   </h4>
-                                  <p className="mt-1 text-xs text-red-700">
+                                  <p className="mt-1 text-xs text-destructive">
                                     {statusInfo.statusNote}
                                   </p>
                                 </div>
@@ -734,9 +734,9 @@ export default function MyAccountsPage() {
                             <div className="flex flex-wrap gap-2">
                               {/* Orders Count */}
                               {(account.orders || 0) > 0 && (
-                                <div className="flex items-center gap-1.5 rounded-md bg-blue-100 px-2.5 py-1.5">
+                                <div className="flex items-center gap-1.5 rounded-md bg-primary/10 px-2.5 py-1.5">
                                   <svg
-                                    className="h-4 w-4 text-blue-600"
+                                    className="h-4 w-4 text-primary"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -748,7 +748,7 @@ export default function MyAccountsPage() {
                                       d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
                                     />
                                   </svg>
-                                  <span className="text-xs font-semibold text-blue-700">
+                                  <span className="text-xs font-semibold text-primary">
                                     {t("new_orders")}: {account.orders || 0}
                                   </span>
                                 </div>
@@ -756,9 +756,9 @@ export default function MyAccountsPage() {
 
                               {/* Messages Count */}
                               {(account.messages || 0) > 0 && (
-                                <div className="flex items-center gap-1.5 rounded-md bg-green-100 px-2.5 py-1.5">
+                                <div className="flex items-center gap-1.5 rounded-md bg-success/10 px-2.5 py-1.5">
                                   <svg
-                                    className="h-4 w-4 text-green-600"
+                                    className="h-4 w-4 text-success"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
@@ -770,7 +770,7 @@ export default function MyAccountsPage() {
                                       d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
                                     />
                                   </svg>
-                                  <span className="text-xs font-semibold text-green-700">
+                                  <span className="text-xs font-semibold text-success">
                                     {t("new_messages")}: {account.messages || 0}
                                   </span>
                                 </div>
@@ -782,11 +782,11 @@ export default function MyAccountsPage() {
                         {statusInfo.statusNote &&
                           (statusInfo.status === "REJECT" ||
                             statusInfo.status === "INACTIVE") && (
-                            <div className="rounded-lg border border-red-200 bg-red-50 p-3">
+                            <div className="rounded-lg border border-destructive/20 bg-destructive/5 p-3">
                               <div className="flex items-start space-x-2">
                                 <div className="shrink-0">
                                   <svg
-                                    className="mt-0.5 h-4 w-4 text-red-600"
+                                    className="mt-0.5 h-4 w-4 text-destructive"
                                     fill="currentColor"
                                     viewBox="0 0 20 20"
                                   >
@@ -798,10 +798,10 @@ export default function MyAccountsPage() {
                                   </svg>
                                 </div>
                                 <div className="flex-1">
-                                  <h4 className="text-xs font-medium text-red-800">
+                                  <h4 className="text-xs font-medium text-destructive">
                                     {t("admin_note")}:
                                   </h4>
-                                  <p className="mt-1 text-xs text-red-700">
+                                  <p className="mt-1 text-xs text-destructive">
                                     {statusInfo.statusNote}
                                   </p>
                                 </div>
@@ -860,9 +860,9 @@ export default function MyAccountsPage() {
                           </p>
                           <div className="flex flex-wrap gap-2">
                             {/* Messages Count */}
-                            <div className="flex items-center gap-1.5 rounded-md bg-green-100 px-2.5 py-1.5">
+                            <div className="flex items-center gap-1.5 rounded-md bg-success/10 px-2.5 py-1.5">
                               <svg
-                                className="h-4 w-4 text-green-600"
+                                className="h-4 w-4 text-success"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -874,7 +874,7 @@ export default function MyAccountsPage() {
                                   d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
                                 />
                               </svg>
-                              <span className="text-xs font-semibold text-green-700">
+                              <span className="text-xs font-semibold text-success">
                                 {t("new_messages")}: {account.messages || 0}
                               </span>
                             </div>
@@ -884,11 +884,11 @@ export default function MyAccountsPage() {
                         {statusInfo.statusNote &&
                           (statusInfo.status === "REJECT" ||
                             statusInfo.status === "INACTIVE") && (
-                            <div className="rounded-lg border border-red-200 bg-red-50 p-3">
+                            <div className="rounded-lg border border-destructive/20 bg-destructive/5 p-3">
                               <div className="flex items-start space-x-2">
                                 <div className="shrink-0">
                                   <svg
-                                    className="mt-0.5 h-4 w-4 text-red-600"
+                                    className="mt-0.5 h-4 w-4 text-destructive"
                                     fill="currentColor"
                                     viewBox="0 0 20 20"
                                   >
@@ -900,10 +900,10 @@ export default function MyAccountsPage() {
                                   </svg>
                                 </div>
                                 <div className="flex-1">
-                                  <h4 className="text-xs font-medium text-red-800">
+                                  <h4 className="text-xs font-medium text-destructive">
                                     {t("admin_note")}:
                                   </h4>
-                                  <p className="mt-1 text-xs text-red-700">
+                                  <p className="mt-1 text-xs text-destructive">
                                     {statusInfo.statusNote}
                                   </p>
                                 </div>

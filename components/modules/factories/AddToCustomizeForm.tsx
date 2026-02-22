@@ -393,7 +393,7 @@ const AddToCustomizeForm: React.FC<AddToCustomizeFormProps> = ({
                               {watchProductImages?.length ? (
                                 <button
                                   type="button"
-                                  className="absolute top-2 right-2 z-10 bg-red-500 hover:bg-red-600 text-white rounded-full p-1.5 shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+                                  className="absolute top-2 right-2 z-10 bg-destructive hover:bg-destructive text-white rounded-full p-1.5 shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
                                   onClick={() => {
                                     handleRemovePreviewImage(item?.id);
                                     if (photosRef.current)
@@ -515,7 +515,7 @@ const AddToCustomizeForm: React.FC<AddToCustomizeFormProps> = ({
                   />
                 ))}
                 <div className="relative w-full aspect-square">
-                  <div className="absolute m-auto flex h-full w-full cursor-pointer flex-wrap items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 hover:border-blue-400 transition-colors">
+                  <div className="absolute m-auto flex h-full w-full cursor-pointer flex-wrap items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 hover:border-primary/70 transition-colors">
                     <div
                       className="text-gray-600 text-sm font-medium flex flex-col items-center gap-2"
                       dir={langDir}
@@ -576,7 +576,7 @@ const AddToCustomizeForm: React.FC<AddToCustomizeFormProps> = ({
               </div>
             </div>
 
-            <p className="text-sm text-red-600" dir={langDir}>
+            <p className="text-sm text-destructive" dir={langDir}>
               {!watchProductImages?.length
                 ? form.formState.errors?.productImages?.message
                 : ""}
@@ -621,7 +621,7 @@ const AddToCustomizeForm: React.FC<AddToCustomizeFormProps> = ({
               updateFactoriesCartWithLogin?.isPending
             }
             type="submit"
-            className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg text-base transition-colors"
+            className="w-full h-12 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg text-base transition-colors"
             dir={langDir}
             translate="no"
           >

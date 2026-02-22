@@ -63,7 +63,7 @@ const DescriptionSection = () => {
                     formContext.getValues()?.productShortDescriptionList?.[index]?.shortDescriptionJson
                   }
                 />
-                <p className="text-[13px] font-medium text-red-500" dir={langDir}>
+                <p className="text-[13px] font-medium text-destructive" dir={langDir}>
                   {/* @ts-ignore */}
                   {formContext?.formState?.errors?.productShortDescriptionList?.[index]?.shortDescription?.message || ''}
                 </p>

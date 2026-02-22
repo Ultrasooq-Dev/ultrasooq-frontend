@@ -474,7 +474,7 @@ export default function EditBranchPage() {
                         </select>
                       )}
                     />
-                    <p className="text-[13px] text-red-500" dir={langDir}>
+                    <p className="text-[13px] text-destructive" dir={langDir}>
                       {form.formState.errors.startTime?.message}
                     </p>
                   </div>
@@ -501,7 +501,7 @@ export default function EditBranchPage() {
                         </select>
                       )}
                     />
-                    <p className="text-[13px] text-red-500" dir={langDir}>
+                    <p className="text-[13px] text-destructive" dir={langDir}>
                       {form.formState.errors.endTime?.message}
                     </p>
                   </div>
@@ -543,7 +543,7 @@ export default function EditBranchPage() {
                   </div>
 
                   {form.formState.errors.workingDays?.message ? (
-                    <p className="text-[13px] text-red-500" dir={langDir} translate="no">
+                    <p className="text-[13px] text-destructive" dir={langDir} translate="no">
                       {t("working_day_required")}
                     </p>
                   ) : null}

@@ -563,8 +563,8 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
       <>
         <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
           <div className="mb-4 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100">
-              <Sparkles className="h-5 w-5 text-purple-600" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-info/10">
+              <Sparkles className="h-5 w-5 text-info" />
             </div>
             <div className="flex-1">
               <h3 className="text-lg font-semibold text-gray-800">
@@ -601,7 +601,7 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
             {/* Loading state */}
             {isSearching && (
               <div className="flex items-center justify-center gap-2 py-6">
-                <Loader2 className="h-5 w-5 animate-spin text-purple-600" />
+                <Loader2 className="h-5 w-5 animate-spin text-info" />
                 <span className="text-sm text-gray-500">
                   {t("searching") || "Searching..."}
                 </span>
@@ -685,7 +685,7 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
                       onClick={() =>
                         handleAIGenerate(lastSearchQuery || "", "text")
                       }
-                      className="bg-purple-600 hover:bg-purple-700 text-white"
+                      className="bg-info hover:bg-info/90 text-white"
                       disabled={!lastSearchQuery.trim()}
                     >
                       <Sparkles className="mr-2 h-4 w-4" />
@@ -698,7 +698,7 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
                   <div className="flex flex-col items-center gap-2 border-t border-gray-100 pt-3">
                     <Button
                       disabled
-                      className="bg-purple-600 text-white"
+                      className="bg-info text-white"
                     >
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       {t("generating") || "Generating..."}
@@ -720,7 +720,7 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <h4 className="flex items-center gap-2 text-sm font-semibold text-gray-700">
-                    <Sparkles className="h-4 w-4 text-purple-600" />
+                    <Sparkles className="h-4 w-4 text-info" />
                     {t("product_models_found") || "Product Models Found"}
                   </h4>
                   {aiModelSource === "text" && (
@@ -731,7 +731,7 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
                         handleAIGenerate(lastSearchQuery || "", "text")
                       }
                       disabled={isAIGenerating || !lastSearchQuery.trim()}
-                      className="text-purple-600 hover:text-purple-700"
+                      className="text-info hover:text-info"
                     >
                       {isAIGenerating ? (
                         <Loader2 className="h-4 w-4 animate-spin" />
@@ -797,7 +797,7 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
                             checkingModel ||
                             processingProductIndex === idx
                           }
-                          className="flex-shrink-0 bg-purple-600 text-white hover:bg-purple-700"
+                          className="flex-shrink-0 bg-info text-white hover:bg-info/90"
                         >
                           {checkingModel &&
                           processingProductIndex === idx ? (
@@ -837,7 +837,7 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
                       handleAIGenerate(lastSearchQuery || "", "text")
                     }
                     variant="outline"
-                    className="mt-3 gap-2 border-purple-300 text-purple-600 hover:bg-purple-50"
+                    className="mt-3 gap-2 border-purple-300 text-info hover:bg-info/5"
                     disabled={!lastSearchQuery.trim()}
                   >
                     <Sparkles className="h-4 w-4" />
@@ -851,7 +851,7 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
               searchResults.length === 0 &&
               aiProductModels.length === 0 && (
                 <div className="flex flex-col items-center gap-2 py-6">
-                  <Loader2 className="h-6 w-6 animate-spin text-purple-600" />
+                  <Loader2 className="h-6 w-6 animate-spin text-info" />
                   <p className="text-sm text-gray-500">
                     {t("ai_generating_suggestions") || "AI is generating suggestions..."}
                   </p>
@@ -936,10 +936,10 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
                           <p
                             className={`mt-1 flex items-center gap-1 text-xs ${
                               previewData.categoryConfidence === "high"
-                                ? "text-green-600"
+                                ? "text-success"
                                 : previewData.categoryConfidence === "medium"
-                                  ? "text-blue-600"
-                                  : "text-yellow-600"
+                                  ? "text-primary"
+                                  : "text-warning"
                             }`}
                           >
                             <CheckCircle2 className="h-3 w-3" />
@@ -953,7 +953,7 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
                                   "Uncertain – please verify"}
                           </p>
                         ) : (
-                          <p className="mt-1 flex items-center gap-1 text-xs text-yellow-600">
+                          <p className="mt-1 flex items-center gap-1 text-xs text-warning">
                             <X className="h-3 w-3" />
                             {t("category_not_matched") ||
                               "Not found – please select manually"}
@@ -1009,15 +1009,15 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
                     <div
                       className={`col-span-2 rounded-lg p-3 ${
                         previewData.modelExists
-                          ? "border border-yellow-200 bg-yellow-50"
-                          : "border border-green-200 bg-green-50"
+                          ? "border border-warning/20 bg-warning/5"
+                          : "border border-success/20 bg-success/5"
                       }`}
                     >
                       <p
                         className={`text-sm font-medium ${
                           previewData.modelExists
-                            ? "text-yellow-800"
-                            : "text-green-800"
+                            ? "text-warning"
+                            : "text-success"
                         }`}
                       >
                         {previewData.modelExists
@@ -1038,7 +1038,7 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
                 </Button>
                 <Button
                   onClick={handleUsePreviewData}
-                  className="bg-purple-600 text-white hover:bg-purple-700"
+                  className="bg-info text-white hover:bg-info/90"
                 >
                   {t("use_this_data") || "Use This Data"}
                 </Button>
@@ -1128,7 +1128,7 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
                     setShowProductPopup(false);
                     handleSelectExistingProduct(selectedProduct);
                   }}
-                  className="bg-blue-600 text-white hover:bg-blue-700"
+                  className="bg-primary text-white hover:bg-primary/90"
                 >
                   <Copy className="mr-2 h-4 w-4" />
                   {t("select") || "Select"}

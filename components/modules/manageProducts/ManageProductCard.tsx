@@ -554,12 +554,12 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
               <h3 className="text-lg font-semibold text-gray-900">{productName || "-"}</h3>
               {/* Product Type Badges */}
               {/* {productType === 'D' && !isDropshipped && (
-                <span className="px-2 py-1 text-xs font-medium bg-purple-100 text-purple-700 rounded-full">
+                <span className="px-2 py-1 text-xs font-medium bg-info/10 text-info rounded-full">
                   {t("wholesale_product")}
                 </span>
               )}
               {isDropshipped && (
-                <span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-700 rounded-full">
+                <span className="px-2 py-1 text-xs font-medium bg-success/10 text-success rounded-full">
                   {t("dropship_product")}
                 </span>
               )} */}
@@ -569,13 +569,13 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
             <div className="flex space-x-6 text-sm text-gray-600">
               <div className="flex items-center space-x-2">
                 <span className="font-medium">{t("stock")}:</span>
-                <span className="text-green-600 font-semibold">
+                <span className="text-success font-semibold">
                   {askForStock === "false" || askForStock === "NO" || (askForStock as any) === false ? stock : t("ask_for_the_stock")}
                 </span>
               </div>
               <div className="flex items-center space-x-2">
                 <span className="font-medium">{t("price")}:</span>
-                <span className="text-blue-600 font-semibold">
+                <span className="text-primary font-semibold">
                   {askForPrice === "false" || askForPrice === "NO" || (askForPrice as any) === false ? `$${productPrice}` : t("ask_for_the_price")}
                 </span>
               </div>
@@ -604,7 +604,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                 <Link href={`/product?copy=${productId}`}>
                   <button
                     type="button"
-                    className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-500 text-white hover:bg-green-600 transition-colors"
+                    className="flex h-10 w-10 items-center justify-center rounded-lg bg-success text-white hover:bg-success transition-colors"
                     title={t("copy_product")}
                   >
                     <IoMdCopy size={18} />
@@ -615,7 +615,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
               {!hideActionButtons && (
                 <button
                   type="button"
-                  className="flex h-10 w-10 items-center justify-center rounded-lg bg-red-500 text-white hover:bg-red-600 transition-colors"
+                  className="flex h-10 w-10 items-center justify-center rounded-lg bg-destructive text-white hover:bg-destructive transition-colors"
                   onClick={handleRemoveProduct}
                   title={t("remove")}
                 >
@@ -1296,7 +1296,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
              <div className="mt-4 flex justify-center space-x-3 border-t border-gray-300 pt-4">
                <button
                  type="button"
-                 className="flex items-center justify-center rounded-lg bg-green-500 px-4 py-2 text-sm text-white hover:bg-green-600 transition-colors"
+                 className="flex items-center justify-center rounded-lg bg-success px-4 py-2 text-sm text-white hover:bg-success transition-colors"
                  onClick={handleEditProduct}
                >
                  <IoMdEdit size={16} className="mr-1" />
@@ -1305,7 +1305,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
 
                <button
                  type="button"
-                 className="flex items-center justify-center rounded-lg bg-blue-500 px-4 py-2 text-sm text-white hover:bg-blue-600 transition-colors"
+                 className="flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm text-white hover:bg-primary transition-colors"
                  onClick={(e) => handleUpdate(e)}
                >
                  <IoMdCreate size={16} className="mr-1" />
@@ -1314,7 +1314,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                 
                <button
                  type="button"
-                 className="flex items-center justify-center rounded-lg bg-orange-500 px-4 py-2 text-sm text-white hover:bg-orange-600 transition-colors"
+                 className="flex items-center justify-center rounded-lg bg-warning px-4 py-2 text-sm text-white hover:bg-warning transition-colors"
                  onClick={handleReset}
                >
                  <IoMdRefresh size={16} className="mr-1" />

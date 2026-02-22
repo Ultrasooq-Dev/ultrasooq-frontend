@@ -1228,7 +1228,7 @@ const CheckoutPage = () => {
                         const displayPrice = parseFloat(suggestedProduct.offerPrice || "0");
                         const productImage = suggestedProduct.productImage;
                         return (
-                          <div key={suggestedProduct.id || index} className="border-2 border-purple-200 rounded-lg p-4 bg-purple-50">
+                          <div key={suggestedProduct.id || index} className="border-2 border-info/20 rounded-lg p-4 bg-info/5">
                             <div className="flex items-start gap-4">
                               {productImage && validator.isURL(productImage) ? (
                                 <Image
@@ -1250,7 +1250,7 @@ const CheckoutPage = () => {
                                   <h4 className="font-semibold text-gray-900">
                                     {suggestedProduct.productName || "Product"}
                                   </h4>
-                                  <span className="px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 text-xs font-medium">
+                                  <span className="px-2 py-0.5 rounded-full bg-info/10 text-info text-xs font-medium">
                                     {t("suggested") || "Suggested"}
                                   </span>
                                 </div>
@@ -1456,13 +1456,13 @@ const CheckoutPage = () => {
 
                                       <div>
                                         {shippingInfo[index]?.info?.serviceId ? (
-                                          <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
-                                            <p className="text-sm font-medium text-green-800">
+                                          <div className="p-3 bg-success/5 border border-success/20 rounded-lg">
+                                            <p className="text-sm font-medium text-success">
                                               {shippingInfo[index].info.serviceName}
                                             </p>
                                           </div>
                                         ) : (
-                                          <span className="text-sm text-red-500">
+                                          <span className="text-sm text-destructive">
                                             {shippingErrors?.[index]?.errors?.serviceId ||
                                               "Please select a shipping service"}
                                           </span>
@@ -1805,7 +1805,7 @@ const CheckoutPage = () => {
                       {shippingCharge > 0 ? (
                         `${currency.symbol}${shippingCharge}`
                       ) : (
-                        <span className="text-green-600 font-medium">{t("free")}</span>
+                        <span className="text-success font-medium">{t("free")}</span>
                       )}
                     </span>
                   </div>
@@ -1844,7 +1844,7 @@ const CheckoutPage = () => {
                       preOrderCalculation?.isPending ||
                       (isFromRfq && rfqQuoteDetailsQuery?.isLoading)
                     }
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-colors duration-200"
+                    className="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 rounded-lg transition-colors duration-200"
                     translate="no"
                   >
                     {preOrderCalculation?.isPending ? (
@@ -1913,7 +1913,7 @@ const CheckoutPage = () => {
             <div>
               <Button
                 type="button"
-                className="mr-2 bg-white text-red-500"
+                className="mr-2 bg-white text-destructive"
                 onClick={onCancelRemove}
                 translate="no"
               >
@@ -1921,7 +1921,7 @@ const CheckoutPage = () => {
               </Button>
               <Button
                 type="button"
-                className="bg-red-500"
+                className="bg-destructive"
                 onClick={onConfirmRemove}
                 translate="no"
               >

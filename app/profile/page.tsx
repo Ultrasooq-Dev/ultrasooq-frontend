@@ -705,7 +705,7 @@ export default function ProfilePage() {
                         className={cn(
                           "text-color-dark block text-left text-sm leading-4 font-medium capitalize",
                           form.formState.errors.phoneNumberList
-                            ? "text-red-500!"
+                            ? "text-destructive!"
                             : "",
                         )}
                         translate="no"
@@ -1097,7 +1097,7 @@ export default function ProfilePage() {
                     />
                   ) : null}
 
-                  <p className="mb-3 text-[13px] text-red-500" dir={langDir}>
+                  <p className="mb-3 text-[13px] text-destructive" dir={langDir}>
                     {form.formState.errors.socialLinkList?.message}
                   </p>
 

@@ -926,8 +926,8 @@ const ManageProductsPage = () => {
             <div className="flex items-center justify-between">
               <div>
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                    <Store className="w-6 h-6 text-blue-600" />
+                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                    <Store className="w-6 h-6 text-primary" />
                   </div>
                   <div>
                     <h1 className="text-xl font-semibold text-gray-900 capitalize">
@@ -962,7 +962,7 @@ const ManageProductsPage = () => {
                       type="button"
                       onClick={handleSearch}
                       disabled={!searchTerm.trim()}
-                      className="h-10 px-4 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                      className="h-10 px-4 bg-primary hover:bg-primary/90 disabled:bg-gray-400 disabled:cursor-not-allowed"
                     >
                       {t("search")}
                     </Button>
@@ -983,7 +983,7 @@ const ManageProductsPage = () => {
                       type="button"
                       onClick={handleExistingProductsSearch}
                       disabled={!existingProductsSearchTerm.trim()}
-                      className="h-10 px-4 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                      className="h-10 px-4 bg-primary hover:bg-primary/90 disabled:bg-gray-400 disabled:cursor-not-allowed"
                     >
                       {t("search")}
                     </Button>
@@ -991,7 +991,7 @@ const ManageProductsPage = () => {
                 )}
 
                 <button
-                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors flex items-center gap-2"
+                  className="px-4 py-2 bg-primary text-white rounded hover:bg-primary/90 transition-colors flex items-center gap-2"
                   onClick={() => router.push('/product')}
                   dir={langDir}
                 >
@@ -999,7 +999,7 @@ const ManageProductsPage = () => {
                   <span>{t("add_product")}</span>
                 </button>
                 {/* <button
-                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+                  className="px-4 py-2 bg-primary text-white rounded hover:bg-primary transition-colors"
                   onClick={selectAllProducts}
                   dir={langDir}
                   translate="no"
@@ -1016,7 +1016,7 @@ const ManageProductsPage = () => {
                 </button> */}
                 {Array.from(globalSelectedIds).length > 0 && (
                   <button
-                    className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+                    className="px-4 py-2 bg-success text-white rounded hover:bg-success/90 transition-colors"
                     onClick={() => router.push(`/manage-products/bulk-action?ids=${Array.from(globalSelectedIds).join(',')}`)}
                     dir={langDir}
                   >
@@ -1035,7 +1035,7 @@ const ManageProductsPage = () => {
                   onClick={() => setActiveTab('my-products')}
                   className={`py-2 px-1 border-b-2 font-medium text-sm ${
                     activeTab === 'my-products'
-                      ? 'border-blue-500 text-blue-600'
+                      ? 'border-primary text-primary'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                   }`}
                 >
@@ -1045,7 +1045,7 @@ const ManageProductsPage = () => {
                   onClick={() => setActiveTab('dropship-products')}
                   className={`py-2 px-1 border-b-2 font-medium text-sm ${
                     activeTab === 'dropship-products'
-                      ? 'border-blue-500 text-blue-600'
+                      ? 'border-primary text-primary'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                   }`}
                 >
@@ -1055,7 +1055,7 @@ const ManageProductsPage = () => {
                   onClick={() => setActiveTab('existing-products')}
                   className={`py-2 px-1 border-b-2 font-medium text-sm ${
                     activeTab === 'existing-products'
-                      ? 'border-blue-500 text-blue-600'
+                      ? 'border-primary text-primary'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                   }`}
                 >
@@ -1078,7 +1078,7 @@ const ManageProductsPage = () => {
                           <button 
                             type="button" 
                             onClick={selectAll}
-                            className="px-3 py-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition-colors text-sm"
+                            className="px-3 py-2 bg-primary/10 text-primary rounded hover:bg-primary/20 transition-colors text-sm"
                           >
                             {t("select_all")}
                           </button>
@@ -1138,7 +1138,7 @@ const ManageProductsPage = () => {
                                   onClick={handleBrandSearch}
                                   disabled={!searchTermBrand.trim()}
                                   size="sm"
-                                  className="h-8 px-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-xs"
+                                  className="h-8 px-3 bg-primary hover:bg-primary/90 disabled:bg-gray-400 disabled:cursor-not-allowed text-xs"
                                 >
                                   {t("search")}
                                 </Button>
@@ -1154,7 +1154,7 @@ const ManageProductsPage = () => {
                                 <div key={item.value} className="flex items-center space-x-2">
                                   <Checkbox
                                     id={item.label}
-                                    className="border border-gray-300 data-[state=checked]:bg-blue-600!"
+                                    className="border border-gray-300 data-[state=checked]:bg-primary!"
                                     onCheckedChange={(checked) =>
                                       handleBrandChange(checked, item)
                                     }
@@ -1187,7 +1187,7 @@ const ManageProductsPage = () => {
                             <div className="flex items-center space-x-2">
                               <Checkbox
                                 id="displayStoreProducts"
-                                className="border border-gray-300 data-[state=checked]:bg-blue-600!"
+                                className="border border-gray-300 data-[state=checked]:bg-primary!"
                                 onCheckedChange={(checked: boolean) =>
                                   setDisplayStoreProducts(checked)
                                 }
@@ -1205,7 +1205,7 @@ const ManageProductsPage = () => {
                             <div className="flex items-center space-x-2">
                               <Checkbox
                                 id="displayBuyGroupProducts"
-                                className="border border-gray-300 data-[state=checked]:bg-blue-600!"
+                                className="border border-gray-300 data-[state=checked]:bg-primary!"
                                 onCheckedChange={(checked: boolean) => {
                                   setDisplayBuyGroupProducts(checked);
                                   setDisplayExpiredProducts(
@@ -1228,7 +1228,7 @@ const ManageProductsPage = () => {
                             <div className="flex items-center space-x-2">
                               <Checkbox
                                 id="displayTrialProducts"
-                                className="border border-gray-300 data-[state=checked]:bg-blue-600!"
+                                className="border border-gray-300 data-[state=checked]:bg-primary!"
                                 onCheckedChange={(checked: boolean) =>
                                   setDisplayTrialProducts(checked)
                                 }
@@ -1246,7 +1246,7 @@ const ManageProductsPage = () => {
                             <div className="flex items-center space-x-2">
                               <Checkbox
                                 id="displayWholesaleProducts"
-                                className="border border-gray-300 data-[state=checked]:bg-blue-600!"
+                                className="border border-gray-300 data-[state=checked]:bg-primary!"
                                 onCheckedChange={(checked: boolean) =>
                                   setDisplayWholesaleProducts(checked)
                                 }
@@ -1265,7 +1265,7 @@ const ManageProductsPage = () => {
                               <div className="flex items-center space-x-2">
                                 <Checkbox
                                   id="displayExpiredProducts"
-                                  className="border border-gray-300 data-[state=checked]:bg-blue-600!"
+                                  className="border border-gray-300 data-[state=checked]:bg-primary!"
                                   onCheckedChange={(checked: boolean) =>
                                     setDisplayExpiredProducts(checked)
                                   }
@@ -1284,7 +1284,7 @@ const ManageProductsPage = () => {
                             <div className="flex items-center space-x-2">
                               <Checkbox
                                 id="displayHiddenProducts"
-                                className="border border-gray-300 data-[state=checked]:bg-blue-600!"
+                                className="border border-gray-300 data-[state=checked]:bg-primary!"
                                 onCheckedChange={(checked: boolean) =>
                                   setDisplayHiddenProducts(checked)
                                 }
@@ -1302,7 +1302,7 @@ const ManageProductsPage = () => {
                             <div className="flex items-center space-x-2">
                               <Checkbox
                                 id="displayDiscountedProducts"
-                                className="border border-gray-300 data-[state=checked]:bg-blue-600!"
+                                className="border border-gray-300 data-[state=checked]:bg-primary!"
                                 onCheckedChange={(checked: boolean) =>
                                   setDisplayDiscountedProducts(checked)
                                 }
@@ -1341,7 +1341,7 @@ const ManageProductsPage = () => {
                               type="button"
                               onClick={handleFilterToggle}
                               className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
-                                showOnlySelected ? 'bg-blue-600' : 'bg-gray-200'
+                                showOnlySelected ? 'bg-primary' : 'bg-gray-200'
                               }`}
                             >
                               <span
@@ -1351,7 +1351,7 @@ const ManageProductsPage = () => {
                               />
                             </button>
                             {showOnlySelected && (
-                              <span className="text-xs text-blue-600 font-medium">
+                              <span className="text-xs text-primary font-medium">
                                 ({Array.from(globalSelectedIds).length} selected)
                               </span>
                             )}
@@ -1362,7 +1362,7 @@ const ManageProductsPage = () => {
                             <select
                               value={limit}
                               onChange={(e) => handleLimitChange(Number(e.target.value))}
-                              className="h-8 px-2 border border-gray-300 rounded-md bg-white text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                              className="h-8 px-2 border border-gray-300 rounded-md bg-white text-sm focus:outline-hidden focus:ring-2 focus:ring-primary"
                             >
                               <option value={3}>3</option>
                               <option value={6}>6</option>
@@ -1414,7 +1414,7 @@ const ManageProductsPage = () => {
                         </p>
                         <button
                           onClick={() => setShowOnlySelected(false)}
-                          className="mt-3 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+                          className="mt-3 px-4 py-2 bg-primary text-white rounded hover:bg-primary transition-colors"
                         >
                           Show All Products
                         </button>
@@ -1550,7 +1550,7 @@ const ManageProductsPage = () => {
                             categoriesQuery?.data?.data?.children?.map((item: any) => item.id) || []
                           );
                         }}
-                        className="px-3 py-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition-colors text-sm"
+                        className="px-3 py-2 bg-primary/10 text-primary rounded hover:bg-primary/20 transition-colors text-sm"
                       >
                         {t("select_all")}
                       </button>
@@ -1617,7 +1617,7 @@ const ManageProductsPage = () => {
                               onClick={handleBrandSearch}
                               disabled={!searchTermBrand.trim()}
                               size="sm"
-                              className="h-8 px-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-xs"
+                              className="h-8 px-3 bg-primary hover:bg-primary/90 disabled:bg-gray-400 disabled:cursor-not-allowed text-xs"
                             >
                               {t("search")}
                             </Button>
@@ -1633,7 +1633,7 @@ const ManageProductsPage = () => {
                             <div key={item.value} className="flex items-center space-x-2">
                               <Checkbox
                                 id={`existing-${item.label}`}
-                                className="border border-gray-300 data-[state=checked]:bg-blue-600!"
+                                className="border border-gray-300 data-[state=checked]:bg-primary!"
                                 onCheckedChange={(checked) =>
                                   handleExistingProductsBrandChange(checked, item)
                                 }
@@ -1668,7 +1668,7 @@ const ManageProductsPage = () => {
                           <div className="flex items-center space-x-2">
                             <Checkbox
                               id="existing-type-p"
-                              className="border border-gray-300 data-[state=checked]:bg-blue-600!"
+                              className="border border-gray-300 data-[state=checked]:bg-primary!"
                               onCheckedChange={(checked) => {
                                 if (checked) {
                                   setExistingProductsSelectedType("P");
@@ -1688,7 +1688,7 @@ const ManageProductsPage = () => {
                           <div className="flex items-center space-x-2">
                             <Checkbox
                               id="existing-type-r"
-                              className="border border-gray-300 data-[state=checked]:bg-blue-600!"
+                              className="border border-gray-300 data-[state=checked]:bg-primary!"
                               onCheckedChange={(checked) => {
                                 if (checked) {
                                   setExistingProductsSelectedType("R");
@@ -1788,7 +1788,7 @@ const ManageProductsPage = () => {
                     <select
                       value={dropshipStatus}
                       onChange={(e) => setDropshipStatus(e.target.value)}
-                      className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary"
                     >
                       <option value="">{t("all_statuses")}</option>
                       <option value="ACTIVE">{t("active")}</option>
@@ -1806,7 +1806,7 @@ const ManageProductsPage = () => {
                       </div>
                       <div className="flex justify-between">
                         <span>{t("active_products")}:</span>
-                        <span className="font-medium text-green-600">
+                        <span className="font-medium text-success">
                           {dropshipProductsQuery.data?.data?.filter((p: any) => p.status === 'ACTIVE').length || 0}
                         </span>
                       </div>
@@ -1920,7 +1920,7 @@ const ManageProductsPage = () => {
 
       {/* Fixed bottom bar for existing products */}
       {activeTab === 'existing-products' && existingProductsSelectedIds.length > 0 && (
-        <div className="fixed bottom-0 left-0 z-10 flex w-full items-center justify-between border-t border-solid border-gray-300 bg-blue-600 px-10 py-3">
+        <div className="fixed bottom-0 left-0 z-10 flex w-full items-center justify-between border-t border-solid border-gray-300 bg-primary px-10 py-3">
           <div className="flex items-center gap-4">
             {/* <p className="text-base font-medium text-white" translate="no">
               {t("n_products_selected").replace("{n}", String(existingProductsSelectedIds.length))}
@@ -1929,7 +1929,7 @@ const ManageProductsPage = () => {
               type="button"
               onClick={() => setExistingProductsSelectedIds([])}
               size="sm"
-              className="flex items-center rounded-sm bg-transparent border border-white text-sm font-bold text-white hover:bg-white hover:text-blue-600"
+              className="flex items-center rounded-sm bg-transparent border border-white text-sm font-bold text-white hover:bg-white hover:text-primary"
               dir={langDir}
               translate="no"
             >
@@ -1944,7 +1944,7 @@ const ManageProductsPage = () => {
                 router.push(`/manage-products/bulk-add-existing?ids=${selectedIds}`);
               }}
               size="lg"
-              className="flex items-center rounded-sm bg-transparent border border-white text-sm font-bold text-white hover:bg-white hover:text-blue-600"
+              className="flex items-center rounded-sm bg-transparent border border-white text-sm font-bold text-white hover:bg-white hover:text-primary"
               dir={langDir}
               translate="no"
             >

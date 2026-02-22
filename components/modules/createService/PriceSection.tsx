@@ -472,7 +472,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                   )}
                 />
                 {!watchConsumerType && consumerTypeMessage ? (
-                  <p className="text-[13px] text-red-500" dir={langDir}>
+                  <p className="text-[13px] text-destructive" dir={langDir}>
                     {consumerTypeMessage.toString()}
                   </p>
                 ) : null}
@@ -501,7 +501,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                 />
 
                 {!watchSellType && sellTypeMessage ? (
-                  <p className="text-[13px] text-red-500" dir={langDir}>
+                  <p className="text-[13px] text-destructive" dir={langDir}>
                     {sellTypeMessage.toString()}
                   </p>
                 ) : null}
@@ -739,7 +739,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                   id="auto"
                   name="orderType"
                   value="auto"
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
+                  className="h-4 w-4 text-primary focus:ring-primary border-gray-300"
                 />
                 <label htmlFor="auto" className="ml-2 text-sm text-gray-700" translate="no">
                   {t("auto_confirm")}
@@ -751,7 +751,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                   id="manual"
                   name="orderType"
                   value="manual"
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
+                  className="h-4 w-4 text-primary focus:ring-primary border-gray-300"
                 />
                 <label htmlFor="manual" className="ml-2 text-sm text-gray-700" translate="no">
                   {t("manual")}
@@ -924,7 +924,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
           //     )}
           //   />
 
-          //   <p className="text-[13px] text-red-500" dir={langDir}>
+          //   <p className="text-[13px] text-destructive" dir={langDir}>
           //     {
           //       formContext.formState.errors["productLocationId"]
           //         ?.message as string
@@ -956,7 +956,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                   />
                 )}
               />
-              <p className="text-[13px] text-red-500" dir={langDir}>
+              <p className="text-[13px] text-destructive" dir={langDir}>
                 {
                   formContext.formState.errors["productCountryId"]
                     ?.message as string
@@ -989,7 +989,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                       />
                     )}
                   />
-                  <p className="text-[13px] text-red-500" dir={langDir}>
+                  <p className="text-[13px] text-destructive" dir={langDir}>
                     {
                       formContext.formState.errors["productStateId"]
                         ?.message as string
@@ -1022,7 +1022,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                       />
                     )}
                   />
-                  <p className="text-[13px] text-red-500" dir={langDir}>
+                  <p className="text-[13px] text-destructive" dir={langDir}>
                     {
                       formContext.formState.errors["productCityId"]
                         ?.message as string
@@ -1202,7 +1202,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
             )}
           />
 
-          <p className="text-[13px] text-red-500" dir={langDir}>
+          <p className="text-[13px] text-destructive" dir={langDir}>
             {formContext.formState.errors["placeOfOriginId"]?.message as string}
           </p>
         </div>
