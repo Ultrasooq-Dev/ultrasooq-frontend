@@ -15,6 +15,9 @@ RUN npm install --legacy-peer-deps
 # Copy source code
 COPY . .
 
+# Cache bust to ensure env vars are fresh
+ARG CACHEBUST=1
+
 # Set build-time env vars (Railway injects these)
 ARG NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
