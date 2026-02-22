@@ -9,6 +9,12 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Arabic/RTL font override - ensures Noto Sans Arabic is used for RTL locales */
+html[dir="rtl"] body,
+html[dir="rtl"] body * {
+  font-family: var(--font-sans-arabic), "Noto Sans Arabic", sans-serif !important;
+}
+
 @theme {
   --color-dark-orange: #db2302;
   --color-dark-cyan: #022335;
@@ -17613,6 +17619,7 @@
 */
 @theme inline {
   --font-sans: var(--font-sans);
+  --font-arabic: var(--font-sans-arabic);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);

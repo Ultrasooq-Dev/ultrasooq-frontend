@@ -111,7 +111,7 @@ export default async function RootLayout({
   return (
     <SessionWrapper>
       <html lang={locale} dir={langDir} className={cn("h-full overflow-x-hidden", geist.variable, notoArabic.variable)}>
-        <body className={`${inter.className} h-full overflow-x-hidden`}>
+        <body className={cn(langDir === "rtl" ? "font-arabic" : inter.className, "h-full overflow-x-hidden")}>
           <DirectionProvider dir={langDir as "ltr" | "rtl"}>
             <a
               href="#main-content"
