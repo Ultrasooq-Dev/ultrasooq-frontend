@@ -6,6 +6,7 @@ const withNextIntl = createNextIntlPlugin();
 const nextConfig = withNextIntl({
   output: "standalone",
   reactStrictMode: true,
+  turbopack: {},
   serverExternalPackages: ["isomorphic-dompurify"],
   allowedDevOrigins: ["192.168.29.205", "127.0.0.1", "localhost"],
   async headers() {

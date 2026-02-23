@@ -1,6 +1,6 @@
 import { useBrands, useCreateBrand } from "@/apis/queries/masters.queries";
 import { IBrands, IOption } from "@/utils/types/common.types";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import CreatableSelect from "react-select/creatable";
 import { useToast } from "../ui/use-toast";
 import { Controller, useFormContext, useWatch } from "react-hook-form";
@@ -55,6 +55,11 @@ const ReactSelectInput: React.FC<{
   const brandsQuery = useBrands({ addedBy: user?.id, type: brandType });
   const createBrand = useCreateBrand();
 
+  // Track brands created in this session so they appear immediately in the
+  // dropdown even when the server-side filter (e.g. type=BRAND → brandType
+  // ADMIN only) would otherwise exclude them.
+  const [localBrands, setLocalBrands] = useState<IOption[]>([]);
+
   const memoizedBrands = useMemo(() => {
     let base: IOption[] =
       brandType && brandsQuery?.data?.data
@@ -82,8 +87,15 @@ const ReactSelectInput: React.FC<{
       ];
     }
 
+    // Merge in locally-created brands that the server query may not return
+    for (const lb of localBrands) {
+      if (!base.some((b) => b.value === lb.value)) {
+        base = [...base, lb];
+      }
+    }
+
     return base;
-  }, [brandsQuery?.data?.data, brandType, formContext, brandNameFromForm]);
+  }, [brandsQuery?.data?.data, brandType, formContext, brandNameFromForm, localBrands]);
 
   // Update brandType when typeOfProduct changes
   useEffect(() => {
@@ -96,25 +108,45 @@ const ReactSelectInput: React.FC<{
   }, [typeOfProduct, selectedBrandType, formContext]);
 
 
-  const handleCreate = async (inputValue: string) => {
-    const response = await createBrand.mutateAsync({ brandName: inputValue });
+  const handleCreate = useCallback(async (inputValue: string) => {
+    try {
+      const response = await createBrand.mutateAsync({ brandName: inputValue });
 
-    if (response.status && response.data) {
-      toast({
-        title: t("brand_create_successful"),
-        description: response.message,
-        variant: "success",
-      });
-      setValue({ label: (response.data as any).brandName, value: (response.data as any).id });
-      formContext.setValue("brandId", (response.data as any).id);
-    } else {
+      if (response.status && response.data) {
+        const newBrand: IOption = {
+          label: (response.data as any).brandName,
+          value: (response.data as any).id,
+        };
+
+        // Add to local brands so it appears in the dropdown immediately,
+        // even if the server-side filter would exclude it.
+        setLocalBrands((prev) => [...prev, newBrand]);
+
+        toast({
+          title: t("brand_create_successful"),
+          description: response.message,
+          variant: "success",
+        });
+
+        // Select the newly created brand in the form
+        setValue(newBrand);
+        formContext.setValue("brandId", newBrand.value);
+        formContext.setValue("brandName", newBrand.label);
+      } else {
+        toast({
+          title: t("brand_create_failed"),
+          description: response.message,
+          variant: "danger",
+        });
+      }
+    } catch (error: any) {
       toast({
         title: t("brand_create_failed"),
-        description: response.message,
+        description: error?.response?.data?.message || error?.message || "Something went wrong",
         variant: "danger",
       });
     }
-  };
+  }, [createBrand, formContext, t, toast]);
 
   const brandTypes = [
     { label: t("brand"), value: "BRAND" },
