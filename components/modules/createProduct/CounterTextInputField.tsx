@@ -15,6 +15,7 @@ type CounterTextInputFieldProps = {
   label?: string;
   placeholder: string;
   errorMessage?: string;
+  disabled?: boolean;
 };
 
 const CounterTextInputField: React.FC<CounterTextInputFieldProps> = ({
@@ -22,6 +23,7 @@ const CounterTextInputField: React.FC<CounterTextInputFieldProps> = ({
   label,
   placeholder,
   errorMessage,
+  disabled,
 }) => {
   const formContext = useFormContext();
   const [counter, setCounter] = useState(0);
@@ -48,7 +50,7 @@ const CounterTextInputField: React.FC<CounterTextInputFieldProps> = ({
                   setCounter(Number(counter) - 1);
                   field.onChange(Number(counter) - 1);
                 }}
-                disabled={counter === 0}
+                disabled={disabled || counter === 0}
               >
                 -
               </button>
@@ -59,6 +61,7 @@ const CounterTextInputField: React.FC<CounterTextInputFieldProps> = ({
                 className="h-[48px]! rounded border-border px-12 text-center focus-visible:ring-0!"
                 {...field}
                 value={counter}
+                disabled={disabled}
                 onChange={(e) => {
                   setCounter(Number(e.target.value));
                   field.onChange(e);
@@ -71,6 +74,7 @@ const CounterTextInputField: React.FC<CounterTextInputFieldProps> = ({
                   setCounter(Number(counter) + 1);
                   field.onChange(Number(counter) + 1);
                 }}
+                disabled={disabled}
               >
                 +
               </button>

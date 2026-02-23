@@ -315,27 +315,10 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
     setMaxCustomer((prevDay) => Math.min(prevDay + 1, 1000));
   };
 
-  const [minQuantityCustomer, setMinQuantityCustomer] = useState<number>(
-    Number(initialMinQuantityPerCustomer),
-  );
-  const decreaseMinQuantityCustomer = () => {
-    setMinQuantityCustomer((prevDay) => Math.max(prevDay - 1, 0));
-  };
-
-  const increaseMinQuantityCustomer = () => {
-    setMinQuantityCustomer((prevDay) => Math.min(prevDay + 1, 1000));
-  };
-
-  const [maxQuantityCustomer, setMaxQuantityCustomer] = useState<number>(
-    Number(initialMaxQuantityPerCustomer),
-  );
-  const decreaseMaxQuantityCustomer = () => {
-    setMaxQuantityCustomer((prevDay) => Math.max(prevDay - 1, 0));
-  };
-
-  const increaseMaxQuantityCustomer = () => {
-    setMaxQuantityCustomer((prevDay) => Math.min(prevDay + 1, 1000));
-  };
+  // Auto-derive minQuantityPerCustomer from minQuantity (or 1),
+  // and maxQuantityPerCustomer from stock — no manual vendor input needed.
+  const minQuantityCustomer = initialMinQuantity ? Number(initialMinQuantity) : 1;
+  const maxQuantityCustomer = Number(initialStock) || Number(initialMaxQuantityPerCustomer) || 0;
 
   // call update single product
   const productUpdate = useUpdateSingleProduct();
@@ -1031,57 +1014,31 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                </div>
              )}
 
-             {/* Min Quantity Per Customer - Show for BUYGROUP or WHOLESALE_PRODUCT sell type */}
+             {/* Min Quantity Per Customer - Auto-derived from min quantity */}
              {(sellType === "BUYGROUP" || sellType === "WHOLESALE_PRODUCT") && (
                <div className="space-y-1">
                  <Label className="text-xs font-medium">{t("min_quantity_per_customer")}</Label>
-                 <div className="flex items-center space-x-1">
-                   <button
-                     onClick={(e) => { e.preventDefault(); decreaseMinQuantityCustomer() }}
-                     className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
-                   >
-                     -
-                   </button>
-                   <input
-                     type="number"
-                     value={minQuantityCustomer}
-                     onChange={(e) => setMinQuantityCustomer(Number(e.target.value))}
-                     className="h-6 w-12 rounded border border-border text-center text-xs"
-                   />
-                   <button
-                     onClick={(e) => { e.preventDefault(); increaseMinQuantityCustomer() }}
-                     className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
-                   >
-                     +
-                   </button>
-                 </div>
+                 <input
+                   type="number"
+                   value={minQuantityCustomer}
+                   readOnly
+                   disabled
+                   className="h-6 w-16 rounded border border-border bg-muted text-center text-xs text-muted-foreground"
+                 />
                </div>
              )}
 
-             {/* Max Quantity Per Customer - Show for BUYGROUP or WHOLESALE_PRODUCT sell type */}
+             {/* Max Quantity Per Customer - Auto-derived from stock */}
              {(sellType === "BUYGROUP" || sellType === "WHOLESALE_PRODUCT") && (
                <div className="space-y-1">
                  <Label className="text-xs font-medium">{t("max_quantity_per_customer")}</Label>
-                 <div className="flex items-center space-x-1">
-                   <button
-                     onClick={(e) => { e.preventDefault(); decreaseMaxQuantityCustomer() }}
-                     className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
-                   >
-                     -
-                   </button>
-                   <input
-                     type="number"
-                     value={maxQuantityCustomer}
-                     onChange={(e) => setMaxQuantityCustomer(Number(e.target.value))}
-                     className="h-6 w-12 rounded border border-border text-center text-xs"
-                   />
-                   <button
-                     onClick={(e) => { e.preventDefault(); increaseMaxQuantityCustomer() }}
-                     className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
-                   >
-                     +
-                   </button>
-                 </div>
+                 <input
+                   type="number"
+                   value={maxQuantityCustomer}
+                   readOnly
+                   disabled
+                   className="h-6 w-16 rounded border border-border bg-muted text-center text-xs text-muted-foreground"
+                 />
                </div>
              )}
 

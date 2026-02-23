@@ -59,6 +59,8 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
     "productPriceList.[0].consumerType",
   );
   const watchSellType = formContext.watch("productPriceList.[0].sellType");
+  const watchStock = formContext.watch("productPriceList.[0].stock");
+  const watchMinQuantity = formContext.watch("productPriceList.[0].minQuantity");
   const watchConsumerDiscount = formContext.watch(
     "productPriceList.[0].consumerDiscount",
   );
@@ -148,6 +150,33 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
     
     // No auto-set behavior - user can choose any consumer type
   }, [watchSellType, setValue]);
+
+  // Auto-fill minQuantityPerCustomer from minQuantity (or default to 1)
+  // and maxQuantityPerCustomer from stock value — vendors don't need to enter these manually
+  useEffect(() => {
+    const needsAutoFill =
+      watchSellType === "NORMALSELL" ||
+      watchSellType === "BUYGROUP" ||
+      watchSellType === "WHOLESALE_PRODUCT" ||
+      (watchSellType === "TRIAL_PRODUCT" && watchConsumerType === "EVERYONE");
+
+    if (needsAutoFill) {
+      const minQty = watchMinQuantity ? Number(watchMinQuantity) : 1;
+      setValue("productPriceList.[0].minQuantityPerCustomer", minQty);
+    }
+  }, [watchSellType, watchConsumerType, watchMinQuantity, setValue]);
+
+  useEffect(() => {
+    const needsAutoFill =
+      watchSellType === "NORMALSELL" ||
+      watchSellType === "BUYGROUP" ||
+      watchSellType === "WHOLESALE_PRODUCT" ||
+      (watchSellType === "TRIAL_PRODUCT" && watchConsumerType === "EVERYONE");
+
+    if (needsAutoFill && watchStock) {
+      setValue("productPriceList.[0].maxQuantityPerCustomer", Number(watchStock));
+    }
+  }, [watchSellType, watchConsumerType, watchStock, setValue]);
 
   const [localTime, setLocalTime] = useState<string>("");
 
@@ -528,7 +557,8 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                 <CounterTextInputField
                   label={t("max_quantity_per_customer")}
                   name="productPriceList.[0].maxQuantityPerCustomer"
-                  placeholder={t("max")}
+                  placeholder={t("stock")}
+                  disabled
                   errorMessage={
                     maxQuantityPerCustomerMessage
                       ? maxQuantityPerCustomerMessage.toString()
@@ -539,13 +569,14 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
             ) : null}
 
 
-            {/* Min/Max Quantity Per Customer - Show for NORMALSELL, BUYGROUP, or WHOLESALE_PRODUCT sell types */}
+            {/* Min/Max Quantity Per Customer - Auto-filled from min quantity and stock */}
             {watchSellType === "NORMALSELL" || watchSellType === "BUYGROUP" || watchSellType === "WHOLESALE_PRODUCT" ? (
               <>
                 <CounterTextInputField
                   label={t("min_quantity_per_customer")}
                   name="productPriceList.[0].minQuantityPerCustomer"
-                  placeholder={t("min")}
+                  placeholder={t("min_quantity")}
+                  disabled
                   errorMessage={
                     minQuantityPerCustomerMessage
                       ? minQuantityPerCustomerMessage.toString()
@@ -556,7 +587,8 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                 <CounterTextInputField
                   label={t("max_quantity_per_customer")}
                   name="productPriceList.[0].maxQuantityPerCustomer"
-                  placeholder={t("max")}
+                  placeholder={t("stock")}
+                  disabled
                   errorMessage={
                     maxQuantityPerCustomerMessage
                       ? maxQuantityPerCustomerMessage.toString()
