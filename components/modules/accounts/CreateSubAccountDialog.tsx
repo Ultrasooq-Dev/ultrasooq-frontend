@@ -138,7 +138,7 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
   };
 
   const handleCreateAccount = async (
-    formData: z.infer<typeof createAccountSchema>,
+    formData: any,
   ) => {
     setIsCreatingAccount(true);
     try {
