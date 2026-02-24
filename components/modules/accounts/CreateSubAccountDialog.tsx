@@ -110,7 +110,7 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
   const frontIdentityRef = useRef<HTMLInputElement>(null);
   const backIdentityRef = useRef<HTMLInputElement>(null);
 
-  const form = useForm<z.infer<typeof createAccountSchema>>({
+  const form = useForm<any>({
     resolver: zodResolver(createAccountSchemaFn(t)),
     defaultValues: {
       accountName: "",
