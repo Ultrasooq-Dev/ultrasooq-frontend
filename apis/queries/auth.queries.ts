@@ -56,6 +56,9 @@ export const useRegister = () =>
     },
     onSuccess: () => {},
     onError: (err: APIResponseError) => {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('[useRegister] mutation failed:', err.message);
+      }
     },
   });
 
@@ -67,6 +70,9 @@ export const useVerifyOtp = () =>
     },
     onSuccess: () => {},
     onError: (err: APIResponseError) => {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('[useVerifyOtp] mutation failed:', err.message);
+      }
     },
   });
 
@@ -78,6 +84,9 @@ export const useResendOtp = () =>
     },
     onSuccess: () => {},
     onError: (err: APIResponseError) => {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('[useResendOtp] mutation failed:', err.message);
+      }
     },
   });
 
@@ -89,6 +98,9 @@ export const useLogin = () =>
     },
     onSuccess: () => {},
     onError: (err: APIResponseError) => {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('[useLogin] mutation failed:', err.message);
+      }
     },
   });
 
@@ -100,6 +112,9 @@ export const useForgotPassword = () =>
     },
     onSuccess: () => {},
     onError: (err: APIResponseError) => {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('[useForgotPassword] mutation failed:', err.message);
+      }
     },
   });
 
@@ -111,6 +126,9 @@ export const useResetPassword = () =>
     },
     onSuccess: () => {},
     onError: (err: APIResponseError) => {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('[useResetPassword] mutation failed:', err.message);
+      }
     },
   });
 
@@ -126,6 +144,9 @@ export const usePasswordResetVerify = () =>
     },
     onSuccess: () => {},
     onError: (err: APIResponseError) => {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('[usePasswordResetVerify] mutation failed:', err.message);
+      }
     },
   });
 
@@ -137,6 +158,9 @@ export const useChangePassword = () =>
     },
     onSuccess: () => {},
     onError: (err: APIResponseError) => {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('[useChangePassword] mutation failed:', err.message);
+      }
     },
   });
 
@@ -148,6 +172,9 @@ export const useChangeEmail = () =>
     },
     onSuccess: () => {},
     onError: (err: APIResponseError) => {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('[useChangeEmail] mutation failed:', err.message);
+      }
     },
   });
 
@@ -169,6 +196,9 @@ export const useChangeEmailVerify = () => {
       });
     },
     onError: (err: APIResponseError) => {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('[useChangeEmailVerify] mutation failed:', err.message);
+      }
     },
   });
 };
@@ -198,6 +228,9 @@ export const useSocialLogin = () =>
     },
     onSuccess: () => {},
     onError: (err: APIResponseError) => {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('[useSocialLogin] mutation failed:', err.message);
+      }
     },
   });
 
@@ -251,6 +284,9 @@ export const useCreateAccount = () => {
       await queryClient.invalidateQueries({ queryKey: ["currentAccount"] });
     },
     onError: (error) => {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('[useCreateAccount] mutation failed:', error.message);
+      }
     },
   });
 };
@@ -261,8 +297,15 @@ export const useSwitchAccount = () => {
   return useMutation<ISwitchAccount, APIResponseError, ISwitchAccountRequest>({
     mutationFn: (payload) => switchAccount(payload).then((res) => res.data),
     onSuccess: async (data) => {
+      // Cancel any in-flight queries before swapping the token to prevent race conditions
+      await queryClient.cancelQueries();
+
       // Update the token in cookies FIRST
-      setCookie(PUREMOON_TOKEN_KEY, data.data.accessToken);
+      setCookie(PUREMOON_TOKEN_KEY, data.data.accessToken, {
+        secure: true,
+        sameSite: 'strict',
+        path: '/',
+      });
 
       // Clear all cached query data so stale data from the old account is removed.
       // Use removeQueries instead of resetQueries to avoid canceling active observers.

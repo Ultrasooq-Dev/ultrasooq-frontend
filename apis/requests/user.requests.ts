@@ -1,79 +1,46 @@
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
-import axios from "axios";
-import { getCookie } from "cookies-next";
-import { getApiUrl } from "@/config/api";
+import http from "../http";
 
 export const updateUserProfile = (payload: Record<string, unknown>) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/user/updateProfile`,
+    url: `/user/updateProfile`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const fetchMe = () => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/user/me`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: `/user/me`,
   });
 };
 
 export const fetchUniqueUser = (payload: { userId: number | undefined }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/user/findUnique`,
+    url: `/user/findUnique`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const fetchUserPermissions = () => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/user/get-perrmision`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: `/user/get-perrmision`,
   });
 };
 
 export const fetchUserBusinessCategories = () => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/user/bussiness-category/get-all`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: `/user/bussiness-category/get-all`,
   });
 };
 
 export const fetchUserById = (payload: { userId: number }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/user/findUnique`,
+    url: `/user/findUnique`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };

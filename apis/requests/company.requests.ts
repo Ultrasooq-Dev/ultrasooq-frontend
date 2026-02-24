@@ -1,58 +1,35 @@
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
-import axios from "axios";
-import { getCookie } from "cookies-next";
+import http from "../http";
 import { isEmpty } from "lodash";
-import { getApiUrl } from "@/config/api";
 
 export const createCompanyProfile = (payload: Record<string, unknown>) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/user/userProfile`,
+    url: "/user/userProfile",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const updateCompanyProfile = (payload: Record<string, unknown>) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/user/updateUserProfile`,
+    url: "/user/updateUserProfile",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const updateCompanyBranch = (payload: Record<string, unknown>) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/user/updateBranch`,
+    url: "/user/updateBranch",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const createCompanyBranch = (payload: Record<string, unknown>) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/user/addBranch`,
+    url: "/user/addBranch",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -63,13 +40,8 @@ export const fetchCompanyBranchById = (payload: { branchId: string }) => {
     query.append("branchId", String(payload.branchId));
   }
 
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/user/findOneBranch?${query}`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: `/user/findOneBranch?${query}`,
   });
 };

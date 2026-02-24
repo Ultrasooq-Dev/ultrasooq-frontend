@@ -420,13 +420,17 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
               changeCurrency(response.data.currency || "USD");
             }
 
-            setCookie("ipInfoLoaded", "1");
+            setCookie("ipInfoLoaded", "1", {
+              secure: true,
+              sameSite: 'strict',
+              path: '/',
+            });
           }
         } else {
           setSelectedCurrency(window.localStorage.currency || "USD");
           changeCurrency(window.localStorage.currency || "USD");
         }
-      } catch (error) {}
+      } catch (error) { console.error(error); }
     };
 
     if (typeof window !== "undefined") {

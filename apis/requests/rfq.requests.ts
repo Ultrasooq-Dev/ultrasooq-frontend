@@ -1,8 +1,5 @@
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
-import { getCookie } from "cookies-next";
-import axios from "axios";
+import http from "../http";
 import urlcat from "urlcat";
-import { getApiUrl } from "@/config/api";
 import {
   AddRfqQuotesRequest,
   AddFactoriesQuotesRequest,
@@ -17,14 +14,9 @@ export const fetchRfqProducts = (payload: {
   brandIds?: string;
   isOwner?: string;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/product/getAllRfqProduct`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/product/getAllRfqProduct`, payload),
   });
 };
 
@@ -43,14 +35,9 @@ export const fetchFactoriesProducts = (payload: {
   if (related) {
     return fetchFactoriesProductsByUserBusinessCategory(payload);
   }
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/product/getAllFactoriesProduct`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/product/getAllFactoriesProduct`, payload),
   });
 };
 
@@ -63,17 +50,12 @@ export const fetchFactoriesProductsByUserBusinessCategory = (payload: {
   brandIds?: string;
   isOwner?: string;
 }) => {
-  return axios({
+  return http({
     method: "GET",
     url: urlcat(
-      `${getApiUrl()}/product/getAllFactoriesProductByUserBusinessCategory`,
+      `/product/getAllFactoriesProductByUserBusinessCategory`,
       payload,
     ),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -82,15 +64,10 @@ export const addRfqProduct = (payload: {
   rfqProductName: string;
   rfqProductImagesList: { imageName: string; image: string }[];
 }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/product/addRfqProduct`,
+    url: `/product/addRfqProduct`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -100,27 +77,17 @@ export const updateRfqProduct = (payload: {
   rfqProductName: string;
   rfqProductImagesList: { imageName: string; image: string }[];
 }) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/product/editRfqProduct`,
+    url: `/product/editRfqProduct`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const fetchRfqProductById = (payload: { rfqProductId: string }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/product/getOneRfqProduct`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/product/getOneRfqProduct`, payload),
   });
 };
 
@@ -128,14 +95,9 @@ export const fetchRfqCartByUserId = (payload: {
   page: number;
   limit: number;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/cart/rfqCartlist`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/cart/rfqCartlist`, payload),
   });
 };
 
@@ -143,14 +105,9 @@ export const fetchFactoriesCartByUserId = (payload: {
   page: number;
   limit: number;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/cart/getAllFactoriesCart`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/cart/getAllFactoriesCart`, payload),
   });
 };
 
@@ -162,15 +119,10 @@ export const updateRfqCartWithLogin = (payload: {
   offerPriceTo?: number;
   note?: string;
 }) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/cart/updateRfqCart`,
+    url: `/cart/updateRfqCart`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -179,28 +131,18 @@ export const updateFactoriesCartWithLogin = (payload: {
   quantity: number;
   customizeProductId: number;
 }) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/cart/updateFactoriesCart`,
+    url: `/cart/updateFactoriesCart`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const addFactoriesProductApi = (payload: { productId: number }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/product/addProductDuplicateFactories`,
+    url: `/product/addProductDuplicateFactories`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -210,41 +152,26 @@ export const addCustomizeProductApi = (payload: {
   fromPrice: number;
   toPrice: number;
 }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/product/addCustomizeProduct`,
+    url: `/product/addCustomizeProduct`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const deleteRfqCartItem = (payload: { rfqCartId: number }) => {
-  return axios({
+  return http({
     method: "DELETE",
-    url: urlcat(`${getApiUrl()}/cart/rfqCartDelete`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/cart/rfqCartDelete`, payload),
   });
 };
 
 export const deleteFactoriesCartItem = (payload: {
   factoriesCartId: number;
 }) => {
-  return axios({
+  return http({
     method: "DELETE",
-    url: urlcat(`${getApiUrl()}/cart/deleteFactoriesCart`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/cart/deleteFactoriesCart`, payload),
   });
 };
 
@@ -252,14 +179,9 @@ export const fetchAllRfqQuotesByBuyerId = (payload: {
   page: number;
   limit: number;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/product/getAllRfqQuotesByBuyerID`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/product/getAllRfqQuotesByBuyerID`, payload),
   });
 };
 
@@ -268,34 +190,24 @@ export const fetchAllRfqQuotesUsersByBuyerId = (payload: {
   limit: number;
   rfqQuotesId: number;
 }) => {
-  return axios({
+  return http({
     method: "GET",
     url: urlcat(
-      `${getApiUrl()}/product/getAllRfqQuotesUsersByBuyerID`,
+      `/product/getAllRfqQuotesUsersByBuyerID`,
       payload,
     ),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const fetchOneRfqQuotesUsersByBuyerID = (payload: {
   rfqQuotesId?: number;
 }) => {
-  return axios({
+  return http({
     method: "GET",
     url: urlcat(
-      `${getApiUrl()}/product/getOneRfqQuotesUsersByBuyerID`,
+      `/product/getOneRfqQuotesUsersByBuyerID`,
       payload,
     ),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -304,68 +216,43 @@ export const fetchAllRfqQuotesUsersBySellerId = (payload: {
   limit: number;
   showHidden?: boolean;
 }) => {
-  return axios({
+  return http({
     method: "GET",
     url: urlcat(
-      `${getApiUrl()}/product/getAllRfqQuotesUsersBySellerID`,
+      `/product/getAllRfqQuotesUsersBySellerID`,
       payload,
     ),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const addRfqQuotes = (payload: AddRfqQuotesRequest) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/product/addRfqQuotes`,
+    url: `/product/addRfqQuotes`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const addFactoriesQuotes = (payload: AddFactoriesQuotesRequest) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/product/createFactoriesRequest`,
+    url: `/product/createFactoriesRequest`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const addProductDuplicateRfq = (payload: { productId: number }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/product/addProductDuplicateRfq`,
+    url: `/product/addProductDuplicateRfq`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const deleteRfqQuote = (payload: { rfqQuotesId: number }) => {
-  return axios({
+  return http({
     method: "DELETE",
-    url: urlcat(`${getApiUrl()}/product/deleteOneRfqQuote`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/product/deleteOneRfqQuote`, payload),
   });
 };
 
@@ -373,14 +260,9 @@ export const hideRfqRequest = (payload: {
   rfqQuotesUserId: number;
   isHidden: boolean;
 }) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/product/hideRfqRequest`,
+    url: `/product/hideRfqRequest`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };

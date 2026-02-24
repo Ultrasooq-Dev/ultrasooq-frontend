@@ -110,10 +110,16 @@ export default function LoginPage() {
       if (rememberMe) {
         setCookie(PUREMOON_TOKEN_KEY, response.accessToken, {
           expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+          secure: true,
+          sameSite: 'strict',
+          path: '/',
         });
       } else {
         setCookie(PUREMOON_TOKEN_KEY, response.accessToken, {
           expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+          secure: true,
+          sameSite: 'strict',
+          path: '/',
         });
       }
 
@@ -131,7 +137,9 @@ export default function LoginPage() {
           ...(permissions?.data?.data?.userRoleDetail?.userRolePermission ||
             []),
         ]);
-      } catch (e) {}
+      } catch (e) {
+        console.error('[login] Failed to fetch permissions:', e);
+      }
 
       toast({
         title: t("login_successful"),
@@ -188,7 +196,11 @@ export default function LoginPage() {
           description: t("you_have_successfully_logged_in"),
           variant: "success",
         });
-        setCookie(PUREMOON_TOKEN_KEY, response.accessToken);
+        setCookie(PUREMOON_TOKEN_KEY, response.accessToken, {
+          secure: true,
+          sameSite: 'strict',
+          path: '/',
+        });
 
         await updateCart.mutateAsync({ deviceId });
         form.reset();

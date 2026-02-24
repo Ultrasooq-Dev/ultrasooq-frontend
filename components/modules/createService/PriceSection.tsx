@@ -179,8 +179,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
           value: state.id,
         })) as any,
       );
-    } catch (error) {
-    }
+    } catch (error) { console.error(error); }
   };
 
   // Fetch Cities When State is Selected
@@ -231,8 +230,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
           value: city.id,
         })) as any,
       );
-    } catch (error) {
-    }
+    } catch (error) { console.error(error); }
   };
 
   // {/* For latitude and longitude */}
@@ -278,8 +276,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
           });
 
           setStatesByCountry(statesData);
-        } catch (error) {
-        }
+        } catch (error) { console.error(error); }
       };
 
       fetchStates();
@@ -311,8 +308,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
           });
 
           setCitiesByState(citiesData);
-        } catch (error) {
-        }
+        } catch (error) { console.error(error); }
       };
 
       fetchCities();

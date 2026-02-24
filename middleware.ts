@@ -23,6 +23,11 @@ export function middleware(request: NextRequest) {
     "/my-accounts",
     "/my-orders",
     "/checkout",
+    "/complete-order",
+    "/checkout-complete",
+    "/orders",
+    "/rfq-cart",
+    "/rfq-quotes",
     "/notifications",
     "/wallet",
     "/wishlist",
@@ -44,6 +49,8 @@ export function middleware(request: NextRequest) {
     "/company-profile",
     "/freelancer-profile",
     "/email-change-verify",
+    "/factories-cart",
+    "/rfq-request",
   ];
 
   // Redirect root to /home

@@ -89,8 +89,11 @@ export default function OtpVerifyPage() {
       setCookie(PUREMOON_TOKEN_KEY, response.accessToken, {
         // 3 days
         expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+        secure: true,
+        sameSite: 'strict',
+        path: '/',
       });
-      
+
       // Fetch user data and update AuthContext (same as login page)
       try {
         const userRes = await fetchMe();

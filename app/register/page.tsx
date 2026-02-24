@@ -165,6 +165,9 @@ export default function RegisterPage() {
       setCookie(PUREMOON_TOKEN_KEY, response.accessToken, {
         // 7 days
         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        secure: true,
+        sameSite: 'strict',
+        path: '/',
       });
 
       // Fetch user data and update AuthContext (same as login page)
@@ -240,6 +243,9 @@ export default function RegisterPage() {
         });
         setCookie(PUREMOON_TOKEN_KEY, response.accessToken, {
           expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          path: '/',
         });
 
         // Update cart
@@ -267,7 +273,7 @@ export default function RegisterPage() {
             ...(permissions?.data?.data?.userRoleDetail?.userRolePermission ||
               []),
           ]);
-        } catch (e) {}
+        } catch (e) { console.error(e); }
 
         localStorage.removeItem("loginType");
         setIsGoogleLoading(false);

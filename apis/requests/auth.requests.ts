@@ -1,4 +1,4 @@
-import { PUREMOON_TEMP_TOKEN_KEY, PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { PUREMOON_TEMP_TOKEN_KEY } from "@/utils/constants";
 import {
   IChangeEmailRequest,
   IChangeEmailVerifyRequest,
@@ -13,58 +13,57 @@ import {
   ISwitchAccountRequest,
   IVerifyOtpRequest,
 } from "@/utils/types/auth.types";
-import axios from "axios";
+import http from "../http";
 import { getCookie } from "cookies-next";
-import { getApiUrl } from "@/config/api";
 
 export const register = (payload: IRegisterRequest) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/user/register`,
+    url: "/user/register",
     data: payload,
   });
 };
 
 export const verifyOtp = (payload: IVerifyOtpRequest) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/user/registerValidateOtp`,
+    url: "/user/registerValidateOtp",
     data: payload,
   });
 };
 
 export const resendOtp = (payload: IResendOtpRequest) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/user/resendOtp`,
+    url: "/user/resendOtp",
     data: payload,
   });
 };
 
 export const login = (payload: ILoginRequest) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/user/login`,
+    url: "/user/login",
     data: payload,
   });
 };
 
 export const forgotPassword = (payload: IForgotPasswordRequest) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/user/forgetPassword`,
+    url: "/user/forgetPassword",
     data: payload,
   });
 };
 
 export const resetPassword = (payload: IResetPasswordRequest) => {
-  return axios({
+  // resetPassword uses the temporary token (PUREMOON_TEMP_TOKEN_KEY), not the main auth token.
+  // We must set the Authorization header manually here.
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/user/resetPassword`,
+    url: "/user/resetPassword",
     data: payload,
     headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
       Authorization: "Bearer " + getCookie(PUREMOON_TEMP_TOKEN_KEY),
     },
   });
@@ -73,70 +72,50 @@ export const resetPassword = (payload: IResetPasswordRequest) => {
 export const passwordResetVerify = (
   payload: IPasswordResetVerifyOtpRequest,
 ) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/user/verifyOtp`,
+    url: "/user/verifyOtp",
     data: payload,
   });
 };
 
 export const changePassword = (payload: IChangePasswordRequest) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/user/changePassword`,
+    url: "/user/changePassword",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const changeEmail = (payload: IChangeEmailRequest) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/user/changeEmail`,
+    url: "/user/changeEmail",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const emailChangeVerify = (payload: IChangeEmailVerifyRequest) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/user/verifyEmail`,
+    url: "/user/verifyEmail",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const socialLogin = (payload: { provider: string; token: string; [key: string]: unknown }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/user/socialLogin`,
+    url: "/user/socialLogin",
     data: payload,
   });
 };
 
 // Multi-Account System Requests
 export const myAccounts = () => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/user/myAccounts`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: "/user/myAccounts",
     params: {
       _t: Date.now(),
     },
@@ -144,39 +123,24 @@ export const myAccounts = () => {
 };
 
 export const createAccount = (payload: ICreateAccountRequest) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/user/createAccount`,
+    url: "/user/createAccount",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const switchAccount = (payload: ISwitchAccountRequest) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/user/switchAccount`,
+    url: "/user/switchAccount",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const currentAccount = () => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/user/currentAccount`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: "/user/currentAccount",
   });
 };

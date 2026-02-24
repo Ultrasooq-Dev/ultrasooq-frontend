@@ -1,13 +1,8 @@
-import axios from "axios";
-import { getApiUrl } from "@/config/api";
+import http from "../http";
 
 export const fetchPageSettingBySlug = (slug: string) => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/admin/page-settings/get-one?slug=${slug}`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
+    url: `/admin/page-settings/get-one?slug=${slug}`,
   });
 };

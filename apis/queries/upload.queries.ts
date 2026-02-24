@@ -15,6 +15,9 @@ export const useUploadFile = () =>
     },
     onSuccess: () => {},
     onError: (err: APIResponseError) => {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('[useUploadFile] mutation failed:', err.message);
+      }
     },
   });
 
@@ -26,6 +29,9 @@ export const useUploadMultipleFile = () =>
     },
     onSuccess: () => {},
     onError: (err: APIResponseError) => {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('[useUploadMultipleFile] mutation failed:', err.message);
+      }
     },
   });
 
@@ -44,5 +50,8 @@ export const useDeleteFile = () =>
     },
     onSuccess: () => {},
     onError: (err: APIResponseError) => {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('[useDeleteFile] mutation failed:', err.message);
+      }
     },
   });

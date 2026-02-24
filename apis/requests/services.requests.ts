@@ -1,33 +1,20 @@
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
-import { getCookie } from "cookies-next";
-import axios from "axios";
+import http from "../http";
 import urlcat from "urlcat";
-import { getApiUrl } from "@/config/api";
-import {} from "@/utils/types/product.types";
+
 
 export const createService = (payload: Record<string, unknown>) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/service/create`,
+    url: `/service/create`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const updateService = (payload: Record<string, unknown>) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/service/${payload?.serviceId}`,
+    url: `/service/${payload?.serviceId}`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -39,14 +26,9 @@ export const fetchAllServices = (payload: {
   userId?: number;
   ownService?: boolean;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/service/list`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/service/list`, payload),
   });
 };
 
@@ -55,27 +37,17 @@ export const fetchServiceById = (payload: {
   userId?: number;
   sharedLinkId?: string;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/service/${payload.serviceid}`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: `/service/${payload.serviceid}`,
   });
 };
 
 export const addServiceToCart = (payload: number[]) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/cart/updateservice`,
+    url: `/cart/updateservice`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -86,14 +58,9 @@ export const fetchServicesBySeller = (payload: {
   fromCityId?: number;
   toCityId?: number;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/service/getAllServiceBySeller`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/service/getAllServiceBySeller`, payload),
   });
 };
 
@@ -104,14 +71,9 @@ export const fetchServicesByOtherSeller = (payload: {
   fromCityId?: number;
   toCityId?: number;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/service/getAllServiceOfOtherSeller`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/service/getAllServiceOfOtherSeller`, payload),
   });
 };
 
@@ -120,16 +82,11 @@ export const fetchServicesByProductCategory = (payload: {
   page: number;
   limit: number;
 }) => {
-  return axios({
+  return http({
     method: "GET",
     url: urlcat(
-      `${getApiUrl()}/service/getAllServiceRelatedProductCategoryId`,
+      `/service/getAllServiceRelatedProductCategoryId`,
       payload,
     ),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };

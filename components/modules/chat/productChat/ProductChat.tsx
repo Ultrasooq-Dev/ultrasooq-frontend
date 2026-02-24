@@ -233,8 +233,7 @@ const ProductChat: React.FC<ProductChatProps> = ({ productId, roomId }) => {
 
         try {
           await uploadAttachment(formData);
-        } catch (error) {
-        }
+        } catch (error) { console.error(error); }
       });
       await Promise.all(uploadPromises);
       setAttachments([]);

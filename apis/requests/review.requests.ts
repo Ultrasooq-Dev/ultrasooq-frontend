@@ -1,8 +1,5 @@
-import axios from "axios";
-import { getCookie } from "cookies-next";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import http from "../http";
 import urlcat from "urlcat";
-import { getApiUrl } from "@/config/api";
 
 export const fetchReviews = (payload: {
   page: number;
@@ -10,9 +7,9 @@ export const fetchReviews = (payload: {
   productId: string;
   sortType?: "highest" | "lowest" | "newest";
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/product/getAllProductReview`, payload),
+    url: urlcat(`/product/getAllProductReview`, payload),
   });
 };
 
@@ -22,15 +19,10 @@ export const addReview = (payload: {
   description: string;
   rating: number;
 }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/product/addProductReview`,
+    url: `/product/addProductReview`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -40,27 +32,17 @@ export const updateReview = (payload: {
   description: string;
   rating: number;
 }) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/product/editProductReview`,
+    url: `/product/editProductReview`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const fetchReviewById = (payload: { productReviewId: number }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/product/getOneProductReview`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/product/getOneProductReview`, payload),
   });
 };
 
@@ -72,15 +54,10 @@ export const addSellerReview = (payload: {
   description: string;
   rating: number;
 }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/product/addProductPriceReview`,
+    url: `/product/addProductPriceReview`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -90,29 +67,19 @@ export const updateSellerReview = (payload: {
   description: string;
   rating: number;
 }) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/product/updateOneProductPriceReview`,
+    url: `/product/updateOneProductPriceReview`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const fetchSellerReviewById = (payload: {
   productPriceReviewId: number;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/product/getOneProductPriceReview`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/product/getOneProductPriceReview`, payload),
   });
 };
 
@@ -122,16 +89,11 @@ export const fetchAllProductPriceReviewBySellerId = (payload: {
   sortType?: "highest" | "lowest" | "newest";
   sellerId: string;
 }) => {
-  return axios({
+  return http({
     method: "GET",
     url: urlcat(
-      `${getApiUrl()}/product/getAllProductPriceReviewBySellerId`,
+      `/product/getAllProductPriceReviewBySellerId`,
       payload,
     ),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };

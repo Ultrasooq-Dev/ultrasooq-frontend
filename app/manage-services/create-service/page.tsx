@@ -327,8 +327,7 @@ const CreateServicePage = () => {
           value: state.id,
         })),
       );
-    } catch (error) {
-    }
+    } catch (error) { console.error(error); }
   };
 
   const fetchCities = async (stateId: number) => {
@@ -340,8 +339,7 @@ const CreateServicePage = () => {
           value: city.id,
         })),
       );
-    } catch (error) {
-    }
+    } catch (error) { console.error(error); }
   };
 
   const handleUploadedFile = async (list: any[]) => {

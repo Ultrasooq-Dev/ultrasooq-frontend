@@ -29,7 +29,7 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
   const { currency, langDir, selectedLocale } = useAuth();
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  
+
   const [activeAction, setActiveAction] = useState<string | null>(null);
   const [amount, setAmount] = useState("");
   const [transferUserId, setTransferUserId] = useState("");
@@ -52,11 +52,13 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
 
     // Load AmwalPay Smartbox script (UAT environment for testing)
     const script = document.createElement('script');
-    script.src = 'https://test.amwalpg.com:7443/js/SmartBox.js?v=1.1';
+    script.src = process.env.NEXT_PUBLIC_AMWALPAY_SMARTBOX_URL || 'https://test.amwalpg.com:7443/js/SmartBox.js?v=1.1';
     script.async = true;
     script.onload = () => {};
     script.onerror = () => {
-      console.error('Failed to load AmwalPay Smartbox');
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('Failed to load AmwalPay Smartbox');
+      }
     };
     document.body.appendChild(script);
 
@@ -85,7 +87,7 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
     }
 
     setIsProcessing(true);
-    
+
     try {
       // Use AmwalPay for wallet recharge
       await handleAmwalPayWalletRecharge(parseFloat(amount));
@@ -116,7 +118,7 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
     try {
       // AmwalPay supports 'ar' and 'en' — map from selected locale
       const currentLang = selectedLocale === 'ar' ? 'ar' : 'en';
-      
+
       const response = await createAmwalPayWalletConfig.mutateAsync({
         amount: amount,
         walletId: wallet.id,
@@ -149,8 +151,8 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
           SecureHash: config.SecureHash,
           completeCallback: async function(data: any) {
             setIsProcessingPayment(false);
-            
-            const isSuccess = 
+
+            const isSuccess =
               (data.responseCode === '00' && data.success === true) ||
               (data.responseCode === '00' && data.isSuccess !== false) ||
               (data.responseCode === '00') ||
@@ -159,17 +161,17 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
               (data.data?.success === true) ||
               (data.data?.auth === 'AUTHORIZED') ||
               (data.auth === 'AUTHORIZED');
-            
+
             if (isSuccess) {
               // Extract transaction details
-              const transactionId = 
-                data.transactionId || 
-                data.data?.transactionId || 
+              const transactionId =
+                data.transactionId ||
+                data.data?.transactionId ||
                 data.data?.hostResponseData?.transactionId ||
                 data.data?.paymentId ||
                 data.paymentId ||
                 config.MerchantReference;
-              
+
               const amountValue = data.data?.amount || data.amount || amount;
               const merchantRef = config.MerchantReference;
 
@@ -181,7 +183,9 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
                   amount: amountValue
                 });
               } catch (verifyError) {
-                console.error('Error verifying payment:', verifyError);
+                if (process.env.NODE_ENV !== 'production') {
+                  console.error('Error verifying payment:', verifyError);
+                }
                 // Continue anyway - webhook might process it
               }
 
@@ -190,17 +194,17 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
                 description: t("funds_added_to_wallet") || "Funds have been added to your wallet",
                 variant: "success",
               });
-              
+
               // Wait a bit for webhook to process, then refresh wallet balance and transactions
               setTimeout(() => {
                 queryClient.invalidateQueries({ queryKey: ["wallet", "balance"] });
                 queryClient.invalidateQueries({ queryKey: ["wallet", "transactions"] });
               }, 2000); // Wait 2 seconds for webhook to process
-              
+
               // Also refresh immediately and again after delay
               queryClient.invalidateQueries({ queryKey: ["wallet", "balance"] });
               queryClient.invalidateQueries({ queryKey: ["wallet", "transactions"] });
-              
+
               setAmount("");
               setActiveAction(null);
             } else {
@@ -212,7 +216,9 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
             }
           },
           errorCallback: function(data: any) {
-            console.error('AmwalPay Wallet Recharge Error:', data);
+            if (process.env.NODE_ENV !== 'production') {
+              console.error('AmwalPay Wallet Recharge Error:', data);
+            }
             setIsProcessingPayment(false);
             toast({
               title: t("deposit_failed") || "Deposit Failed",
@@ -241,7 +247,9 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
       }
     } catch (error: any) {
       setIsProcessingPayment(false);
-      console.error('AmwalPay Wallet Recharge Error:', error);
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('AmwalPay Wallet Recharge Error:', error);
+      }
       toast({
         title: t("deposit_failed"),
         description: error.message || 'Failed to process payment',
@@ -275,13 +283,13 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
   //       amount: parseFloat(amount),
   //       withdrawalMethod: "BANK_TRANSFER",
   //     });
-      
+
   //     toast({
   //       title: t("withdrawal_successful"),
   //       description: t("withdrawal_request_submitted"),
   //       variant: "success",
   //     });
-      
+
   //     setAmount("");
   //     setActiveAction(null);
   //   } catch (error) {
@@ -330,13 +338,13 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
   //       amount: parseFloat(amount),
   //       description: description || undefined,
   //     });
-      
+
   //     toast({
   //       title: t("transfer_successful"),
   //       description: t("funds_transferred_successfully"),
   //       variant: "success",
   //     });
-      
+
   //     setAmount("");
   //     setTransferUserId("");
   //     setDescription("");
@@ -357,7 +365,7 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
       <h3 className="text-lg font-semibold text-foreground mb-4" dir={langDir} translate="no">
         {t("wallet_actions")}
       </h3>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
         {/* Deposit */}
         <div className="border border-border rounded-lg p-4 hover:border-[#FF9900] transition-colors">
@@ -372,7 +380,7 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
               </svg>
             </div>
           </div>
-          
+
           {activeAction === "deposit" ? (
             <div className="space-y-3">
               <div>
@@ -429,7 +437,7 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
               </svg>
             </div>
           </div>
-          
+
           {activeAction === "withdraw" ? (
             <div className="space-y-3">
               <div>
@@ -487,7 +495,7 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
               </svg>
             </div>
           </div>
-          
+
           {activeAction === "transfer" ? (
             <div className="space-y-3">
               <div>

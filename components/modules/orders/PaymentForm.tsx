@@ -26,8 +26,8 @@ type PaymentFormProps = {
   clearCardElement: boolean;
 };
 
-// Load Stripe with your public key
-const stripePromise = loadStripe('pk_test_51QuptGPQ2VnoEyMPay2u4FyltporIQfMh9hWcp2EEresPjx07AuT4lFLuvnNrvO7ksqtaepmRQHfYs4FLia8lIV500i83tXYMR');
+// Load Stripe with your public key from environment variable
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 const PaymentForm: React.FC<PaymentFormProps> = ({
   onCreateOrder,

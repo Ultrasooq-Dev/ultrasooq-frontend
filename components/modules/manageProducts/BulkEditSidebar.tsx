@@ -679,8 +679,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                 value: state.id.toString(),
               }));
             }
-          } catch (error) {
-          }
+          } catch (error) { console.error(error); }
         }
         
         setStatesByCountry(newStatesByCountry);
@@ -712,8 +711,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                 value: city.id.toString(),
               }));
             }
-          } catch (error) {
-          }
+          } catch (error) { console.error(error); }
         }
         
         setCitiesByState(newCitiesByState);

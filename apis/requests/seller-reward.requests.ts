@@ -1,8 +1,5 @@
-import axios from "axios";
-import { getCookie } from "cookies-next";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import http from "../http";
 import urlcat from "urlcat";
-import { getApiUrl } from "@/config/api";
 
 export const fetchSellerRewards = (payload: {
   page: number;
@@ -11,14 +8,9 @@ export const fetchSellerRewards = (payload: {
   productId?: string;
   sortType?: "asc" | "desc";
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/product/getAllSellerReward`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/product/getAllSellerReward`, payload),
   });
 };
 
@@ -31,15 +23,10 @@ export const addSellerReward = (payload: {
   minimumOrder: number;
   stock: number;
 }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/product/createSellerRewardProduct`,
+    url: `/product/createSellerRewardProduct`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -49,27 +36,17 @@ export const fetchShareLinks = (payload: {
   productId?: string;
   sortType?: "asc" | "desc";
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/product/getAllGenerateLink`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/product/getAllGenerateLink`, payload),
   });
 };
 
 export const createShareLink = (payload: { sellerRewardId: number }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/product/generateLink`,
+    url: `/product/generateLink`,
     data: Object.assign(payload, { generatedLink: "generatedLink" }),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -80,16 +57,11 @@ export const fetchShareLinksBySellerRewardId = (payload: {
   sellerRewardId?: string;
   sortType?: "asc" | "desc";
 }) => {
-  return axios({
+  return http({
     method: "GET",
     url: urlcat(
-      `${getApiUrl()}/product/getAllGenerateLinkBySellerRewardId`,
+      `/product/getAllGenerateLinkBySellerRewardId`,
       payload,
     ),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };

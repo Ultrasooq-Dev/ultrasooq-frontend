@@ -1,18 +1,10 @@
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
-import axios from "axios";
-import { getCookie } from "cookies-next";
-import { getApiUrl } from "@/config/api";
+import http from "../http";
 
 export const fetchHelpCenterQueries = (payload?: Record<string, unknown>) => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/user/help-center/get-all`,
+    url: "/user/help-center/get-all",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -21,14 +13,9 @@ export const submitQuery = (payload: {
   email: string;
   query: string;
 }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/user/help-center/create`,
+    url: "/user/help-center/create",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };

@@ -68,7 +68,7 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
         rfqQuoteProductId: chat.rfqQuoteProductId,
       };
       updateRfqRequestStatus(payload);
-    } catch (error) {}
+    } catch (error) { console.error(error); }
   };
 
   const handleUnreadMessages = async () => {
@@ -81,7 +81,7 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
         await updateUnreadMessages(payload);
         updateVendorMessageCount();
       }
-    } catch (error) {}
+    } catch (error) { console.error(error); }
   };
 
   // NEW: Handle selecting suggested products (Buyer action)

@@ -429,7 +429,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
           await updateUnreadMessages(payload);
         }
       }
-    } catch (error) {}
+    } catch (error) { console.error(error); }
   };
 
   const updateVendorMessageCount = () => {
@@ -507,7 +507,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
           updateRFQProduct(message?.rfqProductPriceRequest);
         }
       }
-    } catch (error) {}
+    } catch (error) { console.error(error); }
   };
 
   const checkRoomId = async () => {
@@ -991,7 +991,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
 
         try {
           await uploadAttachment(formData);
-        } catch (error) {}
+        } catch (error) { console.error(error); }
       });
       await Promise.all(uploadPromises);
       setAttachments([]);

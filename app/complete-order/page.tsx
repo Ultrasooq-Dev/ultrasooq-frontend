@@ -41,10 +41,8 @@ import { Button } from "@/components/ui/button";
 import LoaderWithMessage from "@/components/shared/LoaderWithMessage";
 import { useWalletBalance } from "@/apis/queries/wallet.queries";
 
-// Load Stripe with your public key
-const stripePromise = loadStripe(
-  "pk_test_51QuptGPQ2VnoEyMPay2u4FyltporIQfMh9hWcp2EEresPjx07AuT4lFLuvnNrvO7ksqtaepmRQHfYs4FLia8lIV500i83tXYMR",
-);
+// Load Stripe with your public key from environment variable
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 const CompleteOrderPage = () => {
   const t = useTranslations();
@@ -73,11 +71,13 @@ const CompleteOrderPage = () => {
   useEffect(() => {
     // Load AmwalPay Smartbox script (UAT environment for testing)
     const script = document.createElement('script');
-    script.src = 'https://test.amwalpg.com:7443/js/SmartBox.js?v=1.1';
+    script.src = process.env.NEXT_PUBLIC_AMWALPAY_SMARTBOX_URL || 'https://test.amwalpg.com:7443/js/SmartBox.js?v=1.1';
     script.async = true;
     script.onload = () => {};
     script.onerror = () => {
-      console.error('Failed to load AmwalPay Smartbox');
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('Failed to load AmwalPay Smartbox');
+      }
     };
     document.body.appendChild(script);
 
@@ -189,7 +189,9 @@ const CompleteOrderPage = () => {
             data.cartIds = [];
             data.serviceCartIds = [];
           } catch (e) {
-            console.error("Error parsing RFQ data:", e);
+            if (process.env.NODE_ENV !== 'production') {
+              console.error("Error parsing RFQ data:", e);
+            }
             toast({
               title: t("order_cant_be_placed"),
               description: t("order_placed_retry_info"),
@@ -380,7 +382,9 @@ const CompleteOrderPage = () => {
               }, 500);
             } else {
               // Log the actual data structure for debugging
-              console.error('Payment not successful. Response data:', data);
+              if (process.env.NODE_ENV !== 'production') {
+                console.error('Payment not successful. Response data:', data);
+              }
               toast({
                 title: t("payment_failed") || "Payment Failed",
                 description: data.message || data.ResponseMessage || data.data?.message || t("payment_was_not_successful") || "Payment was not successful",
@@ -389,7 +393,9 @@ const CompleteOrderPage = () => {
             }
           },
           errorCallback: function(data: any) {
-            console.error('AmwalPay Payment Error:', data);
+            if (process.env.NODE_ENV !== 'production') {
+              console.error('AmwalPay Payment Error:', data);
+            }
             setIsRedirectingToPaymob(false);
             toast({
               title: t("payment_failed") || "Payment Failed",
@@ -419,7 +425,9 @@ const CompleteOrderPage = () => {
       }
     } catch (error: any) {
       setIsRedirectingToPaymob(false);
-      console.error('AmwalPay Payment Error:', error);
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('AmwalPay Payment Error:', error);
+      }
       toast({
         title: t("something_went_wrong"),
         description: error.message || 'Failed to process payment',

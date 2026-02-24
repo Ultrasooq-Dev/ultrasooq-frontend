@@ -1,8 +1,5 @@
-import { PUREMOON_TOKEN_KEY } from "../../utils/constants";
-import axios from "axios";
+import http from "../http";
 import urlcat from "urlcat";
-import { getCookie } from "cookies-next";
-import { getApiUrl } from "@/config/api";
 import {
   CreatePrivateRoomRequest,
   FindRoomRequest,
@@ -12,139 +9,89 @@ import {
 } from "../../utils/types/chat.types";
 
 export const sendMessage = (payload: CreatePrivateRoomRequest) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/chat/createPrivateRoom`,
+    url: "/chat/createPrivateRoom",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const createPrivateRoom = (payload: CreatePrivateRoomRequest) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/chat/createPrivateRoom`,
+    url: "/chat/createPrivateRoom",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const findRoomId = (payload: FindRoomRequest) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/chat/find-room`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat("/chat/find-room", payload),
   });
 };
 
 export const getChatHistory = (payload: ChatHistoryRequest) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/chat/messages`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat("/chat/messages", payload),
   });
 };
 
 export const updateRfqRequestPriceStatus = (
   payload: RfqPriceStatusUpdateRequest,
 ) => {
-  return axios({
+  return http({
     method: "put",
-    url: `${getApiUrl()}/chat/update-rfq-price-request-status`,
+    url: "/chat/update-rfq-price-request-status",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const updateUnreadMessages = (payload: UpdateMessageStatusRequest) => {
-  return axios({
+  return http({
     method: "patch",
-    url: `${getApiUrl()}/chat/read-messages`,
+    url: "/chat/read-messages",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const getProductDetails = (productId: number) => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/chat/product?productId=${productId}`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: `/chat/product?productId=${productId}`,
   });
 };
 
 export const getProductMessages = (productId: number, sellerId: number) => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/chat/product/messages?productId=${productId}&sellerId=${sellerId}`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: `/chat/product/messages?productId=${productId}&sellerId=${sellerId}`,
   });
 };
 
 export const getAllProductsWithMessages = (sellerId: number) => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/chat/products/messages?sellerId=${sellerId}`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: `/chat/products/messages?sellerId=${sellerId}`,
   });
 };
 
 export const uploadAttachment = (payload: FormData) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/chat/upload-attachment`,
+    url: "/chat/upload-attachment",
     data: payload,
     headers: {
       "Content-Type": "multipart/form-data",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
     },
   });
 };
 
 export const downloadAttachment = (filePath: string) => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/chat/download-attachment?file-path=${filePath}`,
-    headers: {
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: `/chat/download-attachment?file-path=${filePath}`,
   });
 };
 
@@ -155,14 +102,9 @@ export const getVendorProductsForSuggestion = (payload: {
   limit: number;
   term?: string;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/chat/vendor-products-for-suggestion`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat("/chat/vendor-products-for-suggestion", payload),
   });
 };
 
@@ -172,14 +114,9 @@ export const selectSuggestedProducts = (payload: {
   rfqQuoteProductId: number;
   rfqQuotesUserId: number;
 }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/chat/select-suggested-products`,
+    url: "/chat/select-suggested-products",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };

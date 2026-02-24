@@ -93,6 +93,9 @@ export default function PasswordResetVerifyPage() {
       setCookie(PUREMOON_TEMP_TOKEN_KEY, response.accessToken, {
         // 3 days
         expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+        secure: true,
+        sameSite: 'strict',
+        path: '/',
       });
       toast({
         title: t("verification_successful"),

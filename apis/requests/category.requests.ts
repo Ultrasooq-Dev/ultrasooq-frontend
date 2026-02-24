@@ -1,26 +1,18 @@
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
-import axios from "axios";
-import { getCookie } from "cookies-next";
+import http from "../http";
 import { isEmpty } from "lodash";
 import urlcat from "urlcat";
-import { getApiUrl } from "@/config/api";
 
 export const fetchCategory = (payload: { categoryId?: string }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/category/findOne`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat("/category/findOne", payload),
   });
 };
 
 export const fetchCategories = () => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/category/findAll?page=1&limit=10`,
+    url: "/category/findAll?page=1&limit=10",
   });
 };
 
@@ -31,13 +23,8 @@ export const fetchSubCategoriesById = (payload: { categoryId: string }) => {
     query.append("categoryId", String(payload.categoryId));
   }
 
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/category/findOne?${query}`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: `/category/findOne?${query}`,
   });
 };

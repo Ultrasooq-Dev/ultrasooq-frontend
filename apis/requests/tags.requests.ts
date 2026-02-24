@@ -1,24 +1,16 @@
-import axios from "axios";
-import { getCookie } from "cookies-next";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
-import { getApiUrl } from "@/config/api";
+import http from "../http";
 
 export const fetchTags = () => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/user/viewTags`,
+    url: `/user/viewTags`,
   });
 };
 
 export const createTag = (payload: { tagName: string }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/user/createTag`,
+    url: `/user/createTag`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };

@@ -61,7 +61,7 @@ const MyOrderDetailsPage = () => {
         document.execCommand("copy");
         document.body.removeChild(ta);
       }
-    } catch (_) {}
+    } catch (_) { console.error(_); }
   };
 
   const orderByIdQuery = useOrderById(

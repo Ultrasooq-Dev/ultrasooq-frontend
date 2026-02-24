@@ -1,8 +1,5 @@
-import axios from "axios";
-import { getCookie } from "cookies-next";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import http from "../http";
 import urlcat from "urlcat";
-import { getApiUrl } from "@/config/api";
 
 export const fetchOrders = (payload: {
   page: number;
@@ -12,14 +9,9 @@ export const fetchOrders = (payload: {
   startDate?: string;
   endDate?: string;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/order/getAllOrderProductByUserId`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat("/order/getAllOrderProductByUserId", payload),
   });
 };
 
@@ -32,15 +24,10 @@ export const createOrder = (payload: {
   deviceId?: string;
   [key: string]: unknown;
 }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/order/createOrder`,
+    url: "/order/createOrder",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -61,9 +48,9 @@ export const createOrderUnAuth = (payload: {
   paymentMethod?: string;
   [key: string]: unknown;
 }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/order/createOrderUnAuth`,
+    url: "/order/createOrderUnAuth",
     data: payload,
   });
 };
@@ -74,15 +61,10 @@ export const createPaymentIntent = (payload: {
   orderId?: number;
   [key: string]: unknown;
 }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/payment/create-paymob-intention`,
+    url: "/payment/create-paymob-intention",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -92,15 +74,10 @@ export const createPaymentLink = (payload: {
   orderId?: number;
   [key: string]: unknown;
 }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/payment/createPaymentLink`,
+    url: "/payment/createPaymentLink",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -110,15 +87,10 @@ export const createEMIPayment = (payload: {
   emiPlan?: string;
   [key: string]: unknown;
 }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/payment/createPaymentForEMI`,
+    url: "/payment/createPaymentForEMI",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -128,45 +100,30 @@ export const createAmwalPayConfig = (payload: {
   currency?: string;
   [key: string]: unknown;
 }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/payment/create-amwalpay-config`,
+    url: "/payment/create-amwalpay-config",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const fetchOrderById = (payload: { orderProductId: string }) => {
-  return axios({
+  return http({
     method: "GET",
     url: urlcat(
-      `${getApiUrl()}/order/getOneOrderProductDetailByUserId`,
+      "/order/getOneOrderProductDetailByUserId",
       payload,
     ),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const fetchOrderBySellerId = (payload: { orderProductId: string }) => {
-  return axios({
+  return http({
     method: "GET",
     url: urlcat(
-      `${getApiUrl()}/order/getOneOrderProductDetailBySellerId`,
+      "/order/getOneOrderProductDetailBySellerId",
       payload,
     ),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -178,14 +135,9 @@ export const fetchOrdersBySellerId = (payload: {
   startDate?: string;
   endDate?: string;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/order/getAllOrderProductBySellerId`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat("/order/getAllOrderProductBySellerId", payload),
   });
 };
 
@@ -193,15 +145,10 @@ export const updateProductStatus = (payload: {
   orderProductId: number;
   status: string;
 }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/order/orderProductStatusById`,
+    url: "/order/orderProductStatusById",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -209,15 +156,10 @@ export const updateCancelReason = (payload: {
   orderProductId: number;
   cancelReason: string;
 }) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/order/orderProductCancelReason`,
+    url: "/order/orderProductCancelReason",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -225,15 +167,10 @@ export const updateOrderShippingStatus = (payload: {
   orderShippingId: number;
   receipt: string;
 }) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/order/orderShippingStatusUpdateById`,
+    url: "/order/orderShippingStatusUpdateById",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -242,39 +179,25 @@ export const preOrderCalculation = (payload: {
   serviceCartIds: number[];
   userAddressId: number;
 }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/order/preOrderCal`,
+    url: "/order/preOrderCal",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const fetchOrderByIdUnAuth = (payload: { orderId: number }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/order/getOneOrderUnAuth`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
+    url: urlcat("/order/getOneOrderUnAuth", payload),
   });
 };
 
 // Vendor Dashboard specific endpoints
 export const fetchVendorOrderStats = () => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/order/vendor/order-stats`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: "/order/vendor/order-stats",
   });
 };
 
@@ -286,14 +209,9 @@ export const fetchVendorRecentOrders = (payload: {
   endDate?: string;
   sellType?: string;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/order/vendor/recent-orders`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat("/order/vendor/recent-orders", payload),
   });
 };
 
@@ -302,15 +220,10 @@ export const updateOrderStatus = (payload: {
   status: string;
   notes?: string;
 }) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/order/vendor/update-status`,
+    url: "/order/vendor/update-status",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -320,14 +233,9 @@ export const addOrderTracking = (payload: {
   carrier: string;
   notes?: string;
 }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/order/vendor/add-tracking`,
+    url: "/order/vendor/add-tracking",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };

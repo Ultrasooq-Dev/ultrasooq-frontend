@@ -21,8 +21,8 @@ import { Elements, CardElement, useStripe, useElements } from "@stripe/react-str
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/context/AuthContext";
 
-// Load Stripe with your public key
-const stripePromise = loadStripe("pk_test_51QuptGPQ2VnoEyMPay2u4FyltporIQfMh9hWcp2EEresPjx07AuT4lFLuvnNrvO7ksqtaepmRQHfYs4FLia8lIV500i83tXYMR");
+// Load Stripe with your public key from environment variable
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 const OrdersPage = () => {
   const t = useTranslations();
@@ -51,7 +51,7 @@ const OrdersPage = () => {
   const createOrder = useCreateOrder();
   const createOrderUnAuth = useCreateOrderUnAuth();
   // const createIntent = useCreateIntent();
-  const [advanceAmount, setAdvanceAmount] = useState(""); 
+  const [advanceAmount, setAdvanceAmount] = useState("");
 
   // const memoizedCartList = useMemo(() => {
   //   return cartListByUser.data?.data || [];
@@ -116,7 +116,7 @@ const OrdersPage = () => {
 
   const [clearCard, setClearCard] = useState(false);
 
-  const handleCreateOrder = async (paymentType: string, paymentIntentId: string) => { 
+  const handleCreateOrder = async (paymentType: string, paymentIntentId: string) => {
     alert(paymentType);
     if (hasAccessToken) {
       if (orders.orders) {
@@ -127,11 +127,11 @@ const OrdersPage = () => {
             variant: "danger",
           });
            // Clear the CardElement before returning
-           setClearCard(true);  
+           setClearCard(true);
           return;
         }
          const data: Record<string, any> = { ...orders.orders }; // Using Record<string, any> to allow dynamic properties
-       
+
          data.paymentMethod = paymentType;
          if (paymentIntentId )  data.paymentIntentId = paymentIntentId;
         const response = await createOrder.mutateAsync(data);
@@ -151,7 +151,7 @@ const OrdersPage = () => {
     } else {
       if (orders.orders) {
         const data: Record<string, any> = { ...orders.orders }; // Using Record<string, any> to allow dynamic properties
-       
+
          data.paymentMethod = paymentType;
          if (paymentIntentId )  data.paymentIntentId = paymentIntentId;
         const response = await createOrderUnAuth.mutateAsync(data);
@@ -168,7 +168,7 @@ const OrdersPage = () => {
         paymentType === 'advance' ? setClearCard(false) : router.push("/login");
       }
       }
-      
+
     }
   };
 
@@ -205,7 +205,7 @@ const OrdersPage = () => {
                     <p dir={langDir} translate="no">{t("subtotal")}</p>
                     <h5>{currency.symbol}{calculateTotalAmount() || 0}</h5>
                   </li>
-                  {advanceAmount !== "" ? 
+                  {advanceAmount !== "" ?
                   <>
                     <li>
                       <p dir={langDir} translate="no">{t("advance_payment")}</p>

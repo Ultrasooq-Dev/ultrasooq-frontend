@@ -430,7 +430,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
           await updateUnreadMessages(payload);
         }
       }
-    } catch (error) {}
+    } catch (error) { console.error(error); }
   };
 
   const handleNewMessage = (message: any) => {
@@ -487,7 +487,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
           updateRFQProduct(message?.rfqProductPriceRequest);
         }
       }
-    } catch (error) {}
+    } catch (error) { console.error(error); }
   };
 
   const handleSendMessage = async () => {
@@ -1029,7 +1029,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
 
         try {
           await uploadAttachment(formData);
-        } catch (error) {}
+        } catch (error) { console.error(error); }
       });
       await Promise.all(uploadPromises);
       setAttachments([]);

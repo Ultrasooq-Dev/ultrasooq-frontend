@@ -205,8 +205,7 @@ const AdminProductChat: React.FC<AdminProductChatProps> = ({ productId, productD
 
         try {
           await uploadAttachment(formData);
-        } catch (error) {
-        }
+        } catch (error) { console.error(error); }
       });
       await Promise.all(uploadPromises);
       setAttachments([]);
@@ -324,7 +323,7 @@ const AdminProductChat: React.FC<AdminProductChatProps> = ({ productId, productD
       }
       // UPDATE UNREAD MESSAGE
       handleUpdateNewMessageStatus(message)
-    } catch (error) { }
+    } catch (error) { console.error(error); }
   }
 
   const handleUpdateNewMessageStatus = async (message: any) => {
@@ -336,9 +335,7 @@ const AdminProductChat: React.FC<AdminProductChatProps> = ({ productId, productD
         }
         await updateUnreadMessages(payload)
       }
-    } catch (error) {
-
-    }
+    } catch (error) { console.error(error); }
   }
 
   const updateMessageCount = () => {

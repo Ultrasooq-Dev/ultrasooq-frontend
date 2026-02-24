@@ -120,8 +120,7 @@ export const handleDescriptionParse = (description: string) => {
     try {
       const json = JSON.parse(description);
       return json;
-    } catch (error) {
-    }
+    } catch (error) { console.error(error); }
   }
 };
 

@@ -1,59 +1,36 @@
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
 import { IFreelancerStatusRequest } from "@/utils/types/user.types";
-import axios from "axios";
-import { getCookie } from "cookies-next";
-import { getApiUrl } from "@/config/api";
+import http from "../http";
 
 export const createFreelancerProfile = (payload: Record<string, unknown>) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/user/userProfile`,
+    url: "/user/userProfile",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const updateFreelancerProfile = (payload: Record<string, unknown>) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/user/updateUserProfile`,
+    url: "/user/updateUserProfile",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const updateFreelancerBranch = (payload: Record<string, unknown>) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/user/updateBranch`,
+    url: "/user/updateBranch",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const updateFreelancerActiveStatus = (
   payload: IFreelancerStatusRequest,
 ) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/user/onlineoffline`,
+    url: "/user/onlineoffline",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };

@@ -63,7 +63,7 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
         rfqQuoteProductId: chat.rfqQuoteProductId,
       };
       updateRfqRequestStatus(payload);
-    } catch (error) {}
+    } catch (error) { console.error(error); }
   };
 
   const handleUnreadMessages = async () => {
@@ -76,7 +76,7 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
         await updateUnreadMessages(payload);
         updateRfqMessageCount();
       }
-    } catch (error) {}
+    } catch (error) { console.error(error); }
   };
 
   // Helper function to get user initials

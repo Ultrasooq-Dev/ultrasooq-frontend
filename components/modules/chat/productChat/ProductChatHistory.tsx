@@ -50,7 +50,7 @@ const ProductChatHistory: React.FC<ProductChatHistoryProps> = ({
         await updateUnreadMessages(payload);
         if (updateMessageCount) updateMessageCount()
       }
-    } catch (error) { }
+    } catch (error) { console.error(error); }
   };
 
   return (

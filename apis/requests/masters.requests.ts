@@ -1,14 +1,10 @@
-import axios from "axios";
-import { isEmpty } from "lodash";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
-import { getCookie } from "cookies-next";
+import http from "../http";
 import urlcat from "urlcat";
-import { getApiUrl } from "@/config/api";
 
 export const fetchCountries = () => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/product/countryList`,
+    url: "/product/countryList",
   });
 };
 
@@ -23,22 +19,17 @@ export const fetchBrands = (payload: {
   if (payload.term) query.append("term", String(payload.term));
   if (payload.type) query.append("type", String(payload.type));
 
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/brand/findAll?${query}`,
+    url: `/brand/findAll?${query}`,
   });
 };
 
 export const fetchuserRoles = () => {
   const query = new URLSearchParams();
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/user/getAllUserRole?${query}`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: `/user/getAllUserRole?${query}`,
   });
 };
 
@@ -46,105 +37,75 @@ export const fetchuserRolesWithPagination = (payload: {
   page: number;
   limit: number;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/user/getAllUserRole`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat("/user/getAllUserRole", payload),
   });
 };
 
 export const deleteMemberRole = (payload: { id: number }) => {
-  return axios({
+  return http({
     method: "DELETE",
-    url: urlcat(`${getApiUrl()}/user/deleteUserRole`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat("/user/deleteUserRole", payload),
   });
 };
 
 export const createBrand = (payload: { brandName: string }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/brand/addBrandByUser`,
+    url: "/brand/addBrandByUser",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const createUserRole = (payload: { userRoleName: string }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/user/createUserRole`,
+    url: "/user/createUserRole",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const copyUserRole = (payload: { userRoleId: number }) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/user/copy-userRole-with-permission`,
+    url: "/user/copy-userRole-with-permission",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const updateUserRole = (payload: { userRoleName: string }) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/user/updateUserRole`,
+    url: "/user/updateUserRole",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const fetchLocation = () => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/product/locationList`,
+    url: "/product/locationList",
   });
 };
 
 export const fetchAllCountry = () => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/admin/getAllCountry?page=1&limit=1000&sort=desc`,
+    url: "/admin/getAllCountry?page=1&limit=1000&sort=desc",
   });
 };
 
 export const fetchStatesByCountry = (payload: { countryId: number }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/admin/getAllStates?countryId=${payload.countryId}&page=1&limit=5000&sort=desc`,
+    url: `/admin/getAllStates?countryId=${payload.countryId}&page=1&limit=5000&sort=desc`,
   });
 };
 
 export const fetchCitiesByState = (payload: { stateId: number }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/admin/getAllCities?stateId=${payload.stateId}&page=1&limit=50000&sort=desc`,
+    url: `/admin/getAllCities?stateId=${payload.stateId}&page=1&limit=50000&sort=desc`,
   });
 };

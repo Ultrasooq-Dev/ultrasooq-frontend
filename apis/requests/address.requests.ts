@@ -1,74 +1,46 @@
-import axios from "axios";
-import { getCookie } from "cookies-next";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import http from "../http";
 import urlcat from "urlcat";
 import {
   AddressCreateRequest,
   AddressUpdateRequest,
 } from "@/utils/types/address.types";
-import { getApiUrl } from "@/config/api";
 
 export const fetchAllUserAddress = (payload: {
   page: number;
   limit: number;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/user/getAllUserAddress`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat("/user/getAllUserAddress", payload),
   });
 };
 
 export const addAddress = (payload: AddressCreateRequest) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/user/addUserAddress`,
+    url: "/user/addUserAddress",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const updateAddress = (payload: AddressUpdateRequest) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/user/updateUserAddress`,
+    url: "/user/updateUserAddress",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const fetchAddressById = (payload: { userAddressId: string }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/user/getOneUserAddress`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat("/user/getOneUserAddress", payload),
   });
 };
 
 export const deleteAddress = (payload: { userAddressId: number }) => {
-  return axios({
+  return http({
     method: "DELETE",
-    url: urlcat(`${getApiUrl()}/user/deleteUserAddress`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat("/user/deleteUserAddress", payload),
   });
 };

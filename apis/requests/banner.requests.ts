@@ -1,7 +1,4 @@
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
-import axios from "axios";
-import { getCookie } from "cookies-next";
-import { getApiUrl } from "@/config/api";
+import http from "../http";
 
 export interface IBanner {
   id: number;
@@ -49,147 +46,94 @@ export interface IBannerAnalytics {
 // Get all active banners (public)
 export const fetchActiveBanners = (position?: string) => {
   const params = position ? { position } : {};
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/banner/active`,
+    url: "/banner/active",
     params,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
   });
 };
 
 // Get all banners (admin)
 export const fetchAllBanners = (params?: { page?: number; limit?: number; position?: string }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/banner`,
+    url: "/banner",
     params,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 // Get single banner
 export const fetchBannerById = (id: number) => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/banner/${id}`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: `/banner/${id}`,
   });
 };
 
 // Create banner (admin)
 export const createBanner = (payload: ICreateBanner) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/banner`,
+    url: "/banner",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 // Update banner (admin)
 export const updateBanner = (id: number, payload: Partial<ICreateBanner>) => {
-  return axios({
+  return http({
     method: "PUT",
-    url: `${getApiUrl()}/banner/${id}`,
+    url: `/banner/${id}`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 // Delete banner (admin)
 export const deleteBanner = (id: number) => {
-  return axios({
+  return http({
     method: "DELETE",
-    url: `${getApiUrl()}/banner/${id}`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: `/banner/${id}`,
   });
 };
 
 // Toggle banner status (admin)
 export const toggleBannerStatus = (id: number, isActive: boolean) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/banner/${id}/status`,
+    url: `/banner/${id}/status`,
     data: { isActive },
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 // Update banner priority (admin)
 export const updateBannerPriority = (id: number, priority: number) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/banner/${id}/priority`,
+    url: `/banner/${id}/priority`,
     data: { priority },
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 // Track banner click
 export const trackBannerClick = (id: number) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/banner/${id}/track-click`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
+    url: `/banner/${id}/track-click`,
   });
 };
 
 // Track banner view
 export const trackBannerView = (id: number) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/banner/${id}/track-view`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
+    url: `/banner/${id}/track-view`,
   });
 };
 
 // Get banner analytics (admin)
 export const fetchBannerAnalytics = () => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/banner/analytics`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: "/banner/analytics",
   });
 };
-

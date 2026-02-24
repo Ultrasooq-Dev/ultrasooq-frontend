@@ -1,18 +1,10 @@
-import axios from "axios";
-import { getCookie } from "cookies-next";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import http from "../http";
 import urlcat from "urlcat";
-import { getApiUrl } from "@/config/api";
 
 export const fetchCartByUserId = (payload: { page: number; limit: number }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/cart/list`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat("/cart/list", payload),
   });
 };
 
@@ -21,9 +13,9 @@ export const fetchCartByDevice = (payload: {
   limit: number;
   deviceId: string;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/cart/listUnAuth`, payload),
+    url: urlcat("/cart/listUnAuth", payload),
   });
 };
 
@@ -33,15 +25,10 @@ export const updateCartWithLogin = (payload: {
   sharedLinkId?: number;
   productVariant?: Record<string, unknown>;
 }) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/cart/update`,
+    url: "/cart/update",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -52,9 +39,9 @@ export const updateCartByDevice = (payload: {
   sharedLinkId?: number;
   productVariant?: Record<string, unknown>;
 }) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/cart/updateUnAuth`,
+    url: "/cart/updateUnAuth",
     data: payload,
   });
 };
@@ -65,27 +52,17 @@ export const updateCartWithService = (payload: {
   serviceFeatureIds?: number[];
   [key: string]: unknown;
 }) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/cart/updateservice/product`,
+    url: "/cart/updateservice/product",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const deleteCartItem = (payload: { cartId: number }) => {
-  return axios({
+  return http({
     method: "DELETE",
-    url: urlcat(`${getApiUrl()}/cart/delete`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat("/cart/delete", payload),
   });
 };
 
@@ -97,60 +74,40 @@ export const deleteServiceFromCart = (
   if (serviceFeatureId) {
     payload.servicefeatureids = serviceFeatureId.toString();
   }
-  return axios({
+  return http({
     method: "DELETE",
-    url: urlcat(`${getApiUrl()}/cart/deleteService/${cartId}`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/cart/deleteService/${cartId}`, payload),
   });
 };
 
 export const updateUserCartByDeviceId = (payload: { deviceId: string }) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/cart/updateUserIdBydeviceId`,
+    url: "/cart/updateUserIdBydeviceId",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const fetchCartCountWithLogin = () => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/cart/cartCount`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: "/cart/cartCount",
   });
 };
 
 export const fetchCartCountByDeviceId = (payload: { deviceId: string }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/cart/cartCountUnAuth`,
+    url: "/cart/cartCountUnAuth",
     data: payload,
   });
 };
 
 export const addServiceToCartWithProduct = (payload: Record<string, unknown>) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/cart/updateCartServiceWithProduct`,
+    url: "/cart/updateCartServiceWithProduct",
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -159,13 +116,8 @@ export const fetchCartRecommendations = (payload: {
   limit?: number;
   deviceId?: string;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/cart/recommendations`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat("/cart/recommendations", payload),
   });
 };

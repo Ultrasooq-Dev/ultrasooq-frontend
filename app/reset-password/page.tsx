@@ -107,6 +107,9 @@ export default function ResetPasswordPage() {
       setCookie(PUREMOON_TOKEN_KEY, accessToken, {
         // 3 days
         expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+        secure: true,
+        sameSite: 'strict',
+        path: '/',
       });
     }
   }, []);

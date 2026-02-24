@@ -1,8 +1,5 @@
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
-import { getCookie } from "cookies-next";
-import axios from "axios";
+import http from "../http";
 import urlcat from "urlcat";
-import { getApiUrl } from "@/config/api";
 import {
   ICreateProductRequest,
   IDeleteProductRequest,
@@ -10,15 +7,10 @@ import {
 } from "@/utils/types/product.types";
 
 export const createProduct = (payload: ICreateProductRequest) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/product/create`,
+    url: `/product/create`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -34,9 +26,9 @@ export const fetchProducts = (payload: {
   discount?: boolean;
   sort?: string;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/product/findAll`, payload),
+    url: urlcat(`/product/findAll`, payload),
   });
 };
 
@@ -45,14 +37,9 @@ export const fetchProductById = (payload: {
   userId?: number;
   sharedLinkId?: string;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/product/findOne`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/product/findOne`, payload),
   });
 };
 
@@ -60,39 +47,24 @@ export const fetchRfqProductById = (payload: {
   productId: string;
   userId?: number;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/product/rfqFindOne`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/product/rfqFindOne`, payload),
   });
 };
 
 export const deleteProduct = (payload: IDeleteProductRequest) => {
-  return axios({
+  return http({
     method: "DELETE",
-    url: `${getApiUrl()}/product/delete/${payload.productId}`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: `/product/delete/${payload.productId}`,
   });
 };
 
 export const updateProduct = (payload: IUpdateProductRequest) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/product/update`,
+    url: `/product/update`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -103,15 +75,10 @@ export const updateForCustomize = (payload: {
   toPrice?: number;
   [key: string]: unknown;
 }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/product/addCustomizeProduct`,
+    url: `/product/addCustomizeProduct`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -128,14 +95,9 @@ export const fetchExistingProducts = (payload: {
   productType?: string;
   type?: string;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/product/searchExistingProducts`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/product/searchExistingProducts`, payload),
   });
 };
 
@@ -150,17 +112,12 @@ export const fetchExistingProductForCopy = (payload: {
   priceMax?: number;
   categoryIds?: string;
 }) => {
-  return axios({
+  return http({
     method: "GET",
     url: urlcat(
-      `${getApiUrl()}/product/searchExistingProductsForCopy`,
+      `/product/searchExistingProductsForCopy`,
       payload,
     ),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -168,14 +125,9 @@ export const fetchExistingProductForCopy = (payload: {
 export const fetchExistingProductById = (payload: {
   existingProductId: string;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/product/getExistingProductById`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/product/getExistingProductById`, payload),
   });
 };
 
@@ -200,14 +152,9 @@ export const fetchAllProducts = (payload: {
   if (related) {
     return fetchAllProductsByUserBusinessCategory(payload);
   }
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/product/getAllProduct`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/product/getAllProduct`, payload),
   });
 };
 
@@ -224,17 +171,12 @@ export const fetchAllProductsByUserBusinessCategory = (payload: {
   isOwner?: string;
   userType?: string;
 }) => {
-  return axios({
+  return http({
     method: "GET",
     url: urlcat(
-      `${getApiUrl()}/product/getAllProductByUserBusinessCategory`,
+      `/product/getAllProductByUserBusinessCategory`,
       payload,
     ),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -257,14 +199,9 @@ export const fetchAllBuyGroupProducts = (payload: {
   if (related) {
     return fetchAllBuyGroupProductsByUserBusinessCategory(payload);
   }
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/product/getAllBuyGroupProduct`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/product/getAllBuyGroupProduct`, payload),
   });
 };
 
@@ -281,17 +218,12 @@ export const fetchAllBuyGroupProductsByUserBusinessCategory = (payload: {
   isOwner?: string;
   userType?: string;
 }) => {
-  return axios({
+  return http({
     method: "GET",
     url: urlcat(
-      `${getApiUrl()}/product/getAllBuyGroupProductByUserBusinessCategory`,
+      `/product/getAllBuyGroupProductByUserBusinessCategory`,
       payload,
     ),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -302,9 +234,9 @@ export const fetchSameBrandProducts = (payload: {
   userId?: number;
   productId?: string;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/product/sameBrandAllProduct`, payload),
+    url: urlcat(`/product/sameBrandAllProduct`, payload),
   });
 };
 
@@ -315,9 +247,9 @@ export const fetchRelatedProducts = (payload: {
   userId?: number;
   productId?: string;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/product/relatedAllProduct`, payload),
+    url: urlcat(`/product/relatedAllProduct`, payload),
   });
 };
 
@@ -326,15 +258,10 @@ export const addMultiplePriceForProduct = (payload: {
   prices: { offerPrice: number; productPrice: number; consumerType?: string }[];
   [key: string]: unknown;
 }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/product/addMultiplePriceForProduct`,
+    url: `/product/addMultiplePriceForProduct`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -345,15 +272,10 @@ export const updateMultipleProductPrice = (payload: {
   status?: string;
   [key: string]: unknown;
 }) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/product/updateMultipleProductPrice`,
+    url: `/product/updateMultipleProductPrice`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -369,14 +291,9 @@ export const getAllManagedProducts = (payload: {
   sellType?: string;
   discount?: boolean;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/product/getAllProductPriceByUser`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/product/getAllProductPriceByUser`, payload),
   });
 };
 
@@ -384,26 +301,16 @@ export const getOneWithProductPrice = (payload: {
   productId: number;
   adminId: number;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/product/findOneWithProductPrice`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/product/findOneWithProductPrice`, payload),
   });
 };
 
 export const getVendorDetails = (payload: { adminId: string }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/product/vendorDetails`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/product/vendorDetails`, payload),
   });
 };
 
@@ -419,14 +326,9 @@ export const getVendorProducts = (payload: {
   discount?: boolean;
   sort?: string;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/product/vendorAllProduct`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/product/vendorAllProduct`, payload),
   });
 };
 
@@ -434,17 +336,12 @@ export const getOneProductByProductCondition = (payload: {
   productId: number;
   productPriceId: number;
 }) => {
-  return axios({
+  return http({
     method: "GET",
     url: urlcat(
-      `${getApiUrl()}/product/getOneProductByProductCondition`,
+      `/product/getOneProductByProductCondition`,
       payload,
     ),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -465,15 +362,10 @@ export const updateProductPriceByProductCondition = (payload: {
     video: string;
   }[];
 }) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/product/editProductPriceByProductCondition`,
+    url: `/product/editProductPriceByProductCondition`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -481,15 +373,10 @@ export const updateProductStatus = (payload: {
   productPriceId: number;
   status: string;
 }) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/product/updateProductPrice`,
+    url: `/product/updateProductPrice`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -518,41 +405,26 @@ export const updateSingleProducts = (payload: {
   minQuantityPerCustomer: number;
   maxQuantityPerCustomer: number;
 }) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/product/updateProductPrice`,
+    url: `/product/updateProductPrice`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const removeProduct = (payload: { productPriceId: number }) => {
-  return axios({
+  return http({
     method: "DELETE",
-    url: urlcat(`${getApiUrl()}/product/deleteOneProductPrice`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/product/deleteOneProductPrice`, payload),
   });
 };
 
 export const fetchProductVariant = (productPriceId: number[]) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/product/getProductVariant`,
+    url: `/product/getProductVariant`,
     data: {
       productPriceId,
-    },
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
     },
   });
 };
@@ -564,14 +436,9 @@ export const getProductsByService = (
     limit: number;
   },
 ) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/service/product/${serviceId}`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/service/product/${serviceId}`, payload),
   });
 };
 
@@ -584,15 +451,10 @@ export const createDropshipProduct = (payload: {
   additionalImages?: string[];
   markup: number;
 }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/product/dropship`,
+    url: `/product/dropship`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -604,14 +466,9 @@ export const getAvailableProductsForDropship = (payload: {
   priceMin?: number;
   priceMax?: number;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/product/available-for-dropship`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/product/available-for-dropship`, payload),
   });
 };
 
@@ -620,51 +477,31 @@ export const getDropshipProducts = (payload: {
   limit: number;
   status?: string;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/product/dropship-products`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/product/dropship-products`, payload),
   });
 };
 
 export const getDropshipEarnings = () => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/product/dropship-earnings`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: `/product/dropship-earnings`,
   });
 };
 
 export const updateDropshipProductStatus = (id: number, status: string) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/product/dropship/${id}/status`,
+    url: `/product/dropship/${id}/status`,
     data: { status },
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const deleteDropshipProduct = (id: number) => {
-  return axios({
+  return http({
     method: "DELETE",
-    url: `${getApiUrl()}/product/dropship/${id}`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: `/product/dropship/${id}`,
   });
 };
 
@@ -679,15 +516,10 @@ export const markProductAsDropshipable = (
     dropshipSettings?: Record<string, unknown>;
   }
 ) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/product/dropship/enable/${productId}`,
+    url: `/product/dropship/enable/${productId}`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -696,27 +528,17 @@ export const getMyDropshipableProducts = (payload: {
   page: number;
   limit: number;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/product/dropship/my-dropshipable-products`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/product/dropship/my-dropshipable-products`, payload),
   });
 };
 
 // Get dropship analytics
 export const getDropshipAnalytics = () => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/product/dropship/analytics`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: `/product/dropship/analytics`,
   });
 };
 
@@ -728,15 +550,10 @@ export const bulkUpdateDropshipable = (payload: {
   dropshipMinMarkup?: number;
   dropshipMaxMarkup?: number;
 }) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/product/dropship/bulk-enable`,
+    url: `/product/dropship/bulk-enable`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -745,40 +562,25 @@ export const getWholesaleProducts = (payload: {
   page: number;
   limit: number;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/product/wholesale/products`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/product/wholesale/products`, payload),
   });
 };
 
 // Get wholesale dashboard
 export const getWholesaleDashboard = () => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/product/wholesale/dashboard`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: `/product/wholesale/dashboard`,
   });
 };
 
 // Get wholesale product sales details
 export const getWholesaleProductSales = (productId: number) => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/product/wholesale/product/${productId}/sales`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: `/product/wholesale/product/${productId}/sales`,
   });
 };
 
@@ -792,27 +594,17 @@ export const getUserOwnDropshipableProducts = (payload: {
   status?: string;
   sort?: string;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/product/getUserOwnDropshipableProducts`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/product/getUserOwnDropshipableProducts`, payload),
   });
 };
 
 // Get dropship products created from a specific original product
 export const getDropshipProductsFromOriginal = (originalProductId: number) => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/product/getDropshipProductsFromOriginal/${originalProductId}`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: `/product/getDropshipProductsFromOriginal/${originalProductId}`,
   });
 };
 
@@ -827,14 +619,9 @@ export const trackProductView = (payload: {
     params.deviceId = payload.deviceId;
   }
   
-  return axios({
+  return http({
     method: "PATCH",
-    url: urlcat(`${getApiUrl()}/product/productViewCount`, params),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/product/productViewCount`, params),
   });
 };
 
@@ -844,15 +631,10 @@ export const trackProductClick = (payload: {
   clickSource?: string;
   deviceId?: string;
 }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/product/trackClick`,
+    url: `/product/trackClick`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -863,15 +645,10 @@ export const trackProductSearch = (payload: {
   clicked?: boolean;
   deviceId?: string;
 }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/product/trackSearch`,
+    url: `/product/trackSearch`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -880,14 +657,9 @@ export const fetchSearchSuggestions = (payload: {
   userId?: number;
   deviceId?: string;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/product/searchSuggestions`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/product/searchSuggestions`, payload),
   });
 };
 
@@ -898,13 +670,8 @@ export const fetchAiSearch = (payload: {
   userId?: number;
   userType?: string;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/product/search/ai`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/product/search/ai`, payload),
   });
 };

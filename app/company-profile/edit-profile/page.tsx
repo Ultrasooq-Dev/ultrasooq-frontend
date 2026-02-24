@@ -214,8 +214,7 @@ export default function EditProfilePage() {
       if (userProfile?.aboutUs) {
         try {
           abountUsJson = JSON.parse(userProfile?.aboutUs);
-        } catch (error) {
-        }
+        } catch (error) { console.error(error); }
       }
       
       const formData = {

@@ -1,7 +1,4 @@
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
-import { getCookie } from "cookies-next";
-import axios from "axios";
-import { getApiUrl } from "@/config/api";
+import http from "../http";
 
 export interface AiCategorizePayload {
   productName: string;
@@ -22,14 +19,9 @@ export interface AiCategorizeResponse {
 }
 
 export const aiCategorizeProduct = (payload: AiCategorizePayload) => {
-  return axios<AiCategorizeResponse>({
+  return http<AiCategorizeResponse>({
     method: "POST",
-    url: `${getApiUrl()}/product/ai-categorize`,
+    url: `/product/ai-categorize`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };

@@ -1,7 +1,4 @@
-import axios from "axios";
-import { getCookie } from "cookies-next";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
-import { getApiUrl } from "@/config/api";
+import http from "../http";
 import urlcat from "urlcat";
 import {
   Notification,
@@ -19,74 +16,43 @@ export interface FetchNotificationsPayload {
 export const fetchNotifications = async (
   payload: FetchNotificationsPayload = {},
 ) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/notification`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat("/notification", payload),
   });
 };
 
 export const fetchUnreadCount = async () => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/notification/unread-count`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: "/notification/unread-count",
   });
 };
 
 export const markAsRead = async (notificationId: number) => {
-  return axios({
+  return http({
     method: "PUT",
-    url: `${getApiUrl()}/notification/${notificationId}/read`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: `/notification/${notificationId}/read`,
   });
 };
 
 export const markAllAsRead = async () => {
-  return axios({
+  return http({
     method: "PUT",
-    url: `${getApiUrl()}/notification/read-all`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: "/notification/read-all",
   });
 };
 
 export const deleteNotification = async (notificationId: number) => {
-  return axios({
+  return http({
     method: "DELETE",
-    url: `${getApiUrl()}/notification/${notificationId}`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: `/notification/${notificationId}`,
   });
 };
 
 export const deleteAllNotifications = async () => {
-  return axios({
+  return http({
     method: "DELETE",
-    url: `${getApiUrl()}/notification`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: "/notification",
   });
 };
-

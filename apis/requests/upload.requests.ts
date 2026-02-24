@@ -1,43 +1,27 @@
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
-import axios from "axios";
-import { getCookie } from "cookies-next";
-import { getApiUrl } from "@/config/api";
+import http from "../http";
 
 export const uploadFile = (payload: FormData) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/user/presignedUrlUpload`,
+    url: `/user/presignedUrlUpload`,
     data: payload,
-    headers: {
-      "Content-Type": "multipart/form-data",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    headers: { "Content-Type": "multipart/form-data" },
   });
 };
 
 export const uploadMultipleFile = (payload: FormData) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/user/presignedUrlUploadMultiple`,
+    url: `/user/presignedUrlUploadMultiple`,
     data: payload,
-    headers: {
-      "Content-Type": "multipart/form-data",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    headers: { "Content-Type": "multipart/form-data" },
   });
 };
 
 export const deleteFile = (payload: { fileName: string; [key: string]: unknown }) => {
-  return axios({
+  return http({
     method: "DELETE",
-    url: `${getApiUrl()}/user/presignedUrlDelete`,
+    url: `/user/presignedUrlDelete`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };

@@ -1,8 +1,5 @@
-import axios from "axios";
-import { getCookie } from "cookies-next";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import http from "../http";
 import urlcat from "urlcat";
-import { getApiUrl } from "@/config/api";
 import {
   IWalletDepositRequest,
   IWalletWithdrawRequest,
@@ -11,53 +8,33 @@ import {
 } from "@/utils/types/wallet.types";
 
 export const fetchWalletBalance = () => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/wallet/balance`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: `/wallet/balance`,
   });
 };
 
 export const depositToWallet = (payload: IWalletDepositRequest) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/wallet/deposit`,
+    url: `/wallet/deposit`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const withdrawFromWallet = (payload: IWalletWithdrawRequest) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/wallet/withdraw`,
+    url: `/wallet/withdraw`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const transferToUser = (payload: IWalletTransferRequest) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/wallet/transfer`,
+    url: `/wallet/transfer`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -68,51 +45,31 @@ export const fetchWalletTransactions = (payload: {
   startDate?: string;
   endDate?: string;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/wallet/transactions`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/wallet/transactions`, payload),
   });
 };
 
 export const fetchWalletTransactionById = (transactionId: number) => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/wallet/transactions/${transactionId}`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: `/wallet/transactions/${transactionId}`,
   });
 };
 
 export const fetchWalletSettings = () => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/wallet/settings`,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: `/wallet/settings`,
   });
 };
 
 export const updateWalletSettings = (payload: Partial<IWalletSettings>) => {
-  return axios({
+  return http({
     method: "PUT",
-    url: `${getApiUrl()}/wallet/settings`,
+    url: `/wallet/settings`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -123,27 +80,17 @@ export const fetchAllWallets = (payload: {
   userId?: number;
   status?: string;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/admin/wallets`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/admin/wallets`, payload),
   });
 };
 
 export const updateWalletStatus = (walletId: number, status: string) => {
-  return axios({
+  return http({
     method: "PUT",
-    url: `${getApiUrl()}/admin/wallets/${walletId}/status`,
+    url: `/admin/wallets/${walletId}/status`,
     data: { status },
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
@@ -155,39 +102,24 @@ export const fetchAllWalletTransactions = (payload: {
   startDate?: string;
   endDate?: string;
 }) => {
-  return axios({
+  return http({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/admin/transactions`, payload),
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
+    url: urlcat(`/admin/transactions`, payload),
   });
 };
 
 export const createAmwalPayWalletConfig = (payload: Record<string, unknown>) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/payment/create-amwalpay-wallet-config`,
+    url: `/payment/create-amwalpay-wallet-config`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };
 
 export const verifyAmwalPayWalletPayment = (payload: Record<string, unknown>) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/payment/verify-amwalpay-wallet-payment`,
+    url: `/payment/verify-amwalpay-wallet-payment`,
     data: payload,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-    },
   });
 };

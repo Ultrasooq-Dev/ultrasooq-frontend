@@ -1618,8 +1618,8 @@ const CreateProductPage = () => {
         ...watchProductImages
           .filter((item: any) => typeof item.path === "string")
           .map((item: any) => item.path),
-        ...imageUrlArray,
-      ];
+        ...(imageUrlArray || []),
+      ].filter((item: any) => typeof item === "string");
 
       if (updatedFormData.productImages.length) {
         updatedFormData.productImagesList = updatedFormData.productImages.map(

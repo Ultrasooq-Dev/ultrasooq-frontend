@@ -4,32 +4,21 @@
  *   filters, category keywords, and multi-category product management.
  * @api /specification/*
  */
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
-import axios from "axios";
-import { getCookie } from "cookies-next";
-import { getApiUrl } from "@/config/api";
-
-const authHeaders = () => ({
-  "Content-Type": "application/json",
-  Accept: "application/json",
-  Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
-});
+import http from "../http";
 
 // ── Spec Templates ──
 
 export const fetchSpecTemplates = (categoryId: number) => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/specification/template/${categoryId}`,
-    headers: authHeaders(),
+    url: `/specification/template/${categoryId}`,
   });
 };
 
 export const fetchSpecTemplatesForCategories = (categoryIds: number[]) => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/specification/template/multi?ids=${categoryIds.join(",")}`,
-    headers: authHeaders(),
+    url: `/specification/template/multi?ids=${categoryIds.join(",")}`,
   });
 };
 
@@ -45,10 +34,9 @@ export const createSpecTemplate = (data: {
   sortOrder?: number;
   groupName?: string;
 }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/specification/template`,
-    headers: authHeaders(),
+    url: `/specification/template`,
     data,
   });
 };
@@ -67,10 +55,9 @@ export const bulkCreateSpecTemplates = (data: {
     groupName?: string;
   }>;
 }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/specification/template/bulk`,
-    headers: authHeaders(),
+    url: `/specification/template/bulk`,
     data,
   });
 };
@@ -89,29 +76,26 @@ export const updateSpecTemplate = (
     groupName: string;
   }>
 ) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/specification/template/${id}`,
-    headers: authHeaders(),
+    url: `/specification/template/${id}`,
     data,
   });
 };
 
 export const deleteSpecTemplate = (id: number) => {
-  return axios({
+  return http({
     method: "DELETE",
-    url: `${getApiUrl()}/specification/template/${id}`,
-    headers: authHeaders(),
+    url: `/specification/template/${id}`,
   });
 };
 
 // ── Spec Values ──
 
 export const fetchSpecValues = (productId: number) => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/specification/value/${productId}`,
-    headers: authHeaders(),
+    url: `/specification/value/${productId}`,
   });
 };
 
@@ -123,10 +107,9 @@ export const setSpecValues = (data: {
     numericValue?: number;
   }>;
 }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/specification/value`,
-    headers: authHeaders(),
+    url: `/specification/value`,
     data,
   });
 };
@@ -135,10 +118,9 @@ export const updateSpecValue = (
   id: number,
   data: { value?: string; numericValue?: number }
 ) => {
-  return axios({
+  return http({
     method: "PATCH",
-    url: `${getApiUrl()}/specification/value/${id}`,
-    headers: authHeaders(),
+    url: `/specification/value/${id}`,
     data,
   });
 };
@@ -146,10 +128,9 @@ export const updateSpecValue = (
 // ── Filters ──
 
 export const fetchFilters = (categoryId: number) => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/specification/filters/${categoryId}`,
-    headers: authHeaders(),
+    url: `/specification/filters/${categoryId}`,
   });
 };
 
@@ -159,27 +140,24 @@ export const addCategoryKeywords = (
   categoryId: number,
   keywords: string[]
 ) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/specification/keywords/${categoryId}`,
-    headers: authHeaders(),
+    url: `/specification/keywords/${categoryId}`,
     data: { keywords },
   });
 };
 
 export const fetchCategoryKeywords = (categoryId: number) => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/specification/keywords/${categoryId}`,
-    headers: authHeaders(),
+    url: `/specification/keywords/${categoryId}`,
   });
 };
 
 export const matchCategories = (text: string) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/specification/match-categories`,
-    headers: authHeaders(),
+    url: `/specification/match-categories`,
     data: { text },
   });
 };
@@ -191,27 +169,24 @@ export const setProductCategories = (
   categoryIds: number[],
   primaryCategoryId?: number
 ) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/specification/product-categories/${productId}`,
-    headers: authHeaders(),
+    url: `/specification/product-categories/${productId}`,
     data: { categoryIds, primaryCategoryId },
   });
 };
 
 export const fetchProductCategories = (productId: number) => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/specification/product-categories/${productId}`,
-    headers: authHeaders(),
+    url: `/specification/product-categories/${productId}`,
   });
 };
 
 export const autoCategorizeProduct = (productId: number) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/specification/auto-categorize/${productId}`,
-    headers: authHeaders(),
+    url: `/specification/auto-categorize/${productId}`,
   });
 };
 
@@ -222,10 +197,9 @@ export const suggestCategories = (data: {
   description: string;
   tags: string[];
 }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/product/suggestCategories`,
-    headers: authHeaders(),
+    url: `/product/suggestCategories`,
     data,
   });
 };
@@ -235,10 +209,9 @@ export const generateSpecValues = (data: {
   description: string;
   categoryId: number;
 }) => {
-  return axios({
+  return http({
     method: "POST",
-    url: `${getApiUrl()}/product/generateSpecValues`,
-    headers: authHeaders(),
+    url: `/product/generateSpecValues`,
     data,
   });
 };
@@ -246,8 +219,8 @@ export const generateSpecValues = (data: {
 // ── Health ──
 
 export const fetchHealth = () => {
-  return axios({
+  return http({
     method: "GET",
-    url: `${getApiUrl()}/health`,
+    url: `/health`,
   });
 };
