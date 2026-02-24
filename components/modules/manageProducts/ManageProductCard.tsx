@@ -315,10 +315,18 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
     setMaxCustomer((prevDay) => Math.min(prevDay + 1, 1000));
   };
 
-  // Auto-derive minQuantityPerCustomer from minQuantity (or 1),
-  // and maxQuantityPerCustomer from stock — no manual vendor input needed.
-  const minQuantityCustomer = initialMinQuantity ? Number(initialMinQuantity) : 1;
-  const maxQuantityCustomer = Number(initialStock) || Number(initialMaxQuantityPerCustomer) || 0;
+  const [minQuantityCustomer, setMinQuantityCustomer] = useState<number>(
+    initialMinQuantity ? Number(initialMinQuantity) : 1,
+  );
+  const [maxQuantityCustomer, setMaxQuantityCustomer] = useState<number>(
+    Number(initialStock) || Number(initialMaxQuantityPerCustomer) || 0,
+  );
+  const decreaseMaxQuantityCustomer = () => {
+    setMaxQuantityCustomer((prev) => Math.max(prev - 1, 0));
+  };
+  const increaseMaxQuantityCustomer = () => {
+    setMaxQuantityCustomer((prev) => Math.min(prev + 1, 10000));
+  };
 
   // call update single product
   const productUpdate = useUpdateSingleProduct();
