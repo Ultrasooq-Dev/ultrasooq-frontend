@@ -144,69 +144,92 @@ export default function RegisterPage() {
   const updateCart = useUpdateUserCartByDeviceId();
 
   const onSubmit = async (formData: z.infer<typeof formSchema>) => {
-    const loginType = session ? getLoginType() : "MANUAL";
-    const response = await register.mutateAsync({
-      ...formData,
-      tradeRole: "BUYER",
-      loginType: loginType as "MANUAL" | "GOOGLE" | "FACEBOOK",
-    });
-
-    if (response?.status && response?.otp) {
-      toast({
-        title: t("verification_code_sent"),
-        description: t("verification_code_info"),
-        variant: "success",
-      });
-      sessionStorage.setItem("email", formData.email.toLowerCase());
-      form.reset();
-      router.push("/otp-verify");
-    } else if (response?.status && response?.accessToken) {
-      // setCookie(PUREMOON_TOKEN_KEY, response.accessToken);
-      setCookie(PUREMOON_TOKEN_KEY, response.accessToken, {
-        // 7 days
-        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+    try {
+      const loginType = session ? getLoginType() : "MANUAL";
+      const response = await register.mutateAsync({
+        ...formData,
+        tradeRole: "BUYER",
+        loginType: loginType as "MANUAL" | "GOOGLE" | "FACEBOOK",
       });
 
-      // Fetch user data and update AuthContext (same as login page)
-      try {
-        const userRes = await fetchMe();
-        if (userRes?.data?.data?.id) {
-          setUser({
-            id: userRes.data.data.id,
-            firstName: userRes.data.data.firstName || "",
-            lastName: userRes.data.data.lastName || "",
-            tradeRole: userRes.data.data.tradeRole || "",
-          });
+      if (response?.status && response?.otp) {
+        toast({
+          title: t("verification_code_sent"),
+          description: t("verification_code_info"),
+          variant: "success",
+        });
+        sessionStorage.setItem("email", formData.email.toLowerCase());
+        form.reset();
+        router.push("/otp-verify");
+      } else if (response?.status && response?.accessToken) {
+        setCookie(PUREMOON_TOKEN_KEY, response.accessToken, {
+          // 7 days
+          expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        });
+
+        // Fetch user data and update AuthContext (same as login page)
+        try {
+          const userRes = await fetchMe();
+          if (userRes?.data?.data?.id) {
+            setUser({
+              id: userRes.data.data.id,
+              firstName: userRes.data.data.firstName || "",
+              lastName: userRes.data.data.lastName || "",
+              tradeRole: userRes.data.data.tradeRole || "",
+            });
+          }
+        } catch (e) {
+          // If fetchMe fails, the AuthContext useEffect will try to recover
+          console.error("Failed to fetch user after registration:", e);
         }
-      } catch (e) {
-        // If fetchMe fails, the AuthContext useEffect will try to recover
-        console.error("Failed to fetch user after registration:", e);
-      }
 
-      // Fetch permissions (optional, same as login page)
-      try {
-        const permissions = await fetchUserPermissions();
-        setPermissions([
-          ...(permissions?.data?.data?.userRoleDetail?.userRolePermission ||
-            []),
-        ]);
-      } catch (e) {
-        // Silent fail - permissions are optional
-      }
+        // Fetch permissions (optional, same as login page)
+        try {
+          const permissions = await fetchUserPermissions();
+          setPermissions([
+            ...(permissions?.data?.data?.userRoleDetail?.userRolePermission ||
+              []),
+          ]);
+        } catch (e) {
+          // Silent fail - permissions are optional
+        }
 
-      toast({
-        title: t("registration_successful"),
-        description: response.message,
-        variant: "success",
-      });
-      form.reset();
-      router.push("/profile?fromRegister=1");
-    } else {
+        toast({
+          title: t("registration_successful"),
+          description: response.message,
+          variant: "success",
+        });
+        form.reset();
+        router.push("/profile?fromRegister=1");
+      } else {
+        toast({
+          title: t("registration_failed"),
+          description: response?.message || t("something_went_wrong"),
+          variant: "danger",
+        });
+      }
+    } catch (error: any) {
+      const errorMessage =
+        error?.response?.data?.message ||
+        error?.message ||
+        t("something_went_wrong");
+
+      // If user is already registered, guide them to login
+      const isAlreadyRegistered =
+        typeof errorMessage === "string" &&
+        (errorMessage.toLowerCase().includes("already") ||
+          errorMessage.toLowerCase().includes("exist"));
+
       toast({
         title: t("registration_failed"),
-        description: response.message,
+        description: errorMessage,
         variant: "danger",
       });
+
+      if (isAlreadyRegistered) {
+        // Store email and redirect to login after a short delay
+        sessionStorage.setItem("email", formData.email.toLowerCase());
+      }
     }
   };
 
