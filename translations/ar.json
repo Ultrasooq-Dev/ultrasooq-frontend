@@ -166,7 +166,7 @@
   "confirm_delete": "تأكيد الحذف",
   "required": "مطلوب",
   "placeholder": "عنصر نائب",
-  "enter_placeholder": "أدخل العنصر النائب",
+  "enter_placeholder": "أدخل النص الإرشادي",
   "first": "الأولى",
   "last": "الأخيرة",
   "everyone": "الجميع",
