@@ -105,7 +105,7 @@ const AddReceipt: React.FC<AddReceiptProps> = ({
                             if (file) {
                                 if (file.size > 5 * 1024 * 1024) {
                                     toast({
-                                        description: "File size must be less than or equal to 5MB",
+                                        description: t("file_size_must_be_less_than_5mb"),
                                         variant: "danger",
                                     })
                                     if (fileInputRef?.current) fileInputRef.current.value = '';
@@ -114,7 +114,7 @@ const AddReceipt: React.FC<AddReceiptProps> = ({
 
                                 if (!allowedFileTypes.includes(file.type)) {
                                     toast({
-                                        description: "Allowed file types: " + allowedFileExtensions.join(", "),
+                                        description: t("allowed_file_types") + ": " + allowedFileExtensions.join(", "),
                                         variant: "danger",
                                     });
                                     if (fileInputRef?.current) fileInputRef.current.value = '';

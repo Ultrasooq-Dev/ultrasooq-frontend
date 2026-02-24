@@ -28,45 +28,35 @@ import { z } from "zod";
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/context/AuthContext";
 
-const formSchema = z
-  .object({
-    password: z
-      .string()
-      .trim()
-      .min(2, {
-        message: "Old Password is required",
-      })
-      .min(8, {
-        message: "Password must be longer than or equal to 8 characters",
-      }),
-    newPassword: z
-      .string()
-      .trim()
-      .min(2, {
-        message: "New Password is required",
-      })
-      .min(8, {
-        message: "Password must be longer than or equal to 8 characters",
-      }),
-    confirmPassword: z
-      .string()
-      .trim()
-      .min(2, {
-        message: "Password is required",
-      })
-      .min(8, {
-        message: "Password must be longer than or equal to 8 characters",
-      }),
-  })
-  .superRefine(({ newPassword, confirmPassword }, ctx) => {
-    if (newPassword !== confirmPassword) {
-      ctx.addIssue({
-        code: "custom",
-        message: "Passwords do not match",
-        path: ["confirmPassword"],
-      });
-    }
-  });
+const formSchema = (t: any) => {
+  return z
+    .object({
+      password: z
+        .string()
+        .trim()
+        .min(2, { message: t("password_is_required") })
+        .min(8, { message: t("password_characters_limit_n", { n: 8 }) }),
+      newPassword: z
+        .string()
+        .trim()
+        .min(2, { message: t("password_is_required") })
+        .min(8, { message: t("password_characters_limit_n", { n: 8 }) }),
+      confirmPassword: z
+        .string()
+        .trim()
+        .min(2, { message: t("password_is_required") })
+        .min(8, { message: t("password_characters_limit_n", { n: 8 }) }),
+    })
+    .superRefine(({ newPassword, confirmPassword }, ctx) => {
+      if (newPassword !== confirmPassword) {
+        ctx.addIssue({
+          code: "custom",
+          message: t("passwords_do_not_match"),
+          path: ["confirmPassword"],
+        });
+      }
+    });
+};
 
 export default function ChangePasswordPage() {
   const t = useTranslations();
@@ -74,7 +64,7 @@ export default function ChangePasswordPage() {
   const router = useRouter();
   const { toast } = useToast();
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema(t)),
     defaultValues: {
       password: "",
       newPassword: "",
@@ -88,7 +78,7 @@ export default function ChangePasswordPage() {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: any) => {
     const response = await changePassword.mutateAsync(values, {
       onError: (err) => {
         toast({

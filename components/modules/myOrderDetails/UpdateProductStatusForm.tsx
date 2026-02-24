@@ -25,24 +25,26 @@ type UpdateProductStatusFormProps = {
   tradeRole?: string;
 };
 
-const formSchema = z
-  .object({
-    status: z
-      .string()
-      .trim()
-      .min(2, { message: "Status is required" })
-      .max(50, { message: "Status must be less than 50 characters" }),
-    cancelReason: z.string().trim().optional(),
-  })
-  .superRefine(({ status, cancelReason }, ctx) => {
-    if (status === "CANCELLED" && !cancelReason) {
-      ctx.addIssue({
-        code: "custom",
-        message: "Cancel Reason is required",
-        path: ["cancelReason"],
-      });
-    }
-  });
+const createFormSchema = (t: any) => {
+  return z
+    .object({
+      status: z
+        .string()
+        .trim()
+        .min(2, { message: t("status_is_required") })
+        .max(50),
+      cancelReason: z.string().trim().optional(),
+    })
+    .superRefine(({ status, cancelReason }, ctx) => {
+      if (status === "CANCELLED" && !cancelReason) {
+        ctx.addIssue({
+          code: "custom",
+          message: t("cancel_reason_is_required"),
+          path: ["cancelReason"],
+        });
+      }
+    });
+};
 
 const UpdateProductStatusForm: React.FC<UpdateProductStatusFormProps> = ({
   orderProductId,
@@ -57,7 +59,7 @@ const UpdateProductStatusForm: React.FC<UpdateProductStatusFormProps> = ({
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(createFormSchema(t)),
     defaultValues: {
       status: "",
     },
@@ -68,7 +70,7 @@ const UpdateProductStatusForm: React.FC<UpdateProductStatusFormProps> = ({
 
   const watchStatus = form.watch("status");
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: any) => {
     if (values.status === "") return;
 
     if (values.status === "DELIVERED" && tradeRole != 'BUYER') {

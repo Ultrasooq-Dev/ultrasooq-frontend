@@ -35,50 +35,50 @@ import { useUploadFile } from "@/apis/queries/upload.queries";
 import AddImageContent from "@/components/modules/profile/AddImageContent";
 import ClostIcon from "@/public/images/close-white.svg";
 
-const createAccountSchema = z.object({
-  // Basic account info
-  accountName: z
-    .string()
-    .trim()
-    .min(2, {
-      message: "Account name is required",
-    })
-    .refine(
-      (val) => {
-        const trimmed = val.trim().toLowerCase();
-        return (
-          trimmed !== "undefined" &&
-          trimmed !== "undefined account" &&
-          trimmed !== "null"
-        );
-      },
-      {
-        message: "Please enter a valid account name",
-      },
-    ),
-  tradeRole: z.enum(["COMPANY", "FREELANCER"], {
-    error: "Please select a trade role",
-  }),
-
-  // Company-specific fields (only for COMPANY role)
-  companyName: z.string().optional(),
-  companyAddress: z.string().optional(),
-  companyPhone: z.string().optional(),
-  companyWebsite: z.string().optional(),
-  companyTaxId: z.string().optional(),
-
-  // Identity card uploads (mandatory for COMPANY and FREELANCER)
-  uploadIdentityFrontImage: z
-    .any()
-    .refine((files) => files && files.length > 0, {
-      message: "Identity card front side is required",
+const createAccountSchemaFn = (t: any) => {
+  return z.object({
+    // Basic account info
+    accountName: z
+      .string()
+      .trim()
+      .min(2, { message: t("account_name_is_required") })
+      .refine(
+        (val) => {
+          const trimmed = val.trim().toLowerCase();
+          return (
+            trimmed !== "undefined" &&
+            trimmed !== "undefined account" &&
+            trimmed !== "null"
+          );
+        },
+        {
+          message: t("enter_valid_account_name"),
+        },
+      ),
+    tradeRole: z.enum(["COMPANY", "FREELANCER"], {
+      error: t("select_trade_role"),
     }),
-  uploadIdentityBackImage: z
-    .any()
-    .refine((files) => files && files.length > 0, {
-      message: "Identity card back side is required",
-    }),
-});
+
+    // Company-specific fields (only for COMPANY role)
+    companyName: z.string().optional(),
+    companyAddress: z.string().optional(),
+    companyPhone: z.string().optional(),
+    companyWebsite: z.string().optional(),
+    companyTaxId: z.string().optional(),
+
+    // Identity card uploads (mandatory for COMPANY and FREELANCER)
+    uploadIdentityFrontImage: z
+      .any()
+      .refine((files) => files && files.length > 0, {
+        message: t("identity_card_front_required"),
+      }),
+    uploadIdentityBackImage: z
+      .any()
+      .refine((files) => files && files.length > 0, {
+        message: t("identity_card_back_required"),
+      }),
+  });
+};
 
 type CreateSubAccountDialogProps = {
   open: boolean;
@@ -111,7 +111,7 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
   const backIdentityRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<z.infer<typeof createAccountSchema>>({
-    resolver: zodResolver(createAccountSchema),
+    resolver: zodResolver(createAccountSchemaFn(t)),
     defaultValues: {
       accountName: "",
       tradeRole: "FREELANCER",

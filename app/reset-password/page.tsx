@@ -18,36 +18,30 @@ import LoaderWithMessage from "@/components/shared/LoaderWithMessage";
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/context/AuthContext";
 
-const formSchema = z
-  .object({
-    newPassword: z
-      .string()
-      .trim()
-      .min(2, {
-        message: "New Password is required",
-      })
-      .min(8, {
-        message: "Password must be longer than or equal to 8 characters",
-      }),
-    confirmPassword: z
-      .string()
-      .trim()
-      .min(2, {
-        message: "Password is required",
-      })
-      .min(8, {
-        message: "Password must be longer than or equal to 8 characters",
-      }),
-  })
-  .superRefine(({ newPassword, confirmPassword }, ctx) => {
-    if (newPassword !== confirmPassword) {
-      ctx.addIssue({
-        code: "custom",
-        message: "Passwords do not match",
-        path: ["confirmPassword"],
-      });
-    }
-  });
+const formSchema = (t: any) => {
+  return z
+    .object({
+      newPassword: z
+        .string()
+        .trim()
+        .min(2, { message: t("password_is_required") })
+        .min(8, { message: t("password_characters_limit_n", { n: 8 }) }),
+      confirmPassword: z
+        .string()
+        .trim()
+        .min(2, { message: t("password_is_required") })
+        .min(8, { message: t("password_characters_limit_n", { n: 8 }) }),
+    })
+    .superRefine(({ newPassword, confirmPassword }, ctx) => {
+      if (newPassword !== confirmPassword) {
+        ctx.addIssue({
+          code: "custom",
+          message: t("passwords_do_not_match"),
+          path: ["confirmPassword"],
+        });
+      }
+    });
+};
 
 export default function ResetPasswordPage() {
   const t = useTranslations();
@@ -55,7 +49,7 @@ export default function ResetPasswordPage() {
   const router = useRouter();
   const { toast } = useToast();
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema(t)),
     defaultValues: {
       newPassword: "",
       confirmPassword: "",
@@ -64,7 +58,7 @@ export default function ResetPasswordPage() {
   const [showSuccess, setShowSuccess] = useState(false);
   const resetPassword = useResetPassword();
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: any) => {
     const response = await resetPassword.mutateAsync(values, {
       onError: (err) => {
         toast({

@@ -42,73 +42,57 @@ import { useAuth } from "@/context/AuthContext";
 import { fetchMe, fetchUserPermissions } from "@/apis/requests/user.requests";
 import { useUpdateUserCartByDeviceId } from "@/apis/queries/cart.queries";
 
-const formSchema = z
-  .object({
-    firstName: z
-      .string()
-      .trim()
-      .min(2, {
-        message: "First Name is required",
-      })
-      .max(50, {
-        message: "First Name must be less than 50 characters",
+const formSchema = (t: any) => {
+  return z
+    .object({
+      firstName: z
+        .string()
+        .trim()
+        .min(2, { message: t("first_name_required") })
+        .max(50, { message: t("first_name_must_be_50_chars_only") }),
+      lastName: z
+        .string()
+        .trim()
+        .min(2, { message: t("last_name_requierd") })
+        .max(50, { message: t("last_name_must_be_50_chars_only") }),
+      email: z
+        .string()
+        .trim()
+        .min(5, { message: t("email_is_required") })
+        .email()
+        .refine((val) => (EMAIL_REGEX_LOWERCASE.test(val) ? true : false), {
+          message: t("email_must_be_lowercase"),
+        }),
+      initialPassword: z
+        .string()
+        .trim()
+        .min(1, { message: t("password_is_required") })
+        .min(8, { message: t("password_characters_limit_n", { n: 8 }) }),
+      password: z.string().trim().min(1, {
+        message: t("confirm_password_is_required"),
       }),
-    lastName: z
-      .string()
-      .trim()
-      .min(2, { message: "Last Name is required" })
-      .max(50, {
-        message: "Last Name must be less than 50 characters",
-      }),
-    email: z
-      .string()
-      .trim()
-      .min(5, { message: "Email Address is required" })
-      .email({
-        message: "Invalid Email Address",
-      })
-      .refine((val) => (EMAIL_REGEX_LOWERCASE.test(val) ? true : false), {
-        message: "Email must be in lower case",
-      }),
-    initialPassword: z
-      .string()
-      .trim()
-      .min(1, {
-        message: "Login Password is required",
-      })
-      .min(8, {
-        message: "Password must be longer than or equal to 8 characters",
-      }),
-    password: z.string().trim().min(1, {
-      message: "Confirm Password is required",
-    }),
-    cc: z.string().trim(),
-    phoneNumber: z
-      .string()
-      .trim()
-      .min(2, {
-        message: "Phone Number is required",
-      })
-      .min(8, {
-        message: "Phone Number must be minimum of 8 digits",
-      })
-      .max(20, {
-        message: "Phone Number cannot be more than 20 digits",
-      }),
+      cc: z.string().trim(),
+      phoneNumber: z
+        .string()
+        .trim()
+        .min(2, { message: t("phone_number_required") })
+        .min(8, { message: t("phone_number_must_be_min_8_digits") })
+        .max(20, { message: t("phone_number_cant_be_more_than_20_digits") }),
 
-    acceptTerms: z.boolean().refine((val) => val, {
-      message: "You must accept the Terms Of Use & Privacy Policy",
-    }),
-  })
-  .superRefine(({ initialPassword, password }, ctx) => {
-    if (initialPassword !== password) {
-      ctx.addIssue({
-        code: "custom",
-        message: "Passwords do not match",
-        path: ["password"],
-      });
-    }
-  });
+      acceptTerms: z.boolean().refine((val) => val, {
+        message: t("accept_terms_required"),
+      }),
+    })
+    .superRefine(({ initialPassword, password }, ctx) => {
+      if (initialPassword !== password) {
+        ctx.addIssue({
+          code: "custom",
+          message: t("passwords_do_not_match"),
+          path: ["password"],
+        });
+      }
+    });
+};
 
 export default function RegisterPage() {
   const t = useTranslations();
@@ -122,7 +106,7 @@ export default function RegisterPage() {
   const deviceId = getOrCreateDeviceId() || "";
 
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema(t)),
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -143,7 +127,7 @@ export default function RegisterPage() {
   const socialLogin = useSocialLogin();
   const updateCart = useUpdateUserCartByDeviceId();
 
-  const onSubmit = async (formData: z.infer<typeof formSchema>) => {
+  const onSubmit = async (formData: any) => {
     try {
       const loginType = session ? getLoginType() : "MANUAL";
       const response = await register.mutateAsync({
