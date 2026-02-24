@@ -10,11 +10,16 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
 import { useToast } from "@/components/ui/use-toast";
 import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { deleteCookie } from "cookies-next";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -78,6 +83,10 @@ export default function ChangePasswordPage() {
   });
   const [showSuccess, setShowSuccess] = useState(false);
   const changePassword = useChangePassword();
+
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const response = await changePassword.mutateAsync(values, {
@@ -148,13 +157,29 @@ export default function ChangePasswordPage() {
                         {t("old_password")}
                       </FormLabel>
                       <FormControl>
-                        <Input
-                          type="password"
-                          placeholder="**********"
-                          className="h-12 rounded-lg border-border focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-0"
-                          {...field}
-                          dir={langDir}
-                        />
+                        <InputGroup className="h-12 rounded-lg border-border focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-0">
+                          <InputGroupInput
+                            type={showOldPassword ? "text" : "password"}
+                            placeholder="**********"
+                            className="h-full border-0 ring-0 focus-visible:ring-0"
+                            {...field}
+                            dir={langDir}
+                          />
+                          <InputGroupAddon align="inline-end">
+                            <button
+                              type="button"
+                              onClick={() => setShowOldPassword(!showOldPassword)}
+                              className="text-muted-foreground hover:text-foreground transition-colors"
+                              tabIndex={-1}
+                            >
+                              {showOldPassword ? (
+                                <EyeOffIcon className="size-4" />
+                              ) : (
+                                <EyeIcon className="size-4" />
+                              )}
+                            </button>
+                          </InputGroupAddon>
+                        </InputGroup>
                       </FormControl>
                       <FormMessage className="text-sm" />
                     </FormItem>
@@ -170,13 +195,29 @@ export default function ChangePasswordPage() {
                         {t("new_password")}
                       </FormLabel>
                       <FormControl>
-                        <Input
-                          type="password"
-                          placeholder="**********"
-                          className="h-12 rounded-lg border-border focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-0"
-                          {...field}
-                          dir={langDir}
-                        />
+                        <InputGroup className="h-12 rounded-lg border-border focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-0">
+                          <InputGroupInput
+                            type={showNewPassword ? "text" : "password"}
+                            placeholder="**********"
+                            className="h-full border-0 ring-0 focus-visible:ring-0"
+                            {...field}
+                            dir={langDir}
+                          />
+                          <InputGroupAddon align="inline-end">
+                            <button
+                              type="button"
+                              onClick={() => setShowNewPassword(!showNewPassword)}
+                              className="text-muted-foreground hover:text-foreground transition-colors"
+                              tabIndex={-1}
+                            >
+                              {showNewPassword ? (
+                                <EyeOffIcon className="size-4" />
+                              ) : (
+                                <EyeIcon className="size-4" />
+                              )}
+                            </button>
+                          </InputGroupAddon>
+                        </InputGroup>
                       </FormControl>
                       <FormMessage className="text-sm" />
                       <p className="mt-2 text-xs text-muted-foreground" translate="no">
@@ -195,13 +236,29 @@ export default function ChangePasswordPage() {
                         {t("reenter_new_password")}
                       </FormLabel>
                       <FormControl>
-                        <Input
-                          type="password"
-                          placeholder="**********"
-                          className="h-12 rounded-lg border-border focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-0"
-                          {...field}
-                          dir={langDir}
-                        />
+                        <InputGroup className="h-12 rounded-lg border-border focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-0">
+                          <InputGroupInput
+                            type={showConfirmPassword ? "text" : "password"}
+                            placeholder="**********"
+                            className="h-full border-0 ring-0 focus-visible:ring-0"
+                            {...field}
+                            dir={langDir}
+                          />
+                          <InputGroupAddon align="inline-end">
+                            <button
+                              type="button"
+                              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                              className="text-muted-foreground hover:text-foreground transition-colors"
+                              tabIndex={-1}
+                            >
+                              {showConfirmPassword ? (
+                                <EyeOffIcon className="size-4" />
+                              ) : (
+                                <EyeIcon className="size-4" />
+                              )}
+                            </button>
+                          </InputGroupAddon>
+                        </InputGroup>
                       </FormControl>
                       <FormMessage className="text-sm" />
                     </FormItem>

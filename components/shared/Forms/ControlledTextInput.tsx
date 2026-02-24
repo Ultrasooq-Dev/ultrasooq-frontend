@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import {
   FormControl,
   FormField,
@@ -7,9 +9,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input, InputProps } from "@/components/ui/input";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
 import { useFormContext } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 
 interface ControlledTextInputProps extends InputProps {
   label?: string;
@@ -27,6 +35,9 @@ const ControlledTextInput: React.FC<ControlledTextInputProps> = ({
 }) => {
   const formContext = useFormContext();
   const { langDir } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
+
+  const isPassword = props.type === "password";
 
   // Destructure value and defaultValue from props to prevent conflicts with field
   const { value: _value, defaultValue: _defaultValue, ...restProps } = props;
@@ -42,7 +53,32 @@ const ControlledTextInput: React.FC<ControlledTextInputProps> = ({
         )}>
           {showLabel ? <FormLabel dir={langDir}>{label}</FormLabel> : null}
           <FormControl>
-            <Input {...restProps} className="theme-form-control-s1" {...field} />
+            {isPassword ? (
+              <InputGroup className="theme-form-control-s1 h-auto">
+                <InputGroupInput
+                  {...restProps}
+                  {...field}
+                  type={showPassword ? "text" : "password"}
+                  className="theme-form-control-s1 border-0 ring-0 focus-visible:ring-0"
+                />
+                <InputGroupAddon align="inline-end">
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                    tabIndex={-1}
+                  >
+                    {showPassword ? (
+                      <EyeOffIcon className="size-4" />
+                    ) : (
+                      <EyeIcon className="size-4" />
+                    )}
+                  </button>
+                </InputGroupAddon>
+              </InputGroup>
+            ) : (
+              <Input {...restProps} className="theme-form-control-s1" {...field} />
+            )}
           </FormControl>
           <FormMessage />
         </FormItem>
