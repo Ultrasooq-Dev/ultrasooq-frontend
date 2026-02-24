@@ -56,20 +56,36 @@ export const AuthProvider: React.FC<{
     if (!user && typeof window !== "undefined") {
       const token = getCookie(PUREMOON_TOKEN_KEY);
       if (token) {
-        fetchMe()
-          .then((res) => {
-            if (res?.data?.data?.id) {
-              setUser({
-                id: res.data.data.id,
-                firstName: res.data.data.firstName || "",
-                lastName: res.data.data.lastName || "",
-                tradeRole: res.data.data.tradeRole || "",
-              });
-            }
-          })
-          .catch(() => {
-            // Silent fail - user will need to login again
-          });
+        let retryCount = 0;
+        const maxRetries = 2;
+
+        const attemptRecovery = () => {
+          fetchMe()
+            .then((res) => {
+              if (res?.data?.data?.id) {
+                setUser({
+                  id: res.data.data.id,
+                  firstName: res.data.data.firstName || "",
+                  lastName: res.data.data.lastName || "",
+                  tradeRole: res.data.data.tradeRole || "",
+                });
+              }
+            })
+            .catch((err) => {
+              const status = err?.response?.status;
+              if (status === 401) {
+                // Token is truly invalid - clear it so user gets a clean login redirect
+                document.cookie =
+                  "puremoon_accessToken=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+              } else if (retryCount < maxRetries) {
+                // Network error or server issue - retry after a delay
+                retryCount++;
+                setTimeout(attemptRecovery, 2000 * retryCount);
+              }
+            });
+        };
+
+        attemptRecovery();
       }
     }
   }, [user]);

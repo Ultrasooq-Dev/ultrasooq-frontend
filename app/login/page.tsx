@@ -109,11 +109,11 @@ export default function LoginPage() {
     if (response?.status && response?.accessToken) {
       if (rememberMe) {
         setCookie(PUREMOON_TOKEN_KEY, response.accessToken, {
-          expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+          expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
         });
       } else {
         setCookie(PUREMOON_TOKEN_KEY, response.accessToken, {
-          expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+          expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
         });
       }
 
@@ -188,7 +188,9 @@ export default function LoginPage() {
           description: t("you_have_successfully_logged_in"),
           variant: "success",
         });
-        setCookie(PUREMOON_TOKEN_KEY, response.accessToken);
+        setCookie(PUREMOON_TOKEN_KEY, response.accessToken, {
+          expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+        });
 
         await updateCart.mutateAsync({ deviceId });
         form.reset();

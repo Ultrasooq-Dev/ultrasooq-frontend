@@ -15,6 +15,11 @@ const http: AxiosInstance = axios.create({
   },
 });
 
+// Track 401 handling to prevent multiple simultaneous redirects
+let isHandling401 = false;
+let consecutive401Count = 0;
+let last401Time = 0;
+
 // Request interceptor: set base URL dynamically and attach auth token
 http.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
@@ -34,19 +39,48 @@ http.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
-// Response interceptor: handle errors globally
+// Response interceptor: handle errors globally with debounced 401 handling
 http.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // Reset 401 counter on any successful response
+    consecutive401Count = 0;
+    return response;
+  },
   (error: AxiosError) => {
     if (error.response?.status === 401) {
-      // Token expired or invalid — redirect to login
       if (typeof window !== "undefined") {
         const currentPath = window.location.pathname;
-        if (currentPath !== "/login" && currentPath !== "/register") {
+        const now = Date.now();
+
+        // Skip 401 handling on auth pages
+        const authPages = ["/login", "/register", "/forget-password", "/reset-password", "/otp-verify"];
+        if (authPages.some((page) => currentPath.startsWith(page))) {
+          return Promise.reject(error);
+        }
+
+        // Track consecutive 401s within a short window
+        if (now - last401Time < 5000) {
+          consecutive401Count++;
+        } else {
+          consecutive401Count = 1;
+        }
+        last401Time = now;
+
+        // Only clear token and redirect after multiple consecutive 401s
+        // This prevents logout from a single transient 401
+        if (consecutive401Count >= 2 && !isHandling401) {
+          isHandling401 = true;
+          consecutive401Count = 0;
+
           // Clear stale token and redirect to login
           document.cookie =
             "puremoon_accessToken=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
           window.location.href = "/login";
+
+          // Reset flag after a delay (in case redirect doesn't happen immediately)
+          setTimeout(() => {
+            isHandling401 = false;
+          }, 3000);
         }
       }
     }

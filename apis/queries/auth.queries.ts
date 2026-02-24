@@ -206,19 +206,17 @@ export const useMyAccounts = () => {
   return useQuery<IMyAccounts, APIResponseError>({
     queryKey: ["myAccounts"],
     queryFn: async () => {
-      if (process.env.NODE_ENV === "development") {
-      }
       const res = await myAccounts();
-      if (process.env.NODE_ENV === "development") {
-      }
       return res.data;
     },
     enabled: !!getCookie(PUREMOON_TOKEN_KEY),
-    staleTime: 0, // Data is always considered stale
-    gcTime: 0, // Don't cache the data (formerly cacheTime)
+    staleTime: 2 * 60 * 1000, // 2 minutes - prevents excessive re-fetching
+    gcTime: 5 * 60 * 1000, // 5 minutes - keep cached data available
     refetchOnMount: true,
     refetchOnWindowFocus: true,
-    refetchInterval: false, // Disable automatic refetching
+    refetchInterval: false,
+    retry: 1,
+    retryDelay: 2000,
   });
 };
 
@@ -230,10 +228,12 @@ export const useCurrentAccount = () => {
       return res.data;
     },
     enabled: !!getCookie(PUREMOON_TOKEN_KEY),
-    staleTime: 0, // Data is always considered stale
-    gcTime: 0, // Don't cache the data
+    staleTime: 2 * 60 * 1000, // 2 minutes
+    gcTime: 5 * 60 * 1000, // 5 minutes
     refetchOnMount: true,
     refetchOnWindowFocus: true,
+    retry: 1,
+    retryDelay: 2000,
   });
 };
 
@@ -261,8 +261,10 @@ export const useSwitchAccount = () => {
   return useMutation<ISwitchAccount, APIResponseError, ISwitchAccountRequest>({
     mutationFn: (payload) => switchAccount(payload).then((res) => res.data),
     onSuccess: async (data) => {
-      // Update the token in cookies FIRST
-      setCookie(PUREMOON_TOKEN_KEY, data.data.accessToken);
+      // Update the token in cookies FIRST (7 days expiration)
+      setCookie(PUREMOON_TOKEN_KEY, data.data.accessToken, {
+        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      });
 
       // Clear all cached query data so stale data from the old account is removed.
       // Use removeQueries instead of resetQueries to avoid canceling active observers.

@@ -1,14 +1,14 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMe } from '@/apis/queries/user.queries';
 import { useCurrentAccount } from '@/apis/queries/auth.queries';
-import { 
-  hasRouteAccess, 
-  hasLimitedAccess, 
+import {
+  hasRouteAccess,
+  hasLimitedAccess,
   getUnauthorizedRedirect,
-  hasFullAccess 
+  hasFullAccess
 } from '@/utils/statusCheck';
 import { PUREMOON_TOKEN_KEY } from '@/utils/constants';
 import { getCookie } from 'cookies-next';
@@ -30,10 +30,11 @@ const RouteGuard: React.FC<RouteGuardProps> = ({
   const router = useRouter();
   const [isChecking, setIsChecking] = useState(true);
   const [hasAccess, setHasAccess] = useState(false);
-  
+  const checkTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   const accessToken = getCookie(PUREMOON_TOKEN_KEY);
-  const { data: me, isLoading: meLoading } = useMe(!!accessToken);
-  const { data: currentAccount, isLoading: accountLoading } = useCurrentAccount();
+  const { data: me, isLoading: meLoading, isError: meError } = useMe(!!accessToken);
+  const { data: currentAccount, isLoading: accountLoading, isError: accountError } = useCurrentAccount();
 
   useEffect(() => {
     if (!accessToken) {
@@ -46,25 +47,48 @@ const RouteGuard: React.FC<RouteGuardProps> = ({
       return; // Still loading
     }
 
-    // Prevent redirect if we don't have account data yet
-    if (!currentAccount?.data?.account && !me?.data?.data) {
+    // If both queries errored (e.g. network issue), grant temporary access
+    // instead of falsely redirecting - the user will be redirected on next
+    // successful fetch if their status is wrong
+    if (meError && accountError) {
+      setHasAccess(true);
+      setIsChecking(false);
       return;
     }
 
+    // Prevent redirect if we don't have account data yet
+    // Give it some time before assuming there's no data
+    if (!currentAccount?.data?.account && !me?.data?.data) {
+      // Set a timeout to grant access after 5 seconds of no data
+      // This prevents infinite loading when API is down
+      if (!checkTimeoutRef.current) {
+        checkTimeoutRef.current = setTimeout(() => {
+          setHasAccess(true);
+          setIsChecking(false);
+        }, 5000);
+      }
+      return;
+    }
+
+    // Clear timeout if we got data
+    if (checkTimeoutRef.current) {
+      clearTimeout(checkTimeoutRef.current);
+      checkTimeoutRef.current = null;
+    }
+
     // Get user status from current account or me data
-    let userStatus = 'WAITING'; // Default fallback
-    
+    // Default to 'ACTIVE' to prevent false redirects when data is partially available
+    let userStatus = 'ACTIVE';
+
     if (currentAccount?.data?.account?.status) {
       userStatus = currentAccount.data.account.status;
     } else if (me?.data?.data?.status) {
       userStatus = me.data.data.status;
     }
 
-
-
     // Check if user has access based on status
     let accessGranted = false;
-    
+
     if (requiredStatus === 'ANY') {
       accessGranted = true; // Allow access for any status
     } else if (requiredStatus === 'ACTIVE') {
@@ -73,24 +97,33 @@ const RouteGuard: React.FC<RouteGuardProps> = ({
       accessGranted = hasLimitedAccess(userStatus) || hasFullAccess(userStatus);
     }
 
-
-
     if (!accessGranted) {
       // User doesn't have access, redirect appropriately
       const redirectUrl = getUnauthorizedRedirect(userStatus);
-      
+
       // Prevent infinite redirects - if we're already on the redirect URL, don't redirect again
       if (typeof window !== 'undefined' && window.location.pathname === redirectUrl) {
+        setHasAccess(true);
+        setIsChecking(false);
         return;
       }
-      
+
       router.push(redirectUrl);
       return;
     }
 
     setHasAccess(true);
     setIsChecking(false);
-  }, [accessToken, me, currentAccount, meLoading, accountLoading, requiredStatus, router]);
+  }, [accessToken, me, currentAccount, meLoading, accountLoading, meError, accountError, requiredStatus, router]);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (checkTimeoutRef.current) {
+        clearTimeout(checkTimeoutRef.current);
+      }
+    };
+  }, []);
 
   if (meLoading || accountLoading || isChecking) {
     return showLoader ? (

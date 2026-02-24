@@ -46,11 +46,13 @@ export const useMe = (enabled = true) =>
       return res.data;
     },
     enabled,
-    staleTime: 0, // Data is always considered stale
-    gcTime: 0, // Don't cache the data
+    staleTime: 2 * 60 * 1000, // 2 minutes - prevents excessive re-fetching
+    gcTime: 5 * 60 * 1000, // 5 minutes - keep cached data available
     refetchOnMount: true,
     refetchOnWindowFocus: true,
     refetchInterval: false,
+    retry: 1, // Retry once on failure before giving up
+    retryDelay: 2000,
   });
 
 export const useUniqueUser = (
@@ -64,8 +66,8 @@ export const useUniqueUser = (
       return res.data;
     },
     enabled,
-    staleTime: 0, // Data is always considered stale
-    gcTime: 0, // Don't cache the data
+    staleTime: 2 * 60 * 1000, // 2 minutes
+    gcTime: 5 * 60 * 1000, // 5 minutes
     refetchOnMount: true,
     refetchOnWindowFocus: true,
   });
