@@ -53,7 +53,7 @@ import { getInitials, getOrCreateDeviceId } from "@/utils/helper";
 import { useQueryClient } from "@tanstack/react-query";
 import { deleteCookie, getCookie, setCookie } from "cookies-next";
 import { debounce, isArray } from "lodash";
-import { MenuIcon, LayoutGrid, Search } from "lucide-react";
+import { MenuIcon, LayoutGrid, Search, GlobeIcon } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
@@ -668,6 +668,35 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
 
               {/* Dark/Light Mode Toggle */}
               <ThemeToggle />
+
+              {/* Language Switcher */}
+              <div className="relative rounded-lg p-1 transition-all hover:bg-card/10">
+                <GlobeIcon className="pointer-events-none absolute top-1/2 h-4 w-4 -translate-y-1/2 text-white ltr:left-1.5 rtl:right-1.5" />
+                <select
+                  dir={langDir}
+                  className="h-8 w-8 cursor-pointer appearance-none rounded-lg bg-transparent text-transparent focus:outline-none"
+                  value={selectedLocale}
+                  aria-label="Select language"
+                  onChange={async (e) => {
+                    const newLocale = e.target.value;
+                    setSelectedLocale(newLocale);
+                    await applyTranslation(newLocale);
+                    router.refresh();
+                  }}
+                >
+                  {languages.map(
+                    (language: { locale: string; name: string; flag?: string }) => (
+                      <option
+                        className="bg-dark-cyan text-white"
+                        key={language.locale}
+                        value={language.locale}
+                      >
+                        {language.flag ? `${language.flag} ` : ""}{language.name}
+                      </option>
+                    ),
+                  )}
+                </select>
+              </div>
 
               {/* Wishlist */}
               <Link
