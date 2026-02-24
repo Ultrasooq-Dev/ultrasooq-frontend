@@ -11,6 +11,12 @@ import { getApiUrl } from '@/config/api';
 
 // Mock dependencies
 jest.mock('axios', () => {
+  // Define MockAxiosHeaders inside the factory so it's available when jest.mock is hoisted
+  class MockHeaders {
+    [key: string]: any;
+    set(key: string, value: string) { this[key] = value; return this; }
+  }
+
   const mockInterceptors = {
     request: { use: jest.fn(), eject: jest.fn() },
     response: { use: jest.fn(), eject: jest.fn() },
@@ -33,6 +39,7 @@ jest.mock('axios', () => {
   return {
     __esModule: true,
     default: mockAxios,
+    AxiosHeaders: MockHeaders,
     ...mockAxios,
   };
 });
@@ -86,6 +93,10 @@ describe('HTTP Client (apis/http.ts)', () => {
 
     // Re-setup the mocks after resetModules
     jest.doMock('axios', () => {
+      class MockHeaders {
+        [key: string]: any;
+        set(key: string, value: string) { this[key] = value; return this; }
+      }
       const interceptors = {
         request: { use: jest.fn(), eject: jest.fn() },
         response: { use: jest.fn(), eject: jest.fn() },
@@ -102,7 +113,7 @@ describe('HTTP Client (apis/http.ts)', () => {
       const mock: any = jest.fn(() => instance);
       mock.create = jest.fn(() => instance);
       mock.isAxiosError = jest.fn();
-      return { __esModule: true, default: mock, ...mock };
+      return { __esModule: true, default: mock, AxiosHeaders: MockHeaders, ...mock };
     });
 
     jest.doMock('cookies-next', () => ({

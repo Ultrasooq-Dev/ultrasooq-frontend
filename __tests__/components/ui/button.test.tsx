@@ -82,7 +82,7 @@ describe('Button Component', () => {
 
       const button = screen.getByRole('button');
       expect(button).toBeInTheDocument();
-      expect(button.className).toContain('hover:bg-accent');
+      expect(button.className).toContain('hover:bg-muted');
     });
 
     it('should render with link variant', () => {
@@ -100,7 +100,7 @@ describe('Button Component', () => {
 
       const button = screen.getByRole('button');
       expect(button.className).toContain('h-9');
-      expect(button.className).toContain('px-4');
+      expect(button.className).toContain('px-3');
     });
 
     it('should render with sm size', () => {
@@ -121,8 +121,7 @@ describe('Button Component', () => {
       render(<Button size="icon">X</Button>);
 
       const button = screen.getByRole('button');
-      expect(button.className).toContain('h-9');
-      expect(button.className).toContain('w-9');
+      expect(button.className).toContain('size-9');
     });
   });
 
