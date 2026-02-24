@@ -1,7 +1,7 @@
 /**
- * Tests for Next.js middleware (middleware.ts)
+ * Tests for Next.js proxy (proxy.ts)
  *
- * The middleware handles:
+ * The proxy handles:
  * - Root redirect: / -> /home
  * - Auth pages: redirect to /home if already logged in
  * - Protected pages: redirect to /login if not authenticated
@@ -37,8 +37,8 @@ jest.mock('@/utils/constants', () => ({
   PUREMOON_TOKEN_KEY: 'puremoon_accessToken',
 }));
 
-// Import middleware after mocking
-import { middleware } from '@/middleware';
+// Import proxy after mocking
+import { proxy } from '@/proxy';
 
 /**
  * Helper to create a mock NextRequest object.
@@ -93,7 +93,7 @@ function createMockRequest(
   } as unknown as NextRequest;
 }
 
-describe('Middleware', () => {
+describe('Proxy', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -102,7 +102,7 @@ describe('Middleware', () => {
     it('should redirect / to /home', () => {
       const request = createMockRequest('/');
 
-      middleware(request);
+      proxy(request);
 
       expect(NextResponse.redirect).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -119,7 +119,7 @@ describe('Middleware', () => {
       publicPaths.forEach((path) => {
         jest.clearAllMocks();
         const request = createMockRequest(path);
-        middleware(request);
+        proxy(request);
 
         expect(NextResponse.next).toHaveBeenCalled();
         expect(NextResponse.redirect).not.toHaveBeenCalled();
@@ -129,7 +129,7 @@ describe('Middleware', () => {
     it('should allow access to public pages with auth', () => {
       const request = createMockRequest('/home', 'valid-token-123');
 
-      middleware(request);
+      proxy(request);
 
       expect(NextResponse.next).toHaveBeenCalled();
     });
@@ -153,7 +153,7 @@ describe('Middleware', () => {
       protectedPaths.forEach((path) => {
         jest.clearAllMocks();
         const request = createMockRequest(path);
-        middleware(request);
+        proxy(request);
 
         expect(NextResponse.redirect).toHaveBeenCalledWith(
           expect.objectContaining({
@@ -166,7 +166,7 @@ describe('Middleware', () => {
     it('should redirect unauthenticated users from nested protected paths', () => {
       const request = createMockRequest('/profile/settings');
 
-      middleware(request);
+      proxy(request);
 
       expect(NextResponse.redirect).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -178,7 +178,7 @@ describe('Middleware', () => {
     it('should allow authenticated users to access protected pages', () => {
       const request = createMockRequest('/profile', 'valid-token-xyz');
 
-      middleware(request);
+      proxy(request);
 
       expect(NextResponse.next).toHaveBeenCalled();
       expect(NextResponse.redirect).not.toHaveBeenCalled();
@@ -199,7 +199,7 @@ describe('Middleware', () => {
       authPages.forEach((path) => {
         jest.clearAllMocks();
         const request = createMockRequest(path, 'existing-token-abc');
-        middleware(request);
+        proxy(request);
 
         expect(NextResponse.redirect).toHaveBeenCalledWith(
           expect.objectContaining({
@@ -215,7 +215,7 @@ describe('Middleware', () => {
       authPages.forEach((path) => {
         jest.clearAllMocks();
         const request = createMockRequest(path);
-        middleware(request);
+        proxy(request);
 
         expect(NextResponse.next).toHaveBeenCalled();
         expect(NextResponse.redirect).not.toHaveBeenCalled();
