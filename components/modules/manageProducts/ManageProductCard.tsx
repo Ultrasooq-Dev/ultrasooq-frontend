@@ -434,8 +434,8 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
     setMaxQuantity(Number(initialMaxQuantity));
     setMinCustomer(Number(initialMinCustomer));
     setMaxCustomer(Number(initialMaxCustomer));
-    setMinQuantityCustomer(Number(initialMinQuantityPerCustomer));
-    setMaxQuantityCustomer(Number(initialMaxQuantityPerCustomer));
+    // minQuantityCustomer and maxQuantityCustomer are auto-derived (not stateful),
+    // so no setter calls needed here — they recompute from minQuantity and stock.
   };
 
   return (
@@ -1129,28 +1129,16 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                    </div>
                  )}
 
-                 {/* Max Quantity Per Customer for Trial Product */}
+                 {/* Max Quantity Per Customer for Trial Product (auto-derived from stock) */}
                  <div className="space-y-1">
                    <Label className="text-xs font-medium">{t("max_quantity_per_customer")}</Label>
                    <div className="flex items-center space-x-1">
-                     <button
-                       onClick={(e) => { e.preventDefault(); decreaseMaxQuantityCustomer() }}
-                       className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
-                     >
-                       -
-                     </button>
                      <input
                        type="number"
                        value={maxQuantityCustomer}
-                       onChange={(e) => setMaxQuantityCustomer(Number(e.target.value))}
-                       className="h-6 w-12 rounded border border-border text-center text-xs"
+                       readOnly
+                       className="h-6 w-12 rounded border border-border text-center text-xs bg-muted"
                      />
-                     <button
-                       onClick={(e) => { e.preventDefault(); increaseMaxQuantityCustomer() }}
-                       className="flex h-6 w-6 items-center justify-center rounded border border-border bg-card text-muted-foreground hover:bg-muted text-xs"
-                     >
-                       +
-                     </button>
                    </div>
                  </div>
                </>
