@@ -51,7 +51,7 @@ const ControlledPhoneInput: React.FC<ControlledPhoneInputProps> = ({
         render={({ field }) => (
           <PhoneInput
             {...props}
-            country={"eg"}
+            country={"om"}
             enableSearch={true}
             value={field.value}
             onChange={(phone: string, country: CountryData) => {
