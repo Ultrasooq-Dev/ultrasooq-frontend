@@ -13,7 +13,7 @@ import LocaleProvider from "@/components/LocaleProvider";
 import ConditionalLayout from "@/components/ConditionalLayout";
 import TitleProtection from "@/components/TitleProtection";
 import { getUserLocale } from "@/src/services/locale";
-import { PUREMOON_TOKEN_KEY, LANGUAGES } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY, LANGUAGES } from "@/utils/constants";
 import axios from "axios";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
 async function authorizeUser() {
   try {
     const cookieStore = await cookies();
-    const token = cookieStore.get(PUREMOON_TOKEN_KEY);
+    const token = cookieStore.get(ULTRASOOQ_TOKEN_KEY);
     if (token?.value) {
       const res = await axios({
         method: "POST",
@@ -62,7 +62,7 @@ async function authorizeUser() {
 async function getUserPermissions() {
   try {
     const cookieStore = await cookies();
-    const token = cookieStore.get(PUREMOON_TOKEN_KEY);
+    const token = cookieStore.get(ULTRASOOQ_TOKEN_KEY);
     if (token?.value) {
       const res = await axios({
         method: "GET",

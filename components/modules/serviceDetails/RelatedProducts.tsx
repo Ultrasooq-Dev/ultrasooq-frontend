@@ -7,7 +7,7 @@ import { TrendingProduct } from "@/utils/types/common.types";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import ProductCard from "../trending/ProductCard";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import { getCookie } from "cookies-next";
 import { useAuth } from "@/context/AuthContext";
 
@@ -33,7 +33,7 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
     const addToWishlist = useAddToWishList();
     const deleteFromWishlist = useDeleteFromWishList();
     const [haveAccessToken, setHaveAccessToken] = useState(false);
-    const accessToken = getCookie(PUREMOON_TOKEN_KEY);
+    const accessToken = getCookie(ULTRASOOQ_TOKEN_KEY);
     const [page, setPage] = useState<number>(1);
     const [limit, setLimit] = useState<number>(8);
 

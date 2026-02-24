@@ -24,7 +24,7 @@ import { CartItem } from "@/utils/types/cart.types";
 import { AddressItem } from "@/utils/types/address.types";
 import { useClickOutside } from "use-events";
 import { getCookie } from "cookies-next";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import { getOrCreateDeviceId } from "@/utils/helper";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup } from "@/components/ui/radio-group";
@@ -146,7 +146,7 @@ const CheckoutPage = () => {
   const shippingModalRef = useRef(null);
 
   const deviceId = getOrCreateDeviceId() || "";
-  const accessToken = getCookie(PUREMOON_TOKEN_KEY);
+  const accessToken = getCookie(ULTRASOOQ_TOKEN_KEY);
 
   const orderStore = useOrderStore();
   const preOrderCalculation = usePreOrderCalculation();

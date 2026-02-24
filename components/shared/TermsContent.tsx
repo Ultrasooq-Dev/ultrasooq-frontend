@@ -73,16 +73,16 @@ const TermsContent = () => {
 
       <ul className="mb-4 pl-5">
         <li className="relative pl-5 before:absolute before:left-0 before:top-[11px] before:h-[6px] before:w-[6px] before:rounded-full before:bg-color-dark before:content-['']">
-          Republish material from www.puremoon.com
+          Republish material from www.ultrasooq.com
         </li>
         <li className="relative pl-5 before:absolute before:left-0 before:top-[11px] before:h-[6px] before:w-[6px] before:rounded-full before:bg-color-dark before:content-['']">
-          Sell, rent or sub-license material from www.puremoon.com
+          Sell, rent or sub-license material from www.ultrasooq.com
         </li>
         <li className="relative pl-5 before:absolute before:left-0 before:top-[11px] before:h-[6px] before:w-[6px] before:rounded-full before:bg-color-dark before:content-['']">
-          Reproduce, duplicate or copy material from www.puremoon.com
+          Reproduce, duplicate or copy material from www.ultrasooq.com
         </li>
         <li className="relative pl-5 before:absolute before:left-0 before:top-[11px] before:h-[6px] before:w-[6px] before:rounded-full before:bg-color-dark before:content-['']">
-          Redistribute content from www.puremoon.com
+          Redistribute content from www.ultrasooq.com
         </li>
       </ul>
 

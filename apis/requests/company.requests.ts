@@ -1,4 +1,4 @@
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import { isEmpty } from "lodash";
@@ -12,7 +12,7 @@ export const createCompanyProfile = (payload: Record<string, unknown>) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -25,7 +25,7 @@ export const updateCompanyProfile = (payload: Record<string, unknown>) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -38,7 +38,7 @@ export const updateCompanyBranch = (payload: Record<string, unknown>) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -51,7 +51,7 @@ export const createCompanyBranch = (payload: Record<string, unknown>) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -69,7 +69,7 @@ export const fetchCompanyBranchById = (payload: { branchId: string }) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };

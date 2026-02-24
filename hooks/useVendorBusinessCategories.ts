@@ -3,7 +3,7 @@ import { useUniqueUser, useUserBusinessCategories } from "@/apis/queries/user.qu
 import { useAuth } from "@/context/AuthContext";
 import { useCurrentAccount } from "@/apis/queries/auth.queries";
 import { getCookie } from "cookies-next";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 
 /**
  * Hook to get vendor's business category IDs
@@ -14,7 +14,7 @@ import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
 export const useVendorBusinessCategories = () => {
   const { user } = useAuth();
   const currentAccount = useCurrentAccount();
-  const accessToken = getCookie(PUREMOON_TOKEN_KEY);
+  const accessToken = getCookie(ULTRASOOQ_TOKEN_KEY);
   
   // Method 1: Try useUserBusinessCategories (token-based, should work with current account)
   const userBusinessCategoriesQuery = useUserBusinessCategories(!!accessToken);

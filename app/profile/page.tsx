@@ -27,7 +27,7 @@ import { cn } from "@/lib/utils";
 import {
   EMAIL_REGEX_LOWERCASE,
   GENDER_LIST,
-  PUREMOON_TOKEN_KEY,
+  ULTRASOOQ_TOKEN_KEY,
   SOCIAL_MEDIA_ICON,
   SOCIAL_MEDIA_LIST,
 } from "@/utils/constants";
@@ -164,7 +164,7 @@ export default function ProfilePage() {
       userBusinessCategoryList: [],
     },
   });
-  const accessToken = getCookie(PUREMOON_TOKEN_KEY);
+  const accessToken = getCookie(ULTRASOOQ_TOKEN_KEY);
   const [imageFile, setImageFile] = useState<FileList | null>();
   const [identityFrontImageFile, setIdentityFrontImageFile] =
     useState<FileList | null>();

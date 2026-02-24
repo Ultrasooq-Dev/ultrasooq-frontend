@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useSidebar } from "@/context/SidebarContext";
 import { useAuth } from "@/context/AuthContext";
 import { getCookie } from "cookies-next";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import { cn } from "@/lib/utils";
 
 interface ContentWrapperProps {
@@ -15,7 +15,7 @@ const ContentWrapper: React.FC<ContentWrapperProps> = ({ children }) => {
   const { langDir } = useAuth();
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const accessToken = getCookie(PUREMOON_TOKEN_KEY);
+  const accessToken = getCookie(ULTRASOOQ_TOKEN_KEY);
 
   // Ensure hydration matches - only calculate sidebar width after mount
   useEffect(() => {

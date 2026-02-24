@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { PUREMOON_TOKEN_KEY } from "./utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "./utils/constants";
 
 export function proxy(request: NextRequest) {
-  const authToken = request.cookies.get(PUREMOON_TOKEN_KEY)?.value;
+  const authToken = request.cookies.get(ULTRASOOQ_TOKEN_KEY)?.value;
   const pathname = request.nextUrl.pathname;
 
   // Auth pages: if logged in, redirect to /home; otherwise allow access

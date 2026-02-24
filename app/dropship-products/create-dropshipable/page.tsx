@@ -296,7 +296,7 @@ const CreateDropshipableProductPage = () => {
                                     const isExternalUrl = imageSrc && 
                                       typeof imageSrc === "string" && 
                                       imageSrc.startsWith("http") && 
-                                      !imageSrc.includes("puremoon.s3.amazonaws.com");
+                                      !imageSrc.includes("ultrasooq.s3.amazonaws.com");
                                     
                                     return isExternalUrl ? (
                                       <img
@@ -410,7 +410,7 @@ const CreateDropshipableProductPage = () => {
                     const isExternalUrl = imageSrc && 
                       typeof imageSrc === "string" && 
                       imageSrc.startsWith("http") && 
-                      !imageSrc.includes("puremoon.s3.amazonaws.com");
+                      !imageSrc.includes("ultrasooq.s3.amazonaws.com");
                     
                     return (
                       <div key={index} className="aspect-square bg-muted rounded-lg overflow-hidden relative">

@@ -1,6 +1,6 @@
 import { getCookie } from "cookies-next";
 import {
-  PUREMOON_TOKEN_KEY,
+  ULTRASOOQ_TOKEN_KEY,
   USER_STATUS_CONFIG,
   DEFAULT_SUB_ACCOUNT_STATUS,
 } from "@/utils/constants";
@@ -52,7 +52,7 @@ export const getUserStatusInfo = (userData: any): UserStatus => {
  * @returns boolean indicating if user has access token
  */
 export const isAuthenticated = (): boolean => {
-  return !!getCookie(PUREMOON_TOKEN_KEY);
+  return !!getCookie(ULTRASOOQ_TOKEN_KEY);
 };
 
 /**

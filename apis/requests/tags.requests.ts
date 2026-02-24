@@ -1,6 +1,6 @@
 import axios from "axios";
 import { getCookie } from "cookies-next";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import { getApiUrl } from "@/config/api";
 
 export const fetchTags = () => {
@@ -18,7 +18,7 @@ export const createTag = (payload: { tagName: string }) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };

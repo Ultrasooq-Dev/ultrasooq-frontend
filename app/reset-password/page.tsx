@@ -5,7 +5,7 @@ import PasswordChangeSuccessContent from "@/components/shared/PasswordChangeSucc
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { useToast } from "@/components/ui/use-toast";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { deleteCookie, setCookie } from "cookies-next";
 import Image from "next/image";
@@ -67,7 +67,7 @@ export default function ResetPasswordPage() {
           variant: "danger",
         });
         form.reset();
-        deleteCookie(PUREMOON_TOKEN_KEY);
+        deleteCookie(ULTRASOOQ_TOKEN_KEY);
       },
     });
 
@@ -78,7 +78,7 @@ export default function ResetPasswordPage() {
         variant: "success",
       });
       form.reset();
-      deleteCookie(PUREMOON_TOKEN_KEY);
+      deleteCookie(ULTRASOOQ_TOKEN_KEY);
       setShowSuccess(true);
       setTimeout(() => {
         router.push("/login");
@@ -97,8 +97,8 @@ export default function ResetPasswordPage() {
     const params = new URLSearchParams(document.location.search);
     const accessToken = params.get("token");
     if (accessToken) {
-      // setCookie(PUREMOON_TOKEN_KEY, accessToken);
-      setCookie(PUREMOON_TOKEN_KEY, accessToken, {
+      // setCookie(ULTRASOOQ_TOKEN_KEY, accessToken);
+      setCookie(ULTRASOOQ_TOKEN_KEY, accessToken, {
         // 7 days
         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       });

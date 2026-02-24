@@ -20,7 +20,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/context/AuthContext";
 import GoogleIcon from "@/public/images/google-icon.png";
 import LoaderPrimaryIcon from "@/public/images/load-primary.png";
-import { LANGUAGES, PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { LANGUAGES, ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import { getLoginType, getOrCreateDeviceId } from "@/utils/helper";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { setCookie } from "cookies-next";
@@ -108,11 +108,11 @@ export default function LoginPage() {
 
     if (response?.status && response?.accessToken) {
       if (rememberMe) {
-        setCookie(PUREMOON_TOKEN_KEY, response.accessToken, {
+        setCookie(ULTRASOOQ_TOKEN_KEY, response.accessToken, {
           expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
         });
       } else {
-        setCookie(PUREMOON_TOKEN_KEY, response.accessToken, {
+        setCookie(ULTRASOOQ_TOKEN_KEY, response.accessToken, {
           expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
         });
       }
@@ -188,7 +188,7 @@ export default function LoginPage() {
           description: t("you_have_successfully_logged_in"),
           variant: "success",
         });
-        setCookie(PUREMOON_TOKEN_KEY, response.accessToken, {
+        setCookie(ULTRASOOQ_TOKEN_KEY, response.accessToken, {
           expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
         });
 

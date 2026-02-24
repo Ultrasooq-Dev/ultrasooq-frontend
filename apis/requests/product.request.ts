@@ -1,4 +1,4 @@
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import { getCookie } from "cookies-next";
 import axios from "axios";
 import urlcat from "urlcat";
@@ -17,7 +17,7 @@ export const createProduct = (payload: ICreateProductRequest) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -51,7 +51,7 @@ export const fetchProductById = (payload: {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -66,7 +66,7 @@ export const fetchRfqProductById = (payload: {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -78,7 +78,7 @@ export const deleteProduct = (payload: IDeleteProductRequest) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -91,7 +91,7 @@ export const updateProduct = (payload: IUpdateProductRequest) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -110,7 +110,7 @@ export const updateForCustomize = (payload: {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -134,7 +134,7 @@ export const fetchExistingProducts = (payload: {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -159,7 +159,7 @@ export const fetchExistingProductForCopy = (payload: {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -174,7 +174,7 @@ export const fetchExistingProductById = (payload: {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -206,7 +206,7 @@ export const fetchAllProducts = (payload: {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -233,7 +233,7 @@ export const fetchAllProductsByUserBusinessCategory = (payload: {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -263,7 +263,7 @@ export const fetchAllBuyGroupProducts = (payload: {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -290,7 +290,7 @@ export const fetchAllBuyGroupProductsByUserBusinessCategory = (payload: {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -333,7 +333,7 @@ export const addMultiplePriceForProduct = (payload: {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -352,7 +352,7 @@ export const updateMultipleProductPrice = (payload: {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -375,7 +375,7 @@ export const getAllManagedProducts = (payload: {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -390,7 +390,7 @@ export const getOneWithProductPrice = (payload: {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -402,7 +402,7 @@ export const getVendorDetails = (payload: { adminId: string }) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -425,7 +425,7 @@ export const getVendorProducts = (payload: {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -443,7 +443,7 @@ export const getOneProductByProductCondition = (payload: {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -472,7 +472,7 @@ export const updateProductPriceByProductCondition = (payload: {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -488,7 +488,7 @@ export const updateProductStatus = (payload: {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -525,7 +525,7 @@ export const updateSingleProducts = (payload: {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -537,7 +537,7 @@ export const removeProduct = (payload: { productPriceId: number }) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -552,7 +552,7 @@ export const fetchProductVariant = (productPriceId: number[]) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -570,7 +570,7 @@ export const getProductsByService = (
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -591,7 +591,7 @@ export const createDropshipProduct = (payload: {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -610,7 +610,7 @@ export const getAvailableProductsForDropship = (payload: {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -626,7 +626,7 @@ export const getDropshipProducts = (payload: {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -638,7 +638,7 @@ export const getDropshipEarnings = () => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -651,7 +651,7 @@ export const updateDropshipProductStatus = (id: number, status: string) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -663,7 +663,7 @@ export const deleteDropshipProduct = (id: number) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -686,7 +686,7 @@ export const markProductAsDropshipable = (
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -702,7 +702,7 @@ export const getMyDropshipableProducts = (payload: {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -715,7 +715,7 @@ export const getDropshipAnalytics = () => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -735,7 +735,7 @@ export const bulkUpdateDropshipable = (payload: {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -751,7 +751,7 @@ export const getWholesaleProducts = (payload: {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -764,7 +764,7 @@ export const getWholesaleDashboard = () => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -777,7 +777,7 @@ export const getWholesaleProductSales = (productId: number) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -798,7 +798,7 @@ export const getUserOwnDropshipableProducts = (payload: {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -811,7 +811,7 @@ export const getDropshipProductsFromOriginal = (originalProductId: number) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -833,7 +833,7 @@ export const trackProductView = (payload: {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -851,7 +851,7 @@ export const trackProductClick = (payload: {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -870,7 +870,7 @@ export const trackProductSearch = (payload: {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -886,7 +886,7 @@ export const fetchSearchSuggestions = (payload: {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -904,7 +904,7 @@ export const fetchAiSearch = (payload: {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };

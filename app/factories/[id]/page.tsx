@@ -23,7 +23,7 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter, useParams, useSearchParams } from "next/navigation";
 import { getCookie } from "cookies-next";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import { getOrCreateDeviceId, handleDescriptionParse } from "@/utils/helper";
 import ReviewSection from "@/components/shared/ReviewSection";
 import QuestionsAnswersSection from "@/components/modules/productDetails/QuestionsAnswersSection";
@@ -67,7 +67,7 @@ const ProductDetailsPage = () => {
   const deviceId = getOrCreateDeviceId() || "";
   const [activeTab, setActiveTab] = useState("description");
   const [haveAccessToken, setHaveAccessToken] = useState(false);
-  const accessToken = getCookie(PUREMOON_TOKEN_KEY);
+  const accessToken = getCookie(ULTRASOOQ_TOKEN_KEY);
   const type = searchQuery?.get("type");
   const otherSellerId = searchQuery?.get("sellerId");
   const otherProductId = searchQuery?.get("productId");

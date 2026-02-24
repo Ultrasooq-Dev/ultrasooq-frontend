@@ -62,7 +62,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/context/AuthContext";
 import { useCategoryStore } from "@/lib/categoryStore";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import { getOrCreateDeviceId } from "@/utils/helper";
 import { useQueryClient } from "@tanstack/react-query";
 import { getCookie } from "cookies-next";
@@ -114,7 +114,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
   const [limit] = useState(10);
   const [productVariants, setProductVariants] = useState<any[]>([]);
   const [haveAccessToken, setHaveAccessToken] = useState(false);
-  const accessToken = getCookie(PUREMOON_TOKEN_KEY);
+  const accessToken = getCookie(ULTRASOOQ_TOKEN_KEY);
   const searchUrlTerm = (searchParams as any)?.term || "";
   const category = useCategoryStore();
 

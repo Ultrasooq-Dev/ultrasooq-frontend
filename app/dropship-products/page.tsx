@@ -23,7 +23,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { getCookie } from "cookies-next";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import BannerImage from "@/public/images/rfq-sec-bg.png";
 import Footer from "@/components/shared/Footer";
 import { IoMdAdd } from "react-icons/io";
@@ -72,7 +72,7 @@ const DropshipProductsPage = (props: DropshipProductsPageProps) => {
   const [searchTermBrand, setSearchTermBrand] = useState("");
   const [activeSearchTermBrand, setActiveSearchTermBrand] = useState("");
   const [haveAccessToken, setHaveAccessToken] = useState(false);
-  const accessToken = getCookie(PUREMOON_TOKEN_KEY);
+  const accessToken = getCookie(ULTRASOOQ_TOKEN_KEY);
   const [page, setPage] = useState(1);
   const [limit] = useState(8);
   const [cartList, setCartList] = useState<any[]>([]);

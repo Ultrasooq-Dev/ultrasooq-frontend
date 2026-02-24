@@ -1,6 +1,6 @@
 import axios from "axios";
 import { isEmpty } from "lodash";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import { getCookie } from "cookies-next";
 import urlcat from "urlcat";
 import { getApiUrl } from "@/config/api";
@@ -13,7 +13,7 @@ export const createMember = (payload: Record<string, unknown>) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -25,7 +25,7 @@ export const fetchAllMembers = (payload: { page: number; limit: number }) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -38,7 +38,7 @@ export const updateMember = (payload: Record<string, unknown>) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -50,7 +50,7 @@ export const fetchPermissions = () => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -63,7 +63,7 @@ export const setPermission = (payload: Record<string, unknown>) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -75,7 +75,7 @@ export const fetchPermissionByRoleId = (payload: { userRoleId: number }) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -88,7 +88,7 @@ export const updatePermission = (payload: Record<string, unknown>) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };

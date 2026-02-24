@@ -1,6 +1,6 @@
 import axios from "axios";
 import { isEmpty } from "lodash";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import { getCookie } from "cookies-next";
 import urlcat from "urlcat";
 import { getApiUrl } from "@/config/api";
@@ -37,7 +37,7 @@ export const fetchuserRoles = () => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -52,7 +52,7 @@ export const fetchuserRolesWithPagination = (payload: {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -64,7 +64,7 @@ export const deleteMemberRole = (payload: { id: number }) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -77,7 +77,7 @@ export const createBrand = (payload: { brandName: string }) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -90,7 +90,7 @@ export const createUserRole = (payload: { userRoleName: string }) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -103,7 +103,7 @@ export const copyUserRole = (payload: { userRoleId: number }) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -116,7 +116,7 @@ export const updateUserRole = (payload: { userRoleName: string }) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };

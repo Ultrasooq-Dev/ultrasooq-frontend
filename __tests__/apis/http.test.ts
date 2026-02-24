@@ -6,7 +6,7 @@ import axios, {
   AxiosHeaders,
 } from 'axios';
 import { getCookie } from 'cookies-next';
-import { PUREMOON_TOKEN_KEY } from '@/utils/constants';
+import { ULTRASOOQ_TOKEN_KEY } from '@/utils/constants';
 import { getApiUrl } from '@/config/api';
 
 // Mock dependencies
@@ -48,7 +48,7 @@ jest.mock('@/config/api', () => ({
 }));
 
 jest.mock('@/utils/constants', () => ({
-  PUREMOON_TOKEN_KEY: 'puremoon_accessToken',
+  ULTRASOOQ_TOKEN_KEY: 'ultrasooq_accessToken',
 }));
 
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -116,7 +116,7 @@ describe('HTTP Client (apis/http.ts)', () => {
     }));
 
     jest.doMock('@/utils/constants', () => ({
-      PUREMOON_TOKEN_KEY: 'puremoon_accessToken',
+      ULTRASOOQ_TOKEN_KEY: 'ultrasooq_accessToken',
     }));
 
     const axiosMod = require('axios');

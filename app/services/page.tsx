@@ -28,7 +28,7 @@ import {
 } from "@/apis/queries/cart.queries";
 import { getOrCreateDeviceId } from "@/utils/helper";
 import { getCookie } from "cookies-next";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import SkeletonProductCardLoader from "@/components/shared/SkeletonProductCardLoader";
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/context/AuthContext";
@@ -57,7 +57,7 @@ const Services = (props: ServicesPageProps) => {
     const [haveAccessToken, setHaveAccessToken] = useState(false);
     const [isServiceAddToCartModalOpen, setIsServiceAddToCartModalOpen] = useState(false);
     const [selectedServiceId, setSelectedServiceId] = useState<any>(null);
-    const accessToken = getCookie(PUREMOON_TOKEN_KEY);
+    const accessToken = getCookie(ULTRASOOQ_TOKEN_KEY);
 
     const me = useMe();
     const allServicesQuery = useGetAllServices({

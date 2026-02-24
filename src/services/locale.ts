@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 
 // In this example the locale is read from a cookie. You could alternatively
 // also read it from a database, backend service, or any other source.
-const COOKIE_NAME = 'PUREMOON_LOCALE';
+const COOKIE_NAME = 'ULTRASOOQ_LOCALE';
 
 // Supported locales — must match the translation files in /translations/
 const SUPPORTED_LOCALES = new Set([

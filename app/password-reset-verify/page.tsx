@@ -19,7 +19,7 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import { setCookie } from "cookies-next";
 import Image from "next/image";
-import { PUREMOON_TEMP_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TEMP_TOKEN_KEY } from "@/utils/constants";
 import BackgroundImage from "@/public/images/before-login-bg.png";
 import LoaderWithMessage from "@/components/shared/LoaderWithMessage";
 import { useTranslations } from "next-intl";
@@ -89,8 +89,8 @@ export default function PasswordResetVerifyPage() {
 
     if (response?.status && response?.accessToken) {
       // store in cookie
-      // setCookie(PUREMOON_TEMP_TOKEN_KEY, response.accessToken);
-      setCookie(PUREMOON_TEMP_TOKEN_KEY, response.accessToken, {
+      // setCookie(ULTRASOOQ_TEMP_TOKEN_KEY, response.accessToken);
+      setCookie(ULTRASOOQ_TEMP_TOKEN_KEY, response.accessToken, {
         // 3 days
         expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
       });

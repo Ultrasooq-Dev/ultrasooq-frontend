@@ -70,7 +70,7 @@ const DropshipProductCard: React.FC<DropshipProductCardProps> = ({
         <div className="relative h-48 w-full overflow-hidden bg-muted">
           {productImage && (validator.isURL(productImage) || productImage.startsWith('data:image/')) ? (
             // Check if the image is from an allowed domain (S3 bucket) or is a data URL
-            productImage.includes('puremoon.s3.amazonaws.com') || productImage.startsWith('data:image/') ? (
+            productImage.includes('ultrasooq.s3.amazonaws.com') || productImage.startsWith('data:image/') ? (
               <Image
                 src={productImage}
                 alt={productName}

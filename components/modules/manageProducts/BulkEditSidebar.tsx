@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
-import { SELL_TYPE_LIST, CONSUMER_TYPE_LIST, PRODUCT_CONDITION_LIST, PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { SELL_TYPE_LIST, CONSUMER_TYPE_LIST, PRODUCT_CONDITION_LIST, ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import { getCookie } from "cookies-next";
 import ReactSelect, { MultiValue } from "react-select";
 import { IOption } from "@/utils/types/common.types";
@@ -148,7 +148,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
     setConfirmAction(null);
 
     try {
-      const token = getCookie(PUREMOON_TOKEN_KEY);
+      const token = getCookie(ULTRASOOQ_TOKEN_KEY);
       
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/bulkHideShow`, {
         method: 'PATCH',
@@ -212,7 +212,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
         return;
       }
 
-      const token = getCookie(PUREMOON_TOKEN_KEY);
+      const token = getCookie(ULTRASOOQ_TOKEN_KEY);
       
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/bulkProductCondition`, {
         method: 'PATCH',
@@ -299,7 +299,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
       if (formData.timeOpen !== undefined) discountData.timeOpen = Number(formData.timeOpen);
       if (formData.timeClose !== undefined) discountData.timeClose = Number(formData.timeClose);
 
-      const token = getCookie(PUREMOON_TOKEN_KEY);
+      const token = getCookie(ULTRASOOQ_TOKEN_KEY);
       
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/bulkDiscountUpdate`, {
         method: 'PATCH',
@@ -390,7 +390,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
       // Note: placeOfOriginId temporarily disabled due to database constraint issues
       // if (formData.placeOfOriginId) locationData.placeOfOriginId = formData.placeOfOriginId;
 
-      const token = getCookie(PUREMOON_TOKEN_KEY);
+      const token = getCookie(ULTRASOOQ_TOKEN_KEY);
       
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/bulkWhereToSellUpdate`, {
         method: 'PATCH',
@@ -470,7 +470,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
       if (watchAskForPrice && watchAskForPrice !== "") askForData.askForPrice = watchAskForPrice;
       if (watchAskForStock && watchAskForStock !== "") askForData.askForStock = watchAskForStock;
 
-      const token = getCookie(PUREMOON_TOKEN_KEY);
+      const token = getCookie(ULTRASOOQ_TOKEN_KEY);
       
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/bulkAskForUpdate`, {
         method: 'PATCH',

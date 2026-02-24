@@ -5,8 +5,8 @@ import PosIcon from "@/public/images/menu-icon-pos.svg";
 import RfqIcon from "@/public/images/menu-icon-rfq.svg";
 import ServiceIcon from "@/public/images/menu-icon-service.svg";
 
-export const PUREMOON_TOKEN_KEY: string = "puremoon_accessToken";
-export const PUREMOON_TEMP_TOKEN_KEY: string = "puremoon_temp_accessToken";
+export const ULTRASOOQ_TOKEN_KEY: string = "ultrasooq_accessToken";
+export const ULTRASOOQ_TEMP_TOKEN_KEY: string = "ultrasooq_temp_accessToken";
 
 export const DAYS_OF_WEEK: {
   label: string;

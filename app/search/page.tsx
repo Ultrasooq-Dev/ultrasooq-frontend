@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState, use } from "react";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import SearchedStoreProducts from "@/components/modules/serach/SearchedStoreProducts";
@@ -41,7 +41,7 @@ const SearchPage = (props: SearchPageProps) => {
     const { langDir } = useAuth();
     const router = useRouter();
     const [haveAccessToken, setHaveAccessToken] = useState(false);
-    const accessToken = getCookie(PUREMOON_TOKEN_KEY);
+    const accessToken = getCookie(ULTRASOOQ_TOKEN_KEY);
     const [cartList, setCartList] = useState<any[]>([]);
     const deviceId = getOrCreateDeviceId() || '';
     const [storeProductsCount, setStoreProductsCount] = useState<number>();

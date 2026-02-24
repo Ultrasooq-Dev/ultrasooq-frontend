@@ -221,7 +221,7 @@ const DropshipProductManageCard: React.FC<DropshipProductManageCardProps> = ({
           <div className="relative h-24 w-24 overflow-hidden rounded-lg border border-border">
             {productImage && validator.isURL(productImage) ? (
               // Check if the image is from an allowed domain (S3 bucket)
-              productImage.includes('puremoon.s3.amazonaws.com') ? (
+              productImage.includes('ultrasooq.s3.amazonaws.com') ? (
                 <Image
                   src={productImage}
                   alt="product-image"

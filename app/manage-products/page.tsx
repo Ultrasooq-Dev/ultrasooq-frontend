@@ -25,7 +25,7 @@ import { Store } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { debounce } from "lodash";
 import { getCookie } from "cookies-next";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
@@ -183,7 +183,7 @@ const ManageProductsPage = () => {
   const [existingProductsSelectedIds, setExistingProductsSelectedIds] = useState<number[]>([]);
   const [existingProductsSelectedType, setExistingProductsSelectedType] = useState<string>("");
   const [haveAccessToken, setHaveAccessToken] = useState(false);
-  const accessToken = getCookie(PUREMOON_TOKEN_KEY);
+  const accessToken = getCookie(ULTRASOOQ_TOKEN_KEY);
   
   // Handle page change while preserving selections
   const handlePageChange = (newPage: number) => {

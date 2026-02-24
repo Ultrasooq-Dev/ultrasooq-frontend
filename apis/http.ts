@@ -4,7 +4,7 @@ import axios, {
   AxiosError,
 } from "axios";
 import { getCookie } from "cookies-next";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import { getApiUrl } from "@/config/api";
 
 const http: AxiosInstance = axios.create({
@@ -29,7 +29,7 @@ http.interceptors.request.use(
       config.baseURL = getApiUrl();
     }
 
-    const token = getCookie(PUREMOON_TOKEN_KEY);
+    const token = getCookie(ULTRASOOQ_TOKEN_KEY);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -74,7 +74,7 @@ http.interceptors.response.use(
 
           // Clear stale token and redirect to login
           document.cookie =
-            "puremoon_accessToken=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+            "ultrasooq_accessToken=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
           window.location.href = "/login";
 
           // Reset flag after a delay (in case redirect doesn't happen immediately)

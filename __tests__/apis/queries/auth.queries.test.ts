@@ -31,8 +31,8 @@ jest.mock('cookies-next', () => ({
 
 // Mock constants
 jest.mock('@/utils/constants', () => ({
-  PUREMOON_TOKEN_KEY: 'puremoon_accessToken',
-  PUREMOON_TEMP_TOKEN_KEY: 'puremoon_temp_accessToken',
+  ULTRASOOQ_TOKEN_KEY: 'ultrasooq_accessToken',
+  ULTRASOOQ_TEMP_TOKEN_KEY: 'ultrasooq_temp_accessToken',
 }));
 
 // Mock config/api

@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/select";
 import Image from "next/image";
 import { getCookie } from "cookies-next";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import BannerImage from "@/public/images/rfq-sec-bg.png";
 import SearchIcon from "@/public/images/search-icon-rfq.png";
 import Footer from "@/components/shared/Footer";
@@ -102,7 +102,7 @@ const FactoriesPage = (props: FactoriesPageProps) => {
   const [displayMyProducts, setDisplayMyProducts] = useState("0");
   const [displayRelatedProducts, setDisplayRelatedProducts] = useState(false);
   const [haveAccessToken, setHaveAccessToken] = useState(false);
-  const accessToken = getCookie(PUREMOON_TOKEN_KEY);
+  const accessToken = getCookie(ULTRASOOQ_TOKEN_KEY);
   const [page, setPage] = useState(1);
   const [limit] = useState(8);
   const [productVariants, setProductVariants] = useState<any[]>([]);

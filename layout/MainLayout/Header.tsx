@@ -46,7 +46,7 @@ import {
   CURRENCIES,
   LANGUAGES,
   PRODUCT_CATEGORY_ID,
-  PUREMOON_TOKEN_KEY,
+  ULTRASOOQ_TOKEN_KEY,
   menuBarIconList,
 } from "@/utils/constants";
 import { getInitials, getOrCreateDeviceId } from "@/utils/helper";
@@ -118,7 +118,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
   const searchParams = useSearchParams();
   const permissions: string[] = getPermissions();
   const { toast } = useToast();
-  const accessToken = getCookie(PUREMOON_TOKEN_KEY);
+  const accessToken = getCookie(ULTRASOOQ_TOKEN_KEY);
   const { isHovered, isOpen, openSidebar, closeSidebar } = useSidebar();
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -164,7 +164,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
   const [subSubCategoryIndex, setSubSubCategoryIndex] = useState(0);
   const [subSubSubCategoryIndex, setSubSubSubCategoryIndex] = useState(0);
 
-  const hasAccessToken = !!getCookie(PUREMOON_TOKEN_KEY);
+  const hasAccessToken = !!getCookie(ULTRASOOQ_TOKEN_KEY);
   const deviceId = getOrCreateDeviceId() || "";
   const {
     clearUser,
@@ -319,7 +319,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
 
   const handleLogout = async () => {
     setIsLoggedIn(false);
-    deleteCookie(PUREMOON_TOKEN_KEY);
+    deleteCookie(ULTRASOOQ_TOKEN_KEY);
     queryClient.clear();
     clearUser();
     await signOut({

@@ -9,7 +9,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { PUREMOON_TOKEN_KEY } from '@/utils/constants';
+import { ULTRASOOQ_TOKEN_KEY } from '@/utils/constants';
 
 // Mock next/server
 jest.mock('next/server', () => {
@@ -34,7 +34,7 @@ jest.mock('next/server', () => {
 });
 
 jest.mock('@/utils/constants', () => ({
-  PUREMOON_TOKEN_KEY: 'puremoon_accessToken',
+  ULTRASOOQ_TOKEN_KEY: 'ultrasooq_accessToken',
 }));
 
 // Import proxy after mocking
@@ -51,7 +51,7 @@ function createMockRequest(
 
   const cookies = {
     get: jest.fn((name: string) => {
-      if (name === PUREMOON_TOKEN_KEY && authToken) {
+      if (name === ULTRASOOQ_TOKEN_KEY && authToken) {
         return { name, value: authToken };
       }
       return undefined;
@@ -59,7 +59,7 @@ function createMockRequest(
     getAll: jest.fn(() => []),
     set: jest.fn(),
     delete: jest.fn(),
-    has: jest.fn((name: string) => name === PUREMOON_TOKEN_KEY && !!authToken),
+    has: jest.fn((name: string) => name === ULTRASOOQ_TOKEN_KEY && !!authToken),
     clear: jest.fn(),
     size: 0,
     [Symbol.iterator]: function* () {},

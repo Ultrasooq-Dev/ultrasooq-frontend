@@ -1,7 +1,7 @@
 "use client";
 
 import { setUserLocale } from "@/src/services/locale";
-import { CURRENCIES, LANGUAGES, PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { CURRENCIES, LANGUAGES, ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import { fetchMe } from "@/apis/requests/user.requests";
 import { getCookie } from "cookies-next";
 import React, {
@@ -54,7 +54,7 @@ export const AuthProvider: React.FC<{
   // Client-side user recovery: If server-side auth failed but token exists, fetch user
   useEffect(() => {
     if (!user && typeof window !== "undefined") {
-      const token = getCookie(PUREMOON_TOKEN_KEY);
+      const token = getCookie(ULTRASOOQ_TOKEN_KEY);
       if (token) {
         let retryCount = 0;
         const maxRetries = 2;
@@ -76,7 +76,7 @@ export const AuthProvider: React.FC<{
               if (status === 401) {
                 // Token is truly invalid - clear it so user gets a clean login redirect
                 document.cookie =
-                  "puremoon_accessToken=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+                  "ultrasooq_accessToken=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
               } else if (retryCount < maxRetries) {
                 // Network error or server issue - retry after a delay
                 retryCount++;

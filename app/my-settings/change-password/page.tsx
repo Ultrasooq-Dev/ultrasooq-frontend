@@ -16,7 +16,7 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group";
 import { useToast } from "@/components/ui/use-toast";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { deleteCookie } from "cookies-next";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
@@ -87,7 +87,7 @@ export default function ChangePasswordPage() {
           variant: "danger",
         });
         form.reset();
-        deleteCookie(PUREMOON_TOKEN_KEY);
+        deleteCookie(ULTRASOOQ_TOKEN_KEY);
       },
     });
 
@@ -98,7 +98,7 @@ export default function ChangePasswordPage() {
         variant: "success",
       });
       form.reset();
-      deleteCookie(PUREMOON_TOKEN_KEY);
+      deleteCookie(ULTRASOOQ_TOKEN_KEY);
       setShowSuccess(true);
       setTimeout(() => {
         router.push("/home");

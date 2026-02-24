@@ -179,7 +179,7 @@ const DropshipProductCard: React.FC<DropshipProductCardProps> = ({
             
             {/* Product Images */}
             <div className="relative w-20 h-20 rounded-lg overflow-hidden bg-muted flex-shrink-0 shadow-sm">
-              {productImage && validator.isURL(productImage) && !productImage.includes('puremoon.s3.amazonaws.com') ? (
+              {productImage && validator.isURL(productImage) && !productImage.includes('ultrasooq.s3.amazonaws.com') ? (
                 <img
                   src={productImage}
                   alt={productName}

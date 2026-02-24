@@ -685,7 +685,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         <div className="relative w-full h-full sm:h-48 lg:h-56 bg-muted overflow-hidden min-h-[140px]">
           {item?.productImage && (validator.isURL(item.productImage) || item.productImage.startsWith('data:image/')) ? (
             // Check if the image is from an allowed domain (S3 bucket) or is a data URL
-            item.productImage.includes('puremoon.s3.amazonaws.com') || item.productImage.startsWith('data:image/') ? (
+            item.productImage.includes('ultrasooq.s3.amazonaws.com') || item.productImage.startsWith('data:image/') ? (
               <Image
                 src={item.productImage}
                 alt="product-image"

@@ -9,7 +9,7 @@ const PolicyContent = () => {
       </p>
       Your privacy is important to us. It is [Website/Service]&apos;s policy to
       respect your privacy regarding any information we may collect from you
-      across our puremoon, www.puremoon.com, and other sites we own and operate.
+      across our ultrasooq, www.ultrasooq.com, and other sites we own and operate.
       <p className="mb-3">
         We only ask for personal information when we truly need it to provide a
         service to you. We collect it by fair and lawful means, with your

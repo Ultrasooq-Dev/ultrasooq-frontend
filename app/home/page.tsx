@@ -21,7 +21,7 @@ import Footer from "@/components/shared/Footer";
 import { toast } from "@/components/ui/use-toast";
 import { useAuth } from "@/context/AuthContext";
 import { useCategoryStore } from "@/lib/categoryStore";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import { getOrCreateDeviceId } from "@/utils/helper";
 import { TrendingProduct } from "@/utils/types/common.types";
 import { useQueryClient } from "@tanstack/react-query";
@@ -47,7 +47,7 @@ function HomePage() {
   const deviceId = getOrCreateDeviceId() || "";
   const [haveAccessToken, setHaveAccessToken] = useState(false);
   const [isCategorySidebarOpen, setIsCategorySidebarOpen] = useState(false);
-  const accessToken = getCookie(PUREMOON_TOKEN_KEY);
+  const accessToken = getCookie(ULTRASOOQ_TOKEN_KEY);
 
   const addToWishlist = useAddToWishList();
   const deleteFromWishlist = useDeleteFromWishList();

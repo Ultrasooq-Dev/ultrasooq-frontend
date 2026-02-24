@@ -4,7 +4,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import { getCookie } from "cookies-next";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, XCircle, Copy } from "lucide-react";
@@ -16,7 +16,7 @@ const CheckoutCompletePage = () => {
     const { langDir, currency } = useAuth();
     const router = useRouter();
     const searchParams = useSearchParams();
-    const accessToken = getCookie(PUREMOON_TOKEN_KEY);
+    const accessToken = getCookie(ULTRASOOQ_TOKEN_KEY);
     const [haveAccessToken, setHaveAccessToken] = useState<boolean>(false);
     const [copiedId, setCopiedId] = useState<string | null>(null);
 

@@ -19,7 +19,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/context/AuthContext";
 import { useVendorBusinessCategories } from "@/hooks/useVendorBusinessCategories";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import { getOrCreateDeviceId } from "@/utils/helper";
 import { checkCategoryConnection } from "@/utils/categoryConnection";
 import { CartItem } from "@/utils/types/cart.types";
@@ -58,7 +58,7 @@ const CartListPage = () => {
   const { toast } = useToast();
   const [haveAccessToken, setHaveAccessToken] = useState(false);
   const deviceId = getOrCreateDeviceId() || "";
-  const accessToken = getCookie(PUREMOON_TOKEN_KEY);
+  const accessToken = getCookie(ULTRASOOQ_TOKEN_KEY);
   const [loading, setLoading] = useState<boolean>(false);
   const [totalAmount, setTotalAmount] = useState<number>(0);
 

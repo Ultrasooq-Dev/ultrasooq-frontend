@@ -7,7 +7,7 @@ import { useMe } from "@/apis/queries/user.queries";
 import { useExistingProduct } from "@/apis/queries/product.queries";
 import { useCategory } from "@/apis/queries/category.queries";
 import { useToast } from "@/components/ui/use-toast";
-import { PRODUCT_CATEGORY_ID, PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { PRODUCT_CATEGORY_ID, ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import { Button } from "@/components/ui/button";
 import {
   Search,
@@ -195,7 +195,7 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
         );
         const leafCats = allCats.filter((c) => c.isLeaf);
         const parentCats = allCats.filter((c) => !c.isLeaf);
-        const token = getCookie(PUREMOON_TOKEN_KEY);
+        const token = getCookie(ULTRASOOQ_TOKEN_KEY);
 
         try {
           if (leafCats.length > 0) {
@@ -272,7 +272,7 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
         setIsAIGenerating(true);
 
         try {
-          const token = getCookie(PUREMOON_TOKEN_KEY);
+          const token = getCookie(ULTRASOOQ_TOKEN_KEY);
 
           if (type === "text" && typeof input === "string") {
             const res = await fetch(
@@ -434,7 +434,7 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
         setProcessingProductIndex(modelIdx >= 0 ? modelIdx : null);
 
         try {
-          const token = getCookie(PUREMOON_TOKEN_KEY);
+          const token = getCookie(ULTRASOOQ_TOKEN_KEY);
 
           const checkRes = await fetch(
             `${getApiUrl()}/product/check-model-exists`,

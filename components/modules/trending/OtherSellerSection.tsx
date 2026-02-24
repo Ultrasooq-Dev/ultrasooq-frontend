@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { getOrCreateDeviceId } from "@/utils/helper";
 import { getCookie } from "cookies-next";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import {
   useCartListByDevice,
   useCartListByUserId,
@@ -40,7 +40,7 @@ const OtherSellerSection: React.FC<OtherSellerSectionProps> = ({
   const { toast } = useToast();
   const deviceId = getOrCreateDeviceId() || "";
   const [haveAccessToken, setHaveAccessToken] = useState(false);
-  const accessToken = getCookie(PUREMOON_TOKEN_KEY);
+  const accessToken = getCookie(ULTRASOOQ_TOKEN_KEY);
   // const otherSellerId = searchQuery?.get("sellerId");
   // const otherProductId = searchQuery?.get("productId");
 

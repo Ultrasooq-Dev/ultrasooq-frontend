@@ -10,7 +10,7 @@ import {
   getUnauthorizedRedirect,
   hasFullAccess
 } from '@/utils/statusCheck';
-import { PUREMOON_TOKEN_KEY } from '@/utils/constants';
+import { ULTRASOOQ_TOKEN_KEY } from '@/utils/constants';
 import { getCookie } from 'cookies-next';
 import LoaderWithMessage from './LoaderWithMessage';
 
@@ -32,7 +32,7 @@ const RouteGuard: React.FC<RouteGuardProps> = ({
   const [hasAccess, setHasAccess] = useState(false);
   const checkTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const accessToken = getCookie(PUREMOON_TOKEN_KEY);
+  const accessToken = getCookie(ULTRASOOQ_TOKEN_KEY);
   const { data: me, isLoading: meLoading, isError: meError } = useMe(!!accessToken);
   const { data: currentAccount, isLoading: accountLoading, isError: accountError } = useCurrentAccount();
 

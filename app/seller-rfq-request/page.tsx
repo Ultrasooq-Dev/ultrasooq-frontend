@@ -125,7 +125,7 @@ const SellerRfqRequestPage = () => {
             <div className="p-3">
               <div className="mb-4 flex items-center justify-between">
                 {!isSidebarCollapsed && (
-                  <h2 className="text-lg font-bold text-foreground">Puremoon</h2>
+                  <h2 className="text-lg font-bold text-foreground">Ultrasooq</h2>
                 )}
                 <button
                   onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
@@ -432,7 +432,7 @@ const SellerRfqRequestPage = () => {
             <div className="p-3">
               <div className="mb-4 flex items-center justify-between">
                 {!isSidebarCollapsed && (
-                  <h2 className="text-lg font-bold text-foreground">Puremoon</h2>
+                  <h2 className="text-lg font-bold text-foreground">Ultrasooq</h2>
                 )}
                 <button
                   onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}

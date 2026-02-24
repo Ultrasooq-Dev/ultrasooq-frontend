@@ -5,7 +5,7 @@ import {
   useCartListByUserId,
 } from "@/apis/queries/cart.queries";
 import { getCookie } from "cookies-next";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import { getOrCreateDeviceId } from "@/utils/helper";
 import PaymentForm from "@/components/modules/orders/PaymentForm";
 import { initialOrderState, useOrderStore } from "@/lib/orderStore";
@@ -29,7 +29,7 @@ const OrdersPage = () => {
   const { langDir, currency } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
-  const hasAccessToken = !!getCookie(PUREMOON_TOKEN_KEY);
+  const hasAccessToken = !!getCookie(ULTRASOOQ_TOKEN_KEY);
   const deviceId = getOrCreateDeviceId() || "";
   const orders = useOrderStore();
 

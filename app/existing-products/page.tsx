@@ -25,7 +25,7 @@ import Footer from "@/components/shared/Footer";
 import Pagination from "@/components/shared/Pagination";
 import { useMe } from "@/apis/queries/user.queries";
 import { getCookie } from "cookies-next";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
@@ -48,7 +48,7 @@ const ExistingProductsPage = () => {
   const [page, setPage] = useState(1);
   const [limit] = useState(8);
   const [haveAccessToken, setHaveAccessToken] = useState(false);
-  const accessToken = getCookie(PUREMOON_TOKEN_KEY);
+  const accessToken = getCookie(ULTRASOOQ_TOKEN_KEY);
   const [selectedProductIds, setSelectedProductIds] = useState<number[]>([]);
 
   const me = useMe();

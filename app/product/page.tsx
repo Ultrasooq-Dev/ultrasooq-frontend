@@ -32,7 +32,7 @@ import {
 } from "@/apis/queries/product.queries";
 import { useCurrentAccount } from "@/apis/queries/auth.queries";
 import { getCookie } from "cookies-next";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { useRouter, useSearchParams } from "next/navigation";

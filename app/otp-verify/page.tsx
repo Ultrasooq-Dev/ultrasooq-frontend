@@ -15,7 +15,7 @@ import { useResendOtp, useVerifyOtp } from "@/apis/queries/auth.queries";
 import { useToast } from "@/components/ui/use-toast";
 import { setCookie } from "cookies-next";
 import Image from "next/image";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import BackgroundImage from "@/public/images/before-login-bg.png";
 import LoaderWithMessage from "@/components/shared/LoaderWithMessage";
 import { useTranslations } from "next-intl";
@@ -85,8 +85,8 @@ export default function OtpVerifyPage() {
 
     if (response?.status && response?.accessToken) {
       // store in cookie
-      // setCookie(PUREMOON_TOKEN_KEY, response.accessToken);
-      setCookie(PUREMOON_TOKEN_KEY, response.accessToken, {
+      // setCookie(ULTRASOOQ_TOKEN_KEY, response.accessToken);
+      setCookie(ULTRASOOQ_TOKEN_KEY, response.accessToken, {
         // 7 days
         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       });

@@ -12,7 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter, useParams, useSearchParams } from "next/navigation";
 import { getCookie } from "cookies-next";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import { handleDescriptionParse } from "@/utils/helper";
 import ReviewSection from "@/components/shared/ReviewSection";
 import QuestionsAnswersSection from "@/components/modules/productDetails/QuestionsAnswersSection";
@@ -246,7 +246,7 @@ const ProductDetailsPage = () => {
                     hasItem={cartList?.find((item: any) => item.productId == productDetails?.id) ? true : false}
               isLoading={productQueryById?.isLoading}
               onWishlist={handleAddToWishlist}
-                    haveAccessToken={!!getCookie(PUREMOON_TOKEN_KEY)}
+                    haveAccessToken={!!getCookie(ULTRASOOQ_TOKEN_KEY)}
               inWishlist={!!productInWishlist}
                     askForPrice={productDetails?.product_productPrice?.[0]?.askForPrice}
                     onProductUpdateSuccess={() => {}}

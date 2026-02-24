@@ -1,4 +1,4 @@
-import { PUREMOON_TEMP_TOKEN_KEY, PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TEMP_TOKEN_KEY, ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import {
   IChangeEmailRequest,
   IChangeEmailVerifyRequest,
@@ -65,7 +65,7 @@ export const resetPassword = (payload: IResetPasswordRequest) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TEMP_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TEMP_TOKEN_KEY),
     },
   });
 };
@@ -88,7 +88,7 @@ export const changePassword = (payload: IChangePasswordRequest) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -101,7 +101,7 @@ export const changeEmail = (payload: IChangeEmailRequest) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -114,7 +114,7 @@ export const emailChangeVerify = (payload: IChangeEmailVerifyRequest) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -135,7 +135,7 @@ export const myAccounts = () => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
     params: {
       _t: Date.now(),
@@ -151,7 +151,7 @@ export const createAccount = (payload: ICreateAccountRequest) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -164,7 +164,7 @@ export const switchAccount = (payload: ISwitchAccountRequest) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };
@@ -176,7 +176,7 @@ export const currentAccount = () => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: "Bearer " + getCookie(PUREMOON_TOKEN_KEY),
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
     },
   });
 };

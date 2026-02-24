@@ -17,7 +17,7 @@ import { useUploadMultipleFile } from "@/apis/queries/upload.queries";
 import { useTags } from "@/apis/queries/tags.queries";
 import { useMe } from "@/apis/queries/user.queries";
 import { getCookie } from "cookies-next";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import Image from "next/image";
 import PlaceholderImage from "@/public/images/product-placeholder.png";
 import validator from "validator";
@@ -490,7 +490,7 @@ const BulkAddExistingProductsPage = () => {
                       <div className="relative h-16 w-16 overflow-hidden rounded-lg border border-border">
                         {product.productImage && validator.isURL(product.productImage) ? (
                           // Check if the image is from an allowed domain (S3 bucket)
-                          product.productImage.includes('puremoon.s3.amazonaws.com') ? (
+                          product.productImage.includes('ultrasooq.s3.amazonaws.com') ? (
                             <Image
                               src={product.productImage}
                               alt="product-image"

@@ -35,7 +35,7 @@ import {
   WalletIcon,
 } from "lucide-react";
 import { getCookie, deleteCookie } from "cookies-next";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import { useCurrentAccount } from "@/apis/queries/auth.queries";
 import { useMe } from "@/apis/queries/user.queries";
 import { useQueryClient } from "@tanstack/react-query";
@@ -64,7 +64,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
   const { langDir, clearUser } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
-  const accessToken = getCookie(PUREMOON_TOKEN_KEY);
+  const accessToken = getCookie(ULTRASOOQ_TOKEN_KEY);
   const { data: currentAccountData } = useCurrentAccount();
   const me = useMe(!!accessToken);
   const [isClient, setIsClient] = useState(false);
@@ -414,7 +414,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
         onClick: async () => {
           try {
             // Delete the token cookie
-            deleteCookie(PUREMOON_TOKEN_KEY);
+            deleteCookie(ULTRASOOQ_TOKEN_KEY);
             // Clear React Query cache
             queryClient.clear();
             // Clear user from AuthContext

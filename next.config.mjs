@@ -35,7 +35,7 @@ const nextConfig = withNextIntl({
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "puremoon.s3.amazonaws.com",
+        hostname: "ultrasooq.s3.amazonaws.com",
         port: "",
         pathname: "/**",
       },

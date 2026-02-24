@@ -18,7 +18,7 @@ import {
 } from "../requests/auth.requests";
 import { APIResponseError } from "@/utils/types/common.types";
 import { getCookie, setCookie } from "cookies-next";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import {
   IChangeEmail,
   IChangeEmailRequest,
@@ -209,7 +209,7 @@ export const useMyAccounts = () => {
       const res = await myAccounts();
       return res.data;
     },
-    enabled: !!getCookie(PUREMOON_TOKEN_KEY),
+    enabled: !!getCookie(ULTRASOOQ_TOKEN_KEY),
     staleTime: 2 * 60 * 1000, // 2 minutes - prevents excessive re-fetching
     gcTime: 5 * 60 * 1000, // 5 minutes - keep cached data available
     refetchOnMount: true,
@@ -227,7 +227,7 @@ export const useCurrentAccount = () => {
       const res = await currentAccount();
       return res.data;
     },
-    enabled: !!getCookie(PUREMOON_TOKEN_KEY),
+    enabled: !!getCookie(ULTRASOOQ_TOKEN_KEY),
     staleTime: 2 * 60 * 1000, // 2 minutes
     gcTime: 5 * 60 * 1000, // 5 minutes
     refetchOnMount: true,
@@ -262,7 +262,7 @@ export const useSwitchAccount = () => {
     mutationFn: (payload) => switchAccount(payload).then((res) => res.data),
     onSuccess: async (data) => {
       // Update the token in cookies FIRST (7 days expiration)
-      setCookie(PUREMOON_TOKEN_KEY, data.data.accessToken, {
+      setCookie(ULTRASOOQ_TOKEN_KEY, data.data.accessToken, {
         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       });
 

@@ -61,7 +61,7 @@ import {
 } from "@/apis/queries/cart.queries";
 import { getOrCreateDeviceId } from "@/utils/helper";
 import { getCookie } from "cookies-next";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import BannerSection from "@/components/modules/trending/BannerSection";
 import SkeletonProductCardLoader from "@/components/shared/SkeletonProductCardLoader";
 import { useCategoryStore } from "@/lib/categoryStore";
@@ -128,7 +128,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
   const [selectedSpecFilters, setSelectedSpecFilters] = useState<Record<string, string[]>>({});
   const [isCategorySidebarOpen, setIsCategorySidebarOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const accessToken = getCookie(PUREMOON_TOKEN_KEY);
+  const accessToken = getCookie(ULTRASOOQ_TOKEN_KEY);
   const category = useCategoryStore();
 
   const minPriceInputRef = useRef<HTMLInputElement>(null);

@@ -16,7 +16,7 @@ import { Search, Plus, Copy, ArrowLeft, Eye, X, Camera, Link as LinkIcon, Sparkl
 import { withActiveUserGuard } from "@/components/shared/withRouteGuard";
 import { getApiUrl } from "@/config/api";
 import { getCookie } from "cookies-next";
-import { PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 
 const AddFromExistingProductPage = () => {
   const t = useTranslations();
@@ -181,7 +181,7 @@ const AddFromExistingProductPage = () => {
     const parentCategories = allCategories.filter((cat) => !cat.isLeaf);
 
     try {
-      const token = getCookie(PUREMOON_TOKEN_KEY);
+      const token = getCookie(ULTRASOOQ_TOKEN_KEY);
 
       // STEP 1: Try matching with ONLY leaf categories first
       if (leafCategories.length > 0) {
@@ -322,7 +322,7 @@ const AddFromExistingProductPage = () => {
     setIsAIGenerating(true);
     
     try {
-      const token = getCookie(PUREMOON_TOKEN_KEY);
+      const token = getCookie(ULTRASOOQ_TOKEN_KEY);
       
       // For text queries, use the new lightweight list endpoint to get models only
       if (type === 'text' && typeof input === 'string') {
@@ -614,7 +614,7 @@ const AddFromExistingProductPage = () => {
     setProcessingProductIndex(modelIndex >= 0 ? modelIndex : null);
     
     try {
-      const token = getCookie(PUREMOON_TOKEN_KEY);
+      const token = getCookie(ULTRASOOQ_TOKEN_KEY);
       
       // Step 1: Check if model exists
       const checkResponse = await fetch(`${getApiUrl()}/product/check-model-exists`, {
@@ -717,7 +717,7 @@ const AddFromExistingProductPage = () => {
     setModelExists(null);
 
     try {
-      const token = getCookie(PUREMOON_TOKEN_KEY);
+      const token = getCookie(ULTRASOOQ_TOKEN_KEY);
 
       // STEP 1: Check if this suggested model already exists
       const checkResponse = await fetch(`${getApiUrl()}/product/check-model-exists`, {
@@ -1509,7 +1509,7 @@ const AddFromExistingProductPage = () => {
                       const isExternalUrl = imageSrc && 
                         typeof imageSrc === "string" && 
                         imageSrc.startsWith("http") && 
-                        !imageSrc.includes("puremoon.s3.amazonaws.com");
+                        !imageSrc.includes("ultrasooq.s3.amazonaws.com");
                       
                       return (
                         <div key={index} className="aspect-square bg-muted rounded-lg overflow-hidden relative">

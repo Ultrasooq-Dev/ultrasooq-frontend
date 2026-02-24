@@ -25,7 +25,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { EMAIL_REGEX_LOWERCASE, PUREMOON_TOKEN_KEY } from "@/utils/constants";
+import { EMAIL_REGEX_LOWERCASE, ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import { setCookie } from "cookies-next";
 import PolicyContent from "@/components/shared/PolicyContent";
 import TermsContent from "@/components/shared/TermsContent";
@@ -146,7 +146,7 @@ export default function RegisterPage() {
         form.reset();
         router.push("/otp-verify");
       } else if (response?.status && response?.accessToken) {
-        setCookie(PUREMOON_TOKEN_KEY, response.accessToken, {
+        setCookie(ULTRASOOQ_TOKEN_KEY, response.accessToken, {
           // 7 days
           expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         });
@@ -245,7 +245,7 @@ export default function RegisterPage() {
             t("you_have_successfully_registered") || response.message,
           variant: "success",
         });
-        setCookie(PUREMOON_TOKEN_KEY, response.accessToken, {
+        setCookie(ULTRASOOQ_TOKEN_KEY, response.accessToken, {
           expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         });
 
