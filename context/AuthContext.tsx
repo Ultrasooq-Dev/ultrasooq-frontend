@@ -115,20 +115,15 @@ export const AuthProvider: React.FC<{
     startTransition(() => {});
   };
 
-  // Compute currency symbol based on locale (for OMR: Arabic vs English)
+  // Compute currency symbol based on locale
   const currencyWithLocale = useMemo(() => {
-    let symbol = currency.symbol;
-
-    if (currency.code === "OMR") {
-      // Check if currency has symbolAr property and locale is Arabic
-      const currencyWithAr = currency as (typeof CURRENCIES)[0] & {
-        symbolAr?: string;
-      };
-      symbol =
-        selectedLocale === "ar" && currencyWithAr.symbolAr
-          ? currencyWithAr.symbolAr
-          : currency.symbol;
-    }
+    const currencyWithAr = currency as (typeof CURRENCIES)[0] & {
+      symbolAr?: string;
+    };
+    const symbol =
+      selectedLocale === "ar" && currencyWithAr.symbolAr
+        ? currencyWithAr.symbolAr
+        : currency.symbol;
 
     return {
       ...currency,

@@ -224,8 +224,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
   const languages = [...LANGUAGES];
 
   const [selectedCurrency, setSelectedCurrency] = useState<string>("OMR");
-  // const currencies = [...CURRENCIES];
-  const currencies = CURRENCIES.filter((currency) => currency.code === "OMR");
+  const currencies = [...CURRENCIES];
 
   // Force refresh current account data when pathname changes (account switching)
   useEffect(() => {
@@ -412,19 +411,19 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                 router.refresh();
               });
 
-              setSelectedCurrency(response.data.currency || "USD");
+              setSelectedCurrency(response.data.currency || "OMR");
               window.localStorage.setItem(
                 "currency",
-                response.data.currency || "USD",
+                response.data.currency || "OMR",
               );
-              changeCurrency(response.data.currency || "USD");
+              changeCurrency(response.data.currency || "OMR");
             }
 
             setCookie("ipInfoLoaded", "1");
           }
         } else {
-          setSelectedCurrency(window.localStorage.currency || "USD");
-          changeCurrency(window.localStorage.currency || "USD");
+          setSelectedCurrency(window.localStorage.currency || "OMR");
+          changeCurrency(window.localStorage.currency || "OMR");
         }
       } catch (error) {}
     };
@@ -1237,25 +1236,6 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                       : "justify-end",
                   )}
                 >
-                  {currentTradeRole != "BUYER" ? (
-                    <li
-                      className={cn(
-                        "px-3 text-xs font-normal text-white/90 md:text-sm",
-                        langDir === "rtl"
-                          ? "border-l border-solid border-white/30"
-                          : "border-r border-solid border-white/30",
-                      )}
-                    >
-                      <a
-                        href="#"
-                        dir={langDir}
-                        translate="no"
-                        className="transition-colors hover:text-white"
-                      >
-                        {t("store_location")}
-                      </a>
-                    </li>
-                  ) : null}
                   <li
                     className={cn(
                       "px-3 text-xs font-normal text-white/90 md:text-sm",
@@ -1295,14 +1275,16 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                         changeCurrency(e.target.value || "OMR");
                       }}
                     >
-                      {currencies.map((item: { code: string }) => {
+                      {currencies.map((item: any) => {
                         return (
                           <option
                             className="bg-dark-cyan text-white"
                             value={item.code}
                             key={item.code}
                           >
-                            {item.code}
+                            {langDir === "rtl"
+                              ? `${item.symbolAr} ${item.code}`
+                              : `${item.symbol} ${item.code}`}
                           </option>
                         );
                       })}

@@ -448,21 +448,46 @@ export const LANGUAGES = [
 
 export const CURRENCIES = [
   {
-    code: "INR",
-    symbol: "₹",
+    code: "OMR",
+    symbol: "OMR",
+    symbolAr: "ر.ع",
+    name: "Omani Rial",
+    nameAr: "ريال عماني",
   },
   {
     code: "USD",
     symbol: "$",
+    symbolAr: "$",
+    name: "US Dollar",
+    nameAr: "دولار أمريكي",
   },
   {
-    code: "AUD",
-    symbol: "$",
+    code: "SAR",
+    symbol: "﷼",
+    symbolAr: "ر.س",
+    name: "Saudi Riyal",
+    nameAr: "ريال سعودي",
   },
   {
-    code: "OMR",
-    symbol: "OMR", // English symbol
-    symbolAr: "ريال عماني", // Arabic symbol
+    code: "AED",
+    symbol: "د.إ",
+    symbolAr: "د.إ",
+    name: "UAE Dirham",
+    nameAr: "درهم إماراتي",
+  },
+  {
+    code: "EUR",
+    symbol: "€",
+    symbolAr: "€",
+    name: "Euro",
+    nameAr: "يورو",
+  },
+  {
+    code: "GBP",
+    symbol: "£",
+    symbolAr: "£",
+    name: "British Pound",
+    nameAr: "جنيه إسترليني",
   },
 ];
 
