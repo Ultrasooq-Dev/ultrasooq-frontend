@@ -422,7 +422,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
             // Sign out from NextAuth
             await signOut({
               redirect: false,
-              callbackUrl: "/home",
+              callbackUrl: "/login",
             });
             // Close sidebar on mobile
             if (typeof window !== "undefined" && window.innerWidth < 768) {
@@ -436,7 +436,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
             });
             // Force a full page reload to ensure all components re-initialize with updated cookie state
             // This ensures the Header component re-reads the cookie and shows login/register buttons
-            window.location.href = "/home";
+            window.location.href = "/login";
           } catch (error) {
             console.error("Logout error:", error);
             toast({

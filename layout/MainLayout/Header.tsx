@@ -323,9 +323,9 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
     deleteCookie(PUREMOON_TOKEN_KEY);
     queryClient.clear();
     clearUser();
-    const data = await signOut({
+    await signOut({
       redirect: false,
-      callbackUrl: "/home",
+      callbackUrl: "/login",
     });
     toast({
       title: t("logout_successful"),
@@ -333,7 +333,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
       variant: "success",
     });
 
-    router.push("/home");
+    router.push("/login");
   };
 
   const wrapperRef = useRef(null);
