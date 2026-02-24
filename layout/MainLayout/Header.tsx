@@ -949,7 +949,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                     className="h-5 w-5"
                   />
                   <span className="text-xs font-medium text-white sm:text-sm">
-                    Login
+                    {t("login")}
                   </span>
                 </Link>
               )}
