@@ -2,6 +2,7 @@
 import { NextIntlClientProvider } from 'next-intl';
 import { useAuth } from '@/context/AuthContext';
 import { useEffect, useState } from 'react';
+import { loadZodLocale } from '@/lib/zod-locale';
 
 // Static imports for all 20 locales - required for Next.js build
 import enMessages from '@/translations/en.json';
@@ -83,6 +84,11 @@ export default function LocaleProvider({
   const [messages, setMessages] = useState(validatedInitialMessages);
   const [locale, setLocale] = useState(initialLocale);
 
+  // Set Zod locale on initial load
+  useEffect(() => {
+    loadZodLocale(initialLocale);
+  }, [initialLocale]);
+
   useEffect(() => {
     if (selectedLocale && selectedLocale !== locale && typeof window !== 'undefined') {
       // Get messages from static import map
@@ -90,6 +96,8 @@ export default function LocaleProvider({
       if (newMessages && Object.keys(newMessages).length > 0) {
         setMessages(newMessages);
         setLocale(selectedLocale);
+        // Update Zod locale when language changes
+        loadZodLocale(selectedLocale);
       } else {
         console.warn(`Translation file for locale "${selectedLocale}" not found. Falling back to current locale.`);
       }
