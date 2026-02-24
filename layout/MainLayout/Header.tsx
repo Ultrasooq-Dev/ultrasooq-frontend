@@ -1319,13 +1319,13 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
 
             <div
               className={cn(
-                "flex flex-wrap items-center",
+                "flex items-center gap-3",
                 langDir === "rtl" && "flex-row-reverse",
               )}
             >
               <div
                 className={cn(
-                  "flex w-5/12 flex-1 items-center py-1.5 md:w-2/12 md:py-2 lg:w-1/6",
+                  "flex flex-shrink-0 items-center py-1.5 md:py-2",
                   langDir === "rtl" ? "order-3" : "order-1",
                 )}
               >
@@ -1350,7 +1350,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
               </div>
               <div
                 className={cn(
-                  "flex w-[80%] items-center gap-2 py-1.5 md:w-7/12 md:px-3 md:py-2 lg:w-4/6",
+                  "flex min-w-0 flex-1 items-center gap-2 py-1.5 md:px-3 md:py-2",
                   langDir === "rtl"
                     ? "order-2 flex-row-reverse"
                     : "order-3 md:order-2",
@@ -1370,7 +1370,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                       {t("search")}
                     </button>
                     {/* Search input - middle */}
-                    <div className="relative max-w-[55%] flex-1 md:max-w-[50%] lg:max-w-[65%] xl:max-w-[75%]">
+                    <div className="relative min-w-0 flex-1">
                       <input
                         type="text"
                         className={`form-control h-9 w-full rounded-lg border-2 border-white/20 text-sm text-foreground transition-all placeholder:text-muted-foreground focus:border-transparent focus:ring-2 focus:ring-primary focus:outline-none md:h-10 md:text-base ${
@@ -1481,7 +1481,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                       </div>
                     )}
                     {/* Search input - middle */}
-                    <div className="relative max-w-[55%] flex-1 md:max-w-[50%] lg:max-w-[65%] xl:max-w-[75%]">
+                    <div className="relative min-w-0 flex-1">
                       <input
                         type="text"
                         className={`form-control h-9 w-full rounded-lg border-2 border-white/20 text-sm text-foreground transition-all placeholder:text-muted-foreground focus:border-transparent focus:ring-2 focus:ring-primary focus:outline-none md:h-10 md:text-base ${
@@ -1537,7 +1537,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
               </div>
               <div
                 className={cn(
-                  "flex w-7/12 sm:w-7/12 md:w-3/12 md:py-1.5 lg:w-1/6 lg:py-2",
+                  "flex flex-shrink-0 md:py-1.5 lg:py-2",
                   langDir === "rtl"
                     ? "order-1 justify-start"
                     : "order-2 justify-end sm:order-2 md:order-3",
