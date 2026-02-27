@@ -220,7 +220,6 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
     setIsActive(!isActive);
   };
 
-  const [selectedLocale, setSelectedLocale] = useState<string>(locale || "en");
   const languages = [...LANGUAGES];
 
   const [selectedCurrency, setSelectedCurrency] = useState<string>("OMR");
@@ -674,11 +673,10 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                 <select
                   dir={langDir}
                   className="h-8 w-8 cursor-pointer appearance-none rounded-lg bg-transparent text-transparent focus:outline-none"
-                  value={selectedLocale}
+                  value={currentLocale}
                   aria-label="Select language"
                   onChange={async (e) => {
                     const newLocale = e.target.value;
-                    setSelectedLocale(newLocale);
                     await applyTranslation(newLocale);
                     router.refresh();
                   }}
@@ -1299,13 +1297,11 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
                     <select
                       dir={langDir}
                       className="cursor-pointer rounded border-0 bg-transparent px-1 py-1 text-xs text-white/90 transition-colors hover:text-white focus:outline-none md:text-sm"
-                      value={selectedLocale}
+                      value={currentLocale}
                       aria-label="Select language"
                       onChange={async (e) => {
                         const newLocale = e.target.value;
-                        setSelectedLocale(newLocale);
                         await applyTranslation(newLocale);
-                        // Refresh router to reload server components with new locale
                         router.refresh();
                       }}
                     >
