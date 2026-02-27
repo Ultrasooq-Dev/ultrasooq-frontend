@@ -39,7 +39,7 @@ const OtherItemCard: React.FC<OtherItemCardProps> = ({
   updatedAt,
 }) => {
   const t = useTranslations();
-  const { langDir, currency } = useAuth();
+  const { langDir, currency, selectedLocale } = useAuth();
 
   return (
     <div className="my-order-item">
@@ -118,35 +118,35 @@ const OtherItemCard: React.FC<OtherItemCardProps> = ({
                 <>
                   <BiCircle color="green" />
                   {t("placed_on")}{" "}
-                  {orderProductDate ? formattedDate(orderProductDate) : ""}
+                  {orderProductDate ? formattedDate(orderProductDate, selectedLocale) : ""}
                 </>
               ) : null}
 
               {orderProductStatus === "SHIPPED" ? (
                 <>
                   <BiCircle color="green" />
-                  {t("shipped_on")} {updatedAt ? formattedDate(updatedAt) : ""}
+                  {t("shipped_on")} {updatedAt ? formattedDate(updatedAt, selectedLocale) : ""}
                 </>
               ) : null}
 
               {orderProductStatus === "OFD" ? (
                 <>
                   <BiCircle color="green" /> {t("out_for_delivery")}{" "}
-                  {updatedAt ? formattedDate(updatedAt) : ""}
+                  {updatedAt ? formattedDate(updatedAt, selectedLocale) : ""}
                 </>
               ) : null}
 
               {orderProductStatus === "DELIVERED" ? (
                 <>
                   <BiSolidCircle color="green" /> {t("delivered_on")}{" "}
-                  {updatedAt ? formattedDate(updatedAt) : ""}
+                  {updatedAt ? formattedDate(updatedAt, selectedLocale) : ""}
                 </>
               ) : null}
 
               {orderProductStatus === "CANCELLED" ? (
                 <>
                   <BiSolidCircle color="red" /> {t("cancelled_on")}{" "}
-                  {updatedAt ? formattedDate(updatedAt) : ""}
+                  {updatedAt ? formattedDate(updatedAt, selectedLocale) : ""}
                 </>
               ) : null}
             </h4>

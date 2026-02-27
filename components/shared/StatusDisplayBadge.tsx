@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslations } from "next-intl";
 import { USER_STATUS_CONFIG } from "@/utils/constants";
 
 interface StatusDisplayBadgeProps {
@@ -14,6 +15,7 @@ const StatusDisplayBadge: React.FC<StatusDisplayBadgeProps> = ({
   size = "md",
   showIcon = true,
 }) => {
+  const t = useTranslations();
   const statusConfig = USER_STATUS_CONFIG[status as keyof typeof USER_STATUS_CONFIG] || USER_STATUS_CONFIG.WAITING;
 
   const sizeClasses = {
@@ -83,7 +85,7 @@ const StatusDisplayBadge: React.FC<StatusDisplayBadgeProps> = ({
             )}
           </svg>
         )}
-        {statusConfig.label}
+        {t(statusConfig.label)}
       </span>
 
       {statusNote && (

@@ -746,7 +746,7 @@ export default function EditBranchPage() {
                             </FormControl>
                             <div className="space-y-1 leading-none">
                               <FormLabel className="text-light-gray">
-                                {item.label}
+                                {t(item.label)}
                               </FormLabel>
                             </div>
                           </FormItem>

@@ -96,7 +96,7 @@ export const AuthProvider: React.FC<{
     setUser(null);
   };
 
-  const [selectedLocale, setSelectedLocale] = useState<string>(locale || "en");
+  const [selectedLocale, setSelectedLocale] = useState<string>(locale || "ar");
 
   const applyTranslation = async (locale: string): Promise<void> => {
     // Always set the cookie client-side as a reliable fallback

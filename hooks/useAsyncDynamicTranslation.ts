@@ -12,7 +12,7 @@ export function useAsyncDynamicTranslation() {
 
   // Translate for any non-English locale
   const shouldTranslate = selectedLocale !== 'en' && !!selectedLocale;
-  const activeLocale = selectedLocale || 'en';
+  const activeLocale = selectedLocale || 'ar';
 
   const translate = useCallback(async (text: string | null | undefined): Promise<string> => {
     if (!text || !text.trim()) return text || '';

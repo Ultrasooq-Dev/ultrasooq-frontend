@@ -145,7 +145,7 @@ const VendorMoreInformationSection: React.FC<
                   <span>{t("working_days")}:</span>
                 </div>
                 <div className="w-9/12 text-base font-medium leading-4 text-color-dark md:w-6/12" dir={langDir}>
-                  <span>{memoizedParsedDays || "NA"}</span>
+                  <span>{memoizedParsedDays ? memoizedParsedDays.map((d: string) => t(d)).join(", ") : "NA"}</span>
                 </div>
               </div>
             </div>

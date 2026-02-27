@@ -230,7 +230,7 @@ export function useDynamicTranslation(): UseDynamicTranslationReturn {
 
   // Translate for any non-English locale
   const shouldTranslate = selectedLocale !== 'en' && !!selectedLocale;
-  const activeLocale = selectedLocale || 'en';
+  const activeLocale = selectedLocale || 'ar';
 
   // Load cache for current locale
   useEffect(() => {

@@ -15,9 +15,8 @@ export const parsedDays = (data: string) => {
         return DAYS_NAME_LIST[day];
       }
     })
-    .filter((item) => item)
-    .join(", ");
-  return response || "NA";
+    .filter((item): item is string => !!item);
+  return response.length > 0 ? response : undefined;
 };
 
 export const getInitials = (firstName: string, lastName: string) => {

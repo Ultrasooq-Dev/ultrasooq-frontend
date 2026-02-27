@@ -657,7 +657,7 @@ export default function ProfilePage() {
                                       id={type.value}
                                     />
                                     <FormLabel htmlFor={type.value}>
-                                      {type.label}
+                                      {t(type.label)}
                                     </FormLabel>
                                   </div>
                                 </FormControl>

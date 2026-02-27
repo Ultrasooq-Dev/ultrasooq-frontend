@@ -110,7 +110,7 @@ const STATIC_NAV_ITEMS = [
   { id: "rfq", href: "/rfq", translationKey: "rfq", icon: menuBarIconList[4] },
 ];
 
-const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
+const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
   const t = useTranslations();
   const router = useRouter();
   const pathname = usePathname();
@@ -404,7 +404,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "en" }) => {
               localeKey = localeKey.split("-")[0];
               localeKey =
                 languages.find((language) => language.locale == localeKey)
-                  ?.locale || "en";
+                  ?.locale || "ar";
               window.localStorage.setItem("locale", localeKey);
               applyTranslation(localeKey).then(() => {
                 router.refresh();

@@ -13,31 +13,31 @@ export const DAYS_OF_WEEK: {
   value: string;
 }[] = [
   {
-    label: "Sun",
+    label: "day_sun",
     value: "sun",
   },
   {
-    label: "Mon",
+    label: "day_mon",
     value: "mon",
   },
   {
-    label: "Tues",
+    label: "day_tue",
     value: "tue",
   },
   {
-    label: "Wed",
+    label: "day_wed",
     value: "wed",
   },
   {
-    label: "Thurs",
+    label: "day_thu",
     value: "thu",
   },
   {
-    label: "Fri",
+    label: "day_fri",
     value: "fri",
   },
   {
-    label: "Sat",
+    label: "day_sat",
     value: "sat",
   },
 ];
@@ -94,13 +94,13 @@ export const BUSINESS_TYPE_LIST: { label: string; value: string }[] = [
 ];
 
 export const DAYS_NAME_LIST: { [key: string]: string } = {
-  sun: "Sunday",
-  mon: "Monday",
-  tue: "Tuesday",
-  wed: "Wednesday",
-  thu: "Thursday",
-  fri: "Friday",
-  sat: "Saturday",
+  sun: "sunday",
+  mon: "monday",
+  tue: "tuesday",
+  wed: "wednesday",
+  thu: "thursday",
+  fri: "friday",
+  sat: "saturday",
 };
 
 export const FREELANCER_UNIQUE_ID = "PUREFW";
@@ -108,13 +108,13 @@ export const COMPANY_UNIQUE_ID = "PUREFC";
 export const MEMBER_UNIQUE_ID = "PUREFM";
 
 export const WEEKDAYS_LIST = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
+  "sunday",
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
 ];
 
 export const EMAIL_REGEX_LOWERCASE = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
@@ -187,26 +187,26 @@ export const ADMIN_BEARER = process.env.NEXT_PUBLIC_ADMIN_TOKEN || "";
 
 export const TRADE_ROLE_LIST: { label: string; value: string }[] = [
   {
-    label: "Buyer",
+    label: "buyer",
     value: "BUYER",
   },
   {
-    label: "Freelancer",
+    label: "freelancer",
     value: "FREELANCER",
   },
   {
-    label: "Company",
+    label: "company",
     value: "COMPANY",
   },
 ];
 
 export const GENDER_LIST: { label: string; value: string }[] = [
   {
-    label: "Male",
+    label: "male",
     value: "MALE",
   },
   {
-    label: "Female",
+    label: "female",
     value: "FEMALE",
   },
 ];
@@ -236,22 +236,22 @@ export const NO_OF_EMPLOYEES_LIST: { label: string; value: string }[] = [
 
 export const INPUT_TYPE_LIST: { label: string; value: string }[] = [
   {
-    label: "Text",
+    label: "text_input",
     value: "text",
   },
   {
-    label: "Number",
+    label: "number_input",
     value: "number",
   },
 ];
 
 export const SIZE_LIST: { label: string; value: string }[] = [
   {
-    label: "Full",
+    label: "size_full",
     value: "full",
   },
   {
-    label: "Small",
+    label: "size_small",
     value: "small",
   },
 ];
@@ -275,29 +275,29 @@ export const SELLER_DELIVERY_STATUS: { [key: string]: string } = {
 
 export const STATUS_LIST: { label: string; value: string }[] = [
   {
-    label: "Confirmed",
+    label: "status_confirmed",
     value: "CONFIRMED",
   },
   {
-    label: "Shipped",
+    label: "status_shipped",
     value: "SHIPPED",
   },
   {
-    label: "On the way",
+    label: "status_on_the_way",
     value: "OFD",
   },
   {
-    label: "Delivered",
+    label: "status_delivered",
     value: "DELIVERED",
   },
   {
-    label: "Cancelled",
+    label: "status_cancelled",
     value: "CANCELLED",
   },
 ];
 
-export const formattedDate = (formatDate: string | undefined) =>
-  formatDate ? new Date(formatDate).toLocaleDateString("en-US", {
+export const formattedDate = (formatDate: string | undefined, locale?: string) =>
+  formatDate ? new Date(formatDate).toLocaleDateString(locale || "ar", {
     day: "numeric",
     month: "short",
     year: "numeric",
@@ -394,18 +394,18 @@ export const PRODUCT_CONDITION_LIST = [
 ];
 
 export const MONTHS: string[] = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
+  "month_jan",
+  "month_feb",
+  "month_mar",
+  "month_apr",
+  "month_may",
+  "month_jun",
+  "month_jul",
+  "month_aug",
+  "month_sep",
+  "month_oct",
+  "month_nov",
+  "month_dec",
 ];
 
 export const CHAT_REQUEST_MESSAGE = {
@@ -493,16 +493,16 @@ export const CURRENCIES = [
 
 // User Status System Constants
 export const USER_STATUS_LIST = [
-  { value: "WAITING", label: "Waiting" },
-  { value: "ACTIVE", label: "Active" },
-  { value: "REJECT", label: "Reject" },
-  { value: "INACTIVE", label: "Inactive" },
-  { value: "WAITING_FOR_SUPER_ADMIN", label: "Waiting for Super Admin" },
+  { value: "WAITING", label: "status_waiting" },
+  { value: "ACTIVE", label: "status_active" },
+  { value: "REJECT", label: "status_rejected" },
+  { value: "INACTIVE", label: "status_inactive" },
+  { value: "WAITING_FOR_SUPER_ADMIN", label: "status_waiting_for_super_admin" },
 ];
 
 export const USER_STATUS_CONFIG = {
   WAITING: {
-    label: "Waiting",
+    label: "status_waiting",
     value: "WAITING",
     color: "#ffc107",
     bgColor: "#fff3cd",
@@ -513,7 +513,7 @@ export const USER_STATUS_CONFIG = {
     canDeactivate: true,
   },
   ACTIVE: {
-    label: "Active",
+    label: "status_active",
     value: "ACTIVE",
     color: "#28a745",
     bgColor: "#d4edda",
@@ -524,7 +524,7 @@ export const USER_STATUS_CONFIG = {
     canDeactivate: true,
   },
   REJECT: {
-    label: "Rejected",
+    label: "status_rejected",
     value: "REJECT",
     color: "#dc3545",
     bgColor: "#f8d7da",
@@ -535,7 +535,7 @@ export const USER_STATUS_CONFIG = {
     canDeactivate: true,
   },
   INACTIVE: {
-    label: "Inactive",
+    label: "status_inactive",
     value: "INACTIVE",
     color: "#6c757d",
     bgColor: "#e2e3e5",
@@ -546,7 +546,7 @@ export const USER_STATUS_CONFIG = {
     canDeactivate: false,
   },
   WAITING_FOR_SUPER_ADMIN: {
-    label: "Waiting for Super Admin",
+    label: "status_waiting_for_super_admin",
     value: "WAITING_FOR_SUPER_ADMIN",
     color: "#17a2b8",
     bgColor: "#d1ecf1",
@@ -570,10 +570,10 @@ export const PRODUCT_TYPES = {
 } as const;
 
 export const PRODUCT_TYPE_LABELS = {
-  P: "Normal Product",
-  R: "RFQ Product",
-  F: "Factory Product",
-  D: "Dropship Product",
+  P: "normal_product",
+  R: "rfq_product",
+  F: "factory_product",
+  D: "dropship_product",
 } as const;
 
 // WhatsApp Support Configuration

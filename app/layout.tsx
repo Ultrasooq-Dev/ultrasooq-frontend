@@ -97,7 +97,7 @@ export default async function RootLayout({
 
   const locale = await getUserLocale();
   const messages = (await import(`../translations/${locale}.json`)).default;
-  const langDir = LANGUAGES.find((l) => l.locale === locale)?.direction || "ltr";
+  const langDir = LANGUAGES.find((l) => l.locale === locale)?.direction || "rtl";
 
   // Create user object only if we have valid data
   const userObject = userData?.data?.id

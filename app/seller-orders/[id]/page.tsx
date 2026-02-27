@@ -30,7 +30,7 @@ import AddReceipt from "@/components/modules/sellerOrderDetails/AddReceipt";
 
 const MyOrderDetailsPage = ({ }) => {
   const t = useTranslations();
-  const { langDir, currency } = useAuth();
+  const { langDir, currency, selectedLocale } = useAuth();
   const router = useRouter();
   const hasPermission = checkPermission(PERMISSION_ORDERS);
   const searchParams = useParams();
@@ -65,30 +65,11 @@ const MyOrderDetailsPage = ({ }) => {
   function formatDate(inputDate: string | undefined): string {
     if (!inputDate) return "-";
     const dateObj = new Date(inputDate);
-    const dayOfWeek = dateObj.toLocaleString("en", { weekday: "short" });
-    const dayOfMonth = dateObj.getDate();
-    const month = MONTHS[dateObj.getMonth()];
-
-    // Function to add suffix to day of the month
-    function getDaySuffix(day: number): string {
-      if (day >= 11 && day <= 13) {
-        return `${day}th`;
-      }
-      switch (day % 10) {
-        case 1:
-          return `${day}st`;
-        case 2:
-          return `${day}nd`;
-        case 3:
-          return `${day}rd`;
-        default:
-          return `${day}th`;
-      }
-    }
-
-    const dayWithSuffix = getDaySuffix(dayOfMonth);
-
-    return `${dayOfWeek}, ${dayWithSuffix} ${month}`;
+    return dateObj.toLocaleDateString(selectedLocale || "ar", {
+      weekday: "short",
+      day: "numeric",
+      month: "short",
+    });
   }
 
   useEffect(() => {
@@ -553,7 +534,7 @@ const MyOrderDetailsPage = ({ }) => {
                                 <BiCircle color="green" />
                                 {t("placed_on")}{" "}
                                 {orderDetails?.orderProductDate
-                                  ? formattedDate(orderDetails.orderProductDate)
+                                  ? formattedDate(orderDetails.orderProductDate, selectedLocale)
                                   : ""}
                               </>
                             ) : null}
@@ -563,7 +544,7 @@ const MyOrderDetailsPage = ({ }) => {
                                 <BiCircle color="green" />
                                 {t("shipped_on")}{" "}
                                 {orderDetails?.updatedAt
-                                  ? formattedDate(orderDetails.updatedAt)
+                                  ? formattedDate(orderDetails.updatedAt, selectedLocale)
                                   : ""}
                               </>
                             ) : null}
@@ -573,7 +554,7 @@ const MyOrderDetailsPage = ({ }) => {
                                 <BiCircle color="green" />{" "}
                                 {t("out_for_delivery")}{" "}
                                 {orderDetails?.updatedAt
-                                  ? formattedDate(orderDetails.updatedAt)
+                                  ? formattedDate(orderDetails.updatedAt, selectedLocale)
                                   : ""}
                               </>
                             ) : null}
@@ -584,7 +565,7 @@ const MyOrderDetailsPage = ({ }) => {
                                 <BiSolidCircle color="green" />{" "}
                                 {t("delivered_on")}{" "}
                                 {orderDetails?.updatedAt
-                                  ? formattedDate(orderDetails.updatedAt)
+                                  ? formattedDate(orderDetails.updatedAt, selectedLocale)
                                   : ""}
                               </>
                             ) : null}
@@ -595,7 +576,7 @@ const MyOrderDetailsPage = ({ }) => {
                                 <BiSolidCircle color="red" />{" "}
                                 {t("cancelled_on")}{" "}
                                 {orderDetails?.updatedAt
-                                  ? formattedDate(orderDetails.updatedAt)
+                                  ? formattedDate(orderDetails.updatedAt, selectedLocale)
                                   : ""}
                               </>
                             ) : null}

@@ -1,7 +1,7 @@
 "use client";
 import { NextIntlClientProvider } from 'next-intl';
 import { useAuth } from '@/context/AuthContext';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { loadZodLocale } from '@/lib/zod-locale';
 
 // Static imports for all 20 locales - required for Next.js build
@@ -79,7 +79,7 @@ export default function LocaleProvider({
   // Ensure initialMessagesValue is never empty
   const validatedInitialMessages = (initialMessagesValue && Object.keys(initialMessagesValue).length > 0)
     ? initialMessagesValue
-    : (translationMap['en'] || {});
+    : (translationMap['ar'] || {});
 
   const [messages, setMessages] = useState(validatedInitialMessages);
   const [locale, setLocale] = useState(initialLocale);
@@ -104,8 +104,8 @@ export default function LocaleProvider({
     }
   }, [selectedLocale, locale]);
 
-  // Ensure we always have valid messages before rendering
-  const getValidMessages = () => {
+  // Compute current messages - always guaranteed to have valid messages
+  const currentMessages = useMemo(() => {
     // First try current messages state
     if (messages && typeof messages === 'object' && Object.keys(messages).length > 0) {
       return messages;
@@ -114,26 +114,41 @@ export default function LocaleProvider({
     if (locale && translationMap[locale] && Object.keys(translationMap[locale]).length > 0) {
       return translationMap[locale];
     }
-    // Finally fallback to English
-    if (translationMap['en'] && Object.keys(translationMap['en']).length > 0) {
-      return translationMap['en'];
-    }
-    // Last resort - return empty object (should never happen)
-    console.error('LocaleProvider: All message sources are empty!');
-    return {};
-  };
+    // Finally fallback to Arabic (default language)
+    return translationMap['ar'] || {};
+  }, [messages, locale]);
 
-  const currentMessages = getValidMessages();
-  const currentLocale = locale || 'en';
+  const currentLocale = locale || 'ar';
 
-  // Ensure messages object is not empty
+  // Fallback: when a message key is missing, try English before returning the key
+  const getMessageFallback = useMemo(() => {
+    return ({ key, namespace }: { key: string; namespace?: string; error: Error }) => {
+      const fullKey = namespace ? `${namespace}.${key}` : key;
+      // Try to find the key in English messages as fallback
+      const enValue = fullKey.split('.').reduce((obj: any, k: string) => obj?.[k], translationMap['en']);
+      return typeof enValue === 'string' ? enValue : fullKey;
+    };
+  }, []);
+
+  // Ensure messages object is not empty - render children without provider as last resort
   if (!currentMessages || typeof currentMessages !== 'object' || Object.keys(currentMessages).length === 0) {
     console.error('LocaleProvider: No valid messages found. This is a critical error.');
     return <>{children}</>;
   }
 
   return (
-    <NextIntlClientProvider messages={currentMessages} locale={currentLocale} timeZone="Asia/Muscat">
+    <NextIntlClientProvider
+      messages={currentMessages}
+      locale={currentLocale}
+      timeZone="Asia/Muscat"
+      onError={(error) => {
+        // Silently handle missing messages - fallback will provide English text
+        if (process.env.NODE_ENV === 'development') {
+          console.warn('Translation error:', error);
+        }
+      }}
+      getMessageFallback={getMessageFallback}
+    >
       {children}
     </NextIntlClientProvider>
   );
