@@ -537,13 +537,13 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
               </div>
               {isHovered || isOpen ? (
                 <div className="relative z-10 flex w-full items-center justify-center text-sidebar-primary-foreground">
-                  {/* Full ULTRASOOQ Logo - when sidebar is expanded */}
+                  {/* Logo icon - larger when sidebar is expanded */}
                   <Image
-                    src="/images/logo1.png"
+                    src="/images/logoicon.png"
                     alt="Ultrasooq Logo"
-                    width={180}
-                    height={60}
-                    className="h-auto w-auto max-w-[180px] object-contain"
+                    width={80}
+                    height={80}
+                    className="h-20 w-20 object-contain"
                     priority
                   />
                   {/* Close button for mobile - positioned absolutely */}
@@ -560,7 +560,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
                 </div>
               ) : (
                 <div className="relative z-10 flex w-full items-center justify-center text-sidebar-primary-foreground">
-                  {/* US Intertwined Logo - when sidebar is collapsed */}
+                  {/* Logo icon - smaller when sidebar is collapsed */}
                   <Image
                     src="/images/logoicon.png"
                     alt="Ultrasooq Icon"
