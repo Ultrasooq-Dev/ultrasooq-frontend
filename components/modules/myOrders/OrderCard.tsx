@@ -54,7 +54,7 @@ const OrderCard: React.FC<OrderCardProps> = ({
   // }, [productReview?.length, id]);
 
   const t = useTranslations();
-  const { langDir, currency } = useAuth();
+  const { langDir, currency, selectedLocale } = useAuth();
 
   return (
     <div className="my-order-card">
@@ -108,37 +108,37 @@ const OrderCard: React.FC<OrderCardProps> = ({
               <>
                 <BiCircle color="green" />
                 {t("placed_on")}{" "}
-                {orderProductDate ? formattedDate(orderProductDate) : ""}
+                {orderProductDate ? formattedDate(orderProductDate, selectedLocale) : ""}
               </>
             ) : null}
             {orderStatus === "CONFIRMED" ? (
               <>
                 <BiCircle color="green" /> {t("confirmed_on")}{" "}
-                {updatedAt ? formattedDate(updatedAt) : ""}
+                {updatedAt ? formattedDate(updatedAt, selectedLocale) : ""}
               </>
             ) : null}
             {orderStatus === "SHIPPED" ? (
               <>
                 <BiCircle color="green" /> {t("shipped_on")}{" "}
-                {updatedAt ? formattedDate(updatedAt) : ""}
+                {updatedAt ? formattedDate(updatedAt, selectedLocale) : ""}
               </>
             ) : null}
             {orderStatus === "OFD" ? (
               <>
                 <BiCircle color="green" /> {t("out_for_delivery")}{" "}
-                {updatedAt ? formattedDate(updatedAt) : ""}
+                {updatedAt ? formattedDate(updatedAt, selectedLocale) : ""}
               </>
             ) : null}
             {orderStatus === "DELIVERED" ? (
               <>
                 <BiSolidCircle color="green" /> {t("delivered_on")}{" "}
-                {updatedAt ? formattedDate(updatedAt) : ""}
+                {updatedAt ? formattedDate(updatedAt, selectedLocale) : ""}
               </>
             ) : null}
             {orderStatus === "CANCELLED" ? (
               <>
                 <BiSolidCircle color="red" /> {t("cancelled_on")}{" "}
-                {updatedAt ? formattedDate(updatedAt) : ""}
+                {updatedAt ? formattedDate(updatedAt, selectedLocale) : ""}
               </>
             ) : null}
           </h4>

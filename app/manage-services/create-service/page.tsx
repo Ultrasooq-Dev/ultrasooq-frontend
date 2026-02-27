@@ -643,7 +643,7 @@ const CreateServicePage = () => {
                                       form.clearErrors("workingDays");
                                     }}
                                   />
-                                  {day}
+                                  {t(day)}
                                 </label>
                               ))}
                             </div>
@@ -688,7 +688,7 @@ const CreateServicePage = () => {
                                         );
                                       }}
                                     />
-                                    {day}
+                                    {t(day)}
                                   </label>
                                 ))}
                               </div>

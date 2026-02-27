@@ -385,7 +385,7 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
                               />
                             </FormControl>
                             <FormLabel className="text-dark-cyan cursor-pointer text-sm font-normal">
-                              {role.label}
+                              {t(role.label)}
                             </FormLabel>
                           </FormItem>
                         ))}

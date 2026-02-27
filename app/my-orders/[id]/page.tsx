@@ -39,7 +39,7 @@ import { convertDate, convertTime } from "@/utils/helper";
 
 const MyOrderDetailsPage = () => {
   const t = useTranslations();
-  const { langDir, currency } = useAuth();
+  const { langDir, currency, selectedLocale } = useAuth();
   const searchParams = useParams();
 
   // Safe copy helper for tracking number
@@ -123,30 +123,11 @@ const MyOrderDetailsPage = () => {
 
   function formatDate(inputDate: string): string {
     const dateObj = new Date(inputDate);
-    const dayOfWeek = dateObj.toLocaleString("en", { weekday: "short" });
-    const dayOfMonth = dateObj.getDate();
-    const month = MONTHS[dateObj.getMonth()];
-
-    // Function to add suffix to day of the month
-    function getDaySuffix(day: number): string {
-      if (day >= 11 && day <= 13) {
-        return `${day}th`;
-      }
-      switch (day % 10) {
-        case 1:
-          return `${day}st`;
-        case 2:
-          return `${day}nd`;
-        case 3:
-          return `${day}rd`;
-        default:
-          return `${day}th`;
-      }
-    }
-
-    const dayWithSuffix = getDaySuffix(dayOfMonth);
-
-    return `${dayOfWeek}, ${dayWithSuffix} ${month}`;
+    return dateObj.toLocaleDateString(selectedLocale || "ar", {
+      weekday: "short",
+      day: "numeric",
+      month: "short",
+    });
   }
 
   return (
@@ -677,7 +658,7 @@ const MyOrderDetailsPage = () => {
                             <div className="text-muted-foreground">Added</div>
                             <div className="font-medium text-foreground">
                               {tracking?.addedAt
-                                ? formattedDate(tracking.addedAt)
+                                ? formattedDate(tracking.addedAt, selectedLocale)
                                 : "-"}
                             </div>
                           </div>

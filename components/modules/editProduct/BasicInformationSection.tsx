@@ -278,7 +278,7 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
                     <div className="grid w-full grid-cols-1 gap-5 md:grid-cols-2">
                       <BrandSelect />
                       <div className="mt-2 flex flex-col gap-y-3">
-                        <Label>Product Condition</Label>
+                        <Label>{t("product_condition")}</Label>
                         <Controller
                           name="productCondition"
                           control={formContext.control}
@@ -288,8 +288,8 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
                               onChange={(newValue) => {
                                 field.onChange(newValue?.value);
                               }}
-                              options={PRODUCT_CONDITION_LIST}
-                              value={PRODUCT_CONDITION_LIST.find(
+                              options={PRODUCT_CONDITION_LIST.map((item) => ({ ...item, label: t(item.label) }))}
+                              value={PRODUCT_CONDITION_LIST.map((item) => ({ ...item, label: t(item.label) })).find(
                                 (item: any) => item.value === field.value,
                               )}
                               styles={customStyles}

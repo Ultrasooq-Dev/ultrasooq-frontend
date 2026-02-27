@@ -70,8 +70,8 @@ const MoreInformationSection: React.FC<MoreInformationSectionProps> = ({
         </div>
         <div className="mt-6 w-full border-b-2 border-dashed border-border pb-3.5">
           <div className="flex w-full flex-wrap items-center justify-between pb-5">
-            <label className="mb-3.5 block text-lg font-semibold leading-5 text-color-dark">
-              Address
+            <label className="mb-3.5 block text-lg font-semibold leading-5 text-color-dark" dir={langDir} translate="no">
+              {t("address")}
             </label>
             {userDetails?.userBranch?.length ? (
               <div className="w-auto">
@@ -86,7 +86,7 @@ const MoreInformationSection: React.FC<MoreInformationSectionProps> = ({
                     className="mr-1"
                     alt="edit-icon"
                   />
-                  edit
+                  {t("edit")}
                 </Link>
               </div>
             ) : null}
@@ -188,7 +188,7 @@ const MoreInformationSection: React.FC<MoreInformationSectionProps> = ({
                   <span>{t("working_days")}:</span>
                 </div>
                 <div className="w-9/12 text-base font-medium leading-4 text-color-dark md:w-6/12" dir={langDir}>
-                  <span>{memoizedParsedDays || "NA"}</span>
+                  <span>{memoizedParsedDays ? memoizedParsedDays.map((d: string) => t(d)).join(", ") : "NA"}</span>
                 </div>
               </div>
             </div>

@@ -196,13 +196,13 @@ const UpdateProductStatusForm: React.FC<UpdateProductStatusFormProps> = ({
                 className="custom-form-control-s1 select1"
                 name="status"
               >
-                <option value="">Select Status</option>
+                <option value="">{t("select_status")}</option>
                 {(formattedStatusList || []).map((item) => (
                   <option
                     key={item.value}
                     value={item.value}
                   >
-                    {item.label}
+                    {t(item.label)}
                   </option>
                 ))}
               </select>

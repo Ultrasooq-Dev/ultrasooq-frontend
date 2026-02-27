@@ -255,7 +255,7 @@ const VendorBranchSection: React.FC<VendorBranchSectionProps> = ({ branchDetails
                     className="text-base font-medium leading-4 text-color-dark"
                     dir={langDir}
                   >
-                    {memoizedParsedDays || "NA"}
+                    {memoizedParsedDays ? memoizedParsedDays.map((d: string) => t(d)).join(", ") : "NA"}
                   </p>
                 </div>
               </div>

@@ -7,6 +7,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Select as SelectPrimitive } from "radix-ui";
+import { useTranslations } from "next-intl";
 
 interface SelectInputProps extends SelectPrimitive.SelectProps {
   label: string;
@@ -18,16 +19,17 @@ const SelectInput: React.FC<SelectInputProps> = ({
   options,
   ...props
 }) => {
+  const t = useTranslations();
   return (
     <Select {...props}>
       <SelectTrigger className="theme-form-control-s1 data-placeholder:text-muted-foreground">
-        <SelectValue placeholder={`Select ${label}`} />
+        <SelectValue placeholder={`${t('select')} ${label}`} />
       </SelectTrigger>
       <SelectContent>
         {options.map((item) => (
           <SelectItem key={item.value} value={item.value}>
             <div className="flex flex-row items-center py-2">
-              <span>{item.label}</span>
+              <span>{t(item.label)}</span>
             </div>
           </SelectItem>
         ))}
