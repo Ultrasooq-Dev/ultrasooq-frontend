@@ -3,8 +3,8 @@ import axios, {
   InternalAxiosRequestConfig,
   AxiosError,
 } from "axios";
-import { getCookie } from "cookies-next";
-import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
+import { getCookie, setCookie, deleteCookie } from "cookies-next";
+import { ULTRASOOQ_TOKEN_KEY, ULTRASOOQ_REFRESH_TOKEN_KEY } from "@/utils/constants";
 import { getApiUrl } from "@/config/api";
 
 const http: AxiosInstance = axios.create({
@@ -15,12 +15,41 @@ const http: AxiosInstance = axios.create({
   },
 });
 
-// Track 401 handling to prevent multiple simultaneous redirects
-let isHandling401 = false;
-let consecutive401Count = 0;
-let last401Time = 0;
+// ─── Token refresh state ───────────────────────────────────────
+let isRefreshing = false;
+let failedQueue: {
+  resolve: (token: string) => void;
+  reject: (error: unknown) => void;
+}[] = [];
 
-// Request interceptor: set base URL dynamically and attach auth token
+/**
+ * Process all queued requests after a token refresh attempt.
+ * If the refresh succeeded, retry each request with the new token.
+ * If the refresh failed, reject all queued requests.
+ */
+function processQueue(error: unknown, token: string | null = null) {
+  failedQueue.forEach((prom) => {
+    if (token) {
+      prom.resolve(token);
+    } else {
+      prom.reject(error);
+    }
+  });
+  failedQueue = [];
+}
+
+/**
+ * Clear all auth tokens and redirect to login page.
+ */
+function forceLogout() {
+  deleteCookie(ULTRASOOQ_TOKEN_KEY);
+  deleteCookie(ULTRASOOQ_REFRESH_TOKEN_KEY);
+  if (typeof window !== "undefined") {
+    window.location.href = "/login";
+  }
+}
+
+// ─── Request interceptor ──────────────────────────────────────
 http.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     // Set baseURL dynamically per request so that getApiUrl() can resolve
@@ -39,52 +68,104 @@ http.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
-// Response interceptor: handle errors globally with debounced 401 handling
+// ─── Response interceptor: auto-refresh on 401 ───────────────
 http.interceptors.response.use(
-  (response) => {
-    // Reset 401 counter on any successful response
-    consecutive401Count = 0;
-    return response;
-  },
-  (error: AxiosError) => {
-    if (error.response?.status === 401) {
-      if (typeof window !== "undefined") {
-        const currentPath = window.location.pathname;
-        const now = Date.now();
+  (response) => response,
+  async (error: AxiosError) => {
+    const originalRequest = error.config as InternalAxiosRequestConfig & {
+      _retry?: boolean;
+    };
 
-        // Skip 401 handling on auth pages
-        const authPages = ["/login", "/register", "/forget-password", "/reset-password", "/otp-verify"];
-        if (authPages.some((page) => currentPath.startsWith(page))) {
-          return Promise.reject(error);
-        }
+    // Only handle 401 errors
+    if (error.response?.status !== 401) {
+      return Promise.reject(error);
+    }
 
-        // Track consecutive 401s within a short window
-        if (now - last401Time < 5000) {
-          consecutive401Count++;
-        } else {
-          consecutive401Count = 1;
-        }
-        last401Time = now;
-
-        // Only clear token and redirect after multiple consecutive 401s
-        // This prevents logout from a single transient 401
-        if (consecutive401Count >= 2 && !isHandling401) {
-          isHandling401 = true;
-          consecutive401Count = 0;
-
-          // Clear stale token and redirect to login
-          document.cookie =
-            "ultrasooq_accessToken=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
-          window.location.href = "/login";
-
-          // Reset flag after a delay (in case redirect doesn't happen immediately)
-          setTimeout(() => {
-            isHandling401 = false;
-          }, 3000);
-        }
+    // Skip refresh on auth pages
+    if (typeof window !== "undefined") {
+      const authPages = ["/login", "/register", "/forget-password", "/reset-password", "/otp-verify"];
+      if (authPages.some((page) => window.location.pathname.startsWith(page))) {
+        return Promise.reject(error);
       }
     }
-    return Promise.reject(error);
+
+    // If this request was already retried after a refresh, don't retry again
+    if (originalRequest._retry) {
+      forceLogout();
+      return Promise.reject(error);
+    }
+
+    // If a refresh is already in progress, queue this request
+    if (isRefreshing) {
+      return new Promise((resolve, reject) => {
+        failedQueue.push({
+          resolve: (token: string) => {
+            originalRequest.headers.Authorization = `Bearer ${token}`;
+            resolve(http(originalRequest));
+          },
+          reject: (err: unknown) => {
+            reject(err);
+          },
+        });
+      });
+    }
+
+    // Attempt to refresh the token
+    originalRequest._retry = true;
+    isRefreshing = true;
+
+    const refreshToken = getCookie(ULTRASOOQ_REFRESH_TOKEN_KEY);
+
+    if (!refreshToken) {
+      // No refresh token — force logout
+      isRefreshing = false;
+      processQueue(error, null);
+      forceLogout();
+      return Promise.reject(error);
+    }
+
+    try {
+      // Call the backend refresh endpoint directly (not through http to avoid interceptor loop)
+      const baseUrl = getApiUrl();
+      const response = await axios.post(`${baseUrl}/auth/refresh`, {
+        refreshToken,
+      });
+
+      if (response.data?.status && response.data?.accessToken) {
+        const newAccessToken = response.data.accessToken;
+        const newRefreshToken = response.data.refreshToken;
+
+        // Store new tokens
+        setCookie(ULTRASOOQ_TOKEN_KEY, newAccessToken, {
+          expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+        });
+        if (newRefreshToken) {
+          setCookie(ULTRASOOQ_REFRESH_TOKEN_KEY, newRefreshToken, {
+            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+          });
+        }
+
+        // Retry the original request with the new token
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+
+        // Process queued requests
+        processQueue(null, newAccessToken);
+
+        return http(originalRequest);
+      } else {
+        // Refresh endpoint returned non-success
+        processQueue(error, null);
+        forceLogout();
+        return Promise.reject(error);
+      }
+    } catch (refreshError) {
+      // Refresh failed — session expired, force logout
+      processQueue(refreshError, null);
+      forceLogout();
+      return Promise.reject(refreshError);
+    } finally {
+      isRefreshing = false;
+    }
   },
 );
 

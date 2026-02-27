@@ -11,6 +11,13 @@ const authOptions = {
   ],
   secret: process.env.NEXTAUTH_SECRET,
   debug: process.env.NODE_ENV === "development",
+  session: {
+    strategy: "jwt" as const,
+    maxAge: 7 * 24 * 60 * 60, // 7 days — aligned with backend refresh token expiry
+  },
+  jwt: {
+    maxAge: 7 * 24 * 60 * 60, // 7 days — aligned with backend refresh token expiry
+  },
   pages: {
     signIn: "/login",
     error: "/login",

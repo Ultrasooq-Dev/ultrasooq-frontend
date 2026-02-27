@@ -6,6 +6,7 @@ import RfqIcon from "@/public/images/menu-icon-rfq.svg";
 import ServiceIcon from "@/public/images/menu-icon-service.svg";
 
 export const ULTRASOOQ_TOKEN_KEY: string = "ultrasooq_accessToken";
+export const ULTRASOOQ_REFRESH_TOKEN_KEY: string = "ultrasooq_refreshToken";
 export const ULTRASOOQ_TEMP_TOKEN_KEY: string = "ultrasooq_temp_accessToken";
 
 export const DAYS_OF_WEEK: {

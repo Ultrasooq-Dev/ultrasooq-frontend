@@ -25,7 +25,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { EMAIL_REGEX_LOWERCASE, ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
+import { EMAIL_REGEX_LOWERCASE, ULTRASOOQ_TOKEN_KEY, ULTRASOOQ_REFRESH_TOKEN_KEY } from "@/utils/constants";
 import { setCookie } from "cookies-next";
 import PolicyContent from "@/components/shared/PolicyContent";
 import TermsContent from "@/components/shared/TermsContent";
@@ -147,9 +147,13 @@ export default function RegisterPage() {
         router.push("/otp-verify");
       } else if (response?.status && response?.accessToken) {
         setCookie(ULTRASOOQ_TOKEN_KEY, response.accessToken, {
-          // 7 days
-          expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+          expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
         });
+        if (response.refreshToken) {
+          setCookie(ULTRASOOQ_REFRESH_TOKEN_KEY, response.refreshToken, {
+            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+          });
+        }
 
         // Fetch user data and update AuthContext (same as login page)
         try {
@@ -248,6 +252,11 @@ export default function RegisterPage() {
         setCookie(ULTRASOOQ_TOKEN_KEY, response.accessToken, {
           expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         });
+        if (response.refreshToken) {
+          setCookie(ULTRASOOQ_REFRESH_TOKEN_KEY, response.refreshToken, {
+            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+          });
+        }
 
         // Update cart
         await updateCart.mutateAsync({ deviceId });

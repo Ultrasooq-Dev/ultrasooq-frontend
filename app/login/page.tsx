@@ -20,7 +20,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/context/AuthContext";
 import GoogleIcon from "@/public/images/google-icon.png";
 import LoaderPrimaryIcon from "@/public/images/load-primary.png";
-import { LANGUAGES, ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
+import { LANGUAGES, ULTRASOOQ_TOKEN_KEY, ULTRASOOQ_REFRESH_TOKEN_KEY } from "@/utils/constants";
 import { getLoginType, getOrCreateDeviceId } from "@/utils/helper";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { setCookie } from "cookies-next";
@@ -107,12 +107,12 @@ export default function LoginPage() {
     const response: any = await login.mutateAsync(values);
 
     if (response?.status && response?.accessToken) {
-      if (rememberMe) {
-        setCookie(ULTRASOOQ_TOKEN_KEY, response.accessToken, {
-          expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
-        });
-      } else {
-        setCookie(ULTRASOOQ_TOKEN_KEY, response.accessToken, {
+      // Cookie expiry aligned with backend refresh token (7 days max)
+      setCookie(ULTRASOOQ_TOKEN_KEY, response.accessToken, {
+        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+      });
+      if (response.refreshToken) {
+        setCookie(ULTRASOOQ_REFRESH_TOKEN_KEY, response.refreshToken, {
           expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
         });
       }
@@ -191,6 +191,11 @@ export default function LoginPage() {
         setCookie(ULTRASOOQ_TOKEN_KEY, response.accessToken, {
           expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
         });
+        if (response.refreshToken) {
+          setCookie(ULTRASOOQ_REFRESH_TOKEN_KEY, response.refreshToken, {
+            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+          });
+        }
 
         await updateCart.mutateAsync({ deviceId });
         form.reset();
