@@ -39,7 +39,7 @@ import { useCategoryStore } from "@/lib/categoryStore";
 import { cn } from "@/lib/utils";
 import CartIcon from "@/public/images/cart.svg";
 import UnAuthUserIcon from "@/public/images/login.svg";
-import LogoIcon from "@/public/images/logo1.png";
+import LogoIcon from "@/public/images/logoicon.png";
 import WishlistIcon from "@/public/images/wishlist.svg";
 import NotificationBell from "@/components/shared/NotificationBell";
 import {
