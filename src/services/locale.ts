@@ -22,6 +22,10 @@ export async function getUserLocale() {
 export async function setUserLocale(locale: string) {
   if (SUPPORTED_LOCALES.has(locale)) {
     const cookieStore = await cookies();
-    cookieStore.set(COOKIE_NAME, locale);
+    cookieStore.set(COOKIE_NAME, locale, {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 365, // 1 year
+      sameSite: 'lax',
+    });
   }
 }

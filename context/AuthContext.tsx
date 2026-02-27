@@ -99,7 +99,15 @@ export const AuthProvider: React.FC<{
   const [selectedLocale, setSelectedLocale] = useState<string>(locale || "en");
 
   const applyTranslation = async (locale: string): Promise<void> => {
-    await setUserLocale(locale);
+    // Always set the cookie client-side as a reliable fallback
+    document.cookie = `ULTRASOOQ_LOCALE=${locale};path=/;max-age=${60 * 60 * 24 * 365};samesite=lax`;
+    try {
+      await setUserLocale(locale);
+    } catch (e) {
+      // Server action may fail in production (proxy/cookie issues) —
+      // the client-side cookie above ensures persistence regardless.
+      console.error("Failed to set locale cookie via server action:", e);
+    }
     window.localStorage.setItem("locale", locale);
     startTransition(() => {
       setSelectedLocale(locale);
