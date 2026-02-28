@@ -18,7 +18,6 @@ export const STEP_1_VALIDATE_FIELDS: string[] = ["productName"];
 // typeOfProduct is set from URL, so it should already be present.
 export const STEP_2_VALIDATE_FIELDS: string[] = [
   "typeOfProduct",
-  "brandId",
   "productShortDescriptionList",
   "productSpecificationList",
   "productVariants",

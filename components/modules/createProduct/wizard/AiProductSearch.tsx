@@ -487,6 +487,7 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
               specifications: dbProduct.specifications || [],
               category: dbProduct.category || "",
               brand: dbProduct.brand || "",
+              brandId: dbProduct.brandId || null,
               images: dbProduct.images || [],
               tags: dbProduct.tags || [],
               matchedCategoryId,
