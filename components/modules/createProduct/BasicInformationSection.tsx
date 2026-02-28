@@ -13,7 +13,7 @@ import ControlledTextInput from "@/components/shared/Forms/ControlledTextInput";
 import AddImageContent from "../profile/AddImageContent";
 import CloseWhiteIcon from "@/public/images/close-white.svg";
 import BrandSelect from "@/components/shared/BrandSelect";
-import { PRODUCT_CATEGORY_ID } from "@/utils/constants";
+import { PRODUCT_CATEGORY_ID, SERVICE_CATEGORY_ID } from "@/utils/constants";
 import { fetchSubCategoriesById } from "@/apis/requests/category.requests";
 import ReactSelect from "react-select";
 import DescriptionSection from "./DescriptionSection";
@@ -164,7 +164,8 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
 
   const watchProductImages = formContext.watch("productImages");
 
-  const categoryQuery = useCategory(PRODUCT_CATEGORY_ID.toString());
+  const categoryRootId = activeProductType === "R" ? SERVICE_CATEGORY_ID : PRODUCT_CATEGORY_ID;
+  const categoryQuery = useCategory(categoryRootId.toString());
 
   // Load top-level categories when category query is ready
   useEffect(() => {
