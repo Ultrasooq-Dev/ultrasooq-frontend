@@ -5,6 +5,7 @@ export interface ILoginRequest {
 
 export interface ILogin {
   accessToken: string;
+  refreshToken?: string;
   data: {
     status:
       | "WAITING"
@@ -35,6 +36,7 @@ export interface IRegister {
   message: string;
   status: boolean;
   accessToken: string;
+  refreshToken?: string;
 }
 
 export interface IVerifyOtpRequest {
@@ -65,6 +67,7 @@ export interface User {
 
 export interface IVerifyOtp {
   accessToken: string;
+  refreshToken?: string;
   data: User;
   message: string;
   status: boolean;
@@ -251,6 +254,7 @@ export interface ISwitchAccount {
   status: boolean;
   data: {
     accessToken: string;
+    refreshToken?: string;
     account: IUserAccount | IMainAccount;
   };
 }

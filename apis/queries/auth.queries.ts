@@ -177,6 +177,7 @@ export const useSocialLogin = () =>
   useMutation<
     {
       accessToken: string;
+      refreshToken?: string;
       data: any;
       message: string;
       status: boolean;

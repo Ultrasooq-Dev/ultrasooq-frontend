@@ -1906,5 +1906,21 @@
   "size_small": "Small",
   "text_input": "Text",
   "number_input": "Number",
-  "normal_product": "Normal Product"
+  "normal_product": "Normal Product",
+  "welcome_to": "Welcome to",
+  "join_marketplace_desc": "Join the leading B2B & B2C marketplace in the Middle East. Connect, trade, and grow your business.",
+  "secure": "Secure",
+  "fast": "Fast",
+  "trusted": "Trusted",
+  "sellers": "Sellers",
+  "countries": "Countries",
+  "fill_in_your_details": "Fill in your details to get started",
+  "secure_registration": "Your data is encrypted and secure",
+  "dont_worry": "Don't Worry!",
+  "reset_password_help": "We'll help you reset your password and get back to your account in no time.",
+  "enter_your_email": "Enter your email address",
+  "receive_verification_code": "Receive a verification code",
+  "set_new_password": "Set your new password",
+  "back_to_login": "Back to Login",
+  "all_rights_reserved": "All rights reserved."
 }
