@@ -443,7 +443,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ addressId, onClose }) => {
           <Button
             disabled={createAddress.isPending || updateAddress.isPending}
             type="submit"
-            className="theme-primary-btn mt-3 h-12 w-full rounded bg-dark-orange text-center text-lg font-bold leading-6"
+            className="theme-primary-btn mt-3 h-12 w-full rounded bg-primary text-primary-foreground text-center text-lg font-bold leading-6"
             dir={langDir}
             translate="no"
           >

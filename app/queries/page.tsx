@@ -86,7 +86,7 @@ const QueriesPage = () => {
                                                         <td>{convertDateTime(query.createdAt)}</td>
                                                         <td>
                                                             <button
-                                                                className="relative flex h-8 w-8 items-center justify-center rounded-full shadow-md!"
+                                                                className="relative flex h-8 w-8 items-center justify-center rounded-full bg-card text-foreground shadow-md!"
                                                                 onClick={() => {
                                                                     handleQueryModal();
                                                                     setSelectedQuery(query);

@@ -6090,7 +6090,7 @@ html[dir="rtl"] body * {
   /* end: cart-page */
 
   & .modal-header {
-    @apply flex justify-start border-b border-solid border-b-[#eee] px-6 py-4;
+    @apply flex justify-start border-b border-solid border-b-border px-6 py-4;
   }
 
   & .card-payment-form {
@@ -6126,11 +6126,11 @@ html[dir="rtl"] body * {
   /* end: cart-page */
 
   .add-new-address-modal & {
-    @apply flex justify-start border-b border-solid border-b-[#eee] px-6 py-4;
+    @apply flex justify-start border-b border-solid border-b-border px-6 py-4;
   }
 
   .customModal-s1 & {
-    @apply border-b border-solid border-b-[#eee] px-6 py-5;
+    @apply border-b border-solid border-b-border px-6 py-5;
   }
 
   /* start: responsive */
@@ -7139,7 +7139,7 @@ html[dir="rtl"] body * {
   @apply gap-0 p-0;
 
   & .modal-header {
-    @apply border-b border-solid border-b-[#eee] px-6 py-5;
+    @apply border-b border-solid border-b-border px-6 py-5;
   }
 
   & .modal-body {
@@ -13395,7 +13395,7 @@ html[dir="rtl"] body * {
   @apply sticky top-0 flex w-full max-w-[300px] flex-col gap-y-3;
 
   & .card-item {
-    @apply rounded-[3px] bg-white p-2.5 shadow-[1px_1px_5px_#b4b4b4];
+    @apply rounded-[3px] bg-card p-2.5 shadow-sm;
   }
 
   & .userInfo {
@@ -16262,15 +16262,15 @@ html[dir="rtl"] body * {
   }
 
   .team_members_heading h1 {
-    @apply text-4xl font-semibold leading-10 text-color-dark;
+    @apply text-4xl font-semibold leading-10 text-foreground;
   }
 
   .team_members_heading button {
-    @apply w-auto bg-primary rounded-sm p-3 text-center text-white capitalize font-semibold flex items-center justify-center;
+    @apply w-auto bg-primary rounded-sm p-3 text-center text-primary-foreground capitalize font-semibold flex items-center justify-center;
   }
 
   .team_members_table {
-    @apply w-full rounded-lg border border-solid border-[#E4E3E3] bg-white py-5 px-4;
+    @apply w-full rounded-lg border border-solid border-border bg-card py-5 px-4;
   }
 
   .team_members_table table {
@@ -16279,15 +16279,15 @@ html[dir="rtl"] body * {
   }
 
   .team_members_table table thead {
-    @apply w-full bg-[#F3F3F3] border border-solid border-[#E8E8E8] rounded-sm;
+    @apply w-full bg-muted border border-solid border-border rounded-sm;
   }
 
   .team_members_table table thead tr th {
-    @apply p-[20px] text-sm font-medium text-[#333] text-left;
+    @apply p-[20px] text-sm font-medium text-foreground text-left;
   }
 
   .team_members_table table tbody tr td {
-    @apply p-[20px] border-b border-solid border-[#E8E8E8] text-sm font-normal text-[#7F818D];
+    @apply p-[20px] border-b border-solid border-border text-sm font-normal text-muted-foreground;
   }
 
   .team_members_table table thead tr th:nth-child(4),

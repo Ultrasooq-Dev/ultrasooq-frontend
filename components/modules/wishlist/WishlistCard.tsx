@@ -195,9 +195,9 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
       const stars: Array<React.ReactNode> = [];
       for (let i = 1; i <= 5; i++) {
         if (i <= rating) {
-          stars.push(<FaStar key={i} color="#FFC107" size={14} />);
+          stars.push(<FaStar key={i} className="text-amber-400" size={14} />);
         } else {
-          stars.push(<FaRegStar key={i} color="#FFC107" size={14} />);
+          stars.push(<FaRegStar key={i} className="text-amber-400" size={14} />);
         }
       }
       return stars;

@@ -58,7 +58,7 @@ const WishlistPage = () => {
   return (
     <>
       <title dir={langDir} translate="no">{`${t("wishlist")} | Ultrasooq`}</title>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      <div className="min-h-screen bg-gradient-to-br from-background to-muted">
         <section className="w-full py-8">
           <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
             {/* Header Section */}
@@ -144,7 +144,7 @@ const WishlistPage = () => {
                   <div className="mt-6">
                     <Button
                       onClick={() => router.push("/home")}
-                      className="rounded-lg bg-primary px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary/90"
+                      className="rounded-lg bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
                       translate="no"
                     >
                       {t("browse_products")}
