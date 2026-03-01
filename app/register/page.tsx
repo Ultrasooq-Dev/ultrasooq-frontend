@@ -99,10 +99,10 @@ const formSchema = (t: any) => {
 // ---------------------------------------------------------------------------
 // Stepper Component
 // ---------------------------------------------------------------------------
-const STEPS = [
-  { key: 1, label: "Information", icon: "user" },
-  { key: 2, label: "Verification", icon: "shield" },
-  { key: 3, label: "Account Type", icon: "building" },
+const STEP_KEYS = [
+  { key: 1, labelKey: "step_information", icon: "user" },
+  { key: 2, labelKey: "step_verification", icon: "shield" },
+  { key: 3, labelKey: "step_account_type", icon: "building" },
 ] as const;
 
 function StepIcon({ icon, isActive, isCompleted }: { icon: string; isActive: boolean; isCompleted: boolean }) {
@@ -141,13 +141,15 @@ function StepIcon({ icon, isActive, isCompleted }: { icon: string; isActive: boo
 function RegistrationStepper({
   currentStep,
   langDir,
+  t,
 }: {
   currentStep: number;
   langDir: string;
+  t: (key: string) => string;
 }) {
   return (
     <div className="flex items-center justify-between" dir={langDir}>
-      {STEPS.map((step, idx) => {
+      {STEP_KEYS.map((step, idx) => {
         const isActive = currentStep === step.key;
         const isCompleted = currentStep > step.key;
         return (
@@ -180,8 +182,10 @@ function RegistrationStepper({
                 className={`text-[11px] font-semibold transition-colors duration-300 sm:text-xs ${
                   isActive ? "text-orange-600" : isCompleted ? "text-emerald-600" : "text-gray-400"
                 }`}
+                dir={langDir}
+                translate="no"
               >
-                {step.label}
+                {t(step.labelKey)}
               </span>
             </div>
           </React.Fragment>
@@ -670,17 +674,17 @@ export default function RegisterPage() {
                   <h2 className="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl" dir={langDir} translate="no">
                     {currentStep === 1 && (t("create_your_account") || "Create your account")}
                     {currentStep === 2 && (t("verify_otp") || "Verify your email")}
-                    {currentStep === 3 && (t("account_type") || "Choose account type")}
+                    {currentStep === 3 && t("account_type")}
                   </h2>
                   <p className="mt-1 text-xs text-gray-500 sm:text-sm" dir={langDir} translate="no">
                     {currentStep === 1 && (t("fill_in_your_details") || "Fill in your details to get started")}
                     {currentStep === 2 && (t("enter_otp") || "Enter the code sent to your email")}
-                    {currentStep === 3 && (t("choose_account_type") || "Select how you want to use Ultrasooq")}
+                    {currentStep === 3 && t("choose_account_type")}
                   </p>
                 </div>
 
                 {/* Stepper */}
-                <RegistrationStepper currentStep={currentStep} langDir={langDir} />
+                <RegistrationStepper currentStep={currentStep} langDir={langDir} t={t} />
               </div>
 
               {/* Card Body */}

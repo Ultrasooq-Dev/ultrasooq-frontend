@@ -475,22 +475,9 @@ export default function ProfilePage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [me.data]);
 
-  // Auto-open subaccount dialog once for each user after registration
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const userId = me.data?.data?.id;
-    if (!userId) return;
-
-    const storageKey = `subAccountPopupShown_${userId}`;
-    const alreadyShown = window.localStorage.getItem(storageKey) === "1";
-    if (alreadyShown) return;
-
-    if (fromRegister && accountsData?.data && !hasAdditionalAccounts) {
-      setShowSubAccountDialog(true);
-      window.localStorage.setItem(storageKey, "1");
-    }
-  }, [fromRegister, accountsData?.data, hasAdditionalAccounts, me.data?.data?.id]);
+  // Account type selection is now handled in the registration steps flow.
+  // The sub-account dialog can still be opened manually from the profile page.
+  // No longer auto-open after registration.
 
   return (
     <section className="relative w-full py-7">
