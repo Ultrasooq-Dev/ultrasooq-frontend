@@ -25,7 +25,6 @@ import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { cn } from "@/lib/utils";
 import {
-  EMAIL_REGEX_LOWERCASE,
   GENDER_LIST,
   ULTRASOOQ_TOKEN_KEY,
   SOCIAL_MEDIA_ICON,
@@ -94,9 +93,7 @@ const formSchema = (t: any) => {
       .email({
         message: t("invalid_email_address"),
       })
-      .refine((val) => (EMAIL_REGEX_LOWERCASE.test(val) ? true : false), {
-        message: t("email_must_be_lower_case"),
-      }),
+      .transform((val) => val.toLowerCase()),
     phoneNumberList: z.array(
       z.object({
         cc: z.string().trim(),

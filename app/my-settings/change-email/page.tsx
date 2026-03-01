@@ -17,7 +17,6 @@ import { useChangeEmail } from "@/apis/queries/auth.queries";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { EMAIL_REGEX_LOWERCASE } from "@/utils/constants";
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/context/AuthContext";
 
@@ -30,9 +29,7 @@ const formSchema = (t: any) => {
       .email({
         message: t("invalid_email_address"),
       })
-      .refine((val) => (EMAIL_REGEX_LOWERCASE.test(val) ? true : false), {
-        message: t("email_must_be_lower_case"),
-      }),
+      .transform((val) => val.toLowerCase()),
   });
 };
 

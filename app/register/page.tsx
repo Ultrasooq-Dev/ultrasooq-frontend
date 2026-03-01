@@ -25,7 +25,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { EMAIL_REGEX_LOWERCASE, ULTRASOOQ_TOKEN_KEY, ULTRASOOQ_REFRESH_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY, ULTRASOOQ_REFRESH_TOKEN_KEY } from "@/utils/constants";
 import { setCookie } from "cookies-next";
 import PolicyContent from "@/components/shared/PolicyContent";
 import TermsContent from "@/components/shared/TermsContent";
@@ -63,9 +63,7 @@ const formSchema = (t: any) => {
         .trim()
         .min(5, { message: t("email_is_required") })
         .email()
-        .refine((val) => (EMAIL_REGEX_LOWERCASE.test(val) ? true : false), {
-          message: t("email_must_be_lowercase"),
-        }),
+        .transform((val) => val.toLowerCase()),
       initialPassword: z
         .string()
         .trim()

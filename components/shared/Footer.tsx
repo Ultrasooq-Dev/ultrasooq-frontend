@@ -16,7 +16,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import {
-  EMAIL_REGEX_LOWERCASE,
   WHATSAPP_SUPPORT_NUMBER,
   WHATSAPP_SUPPORT_MESSAGE,
 } from "@/utils/constants";
@@ -35,9 +34,7 @@ const formSchema = (t: any) => {
       .email({
         message: t("invalid_email_address"),
       })
-      .refine((val) => (EMAIL_REGEX_LOWERCASE.test(val) ? true : false), {
-        message: t("email_must_be_lower_case"),
-      }),
+      .transform((val) => val.toLowerCase()),
   });
 };
 
