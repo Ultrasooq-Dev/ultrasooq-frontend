@@ -2,6 +2,7 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import { Sparkles, Tag, FolderTree, Loader2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface AiCategorizationOverlayProps {
   isVisible: boolean;
@@ -12,25 +13,25 @@ interface AiCategorizationOverlayProps {
 const STATUS_CONFIG = {
   analyzing: {
     icon: Sparkles,
-    label: "Analyzing product name...",
+    labelKey: "ai_analyzing_product",
     color: "text-warning",
     bgColor: "bg-warning/5",
   },
   matching: {
     icon: Tag,
-    label: "Matching tags & categories...",
+    labelKey: "ai_matching_categories",
     color: "text-primary",
     bgColor: "bg-primary/5",
   },
   done: {
     icon: FolderTree,
-    label: "Categories found!",
+    labelKey: "ai_categories_found",
     color: "text-success",
     bgColor: "bg-success/5",
   },
   error: {
     icon: Sparkles,
-    label: "Could not auto-detect. Please select manually.",
+    labelKey: "ai_auto_detect_failed",
     color: "text-destructive",
     bgColor: "bg-destructive/5",
   },
@@ -41,6 +42,8 @@ const AiCategorizationOverlay: React.FC<AiCategorizationOverlayProps> = ({
   status,
   message,
 }) => {
+  const t = useTranslations();
+
   if (!isVisible) return null;
 
   const config = STATUS_CONFIG[status];
@@ -82,11 +85,11 @@ const AiCategorizationOverlay: React.FC<AiCategorizationOverlayProps> = ({
               config.color
             )}
           >
-            {message || config.label}
+            {message || t(config.labelKey)}
           </h3>
           {isLoading && (
             <p className="mt-1 text-sm text-muted-foreground">
-              This may take a few seconds...
+              {t("ai_may_take_few_seconds")}
             </p>
           )}
         </div>

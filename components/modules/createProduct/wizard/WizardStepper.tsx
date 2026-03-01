@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
 import type { WizardStep } from "./wizardTypes";
 import { WIZARD_STEPS } from "./wizardTypes";
+import { useTranslations } from "next-intl";
 
 interface WizardStepperProps {
   currentStep: WizardStep;
@@ -16,10 +17,12 @@ const WizardStepper: React.FC<WizardStepperProps> = ({
   completedSteps,
   onStepClick,
 }) => {
+  const t = useTranslations();
+
   return (
     <div className="w-full mb-8">
       <div className="flex items-center justify-between relative">
-        {WIZARD_STEPS.map(({ step, label, description }, index) => {
+        {WIZARD_STEPS.map(({ step, labelKey, descriptionKey }, index) => {
           const isActive = currentStep === step;
           const isCompleted = completedSteps.has(step);
           const isClickable = isCompleted || step < currentStep;
@@ -74,7 +77,7 @@ const WizardStepper: React.FC<WizardStepperProps> = ({
                       : "text-muted-foreground"
                   )}
                 >
-                  {label}
+                  {t(labelKey)}
                 </span>
                 <span
                   className={cn(
@@ -82,7 +85,7 @@ const WizardStepper: React.FC<WizardStepperProps> = ({
                     isActive ? "text-muted-foreground" : "text-muted-foreground"
                   )}
                 >
-                  {description}
+                  {t(descriptionKey)}
                 </span>
               </div>
             </React.Fragment>

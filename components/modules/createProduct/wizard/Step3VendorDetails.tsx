@@ -87,7 +87,7 @@ const Step3VendorDetails: React.FC<Step3Props> = ({ activeProductType }) => {
                 {t("product_condition")}
               </h2>
               <p className="text-sm text-muted-foreground">
-                Specify the condition of your product
+                {t("specify_product_condition_desc")}
               </p>
             </div>
           </div>
@@ -169,10 +169,10 @@ const Step3VendorDetails: React.FC<Step3Props> = ({ activeProductType }) => {
             </div>
             <div>
               <h2 className="text-lg font-semibold text-foreground">
-                Pricing & Sales
+                {t("pricing_and_sales")}
               </h2>
               <p className="text-sm text-muted-foreground">
-                Set prices, discounts, and stock
+                {t("set_prices_discounts_stock")}
               </p>
             </div>
           </div>
@@ -204,10 +204,10 @@ const Step3VendorDetails: React.FC<Step3Props> = ({ activeProductType }) => {
               </div>
               <div>
                 <h2 className="text-lg font-semibold text-foreground">
-                  Variant Pricing
+                  {t("variant_pricing")}
                 </h2>
                 <p className="text-sm text-muted-foreground">
-                  Set price and stock for each variant combination
+                  {t("set_variant_pricing_desc")}
                 </p>
               </div>
             </div>
@@ -245,10 +245,10 @@ const Step3VendorDetails: React.FC<Step3Props> = ({ activeProductType }) => {
             </div>
             <div>
               <h2 className="text-lg font-semibold text-foreground">
-                Location & Customization
+                {t("location_and_customization")}
               </h2>
               <p className="text-sm text-muted-foreground">
-                Sell locations and product customization
+                {t("sell_locations_and_customization")}
               </p>
             </div>
           </div>

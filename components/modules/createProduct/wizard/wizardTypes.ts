@@ -37,7 +37,7 @@ export const STEP_3_FIELDS = [
 ] as const;
 
 export const WIZARD_STEPS = [
-  { step: 1 as WizardStep, label: "Product Info", description: "Name & pictures" },
-  { step: 2 as WizardStep, label: "Details & Specs", description: "Category, specs & variants" },
-  { step: 3 as WizardStep, label: "Vendor Details", description: "Pricing & shipping" },
+  { step: 1 as WizardStep, labelKey: "wizard_step_product_info", descriptionKey: "wizard_step_product_info_desc" },
+  { step: 2 as WizardStep, labelKey: "wizard_step_details_specs", descriptionKey: "wizard_step_details_specs_desc" },
+  { step: 3 as WizardStep, labelKey: "wizard_step_vendor_details", descriptionKey: "wizard_step_vendor_details_desc" },
 ];

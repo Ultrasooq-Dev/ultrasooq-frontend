@@ -1574,8 +1574,7 @@ const CreateProductPage = () => {
     if (!currentUserId) {
       toast({
         title: t("error"),
-        description:
-          "Unable to determine current account. Please try switching accounts and try again.",
+        description: t("unable_to_determine_account"),
         variant: "danger",
       });
       return;

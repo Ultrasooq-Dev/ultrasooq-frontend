@@ -2,6 +2,7 @@
 import React from "react";
 import BasicInformationSection from "../BasicInformationSection";
 import dynamic from "next/dynamic";
+import { useTranslations } from "next-intl";
 
 const DescriptionAndSpecificationSection = dynamic(
   () => import("../DescriptionAndSpecificationSection"),
@@ -26,6 +27,8 @@ const Step2ProductDetails: React.FC<Step2Props> = ({
   selectedCategoryIds,
   copy = false,
 }) => {
+  const t = useTranslations();
+
   return (
     <div className="space-y-6">
       {/* Category, Brand, Condition, Tags */}
@@ -49,10 +52,10 @@ const Step2ProductDetails: React.FC<Step2Props> = ({
             </div>
             <div>
               <h2 className="text-lg font-semibold text-foreground">
-                Category & Basic Details
+                {t("category_and_basic_details")}
               </h2>
               <p className="text-sm text-muted-foreground">
-                Category, brand, condition, and tags
+                {t("category_brand_condition_tags")}
               </p>
             </div>
           </div>
@@ -89,10 +92,10 @@ const Step2ProductDetails: React.FC<Step2Props> = ({
             </div>
             <div>
               <h2 className="text-lg font-semibold text-foreground">
-                Description & Specifications
+                {t("description_and_specifications")}
               </h2>
               <p className="text-sm text-muted-foreground">
-                Product details, specs, and variants
+                {t("product_details_specs_variants")}
               </p>
             </div>
           </div>

@@ -90,7 +90,7 @@ const Step1NameAndPictures: React.FC<Step1Props> = ({
     if (!productName.trim() || productName.trim().length < 3) {
       toast({
         title: t("search_term_too_short") || "Search term too short",
-        description: "Please enter at least 3 characters in the product name",
+        description: t("please_enter_at_least_3_characters"),
         variant: "destructive",
       });
       return;
@@ -118,7 +118,7 @@ const Step1NameAndPictures: React.FC<Step1Props> = ({
               {t("product_name")}
             </h3>
             <p className="text-sm text-muted-foreground">
-              Enter the name of your product
+              {t("enter_product_name_desc")}
             </p>
           </div>
         </div>
@@ -182,7 +182,7 @@ const Step1NameAndPictures: React.FC<Step1Props> = ({
               {t("product_images")}
             </h3>
             <p className="text-sm text-muted-foreground">
-              Add images and videos of your product
+              {t("add_images_and_videos_desc")}
             </p>
           </div>
           {/* AI Scan button — next to the images header */}
@@ -261,21 +261,21 @@ const Step1NameAndPictures: React.FC<Step1Props> = ({
                     onClick={() => handleEditImage(index)}
                     className="rounded-full bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground shadow hover:bg-muted"
                   >
-                    Edit
+                    {t("edit")}
                   </button>
                   <button
                     type="button"
                     onClick={() => handleRemoveImage(index)}
                     className="rounded-full bg-destructive px-3 py-1.5 text-xs font-medium text-white shadow hover:bg-destructive"
                   >
-                    Remove
+                    {t("remove")}
                   </button>
                 </div>
 
                 {/* Index badge */}
                 {index === 0 && (
                   <div className="absolute left-2 top-2 rounded bg-warning px-2 py-0.5 text-xs font-bold text-white">
-                    Main
+                    {t("main")}
                   </div>
                 )}
               </div>

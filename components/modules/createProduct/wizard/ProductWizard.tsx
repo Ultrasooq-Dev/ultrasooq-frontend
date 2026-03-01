@@ -49,10 +49,8 @@ const ProductWizard: React.FC<ProductWizardProps> = ({
     async (aiData: any) => {
       await populateFormWithAIData(form, aiData, setSelectedCategoryIds);
       toast({
-        title: t("product_data_loaded") || "Product Data Loaded",
-        description:
-          t("ai_data_loaded_successfully") ||
-          "AI-generated data loaded. Review and complete the form.",
+        title: t("product_data_loaded"),
+        description: t("ai_data_loaded_successfully"),
       });
     },
     [form, setSelectedCategoryIds, toast, t],
@@ -147,7 +145,7 @@ const ProductWizard: React.FC<ProductWizardProps> = ({
             {/* Skip hint on Step 1 */}
             {currentStep === 1 && (
               <span className="text-xs text-muted-foreground">
-                {t("skip_ai_hint") || "You can skip AI search"}
+                {t("skip_ai_hint")}
               </span>
             )}
             {currentStep < 3 ? (
@@ -164,9 +162,31 @@ const ProductWizard: React.FC<ProductWizardProps> = ({
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                onClick={() => {
-                  form.trigger();
-                  onSubmit();
+                onClick={async (e) => {
+                  // Validate all fields first and show toast if there are errors
+                  const isValid = await form.trigger();
+                  if (!isValid) {
+                    e.preventDefault(); // Prevent form submission if invalid
+
+                    // Check for specific common issues and show helpful toast
+                    const errors = form.formState.errors;
+                    const categoryId = form.getValues("categoryId");
+
+                    if (categoryId === 0 || !categoryId) {
+                      toast({
+                        title: t("validation_error"),
+                        description: t("please_select_category"),
+                        variant: "danger",
+                      });
+                    } else {
+                      toast({
+                        title: t("validation_error"),
+                        description: t("please_fill_required_fields"),
+                        variant: "danger",
+                      });
+                    }
+                    return;
+                  }
                 }}
                 className="gap-2 rounded-xl bg-warning px-8 py-3 font-medium text-white shadow-lg shadow-orange-200 hover:bg-warning disabled:opacity-50"
                 dir={langDir}
