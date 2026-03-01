@@ -90,9 +90,6 @@ export const useRfqProducts = (
           const res = await fetchFactoriesProductsByUserBusinessCategory(payload);
           return res.data;
         },
-        // onError: (err: APIResponseError) => {
-        //   console.log(err);
-        // },
         enabled,
       });
 

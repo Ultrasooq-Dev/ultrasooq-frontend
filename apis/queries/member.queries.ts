@@ -62,9 +62,6 @@ export const useCreateMember = () => {
         const res = await fetchPermissions();
         return res.data;
       },
-      // onError: (err: APIResponseError) => {
-      //   console.log(err);
-      // },
       enabled,
     });
 

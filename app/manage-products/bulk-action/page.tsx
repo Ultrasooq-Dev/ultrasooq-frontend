@@ -23,7 +23,7 @@ const BulkActionPage = () => {
   
   const [selectedProducts, setSelectedProducts] = useState<any[]>([]);
   const [isUpdating, setIsUpdating] = useState(false);
-  const [debugMode, setDebugMode] = useState(true); // Set to false to enable page reload
+  const [debugMode, setDebugMode] = useState(false);
   const prevProductIdsRef = useRef<string | null>(null);
 
   // Bulk update mutation

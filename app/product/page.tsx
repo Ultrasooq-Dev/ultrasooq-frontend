@@ -1241,7 +1241,7 @@ const CreateProductPage = () => {
             }, 100);
           })
           .catch((err) => {
-            console.error("🔵 [DEBUG] Error building category path:", err);
+            console.error("Error building category path:", err);
             // Fallback: use categoryId as categoryLocation
             const updatedProduct = {
               ...existingProduct,

@@ -41,9 +41,9 @@ import { Button } from "@/components/ui/button";
 import LoaderWithMessage from "@/components/shared/LoaderWithMessage";
 import { useWalletBalance } from "@/apis/queries/wallet.queries";
 
-// Load Stripe with your public key
+// Load Stripe with public key from env
 const stripePromise = loadStripe(
-  "pk_test_51QuptGPQ2VnoEyMPay2u4FyltporIQfMh9hWcp2EEresPjx07AuT4lFLuvnNrvO7ksqtaepmRQHfYs4FLia8lIV500i83tXYMR",
+  process.env.NEXT_PUBLIC_STRIPE_KEY || "",
 );
 
 const CompleteOrderPage = () => {

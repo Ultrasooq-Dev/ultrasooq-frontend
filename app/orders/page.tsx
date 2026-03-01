@@ -21,8 +21,8 @@ import { Elements, CardElement, useStripe, useElements } from "@stripe/react-str
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/context/AuthContext";
 
-// Load Stripe with your public key
-const stripePromise = loadStripe("pk_test_51QuptGPQ2VnoEyMPay2u4FyltporIQfMh9hWcp2EEresPjx07AuT4lFLuvnNrvO7ksqtaepmRQHfYs4FLia8lIV500i83tXYMR");
+// Load Stripe with public key from env
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY || "");
 
 const OrdersPage = () => {
   const t = useTranslations();
