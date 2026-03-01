@@ -13,7 +13,7 @@ import ControlledTextInput from "@/components/shared/Forms/ControlledTextInput";
 import AddImageContent from "../profile/AddImageContent";
 import CloseWhiteIcon from "@/public/images/close-white.svg";
 import BrandSelect from "@/components/shared/BrandSelect";
-import { PRODUCT_CATEGORY_ID, PRODUCT_CONDITION_LIST } from "@/utils/constants";
+import { PRODUCT_CATEGORY_ID, SERVICE_CATEGORY_ID } from "@/utils/constants";
 import { fetchSubCategoriesById } from "@/apis/requests/category.requests";
 import ReactSelect from "react-select";
 import DescriptionSection from "./DescriptionSection";
@@ -164,7 +164,8 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
 
   const watchProductImages = formContext.watch("productImages");
 
-  const categoryQuery = useCategory(PRODUCT_CATEGORY_ID.toString());
+  const categoryRootId = activeProductType === "R" ? SERVICE_CATEGORY_ID : PRODUCT_CATEGORY_ID;
+  const categoryQuery = useCategory(categoryRootId.toString());
 
   // Load top-level categories when category query is ready
   useEffect(() => {
@@ -274,15 +275,6 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
     }
   };
 
-  const productConditions = () => {
-    return PRODUCT_CONDITION_LIST.map((item) => {
-      return {
-        label: t(item.label),
-        value: item.value,
-      };
-    });
-  };
-
   const handleCreateTag = async (newTag: string) => {
     const response = await createTag.mutateAsync({ tagName: newTag });
     if (response.status) {
@@ -341,26 +333,11 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {categoryLevels.map((level, levelIndex) => {
-            const pathLength = selectedCategoryIds?.length || 0;
-            const hasPrefilledPath = pathLength > 0;
-
-            // When we HAVE a prefilled path (copy/edit), consider the last 2 levels
-            // as vendor-visible (parent + leaf) and hide the prefix.
-            // Example: [1,2,4,99,101] → vendorStartIndex = 3 (99,101)
-            // Example: [10,20,30]      → vendorStartIndex = 1 (20,30)
-            const vendorStartIndex = hasPrefilledPath
-              ? Math.max(0, pathLength - 2)
-              : 0;
-
-            // Hide prefix levels for prefilled paths (admin/internal)
-            if (hasPrefilledPath && levelIndex < vendorStartIndex) return null;
-
-            const relativeIndex = levelIndex - vendorStartIndex; // 0 = parent, >0 = subs
-            const isParentLevel = relativeIndex === 0;
+            const isParentLevel = levelIndex === 0;
 
             const labelText = isParentLevel
               ? t("product_category")
-              : `${t("sub_category")} ${relativeIndex}`;
+              : `${t("sub_category")} ${levelIndex}`;
 
             return (
               <div key={levelIndex} className="space-y-3">
@@ -491,72 +468,6 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
             selectedBrandType={formContext.getValues("typeOfProduct")}
             productType={activeProductType}
           />
-
-          <div className="space-y-3">
-            <Label
-              className="flex items-center gap-2 text-sm font-medium text-muted-foreground"
-              dir={langDir}
-              translate="no"
-            >
-              <svg
-                className="h-4 w-4 text-muted-foreground"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              {t("product_condition")}
-            </Label>
-            <Controller
-              name="productCondition"
-              control={formContext.control}
-              render={({ field }) => (
-                <ReactSelect
-                  {...field}
-                  onChange={(newValue) => {
-                    field.onChange(newValue?.value);
-                  }}
-                  options={productConditions()}
-                  value={productConditions().find(
-                    (item: any) => item.value === field.value,
-                  )}
-                  styles={customStyles}
-                  instanceId="productCondition"
-                  placeholder={t("select")}
-                />
-              )}
-            />
-            {formContext.formState.errors["productCondition"] && (
-              <p
-                className="mt-1 flex items-center gap-1 text-sm text-destructive"
-                dir={langDir}
-              >
-                <svg
-                  className="h-4 w-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                {
-                  formContext.formState.errors["productCondition"]
-                    ?.message as string
-                }
-              </p>
-            )}
-          </div>
         </div>
       </div>
 

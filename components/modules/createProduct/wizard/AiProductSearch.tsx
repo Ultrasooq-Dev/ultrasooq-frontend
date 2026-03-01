@@ -393,7 +393,7 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
       },
     }));
 
-    // ── Sync search results ─────────────────────────────────────────────
+    // ── Sync search results & auto-trigger AI model search ──────────────
     useEffect(() => {
       if (!shouldSearch || !querySearchTerm) return;
 
@@ -401,8 +401,12 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
         const results = searchData.data;
         setSearchResults(results);
         setIsSearching(false);
-        // Don't auto-trigger AI — just show results (or "no results").
-        // The user can click "Load More with AI" if they want AI suggestions.
+
+        // Auto-trigger AI to find all product models in parallel
+        // This ensures the user always sees AI model suggestions
+        if (aiProductModels.length === 0 && !isAIGenerating) {
+          handleAIGenerate(querySearchTerm, "text");
+        }
       }
     }, [searchData, querySearchTerm, shouldSearch]);
 
@@ -420,7 +424,7 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
       setShowProductPopup(true);
     };
 
-    // ── Select model → generate details → preview ──────────────────────
+    // ── Select model → check DB first → AI fallback → preview ──────────
     const handleSelectModel = useCallback(
       async (model: ModelEntry | string) => {
         const modelName =
@@ -436,6 +440,7 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
         try {
           const token = getCookie(ULTRASOOQ_TOKEN_KEY);
 
+          // ── Step 1: Check DB first ──────────────────────────────
           const checkRes = await fetch(
             `${getApiUrl()}/product/check-model-exists`,
             {
@@ -457,6 +462,45 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
             return;
           }
 
+          // ── Step 2: If found in DB, use DB data directly ────────
+          if (checkData.exists && checkData.existingProduct) {
+            const dbProduct = checkData.existingProduct;
+
+            // Resolve category path from DB categoryId
+            let matchedCategoryId: number | null = dbProduct.categoryId || null;
+            let categoryConfidence = matchedCategoryId ? "high" : "low";
+            let categoryPath: number[] | null = null;
+
+            if (
+              matchedCategoryId &&
+              categoriesQuery?.data?.data?.children
+            ) {
+              categoryPath = findCategoryPathInHierarchy(
+                categoriesQuery.data.data.children,
+                matchedCategoryId,
+              );
+            }
+
+            setPreviewData({
+              productName: dbProduct.productName,
+              description: dbProduct.description || "",
+              specifications: dbProduct.specifications || [],
+              category: dbProduct.category || "",
+              brand: dbProduct.brand || "",
+              brandId: dbProduct.brandId || null,
+              images: dbProduct.images || [],
+              tags: dbProduct.tags || [],
+              matchedCategoryId,
+              categoryConfidence,
+              categoryPath,
+              modelExists: true,
+              fromDatabase: true,
+            });
+            setShowPreviewModal(true);
+            return;
+          }
+
+          // ── Step 3: Not in DB → fall back to AI generation ──────
           const detailsRes = await fetch(
             `${getApiUrl()}/product/ai-generate-details`,
             {
@@ -512,7 +556,8 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
             matchedCategoryId,
             categoryConfidence,
             categoryPath,
-            modelExists: checkData.exists,
+            modelExists: false,
+            fromDatabase: false,
           });
           setShowPreviewModal(true);
         } catch (err: any) {
@@ -1008,21 +1053,27 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
                   {previewData.modelExists !== null && (
                     <div
                       className={`col-span-2 rounded-lg p-3 ${
-                        previewData.modelExists
-                          ? "border border-warning/20 bg-warning/5"
-                          : "border border-success/20 bg-success/5"
+                        previewData.fromDatabase
+                          ? "border border-info/20 bg-info/5"
+                          : previewData.modelExists
+                            ? "border border-warning/20 bg-warning/5"
+                            : "border border-success/20 bg-success/5"
                       }`}
                     >
                       <p
                         className={`text-sm font-medium ${
-                          previewData.modelExists
-                            ? "text-warning"
-                            : "text-success"
+                          previewData.fromDatabase
+                            ? "text-info"
+                            : previewData.modelExists
+                              ? "text-warning"
+                              : "text-success"
                         }`}
                       >
-                        {previewData.modelExists
-                          ? "This model already exists in your catalog"
-                          : "This is a new model"}
+                        {previewData.fromDatabase
+                          ? "Details loaded from database (no AI needed)"
+                          : previewData.modelExists
+                            ? "This model already exists in your catalog"
+                            : "This is a new model (details generated by AI)"}
                       </p>
                     </div>
                   )}

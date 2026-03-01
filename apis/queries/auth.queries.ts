@@ -18,7 +18,7 @@ import {
 } from "../requests/auth.requests";
 import { APIResponseError } from "@/utils/types/common.types";
 import { getCookie, setCookie } from "cookies-next";
-import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY, ULTRASOOQ_REFRESH_TOKEN_KEY } from "@/utils/constants";
 import {
   IChangeEmail,
   IChangeEmailRequest,
@@ -177,6 +177,7 @@ export const useSocialLogin = () =>
   useMutation<
     {
       accessToken: string;
+      refreshToken?: string;
       data: any;
       message: string;
       status: boolean;
@@ -261,10 +262,15 @@ export const useSwitchAccount = () => {
   return useMutation<ISwitchAccount, APIResponseError, ISwitchAccountRequest>({
     mutationFn: (payload) => switchAccount(payload).then((res) => res.data),
     onSuccess: async (data) => {
-      // Update the token in cookies FIRST (7 days expiration)
+      // Update the tokens in cookies FIRST (7 days expiration)
       setCookie(ULTRASOOQ_TOKEN_KEY, data.data.accessToken, {
         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       });
+      if (data.data.refreshToken) {
+        setCookie(ULTRASOOQ_REFRESH_TOKEN_KEY, data.data.refreshToken, {
+          expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        });
+      }
 
       // Clear all cached query data so stale data from the old account is removed.
       // Use removeQueries instead of resetQueries to avoid canceling active observers.

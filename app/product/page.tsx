@@ -243,7 +243,7 @@ const formSchemaForTypeP = (t: any) => {
           error: t("provide_you_product_type"),
         })
         .trim(),
-      brandId: z.number().min(1, { message: t("brand_is_required") }),
+      brandId: z.number().optional(),
       productCountryId: z.coerce.number().optional().or(z.literal(0)),
       productStateId: z.coerce.number().optional().or(z.literal(0)),
       productCityId: z.coerce.number().optional().or(z.literal(0)),
@@ -433,7 +433,7 @@ const formSchemaForTypeR = (t: any) => {
           error: t("provide_you_product_type"),
         })
         .trim(),
-      brandId: z.number().min(1, { message: t("brand_is_required") }),
+      brandId: z.number().optional(),
       productCondition: z.string().trim().optional(),
       productTagList: z
         .array(
@@ -1750,8 +1750,13 @@ const CreateProductPage = () => {
     delete updatedFormData.sellCityIds;
 
     delete updatedFormData.setUpPrice;
-    delete updatedFormData.productCondition;
 
+    // Save values before deleting from root — needed in edit mode
+    const savedProductCondition = updatedFormData.productCondition;
+    const savedIsStockRequired = updatedFormData.isStockRequired;
+    const savedIsOfferPriceRequired = updatedFormData.isOfferPriceRequired;
+
+    delete updatedFormData.productCondition;
     delete updatedFormData.isStockRequired;
     delete updatedFormData.isOfferPriceRequired;
 
@@ -1976,11 +1981,11 @@ const CreateProductPage = () => {
         // Calculate status based on the same logic as create mode
         const calculatedStatus =
           activeProductType === "R"
-            ? updatedFormData.offerPrice || updatedFormData.isOfferPriceRequired
+            ? updatedFormData.offerPrice || savedIsOfferPriceRequired
               ? "ACTIVE"
               : "INACTIVE"
             : updatedFormData.productPrice ||
-                updatedFormData.isOfferPriceRequired
+                savedIsOfferPriceRequired
               ? "ACTIVE"
               : "INACTIVE";
 
@@ -2042,9 +2047,9 @@ const CreateProductPage = () => {
           maxQuantityPerCustomer:
             updatedFormData.productPriceList?.[0]?.maxQuantityPerCustomer ||
             null,
-          productCondition: updatedFormData.productCondition,
-          askForPrice: updatedFormData.isOfferPriceRequired ? "YES" : "NO",
-          askForStock: updatedFormData.isStockRequired ? "YES" : "NO",
+          productCondition: savedProductCondition,
+          askForPrice: savedIsOfferPriceRequired ? "YES" : "NO",
+          askForStock: savedIsStockRequired ? "YES" : "NO",
           status: calculatedStatus,
           productPrice: updatedFormData.productPrice || 0,
           offerPrice: updatedFormData.offerPrice || 0,

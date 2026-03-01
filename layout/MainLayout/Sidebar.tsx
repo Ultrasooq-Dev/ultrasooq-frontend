@@ -35,7 +35,7 @@ import {
   WalletIcon,
 } from "lucide-react";
 import { getCookie, deleteCookie } from "cookies-next";
-import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY, ULTRASOOQ_REFRESH_TOKEN_KEY } from "@/utils/constants";
 import { useCurrentAccount } from "@/apis/queries/auth.queries";
 import { useMe } from "@/apis/queries/user.queries";
 import { useQueryClient } from "@tanstack/react-query";
@@ -413,8 +413,9 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
         isLogout: true,
         onClick: async () => {
           try {
-            // Delete the token cookie
+            // Delete auth cookies
             deleteCookie(ULTRASOOQ_TOKEN_KEY);
+            deleteCookie(ULTRASOOQ_REFRESH_TOKEN_KEY);
             // Clear React Query cache
             queryClient.clear();
             // Clear user from AuthContext

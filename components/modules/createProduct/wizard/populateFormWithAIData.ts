@@ -96,6 +96,14 @@ export async function populateFormWithAIData(
     form.setValue("productPrice", price.toString());
   }
 
+  // Brand auto-fill
+  if (aiData.brandId) {
+    form.setValue("brandId", aiData.brandId);
+    if (aiData.brand) {
+      form.setValue("brandName", aiData.brand);
+    }
+  }
+
   // Category matching (async path building)
   if (
     aiData.matchedCategoryId &&

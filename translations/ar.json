@@ -1906,5 +1906,21 @@
   "size_small": "صغير",
   "text_input": "نص",
   "number_input": "رقم",
-  "normal_product": "منتج عادي"
+  "normal_product": "منتج عادي",
+  "welcome_to": "مرحباً بك في",
+  "join_marketplace_desc": "انضم إلى السوق الرائد للتجارة بين الشركات والمستهلكين في الشرق الأوسط. تواصل وتداول ونمِّ أعمالك.",
+  "secure": "آمن",
+  "fast": "سريع",
+  "trusted": "موثوق",
+  "sellers": "البائعون",
+  "countries": "الدول",
+  "fill_in_your_details": "أدخل بياناتك للبدء",
+  "secure_registration": "بياناتك مشفرة وآمنة",
+  "dont_worry": "لا تقلق!",
+  "reset_password_help": "سنساعدك على إعادة تعيين كلمة المرور والعودة إلى حسابك في أسرع وقت.",
+  "enter_your_email": "أدخل عنوان بريدك الإلكتروني",
+  "receive_verification_code": "استلم رمز التحقق",
+  "set_new_password": "قم بتعيين كلمة المرور الجديدة",
+  "back_to_login": "العودة لتسجيل الدخول",
+  "all_rights_reserved": "جميع الحقوق محفوظة."
 }

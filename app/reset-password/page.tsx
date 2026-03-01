@@ -5,7 +5,7 @@ import PasswordChangeSuccessContent from "@/components/shared/PasswordChangeSucc
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { useToast } from "@/components/ui/use-toast";
-import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
+import { ULTRASOOQ_TOKEN_KEY, ULTRASOOQ_REFRESH_TOKEN_KEY } from "@/utils/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { deleteCookie, setCookie } from "cookies-next";
 import Image from "next/image";
