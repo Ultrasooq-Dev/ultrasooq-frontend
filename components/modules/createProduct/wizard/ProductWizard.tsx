@@ -16,6 +16,12 @@ import Step3VendorDetails from "./Step3VendorDetails";
 import { useWizardForm } from "./useWizardForm";
 import { useAiCategorization } from "./useAiCategorization";
 import { populateFormWithAIData } from "./populateFormWithAIData";
+import {
+  STEP_1_VALIDATE_FIELDS,
+  STEP_2_VALIDATE_FIELDS,
+  STEP_3_VALIDATE_FIELDS,
+} from "./wizardSchemas";
+import type { WizardStep } from "./wizardTypes";
 
 interface ProductWizardProps {
   form: UseFormReturn<any>;
@@ -72,6 +78,7 @@ const ProductWizard: React.FC<ProductWizardProps> = ({
     completedSteps,
     goNext,
     goBack,
+    goToStep,
     onStepClick,
   } = useWizardForm({
     form,
@@ -166,16 +173,26 @@ const ProductWizard: React.FC<ProductWizardProps> = ({
                   // Validate all fields first and show toast if there are errors
                   const isValid = await form.trigger();
                   if (!isValid) {
-                    e.preventDefault(); // Prevent form submission if invalid
+                    e.preventDefault();
 
-                    // Check for specific common issues and show helpful toast
-                    const errors = form.formState.errors;
-                    const categoryId = form.getValues("categoryId");
+                    // Detect which step has the first error and navigate there
+                    const errorKeys = Object.keys(form.formState.errors);
 
-                    if (categoryId === 0 || !categoryId) {
+                    const stepFieldMap: { step: WizardStep; fields: string[]; label: string }[] = [
+                      { step: 1, fields: STEP_1_VALIDATE_FIELDS, label: t("wizard_step_product_info") },
+                      { step: 2, fields: STEP_2_VALIDATE_FIELDS, label: t("wizard_step_details_specs") },
+                      { step: 3, fields: STEP_3_VALIDATE_FIELDS, label: t("wizard_step_vendor_details") },
+                    ];
+
+                    const errorStep = stepFieldMap.find(({ fields }) =>
+                      errorKeys.some((key) => fields.some((f) => key === f || key.startsWith(f + ".")))
+                    );
+
+                    if (errorStep && errorStep.step !== currentStep) {
+                      goToStep(errorStep.step);
                       toast({
                         title: t("validation_error"),
-                        description: t("please_select_category"),
+                        description: `${t("please_fill_required_fields")} — ${errorStep.label} (${t("step")} ${errorStep.step})`,
                         variant: "danger",
                       });
                     } else {

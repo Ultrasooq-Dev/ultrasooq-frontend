@@ -1672,6 +1672,7 @@
   "wizard_step_details_specs_desc": "الفئة والمواصفات والمتغيرات",
   "wizard_step_vendor_details": "تفاصيل البائع",
   "wizard_step_vendor_details_desc": "التسعير والشحن",
+  "step": "الخطوة",
   "enter_product_name_desc": "أدخل اسم المنتج الخاص بك",
   "add_images_and_videos_desc": "أضف صور وفيديوهات للمنتج",
   "main": "رئيسي",

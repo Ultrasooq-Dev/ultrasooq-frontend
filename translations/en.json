@@ -1863,6 +1863,7 @@
   "wizard_step_details_specs_desc": "Category, specs & variants",
   "wizard_step_vendor_details": "Vendor Details",
   "wizard_step_vendor_details_desc": "Pricing & shipping",
+  "step": "Step",
   "enter_product_name_desc": "Enter the name of your product",
   "add_images_and_videos_desc": "Add images and videos of your product",
   "main": "Main",
