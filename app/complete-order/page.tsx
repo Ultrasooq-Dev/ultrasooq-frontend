@@ -323,7 +323,7 @@ const CompleteOrderPage = () => {
           setIsRedirectingToPaymob(false);
           toast({
             title: t("payment_error"),
-            description: "Payment gateway not loaded. Please refresh the page.",
+            description: t("payment_gateway_not_loaded"),
             variant: "danger",
           });
           return;
@@ -360,8 +360,8 @@ const CompleteOrderPage = () => {
             
             if (isSuccess) {
               toast({
-                title: t("payment_successful") || "Payment Successful",
-                description: t("payment_processed_successfully") || "Your payment has been processed successfully",
+                title: t("payment_successful"),
+                description: t("payment_processed_successfully"),
                 variant: "success",
               });
               
@@ -382,8 +382,8 @@ const CompleteOrderPage = () => {
               // Log the actual data structure for debugging
               console.error('Payment not successful. Response data:', data);
               toast({
-                title: t("payment_failed") || "Payment Failed",
-                description: data.message || data.ResponseMessage || data.data?.message || t("payment_was_not_successful") || "Payment was not successful",
+                title: t("payment_failed"),
+                description: data.message || data.ResponseMessage || data.data?.message || t("payment_was_not_successful"),
                 variant: "danger",
               });
             }
@@ -392,16 +392,16 @@ const CompleteOrderPage = () => {
             console.error('AmwalPay Payment Error:', data);
             setIsRedirectingToPaymob(false);
             toast({
-              title: t("payment_failed") || "Payment Failed",
-              description: data.ResponseMessage || data.message || t("something_went_wrong") || "Something went wrong",
+              title: t("payment_failed"),
+              description: data.ResponseMessage || data.message || t("something_went_wrong"),
               variant: "danger",
             });
           },
           cancelCallback: function() {
             setIsRedirectingToPaymob(false);
             toast({
-              title: t("payment_cancelled") || "Payment Cancelled",
-              description: t("payment_was_cancelled") || "Payment was cancelled",
+              title: t("payment_cancelled"),
+              description: t("payment_was_cancelled"),
               variant: "default",
             });
           }
@@ -413,7 +413,7 @@ const CompleteOrderPage = () => {
         setIsRedirectingToPaymob(false);
         toast({
           title: t("something_went_wrong"),
-          description: response.message || 'Failed to initialize payment',
+          description: response.message || t("failed_to_initialize_payment"),
           variant: "danger",
         });
       }
@@ -422,7 +422,7 @@ const CompleteOrderPage = () => {
       console.error('AmwalPay Payment Error:', error);
       toast({
         title: t("something_went_wrong"),
-        description: error.message || 'Failed to process payment',
+        description: error.message || t("failed_to_process_payment"),
         variant: "danger",
       });
     }
@@ -505,7 +505,7 @@ const CompleteOrderPage = () => {
             {t("make_payment")}
           </h1>
           <p className="text-muted-foreground" dir={langDir} translate="no">
-            Choose your preferred payment method to complete your order
+            {t("choose_payment_method_description")}
           </p>
         </div>
 
@@ -515,7 +515,7 @@ const CompleteOrderPage = () => {
             <div className="bg-card rounded-xl shadow-sm border border-border overflow-hidden">
               <div className="px-6 py-4 border-b border-border bg-muted">
                 <h2 className="text-xl font-semibold text-foreground" dir={langDir} translate="no">
-                  Payment Methods
+                  {t("payment_methods")}
                 </h2>
               </div>
               
@@ -548,7 +548,7 @@ const CompleteOrderPage = () => {
                             {t("direct_payment")}
                           </h3>
                           <p className="text-sm text-muted-foreground" dir={langDir} translate="no">
-                            Pay the full amount now with your preferred payment method
+                            {t("direct_payment_description")}
                           </p>
                         </div>
                       </Label>
@@ -577,7 +577,7 @@ const CompleteOrderPage = () => {
                             {t("advance_payment")}
                           </h3>
                           <p className="text-sm text-muted-foreground" dir={langDir} translate="no">
-                            Pay a partial amount now and the rest later
+                            {t("advance_payment_description")}
                           </p>
                         </div>
                       </Label>
@@ -588,17 +588,17 @@ const CompleteOrderPage = () => {
                     <div className="mt-6 pl-8">
                       <div className="bg-muted border border-border rounded-lg p-4">
                         <label className="block text-sm font-medium text-muted-foreground mb-2" dir={langDir} translate="no">
-                          Advance Amount
+                          {t("advance_amount")}
                         </label>
                         <Input
                           type="number"
-                          placeholder="Enter advance amount"
+                          placeholder={t("enter_advance_amount")}
                           value={advanceAmount || ''}
                           onChange={(e) => setAdvanceAmount(Number(e.target.value))}
                           className="max-w-xs"
                         />
                         <p className="text-sm text-muted-foreground mt-2" dir={langDir} translate="no">
-                          Remaining: {currency.symbol}{(orderStore.total - advanceAmount).toFixed(2)}
+                          {t("remaining")}: {currency.symbol}{(orderStore.total - advanceAmount).toFixed(2)}
                         </p>
                       </div>
                     </div>
@@ -627,7 +627,7 @@ const CompleteOrderPage = () => {
                               {t("pay_with_wallet")}
                             </h3>
                             <p className="text-sm text-muted-foreground" dir={langDir} translate="no">
-                              Use your wallet balance ({currency.symbol}{walletData.data.balance ? Number(walletData.data.balance).toFixed(2) : "0.00"})
+                              {t("use_wallet_balance")} ({currency.symbol}{walletData.data.balance ? Number(walletData.data.balance).toFixed(2) : "0.00"})
                             </p>
                           </div>
                         </Label>
@@ -681,7 +681,7 @@ const CompleteOrderPage = () => {
                             {t("pay_it_for_me")}
                           </h3>
                           <p className="text-sm text-muted-foreground" dir={langDir} translate="no">
-                            Generate a payment link to share with someone else
+                            {t("payment_link_description")}
                           </p>
                         </div>
                       </Label>

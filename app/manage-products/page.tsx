@@ -934,14 +934,14 @@ const ManageProductsPage = () => {
                       {(() => {
                         const account = currentAccount?.data?.account;
                         if (currentAccount?.data?.isMainAccount) {
-                          return (account as any)?.firstName || (account as any)?.name || "Main Account";
+                          return (account as any)?.firstName || (account as any)?.name || t("main_account");
                         } else {
                           return (account as any)?.accountName || (account as any)?.companyName || "Account";
                         }
                       })()}
                     </h1>
                     <p className="text-sm text-muted-foreground">
-                      {currentAccount?.data?.account?.tradeRole || "User"}
+                      {currentAccount?.data?.account?.tradeRole || t("user")}
                     </p>
                   </div>
                 </div>

@@ -112,33 +112,33 @@ export default function MyAccountsPage() {
   const getStatusDescription = (status: string, statusNote?: string) => {
     switch (status) {
       case "WAITING":
-        return "Your account is pending approval. You'll be notified once it's reviewed.";
+        return t("status_desc_waiting");
       case "ACTIVE":
-        return "Your account is active and you can use all features.";
+        return t("status_desc_active");
       case "REJECT":
         if (statusNote) {
-          return "Your account was rejected. Please see the admin note below for details.";
+          return t("status_desc_rejected_with_note");
         }
-        return "Your account was rejected. Please contact support for more information.";
+        return t("status_desc_rejected");
       case "INACTIVE":
         if (statusNote) {
-          return "Your account is temporarily inactive. Please see the admin note below for details.";
+          return t("status_desc_inactive_with_note");
         }
-        return "Your account is temporarily inactive. Please contact support to reactivate.";
+        return t("status_desc_inactive");
       case "WAITING_FOR_SUPER_ADMIN":
         if (statusNote) {
-          return `Your account has been escalated to super admin for review: ${statusNote}`;
+          return t("status_desc_super_admin_review_with_note", { statusNote });
         }
-        return "Your account has been escalated to super admin for final review.";
+        return t("status_desc_super_admin_review");
       default:
-        return "Account status information not available.";
+        return t("status_desc_unknown");
     }
   };
 
   if (!mounted || isLoading) {
     return (
       <LoaderWithMessage
-        {...{ message: "Loading your accounts...", className: "min-h-screen" } as any}
+        {...{ message: t("loading_accounts"), className: "min-h-screen" } as any}
       />
     );
   }
@@ -575,7 +575,7 @@ export default function MyAccountsPage() {
                       <CardContent className="space-y-3">
                         <div>
                           <p className="text-sm font-medium text-muted-foreground">
-                            Status
+                            {t("status")}
                           </p>
                           <StatusDisplayBadge
                             status={statusInfo.status}
@@ -714,7 +714,7 @@ export default function MyAccountsPage() {
                       <CardContent className="space-y-3">
                         <div>
                           <p className="text-sm font-medium text-muted-foreground">
-                            Status
+                            {t("status")}
                           </p>
                           <StatusDisplayBadge
                             status={statusInfo.status}

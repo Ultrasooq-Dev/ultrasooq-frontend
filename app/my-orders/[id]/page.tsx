@@ -159,7 +159,7 @@ const MyOrderDetailsPage = () => {
               <li className="flex items-center">
                 <span className="mx-2">/</span>
                 <span className="font-medium text-foreground">
-                  {orderDetails?.orderProduct_order?.orderNo || "Loading..."}
+                  {orderDetails?.orderProduct_order?.orderNo || t("loading")}
                 </span>
               </li>
             </ol>
@@ -177,11 +177,11 @@ const MyOrderDetailsPage = () => {
                     className="text-3xl font-bold text-foreground"
                     dir={langDir}
                   >
-                    Order Details
+                    {t("order_details")}
                   </h1>
                   <p className="mt-1 text-muted-foreground" dir={langDir}>
-                    Order #
-                    {orderDetails?.orderProduct_order?.orderNo || "Loading..."}
+                    {t("order_number_prefix")}
+                    {orderDetails?.orderProduct_order?.orderNo || t("loading")}
                   </p>
                 </div>
               </div>
@@ -210,7 +210,7 @@ const MyOrderDetailsPage = () => {
                 <CardHeader className="bg-gradient-to-r from-primary/5 to-info/5">
                   <CardTitle className="flex items-center gap-2">
                     <MapPin className="h-5 w-5 text-primary" />
-                    Delivery Address
+                    {t("delivery_address")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-6">
@@ -228,7 +228,7 @@ const MyOrderDetailsPage = () => {
                       {shippingDetails?.address}
                       <br />
                       <span className="text-muted-foreground">
-                        Pin: {shippingDetails?.postCode}
+                        {t("pin")}: {shippingDetails?.postCode}
                       </span>
                     </address>
                     <div className="flex items-center gap-2 border-t pt-2 text-muted-foreground">
@@ -244,7 +244,7 @@ const MyOrderDetailsPage = () => {
                 <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50">
                   <CardTitle className="flex items-center gap-2">
                     <CreditCard className="h-5 w-5 text-success" />
-                    Billing Address
+                    {t("billing_address")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-6">
@@ -262,7 +262,7 @@ const MyOrderDetailsPage = () => {
                       {billingDetails?.address}
                       <br />
                       <span className="text-muted-foreground">
-                        Pin: {billingDetails?.postCode}
+                        {t("pin")}: {billingDetails?.postCode}
                       </span>
                     </address>
                     <div className="flex items-center gap-2 border-t pt-2 text-muted-foreground">
@@ -278,7 +278,7 @@ const MyOrderDetailsPage = () => {
                 <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50">
                   <CardTitle className="flex items-center gap-2">
                     <FileText className="h-5 w-5 text-info" />
-                    Actions
+                    {t("actions")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-6">
@@ -289,7 +289,7 @@ const MyOrderDetailsPage = () => {
                       size="lg"
                     >
                       <Download className="mr-2 h-4 w-4" />
-                      Download Invoice
+                      {t("download_invoice")}
                     </Button>
                     {orderDetails?.orderShippingDetail?.receipt && (
                       <Button
@@ -298,7 +298,7 @@ const MyOrderDetailsPage = () => {
                         size="lg"
                       >
                         <Download className="mr-2 h-4 w-4" />
-                        Download Receipt
+                        {t("download_receipt")}
                       </Button>
                     )}
                     <Button
@@ -307,7 +307,7 @@ const MyOrderDetailsPage = () => {
                       size="lg"
                     >
                       <HelpCircle className="mr-2 h-4 w-4" />
-                      Need Help ?
+                      {t("need_help")}
                     </Button>
                   </div>
                 </CardContent>
@@ -321,14 +321,14 @@ const MyOrderDetailsPage = () => {
               <CardHeader className="bg-gradient-to-r from-primary/5 to-info/5">
                 <CardTitle className="flex items-center gap-2">
                   <FileText className="h-5 w-5 text-primary" />
-                  Order Summary
+                  {t("order_summary")}
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-6">
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-muted-foreground">
-                      Order Number
+                      {t("order_number")}
                     </label>
                     <p className="text-lg font-semibold text-foreground">
                       {orderDetails.orderProduct_order.orderNo || "N/A"}
@@ -336,7 +336,7 @@ const MyOrderDetailsPage = () => {
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-muted-foreground">
-                      Order Status
+                      {t("order_status")}
                     </label>
                     <p className="text-lg font-semibold text-foreground">
                       {orderDetails.orderProduct_order.orderStatus || "N/A"}
@@ -344,7 +344,7 @@ const MyOrderDetailsPage = () => {
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-muted-foreground">
-                      Date & Time
+                      {t("date_and_time")}
                     </label>
                     <p className="text-lg font-semibold text-foreground">
                       {orderDetails.orderProduct_order.orderDate
@@ -356,7 +356,7 @@ const MyOrderDetailsPage = () => {
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-muted-foreground">
-                      Subtotal
+                      {t("subtotal")}
                     </label>
                     <p className="text-lg font-semibold text-foreground">
                       {currency.symbol}
@@ -366,7 +366,7 @@ const MyOrderDetailsPage = () => {
                   {(orderDetails.orderProduct_order.totalDiscount ?? 0) > 0 && (
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-muted-foreground">
-                        Discount
+                        {t("discount")}
                       </label>
                       <p className="text-lg font-semibold text-success">
                         -{currency.symbol}
@@ -376,7 +376,7 @@ const MyOrderDetailsPage = () => {
                   )}
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-muted-foreground">
-                      Total Amount
+                      {t("total_amount")}
                     </label>
                     <p className="text-xl font-bold text-primary">
                       {currency.symbol}
@@ -388,7 +388,7 @@ const MyOrderDetailsPage = () => {
                     <>
                       <div className="space-y-2">
                         <label className="text-sm font-medium text-muted-foreground">
-                          Advance Paid
+                          {t("advance_paid")}
                         </label>
                         <p className="text-lg font-semibold text-foreground">
                           {currency.symbol}
@@ -397,7 +397,7 @@ const MyOrderDetailsPage = () => {
                       </div>
                       <div className="space-y-2">
                         <label className="text-sm font-medium text-muted-foreground">
-                          Remaining Due
+                          {t("remaining_due")}
                         </label>
                         <p className="text-lg font-semibold text-warning">
                           {currency.symbol}
@@ -420,7 +420,7 @@ const MyOrderDetailsPage = () => {
                   <CardHeader className="bg-gradient-to-r from-warning/5 to-warning/5">
                     <CardTitle className="flex items-center gap-2">
                       <Truck className="h-5 w-5 text-warning" />
-                      Shipping Details
+                      {t("shipping_details")}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="pt-6">
@@ -428,7 +428,7 @@ const MyOrderDetailsPage = () => {
                       <div className="space-y-2">
                         <h4 className="flex items-center gap-2 font-medium text-foreground">
                           <Truck className="h-4 w-4 text-muted-foreground" />
-                          Shipping Mode
+                          {t("shipping_mode")}
                         </h4>
                         <p className="text-muted-foreground">
                           {orderDetails?.orderShippingDetail?.orderShippingType}
@@ -437,7 +437,7 @@ const MyOrderDetailsPage = () => {
                       <div className="space-y-2">
                         <h4 className="flex items-center gap-2 font-medium text-foreground">
                           <Package className="h-4 w-4 text-muted-foreground" />
-                          Delivery Charge
+                          {t("delivery_charge")}
                         </h4>
                         <p className="text-muted-foreground">
                           {currency.symbol}
@@ -450,7 +450,7 @@ const MyOrderDetailsPage = () => {
                           <div className="space-y-2">
                             <h4 className="flex items-center gap-2 font-medium text-foreground">
                               <Calendar className="h-4 w-4 text-muted-foreground" />
-                              Shipping Date
+                              {t("shipping_date")}
                             </h4>
                             <p className="text-muted-foreground">
                               {convertDate(
@@ -461,7 +461,7 @@ const MyOrderDetailsPage = () => {
                           <div className="space-y-2">
                             <h4 className="flex items-center gap-2 font-medium text-foreground">
                               <Clock className="h-4 w-4 text-muted-foreground" />
-                              From Time
+                              {t("from_time")}
                             </h4>
                             <p className="text-muted-foreground">
                               {convertTime(
@@ -472,7 +472,7 @@ const MyOrderDetailsPage = () => {
                           <div className="space-y-2">
                             <h4 className="flex items-center gap-2 font-medium text-foreground">
                               <Clock className="h-4 w-4 text-muted-foreground" />
-                              To Time
+                              {t("to_time")}
                             </h4>
                             <p className="text-muted-foreground">
                               {convertTime(
@@ -546,12 +546,12 @@ const MyOrderDetailsPage = () => {
                             : orderDetails?.orderProduct_productPrice
                                 ?.productPrice_product?.productName ||
                               orderDetails?.orderProduct_product?.productName ||
-                              "Unknown Product"}
+                              t("unknown_product")}
                         </h3>
                         <div className="mb-3 flex items-center gap-6 text-sm text-muted-foreground">
                           <span className="flex items-center gap-1">
                             <Package className="h-4 w-4" />
-                            Quantity: {orderDetails?.orderQuantity || 0}
+                            {t("quantity")}: {orderDetails?.orderQuantity || 0}
                           </span>
                           <span className="flex items-center gap-1">
                             <Calendar className="h-4 w-4" />
@@ -607,7 +607,7 @@ const MyOrderDetailsPage = () => {
                 <CardHeader className="border-b bg-gradient-to-r from-green-50 to-emerald-50">
                   <CardTitle className="flex items-center gap-2">
                     <RotateCcw className="h-5 w-5 text-success" />
-                    Order Tracking
+                    {t("order_tracking")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-8">
@@ -751,7 +751,7 @@ const MyOrderDetailsPage = () => {
                                       : orderDetails?.createdAt
                                         ? formatDate(orderDetails.createdAt)
                                         : "N/A")
-                              : "Pending"}
+                              : t("pending")}
                           </p>
                         </div>
                       </div>
@@ -794,7 +794,7 @@ const MyOrderDetailsPage = () => {
                               "SHIPPED",
                             ].includes(orderDetails?.orderProductStatus || "")
                               ? formatDate(orderDetails?.updatedAt ?? "")
-                              : "Pending"}
+                              : t("pending")}
                           </p>
                         </div>
                       </div>
@@ -828,7 +828,7 @@ const MyOrderDetailsPage = () => {
                               orderDetails?.orderProductStatus || "",
                             )
                               ? formatDate(orderDetails?.updatedAt ?? "")
-                              : "Pending"}
+                              : t("pending")}
                           </p>
                         </div>
                       </div>
@@ -870,13 +870,13 @@ const MyOrderDetailsPage = () => {
                               orderDetails?.orderProductStatus || "",
                             )
                               ? formatDate(orderDetails?.updatedAt ?? "")
-                              : "Pending"}
+                              : t("pending")}
                           </p>
                           {orderDetails?.orderProductStatus === "CANCELLED" &&
                             orderDetails?.cancelReason && (
                               <div className="mt-2 rounded-lg border border-destructive/20 bg-destructive/5 p-3">
                                 <p className="mb-1 text-xs font-medium text-destructive">
-                                  Cancellation Reason:
+                                  {t("cancellation_reason")}:
                                 </p>
                                 <p className="text-sm text-destructive">
                                   {orderDetails.cancelReason}
@@ -897,7 +897,7 @@ const MyOrderDetailsPage = () => {
                 <CardHeader className="border-b bg-gradient-to-r from-indigo-50 to-info/5">
                   <CardTitle className="flex items-center gap-2">
                     <Package className="h-5 w-5 text-info" />
-                    Other Items in This Order
+                    {t("other_items_in_order")}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-8">
@@ -949,12 +949,12 @@ const MyOrderDetailsPage = () => {
                               : item?.orderProduct_productPrice
                                   ?.productPrice_product?.productName ||
                                 item?.orderProduct_product?.productName ||
-                                "Unknown Product"}
+                                t("unknown_product")}
                           </h3>
                           <div className="mb-2 flex items-center gap-4 text-sm text-muted-foreground">
                             <span className="flex items-center gap-1">
                               <Package className="h-3 w-3" />
-                              Qty: {item?.orderQuantity || 0}
+                              {t("qty")}: {item?.orderQuantity || 0}
                             </span>
                             <span className="flex items-center gap-1">
                               <Calendar className="h-3 w-3" />
@@ -991,7 +991,7 @@ const MyOrderDetailsPage = () => {
                               className={`${getStatusColor(item?.orderProductStatus || "")} flex items-center gap-1`}
                             >
                               {getStatusIcon(item?.orderProductStatus || "")}
-                              {item?.orderProductStatus || "Loading..."}
+                              {item?.orderProductStatus || t("loading")}
                             </Badge>
                           </div>
                         </div>

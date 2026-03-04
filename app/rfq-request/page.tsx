@@ -10,8 +10,10 @@ import validator from "validator";
 import {
   useAllRfqQuotesByBuyerId,
 } from "@/apis/queries/rfq.queries";
+import { useTranslations } from "next-intl";
 
 const RfqRequestPage = () => {
+  const t = useTranslations();
   const searchParams = useSearchParams();
   const router = useRouter();
   const [selectedRfqId, setSelectedRfqId] = useState<number | null>(null);
@@ -115,7 +117,7 @@ const RfqRequestPage = () => {
                       router.push("/rfq-request");
                     }}
                     className="flex items-center justify-center w-full p-2 text-muted-foreground hover:bg-muted rounded transition-colors"
-                    title="Back to all RFQ requests"
+                    title={t("back_to_rfq_requests")}
                   >
                     <svg
                       className="w-4 h-4"
@@ -210,7 +212,7 @@ const RfqRequestPage = () => {
                       router.push("/rfq-request");
                     }}
                     className="p-1.5 text-muted-foreground hover:bg-muted rounded transition-colors"
-                    title="Back to RFQ requests"
+                    title={t("back_to_rfq_requests")}
                   >
                     <svg
                       className="w-4 h-4"

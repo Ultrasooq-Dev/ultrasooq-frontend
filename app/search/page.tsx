@@ -162,7 +162,7 @@ const SearchPage = (props: SearchPageProps) => {
                                     value={sortBy}
                                 >
                                     <SelectTrigger className="h-9 w-[170px] border-border bg-card text-sm">
-                                        <SelectValue placeholder="Sort by" />
+                                        <SelectValue placeholder={t("sort_by")} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectGroup>
