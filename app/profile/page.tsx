@@ -315,7 +315,7 @@ export default function ProfilePage() {
     ) {
       form.setError("socialLinkList", {
         type: "custom",
-        message: "Invalid URL",
+        message: t("invalid_url"),
       });
       return;
     }
@@ -720,7 +720,7 @@ export default function ProfilePage() {
                       <ControlledPhoneInput
                         name={`phoneNumberList.${index}.phoneNumber`}
                         countryName={`phoneNumberList.${index}.cc`}
-                        placeholder="Enter Your Phone Number"
+                        placeholder={t("enter_your_phone_number")}
                       />
 
                       {index !== 0 ? (

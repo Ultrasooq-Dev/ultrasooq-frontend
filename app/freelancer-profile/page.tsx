@@ -34,7 +34,7 @@ import MultiSelectCategory from "@/components/shared/MultiSelectCategory";
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/context/AuthContext";
 
-const formSchema = z
+const createFormSchema = (t: (key: string, values?: Record<string, any>) => string) => z
   .object({
     aboutUs: z.string().trim().optional(),
     aboutUsJson: z.array(z.any()).optional(),
@@ -46,7 +46,7 @@ const formSchema = z
         }),
       )
       .min(1, {
-        message: "Business Type is required",
+        message: t("business_type_required"),
       })
       .transform((value) => {
         const temp: any = [];
@@ -58,33 +58,33 @@ const formSchema = z
     address: z
       .string()
       .trim()
-      .min(2, { message: "Address is required" })
+      .min(2, { message: t("address_required") })
       .max(50, {
-        message: "Address must be less than 50 characters",
+        message: t("address_max_50_chars"),
       }),
-    city: z.string().trim().min(2, { message: "City is required" }),
-    province: z.string().trim().min(2, { message: "Province is required" }),
-    country: z.string().trim().min(2, { message: "Country is required" }),
+    city: z.string().trim().min(2, { message: t("city_required") }),
+    province: z.string().trim().min(2, { message: t("province_required") }),
+    country: z.string().trim().min(2, { message: t("country_required") }),
     cc: z.string().trim(),
     contactNumber: z
       .string()
       .trim()
-      .min(2, { message: "Branch Contact Number is required" })
+      .min(2, { message: t("branch_contact_number_required") })
       .min(8, {
-        message: "Branch Contact Number must be minimum of 8 digits",
+        message: t("branch_contact_min_8_digits"),
       })
       .max(20, {
-        message: "Branch Contact Number cannot be more than 20 digits",
+        message: t("branch_contact_max_20_digits"),
       }),
     contactName: z
       .string()
       .trim()
-      .min(2, { message: "Branch Contact Name is required" }),
+      .min(2, { message: t("branch_contact_name_required") }),
     startTime: z.string().trim().min(1, {
-      message: "Start Time is required",
+      message: t("start_time_required"),
     }),
     endTime: z.string().trim().min(1, {
-      message: "End Time is required",
+      message: t("end_time_required"),
     }),
     workingDays: z
       .object({
@@ -130,7 +130,7 @@ const formSchema = z
     if (startTime && endTime && startTime >= endTime) {
       ctx.addIssue({
         code: "custom",
-        message: "End Time must be greater than Start Time",
+        message: t("end_time_must_be_greater"),
         path: ["endTime"],
       });
     }
@@ -139,6 +139,7 @@ const formSchema = z
 export default function FreelancerProfilePage() {
   const t = useTranslations();
   const { langDir } = useAuth();
+  const formSchema = useMemo(() => createFormSchema(t), [t]);
   const router = useRouter();
   const { toast } = useToast();
   const form = useForm({
@@ -284,7 +285,7 @@ export default function FreelancerProfilePage() {
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900 mx-auto"></div>
-          <p className="mt-4 text-lg">Loading account information...</p>
+          <p className="mt-4 text-lg">{t("loading_account_information")}</p>
         </div>
       </div>
     );
@@ -348,28 +349,28 @@ export default function FreelancerProfilePage() {
             >
               <div className="text-normal m-auto mb-7 w-full text-center text-sm leading-6 text-light-gray">
                 <h2 className="mb-3 text-center text-3xl font-semibold leading-8 text-color-dark sm:text-4xl sm:leading-10">
-                  Freelancer Profile
+                  {t("freelancer_profile")}
                 </h2>
               </div>
               <div className="flex w-full flex-wrap">
                 <div className="mb-4 w-full">
                   <div className="mt-2.5 w-full border-b-2 border-dashed border-border">
                     <label className="mb-3.5 block text-left text-lg font-medium capitalize leading-5 text-color-dark">
-                      Freelancer Information
+                      {t("freelancer_information")}
                     </label>
                   </div>
                 </div>
                 <div className="mb-3.5 w-full space-y-5">
                   <ControlledRichTextEditor
-                    label="About Us"
+                    label={t("about_us")}
                     name="aboutUsJson"
                   />
 
                   <AccordionMultiSelectV2
-                    label="Business Type"
+                    label={t("business_type")}
                     name="businessTypeList"
                     options={memoizedTags || []}
-                    placeholder="Business Type"
+                    placeholder={t("business_type")}
                     error={form.formState.errors.businessTypeList?.message}
                   />
                 </div>
@@ -378,7 +379,7 @@ export default function FreelancerProfilePage() {
                     <div className="mb-4 w-full">
                       <div className="mt-2.5 w-full border-b-2 border-dashed border-border">
                         <label className="mb-3.5 block text-left text-lg font-medium capitalize leading-5 text-color-dark">
-                          Address
+                          {t("address")}
                         </label>
                       </div>
                     </div>
@@ -386,10 +387,10 @@ export default function FreelancerProfilePage() {
                     <div className="grid w-full grid-cols-1 gap-5 md:grid-cols-2">
                       <div className="relative w-full">
                         <ControlledTextInput
-                          label="Address"
+                          label={t("address")}
                           name="address"
                           showLabel={true}
-                          placeholder="Address"
+                          placeholder={t("address")}
                         />
 
                         <Image
@@ -402,23 +403,23 @@ export default function FreelancerProfilePage() {
                       </div>
 
                       <ControlledTextInput
-                        label="City"
+                        label={t("city")}
                         name="city"
                         showLabel={true}
-                        placeholder="City"
+                        placeholder={t("city")}
                       />
                     </div>
 
                     <div className="grid w-full grid-cols-1 gap-5 md:grid-cols-2">
                       <ControlledTextInput
-                        label="Province"
+                        label={t("province")}
                         name="province"
                         showLabel={true}
-                        placeholder="Province"
+                        placeholder={t("province")}
                       />
 
                       <ControlledSelectInput
-                        label="Country"
+                        label={t("country")}
                         name="country"
                         options={memoizedCountries}
                       />
@@ -426,18 +427,18 @@ export default function FreelancerProfilePage() {
 
                     <div className="grid w-full grid-cols-1 gap-5 md:grid-cols-2">
                       <ControlledPhoneInput
-                        label="Branch Contact Number"
+                        label={t("branch_contact_number")}
                         name="contactNumber"
                         countryName="cc"
-                        placeholder="Branch Contact Number"
+                        placeholder={t("branch_contact_number")}
                       />
 
                       <ControlledTextInput
                         className="mt-0"
-                        label="Branch Contact Name"
+                        label={t("branch_contact_name")}
                         name="contactName"
                         showLabel={true}
-                        placeholder="Branch Contact Name"
+                        placeholder={t("branch_contact_name")}
                       />
                     </div>
                   </div>
@@ -447,14 +448,14 @@ export default function FreelancerProfilePage() {
                 <div className="mb-4 w-full">
                   <div className="mt-2.5 w-full border-b-2 border-dashed border-border">
                     <label className="mb-3.5 block text-left text-lg font-medium capitalize leading-5 text-color-dark">
-                      Working Hours
+                      {t("working_hours")}
                     </label>
                   </div>
                 </div>
                 <div className="grid w-full grid-cols-1 gap-x-6 md:grid-cols-2">
                   <div className="mb-4 flex w-full flex-col gap-y-3">
                     <Label htmlFor="startTime" className="text-color-dark">
-                      Start Time
+                      {t("start_time")}
                     </Label>
                     <Controller
                       name="startTime"
@@ -464,7 +465,7 @@ export default function FreelancerProfilePage() {
                           {...field}
                           className="h-12! w-full rounded border border-border! px-3 text-base focus-visible:ring-0!"
                         >
-                          <option value="">Select</option>
+                          <option value="">{t("select")}</option>
                           {HOURS_24_FORMAT.map(
                             (hour: string, index: number) => (
                               <option key={index} value={hour}>
@@ -481,7 +482,7 @@ export default function FreelancerProfilePage() {
                   </div>
                   <div className="mb-4 flex w-full flex-col gap-y-3">
                     <Label htmlFor="endTime" className="text-color-dark">
-                      End Time
+                      {t("end_time")}
                     </Label>
                     <Controller
                       name="endTime"
@@ -491,7 +492,7 @@ export default function FreelancerProfilePage() {
                           {...field}
                           className="h-12! w-full rounded border border-border! px-3 text-base focus-visible:ring-0!"
                         >
-                          <option value="">Select</option>
+                          <option value="">{t("select")}</option>
                           {HOURS_24_FORMAT.map(
                             (hour: string, index: number) => (
                               <option key={index} value={hour}>
@@ -545,7 +546,7 @@ export default function FreelancerProfilePage() {
 
                   {form.formState.errors.workingDays?.message ? (
                     <p className="text-[13px] text-destructive" dir={langDir}>
-                      Working Day is required
+                      {t("working_day_required")}
                     </p>
                   ) : null}
                 </div>

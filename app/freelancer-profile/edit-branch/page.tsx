@@ -46,105 +46,106 @@ const customStyles = {
   }),
 };
 
-const formSchema = z
-  .object({
-    businessTypeList: z
-      .array(
-        z.object({
-          label: z.string().trim(),
-          value: z.number(),
+const createFormSchema = (t: (key: string) => string) =>
+  z
+    .object({
+      businessTypeList: z
+        .array(
+          z.object({
+            label: z.string().trim(),
+            value: z.number(),
+          }),
+        )
+        .min(1, {
+          message: t("business_type_required"),
+        })
+        .transform((value) => {
+          const temp: any = [];
+          value.forEach((item) => {
+            temp.push({ businessTypeId: item.value });
+          });
+          return temp;
         }),
-      )
-      .min(1, {
-        message: "Business Type is required",
-      })
-      .transform((value) => {
-        const temp: any = [];
-        value.forEach((item) => {
-          temp.push({ businessTypeId: item.value });
+      address: z
+        .string()
+        .trim()
+        .min(2, { message: t("address_required") })
+        .max(50, {
+          message: t("address_max_50_chars"),
+        }),
+      city: z.string().trim().min(2, { message: t("city_required") }),
+      province: z.string().trim().min(2, { message: t("province_required") }),
+      country: z.string().trim().min(2, { message: t("country_required") }),
+      cc: z.string().trim(),
+      contactNumber: z
+        .string()
+        .trim()
+        .min(2, { message: t("branch_contact_number_required") })
+        .min(8, {
+          message: t("branch_contact_number_min_8"),
+        })
+        .max(20, {
+          message: t("branch_contact_number_max_20"),
+        }),
+      contactName: z
+        .string()
+        .trim()
+        .min(2, { message: t("branch_contact_name_required") }),
+      startTime: z.string().trim().min(1, {
+        message: t("start_time_required"),
+      }),
+      endTime: z.string().trim().min(1, {
+        message: t("end_time_required"),
+      }),
+      workingDays: z
+        .object({
+          sun: z.number(),
+          mon: z.number(),
+          tue: z.number(),
+          wed: z.number(),
+          thu: z.number(),
+          fri: z.number(),
+          sat: z.number(),
+        })
+        .refine((value) => {
+          return (
+            value.sun !== 0 ||
+            value.mon !== 0 ||
+            value.tue !== 0 ||
+            value.wed !== 0 ||
+            value.thu !== 0 ||
+            value.fri !== 0 ||
+            value.sat !== 0
+          );
+        }),
+      // tagList: z
+      //   .array(
+      //     z.object({
+      //       label: z.string().trim(),
+      //       value: z.number(),
+      //     }),
+      //   )
+      //   .min(1, {
+      //     message: "Tag is required",
+      //   })
+      //   .transform((value) => {
+      //     let temp: any = [];
+      //     value.forEach((item) => {
+      //       temp.push({ tagId: item.value });
+      //     });
+      //     return temp;
+      //   }),
+      categoryList: z.any().optional(),
+    })
+    .superRefine(({ startTime, endTime }, ctx) => {
+      if (startTime && endTime && startTime > endTime) {
+        ctx.addIssue({
+          code: "custom",
+          message: t("start_time_must_be_less_than_end_time"),
+          path: ["startTime"],
         });
-        return temp;
-      }),
-    address: z
-      .string()
-      .trim()
-      .min(2, { message: "Address is required" })
-      .max(50, {
-        message: "Address must be less than 50 characters",
-      }),
-    city: z.string().trim().min(2, { message: "City is required" }),
-    province: z.string().trim().min(2, { message: "Province is required" }),
-    country: z.string().trim().min(2, { message: "Country is required" }),
-    cc: z.string().trim(),
-    contactNumber: z
-      .string()
-      .trim()
-      .min(2, { message: "Branch Contact Number is required" })
-      .min(8, {
-        message: "Branch Contact Number must be minimum of 8 digits",
-      })
-      .max(20, {
-        message: "Branch Contact Number cannot be more than 20 digits",
-      }),
-    contactName: z
-      .string()
-      .trim()
-      .min(2, { message: "Branch Contact Name is required" }),
-    startTime: z.string().trim().min(1, {
-      message: "Start Time is required",
-    }),
-    endTime: z.string().trim().min(1, {
-      message: "End Time is required",
-    }),
-    workingDays: z
-      .object({
-        sun: z.number(),
-        mon: z.number(),
-        tue: z.number(),
-        wed: z.number(),
-        thu: z.number(),
-        fri: z.number(),
-        sat: z.number(),
-      })
-      .refine((value) => {
-        return (
-          value.sun !== 0 ||
-          value.mon !== 0 ||
-          value.tue !== 0 ||
-          value.wed !== 0 ||
-          value.thu !== 0 ||
-          value.fri !== 0 ||
-          value.sat !== 0
-        );
-      }),
-    // tagList: z
-    //   .array(
-    //     z.object({
-    //       label: z.string().trim(),
-    //       value: z.number(),
-    //     }),
-    //   )
-    //   .min(1, {
-    //     message: "Tag is required",
-    //   })
-    //   .transform((value) => {
-    //     let temp: any = [];
-    //     value.forEach((item) => {
-    //       temp.push({ tagId: item.value });
-    //     });
-    //     return temp;
-    //   }),
-    categoryList: z.any().optional(),
-  })
-  .superRefine(({ startTime, endTime }, ctx) => {
-    if (startTime && endTime && startTime > endTime) {
-      ctx.addIssue({
-        code: "custom",
-        message: "Start Time must be less than End Time",
-        path: ["startTime"],
-      });
-    }
-  });
+      }
+    });
 
 export default function EditBranchPage() {
   const t = useTranslations();
@@ -152,6 +153,7 @@ export default function EditBranchPage() {
   const router = useRouter();
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const formSchema = useMemo(() => createFormSchema(t), [t]);
   const form = useForm({
     resolver: zodResolver(formSchema) as any,
     defaultValues: {

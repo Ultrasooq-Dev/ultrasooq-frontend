@@ -78,7 +78,7 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
     if (!wallet) {
       toast({
         title: t("error"),
-        description: "Wallet not found",
+        description: t("wallet_not_found"),
         variant: "danger",
       });
       return;
@@ -105,7 +105,7 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
     if (!wallet) {
       toast({
         title: t("error"),
-        description: "Wallet not found",
+        description: t("wallet_not_found"),
         variant: "danger",
       });
       return;
@@ -130,7 +130,7 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
           setIsProcessingPayment(false);
           toast({
             title: t("payment_error"),
-            description: "Payment gateway not loaded. Please refresh the page.",
+            description: t("payment_gateway_not_loaded"),
             variant: "danger",
           });
           return;

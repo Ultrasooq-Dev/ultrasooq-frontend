@@ -149,9 +149,8 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
       if (!identityProof || !identityProofBack) {
         setIsCreatingAccount(false);
         toast({
-          title: "Upload Failed",
-          description:
-            "Please upload both front and back sides of your identity card",
+          title: t("upload_failed"),
+          description: t("please_upload_both_identity_sides"),
           variant: "danger",
         });
         return;
@@ -218,18 +217,17 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
             profileError,
           );
           toast({
-            title: "Account Created",
-            description:
-              "Account created successfully. However, identity card update failed. Please update your profile manually from the profile page.",
+            title: t("account_created"),
+            description: t("account_created_identity_update_failed"),
             variant: "warning" as any,
           });
         }
 
         toast({
-          title: "Account Created",
+          title: t("account_created"),
           description:
             result.message ||
-            "Successfully created new account with identity cards",
+            t("successfully_created_account_with_identity"),
           variant: "success",
         });
         setIsCreatingAccount(false);
@@ -266,12 +264,11 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
         errorMessage.toLowerCase().includes("already have") &&
         errorMessage.toLowerCase().includes("freelancer")
       ) {
-        errorMessage =
-          "The backend currently restricts multiple freelancer accounts. This appears to be a business rule limitation.";
+        errorMessage = t("freelancer_account_restriction");
       }
 
       toast({
-        title: "Account Creation Failed",
+        title: t("account_creation_failed"),
         description: errorMessage,
         variant: "danger",
       });
@@ -505,9 +502,8 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
                                       event.target.files[0].size > 5242880
                                     ) {
                                       toast({
-                                        title: "File too large",
-                                        description:
-                                          "Image size should be less than 5MB",
+                                        title: t("file_too_large"),
+                                        description: t("image_size_less_than_5mb"),
                                         variant: "danger",
                                       });
                                       return;
@@ -600,9 +596,8 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
                                       event.target.files[0].size > 5242880
                                     ) {
                                       toast({
-                                        title: "File too large",
-                                        description:
-                                          "Image size should be less than 5MB",
+                                        title: t("file_too_large"),
+                                        description: t("image_size_less_than_5mb"),
                                         variant: "danger",
                                       });
                                       return;

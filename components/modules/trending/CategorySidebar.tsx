@@ -617,7 +617,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
       return {
         categories: categoriesWithSubcategoriesFiltered.map(({ category }) => category),
         level: 0,
-        title: "Categories",
+        title: t("categories"),
       };
     }
 

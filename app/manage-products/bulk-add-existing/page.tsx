@@ -200,7 +200,7 @@ const BulkAddExistingProductsPage = () => {
             shortDescription: product.shortDescription
           }] : [],
           productSpecificationList: product.specification ? [{
-            label: "Specification",
+            label: t("specification"),
             specification: product.specification
           }] : [],
           description: product.description,

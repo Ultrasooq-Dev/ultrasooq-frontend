@@ -578,7 +578,7 @@ const SellerRfqRequestPage = () => {
             <nav
               className="scrollbar-hide flex space-x-1 overflow-x-auto"
               dir={langDir}
-              aria-label="Tabs"
+              aria-label={t("tabs")}
             >
               {tabs.map((tab) => {
                 const isActive = currentTab === tab.id;

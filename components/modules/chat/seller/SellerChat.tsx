@@ -188,13 +188,13 @@ const SellerChat: React.FC<SellerChatProps> = ({
       }
       toast({
         title: t("success") || "Success",
-        description: "Request hidden successfully",
+        description: t("request_hidden_successfully"),
         variant: "success",
       });
     } catch (error) {
       toast({
         title: t("error") || "Error",
-        description: "Failed to hide request",
+        description: t("failed_to_hide_request"),
         variant: "danger",
       });
     }
@@ -218,13 +218,13 @@ const SellerChat: React.FC<SellerChatProps> = ({
       }
       toast({
         title: t("success") || "Success",
-        description: "Request unhidden successfully",
+        description: t("request_unhidden_successfully"),
         variant: "success",
       });
     } catch (error) {
       toast({
         title: t("error") || "Error",
-        description: "Failed to unhide request",
+        description: t("failed_to_unhide_request"),
         variant: "danger",
       });
     }
@@ -257,7 +257,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
     if (selectedRequests.size === 0) {
       toast({
         title: t("error") || "Error",
-        description: "Please select at least one request",
+        description: t("please_select_at_least_one_request"),
         variant: "danger",
       });
       return;
@@ -291,7 +291,7 @@ const SellerChat: React.FC<SellerChatProps> = ({
     } catch (error) {
       toast({
         title: t("error") || "Error",
-        description: `Failed to ${showHiddenRequests ? "unhide" : "hide"} requests`,
+        description: showHiddenRequests ? t("failed_to_unhide_requests") : t("failed_to_hide_requests"),
         variant: "danger",
       });
     }
@@ -1134,8 +1134,8 @@ const SellerChat: React.FC<SellerChatProps> = ({
                   const productDisplayText = translatedProductNames.length > 0
                     ? translatedProductNames.length === 1
                       ? translatedProductNames[0]
-                      : `${translatedProductNames[0]}${translatedProductNames.length > 1 ? ` +${translatedProductNames.length - 1} more` : ""}`
-                    : "No products";
+                      : `${translatedProductNames[0]}${translatedProductNames.length > 1 ? ` +${translatedProductNames.length - 1} ${t("more")}` : ""}`
+                    : t("no_products");
                   
                   return (
                     <div

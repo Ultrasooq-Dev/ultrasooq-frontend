@@ -166,7 +166,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
       if (!response.ok) {
         const errorText = await response.text();
         toast({
-          title: "Error",
+          title: t("error"),
           description: `HTTP ${response.status}: ${response.statusText}`,
           variant: "destructive",
         });
@@ -177,22 +177,22 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
 
       if (result.status) {
         toast({
-          title: "Success",
+          title: t("success"),
           description: result.message,
           variant: "default",
         });
         onUpdate(); // Refresh the product list
       } else {
         toast({
-          title: "Error",
-          description: result.message || "Failed to update product visibility",
+          title: t("error"),
+          description: result.message || t("failed_to_update_product_visibility"),
           variant: "destructive",
         });
       }
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Network error occurred",
+        title: t("error"),
+        description: t("network_error_occurred"),
         variant: "destructive",
       });
     }
@@ -205,8 +205,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
       
       if (!condition) {
         toast({
-          title: "Error",
-          description: "Please select a product condition",
+          title: t("error"),
+          description: t("please_select_product_condition"),
           variant: "destructive",
         });
         return;
@@ -230,7 +230,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
       if (!response.ok) {
         const errorText = await response.text();
         toast({
-          title: "Error",
+          title: t("error"),
           description: `HTTP ${response.status}: ${response.statusText}`,
           variant: "destructive",
         });
@@ -241,7 +241,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
 
       if (result.status) {
         toast({
-          title: "Success",
+          title: t("success"),
           description: result.message,
           variant: "default",
         });
@@ -249,15 +249,15 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
         form.setValue("productCondition", ""); // Reset the form field
       } else {
         toast({
-          title: "Error",
-          description: result.message || "Failed to update product condition",
+          title: t("error"),
+          description: result.message || t("failed_to_update_product_condition"),
           variant: "destructive",
         });
       }
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Network error occurred",
+        title: t("error"),
+        description: t("network_error_occurred"),
         variant: "destructive",
       });
     }
@@ -271,8 +271,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
       // Validate required fields
       if (!formData.consumerType || !formData.sellType) {
         toast({
-          title: "Error",
-          description: "Please select both Consumer Type and Sell Type",
+          title: t("error"),
+          description: t("please_select_consumer_and_sell_type"),
           variant: "destructive",
         });
         return;
@@ -317,7 +317,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
       if (!response.ok) {
         const errorText = await response.text();
         toast({
-          title: "Error",
+          title: t("error"),
           description: `HTTP ${response.status}: ${response.statusText}`,
           variant: "destructive",
         });
@@ -328,7 +328,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
 
       if (result.status) {
         toast({
-          title: "Success",
+          title: t("success"),
           description: result.message,
           variant: "default",
         });
@@ -351,15 +351,15 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
         form.setValue("timeClose", 0);
       } else {
         toast({
-          title: "Error",
-          description: result.message || "Failed to update discounts",
+          title: t("error"),
+          description: result.message || t("failed_to_update_discounts"),
           variant: "destructive",
         });
       }
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Network error occurred",
+        title: t("error"),
+        description: t("network_error_occurred"),
         variant: "destructive",
       });
     }
@@ -373,8 +373,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
       // Validate that at least one location field is selected
       if (!selectedCountries.length && !selectedStates.length && !selectedCities.length) {
         toast({
-          title: "Error",
-          description: "Please select at least one country, state, or city",
+          title: t("error"),
+          description: t("please_select_at_least_one_location"),
           variant: "destructive",
         });
         return;
@@ -408,7 +408,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
       if (!response.ok) {
         const errorText = await response.text();
         toast({
-          title: "Error",
+          title: t("error"),
           description: `HTTP ${response.status}: ${response.statusText}`,
           variant: "destructive",
         });
@@ -419,7 +419,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
 
       if (result.status) {
         toast({
-          title: "Success",
+          title: t("success"),
           description: result.message,
           variant: "default",
         });
@@ -434,15 +434,15 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
         // form.setValue("placeOfOriginId", ""); // Temporarily disabled
       } else {
         toast({
-          title: "Error",
-          description: result.message || "Failed to update where to sell settings",
+          title: t("error"),
+          description: result.message || t("failed_to_update_where_to_sell"),
           variant: "destructive",
         });
       }
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Network error occurred",
+        title: t("error"),
+        description: t("network_error_occurred"),
         variant: "destructive",
       });
     }
@@ -456,8 +456,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
       // Validate that at least one ask for field is selected
       if ((!watchAskForPrice || watchAskForPrice === "") && (!watchAskForStock || watchAskForStock === "")) {
         toast({
-          title: "Error",
-          description: "Please select at least one Ask For option",
+          title: t("error"),
+          description: t("please_select_at_least_one_ask_for"),
           variant: "destructive",
         });
         return;
@@ -488,7 +488,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
       if (!response.ok) {
         const errorText = await response.text();
         toast({
-          title: "Error",
+          title: t("error"),
           description: `HTTP ${response.status}: ${response.statusText}`,
           variant: "destructive",
         });
@@ -499,7 +499,7 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
 
       if (result.status) {
         toast({
-          title: "Success",
+          title: t("success"),
           description: result.message,
           variant: "default",
         });
@@ -509,15 +509,15 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
         form.setValue("askForStock", "");
       } else {
         toast({
-          title: "Error",
-          description: result.message || "Failed to update ask for settings",
+          title: t("error"),
+          description: result.message || t("failed_to_update_ask_for"),
           variant: "destructive",
         });
       }
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Network error occurred",
+        title: t("error"),
+        description: t("network_error_occurred"),
         variant: "destructive",
       });
     }

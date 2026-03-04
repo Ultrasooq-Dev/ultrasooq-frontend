@@ -593,9 +593,9 @@ const CheckoutPage = () => {
 
   const shippingOptions = () => {
     return [
-      { value: "PICKUP", label: "Consumer Pickup" },
-      { value: "SELLERDROP", label: "Delivery By Seller" },
-      { value: "THIRDPARTY", label: "Third Party" },
+      { value: "PICKUP", label: t("consumer_pickup") },
+      { value: "SELLERDROP", label: t("delivery_by_seller") },
+      { value: "THIRDPARTY", label: t("third_party") },
     ];
   };
 
@@ -974,8 +974,8 @@ const CheckoutPage = () => {
 
     if (!validateShippingInfo()) {
       toast({
-        title: "Shipping error",
-        description: "Shipping data has errors, please check",
+        title: t("shipping_error"),
+        description: t("shipping_data_has_errors"),
         variant: "danger",
       });
       return;

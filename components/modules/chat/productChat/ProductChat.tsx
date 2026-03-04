@@ -192,7 +192,7 @@ const ProductChat: React.FC<ProductChatProps> = ({ productId, roomId }) => {
       if (!connected || !socket) {
         toast({
           title: t("chat"),
-          description: "Not connected to server. Please wait for connection...",
+          description: t("not_connected_to_server"),
           variant: "danger",
         });
         return;

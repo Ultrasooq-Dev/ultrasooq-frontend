@@ -195,7 +195,7 @@ export default function EditProfilePage() {
         toast({ title: t("profile_edit_failed"), description: response.message, variant: "danger", });
       }
     } catch (error) {
-      toast({ title: t("profile_edit_failed"), description: "An error occurred while updating the profile", variant: "danger", });
+      toast({ title: t("profile_edit_failed"), description: t("error_updating_profile"), variant: "danger", });
     }
   };
 

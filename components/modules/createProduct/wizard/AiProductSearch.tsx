@@ -376,7 +376,7 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
         if (!query.trim() || query.trim().length < 3) {
           toast({
             title: t("search_term_too_short") || "Search term too short",
-            description: "Please enter at least 3 characters",
+            description: t("please_enter_at_least_3_characters"),
             variant: "destructive",
           });
           return;
@@ -455,8 +455,8 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
           const checkData = await checkRes.json();
           if (!checkData.status) {
             toast({
-              title: "Failed",
-              description: checkData.message || "Failed to check model existence",
+              title: t("failed"),
+              description: checkData.message || t("failed_to_check_model"),
               variant: "destructive",
             });
             return;
@@ -515,9 +515,9 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
           const detailsData = await detailsRes.json();
           if (!detailsData.status || !detailsData.data) {
             toast({
-              title: "Failed",
+              title: t("failed"),
               description:
-                detailsData.message || "Failed to generate product details",
+                detailsData.message || t("failed_to_generate_product_details"),
               variant: "destructive",
             });
             return;
@@ -562,8 +562,8 @@ const AiProductSearch = forwardRef<AiProductSearchHandle, AiProductSearchProps>(
           setShowPreviewModal(true);
         } catch (err: any) {
           toast({
-            title: "Failed",
-            description: err.message || "AI generation error",
+            title: t("failed"),
+            description: err.message || t("ai_generation_error"),
             variant: "destructive",
           });
         } finally {

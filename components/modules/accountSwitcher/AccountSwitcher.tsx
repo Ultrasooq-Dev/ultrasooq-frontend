@@ -41,8 +41,8 @@ export default function AccountSwitcher() {
         });
       }
       toast({
-        title: "Account Switched",
-        description: "Successfully switched to the selected account",
+        title: t("account_switched"),
+        description: t("switched_to_selected_account"),
         variant: "success",
       });
       setIsOpen(false);
@@ -50,8 +50,8 @@ export default function AccountSwitcher() {
       window.location.href = "/home";
     } catch (error: any) {
       toast({
-        title: "Switch Failed",
-        description: error?.response?.data?.message || "Failed to switch account",
+        title: t("switch_failed"),
+        description: error?.response?.data?.message || t("failed_to_switch_account"),
         variant: "danger",
       });
     }
@@ -71,8 +71,8 @@ export default function AccountSwitcher() {
         });
       }
       toast({
-        title: "Account Switched",
-        description: "Successfully switched to main account",
+        title: t("account_switched"),
+        description: t("switched_to_main_account"),
         variant: "success",
       });
       setIsOpen(false);
@@ -80,8 +80,8 @@ export default function AccountSwitcher() {
       window.location.href = "/home";
     } catch (error: any) {
       toast({
-        title: "Switch Failed",
-        description: error?.response?.data?.message || "Failed to switch account",
+        title: t("switch_failed"),
+        description: error?.response?.data?.message || t("failed_to_switch_account"),
         variant: "danger",
       });
     }

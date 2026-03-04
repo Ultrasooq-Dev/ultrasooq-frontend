@@ -246,7 +246,7 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
 
       toast({
         title: t("success") || "Success",
-        description: "Update sent to vendor",
+        description: t("update_sent_to_vendor"),
         variant: "success",
       });
     } catch (error: any) {
@@ -668,8 +668,8 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
       cratePrivateRoom(payload);
     } catch (error) {
       toast({
-        title: "Chat",
-        description: "Failed!",
+        title: t("chat"),
+        description: t("failed"),
         variant: "danger",
       });
     }

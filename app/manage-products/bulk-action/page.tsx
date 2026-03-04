@@ -76,8 +76,8 @@ const BulkActionPage = () => {
   const handleBulkUpdate = async (updateData: any) => {
     if (selectedProducts.length === 0) {
       toast({
-        title: "No Products Selected",
-        description: "Please select products to update",
+        title: t("no_products_selected"),
+        description: t("please_select_products_to_update"),
         variant: "destructive",
       });
       return;
@@ -146,8 +146,8 @@ const BulkActionPage = () => {
         );
         
         toast({
-          title: "Success!",
-          description: `Successfully updated ${selectedProducts.length} products. Updated fields: ${updatedFields.join(", ")}`,
+          title: t("success"),
+          description: t("successfully_updated_products", { count: selectedProducts.length, fields: updatedFields.join(", ") }),
           variant: "default",
         });
         
@@ -167,8 +167,8 @@ const BulkActionPage = () => {
     } catch (error: any) {
       
       toast({
-        title: "Update Failed",
-        description: `Error updating products: ${error?.response?.data?.message || error?.message || 'Unknown error'}`,
+        title: t("update_failed"),
+        description: error?.response?.data?.message || error?.message || t("unknown_error"),
         variant: "destructive",
       });
     } finally {

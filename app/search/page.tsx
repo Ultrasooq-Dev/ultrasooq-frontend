@@ -27,12 +27,12 @@ interface SearchPageProps {
 }
 
 const SORT_OPTIONS = [
-    { value: "relevance", label: "Best Match" },
-    { value: "price_asc", label: "Price: Low to High" },
-    { value: "price_desc", label: "Price: High to Low" },
-    { value: "newest", label: "Newest First" },
-    { value: "popularity", label: "Most Popular" },
-    { value: "rating", label: "Highest Rated" },
+    { value: "relevance", labelKey: "best_match" },
+    { value: "price_asc", labelKey: "price_low_to_high" },
+    { value: "price_desc", labelKey: "price_high_to_low" },
+    { value: "newest", labelKey: "newest_first" },
+    { value: "popularity", labelKey: "most_popular" },
+    { value: "rating", labelKey: "highest_rated" },
 ];
 
 const SearchPage = (props: SearchPageProps) => {
@@ -168,7 +168,7 @@ const SearchPage = (props: SearchPageProps) => {
                                         <SelectGroup>
                                             {SORT_OPTIONS.map((option) => (
                                                 <SelectItem key={option.value} value={option.value}>
-                                                    {option.label}
+                                                    {t(option.labelKey)}
                                                 </SelectItem>
                                             ))}
                                         </SelectGroup>

@@ -94,7 +94,7 @@ const schema = (t: any) => {
       .refine(
         (data) => !data.isProductConditionRequired || !!data.productCondition,
         {
-          message: "Product Condition is required",
+          message: t("product_condition_required"),
           path: ["productCondition"],
         },
       )

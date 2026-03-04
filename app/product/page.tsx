@@ -1493,7 +1493,7 @@ const CreateProductPage = () => {
           // If it's not an array, create a single specification entry
           form.setValue("productSpecificationList", [
             {
-              label: "Specification",
+              label: t("specification"),
               specification: existingProduct.specification,
             },
           ]);
@@ -1502,7 +1502,7 @@ const CreateProductPage = () => {
         // If parsing fails, treat as plain text
         form.setValue("productSpecificationList", [
           {
-            label: "Specification",
+            label: t("specification"),
             specification: existingProduct.specification,
           },
         ]);
@@ -1971,7 +1971,7 @@ const CreateProductPage = () => {
         if (!productPriceId || !actualProductId) {
           toast({
             title: t("error"),
-            description: "Product ID not found for editing",
+            description: t("product_id_not_found"),
             variant: "danger",
           });
           return;
