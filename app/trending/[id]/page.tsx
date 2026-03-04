@@ -857,7 +857,7 @@ const ProductDetailsPage = () => {
                         <span className="hidden sm:inline">
                           {t("description")}
                         </span>
-                        <span className="sm:hidden">Desc</span>
+                        <span className="sm:hidden">{t("desc_short")}</span>
                       </span>
                     </TabsTrigger>
                     <TabsTrigger
@@ -883,7 +883,7 @@ const ProductDetailsPage = () => {
                         <span className="hidden sm:inline">
                           {t("specification")}
                         </span>
-                        <span className="sm:hidden">Spec</span>
+                        <span className="sm:hidden">{t("spec_short")}</span>
                       </span>
                     </TabsTrigger>
                     <TabsTrigger
@@ -907,7 +907,7 @@ const ProductDetailsPage = () => {
                           />
                         </svg>
                         <span className="hidden sm:inline">{t("reviews")}</span>
-                        <span className="sm:hidden">Reviews</span>
+                        <span className="sm:hidden">{t("reviews")}</span>
                       </span>
                     </TabsTrigger>
                     <TabsTrigger
@@ -933,7 +933,7 @@ const ProductDetailsPage = () => {
                         <span className="hidden sm:inline">
                           {t("questions")}
                         </span>
-                        <span className="sm:hidden">Q&A</span>
+                        <span className="sm:hidden">{t("qanda_short")}</span>
                       </span>
                     </TabsTrigger>
                     <TabsTrigger
@@ -957,7 +957,7 @@ const ProductDetailsPage = () => {
                           />
                         </svg>
                         <span className="hidden sm:inline">{t("vendor")}</span>
-                        <span className="sm:hidden">Vendor</span>
+                        <span className="sm:hidden">{t("vendor")}</span>
                       </span>
                     </TabsTrigger>
                     <TabsTrigger
@@ -983,7 +983,7 @@ const ProductDetailsPage = () => {
                         <span className="hidden sm:inline">
                           {t("services")}
                         </span>
-                        <span className="sm:hidden">Serv</span>
+                        <span className="sm:hidden">{t("serv_short")}</span>
                       </span>
                     </TabsTrigger>
                   </TabsList>
@@ -1154,7 +1154,7 @@ const ProductDetailsPage = () => {
                           translate="no"
                         >
                           {productDetails?.isDropshipped
-                            ? "This is a dropship product. Description is managed by the dropship vendor."
+                            ? t("dropship_description_managed")
                             : t("product_description_will_be_added_soon")}
                         </p>
                       </div>
@@ -1198,7 +1198,7 @@ const ProductDetailsPage = () => {
                           translate="no"
                         >
                           {productDetails?.isDropshipped
-                            ? "This is a dropship product. Specifications are managed by the dropship vendor."
+                            ? t("dropship_specifications_managed")
                             : t("specifications_will_be_added_soon")}
                         </p>
                       </div>

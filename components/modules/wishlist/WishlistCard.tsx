@@ -228,7 +228,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
           e.stopPropagation();
           onDeleteFromWishlist(productId);
         }}
-        aria-label="Remove from wishlist"
+        aria-label={t("remove_from_wishlist")}
       >
         <Trash2 className="h-4 w-4" />
       </Button>
@@ -243,7 +243,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
                 ? wishlistData.productImages[0].image
                 : PlaceholderImage
             }
-            alt={wishlistData?.productName || "Product image"}
+            alt={wishlistData?.productName || t("product_image")}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
             className="object-contain transition-transform duration-300 group-hover:scale-105"

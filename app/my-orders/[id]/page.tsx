@@ -625,17 +625,17 @@ const MyOrderDetailsPage = () => {
                     return (
                       <div className="mb-8 rounded-lg border bg-card p-4">
                         <h4 className="mb-3 font-semibold text-foreground">
-                          Tracking details
+                          {t("tracking_details")}
                         </h4>
                         <div className="grid grid-cols-1 gap-4 text-sm md:grid-cols-3">
                           <div>
-                            <div className="text-muted-foreground">Tracking Number</div>
+                            <div className="text-muted-foreground">{t("tracking_number")}</div>
                             <div className="flex items-center gap-2 font-medium text-foreground">
                               <span>{tracking?.trackingNumber || "-"}</span>
                               {tracking?.trackingNumber ? (
                                 <button
                                   type="button"
-                                  aria-label="Copy tracking"
+                                  aria-label={t("copy")}
                                   onClick={() =>
                                     copyToClipboard(
                                       String(tracking.trackingNumber),
@@ -643,19 +643,19 @@ const MyOrderDetailsPage = () => {
                                   }
                                   className="inline-flex items-center rounded border px-2 py-1 text-xs"
                                 >
-                                  <Copy className="mr-1 h-3 w-3" /> Copy
+                                  <Copy className="mr-1 h-3 w-3" /> {t("copy")}
                                 </button>
                               ) : null}
                             </div>
                           </div>
                           <div>
-                            <div className="text-muted-foreground">Carrier</div>
+                            <div className="text-muted-foreground">{t("carrier")}</div>
                             <div className="font-medium text-foreground">
                               {tracking?.carrier || "-"}
                             </div>
                           </div>
                           <div>
-                            <div className="text-muted-foreground">Added</div>
+                            <div className="text-muted-foreground">{t("added")}</div>
                             <div className="font-medium text-foreground">
                               {tracking?.addedAt
                                 ? formattedDate(tracking.addedAt, selectedLocale)
@@ -665,7 +665,7 @@ const MyOrderDetailsPage = () => {
                         </div>
                         {tracking?.notes ? (
                           <div className="mt-3 text-sm">
-                            <div className="text-muted-foreground">Notes</div>
+                            <div className="text-muted-foreground">{t("notes")}</div>
                             <div className="text-foreground">
                               {tracking.notes}
                             </div>

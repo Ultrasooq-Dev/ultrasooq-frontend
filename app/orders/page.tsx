@@ -225,7 +225,7 @@ const OrdersPage = () => {
                   </h4> <br />
                   {advanceAmount !== "" ? (
                     <>
-                      <h4>Due Balance</h4>
+                      <h4 dir={langDir} translate="no">{t("due_balance")}</h4>
                       <h4 className="amount-value">   {(calculateTotalAmount() - Number(advanceAmount)).toFixed(2)} </h4>
                     </>
                   ) : null}

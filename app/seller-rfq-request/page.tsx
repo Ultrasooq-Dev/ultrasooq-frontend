@@ -133,7 +133,7 @@ const SellerRfqRequestPage = () => {
                     "flex items-center justify-center p-1.5 rounded-lg text-muted-foreground hover:bg-muted transition-colors",
                     isSidebarCollapsed && "w-full"
                   )}
-                  title={isSidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+                  title={isSidebarCollapsed ? t("expand_sidebar") : t("collapse_sidebar")}
                 >
                   <svg 
                     className={cn(
@@ -158,14 +158,14 @@ const SellerRfqRequestPage = () => {
                       ? "bg-destructive/5 text-destructive"
                       : "text-muted-foreground hover:bg-muted"
                   )}
-                  title={isSidebarCollapsed ? "RFQ" : undefined}
+                  title={isSidebarCollapsed ? t("rfq") : undefined}
                 >
                   <div className={cn(
                     "h-4 w-4 rounded flex-shrink-0",
                     (currentTab as string) === "RFQ" ? "bg-destructive" : "bg-muted-foreground"
                   )}></div>
                   {!isSidebarCollapsed && (
-                    <span className="font-medium">RFQ</span>
+                    <span className="font-medium">{t("rfq")}</span>
                   )}
                 </button>
                 <button
@@ -177,14 +177,14 @@ const SellerRfqRequestPage = () => {
                       ? "bg-destructive/5 text-destructive"
                       : "text-muted-foreground hover:bg-muted"
                   )}
-                  title={isSidebarCollapsed ? "Message System" : undefined}
+                  title={isSidebarCollapsed ? t("message_system") : undefined}
                 >
                   <div className={cn(
                     "h-4 w-4 rounded flex-shrink-0",
                     (currentTab as string) === "Product Messages" ? "bg-destructive" : "bg-muted-foreground"
                   )}></div>
                   {!isSidebarCollapsed && (
-                    <span className="font-medium">Message System</span>
+                    <span className="font-medium">{t("message_system")}</span>
                   )}
                 </button>
               </nav>
@@ -203,7 +203,7 @@ const SellerRfqRequestPage = () => {
                   <button
                     onClick={() => setIsRfqListCollapsed(false)}
                     className="flex items-center justify-center w-full p-2 text-muted-foreground hover:bg-muted rounded transition-colors"
-                    title="Expand RFQ list"
+                    title={t("expand_rfq_list")}
                   >
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -328,11 +328,11 @@ const SellerRfqRequestPage = () => {
               // Expanded view - show list of RFQ requests
               <div className="flex h-full flex-col">
                 <div className="border-b border-border bg-muted p-3 flex items-center justify-between">
-                  <h3 className="text-xs font-semibold text-muted-foreground">Request For RFQ</h3>
+                  <h3 className="text-xs font-semibold text-muted-foreground">{t("request_for_rfq")}</h3>
                   <button
                     onClick={() => setIsRfqListCollapsed(true)}
                     className="flex items-center justify-center p-1.5 text-muted-foreground hover:bg-muted rounded transition-colors"
-                    title="Collapse RFQ list"
+                    title={t("collapse_rfq_list")}
                   >
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -370,7 +370,7 @@ const SellerRfqRequestPage = () => {
               // Always show expanded customers list
               <div className="flex h-full flex-col">
                 <div className="border-b border-border bg-muted p-3">
-                  <h3 className="text-xs font-semibold text-muted-foreground">Customers</h3>
+                  <h3 className="text-xs font-semibold text-muted-foreground">{t("customers")}</h3>
                 </div>
                 <div className="flex-1 overflow-y-auto">
                   <SellerChat
@@ -387,7 +387,7 @@ const SellerRfqRequestPage = () => {
             ) : (
               <div className="flex h-full items-center justify-center p-8">
                 <p className="text-center text-xs text-muted-foreground">
-                  Select an RFQ request
+                  {t("select_an_rfq_request")}
                 </p>
               </div>
             )}
@@ -408,7 +408,7 @@ const SellerRfqRequestPage = () => {
             ) : (
               <div className="flex h-full items-center justify-center p-8">
                 <p className="text-center text-sm text-muted-foreground">
-                  Select a customer to view details
+                  {t("select_customer_to_view_details")}
                 </p>
               </div>
             )}
@@ -440,7 +440,7 @@ const SellerRfqRequestPage = () => {
                     "flex items-center justify-center p-1.5 rounded-lg text-muted-foreground hover:bg-muted transition-colors",
                     isSidebarCollapsed && "w-full"
                   )}
-                  title={isSidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+                  title={isSidebarCollapsed ? t("expand_sidebar") : t("collapse_sidebar")}
                 >
                   <svg 
                     className={cn(
@@ -465,14 +465,14 @@ const SellerRfqRequestPage = () => {
                       ? "bg-destructive/5 text-destructive"
                       : "text-muted-foreground hover:bg-muted"
                   )}
-                  title={isSidebarCollapsed ? "RFQ" : undefined}
+                  title={isSidebarCollapsed ? t("rfq") : undefined}
                 >
                   <div className={cn(
                     "h-4 w-4 rounded flex-shrink-0",
                     (currentTab as string) === "RFQ" ? "bg-destructive" : "bg-muted-foreground"
                   )}></div>
                   {!isSidebarCollapsed && (
-                    <span className="font-medium">RFQ</span>
+                    <span className="font-medium">{t("rfq")}</span>
                   )}
                 </button>
                 <button
@@ -484,14 +484,14 @@ const SellerRfqRequestPage = () => {
                       ? "bg-destructive/5 text-destructive"
                       : "text-muted-foreground hover:bg-muted"
                   )}
-                  title={isSidebarCollapsed ? "Message System" : undefined}
+                  title={isSidebarCollapsed ? t("message_system") : undefined}
                 >
                   <div className={cn(
                     "h-4 w-4 rounded flex-shrink-0",
                     (currentTab as string) === "Product Messages" ? "bg-destructive" : "bg-muted-foreground"
                   )}></div>
                   {!isSidebarCollapsed && (
-                    <span className="font-medium">Message System</span>
+                    <span className="font-medium">{t("message_system")}</span>
                   )}
                 </button>
               </nav>
@@ -514,7 +514,7 @@ const SellerRfqRequestPage = () => {
                       setSelectedCustomerId(null);
                     }}
                     className="flex items-center justify-center w-full p-2 text-muted-foreground hover:bg-muted rounded transition-colors"
-                    title="Back to customers"
+                    title={t("back_to_customers")}
                   >
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -523,7 +523,7 @@ const SellerRfqRequestPage = () => {
                 </div>
                 <div className="flex-1 overflow-y-auto p-2">
                   <div className="text-xs text-muted-foreground text-center break-words leading-tight">
-                    Selected Customer
+                    {t("selected_customer")}
                   </div>
                 </div>
               </div>
@@ -531,7 +531,7 @@ const SellerRfqRequestPage = () => {
               // Expanded view - show customers list
               <div className="flex h-full flex-col">
                 <div className="border-b border-border bg-muted p-3">
-                  <h3 className="text-xs font-semibold text-muted-foreground">Customers</h3>
+                  <h3 className="text-xs font-semibold text-muted-foreground">{t("customers")}</h3>
                 </div>
                 <div className="flex-1 overflow-y-auto">
                   <ProductMessagesList
@@ -558,7 +558,7 @@ const SellerRfqRequestPage = () => {
             ) : (
               <div className="flex h-full items-center justify-center p-8">
                 <p className="text-center text-sm text-muted-foreground">
-                  Select a customer to view message history
+                  {t("select_customer_to_view_history")}
                 </p>
               </div>
             )}

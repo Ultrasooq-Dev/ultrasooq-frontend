@@ -816,13 +816,13 @@ const CartListPage = () => {
                       {t("no_cart_items")}
                     </h3>
                     <p className="mb-6 text-muted-foreground" translate="no">
-                      Add some products to get started
+                      {t("add_some_products_to_get_started")}
                     </p>
                     <Button
                       onClick={() => router.push("/trending")}
                       className="bg-primary px-6 py-2 text-white hover:bg-primary/90"
                     >
-                      Continue Shopping
+                      {t("continue_shopping")}
                     </Button>
                   </div>
                 ) : null}
@@ -841,13 +841,13 @@ const CartListPage = () => {
                       {t("no_cart_items")}
                     </h3>
                     <p className="mb-6 text-muted-foreground" translate="no">
-                      Add some products to get started
+                      {t("add_some_products_to_get_started")}
                     </p>
                     <Button
                       onClick={() => router.push("/trending")}
                       className="bg-primary px-6 py-2 text-white hover:bg-primary/90"
                     >
-                      Continue Shopping
+                      {t("continue_shopping")}
                     </Button>
                   </div>
                 ) : null}
@@ -1061,7 +1061,7 @@ const CartListPage = () => {
                       d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
                     />
                   </svg>
-                  <span translate="no">Secure checkout</span>
+                  <span translate="no">{t("secure_checkout")}</span>
                 </div>
               </div>
             </div>
@@ -1085,12 +1085,12 @@ const CartListPage = () => {
                         dir={langDir}
                         translate="no"
                       >
-                        Recommended products
+                        {t("recommended_products")}
                       </h2>
                     </div>
                     <div className="mt-1 flex items-center gap-1">
                       <span className="text-xs text-muted-foreground" translate="no">
-                        Sponsored
+                        {t("sponsored")}
                       </span>
                       <svg
                         className="h-3 w-3 text-muted-foreground"

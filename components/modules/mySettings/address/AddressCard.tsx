@@ -11,6 +11,7 @@ import PhoneIcon from "@/public/images/phoneicon.svg";
 import LocationIcon from "@/public/images/locationicon.svg";
 import { MoreVertical, Edit, Trash2 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
+import { useTranslations } from "next-intl";
 
 type AddressCardProps = {
   id: number;
@@ -43,6 +44,7 @@ const AddressCard: React.FC<AddressCardProps> = ({
   onEdit,
   onDelete,
 }) => {
+  const t = useTranslations();
   const { langDir } = useAuth();
   
   // Helper function to extract name from object or string
@@ -83,7 +85,7 @@ const AddressCard: React.FC<AddressCardProps> = ({
               <button
                 type="button"
                 className="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-all hover:bg-muted hover:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-                aria-label="Address options"
+                aria-label={t("address_options")}
               >
                 <MoreVertical className="h-5 w-5" />
               </button>
@@ -97,7 +99,7 @@ const AddressCard: React.FC<AddressCardProps> = ({
                 className="cursor-pointer focus:bg-muted"
               >
                 <Edit className="mr-2 h-4 w-4" />
-                Edit
+                {t("edit")}
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
@@ -108,7 +110,7 @@ const AddressCard: React.FC<AddressCardProps> = ({
                 className="cursor-pointer text-destructive focus:bg-destructive/5 focus:text-destructive"
               >
                 <Trash2 className="mr-2 h-4 w-4" />
-                Delete
+                {t("delete")}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

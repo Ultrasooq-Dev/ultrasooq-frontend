@@ -712,7 +712,7 @@ const ServiceDetailsPage = () => {
                     <div className="w-full bg-card">
                       {!productDetails?.product_productSpecification?.length ? (
                         <div className="specification-sec">
-                          <h2>No specification found</h2>
+                          <h2>{t("no_specification_found")}</h2>
                         </div>
                       ) : null}
                       {productDetails?.product_productSpecification?.length ? (
@@ -773,7 +773,7 @@ const ServiceDetailsPage = () => {
                   </TabsContent>
                   <TabsContent value="offers" className="mt-0">
                     <div className="w-full bg-card">
-                      <p>More Offers</p>
+                      <p>{t("more_offers")}</p>
                     </div>
                   </TabsContent>
                 </Tabs>

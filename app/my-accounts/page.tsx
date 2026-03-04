@@ -46,17 +46,17 @@ export default function MyAccountsPage() {
         });
       }
       toast({
-        title: "Account Switched",
-        description: "Successfully switched to the selected account",
+        title: t("account_switched"),
+        description: t("account_switched_success"),
         variant: "success",
       });
       // Full page reload ensures server-side auth picks up the new token
       window.location.href = "/home";
     } catch (error: any) {
       toast({
-        title: "Switch Failed",
+        title: t("switch_failed"),
         description:
-          error?.response?.data?.message || "Failed to switch account",
+          error?.response?.data?.message || t("failed_to_switch_account"),
         variant: "danger",
       });
     }
@@ -76,17 +76,17 @@ export default function MyAccountsPage() {
         });
       }
       toast({
-        title: "Account Switched",
-        description: "Successfully switched to main account",
+        title: t("account_switched"),
+        description: t("account_switched_to_main"),
         variant: "success",
       });
       // Full page reload ensures server-side auth picks up the new token
       window.location.href = "/home";
     } catch (error: any) {
       toast({
-        title: "Switch Failed",
+        title: t("switch_failed"),
         description:
-          error?.response?.data?.message || "Failed to switch account",
+          error?.response?.data?.message || t("failed_to_switch_account"),
         variant: "danger",
       });
     }

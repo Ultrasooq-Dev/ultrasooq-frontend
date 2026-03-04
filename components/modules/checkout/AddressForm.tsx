@@ -448,7 +448,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ addressId, onClose }) => {
             translate="no"
           >
             {createAddress.isPending || updateAddress.isPending ? (
-              <LoaderWithMessage message="Please wait" />
+              <LoaderWithMessage message={t("please_wait")} />
             ) : addressId ? (
               t("edit_address")
             ) : (

@@ -204,12 +204,12 @@ const BulkActionPage = () => {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <div className="text-lg mb-4">No products found</div>
+          <div className="text-lg mb-4">{t("no_products_found")}</div>
           <button
             onClick={() => router.push("/manage-products")}
-            className="px-4 py-2 bg-primary text-white rounded hover:bg-primary"
+            className="px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary"
           >
-            Back to Manage Products
+            {t("back_to_manage_products")}
           </button>
         </div>
       </div>
