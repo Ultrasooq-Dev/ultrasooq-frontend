@@ -253,6 +253,7 @@ describe('HTTP Client (apis/http.ts)', () => {
           headers: {},
           config: { headers: new AxiosHeaders() },
         },
+        config: { headers: new AxiosHeaders() } as any,
         isAxiosError: true,
         name: 'AxiosError',
         message: 'Request failed with status code 401',
