@@ -168,7 +168,7 @@ export interface ProductListParams {
 export interface CreateProductRequest {
   productType: 'R' | 'P';
   productName: string;
-  categoryId: number;
+  categoryId?: number;
   brandId: number;
   skuNo: string;
   productTagList?: ProductTag[];

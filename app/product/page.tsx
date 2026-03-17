@@ -1779,14 +1779,9 @@ const CreateProductPage = () => {
       updatedFormData.existingProductId = parseInt(productId);
     }
 
-    // TODO: category input field change
+    // Category is optional — warn but allow submission without it
     if (updatedFormData.categoryId === 0) {
-      toast({
-        title: t("product_create_failed"),
-        description: t("please_select_category"),
-        variant: "danger",
-      });
-      return;
+      delete updatedFormData.categoryId;
     }
 
     ((updatedFormData.description = updatedFormData?.descriptionJson
