@@ -2023,5 +2023,7 @@
   "failed_to_generate_product_details": "Productdetails genereren mislukt",
   "failed_to_hide_requests": "Verzoeken verbergen mislukt",
   "failed_to_unhide_requests": "Verzoeken zichtbaar maken mislukt",
-  "no_products": "Geen producten"
+  "no_products": "Geen producten",
+  "keywords": "Trefwoorden",
+  "keywords_placeholder": "Voer door komma's gescheiden trefwoorden in voor zoeken"
 }

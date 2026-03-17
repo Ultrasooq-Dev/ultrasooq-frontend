@@ -2023,5 +2023,7 @@
   "failed_to_generate_product_details": "Ürün detayları oluşturulamadı",
   "failed_to_hide_requests": "İstekler gizlenemedi",
   "failed_to_unhide_requests": "İstekler gösterilemedi",
-  "no_products": "Ürün yok"
+  "no_products": "Ürün yok",
+  "keywords": "Anahtar Kelimeler",
+  "keywords_placeholder": "Arama için virgülle ayrılmış anahtar kelimeler girin"
 }

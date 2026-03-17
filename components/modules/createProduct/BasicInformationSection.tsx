@@ -46,6 +46,11 @@ const customStyles = {
     boxShadow:
       "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
   }),
+  menuList: (base: any) => ({
+    ...base,
+    maxHeight: 200,
+    overflowY: "auto",
+  }),
   option: (base: any, state: any) => ({
     ...base,
     backgroundColor: state.isSelected
@@ -469,6 +474,15 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
             productType={activeProductType}
           />
         </div>
+      </div>
+
+      {/* Keywords for search */}
+      <div className="space-y-6">
+        <ControlledTextInput
+          label={t("keywords")}
+          name="keywords"
+          placeholder={t("keywords_placeholder")}
+        />
       </div>
 
       {/* Tags Section - temporarily disabled */}

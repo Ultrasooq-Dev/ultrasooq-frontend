@@ -2023,5 +2023,7 @@
   "failed_to_generate_product_details": "제품 세부정보 생성 실패",
   "failed_to_hide_requests": "요청 숨기기 실패",
   "failed_to_unhide_requests": "요청 숨기기 해제 실패",
-  "no_products": "제품 없음"
+  "no_products": "제품 없음",
+  "keywords": "키워드",
+  "keywords_placeholder": "검색용 쉼표로 구분된 키워드 입력"
 }

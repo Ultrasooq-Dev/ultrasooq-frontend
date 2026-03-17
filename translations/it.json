@@ -2023,5 +2023,7 @@
   "failed_to_generate_product_details": "Generazione dettagli fallita",
   "failed_to_hide_requests": "Impossibile nascondere le richieste",
   "failed_to_unhide_requests": "Impossibile mostrare le richieste",
-  "no_products": "Nessun prodotto"
+  "no_products": "Nessun prodotto",
+  "keywords": "Parole chiave",
+  "keywords_placeholder": "Inserisci parole chiave separate da virgola per la ricerca"
 }

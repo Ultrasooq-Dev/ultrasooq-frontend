@@ -76,6 +76,7 @@ export interface Product {
   dropshipCommission?: number;
   dropshipMinMarkup?: number;
   dropshipMaxMarkup?: number;
+  keywords?: string;
   categoryLocation?: string;
   createdAt?: string;
   updatedAt?: string;
@@ -177,6 +178,7 @@ export interface CreateProductRequest {
   offerPrice: number;
   description: string;
   specification: string;
+  keywords?: string;
   status: 'ACTIVE' | 'INACTIVE';
 }
 

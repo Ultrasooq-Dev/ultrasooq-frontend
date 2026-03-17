@@ -2023,5 +2023,7 @@
   "failed_to_generate_product_details": "उत्पाद विवरण उत्पन्न करने में विफल",
   "failed_to_hide_requests": "अनुरोध छिपाने में विफल",
   "failed_to_unhide_requests": "अनुरोध दिखाने में विफल",
-  "no_products": "कोई उत्पाद नहीं"
+  "no_products": "कोई उत्पाद नहीं",
+  "keywords": "कीवर्ड",
+  "keywords_placeholder": "खोज के लिए अल्पविराम से अलग किए गए कीवर्ड दर्ज करें"
 }

@@ -2023,5 +2023,7 @@
   "failed_to_generate_product_details": "Falha ao gerar detalhes do produto",
   "failed_to_hide_requests": "Falha ao ocultar solicitações",
   "failed_to_unhide_requests": "Falha ao exibir solicitações",
-  "no_products": "Sem produtos"
+  "no_products": "Sem produtos",
+  "keywords": "Palavras-chave",
+  "keywords_placeholder": "Insira palavras-chave separadas por vírgulas para pesquisa"
 }

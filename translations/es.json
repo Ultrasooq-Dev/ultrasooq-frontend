@@ -2023,5 +2023,7 @@
   "failed_to_generate_product_details": "Error al generar detalles",
   "failed_to_hide_requests": "Error al ocultar solicitudes",
   "failed_to_unhide_requests": "Error al mostrar solicitudes",
-  "no_products": "Sin productos"
+  "no_products": "Sin productos",
+  "keywords": "Palabras clave",
+  "keywords_placeholder": "Ingrese palabras clave separadas por comas para búsqueda"
 }

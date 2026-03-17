@@ -254,6 +254,7 @@ const formSchemaForTypeP = (t: any) => {
       sellCityIds: z.any().optional(),
       skuNo: z.string().trim().optional(),
       productCondition: z.string().trim().optional(),
+      keywords: z.string().trim().optional(),
       // Tags are optional; when provided, map them to backend structure
       productTagList: z
         .array(
@@ -435,6 +436,7 @@ const formSchemaForTypeR = (t: any) => {
         .trim(),
       brandId: z.number().optional(),
       productCondition: z.string().trim().optional(),
+      keywords: z.string().trim().optional(),
       productTagList: z
         .array(
           z.object({
@@ -581,6 +583,7 @@ const defaultValues: { [key: string]: any } = {
   brandId: 0,
   skuNo: "",
   productCondition: "",
+  keywords: "",
   productTagList: undefined,
   productImagesList: undefined,
   productPrice: "",
@@ -1350,6 +1353,7 @@ const CreateProductPage = () => {
     form.setValue("offerPrice", product.offerPrice);
     form.setValue("description", product.description);
     form.setValue("specification", product.specification);
+    form.setValue("keywords", product.keywords || "");
     form.setValue("shortDescription", product.shortDescription);
     form.setValue("barcode", product.barcode);
     form.setValue("placeOfOriginId", product.placeOfOriginId);
@@ -1439,6 +1443,7 @@ const CreateProductPage = () => {
     form.setValue("productPrice", existingProduct.productPrice);
     form.setValue("offerPrice", existingProduct.offerPrice);
     form.setValue("description", existingProduct.description);
+    form.setValue("keywords", existingProduct.keywords || "");
 
     // Parse description JSON if it exists, otherwise create proper Slate format
     if (existingProduct.description) {
@@ -2009,6 +2014,7 @@ const CreateProductPage = () => {
           offerPrice: updatedFormData.offerPrice || 0,
           description: updatedFormData.description || "",
           specification: updatedFormData.specification || "",
+          keywords: updatedFormData.keywords || "",
           status: calculatedStatus as "ACTIVE" | "INACTIVE",
         };
 

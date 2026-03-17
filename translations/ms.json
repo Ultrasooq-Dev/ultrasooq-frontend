@@ -2023,5 +2023,7 @@
   "failed_to_generate_product_details": "Gagal menjana butiran produk",
   "failed_to_hide_requests": "Gagal menyembunyikan permintaan",
   "failed_to_unhide_requests": "Gagal menyahsembunyi permintaan",
-  "no_products": "Tiada produk"
+  "no_products": "Tiada produk",
+  "keywords": "Kata Kunci",
+  "keywords_placeholder": "Masukkan kata kunci dipisahkan koma untuk carian"
 }

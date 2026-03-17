@@ -2023,5 +2023,7 @@
   "failed_to_generate_product_details": "生成产品详情失败",
   "failed_to_hide_requests": "隐藏请求失败",
   "failed_to_unhide_requests": "取消隐藏请求失败",
-  "no_products": "没有产品"
+  "no_products": "没有产品",
+  "keywords": "关键词",
+  "keywords_placeholder": "输入逗号分隔的搜索关键词"
 }

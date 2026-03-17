@@ -2023,5 +2023,7 @@
   "failed_to_generate_product_details": "Ошибка генерации деталей продукта",
   "failed_to_hide_requests": "Не удалось скрыть запросы",
   "failed_to_unhide_requests": "Не удалось показать запросы",
-  "no_products": "Нет продуктов"
+  "no_products": "Нет продуктов",
+  "keywords": "Ключевые слова",
+  "keywords_placeholder": "Введите ключевые слова через запятую для поиска"
 }

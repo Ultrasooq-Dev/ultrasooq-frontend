@@ -2023,5 +2023,7 @@
   "failed_to_generate_product_details": "ไม่สามารถสร้างรายละเอียดสินค้าได้",
   "failed_to_hide_requests": "ไม่สามารถซ่อนคำขอได้",
   "failed_to_unhide_requests": "ไม่สามารถยกเลิกการซ่อนได้",
-  "no_products": "ไม่มีสินค้า"
+  "no_products": "ไม่มีสินค้า",
+  "keywords": "คำสำคัญ",
+  "keywords_placeholder": "ป้อนคำสำคัญคั่นด้วยเครื่องหมายจุลภาคเพื่อค้นหา"
 }

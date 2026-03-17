@@ -2023,5 +2023,7 @@
   "failed_to_generate_product_details": "Generowanie szczegółów nie powiodło się",
   "failed_to_hide_requests": "Ukrywanie żądań nie powiodło się",
   "failed_to_unhide_requests": "Odkrywanie żądań nie powiodło się",
-  "no_products": "Brak produktów"
+  "no_products": "Brak produktów",
+  "keywords": "Słowa kluczowe",
+  "keywords_placeholder": "Wprowadź słowa kluczowe oddzielone przecinkami do wyszukiwania"
 }

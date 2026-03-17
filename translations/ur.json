@@ -2023,5 +2023,7 @@
   "failed_to_generate_product_details": "مصنوعات کی تفصیلات بنانا ناکام",
   "failed_to_hide_requests": "درخواستیں چھپانا ناکام",
   "failed_to_unhide_requests": "درخواستیں ظاہر کرنا ناکام",
-  "no_products": "کوئی مصنوعات نہیں"
+  "no_products": "کوئی مصنوعات نہیں",
+  "keywords": "کلیدی الفاظ",
+  "keywords_placeholder": "تلاش کے لیے کوما سے الگ کیے گئے کلیدی الفاظ درج کریں"
 }

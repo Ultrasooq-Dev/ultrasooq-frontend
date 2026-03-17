@@ -2023,5 +2023,7 @@
   "failed_to_generate_product_details": "Tạo chi tiết sản phẩm thất bại",
   "failed_to_hide_requests": "Ẩn yêu cầu thất bại",
   "failed_to_unhide_requests": "Hiện yêu cầu thất bại",
-  "no_products": "Không có sản phẩm"
+  "no_products": "Không có sản phẩm",
+  "keywords": "Từ khóa",
+  "keywords_placeholder": "Nhập từ khóa phân tách bằng dấu phẩy để tìm kiếm"
 }

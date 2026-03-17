@@ -2051,5 +2051,7 @@
   "failed_to_generate_product_details": "فشل في إنشاء تفاصيل المنتج",
   "failed_to_hide_requests": "فشل في إخفاء الطلبات",
   "failed_to_unhide_requests": "فشل في إظهار الطلبات",
-  "no_products": "لا توجد منتجات"
+  "no_products": "لا توجد منتجات",
+  "keywords": "كلمات مفتاحية",
+  "keywords_placeholder": "أدخل كلمات مفتاحية مفصولة بفواصل للبحث"
 }

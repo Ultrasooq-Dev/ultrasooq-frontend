@@ -2023,5 +2023,7 @@
   "failed_to_generate_product_details": "製品詳細の生成に失敗",
   "failed_to_hide_requests": "リクエストの非表示に失敗",
   "failed_to_unhide_requests": "リクエストの再表示に失敗",
-  "no_products": "製品なし"
+  "no_products": "製品なし",
+  "keywords": "キーワード",
+  "keywords_placeholder": "カンマ区切りの検索キーワードを入力"
 }

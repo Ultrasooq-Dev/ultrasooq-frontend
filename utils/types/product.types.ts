@@ -16,6 +16,7 @@ export interface ICreateProductRequest {
   offerPrice: number;
   description: string;
   specification: string;
+  keywords?: string;
   status: "ACTIVE" | "INACTIVE";
 }
 

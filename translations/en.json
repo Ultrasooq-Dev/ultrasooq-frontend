@@ -2061,5 +2061,7 @@
   "failed_to_generate_product_details": "Failed to generate product details",
   "failed_to_hide_requests": "Failed to hide requests",
   "failed_to_unhide_requests": "Failed to unhide requests",
-  "no_products": "No products"
+  "no_products": "No products",
+  "keywords": "Keywords",
+  "keywords_placeholder": "Enter comma-separated keywords for search"
 }
