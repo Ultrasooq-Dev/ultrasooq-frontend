@@ -118,6 +118,7 @@ export const getRouteProtection = (routeName: string) => {
     { allowedStatuses: string[]; redirectTo: string }
   > = {
     // Full access routes - only for ACTIVE users
+    product: { allowedStatuses: ["ACTIVE", "WAITING"], redirectTo: "/home" },
     "manage-products": { allowedStatuses: ["ACTIVE"], redirectTo: "/home" },
     "manage-services": { allowedStatuses: ["ACTIVE"], redirectTo: "/home" },
     "team-members": { allowedStatuses: ["ACTIVE"], redirectTo: "/home" },
