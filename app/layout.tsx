@@ -1,6 +1,5 @@
 import { inter } from "@/app/ui/fonts";
 import "@/app/ui/global.css";
-import "@/scss/main.scss";
 import SessionWrapper from "@/components/SessionWrapper";
 import { Toaster } from "@/components/ui/toaster";
 import { DirectionProvider } from "@/components/ui/direction";

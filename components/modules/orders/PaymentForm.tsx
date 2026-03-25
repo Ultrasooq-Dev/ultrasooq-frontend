@@ -197,18 +197,18 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
                           <p>
                             {t("pay_with_wallet_description")}
                           </p>
-                          <div className="wallet_balance_info">
-                            <div className="balance_item">
-                              <span className="balance_label">{t("wallet_balance")}:</span>
-                              <span className="balance_value">{currency.symbol}{walletData.data.balance ? Number(walletData.data.balance).toFixed(2) : "0.00"}</span>
+                          <div className="rounded-[10px] bg-muted p-5 my-4">
+                            <div className="flex items-center justify-between py-2 border-b border-border">
+                              <span className="font-medium text-[#6c757d]">{t("wallet_balance")}:</span>
+                              <span className="font-semibold text-[#2c3e50]">{currency.symbol}{walletData.data.balance ? Number(walletData.data.balance).toFixed(2) : "0.00"}</span>
                             </div>
-                            <div className="balance_item">
-                              <span className="balance_label">{t("order_total")}:</span>
-                              <span className="balance_value">{currency.symbol}{Number(calculateTotalAmount()).toFixed(2)}</span>
+                            <div className="flex items-center justify-between py-2 border-b border-border">
+                              <span className="font-medium text-[#6c757d]">{t("order_total")}:</span>
+                              <span className="font-semibold text-[#2c3e50]">{currency.symbol}{Number(calculateTotalAmount()).toFixed(2)}</span>
                             </div>
-                            <div className="balance_item">
-                              <span className="balance_label">{t("remaining_after_payment")}:</span>
-                              <span className={`balance_value ${(Number(walletData.data.balance || 0) - Number(calculateTotalAmount())) < 0 ? 'insufficient' : 'sufficient'}`}>
+                            <div className="flex items-center justify-between py-2">
+                              <span className="font-medium text-[#6c757d]">{t("remaining_after_payment")}:</span>
+                              <span className={`font-semibold ${(Number(walletData.data.balance || 0) - Number(calculateTotalAmount())) < 0 ? 'text-[#dc3545]' : 'text-[#28a745]'}`}>
                                 {currency.symbol}{(Number(walletData.data.balance || 0) - Number(calculateTotalAmount())).toFixed(2)}
                               </span>
                             </div>

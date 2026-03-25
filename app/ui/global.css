@@ -17598,3 +17598,18 @@ html[dir="rtl"] body * {
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
 }
+
+/* Quill editor height override */
+.ql-container {
+  height: 200px !important;
+}
+
+/* Loading skeleton animation for wallet components */
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
