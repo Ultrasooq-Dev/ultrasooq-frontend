@@ -109,6 +109,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
       messages: "message",
       analytics: "analytics",
       dropshipping: "dropshipping",
+      external_stores: "external_stores",
       profile: "profile",
       settings: "settings",
       logout: "logout",
@@ -284,6 +285,16 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
           path: "/manage-products",
           onClick: () => {
             router.push("/manage-products");
+          },
+        },
+        {
+          icon: <PackageIcon className="h-5 w-5 text-emerald-600" />,
+          label: t("external_stores"),
+          translationKey: "external_stores",
+          shortLabel: getShortLabel("external_stores"),
+          path: "/external-stores",
+          onClick: () => {
+            router.push("/external-stores");
           },
         },
         {
