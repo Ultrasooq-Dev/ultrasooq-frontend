@@ -2077,5 +2077,11 @@
   "error_loading_products": "فشل في تحميل المنتجات. يرجى المحاولة مرة أخرى.",
   "external_id": "المعرف الخارجي",
   "external_sku": "SKU الخارجي",
-  "copied_to_clipboard": "تم النسخ إلى الحافظة"
+  "copied_to_clipboard": "تم النسخ إلى الحافظة",
+  "store_updated_successfully": "تم تحديث المتجر بنجاح",
+  "store_deleted_successfully": "تم حذف المتجر بنجاح",
+  "confirm_delete_store": "هل أنت متأكد من حذف هذا المتجر؟ لا يمكن التراجع عن هذا الإجراء.",
+  "confirm_unsubscribe_product": "هل أنت متأكد من إلغاء اشتراك هذا المنتج؟",
+  "product_unsubscribed_successfully": "تم إلغاء اشتراك المنتج بنجاح",
+  "unsubscribe": "إلغاء الاشتراك"
 }

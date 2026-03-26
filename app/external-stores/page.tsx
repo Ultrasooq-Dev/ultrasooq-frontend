@@ -6,7 +6,10 @@ import { useAuth } from "@/context/AuthContext";
 import {
   useExternalStores,
   useCreateExternalStore,
+  useUpdateExternalStore,
+  useDeleteExternalStore,
   useExternalStoreSubscribedProducts,
+  useUnsubscribeProductFromExternalStore,
 } from "@/apis/queries/external-dropship.queries";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,6 +22,10 @@ import {
   ChevronDownIcon,
   ChevronUpIcon,
   PackageIcon,
+  PencilIcon,
+  Trash2Icon,
+  XIcon,
+  CheckIcon,
 } from "lucide-react";
 import { getApiUrl } from "@/config/api";
 import Image from "next/image";
@@ -33,9 +40,14 @@ const ExternalStoresPage = () => {
   const [name, setName] = useState("");
   const [platform, setPlatform] = useState("");
   const [expandedStoreId, setExpandedStoreId] = useState<number | null>(null);
+  const [editingStoreId, setEditingStoreId] = useState<number | null>(null);
+  const [editName, setEditName] = useState("");
+  const [editPlatform, setEditPlatform] = useState("");
 
   const externalStoresQuery = useExternalStores(true);
   const createStoreMutation = useCreateExternalStore();
+  const updateStoreMutation = useUpdateExternalStore();
+  const deleteStoreMutation = useDeleteExternalStore();
 
   const handleCreateStore = async () => {
     if (!name.trim()) {
@@ -95,6 +107,57 @@ const ExternalStoresPage = () => {
       toast({
         title: t("error"),
         description: t("something_went_wrong"),
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleEditStore = (store: any) => {
+    setEditingStoreId(store.id);
+    setEditName(store.name);
+    setEditPlatform(store.platform || "");
+  };
+
+  const handleCancelEdit = () => {
+    setEditingStoreId(null);
+    setEditName("");
+    setEditPlatform("");
+  };
+
+  const handleSaveEdit = async () => {
+    if (!editName.trim() || !editingStoreId) return;
+    try {
+      await updateStoreMutation.mutateAsync({
+        storeId: editingStoreId,
+        name: editName.trim(),
+        platform: editPlatform || undefined,
+      });
+      setEditingStoreId(null);
+      toast({
+        title: t("store_updated_successfully"),
+        variant: "success",
+      });
+    } catch (error: any) {
+      toast({
+        title: t("error"),
+        description: error?.response?.data?.message || t("something_went_wrong"),
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleDeleteStore = async (storeId: number) => {
+    if (!confirm(t("confirm_delete_store"))) return;
+    try {
+      await deleteStoreMutation.mutateAsync(storeId);
+      toast({
+        title: t("store_deleted_successfully"),
+        variant: "success",
+      });
+    } catch (error: any) {
+      toast({
+        title: t("error"),
+        description: error?.response?.data?.message || t("something_went_wrong"),
         variant: "destructive",
       });
     }
@@ -195,17 +258,77 @@ const ExternalStoresPage = () => {
                       className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm"
                     >
                       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                        <div>
-                          <h3 className="text-base font-semibold text-gray-900">
-                            {store.name}
-                          </h3>
-                          <p className="text-xs text-gray-500">
-                            {store.platform || t("platform_generic")}
-                          </p>
+                        {editingStoreId === store.id ? (
+                          <div className="flex flex-1 items-center gap-2">
+                            <Input
+                              value={editName}
+                              onChange={(e) => setEditName(e.target.value)}
+                              className="h-8 max-w-[200px] text-sm"
+                            />
+                            <Input
+                              value={editPlatform}
+                              onChange={(e) => setEditPlatform(e.target.value)}
+                              placeholder={t("platform_optional")}
+                              className="h-8 max-w-[150px] text-sm"
+                            />
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={handleSaveEdit}
+                              disabled={updateStoreMutation.isPending}
+                              className="h-8 w-8 p-0 text-green-600 hover:text-green-700"
+                            >
+                              {updateStoreMutation.isPending ? (
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                              ) : (
+                                <CheckIcon className="h-4 w-4" />
+                              )}
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={handleCancelEdit}
+                              className="h-8 w-8 p-0 text-gray-500 hover:text-gray-700"
+                            >
+                              <XIcon className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        ) : (
+                          <div>
+                            <h3 className="text-base font-semibold text-gray-900">
+                              {store.name}
+                            </h3>
+                            <p className="text-xs text-gray-500">
+                              {store.platform || t("platform_generic")}
+                            </p>
+                          </div>
+                        )}
+                        <div className="flex items-center gap-2">
+                          <span className="rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-700">
+                            {t("active")}
+                          </span>
+                          {editingStoreId !== store.id && (
+                            <>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={() => handleEditStore(store)}
+                                className="h-8 w-8 p-0 text-gray-500 hover:text-indigo-600"
+                              >
+                                <PencilIcon className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={() => handleDeleteStore(store.id)}
+                                disabled={deleteStoreMutation.isPending}
+                                className="h-8 w-8 p-0 text-gray-500 hover:text-red-600"
+                              >
+                                <Trash2Icon className="h-4 w-4" />
+                              </Button>
+                            </>
+                          )}
                         </div>
-                        <span className="rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-700">
-                          {t("active")}
-                        </span>
                       </div>
 
                       <div className="mt-4 grid gap-3 text-xs sm:grid-cols-2">
@@ -303,10 +426,29 @@ const ExternalStoresPage = () => {
 // Separate component for subscribed products list
 const SubscribedProductsList = ({ storeId }: { storeId: number }) => {
   const t = useTranslations();
+  const { toast } = useToast();
   const subscribedProductsQuery = useExternalStoreSubscribedProducts(
     storeId,
     true,
   );
+  const unsubscribeMutation = useUnsubscribeProductFromExternalStore();
+
+  const handleUnsubscribe = async (productId: number) => {
+    if (!confirm(t("confirm_unsubscribe_product"))) return;
+    try {
+      await unsubscribeMutation.mutateAsync({ storeId, productId });
+      toast({
+        title: t("product_unsubscribed_successfully"),
+        variant: "success",
+      });
+    } catch (error: any) {
+      toast({
+        title: t("error"),
+        description: error?.response?.data?.message || t("something_went_wrong"),
+        variant: "destructive",
+      });
+    }
+  };
 
   if (subscribedProductsQuery.isLoading) {
     return (
@@ -412,17 +554,28 @@ const SubscribedProductsList = ({ storeId }: { storeId: number }) => {
                       {t("external_sku")}: {subscription.externalSku}
                     </p>
                   )}
-                  <span
-                    className={`mt-2 inline-block px-2 py-0.5 text-xs rounded-full ${
-                      subscription.status === "ACTIVE"
-                        ? "bg-green-100 text-green-700"
-                        : "bg-gray-100 text-gray-700"
-                    }`}
-                  >
-                    {subscription.status === "ACTIVE"
-                      ? t("active")
-                      : t("inactive")}
-                  </span>
+                  <div className="mt-2 flex items-center gap-2">
+                    <span
+                      className={`inline-block px-2 py-0.5 text-xs rounded-full ${
+                        subscription.status === "ACTIVE"
+                          ? "bg-green-100 text-green-700"
+                          : "bg-gray-100 text-gray-700"
+                      }`}
+                    >
+                      {subscription.status === "ACTIVE"
+                        ? t("active")
+                        : t("inactive")}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => handleUnsubscribe(product.id)}
+                      disabled={unsubscribeMutation.isPending}
+                      className="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-0.5 text-xs text-red-600 hover:bg-red-100"
+                    >
+                      <XIcon className="h-3 w-3" />
+                      {t("unsubscribe")}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
