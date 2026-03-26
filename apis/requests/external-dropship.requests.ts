@@ -52,6 +52,49 @@ export const subscribeProductsToExternalStore = (params: {
   });
 };
 
+export const updateExternalStore = (
+  storeId: number,
+  payload: { name?: string; platform?: string; settings?: any }
+) => {
+  return axios({
+    method: "PATCH",
+    url: `${getApiUrl()}/external-dropship/stores/${storeId}`,
+    data: payload,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
+    },
+  });
+};
+
+export const deleteExternalStore = (storeId: number) => {
+  return axios({
+    method: "DELETE",
+    url: `${getApiUrl()}/external-dropship/stores/${storeId}`,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
+    },
+  });
+};
+
+export const unsubscribeProductFromExternalStore = (
+  storeId: number,
+  productId: number
+) => {
+  return axios({
+    method: "DELETE",
+    url: `${getApiUrl()}/external-dropship/stores/${storeId}/unsubscribe-product/${productId}`,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
+    },
+  });
+};
+
 export const getSubscribedProductsForExternalStore = (storeId: number) => {
   return axios({
     method: "GET",

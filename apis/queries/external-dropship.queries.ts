@@ -3,7 +3,10 @@ import { APIResponseError } from "@/utils/types/common.types";
 import {
   createExternalStore,
   listExternalStores,
+  updateExternalStore,
+  deleteExternalStore,
   subscribeProductsToExternalStore,
+  unsubscribeProductFromExternalStore,
   getSubscribedProductsForExternalStore,
 } from "../requests/external-dropship.requests";
 
@@ -26,6 +29,55 @@ export const useCreateExternalStore = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["external-stores"] });
+    },
+  });
+};
+
+export const useUpdateExternalStore = () => {
+  const queryClient = useQueryClient();
+  return useMutation<
+    any,
+    APIResponseError,
+    { storeId: number; name?: string; platform?: string }
+  >({
+    mutationFn: async ({ storeId, ...payload }) => {
+      const res = await updateExternalStore(storeId, payload);
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["external-stores"] });
+    },
+  });
+};
+
+export const useDeleteExternalStore = () => {
+  const queryClient = useQueryClient();
+  return useMutation<any, APIResponseError, number>({
+    mutationFn: async (storeId) => {
+      const res = await deleteExternalStore(storeId);
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["external-stores"] });
+    },
+  });
+};
+
+export const useUnsubscribeProductFromExternalStore = () => {
+  const queryClient = useQueryClient();
+  return useMutation<
+    any,
+    APIResponseError,
+    { storeId: number; productId: number }
+  >({
+    mutationFn: async ({ storeId, productId }) => {
+      const res = await unsubscribeProductFromExternalStore(storeId, productId);
+      return res.data;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ["external-store-subscribed-products", variables.storeId],
+      });
     },
   });
 };
