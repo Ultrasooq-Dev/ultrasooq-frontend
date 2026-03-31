@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import Link from "next/link";
 import { useTranslations } from "next-intl";
 import {
   useVendorOverview,
@@ -349,7 +350,8 @@ export default function VendorAnalyticsPage() {
                     : productList.map((p: any) => (
                       <tr
                         key={p.priceId}
-                        className="border-b hover:bg-muted/40"
+                        className="border-b hover:bg-muted/40 cursor-pointer"
+                        onClick={() => window.location.href = `/analytics/${p.priceId}`}
                       >
                         <td className="py-2 pe-4">
                           <div className="font-medium truncate max-w-xs">
