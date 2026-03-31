@@ -20,7 +20,7 @@ import NextTopLoader from "nextjs-toploader";
 import { Geist, Noto_Sans_Arabic } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import { AnalyticsProvider } from "@/lib/analytics";
+import { AnalyticsProvider, AnalyticsErrorBoundary } from "@/lib/analytics";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 const notoArabic = Noto_Sans_Arabic({ subsets: ["arabic"], variable: "--font-sans-arabic" });
@@ -136,6 +136,7 @@ export default async function RootLayout({
                   locale={locale}
                   tradeRole={userObject?.tradeRole}
                 >
+                <AnalyticsErrorBoundary>
                 <SocketProvider>
                   <SidebarProvider>
                     <TitleProtection />
@@ -152,6 +153,7 @@ export default async function RootLayout({
                     </main>
                   </SidebarProvider>
                 </SocketProvider>
+                </AnalyticsErrorBoundary>
                 </AnalyticsProvider>
               </AuthProvider>
             </ReactQueryProvider>

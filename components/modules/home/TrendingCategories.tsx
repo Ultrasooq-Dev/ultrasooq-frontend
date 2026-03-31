@@ -161,20 +161,8 @@ const TrendingCategories: React.FC<TrendingCategoriesProps> = ({
     );
   };
 
-  if (mainCategoriesQuery.isLoading) {
-    return (
-      <div className="flex items-center justify-center py-8">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-border border-t-primary"></div>
-      </div>
-    );
-  }
-
-  if (mainCategoriesQuery.isError || !mainCategories.length) {
-    return (
-      <div className="text-center py-8 text-muted-foreground" translate="no">
-        {t("no_categories_available")}
-      </div>
-    );
+  if (mainCategoriesQuery.isLoading || mainCategoriesQuery.isError || !mainCategories.length) {
+    return null;
   }
 
   return (

@@ -31,7 +31,7 @@ export class AnalyticsErrorBoundary extends React.Component<Props, State> {
   componentDidCatch(error: Error, info: React.ErrorInfo) {
     if (process.env.NEXT_PUBLIC_ANALYTICS_ENABLED === 'false') return;
 
-    const apiBase = process.env.NEXT_PUBLIC_API_URL ?? '/api/v1';
+    const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api/v1';
 
     fetch(`${apiBase}/analytics/errors`, {
       method: 'POST',

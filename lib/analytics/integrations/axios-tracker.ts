@@ -52,7 +52,7 @@ export function attachAnalyticsInterceptors(http: AxiosInstance) {
     (error) => {
       // Track API errors via standalone POST (immediate, not queued)
       if (typeof window !== 'undefined' && error?.response) {
-        const apiBase = process.env.NEXT_PUBLIC_API_URL ?? '/api/v1';
+        const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api/v1';
         const sessionId = getSessionId();
 
         fetch(`${apiBase}/analytics/errors`, {

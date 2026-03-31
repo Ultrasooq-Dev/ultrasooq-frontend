@@ -37,7 +37,7 @@ export function AnalyticsProvider({
 
     if (process.env.NEXT_PUBLIC_ANALYTICS_ENABLED === 'false') return;
 
-    const apiBase = process.env.NEXT_PUBLIC_API_URL ?? '/api/v1';
+    const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api/v1';
 
     initTracker({ apiBase, userId, locale, currency, tradeRole });
     setupVisibilityFlush();
