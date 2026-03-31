@@ -169,5 +169,9 @@ http.interceptors.response.use(
   },
 );
 
+// Attach analytics interceptors (Channel A piggyback — zero extra API calls)
+import { attachAnalyticsInterceptors } from '@/lib/analytics/integrations/axios-tracker';
+attachAnalyticsInterceptors(http);
+
 export default http;
 export { http };
