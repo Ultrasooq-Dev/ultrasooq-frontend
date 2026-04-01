@@ -11,6 +11,7 @@ import {
   getSupportHistory,
 } from "@/apis/requests/support.requests";
 import http from "@/apis/http";
+import { track } from "@/lib/analytics";
 import {
   Bot, Shield, Headset, Paperclip, Send,
   Plus, History, MessageSquare, Store, ChevronLeft, ChevronDown,
@@ -326,6 +327,7 @@ export default function MessagingHub({ onClose, onUnreadChange, user, locale }: 
   const openChat = useCallback((id: string) => {
     setOpenChats((prev) => prev.includes(id) ? prev : [...prev, id]);
     setMinimizedChats((prev) => prev.filter((x) => x !== id));
+    track("support_chat_opened", { threadId: id });
   }, []);
 
   const minimizeChat = useCallback((id: string) => {
@@ -349,6 +351,7 @@ export default function MessagingHub({ onClose, onUnreadChange, user, locale }: 
     setSessions((prev) => [session, ...prev]);
     openChat(id);
     setView("list");
+    track("support_session_created", { sessionId: id });
   }, [locale, openChat]);
 
   // User search
@@ -371,6 +374,7 @@ export default function MessagingHub({ onClose, onUnreadChange, user, locale }: 
       }, ...prev]);
     }
     openChat(id); setView("list");
+    track("user_chat_started", { otherUserId: otherUser.id, otherUserName: otherUser.firstName });
   }, [sessions, locale, openChat]);
 
   const active = sessions.filter((s) => s.status === "active");

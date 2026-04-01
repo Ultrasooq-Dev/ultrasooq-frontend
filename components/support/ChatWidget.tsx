@@ -4,6 +4,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useCurrentAccount } from "@/apis/queries/auth.queries";
 import MessagingHub from "./MessagingHub";
 import { MessageCircle, X } from "lucide-react";
+import { track } from "@/lib/analytics";
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -44,7 +45,7 @@ export default function ChatWidget() {
 
       <button
         type="button"
-        onClick={() => setIsOpen((o) => !o)}
+        onClick={() => { setIsOpen((o) => { track(o ? "support_widget_closed" : "support_widget_opened"); return !o; }); }}
         className="fixed bottom-6 end-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg hover:scale-105 transition-transform"
         aria-label="Messages"
       >
