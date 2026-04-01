@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import MenuGrid from "./MenuGrid";
 import MessageBubble, { type ChatMessage } from "./MessageBubble";
@@ -12,9 +11,9 @@ import {
   getSupportHistory,
 } from "@/apis/requests/support.requests";
 import {
-  Bot, Shield, User, Headset, Paperclip, Send, Minimize2,
-  Plus, Search, History, MessageSquare, Store, ChevronLeft,
-  Loader2, RotateCcw,
+  Bot, Shield, Headset, Paperclip, Send, Minimize2,
+  Plus, History, MessageSquare, Store, ChevronLeft,
+  Loader2,
 } from "lucide-react";
 
 interface MessagingHubProps {
@@ -48,9 +47,77 @@ const GREETING = (name: string, locale: string): ChatMessage => ({
 
 export default function MessagingHub({ onClose, onUnreadChange, user, locale }: MessagingHubProps) {
   const router = useRouter();
-  const { selectedLocale } = useAuth();
   const tradeRole = user?.tradeRole || "BUYER";
   const userName = user?.firstName || "";
+
+  // ─── Drag + Resize ───
+  const windowRef = useRef<HTMLDivElement>(null);
+  const [pos, setPos] = useState(() => {
+    const w = typeof window !== "undefined" ? window.innerWidth : 1200;
+    const h = typeof window !== "undefined" ? window.innerHeight : 800;
+    return { x: w - 420, y: h - 590 };
+  });
+  const [size, setSize] = useState({ w: 380, h: 540 });
+  const [minimized, setMinimized] = useState(false);
+  const dragging = useRef(false);
+  const resizing = useRef(false);
+  const dragOffset = useRef({ x: 0, y: 0 });
+
+  const onDragStart = useCallback((e: React.MouseEvent) => {
+    if ((e.target as HTMLElement).closest("button, textarea, input, a")) return;
+    dragging.current = true;
+    dragOffset.current = { x: e.clientX - pos.x, y: e.clientY - pos.y };
+    e.preventDefault();
+  }, [pos]);
+
+  const onResizeStart = useCallback((e: React.MouseEvent) => {
+    resizing.current = true;
+    dragOffset.current = { x: e.clientX, y: e.clientY };
+    e.preventDefault();
+    e.stopPropagation();
+  }, []);
+
+  useEffect(() => {
+    const onMouseMove = (e: MouseEvent) => {
+      if (dragging.current) {
+        setPos({
+          x: Math.max(0, Math.min(e.clientX - dragOffset.current.x, window.innerWidth - size.w)),
+          y: Math.max(0, Math.min(e.clientY - dragOffset.current.y, window.innerHeight - 80)),
+        });
+      }
+      if (resizing.current) {
+        const dx = e.clientX - dragOffset.current.x;
+        const dy = e.clientY - dragOffset.current.y;
+        dragOffset.current = { x: e.clientX, y: e.clientY };
+        setSize((prev) => ({
+          w: Math.max(300, Math.min(prev.w + dx, 600)),
+          h: Math.max(350, Math.min(prev.h + dy, window.innerHeight - 40)),
+        }));
+      }
+    };
+    const onMouseUp = () => { dragging.current = false; resizing.current = false; };
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
+    return () => { window.removeEventListener("mousemove", onMouseMove); window.removeEventListener("mouseup", onMouseUp); };
+  }, [size.w]);
+
+  // Auto-move when sidebars open (cart, sidebar, etc.)
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      if (typeof window === "undefined") return;
+      // Detect open sidebars/drawers by checking for common classes
+      const cartSidebar = document.querySelector("[data-state='open'][role='dialog'], .cart-sidebar, [class*='translate-x-0'][class*='fixed']");
+      const rightEdge = window.innerWidth;
+      if (cartSidebar) {
+        const rect = cartSidebar.getBoundingClientRect();
+        if (rect.left < rightEdge && pos.x + size.w > rect.left) {
+          setPos((prev) => ({ ...prev, x: Math.max(0, rect.left - size.w - 16) }));
+        }
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["class", "data-state", "style"] });
+    return () => observer.disconnect();
+  }, [pos.x, size.w]);
 
   // Views: "threads" = sidebar list, "chat" = active chat, "menu" = action menu
   const [view, setView] = useState<"threads" | "chat" | "menu">("threads");
@@ -316,9 +383,14 @@ export default function MessagingHub({ onClose, onUnreadChange, user, locale }: 
   );
 
   return (
-    <div className="fixed bottom-24 end-6 z-50 w-[400px] h-[560px] max-h-[80vh] flex flex-col rounded-2xl border bg-background shadow-2xl overflow-hidden">
-      {/* ═══ HEADER ═══ */}
-      <div className="flex items-center justify-between bg-primary px-4 py-2.5 text-primary-foreground shrink-0">
+    <div
+      ref={windowRef}
+      style={{ left: `${pos.x}px`, top: `${pos.y}px`, width: `${size.w}px`, height: `${size.h}px` }}
+      className="fixed z-50 flex flex-col rounded-2xl border bg-background shadow-2xl overflow-hidden">
+      {/* ═══ HEADER — DRAG HANDLE ═══ */}
+      <div
+        onMouseDown={onDragStart}
+        className="flex items-center justify-between bg-primary px-4 py-2.5 text-primary-foreground shrink-0 cursor-move select-none">
         {view === "chat" && (
           <button type="button" onClick={() => setView("threads")} className="p-1 rounded-lg hover:bg-primary-foreground/10">
             <ChevronLeft className="h-4 w-4" />
@@ -504,6 +576,16 @@ export default function MessagingHub({ onClose, onUnreadChange, user, locale }: 
           </div>
         </>
       )}
+      {/* Resize handle */}
+      <div
+        onMouseDown={onResizeStart}
+        className="absolute bottom-0 end-0 w-5 h-5 cursor-se-resize flex items-end justify-end p-0.5 opacity-30 hover:opacity-70 transition-opacity"
+      >
+        <svg width="8" height="8" viewBox="0 0 10 10" className="text-muted-foreground">
+          <path d="M9 1v8H1" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          <path d="M9 5v4H5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+      </div>
     </div>
   );
 }
