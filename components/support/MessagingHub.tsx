@@ -208,7 +208,13 @@ function PopChat({
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-2 py-2 space-y-1">
+      <div className="flex-1 overflow-y-auto px-2 py-2 space-y-1 min-h-[200px]">
+        {messages.length <= 1 && !showMenu && !isTyping && (
+          <div className="flex flex-col items-center justify-center h-full text-muted-foreground py-12">
+            <MessageSquare className="h-8 w-8 mb-2 opacity-20" />
+            <span className="text-xs">{locale === "ar" ? "لا توجد رسائل بعد" : "No messages yet"}</span>
+          </div>
+        )}
         {messages.map((msg) => (
           <MessageBubble key={msg.id} message={msg} locale={locale} onFeedback={handleFeedback}
             onButtonClick={(a, v) => { if (a === "navigate") handleNavigate(v); else if (a === "menu_click") handleMenuClick(v); else if (a === "send_text") { addMsg({ senderType: "customer", content: v }); if (convId) { setIsTyping(true); sendSupportMessage({ conversationId: convId, content: v, metadata: { locale } }).then((res) => { setIsTyping(false); const b = res.data?.botResponse; if (b?.content) addMsg({ senderType: "bot", content: b.content, contentType: b.contentType, metadata: b.metadata }); }).catch(() => setIsTyping(false)); } } }}
@@ -336,7 +342,7 @@ export default function MessagingHub({ onClose, onUnreadChange, user, locale }: 
   return (
     <>
       {/* ═══ LIST PANEL ═══ */}
-      <div className="fixed bottom-20 end-6 z-50 w-[300px] max-h-[480px] flex flex-col rounded-xl border bg-background shadow-2xl overflow-hidden">
+      <div className="fixed bottom-20 end-6 z-50 w-[300px] min-h-[320px] max-h-[480px] flex flex-col rounded-xl border bg-background shadow-2xl overflow-hidden">
         <div className="flex items-center justify-between bg-primary px-3 py-2 text-primary-foreground shrink-0">
           {view !== "list" && <button type="button" onClick={() => view === "user_search" ? setView("user_list") : setView("list")} className="p-1 rounded hover:bg-primary-foreground/10"><ChevronLeft className="h-4 w-4" /></button>}
           <MessageSquare className="h-4 w-4 ms-1" />
