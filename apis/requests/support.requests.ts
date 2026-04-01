@@ -1,7 +1,7 @@
 import http from '../http'
 
-export const initSupportChat = (metadata?: any) =>
-  http({ method: 'POST', url: '/support/widget/init', data: { metadata } })
+export const initSupportChat = (metadata?: any, forceNew = false) =>
+  http({ method: 'POST', url: '/support/widget/init', data: { metadata, forceNew } })
 
 export const sendSupportMessage = (data: {
   conversationId: number

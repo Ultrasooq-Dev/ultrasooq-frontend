@@ -106,7 +106,8 @@ function PopChat({
   // Init support conversation for this window
   useEffect(() => {
     if (session.type === "support" && !convId) {
-      initSupportChat({ locale }).then((res) => {
+      const isNew = session.id.startsWith("support-new");
+      initSupportChat({ locale }, isNew).then((res) => {
         const d = res.data;
         if (d?.conversationId) {
           setConvId(d.conversationId);
