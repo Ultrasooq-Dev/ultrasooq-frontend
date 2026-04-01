@@ -13,7 +13,7 @@ import { MessageCircle, X } from "lucide-react";
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
-  const { me } = useAuth();
+  const { me, selectedLocale } = useAuth();
   const { data: currentAccountData } = useCurrentAccount();
 
   // Resolve tradeRole from current account (multi-account system)
@@ -22,6 +22,7 @@ export default function ChatWidget() {
     currentAccountData?.data?.account?.tradeRole ||
     user?.tradeRole ||
     "BUYER";
+  const locale = selectedLocale || "en";
 
   // Don't render on login/register pages
   const [show, setShow] = useState(false);
@@ -45,6 +46,7 @@ export default function ChatWidget() {
           onClose={() => setIsOpen(false)}
           onUnreadChange={setUnreadCount}
           user={{ ...user, tradeRole }}
+          locale={locale}
         />
       )}
 

@@ -23,6 +23,7 @@ interface ChatWindowProps {
   onClose: () => void;
   onUnreadChange: (count: number) => void;
   user: any;
+  locale?: string;
 }
 
 // Mock data — will be replaced by real WebSocket + API in Phase 8
@@ -147,10 +148,10 @@ const MOCK_RESPONSES: Record<string, ChatMessage> = {
   },
 };
 
-export default function ChatWindow({ onClose, onUnreadChange, user }: ChatWindowProps) {
+export default function ChatWindow({ onClose, onUnreadChange, user, locale: localeProp }: ChatWindowProps) {
   const router = useRouter();
-  const { langDir } = useAuth();
-  const locale = langDir === "rtl" ? "ar" : "en";
+  const { selectedLocale } = useAuth();
+  const locale = localeProp || selectedLocale || "en";
   const tradeRole = user?.tradeRole || "BUYER";
   const userName = user?.firstName || "";
 
