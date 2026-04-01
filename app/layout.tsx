@@ -21,6 +21,7 @@ import { Geist, Noto_Sans_Arabic } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { AnalyticsProvider, AnalyticsErrorBoundary } from "@/lib/analytics";
+import ChatWidget from "@/components/support/ChatWidget";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 const notoArabic = Noto_Sans_Arabic({ subsets: ["arabic"], variable: "--font-sans-arabic" });
@@ -154,6 +155,7 @@ export default async function RootLayout({
                   </SidebarProvider>
                 </SocketProvider>
                 </AnalyticsErrorBoundary>
+                <ChatWidget />
                 </AnalyticsProvider>
               </AuthProvider>
             </ReactQueryProvider>
