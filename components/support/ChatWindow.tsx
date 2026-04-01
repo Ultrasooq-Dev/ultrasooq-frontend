@@ -305,33 +305,49 @@ export default function ChatWindow({ onClose, onUnreadChange, user, locale: loca
     setShowMenu(false);
 
     if (useRealApi && conversationId) {
-      setIsTyping(true);
-      sendSupportMessage({
-        conversationId,
-        content: text,
-        metadata: { locale, currentPage: typeof window !== 'undefined' ? window.location.pathname : '/' },
-      })
-        .then((res) => {
-          setIsTyping(false);
-          const bot = res.data?.botResponse;
-          if (bot) {
+      // If already escalated, just save the message — don't call bot
+      if (conversationStatus === "open" || conversationStatus === "assigned") {
+        sendSupportMessage({
+          conversationId,
+          content: text,
+          metadata: { locale },
+        }).catch(() => {});
+        addMessage({
+          senderType: "bot",
+          content: locale === "ar"
+            ? "تم إرسال رسالتك. سيرد فريق الدعم قريباً."
+            : "Your message was sent. Support team will respond shortly.",
+          contentType: "status",
+        });
+      } else {
+        setIsTyping(true);
+        sendSupportMessage({
+          conversationId,
+          content: text,
+          metadata: { locale, currentPage: typeof window !== 'undefined' ? window.location.pathname : '/' },
+        })
+          .then((res) => {
+            setIsTyping(false);
+            const bot = res.data?.botResponse;
+            if (bot && bot.content) {
+              addMessage({
+                senderType: "bot",
+                content: bot.content,
+                contentType: bot.contentType,
+                metadata: bot.metadata,
+              });
+            }
+            if (res.data?.status) setConversationStatus(res.data.status);
+          })
+          .catch(() => {
+            setIsTyping(false);
             addMessage({
               senderType: "bot",
-              content: bot.content,
-              contentType: bot.contentType,
-              metadata: bot.metadata,
+              content: locale === "ar" ? "حدث خطأ. حاول مرة أخرى." : "Something went wrong. Please try again.",
+              contentType: "text",
             });
-          }
-          if (res.data?.status) setConversationStatus(res.data.status);
-        })
-        .catch(() => {
-          setIsTyping(false);
-          addMessage({
-            senderType: "bot",
-            content: locale === "ar" ? "حدث خطأ. حاول مرة أخرى." : "Something went wrong. Please try again.",
-            contentType: "text",
           });
-        });
+      }
     } else {
       // Mock fallback
       simulateBotResponse({
