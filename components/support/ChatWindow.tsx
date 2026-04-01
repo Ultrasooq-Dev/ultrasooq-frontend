@@ -17,6 +17,7 @@ import {
   sendSupportMessage,
   sendMenuClick,
   submitFeedback,
+  getSupportHistory,
 } from "@/apis/requests/support.requests";
 
 interface ChatWindowProps {
@@ -168,7 +169,7 @@ export default function ChatWindow({ onClose, onUnreadChange, user, locale: loca
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const nextId = useRef(2);
 
-  // Initialize conversation with backend
+  // Initialize conversation with backend (resume existing or create new)
   useEffect(() => {
     initSupportChat({ locale, currentPage: typeof window !== 'undefined' ? window.location.pathname : '/' })
       .then((res) => {
@@ -176,14 +177,16 @@ export default function ChatWindow({ onClose, onUnreadChange, user, locale: loca
         if (data?.conversationId) {
           setConversationId(data.conversationId);
           setUseRealApi(true);
-          // Load existing messages if resuming
+          setConversationStatus(data.status || 'bot');
+
+          // Restore messages if resuming an existing conversation
           if (data.messages?.length > 0) {
             const existing = data.messages.map((m: any) => ({
               id: m.id,
               senderType: m.senderType,
               content: m.content,
               contentType: m.contentType,
-              metadata: m.metadata,
+              metadata: m.metadata ? (typeof m.metadata === 'string' ? JSON.parse(m.metadata) : m.metadata) : undefined,
               feedbackScore: m.feedbackScore,
               createdAt: m.createdAt,
             }));
@@ -191,13 +194,60 @@ export default function ChatWindow({ onClose, onUnreadChange, user, locale: loca
             setShowMenu(false);
             nextId.current = Math.max(...existing.map((m: any) => m.id), 1) + 1;
           }
+
+          // Save to sessionStorage for persistence across close/open
+          if (typeof window !== 'undefined') {
+            sessionStorage.setItem('us_support_cid', String(data.conversationId));
+          }
         }
       })
       .catch(() => {
-        // Fallback to mock mode if API fails (user not logged in, CORS, etc.)
         setUseRealApi(false);
       });
   }, []);
+
+  // Poll for new messages when conversation is escalated to admin (every 5s)
+  useEffect(() => {
+    if (!useRealApi || !conversationId) return;
+    if (conversationStatus !== 'open' && conversationStatus !== 'assigned') return;
+
+    const interval = setInterval(() => {
+      getSupportHistory(conversationId)
+        .then((res) => {
+          const conv = res.data;
+          if (!conv?.messages) return;
+
+          const serverMsgs = conv.messages;
+          const lastLocalId = messages.length > 0 ? Math.max(...messages.filter(m => m.id > 0).map(m => m.id), 0) : 0;
+
+          // Find new messages from server (admin replies)
+          const newMsgs = serverMsgs.filter((m: any) => m.id > lastLocalId);
+          if (newMsgs.length > 0) {
+            for (const m of newMsgs) {
+              addMessage({
+                id: m.id,
+                senderType: m.senderType,
+                content: m.content,
+                contentType: m.contentType,
+                metadata: m.metadata,
+                createdAt: m.createdAt,
+              });
+            }
+            // Update unread count
+            const adminNewMsgs = newMsgs.filter((m: any) => m.senderType === 'admin');
+            if (adminNewMsgs.length > 0) {
+              onUnreadChange(adminNewMsgs.length);
+            }
+          }
+
+          // Update conversation status
+          if (conv.status) setConversationStatus(conv.status);
+        })
+        .catch(() => {});
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [useRealApi, conversationId, conversationStatus, messages, addMessage, onUnreadChange]);
 
   // Auto-scroll to bottom
   useEffect(() => {
