@@ -400,6 +400,7 @@ export default function ChatWindow({ onClose, onUnreadChange, user }: ChatWindow
             tradeRole={tradeRole}
             locale={locale}
             onMenuClick={handleMenuClick}
+            onNavigate={handleNavigate}
           />
         )}
 
