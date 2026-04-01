@@ -1,5 +1,8 @@
 import http from '../http'
 
+export const fetchVendorMiniStats = () =>
+  http({ method: 'GET', url: `/vendor/analytics/mini-stats` })
+
 export const fetchVendorOverview = (params: { days?: number } = {}) =>
   http({ method: 'GET', url: `/vendor/analytics/overview`, params })
 

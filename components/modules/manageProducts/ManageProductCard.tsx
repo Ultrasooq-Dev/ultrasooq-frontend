@@ -21,11 +21,19 @@ import {
   useUpdateProductStatus,
   useUpdateSingleProduct,
 } from "@/apis/queries/product.queries";
+import { IoMdStats } from "react-icons/io";
 import CounterTextInputField from "../createProduct/CounterTextInputField";
 import { useToast } from "@/components/ui/use-toast";
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+
+type ProductMiniStats = {
+  views: number;
+  orders: number;
+  revenue: number;
+  avgRating: number;
+};
 
 type ManageProductCardProps = {
   selectedIds?: number[];
@@ -33,6 +41,7 @@ type ManageProductCardProps = {
   onSelect?: (data: { [key: string]: any }) => void;
   id: number;
   productId: number;
+  miniStats?: ProductMiniStats | null;
   status: string;
   askForPrice: string;
   askForStock: string;
@@ -97,6 +106,7 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
   minQuantityPerCustomer: initialMinQuantityPerCustomer,
   maxQuantityPerCustomer: initialMaxQuantityPerCustomer,
   productCondition: initialCondition,
+  miniStats,
   onRemove,
   hideCheckbox = false,
   hideEyeIcon = false,
@@ -555,7 +565,17 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
                 </span>
               )} */}
             </div>
-            
+
+            {/* Mini Analytics Badge */}
+            {miniStats && (miniStats.views > 0 || miniStats.orders > 0) && (
+              <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                <span>👁 {miniStats.views}</span>
+                <span>📦 {miniStats.orders}</span>
+                {miniStats.revenue > 0 && <span>💰 {miniStats.revenue} OMR</span>}
+                {miniStats.avgRating > 0 && <span>⭐ {miniStats.avgRating}</span>}
+              </div>
+            )}
+
             {/* Stock and Price Info */}
             <div className="flex space-x-6 text-sm text-muted-foreground">
               <div className="flex items-center space-x-2">
@@ -588,6 +608,16 @@ const ManageProductCard: React.FC<ManageProductCardProps> = ({
 
         {/* Right Section - Action Buttons */}
         <div className="flex items-center space-x-2">
+          {/* Analytics Button */}
+          <button
+            type="button"
+            className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+            onClick={() => router.push(`/analytics/${id}`)}
+            title={t("analytics") || "Analytics"}
+          >
+            <IoMdStats size={18} />
+          </button>
+
           {/* Action Buttons - Iconic Only */}
           {!hideCopyButton && !hideActionButtons && (
             <div className="flex space-x-2">

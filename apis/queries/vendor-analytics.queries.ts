@@ -1,11 +1,19 @@
 import { useQuery } from '@tanstack/react-query'
 import {
+  fetchVendorMiniStats,
   fetchVendorOverview,
   fetchVendorProducts,
   fetchVendorProductDetail,
   fetchVendorFunnel,
   fetchVendorReviews,
 } from '../requests/vendor-analytics.requests'
+
+export const useVendorMiniStats = () =>
+  useQuery({
+    queryKey: ['vendor-analytics', 'mini-stats'],
+    queryFn: () => fetchVendorMiniStats().then((r) => r.data as Record<number, { views: number; orders: number; revenue: number; avgRating: number }>),
+    staleTime: 60_000,
+  })
 
 export const useVendorOverview = (days = 30) =>
   useQuery({

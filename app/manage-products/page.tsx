@@ -9,6 +9,7 @@ import { useDropshipProducts, useDeleteDropshipProduct } from "@/apis/queries/dr
 import { useCategory } from "@/apis/queries/category.queries";
 import { PRODUCT_CATEGORY_ID } from "@/utils/constants";
 import ManageProductCard from "@/components/modules/manageProducts/ManageProductCard";
+import { useVendorMiniStats } from "@/apis/queries/vendor-analytics.queries";
 import ExistingProductCard from "@/components/modules/manageProducts/ExistingProductCard";
 import DropshipProductCard from "@/components/modules/manageProducts/DropshipProductCard";
 import ProductCard from "@/components/modules/trending/ProductCard";
@@ -553,6 +554,9 @@ const ManageProductsPage = () => {
   const { data, refetch } = allManagedProductsQuery;
   const [products, setProducts] = useState(data?.data || []);
   const [totalCount, setTotalCount] = useState(data?.totalCount || 0);
+
+  // Mini analytics stats for product badges
+  const { data: miniStatsMap } = useVendorMiniStats();
 
   // Frontend filtering for My Products
   const filteredProducts = useMemo(() => {
@@ -1509,6 +1513,7 @@ const ManageProductsPage = () => {
                              maxQuantityPerCustomer={product?.maxQuantityPerCustomer || 0}
                              productCondition={product?.productCondition || ""}
                              onRemove={handleRemoveFromList}
+                             miniStats={miniStatsMap?.[product?.id] ?? null}
                              productType={product?.productPrice_product?.productType}
                              isDropshipped={product?.productPrice_product?.isDropshipped || false}
                            />
