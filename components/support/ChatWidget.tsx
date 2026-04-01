@@ -8,10 +8,8 @@ import { MessageCircle, X } from "lucide-react";
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
-  const { me, selectedLocale } = useAuth();
+  const { user, selectedLocale } = useAuth();
   const { data: currentAccountData } = useCurrentAccount();
-
-  const user = me?.data?.data ?? me?.data ?? null;
   const tradeRole =
     currentAccountData?.data?.account?.tradeRole ||
     user?.tradeRole ||
