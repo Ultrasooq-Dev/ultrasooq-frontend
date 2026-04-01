@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { useCurrentAccount } from "@/apis/queries/auth.queries";
 import ChatWindow from "./ChatWindow";
 import { MessageCircle, X } from "lucide-react";
 
@@ -13,6 +14,14 @@ export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const { me } = useAuth();
+  const { data: currentAccountData } = useCurrentAccount();
+
+  // Resolve tradeRole from current account (multi-account system)
+  const user = me?.data?.data ?? me?.data ?? null;
+  const tradeRole =
+    currentAccountData?.data?.account?.tradeRole ||
+    user?.tradeRole ||
+    "BUYER";
 
   // Don't render on login/register pages
   const [show, setShow] = useState(false);
@@ -35,7 +44,7 @@ export default function ChatWidget() {
         <ChatWindow
           onClose={() => setIsOpen(false)}
           onUnreadChange={setUnreadCount}
-          user={me?.data?.data ?? me?.data ?? null}
+          user={{ ...user, tradeRole }}
         />
       )}
 
