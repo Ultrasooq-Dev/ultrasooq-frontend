@@ -248,7 +248,7 @@ export default function MessagingHub({ onClose, onUnreadChange, user, locale }: 
   const [sessions, setSessions] = useState<ChatSession[]>([]);
   const [openChats, setOpenChats] = useState<string[]>([]);
   const [minimizedChats, setMinimizedChats] = useState<string[]>([]);
-  const [view, setView] = useState<"list" | "user_search">("list");
+  const [view, setView] = useState<"list" | "support_list" | "user_list" | "user_search">("list");
   const [searchTerm, setSearchTerm] = useState("");
   const [userSearchTerm, setUserSearchTerm] = useState("");
   const [userSearchResults, setUserSearchResults] = useState<any[]>([]);
@@ -338,9 +338,14 @@ export default function MessagingHub({ onClose, onUnreadChange, user, locale }: 
       {/* ═══ LIST PANEL ═══ */}
       <div className="fixed bottom-20 end-6 z-50 w-[300px] max-h-[480px] flex flex-col rounded-xl border bg-background shadow-2xl overflow-hidden">
         <div className="flex items-center justify-between bg-primary px-3 py-2 text-primary-foreground shrink-0">
-          {view !== "list" && <button type="button" onClick={() => setView("list")} className="p-1 rounded hover:bg-primary-foreground/10"><ChevronLeft className="h-4 w-4" /></button>}
+          {view !== "list" && <button type="button" onClick={() => view === "user_search" ? setView("user_list") : setView("list")} className="p-1 rounded hover:bg-primary-foreground/10"><ChevronLeft className="h-4 w-4" /></button>}
           <MessageSquare className="h-4 w-4 ms-1" />
-          <span className="text-sm font-semibold flex-1 ms-2">{view === "list" ? (locale === "ar" ? "الرسائل" : "Messages") : (locale === "ar" ? "بحث مستخدم" : "Find User")}</span>
+          <span className="text-sm font-semibold flex-1 ms-2">
+            {view === "list" ? (locale === "ar" ? "الرسائل" : "Messages")
+              : view === "support_list" ? (locale === "ar" ? "جلسات الدعم" : "Support Sessions")
+              : view === "user_list" ? (locale === "ar" ? "محادثات المستخدمين" : "User Chats")
+              : (locale === "ar" ? "بحث مستخدم" : "Find User")}
+          </span>
           <button type="button" onClick={onClose} className="p-1 rounded hover:bg-primary-foreground/10"><X className="h-3.5 w-3.5" /></button>
         </div>
 
@@ -355,13 +360,19 @@ export default function MessagingHub({ onClose, onUnreadChange, user, locale }: 
               </div>
             </div>
 
-            {/* New Chat — 2 buttons */}
+            {/* Chat Type Buttons */}
             <div className="px-3 py-2 flex gap-2 border-b">
-              <button type="button" onClick={newSupportSession} className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg bg-blue-500/10 text-blue-600 hover:bg-blue-500/20 text-xs font-medium transition-colors">
-                <Shield className="h-3.5 w-3.5" /> {locale === "ar" ? "دعم جديد" : "New Support"}
+              <button type="button" onClick={() => setView("support_list")} className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg bg-blue-500/10 text-blue-600 hover:bg-blue-500/20 text-xs font-medium transition-colors">
+                <Shield className="h-3.5 w-3.5" /> {locale === "ar" ? "الدعم" : "Support"}
+                {sessions.filter(s => s.type === "support" && s.status === "active").length > 0 && (
+                  <span className="h-4 min-w-4 flex items-center justify-center rounded-full bg-blue-600 text-white text-[8px] px-0.5">{sessions.filter(s => s.type === "support" && s.status === "active").length}</span>
+                )}
               </button>
-              <button type="button" onClick={() => setView("user_search")} className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg bg-orange-500/10 text-orange-600 hover:bg-orange-500/20 text-xs font-medium transition-colors">
-                <User className="h-3.5 w-3.5" /> {locale === "ar" ? "مستخدم" : "User Chat"}
+              <button type="button" onClick={() => setView("user_list")} className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg bg-orange-500/10 text-orange-600 hover:bg-orange-500/20 text-xs font-medium transition-colors">
+                <User className="h-3.5 w-3.5" /> {locale === "ar" ? "المستخدمين" : "Users"}
+                {sessions.filter(s => s.type === "user" && s.status === "active").length > 0 && (
+                  <span className="h-4 min-w-4 flex items-center justify-center rounded-full bg-orange-600 text-white text-[8px] px-0.5">{sessions.filter(s => s.type === "user" && s.status === "active").length}</span>
+                )}
               </button>
             </div>
 
@@ -432,6 +443,118 @@ export default function MessagingHub({ onClose, onUnreadChange, user, locale }: 
                 </div>
               )}
             </div>
+          </div>
+        )}
+
+        {/* ── SUPPORT SESSIONS LIST ── */}
+        {view === "support_list" && (
+          <div className="flex-1 overflow-y-auto">
+            <button type="button" onClick={newSupportSession}
+              className="w-full flex items-center gap-2 px-3 py-3 text-start border-b hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors">
+              <div className="h-8 w-8 rounded-full bg-blue-500 text-white flex items-center justify-center shrink-0"><Plus className="h-4 w-4" /></div>
+              <div className="text-xs font-semibold text-blue-600">{locale === "ar" ? "جلسة دعم جديدة" : "New Support Session"}</div>
+            </button>
+
+            {sessions.filter(s => s.type === "support" && s.status === "active").length > 0 && (
+              <div>
+                <div className="px-3 pt-2 pb-1 text-[9px] font-semibold uppercase text-muted-foreground">{locale === "ar" ? "نشطة" : "Active"}</div>
+                {sessions.filter(s => s.type === "support" && s.status === "active").map((s) => {
+                  const Icon = s.botOrAdmin === "admin" ? Shield : Bot;
+                  const color = s.botOrAdmin === "admin" ? "bg-green-500/10 text-green-600" : "bg-blue-500/10 text-blue-600";
+                  return (
+                    <button key={s.id} type="button" onClick={() => { openChat(s.id); setView("list"); }}
+                      className="w-full flex items-center gap-2.5 px-3 py-2.5 text-start hover:bg-muted/50 border-b">
+                      <div className={`h-8 w-8 rounded-full flex items-center justify-center shrink-0 ${color}`}><Icon className="h-3.5 w-3.5" /></div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-medium">{s.name}</span>
+                          <span className="text-[9px] text-muted-foreground">{s.lastTime ? timeAgo(s.lastTime) : ""}</span>
+                        </div>
+                        <p className="text-[10px] text-muted-foreground truncate">{s.lastMessage}</p>
+                      </div>
+                      {s.unread > 0 && <span className="h-4 min-w-4 flex items-center justify-center rounded-full bg-destructive text-[8px] font-bold text-white px-0.5">{s.unread}</span>}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+
+            {sessions.filter(s => s.type === "support" && s.status === "resolved").length > 0 && (
+              <div>
+                <div className="px-3 pt-2 pb-1 text-[9px] font-semibold uppercase text-muted-foreground flex items-center gap-1"><History className="h-3 w-3" />{locale === "ar" ? "محلولة" : "Resolved"}</div>
+                {sessions.filter(s => s.type === "support" && s.status === "resolved").map((s) => (
+                  <button key={s.id} type="button" onClick={() => { openChat(s.id); setView("list"); }}
+                    className="w-full flex items-center gap-2.5 px-3 py-2 text-start hover:bg-muted/50 opacity-50 border-b">
+                    <div className="h-7 w-7 rounded-full bg-muted flex items-center justify-center shrink-0"><Bot className="h-3 w-3 text-muted-foreground" /></div>
+                    <div className="flex-1 min-w-0">
+                      <span className="text-[10px]">{s.name}</span>
+                      <p className="text-[9px] text-muted-foreground truncate">{s.lastMessage}</p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {sessions.filter(s => s.type === "support").length === 0 && (
+              <div className="px-4 py-8 text-center text-xs text-muted-foreground">
+                <Shield className="h-6 w-6 mx-auto mb-2 opacity-20" />
+                {locale === "ar" ? "لا توجد جلسات دعم" : "No support sessions yet"}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ── USER CHATS LIST ── */}
+        {view === "user_list" && (
+          <div className="flex-1 overflow-y-auto">
+            <button type="button" onClick={() => setView("user_search")}
+              className="w-full flex items-center gap-2 px-3 py-3 text-start border-b hover:bg-orange-50 dark:hover:bg-orange-950 transition-colors">
+              <div className="h-8 w-8 rounded-full bg-orange-500 text-white flex items-center justify-center shrink-0"><Plus className="h-4 w-4" /></div>
+              <div className="text-xs font-semibold text-orange-600">{locale === "ar" ? "محادثة مع مستخدم جديد" : "Chat with new user"}</div>
+            </button>
+
+            {sessions.filter(s => s.type === "user" && s.status === "active").length > 0 && (
+              <div>
+                <div className="px-3 pt-2 pb-1 text-[9px] font-semibold uppercase text-muted-foreground">{locale === "ar" ? "نشطة" : "Active"}</div>
+                {sessions.filter(s => s.type === "user" && s.status === "active").map((s) => (
+                  <button key={s.id} type="button" onClick={() => { openChat(s.id); setView("list"); }}
+                    className="w-full flex items-center gap-2.5 px-3 py-2.5 text-start hover:bg-muted/50 border-b">
+                    <div className="h-8 w-8 rounded-full bg-orange-500/10 text-orange-600 flex items-center justify-center shrink-0"><User className="h-3.5 w-3.5" /></div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-medium">{s.name}</span>
+                        <span className="text-[9px] text-muted-foreground">{s.lastTime ? timeAgo(s.lastTime) : ""}</span>
+                      </div>
+                      <p className="text-[10px] text-muted-foreground truncate">{s.lastMessage}</p>
+                    </div>
+                    {s.unread > 0 && <span className="h-4 min-w-4 flex items-center justify-center rounded-full bg-destructive text-[8px] font-bold text-white px-0.5">{s.unread}</span>}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {sessions.filter(s => s.type === "user" && s.status === "resolved").length > 0 && (
+              <div>
+                <div className="px-3 pt-2 pb-1 text-[9px] font-semibold uppercase text-muted-foreground flex items-center gap-1"><History className="h-3 w-3" />{locale === "ar" ? "سابقة" : "Past"}</div>
+                {sessions.filter(s => s.type === "user" && s.status === "resolved").map((s) => (
+                  <button key={s.id} type="button" onClick={() => { openChat(s.id); setView("list"); }}
+                    className="w-full flex items-center gap-2.5 px-3 py-2 text-start hover:bg-muted/50 opacity-50 border-b">
+                    <div className="h-7 w-7 rounded-full bg-muted flex items-center justify-center shrink-0"><User className="h-3 w-3 text-muted-foreground" /></div>
+                    <div className="flex-1 min-w-0">
+                      <span className="text-[10px]">{s.name}</span>
+                      <p className="text-[9px] text-muted-foreground truncate">{s.lastMessage}</p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {sessions.filter(s => s.type === "user").length === 0 && (
+              <div className="px-4 py-8 text-center text-xs text-muted-foreground">
+                <User className="h-6 w-6 mx-auto mb-2 opacity-20" />
+                {locale === "ar" ? "لا توجد محادثات" : "No user chats yet"}
+              </div>
+            )}
           </div>
         )}
 
