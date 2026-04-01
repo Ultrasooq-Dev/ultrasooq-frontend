@@ -12,6 +12,12 @@ import {
   Loader2,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import {
+  initSupportChat,
+  sendSupportMessage,
+  sendMenuClick,
+  submitFeedback,
+} from "@/apis/requests/support.requests";
 
 interface ChatWindowProps {
   onClose: () => void;
@@ -155,9 +161,42 @@ export default function ChatWindow({ onClose, onUnreadChange, user }: ChatWindow
   const [showMenu, setShowMenu] = useState(true);
   const [isTyping, setIsTyping] = useState(false);
   const [conversationStatus, setConversationStatus] = useState<string>("bot");
+  const [conversationId, setConversationId] = useState<number | null>(null);
+  const [useRealApi, setUseRealApi] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const nextId = useRef(2);
+
+  // Initialize conversation with backend
+  useEffect(() => {
+    initSupportChat({ locale, currentPage: typeof window !== 'undefined' ? window.location.pathname : '/' })
+      .then((res) => {
+        const data = res.data;
+        if (data?.conversationId) {
+          setConversationId(data.conversationId);
+          setUseRealApi(true);
+          // Load existing messages if resuming
+          if (data.messages?.length > 0) {
+            const existing = data.messages.map((m: any) => ({
+              id: m.id,
+              senderType: m.senderType,
+              content: m.content,
+              contentType: m.contentType,
+              metadata: m.metadata,
+              feedbackScore: m.feedbackScore,
+              createdAt: m.createdAt,
+            }));
+            setMessages([MOCK_GREETING(userName, locale), ...existing]);
+            setShowMenu(false);
+            nextId.current = Math.max(...existing.map((m: any) => m.id), 1) + 1;
+          }
+        }
+      })
+      .catch(() => {
+        // Fallback to mock mode if API fails (user not logged in, CORS, etc.)
+        setUseRealApi(false);
+      });
+  }, []);
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -211,7 +250,29 @@ export default function ChatWindow({ onClose, onUnreadChange, user }: ChatWindow
         contentType: "text",
       });
 
-      // Handle escalate specially
+      if (useRealApi && conversationId) {
+        setIsTyping(true);
+        sendMenuClick({ conversationId, menuId, locale })
+          .then((res) => {
+            setIsTyping(false);
+            const bot = res.data?.botResponse;
+            if (bot && bot.content) {
+              addMessage({
+                senderType: "bot",
+                content: bot.content,
+                contentType: bot.contentType,
+                metadata: bot.metadata,
+              });
+            }
+            if (res.data?.status) setConversationStatus(res.data.status);
+          })
+          .catch(() => {
+            setIsTyping(false);
+          });
+        return;
+      }
+
+      // Mock fallback
       if (menuId === "escalate") {
         setConversationStatus("open");
         simulateBotResponse(
@@ -225,8 +286,6 @@ export default function ChatWindow({ onClose, onUnreadChange, user }: ChatWindow
         );
         return;
       }
-
-      // Simulate bot response
       const response = MOCK_RESPONSES[menuId];
       if (response) {
         simulateBotResponse(response);
@@ -244,18 +303,47 @@ export default function ChatWindow({ onClose, onUnreadChange, user }: ChatWindow
     setInput("");
     setShowMenu(false);
 
-    // Mock: echo back with a generic bot response
-    simulateBotResponse({
-      id: 0,
-      senderType: "bot",
-      content:
-        locale === "ar"
+    if (useRealApi && conversationId) {
+      setIsTyping(true);
+      sendSupportMessage({
+        conversationId,
+        content: text,
+        metadata: { locale, currentPage: typeof window !== 'undefined' ? window.location.pathname : '/' },
+      })
+        .then((res) => {
+          setIsTyping(false);
+          const bot = res.data?.botResponse;
+          if (bot) {
+            addMessage({
+              senderType: "bot",
+              content: bot.content,
+              contentType: bot.contentType,
+              metadata: bot.metadata,
+            });
+          }
+          if (res.data?.status) setConversationStatus(res.data.status);
+        })
+        .catch(() => {
+          setIsTyping(false);
+          addMessage({
+            senderType: "bot",
+            content: locale === "ar" ? "حدث خطأ. حاول مرة أخرى." : "Something went wrong. Please try again.",
+            contentType: "text",
+          });
+        });
+    } else {
+      // Mock fallback
+      simulateBotResponse({
+        id: 0,
+        senderType: "bot",
+        content: locale === "ar"
           ? "شكراً على رسالتك. دعني أبحث عن إجابة..."
           : `I understand you're asking about "${text}". Let me look into that...`,
-      contentType: "text",
-      createdAt: new Date().toISOString(),
-    });
-  }, [input, addMessage, simulateBotResponse, locale]);
+        contentType: "text",
+        createdAt: new Date().toISOString(),
+      });
+    }
+  }, [input, addMessage, simulateBotResponse, locale, useRealApi, conversationId]);
 
   // Handle button clicks from bot messages
   const handleButtonClick = useCallback(
@@ -295,8 +383,10 @@ export default function ChatWindow({ onClose, onUnreadChange, user }: ChatWindow
         m.id === messageId ? { ...m, feedbackScore: positive ? 5 : 1 } : m
       )
     );
-    // TODO: call API to save feedback
-  }, []);
+    if (useRealApi) {
+      submitFeedback({ messageId, positive }).catch(() => {});
+    }
+  }, [useRealApi]);
 
   // Handle file upload
   const handleFileUpload = useCallback(() => {
