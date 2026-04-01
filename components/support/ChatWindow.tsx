@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { useTranslations } from "next-intl";
 import { useAuth } from "@/context/AuthContext";
 import MenuGrid from "./MenuGrid";
 import MessageBubble, { type ChatMessage } from "./MessageBubble";
@@ -143,7 +142,6 @@ const MOCK_RESPONSES: Record<string, ChatMessage> = {
 };
 
 export default function ChatWindow({ onClose, onUnreadChange, user }: ChatWindowProps) {
-  const t = useTranslations();
   const router = useRouter();
   const { langDir } = useAuth();
   const locale = langDir === "rtl" ? "ar" : "en";

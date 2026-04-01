@@ -150,12 +150,12 @@ export default async function RootLayout({
                           </ConditionalLayout>
                           <Toaster />
                         </NotificationProvider>
+                        <ChatWidget />
                       </LocaleProvider>
                     </main>
                   </SidebarProvider>
                 </SocketProvider>
                 </AnalyticsErrorBoundary>
-                <ChatWidget />
                 </AnalyticsProvider>
               </AuthProvider>
             </ReactQueryProvider>
