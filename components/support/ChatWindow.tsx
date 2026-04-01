@@ -236,10 +236,10 @@ export default function ChatWindow({ onClose, onUnreadChange, user, locale: loca
     [addMessage]
   );
 
-  // Poll for new messages when conversation is escalated to admin (every 5s)
+  // Poll for new messages — always active when conversation exists (every 3s)
   useEffect(() => {
     if (!useRealApi || !conversationId) return;
-    if (conversationStatus !== 'open' && conversationStatus !== 'assigned') return;
+    if (conversationStatus === 'resolved') return; // Stop polling resolved conversations
 
     const interval = setInterval(() => {
       getSupportHistory(conversationId)
@@ -248,9 +248,10 @@ export default function ChatWindow({ onClose, onUnreadChange, user, locale: loca
           if (!conv?.messages) return;
 
           const serverMsgs = conv.messages;
-          const lastLocalId = Math.max(...messages.filter((m) => m.id > 0).map((m) => m.id), 0);
+          const localIds = new Set(messages.filter((m) => m.id > 0).map((m) => m.id));
 
-          const newMsgs = serverMsgs.filter((m: any) => m.id > lastLocalId);
+          // Find messages from server that we don't have locally
+          const newMsgs = serverMsgs.filter((m: any) => m.id > 0 && !localIds.has(m.id));
           if (newMsgs.length > 0) {
             for (const m of newMsgs) {
               addMessage({
@@ -258,17 +259,21 @@ export default function ChatWindow({ onClose, onUnreadChange, user, locale: loca
                 senderType: m.senderType,
                 content: m.content,
                 contentType: m.contentType,
-                metadata: m.metadata,
+                metadata: m.metadata ? (typeof m.metadata === 'string' ? JSON.parse(m.metadata) : m.metadata) : undefined,
                 createdAt: m.createdAt,
               });
             }
+            // Notify unread for admin messages
             const adminNewMsgs = newMsgs.filter((m: any) => m.senderType === 'admin');
             if (adminNewMsgs.length > 0) onUnreadChange(adminNewMsgs.length);
           }
-          if (conv.status) setConversationStatus(conv.status);
+          // Sync conversation status from server
+          if (conv.status && conv.status !== conversationStatus) {
+            setConversationStatus(conv.status);
+          }
         })
         .catch(() => {});
-    }, 5000);
+    }, 3000); // 3 seconds — faster than before
 
     return () => clearInterval(interval);
   }, [useRealApi, conversationId, conversationStatus, messages, addMessage, onUnreadChange]);
