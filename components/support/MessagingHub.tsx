@@ -162,28 +162,65 @@ function PopChat({
     setMessages((prev) => [...prev, { id: msg.id ?? nextId.current++, senderType: "customer", content: "", contentType: "text", createdAt: new Date().toISOString(), ...msg }]);
   }, []);
 
-  const handleSend = () => {
-    const text = input.trim(); if (!text || !convId) return;
-    addMsg({ senderType: "customer", content: text }); setInput(""); setShowMenu(false);
+  const sendWithConv = useCallback((text: string, cid: number) => {
     if (convStatus === "open" || convStatus === "assigned") {
-      sendSupportMessage({ conversationId: convId, content: text, metadata: { locale } }).catch(() => {});
+      sendSupportMessage({ conversationId: cid, content: text, metadata: { locale } }).catch(() => {});
       addMsg({ senderType: "bot", content: locale === "ar" ? "تم إرسال رسالتك." : "Sent to support.", contentType: "status" });
     } else {
       setIsTyping(true);
-      sendSupportMessage({ conversationId: convId, content: text, metadata: { locale } })
+      sendSupportMessage({ conversationId: cid, content: text, metadata: { locale } })
         .then((res) => { setIsTyping(false); const b = res.data?.botResponse; if (b?.content) addMsg({ senderType: "bot", content: b.content, contentType: b.contentType, metadata: b.metadata }); if (res.data?.status) setConvStatus(res.data.status); })
         .catch(() => setIsTyping(false));
     }
+  }, [convStatus, locale, addMsg]);
+
+  const handleSend = () => {
+    const text = input.trim(); if (!text) return;
+    addMsg({ senderType: "customer", content: text }); setInput(""); setShowMenu(false);
+
+    if (convId) {
+      sendWithConv(text, convId);
+    } else {
+      // Auto-create a new support conversation, then send
+      setIsTyping(true);
+      initSupportChat({ locale }, true).then((res) => {
+        const d = res.data;
+        if (d?.conversationId) {
+          setConvId(d.conversationId);
+          setConvStatus(d.status || "bot");
+          sendWithConv(text, d.conversationId);
+        } else {
+          setIsTyping(false);
+        }
+      }).catch(() => { setIsTyping(false); });
+    }
   };
 
-  const handleMenuClick = (menuId: string) => {
-    if (!convId) return; setShowMenu(false);
-    const icons: Record<string, string> = { escalate: "🛟", product_search: "🔍", order_tracker: "📦", faq: "❓" };
-    addMsg({ senderType: "customer", content: icons[menuId] || menuId });
+  const sendMenuWithConv = useCallback((menuId: string, cid: number) => {
     setIsTyping(true);
-    sendMenuClick({ conversationId: convId, menuId, locale })
+    sendMenuClick({ conversationId: cid, menuId, locale })
       .then((res) => { setIsTyping(false); const b = res.data?.botResponse; if (b?.content) addMsg({ senderType: "bot", content: b.content, contentType: b.contentType, metadata: b.metadata }); if (res.data?.status) setConvStatus(res.data.status); })
       .catch(() => setIsTyping(false));
+  }, [locale, addMsg]);
+
+  const handleMenuClick = (menuId: string) => {
+    setShowMenu(false);
+    const icons: Record<string, string> = { escalate: "🛟", product_search: "🔍", order_tracker: "📦", faq: "❓" };
+    addMsg({ senderType: "customer", content: icons[menuId] || menuId });
+
+    if (convId) {
+      sendMenuWithConv(menuId, convId);
+    } else {
+      setIsTyping(true);
+      initSupportChat({ locale }, true).then((res) => {
+        const d = res.data;
+        if (d?.conversationId) {
+          setConvId(d.conversationId);
+          setConvStatus(d.status || "bot");
+          sendMenuWithConv(menuId, d.conversationId);
+        } else { setIsTyping(false); }
+      }).catch(() => { setIsTyping(false); });
+    }
   };
 
   const handleNavigate = (url: string) => { router.push(url); };
