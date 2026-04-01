@@ -60,7 +60,7 @@ const QUICK_ACTIONS: MenuItem[] = [
     roles: ["BUYER"],
     color: "bg-sky-500/10 text-sky-600",
     type: "navigate",
-    navigateTo: "/buyer-orders",
+    navigateTo: "/my-orders",
   },
   {
     id: "nav_seller_orders",
