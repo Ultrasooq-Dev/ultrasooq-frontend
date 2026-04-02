@@ -175,7 +175,7 @@ const MyOrderDetailsPage = ({ }) => {
                                     ? `http://${window.location.hostname}:3000/api/v1`
                                     : '';
                                   window.open(
-                                    `${apiUrl}/order/invoice?orderProductId=${searchParams.id}`,
+                                    `${apiUrl}/order/invoice?orderProductId=${searchParams?.id}`,
                                     '_blank',
                                   );
                                 }}
