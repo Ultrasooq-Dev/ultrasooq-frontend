@@ -458,44 +458,43 @@ const CompleteOrderPage = () => {
     orderStore.setTotal(0);
   };
 
-  const handleCreateEmiPayment = async (orderId: number) => {
-    const data: { [key: string]: any } = {
-      amount: emiAmount * 1000,
-      billing_data: {
-        first_name: orderStore.orders.firstName,
-        last_name: orderStore.orders.lastName,
-        email: orderStore.orders.email,
-        phone_number: orderStore.orders.phone,
-        apartment: orderStore.orders.billingAddress,
-        building: 'NA',
-        street: 'NA',
-        floor: 'NA',
-        city: orderStore.orders.billingCity,
-        state: orderStore.orders.billingProvince,
-        country: orderStore.orders.billingCountry,
-      },
-      extras: {
-        orderId: orderId,
-        paymentType: paymentType,
-      },
-      special_reference: referenceOrderId(orderId)
-    };
-
-    const response = await createEMIPayment.mutateAsync(data);
-
-    if (response?.status) {
-      setIsRedirectingToPaymob(true);
-      window.location.assign(
-        `${process.env.NEXT_PUBLIC_PAYMOB_PAYMENT_URL}?publicKey=${process.env.NEXT_PUBLIC_PAYMOB_PUBLIC_KEY}&clientSecret=${(response.data as any).client_secret}`,
-      );
-    } else {
-      toast({
-        title: t("something_went_wrong"),
-        description: response.message,
-        variant: "danger",
-      });
-    }
-  };
+  // EMI disabled — backend fixes pending (hardcoded amount, cron disabled)
+  // const handleCreateEmiPayment = async (orderId: number) => {
+  //   const data: { [key: string]: any } = {
+  //     amount: emiAmount * 1000,
+  //     billing_data: {
+  //       first_name: orderStore.orders.firstName,
+  //       last_name: orderStore.orders.lastName,
+  //       email: orderStore.orders.email,
+  //       phone_number: orderStore.orders.phone,
+  //       apartment: orderStore.orders.billingAddress,
+  //       building: 'NA',
+  //       street: 'NA',
+  //       floor: 'NA',
+  //       city: orderStore.orders.billingCity,
+  //       state: orderStore.orders.billingProvince,
+  //       country: orderStore.orders.billingCountry,
+  //     },
+  //     extras: {
+  //       orderId: orderId,
+  //       paymentType: paymentType,
+  //     },
+  //     special_reference: referenceOrderId(orderId)
+  //   };
+  //   const response = await createEMIPayment.mutateAsync(data);
+  //   if (response?.status) {
+  //     setIsRedirectingToPaymob(true);
+  //     window.location.assign(
+  //       `${process.env.NEXT_PUBLIC_PAYMOB_PAYMENT_URL}?publicKey=${process.env.NEXT_PUBLIC_PAYMOB_PUBLIC_KEY}&clientSecret=${(response.data as any).client_secret}`,
+  //     );
+  //   } else {
+  //     toast({
+  //       title: t("something_went_wrong"),
+  //       description: response.message,
+  //       variant: "danger",
+  //     });
+  //   }
+  // };
 
   return (
     <div className="min-h-screen bg-muted">
