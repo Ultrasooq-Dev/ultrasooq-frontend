@@ -24,6 +24,13 @@ import {
   fetchVendorRecentOrders,
   updateOrderStatus,
   addOrderTracking,
+  confirmReceipt,
+  fetchDeliveryTimeline,
+  uploadDeliveryProof,
+  fetchPickupCode,
+  confirmPickup,
+  fetchPendingPickups,
+  setPickupWindow,
 } from "../requests/orders.requests";
 import { APIResponseError, APIResponse } from "@/utils/types/common.types";
 import type {
@@ -432,6 +439,101 @@ export const useAddOrderTracking = () => {
       });
     },
     onError: (err: APIResponseError) => {
+    },
+  });
+};
+
+// ================================================================
+// DELIVERY MANAGEMENT HOOKS
+// ================================================================
+
+export const useConfirmReceipt = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (payload: { orderProductId: number }) => {
+      const res = await confirmReceipt(payload);
+      return res?.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["order-by-id"] });
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
+    },
+  });
+};
+
+export const useDeliveryTimeline = (orderProductId: number, enabled = true) => {
+  return useQuery({
+    queryKey: ["delivery-timeline", orderProductId],
+    queryFn: async () => {
+      const res = await fetchDeliveryTimeline({ orderProductId });
+      return res?.data;
+    },
+    enabled: enabled && !!orderProductId,
+  });
+};
+
+export const useUploadDeliveryProof = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (payload: { orderProductId: number; proofUrl: string }) => {
+      const res = await uploadDeliveryProof(payload);
+      return res?.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["order-by-seller-id"] });
+    },
+  });
+};
+
+export const usePickupCode = (orderProductId: number, enabled = true) => {
+  return useQuery({
+    queryKey: ["pickup-code", orderProductId],
+    queryFn: async () => {
+      const res = await fetchPickupCode({ orderProductId });
+      return res?.data;
+    },
+    enabled: enabled && !!orderProductId,
+  });
+};
+
+export const useConfirmPickup = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (payload: { orderProductId: number; code: string }) => {
+      const res = await confirmPickup(payload);
+      return res?.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["order-by-seller-id"] });
+      queryClient.invalidateQueries({ queryKey: ["pending-pickups"] });
+    },
+  });
+};
+
+export const usePendingPickups = (page = 1, limit = 20) => {
+  return useQuery({
+    queryKey: ["pending-pickups", page, limit],
+    queryFn: async () => {
+      const res = await fetchPendingPickups({ page, limit });
+      return res?.data;
+    },
+  });
+};
+
+export const useSetPickupWindow = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (payload: {
+      orderProductId: number;
+      pickupWindowStart: string;
+      pickupWindowEnd: string;
+    }) => {
+      const res = await setPickupWindow(payload);
+      return res?.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["pickup-code"] });
+      queryClient.invalidateQueries({ queryKey: ["pending-pickups"] });
     },
   });
 };

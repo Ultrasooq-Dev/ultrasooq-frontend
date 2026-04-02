@@ -42,9 +42,7 @@ import LoaderWithMessage from "@/components/shared/LoaderWithMessage";
 import { useWalletBalance } from "@/apis/queries/wallet.queries";
 
 // Load Stripe with your public key
-const stripePromise = loadStripe(
-  "pk_test_51QuptGPQ2VnoEyMPay2u4FyltporIQfMh9hWcp2EEresPjx07AuT4lFLuvnNrvO7ksqtaepmRQHfYs4FLia8lIV500i83tXYMR",
-);
+const stripePromise = process.env.NEXT_PUBLIC_STRIPE_KEY ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY) : null;
 
 const CompleteOrderPage = () => {
   const t = useTranslations();
@@ -66,8 +64,9 @@ const CompleteOrderPage = () => {
   const [advanceAmount, setAdvanceAmount] = useState(0);
   const [isRedirectingToPaymob, setIsRedirectingToPaymob] = useState<boolean>(false);
   const [paymentLink, setPaymentLink] = useState<string>();
-  const [emiPeriod, setEmiPeriod] = useState<number>(6);
-  const [emiAmount, setEmiAmount] = useState<number>(0);
+  // EMI disabled — backend fixes pending (hardcoded amount, cron disabled)
+  // const [emiPeriod, setEmiPeriod] = useState<number>(6);
+  // const [emiAmount, setEmiAmount] = useState<number>(0);
 
   // Load AmwalPay Smartbox script
   useEffect(() => {
@@ -250,6 +249,8 @@ const CompleteOrderPage = () => {
         }
       }
     } else {
+      // Guest checkout is disabled - redirect to login
+      router.push("/login?redirect=/checkout");
     }
   };
 
@@ -799,6 +800,7 @@ const CompleteOrderPage = () => {
                     </div>
                   )}
                   
+                  {/* EMI disabled — backend fixes pending (hardcoded amount, cron disabled)
                   {paymentType == "EMI" && (
                     <div className="bg-primary/5 border border-primary/20 rounded-lg p-3">
                       <div className="flex justify-between items-center">
@@ -811,6 +813,7 @@ const CompleteOrderPage = () => {
                       </div>
                     </div>
                   )}
+                  */}
                 </div>
                 
                 <div className="px-6 pb-6">

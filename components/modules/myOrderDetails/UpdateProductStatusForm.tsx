@@ -23,6 +23,7 @@ type UpdateProductStatusFormProps = {
   orderProductDate: string;
   deliveryAfter: number;
   tradeRole?: string;
+  shippingType?: string; // PICKUP, SELLERDROP, THIRDPARTY, PLATFORM
 };
 
 const createFormSchema = (t: any) => {
@@ -52,7 +53,8 @@ const UpdateProductStatusForm: React.FC<UpdateProductStatusFormProps> = ({
   orderProductStatus,
   orderProductDate,
   deliveryAfter,
-  tradeRole
+  tradeRole,
+  shippingType,
 }) => {
   const t = useTranslations();
   const { langDir } = useAuth();
@@ -74,7 +76,13 @@ const UpdateProductStatusForm: React.FC<UpdateProductStatusFormProps> = ({
     if (values.status === "") return;
 
     if (values.status === "DELIVERED" && tradeRole != 'BUYER') {
-      if (moment().diff(moment(orderProductDate), 'days') <= deliveryAfter) {
+      // Skip deliveryAfter check for PICKUP orders (pickup can happen same day)
+      if (shippingType !== 'PICKUP' && moment().diff(moment(orderProductDate), 'days') <= deliveryAfter) {
+        toast({
+          title: t("delivery_too_early"),
+          description: t("delivery_too_early_description", { days: deliveryAfter }),
+          variant: "danger",
+        });
         return;
       }
     }
@@ -147,12 +155,28 @@ const UpdateProductStatusForm: React.FC<UpdateProductStatusFormProps> = ({
 
   const formattedStatusList = useMemo(
     () => {
+      // Buyer can confirm receipt (RECEIVED) when order is DELIVERED
       if (tradeRole == "BUYER") {
+        if (orderProductStatus == "DELIVERED") {
+          return STATUS_LIST.filter((item) => item.value == "RECEIVED");
+        }
         return STATUS_LIST.filter((item) => item.value == "DELIVERED");
       }
 
-      if (orderProductStatus == "CANCELLED") {
+      if (orderProductStatus == "CANCELLED" || orderProductStatus == "RECEIVED") {
         return [];
+      }
+
+      // PICKUP orders: skip SHIPPED and OFD (not applicable)
+      if (shippingType === "PICKUP") {
+        if (orderProductStatus == "CONFIRMED") {
+          return STATUS_LIST.filter((item) => item.value == "CANCELLED");
+          // Pickup completion happens via code verification, not manual status update
+        }
+        if (orderProductStatus == "DELIVERED") {
+          return STATUS_LIST.filter((item) => item.value == "CANCELLED");
+        }
+        return STATUS_LIST.filter((item) => item.value == "CONFIRMED" || item.value == "CANCELLED");
       }
 
       if (orderProductStatus == "CONFIRMED") {
@@ -164,7 +188,7 @@ const UpdateProductStatusForm: React.FC<UpdateProductStatusFormProps> = ({
       }
 
       if (orderProductStatus == "OFD") {
-        if (moment().diff(moment(orderProductDate), 'days') <= deliveryAfter) {
+        if (shippingType !== 'PICKUP' && moment().diff(moment(orderProductDate), 'days') <= deliveryAfter) {
           return STATUS_LIST.filter((item) => item.value == "CANCELLED");
         }
         return STATUS_LIST.filter((item) => item.value == "DELIVERED" || item.value == "CANCELLED");
@@ -175,7 +199,7 @@ const UpdateProductStatusForm: React.FC<UpdateProductStatusFormProps> = ({
       }
 
       return STATUS_LIST.filter((item) => item.value == "CONFIRMED" || item.value == "CANCELLED");
-    }, [orderProductStatus],
+    }, [orderProductStatus, shippingType],
   );
 
   return (
