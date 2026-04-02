@@ -686,10 +686,10 @@ const MyOrderDetailsPage = () => {
                           </div>
                         </div>
                         {/* Track Package external link */}
-                        {orderDetails?.orderShippingDetail?.carrierTrackingUrl && (
+                        {(orderDetails?.orderShippingDetail as any)?.carrierTrackingUrl && (
                           <div className="mt-3">
                             <a
-                              href={orderDetails.orderShippingDetail.carrierTrackingUrl}
+                              href={(orderDetails.orderShippingDetail as any).carrierTrackingUrl}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
@@ -953,7 +953,7 @@ const MyOrderDetailsPage = () => {
                               <div className="mt-3 max-w-xs">
                                 <ConfirmReceiptButton
                                   orderProductId={Number(searchParams?.id)}
-                                  autoConfirmAt={orderDetails?.orderShippingDetail?.autoConfirmAt}
+                                  autoConfirmAt={(orderDetails?.orderShippingDetail as any)?.autoConfirmAt}
                                   onConfirm={async () => {
                                     await confirmReceiptMutation.mutateAsync({
                                       orderProductId: Number(searchParams?.id),
@@ -985,11 +985,11 @@ const MyOrderDetailsPage = () => {
                   )}
 
                   {/* Delivery Proof Image — if seller uploaded */}
-                  {orderDetails?.orderShippingDetail?.proofOfDeliveryUrl && (
+                  {(orderDetails?.orderShippingDetail as any)?.proofOfDeliveryUrl && (
                     <div className="mt-6 rounded-lg border p-4">
                       <h4 className="mb-2 text-sm font-semibold">{t("proof_of_delivery")}</h4>
                       <img
-                        src={orderDetails.orderShippingDetail.proofOfDeliveryUrl}
+                        src={(orderDetails.orderShippingDetail as any).proofOfDeliveryUrl}
                         alt="Delivery proof"
                         className="max-h-48 rounded-md object-cover"
                       />

@@ -296,9 +296,9 @@ const MyOrderDetailsPage = ({ }) => {
                                 : "-"}
                             </div>
                           </div>
-                          {orderDetails?.orderShippingDetail?.carrierTrackingUrl && (
+                          {(orderDetails?.orderShippingDetail as any)?.carrierTrackingUrl && (
                             <a
-                              href={orderDetails.orderShippingDetail.carrierTrackingUrl}
+                              href={(orderDetails.orderShippingDetail as any).carrierTrackingUrl}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="mt-2 inline-block text-sm font-medium text-primary underline"
@@ -387,7 +387,7 @@ const MyOrderDetailsPage = ({ }) => {
                         ["DELIVERED", "OFD"].includes(orderDetails?.orderProductStatus || "") && (
                           <DeliveryProofUpload
                             orderProductId={Number(searchParams?.id)}
-                            existingProofUrl={orderDetails?.orderShippingDetail?.proofOfDeliveryUrl}
+                            existingProofUrl={(orderDetails?.orderShippingDetail as any)?.proofOfDeliveryUrl}
                             onUpload={async (file) => {
                               // TODO: Upload file to S3 first, then return URL
                               // For now, the seller can use the existing AddReceipt component
