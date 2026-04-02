@@ -689,7 +689,7 @@ const MyOrderDetailsPage = () => {
                         {(orderDetails?.orderShippingDetail as any)?.carrierTrackingUrl && (
                           <div className="mt-3">
                             <a
-                              href={(orderDetails.orderShippingDetail as any).carrierTrackingUrl}
+                              href={(orderDetails?.orderShippingDetail as any)?.carrierTrackingUrl}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
@@ -989,7 +989,7 @@ const MyOrderDetailsPage = () => {
                     <div className="mt-6 rounded-lg border p-4">
                       <h4 className="mb-2 text-sm font-semibold">{t("proof_of_delivery")}</h4>
                       <img
-                        src={(orderDetails.orderShippingDetail as any).proofOfDeliveryUrl}
+                        src={(orderDetails?.orderShippingDetail as any)?.proofOfDeliveryUrl}
                         alt="Delivery proof"
                         className="max-h-48 rounded-md object-cover"
                       />

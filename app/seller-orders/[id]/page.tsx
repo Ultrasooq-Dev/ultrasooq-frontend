@@ -298,7 +298,7 @@ const MyOrderDetailsPage = ({ }) => {
                           </div>
                           {(orderDetails?.orderShippingDetail as any)?.carrierTrackingUrl && (
                             <a
-                              href={(orderDetails.orderShippingDetail as any).carrierTrackingUrl}
+                              href={(orderDetails?.orderShippingDetail as any)?.carrierTrackingUrl}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="mt-2 inline-block text-sm font-medium text-primary underline"
