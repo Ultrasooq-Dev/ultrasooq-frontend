@@ -1,10 +1,13 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { cn } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
+import http from "@/apis/http";
+import { track } from "@/lib/analytics";
 import {
   Star, ShoppingCart, Send, Paperclip, MapPin, Truck, Shield,
   MessageSquare, FileText, X, Image, Edit3, ChevronDown, ChevronUp,
-  Check, Eye, CreditCard, Zap, Minus, Plus, SlidersHorizontal, ArrowUpDown, RotateCcw, Wrench,
+  Check, Eye, CreditCard, Zap, Minus, Plus, SlidersHorizontal, ArrowUpDown, RotateCcw, Wrench, ChevronRight,
 } from "lucide-react";
 
 // ─── Mock Data ──────────────────────────────────────────────────
@@ -94,13 +97,72 @@ const ALL_VENDOR_LISTINGS = Object.values(VENDOR_LISTINGS).flat();
 // ─── Component ──────────────────────────────────────────────────
 interface ItemDetailPanelProps {
   selectedItemId: string | null;
+  searchTerm?: string;
   onAddToCart: (productId: number) => void;
   locale: string;
 }
 
-export default function ItemDetailPanel({ selectedItemId, onAddToCart, locale }: ItemDetailPanelProps) {
+export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCart, locale }: ItemDetailPanelProps) {
   const isAr = locale === "ar";
   const [chatInput, setChatInput] = useState("");
+  const [searchPage, setSearchPage] = useState(1);
+
+  // AI usage: 50/day free — TODO: track via API, for now localStorage
+  const [aiUsedToday] = useState(() => {
+    if (typeof window === "undefined") return 0;
+    try {
+      const stored = JSON.parse(localStorage.getItem("us_ai_suggest") ?? "{}");
+      const today = new Date().toDateString();
+      return stored.date === today ? (stored.count ?? 0) : 0;
+    } catch { return 0; }
+  });
+  const aiResetHours = Math.max(1, 24 - new Date().getHours());
+  const PRODUCTS_PER_PAGE = 5;
+
+  // Reset page when search term changes
+  useEffect(() => { setSearchPage(1); }, [searchTerm]);
+
+  // ── Real product search — uses main store search (same as header search) ──
+  const productSearchQuery = useQuery({
+    queryKey: ["product-hub-search", searchTerm, searchPage],
+    queryFn: async () => {
+      if (!searchTerm) return { data: [], totalCount: 0 };
+      try {
+        const res = await http({ method: "GET", url: "/product/getAllProduct", params: { page: searchPage, limit: PRODUCTS_PER_PAGE, term: searchTerm } });
+        const data = res.data?.data ?? [];
+        const totalCount = res.data?.totalCount ?? 0;
+        if (Array.isArray(data) && data.length > 0) return { data, totalCount };
+      } catch {}
+      try {
+        const res = await http({ method: "GET", url: "/product/searchExistingProducts", params: { page: searchPage, limit: PRODUCTS_PER_PAGE, term: searchTerm } });
+        return { data: res.data?.data ?? [], totalCount: res.data?.totalCount ?? 0 };
+      } catch {}
+      return { data: [], totalCount: 0 };
+    },
+    enabled: !!searchTerm && searchTerm.length >= 1,
+    staleTime: 30_000,
+  });
+
+  // Map real products
+  const totalProductCount = productSearchQuery?.data?.totalCount ?? 0;
+  const totalPages = Math.ceil(totalProductCount / PRODUCTS_PER_PAGE);
+
+  const realProducts = useMemo(() => {
+    const data = productSearchQuery?.data?.data ?? [];
+    if (!Array.isArray(data) || data.length === 0) return null;
+    return data.map((p: any) => ({
+      id: p.id,
+      name: p.productName ?? p.name ?? `Product #${p.id}`,
+      price: Number(p.offerPrice ?? p.productPrice ?? 0),
+      rating: p.rating ?? 4.0,
+      reviews: p.reviewCount ?? 0,
+      seller: p.adminName ?? p.sellerName ?? "Vendor",
+      delivery: "3-5 days",
+      inStock: true,
+      stock: p.stock ?? 50,
+      specs: [] as string[][],
+    }));
+  }, [productSearchQuery?.data]);
   const [activeTab, setActiveTab] = useState<"products" | "customize" | "buynow">("products");
   const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
   const [specsOpen, setSpecsOpen] = useState(true);
@@ -110,7 +172,8 @@ export default function ItemDetailPanel({ selectedItemId, onAddToCart, locale }:
     setSelectedProductId(null);
     setViewingProductId(null);
     setActiveTab("products");
-  }, [selectedItemId]);
+    if (searchTerm) track("rfq_product_search", { term: searchTerm });
+  }, [selectedItemId, searchTerm]);
   const [customerNote, setCustomerNote] = useState("Need for corporate use. Prefer black or silver.\nBulk packaging OK. Must include carrying case.");
   const [noteAttachments, setNoteAttachments] = useState<string[]>(["requirements.pdf", "reference-photo.jpg"]);
   const [viewingProductId, setViewingProductId] = useState<number | null>(null);
@@ -189,175 +252,6 @@ export default function ItemDetailPanel({ selectedItemId, onAddToCart, locale }:
   // Vendor listings for the selected product model
   const vendorListings = selectedProductId ? (VENDOR_LISTINGS[selectedProductId] ?? []) : [];
 
-  // Customize view removed — now integrated into Specs & Req. tab
-  if (false) {
-    return (
-      <div className="flex flex-col h-full min-h-0 bg-background">
-        {/* Back header */}
-        <div className="flex items-center gap-2 px-4 py-2 border-b border-border shrink-0">
-          <button type="button" onClick={() => setCustomizeProductId(null)}
-            className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground">
-            <ChevronDown className="h-3.5 w-3.5 rotate-90" /> {isAr ? "رجوع" : "Back"}
-          </button>
-          <div className="ms-auto flex items-center gap-1">
-            <Wrench className="h-3 w-3 text-amber-600" />
-            <span className="text-[10px] font-semibold text-amber-600">{isAr ? "طلب تخصيص" : "Customization Request"}</span>
-          </div>
-        </div>
-
-        {/* Scrollable form */}
-        <div className="flex-1 overflow-y-auto px-4 py-3 space-y-4">
-          {/* Product being customized */}
-          <div className="flex items-center gap-3 p-3 rounded-lg border border-amber-200 bg-amber-50/50 dark:border-amber-800/30 dark:bg-amber-950/10">
-            <div className="h-12 w-12 rounded-lg bg-muted flex items-center justify-center shrink-0">
-              <ShoppingCart className="h-4 w-4 text-muted-foreground/30" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <span className="text-xs font-bold block">{customizeProduct.name}</span>
-              <span className="text-[10px] text-muted-foreground">{customizeProduct.seller} · {customizeProduct.price} OMR</span>
-            </div>
-            <span className="text-[9px] bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 px-1.5 py-0.5 rounded font-medium">
-              {isAr ? "خاص" : "Private to vendor"}
-            </span>
-          </div>
-
-          {/* Quantity */}
-          <div>
-            <label className="text-[11px] font-semibold mb-1 block">{isAr ? "الكمية المطلوبة" : "Required Quantity"}</label>
-            <input type="number" defaultValue={50} min={1}
-              className="w-32 text-xs border border-border rounded-md px-3 py-1.5 bg-background outline-none focus:ring-1 focus:ring-amber-500" />
-          </div>
-
-          {/* Customization details */}
-          <div>
-            <label className="flex items-center gap-1.5 text-[11px] font-semibold mb-1">
-              <Edit3 className="h-3.5 w-3.5 text-amber-600" />
-              {isAr ? "تفاصيل التخصيص" : "Customization Details"}
-            </label>
-            <textarea
-              rows={4}
-              defaultValue=""
-              placeholder={isAr
-                ? "صِف التعديلات المطلوبة...\nمثال: تغيير اللون إلى أزرق، إضافة شعار الشركة، تغليف خاص..."
-                : "Describe the modifications you need...\ne.g. Change color to navy blue, add company logo on ear cups, custom packaging with brand name..."}
-              className="w-full rounded-lg border bg-muted/30 px-3 py-2 text-xs placeholder:text-muted-foreground outline-none focus:ring-1 focus:ring-amber-500 resize-none"
-            />
-          </div>
-
-          {/* Quick customization options based on product specs */}
-          <div>
-            <label className="text-[11px] font-semibold mb-1.5 block">{isAr ? "خيارات التعديل" : "Modification Options"}</label>
-            <div className="space-y-2">
-              {/* Color */}
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] text-muted-foreground w-20 shrink-0">{isAr ? "اللون" : "Color"}</span>
-                <input type="text" placeholder={isAr ? "مثال: أزرق داكن" : "e.g. Navy Blue"}
-                  className="flex-1 text-[10px] border border-border rounded px-2 py-1 bg-background outline-none focus:ring-1 focus:ring-amber-500" />
-              </div>
-              {/* Material */}
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] text-muted-foreground w-20 shrink-0">{isAr ? "المادة" : "Material"}</span>
-                <input type="text" placeholder={isAr ? "مثال: جلد طبيعي" : "e.g. Genuine Leather"}
-                  className="flex-1 text-[10px] border border-border rounded px-2 py-1 bg-background outline-none focus:ring-1 focus:ring-amber-500" />
-              </div>
-              {/* Branding */}
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] text-muted-foreground w-20 shrink-0">{isAr ? "الشعار" : "Branding"}</span>
-                <input type="text" placeholder={isAr ? "مثال: شعار الشركة على الجانب" : "e.g. Company logo on left ear cup"}
-                  className="flex-1 text-[10px] border border-border rounded px-2 py-1 bg-background outline-none focus:ring-1 focus:ring-amber-500" />
-              </div>
-              {/* Packaging */}
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] text-muted-foreground w-20 shrink-0">{isAr ? "التغليف" : "Packaging"}</span>
-                <input type="text" placeholder={isAr ? "مثال: صندوق مخصص" : "e.g. Custom branded box"}
-                  className="flex-1 text-[10px] border border-border rounded px-2 py-1 bg-background outline-none focus:ring-1 focus:ring-amber-500" />
-              </div>
-            </div>
-          </div>
-
-          {/* Budget */}
-          <div>
-            <label className="text-[11px] font-semibold mb-1 block">{isAr ? "الميزانية للوحدة" : "Budget Per Unit (OMR)"}</label>
-            <div className="flex items-center gap-2">
-              <input type="number" placeholder="Min" defaultValue={customizeProduct.price}
-                className="w-24 text-xs border border-border rounded-md px-3 py-1.5 bg-background outline-none focus:ring-1 focus:ring-amber-500" />
-              <span className="text-[10px] text-muted-foreground">—</span>
-              <input type="number" placeholder="Max" defaultValue={Math.round(customizeProduct.price * 1.3)}
-                className="w-24 text-xs border border-border rounded-md px-3 py-1.5 bg-background outline-none focus:ring-1 focus:ring-amber-500" />
-            </div>
-          </div>
-
-          {/* Attachments */}
-          <div>
-            <label className="flex items-center gap-1.5 text-[11px] font-semibold mb-1.5">
-              <Paperclip className="h-3.5 w-3.5 text-amber-600" />
-              {isAr ? "مرفقات (رسومات، تصاميم، صور)" : "Attachments (drawings, designs, photos)"}
-            </label>
-            <div className="flex flex-wrap gap-1.5 mb-2">
-              {customAttachments.map((f, i) => (
-                <div key={i} className="flex items-center gap-1.5 rounded border border-border bg-muted/20 px-2 py-1">
-                  {f.match(/\.(jpg|png|gif)$/i) ? <Image className="h-3 w-3 text-blue-500" /> : <FileText className="h-3 w-3 text-orange-500" />}
-                  <span className="text-[9px] truncate max-w-[80px]">{f}</span>
-                  <button type="button" onClick={() => setCustomAttachments((p) => p.filter((_, idx) => idx !== i))} className="text-muted-foreground hover:text-destructive">
-                    <X className="h-2.5 w-2.5" />
-                  </button>
-                </div>
-              ))}
-              <button type="button"
-                onClick={() => setCustomAttachments((p) => [...p, "design-mockup.png"])}
-                className="flex items-center gap-1 rounded border border-dashed border-border hover:border-amber-500 px-2 py-1 text-[9px] text-muted-foreground hover:text-amber-600">
-                <Paperclip className="h-3 w-3" /> {isAr ? "إرفاق" : "Attach"}
-              </button>
-            </div>
-          </div>
-
-          {/* Message to vendor */}
-          <div>
-            <label className="flex items-center gap-1.5 text-[11px] font-semibold mb-1">
-              <MessageSquare className="h-3.5 w-3.5 text-amber-600" />
-              {isAr ? "رسالة للمورد" : "Message to Vendor"}
-            </label>
-            <textarea
-              value={customMsg}
-              onChange={(e) => setCustomMsg(e.target.value)}
-              rows={3}
-              placeholder={isAr
-                ? "أضف أي تفاصيل إضافية أو أسئلة للمورد..."
-                : "Add any additional details or questions for the vendor..."}
-              className="w-full rounded-lg border bg-muted/30 px-3 py-2 text-xs placeholder:text-muted-foreground outline-none focus:ring-1 focus:ring-amber-500 resize-none"
-            />
-          </div>
-
-          {/* Info note */}
-          <div className="flex items-start gap-2 rounded-lg bg-amber-50 dark:bg-amber-950/10 border border-amber-200 dark:border-amber-800/30 p-2.5">
-            <Shield className="h-4 w-4 text-amber-600 shrink-0 mt-0.5" />
-            <div>
-              <span className="text-[10px] font-semibold text-amber-800 dark:text-amber-400 block">
-                {isAr ? "طلب خاص" : "Private Request"}
-              </span>
-              <span className="text-[9px] text-amber-700/70 dark:text-amber-400/60">
-                {isAr
-                  ? "هذا الطلب يُرسل فقط لهذا المورد. لن يراه موردون آخرون. المورد سيرد عليك مباشرة."
-                  : "This request is sent only to this vendor. Other suppliers won't see it. The vendor will reply to you directly."}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Sticky bottom: send */}
-        <div className="border-t border-border px-4 py-2.5 shrink-0 flex items-center gap-2">
-          <button type="button" onClick={() => setCustomizeProductId(null)}
-            className="rounded-md border border-border px-4 py-2 text-xs font-medium text-muted-foreground hover:bg-muted">
-            {isAr ? "إلغاء" : "Cancel"}
-          </button>
-          <button type="button"
-            className="flex-1 flex items-center justify-center gap-2 rounded-md bg-amber-600 text-white hover:bg-amber-700 py-2 text-xs font-bold">
-            <Send className="h-3.5 w-3.5" /> {isAr ? "إرسال طلب التخصيص" : "Send Customization Request"}
-          </button>
-        </div>
-      </div>
-    );
-  }
 
   // ═══ FULL PRODUCT DETAIL VIEW (takes over panel) ═══
   if (viewingProductId && viewingProduct) {
@@ -418,7 +312,7 @@ export default function ItemDetailPanel({ selectedItemId, onAddToCart, locale }:
             <div className="flex gap-4">
               {/* Product info */}
               <div className="flex-1 min-w-0">
-                <h2 className="text-base font-bold">{viewingProduct.name}</h2>
+                <h2 className="text-base font-bold">{selectedProduct?.name ?? viewingProduct.seller}</h2>
                 <div className="flex items-center gap-2 mt-1">
                   <span className="text-xl font-bold text-green-600">{viewingProduct.price} OMR</span>
                   <span className="text-sm text-muted-foreground line-through">{viewingProduct.originalPrice} OMR</span>
@@ -608,13 +502,7 @@ export default function ItemDetailPanel({ selectedItemId, onAddToCart, locale }:
     <div className="flex flex-col h-full min-h-0 bg-background">
       {/* Item header */}
       <div className="px-4 py-2.5 border-b border-border shrink-0">
-        <h3 className="text-sm font-bold">Wireless Headphones (Noise Cancelling)</h3>
-        <div className="flex items-center gap-3 mt-1 text-[10px] text-muted-foreground">
-          <span className="bg-green-500/10 text-green-600 px-1.5 py-0.5 rounded font-medium">SAME</span>
-          <span>Qty: 50</span>
-          <span>80-100 OMR</span>
-          <span>📎 spec.pdf</span>
-        </div>
+        <h3 className="text-sm font-bold">{searchTerm ?? selectedItemId ?? ""}</h3>
       </div>
 
       {/* 3 Tabs: Products → Buy/Customize → Specs & Req. */}
@@ -622,7 +510,7 @@ export default function ItemDetailPanel({ selectedItemId, onAddToCart, locale }:
         <button type="button" onClick={() => setActiveTab("products")}
           className={cn("flex-1 py-2 text-xs font-medium border-b-2 transition-colors",
             activeTab === "products" ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground")}>
-          {isAr ? "المنتجات" : "Products"} (4)
+          {isAr ? "المنتجات" : "Products"} {(realProducts ?? []).length > 0 ? `(${(realProducts ?? []).length})` : ""}
         </button>
         <button type="button"
           onClick={() => { if (selectedProductId) setActiveTab("buynow"); }}
@@ -663,6 +551,25 @@ export default function ItemDetailPanel({ selectedItemId, onAddToCart, locale }:
                   <option value="discount-desc">{isAr ? "الخصم: الأكبر" : "Discount: Biggest"}</option>
                 </select>
               </div>
+
+              <div className="h-3 w-px bg-border" />
+
+              {/* Fixed filters: sell type chips */}
+              {[
+                { key: "retail", l: isAr ? "تجزئة" : "Retail" },
+                { key: "wholesale", l: isAr ? "جملة" : "Wholesale" },
+                { key: "buygroup", l: isAr ? "مجموعة شراء" : "Buy Group" },
+              ].map((t) => (
+                <button key={t.key} type="button"
+                  className="text-[9px] px-1.5 py-0.5 rounded-full border border-border bg-background text-muted-foreground hover:border-primary/30 hover:text-foreground transition-colors">
+                  {t.l}
+                </button>
+              ))}
+              <label className="flex items-center gap-1 text-[9px] cursor-pointer shrink-0">
+                <input type="checkbox" className="rounded border-border text-amber-600 h-3 w-3" />
+                <Wrench className="h-2.5 w-2.5 text-amber-600" />
+                <span>{isAr ? "قابل للتخصيص" : "Customizable"}</span>
+              </label>
 
               <div className="h-3 w-px bg-border" />
 
@@ -811,7 +718,82 @@ export default function ItemDetailPanel({ selectedItemId, onAddToCart, locale }:
         {/* ═══ PRODUCTS TAB ═══ */}
         {activeTab === "products" && (
           <div className="p-3 space-y-2">
-            {MOCK_PRODUCTS.map((p) => {
+            {/* Two options: Create RFQ + AI Suggest */}
+            <div className="flex gap-2">
+              {/* Option 1: Manual RFQ */}
+              <button
+                type="button"
+                onClick={() => { setActiveTab("customize"); setReqMode("rfq"); }}
+                className="flex-1 flex items-center gap-2 p-2.5 rounded-lg border border-primary/20 bg-primary/5 hover:bg-primary/10 hover:border-primary/40 transition-colors text-start"
+              >
+                <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                  <FileText className="h-4 w-4 text-primary" />
+                </div>
+                <div className="min-w-0">
+                  <span className="text-[10px] font-bold text-primary block">{isAr ? "إنشاء طلب أسعار" : "Create RFQ"}</span>
+                  <span className="text-[8px] text-muted-foreground">{isAr ? "صف ما تحتاجه يدوياً" : "Describe what you need manually"}</span>
+                </div>
+              </button>
+
+              {/* Option 2: AI Product Suggest — 50/day free with countdown */}
+              <button
+                type="button"
+                onClick={() => { if (aiUsedToday < 50) { /* TODO: AI product creation flow */ } }}
+                disabled={aiUsedToday >= 50}
+                className={cn(
+                  "flex-1 flex items-center gap-2 p-2.5 rounded-lg border transition-colors text-start relative",
+                  aiUsedToday >= 50
+                    ? "border-border bg-muted/30 opacity-60 cursor-not-allowed"
+                    : "border-purple-200 bg-purple-50/50 hover:bg-purple-100/50 hover:border-purple-300 dark:border-purple-800/30 dark:bg-purple-950/10 dark:hover:bg-purple-950/20"
+                )}
+              >
+                <div className="h-8 w-8 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center shrink-0">
+                  <Zap className="h-4 w-4 text-purple-600" />
+                </div>
+                <div className="min-w-0">
+                  <span className="text-[10px] font-bold text-purple-700 dark:text-purple-400 block">{isAr ? "اقتراح AI" : "AI Suggest"}</span>
+                  <span className="text-[8px] text-muted-foreground">
+                    {aiUsedToday >= 50
+                      ? (isAr ? `ينتهي الحد خلال ${aiResetHours}س` : `Resets in ${aiResetHours}h`)
+                      : (isAr ? "يُنشئ المنتج ويرسل كطلب أسعار" : "AI creates product & sends as RFQ")}
+                  </span>
+                </div>
+                {/* Usage counter */}
+                <span className={cn(
+                  "absolute top-1 end-1 text-[7px] font-bold px-1 py-0.5 rounded",
+                  aiUsedToday >= 50
+                    ? "bg-destructive/10 text-destructive"
+                    : aiUsedToday >= 40
+                      ? "bg-amber-100 text-amber-700"
+                      : "bg-purple-100 text-purple-600"
+                )}>
+                  {50 - aiUsedToday}/{50}
+                </span>
+              </button>
+            </div>
+
+            {/* Loading */}
+            {productSearchQuery.isLoading && (
+              <div className="flex items-center justify-center py-6">
+                <div className="h-5 w-5 animate-spin rounded-full border-2 border-border border-t-primary" />
+                <span className="text-[10px] text-muted-foreground ms-2">{isAr ? "جاري البحث..." : "Searching..."}</span>
+              </div>
+            )}
+
+            {/* No results message */}
+            {!productSearchQuery.isLoading && searchTerm && (realProducts ?? []).length === 0 && (
+              <div className="rounded-lg border border-amber-200 bg-amber-50/50 dark:bg-amber-950/10 p-4 text-center">
+                <span className="text-xs text-amber-700 dark:text-amber-400 font-semibold block">
+                  {isAr ? `لا توجد نتائج لـ "${searchTerm}"` : `No results for "${searchTerm}"`}
+                </span>
+                <span className="text-[10px] text-amber-600/70 mt-1 block">
+                  {isAr ? "جرب كلمات مختلفة أو أنشئ طلب أسعار مخصص" : "Try different keywords or create a custom RFQ above"}
+                </span>
+              </div>
+            )}
+
+            {/* Product list — real results only, no mock fallback */}
+            {(realProducts ?? []).map((p) => {
               const isSel = p.id === selectedProductId;
               return (
                 <div
@@ -1135,7 +1117,14 @@ export default function ItemDetailPanel({ selectedItemId, onAddToCart, locale }:
             {MOCK_MESSAGES.length > 0 && (
               <span className="text-[8px] bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">{MOCK_MESSAGES.length}</span>
             )}
-            <ChevronDown className={cn("h-3 w-3 ms-auto text-muted-foreground transition-transform", chatExpanded && "rotate-180")} />
+            {/* Usage counter */}
+            <span className={cn(
+              "text-[7px] font-bold px-1 py-0.5 rounded ms-auto me-1",
+              aiUsedToday >= 50 ? "bg-destructive/10 text-destructive" : "bg-muted text-muted-foreground"
+            )}>
+              {50 - aiUsedToday}/50
+            </span>
+            <ChevronDown className={cn("h-3 w-3 text-muted-foreground transition-transform", chatExpanded && "rotate-180")} />
           </button>
 
           {chatExpanded && (
@@ -1153,19 +1142,27 @@ export default function ItemDetailPanel({ selectedItemId, onAddToCart, locale }:
           )}
 
           <div className="flex items-center gap-2 px-3 py-1.5 border-t border-border/50">
-            <button type="button" onClick={() => vendorFileRef.current?.click()} className="text-muted-foreground hover:text-foreground shrink-0">
-              <Paperclip className="h-3 w-3" />
-            </button>
-            <input
-              type="text"
-              value={chatInput}
-              onChange={(e) => setChatInput(e.target.value)}
-              placeholder={isAr ? "اسأل عن المنتج..." : "Ask about this product..."}
-              className="flex-1 bg-muted/50 rounded border px-2 py-1 text-[10px] placeholder:text-muted-foreground outline-none focus:ring-1 focus:ring-primary"
-            />
-            <button type="button" className="text-primary hover:text-primary/80 shrink-0">
-              <Send className="h-3 w-3" />
-            </button>
+            {aiUsedToday >= 50 ? (
+              <div className="flex-1 text-center py-1">
+                <span className="text-[9px] text-destructive font-medium">{isAr ? `انتهى الحد اليومي — يتجدد خلال ${aiResetHours}س` : `Daily limit reached — resets in ${aiResetHours}h`}</span>
+              </div>
+            ) : (
+              <>
+                <button type="button" onClick={() => vendorFileRef.current?.click()} className="text-muted-foreground hover:text-foreground shrink-0">
+                  <Paperclip className="h-3 w-3" />
+                </button>
+                <input
+                  type="text"
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                  placeholder={isAr ? "اسأل عن المنتج..." : "Ask about this product..."}
+                  className="flex-1 bg-muted/50 rounded border px-2 py-1 text-[10px] placeholder:text-muted-foreground outline-none focus:ring-1 focus:ring-primary"
+                />
+                <button type="button" className="text-primary hover:text-primary/80 shrink-0">
+                  <Send className="h-3 w-3" />
+                </button>
+              </>
+            )}
           </div>
         </div>
       )}
