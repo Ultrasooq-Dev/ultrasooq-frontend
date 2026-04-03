@@ -1,6 +1,7 @@
 "use client";
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
+import { useMessageStore } from "@/lib/messageStore";
 import MenuGrid from "./MenuGrid";
 import MessageBubble, { type ChatMessage } from "./MessageBubble";
 import {
@@ -71,13 +72,15 @@ function PopChat({
   onMinimize: () => void; onClose: () => void;
 }) {
   const router = useRouter();
-  const [messages, setMessages] = useState<ChatMessage[]>([GREETING(userName, locale)]);
+  const isUserChat = session.type === "user";
+  const [messages, setMessages] = useState<ChatMessage[]>(isUserChat ? [] : [GREETING(userName, locale)]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-  const [showMenu, setShowMenu] = useState(true);
+  const [showMenu, setShowMenu] = useState(!isUserChat);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [convId, setConvId] = useState<number | null>(session.conversationId ?? null);
   const [convStatus, setConvStatus] = useState(session.botOrAdmin === "admin" ? "open" : "bot");
+  const [userRoomId, setUserRoomId] = useState<number | null>(null);
   const prevCount = useRef(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const windowRef = useRef<HTMLDivElement>(null);
@@ -103,6 +106,67 @@ function PopChat({
     window.addEventListener("mousemove", onMove); window.addEventListener("mouseup", onUp);
     return () => { window.removeEventListener("mousemove", onMove); window.removeEventListener("mouseup", onUp); };
   }, []);
+
+  // ─── USER-TO-USER: Load real messages from room ───
+  useEffect(() => {
+    if (!isUserChat || !session.otherUserId) return;
+
+    // Find or create room
+    http({ method: "GET", url: "/chat/find-room", params: { rfqId: 0, userId: session.otherUserId } })
+      .then((res) => {
+        const roomId = res.data?.data?.id ?? res.data?.id;
+        if (roomId) return roomId;
+        // No room exists — create one
+        return http({ method: "POST", url: "/chat/createPrivateRoom", data: {
+          creatorId: userId, participants: [userId, session.otherUserId], rfqId: 0,
+        }}).then((r) => r.data?.id ?? r.data);
+      })
+      .then((roomId) => {
+        if (!roomId) return;
+        setUserRoomId(roomId);
+        // Load messages
+        return http({ method: "GET", url: "/chat/messages", params: { roomId } });
+      })
+      .then((res) => {
+        if (!res?.data?.data) return;
+        const msgs: ChatMessage[] = res.data.data.map((m: any) => ({
+          id: m.id,
+          senderType: m.userId === userId ? "customer" : "bot",
+          content: m.content ?? "",
+          contentType: "text",
+          createdAt: m.createdAt,
+          metadata: { userName: m.user?.firstName ?? "User" },
+        }));
+        setMessages(msgs);
+        nextId.current = Math.max(...msgs.map((m) => (typeof m.id === "number" ? m.id : 0)), 0) + 1;
+      })
+      .catch(() => {});
+  }, [isUserChat, session.otherUserId, userId]);
+
+  // USER-TO-USER: Poll for new messages
+  useEffect(() => {
+    if (!isUserChat || !userRoomId) return;
+    const interval = setInterval(() => {
+      http({ method: "GET", url: "/chat/messages", params: { roomId: userRoomId } })
+        .then((res) => {
+          if (!res?.data?.data) return;
+          const localIds = new Set(messages.filter((m) => typeof m.id === "number" && m.id > 0).map((m) => m.id));
+          const newMsgs = res.data.data.filter((m: any) => !localIds.has(m.id));
+          if (newMsgs.length > 0) {
+            setMessages((prev) => [...prev, ...newMsgs.map((m: any) => ({
+              id: m.id,
+              senderType: m.userId === userId ? "customer" : "bot",
+              content: m.content ?? "",
+              contentType: "text",
+              createdAt: m.createdAt,
+              metadata: { userName: m.user?.firstName ?? "User" },
+            }))]);
+          }
+        })
+        .catch(() => {});
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [isUserChat, userRoomId, userId, messages]);
 
   // Init support conversation for this window
   useEffect(() => {
@@ -179,10 +243,20 @@ function PopChat({
     const text = input.trim(); if (!text) return;
     addMsg({ senderType: "customer", content: text }); setInput(""); setShowMenu(false);
 
+    // User-to-user: send via REST API to real room
+    if (isUserChat) {
+      if (userRoomId) {
+        http({ method: "POST", url: "/chat/send-message", data: {
+          content: text, userId, roomId: userRoomId, rfqId: 0,
+        }}).catch(() => {});
+      }
+      return;
+    }
+
+    // Support: existing flow
     if (convId) {
       sendWithConv(text, convId);
     } else {
-      // Auto-create a new support conversation, then send
       setIsTyping(true);
       initSupportChat({ locale }, true).then((res) => {
         const d = res.data;
@@ -248,7 +322,7 @@ function PopChat({
       </div>
 
       <div className="flex-1 overflow-y-auto px-2 py-2 space-y-1 min-h-[200px]">
-        {messages.length <= 1 && !showMenu && !isTyping && (
+        {messages.length === 0 && !showMenu && !isTyping && (
           <div className="flex flex-col items-center justify-center h-full text-muted-foreground py-12">
             <MessageSquare className="h-8 w-8 mb-2 opacity-20" />
             <span className="text-xs">{locale === "ar" ? "لا توجد رسائل بعد" : "No messages yet"}</span>
@@ -259,7 +333,7 @@ function PopChat({
             onButtonClick={(a, v) => { if (a === "navigate") handleNavigate(v); else if (a === "menu_click") handleMenuClick(v); else if (a === "send_text") { addMsg({ senderType: "customer", content: v }); if (convId) { setIsTyping(true); sendSupportMessage({ conversationId: convId, content: v, metadata: { locale } }).then((res) => { setIsTyping(false); const b = res.data?.botResponse; if (b?.content) addMsg({ senderType: "bot", content: b.content, contentType: b.contentType, metadata: b.metadata }); }).catch(() => setIsTyping(false)); } } }}
             onNavigate={handleNavigate} />
         ))}
-        {showMenu && <MenuGrid tradeRole={tradeRole} locale={locale} onMenuClick={handleMenuClick} onNavigate={handleNavigate} />}
+        {showMenu && !isUserChat && <MenuGrid tradeRole={tradeRole} locale={locale} onMenuClick={handleMenuClick} onNavigate={handleNavigate} />}
         {isTyping && (
           <div className="flex items-center gap-2 py-1">
             <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground"><Loader2 className="h-3 w-3 animate-spin" /></div>
@@ -286,6 +360,7 @@ function PopChat({
 
 // ─── Main Hub ────────────────────────────────────────────────────
 export default function MessagingHub({ onClose, onUnreadChange, user, locale }: MessagingHubProps) {
+  const router = useRouter();
   const tradeRole = user?.tradeRole || "BUYER";
   const userName = user?.firstName || "";
   const userId = user?.id || 0;
@@ -300,6 +375,71 @@ export default function MessagingHub({ onClose, onUnreadChange, user, locale }: 
   const [searchingUsers, setSearchingUsers] = useState(false);
   const [actionsExpanded, setActionsExpanded] = useState(false);
   const sessionCounter = useRef(1);
+
+  // ─── Unread counts from store (for badge) + fetch user rooms from API ───
+  const { channelCounts } = useMessageStore();
+  const [userRooms, setUserRooms] = useState<Array<{ id: number; name: string; lastMsg: string; time: string; unread: number; otherUserId?: number; otherUserName?: string }>>([]);
+
+  // Fetch user chat rooms from API when Users tab opens
+  useEffect(() => {
+    if (view !== "user_list" || !userId) return;
+    http({ method: "GET", url: "/chat/channels/summary" })
+      .then((res) => {
+        // Get all non-support channel conversations
+        const channels = (res.data?.data ?? res.data ?? []).filter((c: any) => c.id !== "support" && c.id !== "unread");
+        // Fetch conversations for each channel
+        const fetches = channels.map((ch: any) =>
+          http({ method: "GET", url: `/chat/channels/${ch.id}/conversations` }).catch(() => ({ data: { data: [] } }))
+        );
+        return Promise.all(fetches);
+      })
+      .then((results) => {
+        const rooms: typeof userRooms = [];
+        for (const res of results) {
+          const convos = res.data?.data ?? res.data ?? [];
+          for (const c of convos) {
+            if (c.unreadCount > 0 || c.lastMessage) {
+              const otherParticipant = c.participants?.find((p: any) => p.userId !== userId);
+              rooms.push({
+                id: c.id,
+                name: c.name || otherParticipant?.user?.firstName || `Room #${c.id}`,
+                lastMsg: c.lastMessage?.content ?? "",
+                time: c.lastMessageAt ?? c.createdAt ?? "",
+                unread: c.unreadCount ?? 0,
+                otherUserId: otherParticipant?.userId,
+                otherUserName: otherParticipant?.user?.firstName,
+              });
+            }
+          }
+        }
+        rooms.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime());
+        setUserRooms(rooms);
+      })
+      .catch(() => {});
+  }, [view, userId]);
+  const supportUnread = useMemo(() => {
+    const fromStore = channelCounts.find((c) => c.id === "support");
+    if (fromStore) return fromStore.count;
+    // Fallback: count from local sessions
+    return sessions.filter(s => s.type === "support" && s.unread > 0).reduce((sum, s) => sum + s.unread, 0);
+  }, [channelCounts, sessions]);
+  const usersUnread = useMemo(() => {
+    // From fetched user rooms
+    const fromRooms = userRooms.reduce((sum, r) => sum + r.unread, 0);
+    if (fromRooms > 0) return fromRooms;
+    // From store counts
+    const fromStore = channelCounts
+      .filter((c) => c.id !== "support" && c.id !== "unread")
+      .reduce((sum, c) => sum + c.count, 0);
+    if (fromStore > 0) return fromStore;
+    // Fallback: local sessions
+    return sessions.filter(s => s.type === "user" && s.unread > 0).reduce((sum, s) => sum + s.unread, 0);
+  }, [userRooms, channelCounts, sessions]);
+
+  // Push total unread to parent floating button badge
+  useEffect(() => {
+    onUnreadChange(supportUnread + usersUnread);
+  }, [supportUnread, usersUnread, onUnreadChange]);
 
   // Load existing support sessions
   useEffect(() => {
@@ -412,14 +552,14 @@ export default function MessagingHub({ onClose, onUnreadChange, user, locale }: 
             <div className="px-3 py-2 flex gap-2 border-b">
               <button type="button" onClick={() => setView("support_list")} className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg bg-blue-500/10 text-blue-600 hover:bg-blue-500/20 text-xs font-medium transition-colors">
                 <Shield className="h-3.5 w-3.5" /> {locale === "ar" ? "الدعم" : "Support"}
-                {sessions.filter(s => s.type === "support" && s.status === "active").length > 0 && (
-                  <span className="h-4 min-w-4 flex items-center justify-center rounded-full bg-blue-600 text-white text-[8px] px-0.5">{sessions.filter(s => s.type === "support" && s.status === "active").length}</span>
+                {supportUnread > 0 && (
+                  <span className="h-4 min-w-4 flex items-center justify-center rounded-full bg-blue-600 text-white text-[8px] px-0.5">{supportUnread}</span>
                 )}
               </button>
               <button type="button" onClick={() => setView("user_list")} className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg bg-orange-500/10 text-orange-600 hover:bg-orange-500/20 text-xs font-medium transition-colors">
                 <User className="h-3.5 w-3.5" /> {locale === "ar" ? "المستخدمين" : "Users"}
-                {sessions.filter(s => s.type === "user" && s.status === "active").length > 0 && (
-                  <span className="h-4 min-w-4 flex items-center justify-center rounded-full bg-orange-600 text-white text-[8px] px-0.5">{sessions.filter(s => s.type === "user" && s.status === "active").length}</span>
+                {usersUnread > 0 && (
+                  <span className="h-4 min-w-4 flex items-center justify-center rounded-full bg-orange-600 text-white text-[8px] px-0.5">{usersUnread}</span>
                 )}
               </button>
             </div>
@@ -552,9 +692,89 @@ export default function MessagingHub({ onClose, onUnreadChange, user, locale }: 
           </div>
         )}
 
-        {/* ── USER CHATS LIST ── */}
+        {/* ── USER CHATS LIST — real rooms from API + local sessions ── */}
         {view === "user_list" && (
           <div className="flex-1 overflow-y-auto">
+            {/* Rooms fetched from API */}
+            {userRooms.length > 0 && (
+              <div>
+                <div className="flex items-center px-3 pt-2 pb-1">
+                  <span className="flex-1 text-[9px] font-semibold uppercase text-muted-foreground tracking-wider">
+                    {locale === "ar" ? "المحادثات" : "Conversations"} · {userRooms.length}
+                  </span>
+                  {userRooms.filter((r) => r.unread > 0).length > 1 && (
+                    <button type="button"
+                      onClick={() => {
+                        // Open ALL unread rooms as pop chats
+                        const unreadRooms = userRooms.filter((r) => r.unread > 0);
+                        const newSessions: ChatSession[] = [];
+                        const newOpenIds: string[] = [];
+                        for (const room of unreadRooms) {
+                          const chatId = `user-${room.otherUserId ?? room.id}`;
+                          if (!sessions.some((s) => s.id === chatId)) {
+                            newSessions.push({
+                              id: chatId, type: "user",
+                              name: room.otherUserName ?? room.name,
+                              status: "active",
+                              lastMessage: room.lastMsg,
+                              lastTime: room.time,
+                              unread: room.unread,
+                              otherUserId: room.otherUserId,
+                            });
+                          }
+                          newOpenIds.push(chatId);
+                        }
+                        if (newSessions.length > 0) setSessions((prev) => [...newSessions, ...prev]);
+                        setOpenChats((prev) => [...new Set([...prev, ...newOpenIds])]);
+                        setView("list");
+                      }}
+                      className="text-[9px] font-semibold text-primary hover:underline"
+                    >
+                      {locale === "ar" ? "فتح الكل" : "Open All"}
+                    </button>
+                  )}
+                </div>
+                {userRooms.map((room) => (
+                  <button key={room.id} type="button"
+                    onClick={() => {
+                      // Open as a PopChat inside the widget
+                      const chatId = `user-${room.otherUserId ?? room.id}`;
+                      if (!sessions.some((s) => s.id === chatId)) {
+                        setSessions((prev) => [{
+                          id: chatId, type: "user",
+                          name: room.otherUserName ?? room.name,
+                          status: "active" as const,
+                          lastMessage: room.lastMsg,
+                          lastTime: room.time,
+                          unread: room.unread,
+                          otherUserId: room.otherUserId,
+                        }, ...prev]);
+                      }
+                      openChat(chatId);
+                      setView("list");
+                    }}
+                    className="w-full flex items-center gap-2.5 px-3 py-2.5 text-start hover:bg-muted/50 border-b">
+                    <div className="relative shrink-0">
+                      <div className="h-8 w-8 rounded-full bg-orange-500/10 text-orange-600 flex items-center justify-center">
+                        <span className="text-xs font-bold">{(room.otherUserName ?? room.name).charAt(0)}</span>
+                      </div>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between">
+                        <span className={`text-xs truncate ${room.unread > 0 ? "font-bold" : "font-medium"}`}>{room.otherUserName ?? room.name}</span>
+                        <span className="text-[9px] text-muted-foreground shrink-0 ms-1">{room.time ? timeAgo(room.time) : ""}</span>
+                      </div>
+                      <p className="text-[10px] text-muted-foreground truncate">{room.lastMsg}</p>
+                    </div>
+                    {room.unread > 0 && (
+                      <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive text-[8px] font-bold text-white px-0.5 shrink-0">{room.unread}</span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* New chat + local sessions */}
             <button type="button" onClick={() => setView("user_search")}
               className="w-full flex items-center gap-2 px-3 py-3 text-start border-b hover:bg-orange-50 dark:hover:bg-orange-950 transition-colors">
               <div className="h-8 w-8 rounded-full bg-orange-500 text-white flex items-center justify-center shrink-0"><Plus className="h-4 w-4" /></div>
@@ -597,12 +817,19 @@ export default function MessagingHub({ onClose, onUnreadChange, user, locale }: 
               </div>
             )}
 
-            {sessions.filter(s => s.type === "user").length === 0 && (
+            {sessions.filter(s => s.type === "user").length === 0 && userRooms.length === 0 && (
               <div className="px-4 py-8 text-center text-xs text-muted-foreground">
                 <User className="h-6 w-6 mx-auto mb-2 opacity-20" />
                 {locale === "ar" ? "لا توجد محادثات" : "No user chats yet"}
               </div>
             )}
+
+            {/* View all in full messages page */}
+            <button type="button" onClick={() => { window.location.href = "/messages"; }}
+              className="w-full flex items-center justify-center gap-1.5 px-3 py-2.5 text-xs font-medium text-primary border-t hover:bg-primary/5 transition-colors">
+              <MessageSquare className="h-3.5 w-3.5" />
+              {locale === "ar" ? "عرض الكل في الرسائل" : "View all in Messages"}
+            </button>
           </div>
         )}
 

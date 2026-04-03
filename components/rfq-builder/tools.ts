@@ -68,7 +68,7 @@ async function extractTextFromPdf(file: File): Promise<string> {
       canvas.width = viewport.width;
       canvas.height = viewport.height;
       const ctx = canvas.getContext("2d")!;
-      await page.render({ canvasContext: ctx, viewport }).promise;
+      await page.render({ canvasContext: ctx, viewport, canvas } as any).promise;
 
       const { data } = await worker.recognize(canvas);
       if (data.text.trim()) ocrParts.push(data.text.trim());

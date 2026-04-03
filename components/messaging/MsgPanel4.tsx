@@ -1,18 +1,19 @@
 "use client";
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
-import { MessageSquare, Phone, Video, Info, Paperclip, Send, Smile } from "lucide-react";
+import { MessageSquare, Phone, Video, Info, Paperclip, Send, Loader2 } from "lucide-react";
+import { useChatMessages } from "./useChat";
+import type { ChatMessage } from "@/lib/messageStore";
 
-const MOCK_MESSAGES = [
-  { id: 1, userId: 5, name: "Ahmed", text: "Hi, I need a bulk order of iPads and Dell laptops.", time: "10:30 AM" },
-  { id: 2, userId: 6, name: "You", text: "Hello! I can offer 10 iPads at 450 OMR each and 10 Dell XPS at 650 OMR each.", time: "10:32 AM" },
-  { id: 3, userId: 5, name: "Ahmed", text: "Can you do 400 OMR for the iPads? We are ordering 10 units.", time: "10:35 AM" },
-  { id: 4, userId: 6, name: "You", text: "I can do 420 OMR per unit for 10+ orders. Best price I can offer.", time: "10:38 AM" },
-  { id: 5, userId: 5, name: "Ahmed", text: "Deal! Please send the updated quote.", time: "10:45 AM" },
-  { id: 6, userId: 6, name: "You", text: "Updated quote sent. Total: 10,700 OMR for 10 iPads + 10 Dell XPS.", time: "10:50 AM" },
-  { id: 7, userId: 5, name: "Ahmed", text: "When can you deliver?", time: "11:00 AM" },
-  { id: 8, userId: 6, name: "You", text: "Delivery within 5-7 business days to Muscat.", time: "11:02 AM" },
-];
+function formatTime(iso: string) {
+  try {
+    return new Date(iso).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  } catch {
+    return iso;
+  }
+}
+
+// No mock data — real messages come from useMessageStore via useChat hook
 
 interface MsgPanel4Props {
   personId: string | null;
@@ -26,6 +27,30 @@ interface MsgPanel4Props {
 export default function MsgPanel4({ personId, onToggleInfo, showInfo, locale, userId, userName }: MsgPanel4Props) {
   const isAr = locale === "ar";
   const [input, setInput] = useState("");
+
+  const {
+    roomMessages,
+    roomTyping,
+    scrollRef,
+    sendMessage,
+    emitTyping,
+    isSending,
+  } = useChatMessages(userId, userName);
+
+  const messages = roomMessages;
+
+  const handleSend = () => {
+    if (!input.trim()) return;
+    sendMessage(input);
+    setInput("");
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
 
   if (!personId) {
     return (
@@ -46,50 +71,82 @@ export default function MsgPanel4({ personId, onToggleInfo, showInfo, locale, us
   return (
     <div className="flex flex-col h-full min-h-0 min-w-0 bg-background">
       {/* Header */}
-      <div className="flex items-center gap-2 px-4 py-2 border-b border-border shrink-0">
-        <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs font-bold shrink-0">A</div>
+      <div className="flex items-center gap-3 px-4 py-2.5 border-b border-border shrink-0">
+        <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm font-bold shrink-0">A</div>
         <div className="flex-1 min-w-0">
-          <h3 className="text-xs font-semibold truncate">Ahmed Al-Busaidi</h3>
-          <div className="flex items-center gap-1">
-            <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
-            <span className="text-[9px] text-muted-foreground">{isAr ? "متصل" : "Online"}</span>
+          <h3 className="text-sm font-semibold truncate">Ahmed Al-Busaidi</h3>
+          <div className="flex items-center gap-1.5">
+            <div className="h-2 w-2 rounded-full bg-green-500" />
+            <span className="text-xs text-muted-foreground">
+              {roomTyping.length > 0
+                ? (isAr ? "يكتب..." : "typing...")
+                : (isAr ? "متصل" : "Online")}
+            </span>
           </div>
         </div>
-        <button type="button" className="p-1.5 rounded-lg hover:bg-muted text-muted-foreground"><Phone className="h-3.5 w-3.5" /></button>
-        <button type="button" className="p-1.5 rounded-lg hover:bg-muted text-muted-foreground"><Video className="h-3.5 w-3.5" /></button>
+        <button type="button" className="p-1.5 rounded-lg hover:bg-muted text-muted-foreground"><Phone className="h-4 w-4" /></button>
+        <button type="button" className="p-1.5 rounded-lg hover:bg-muted text-muted-foreground"><Video className="h-4 w-4" /></button>
         <button type="button" onClick={onToggleInfo}
           className={cn("p-1.5 rounded-lg transition-colors", showInfo ? "bg-primary/10 text-primary" : "hover:bg-muted text-muted-foreground")}>
-          <Info className="h-3.5 w-3.5" />
+          <Info className="h-4 w-4" />
         </button>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-4 py-3 space-y-2.5 min-h-0">
-        {MOCK_MESSAGES.map((msg) => {
-          const isOwn = msg.userId === 6;
+      <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-3 space-y-3 min-h-0">
+        {messages.map((msg) => {
+          const isOwn = msg.senderId === userId || msg.senderId === 0;
+          const sending = isSending(msg.id);
+
+          // System messages (RFQ updates)
+          if (msg.contentType === "system" || msg.contentType === "rfq_update") {
+            return (
+              <div key={msg.id} className="flex justify-center">
+                <div className="rounded-full bg-amber-50 dark:bg-amber-950/10 border border-amber-200/50 px-4 py-1.5 text-xs text-amber-700 dark:text-amber-400">
+                  🔔 {msg.content}
+                </div>
+              </div>
+            );
+          }
+
           return (
             <div key={msg.id} className={cn("flex gap-2", isOwn && "flex-row-reverse")}>
               <div className={cn(
-                "h-6 w-6 rounded-full flex items-center justify-center text-[8px] font-bold shrink-0",
+                "h-8 w-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0",
                 isOwn ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
               )}>
-                {msg.name.charAt(0)}
+                {msg.senderName.charAt(0)}
               </div>
-              <div className="max-w-[70%] min-w-0">
+              <div className="max-w-[75%] min-w-0">
                 <div className={cn("flex items-baseline gap-1.5 mb-0.5", isOwn && "flex-row-reverse")}>
-                  <span className="text-[9px] font-semibold">{msg.name}</span>
-                  <span className="text-[7px] text-muted-foreground">{msg.time}</span>
+                  <span className="text-xs font-semibold">{isOwn ? (isAr ? "أنت" : "You") : msg.senderName}</span>
+                  <span className="text-[10px] text-muted-foreground">{formatTime(msg.createdAt)}</span>
+                  {sending && <Loader2 className="h-3 w-3 animate-spin text-muted-foreground" />}
                 </div>
                 <div className={cn(
-                  "rounded-lg px-2.5 py-1.5 text-xs break-words",
-                  isOwn ? "bg-primary text-primary-foreground" : "bg-muted"
+                  "rounded-lg px-3 py-2 text-sm break-words",
+                  isOwn ? "bg-primary text-primary-foreground" : "bg-muted",
+                  sending && "opacity-70"
                 )}>
-                  {msg.text}
+                  {msg.content}
                 </div>
               </div>
             </div>
           );
         })}
+
+        {/* Typing indicator */}
+        {roomTyping.length > 0 && (
+          <div className="flex gap-2">
+            <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center shrink-0">
+              <div className="flex gap-0.5">
+                <div className="h-1.5 w-1.5 rounded-full bg-muted-foreground animate-bounce" style={{ animationDelay: "0ms" }} />
+                <div className="h-1.5 w-1.5 rounded-full bg-muted-foreground animate-bounce" style={{ animationDelay: "150ms" }} />
+                <div className="h-1.5 w-1.5 rounded-full bg-muted-foreground animate-bounce" style={{ animationDelay: "300ms" }} />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Input */}
@@ -101,11 +158,12 @@ export default function MsgPanel4({ personId, onToggleInfo, showInfo, locale, us
           <input
             type="text"
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={(e) => { setInput(e.target.value); emitTyping(); }}
+            onKeyDown={handleKeyDown}
             placeholder={isAr ? "اكتب رسالة..." : "Type a message..."}
-            className="flex-1 rounded-lg border bg-muted/50 px-3 py-2 text-xs placeholder:text-muted-foreground outline-none focus:ring-1 focus:ring-primary min-w-0"
+            className="flex-1 rounded-lg border bg-muted/50 px-3 py-2 text-sm placeholder:text-muted-foreground outline-none focus:ring-1 focus:ring-primary min-w-0"
           />
-          <button type="button"
+          <button type="button" onClick={handleSend}
             className={cn("flex h-8 w-8 items-center justify-center rounded-lg shrink-0 transition-colors",
               input.trim() ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground")}>
             <Send className="h-4 w-4" />

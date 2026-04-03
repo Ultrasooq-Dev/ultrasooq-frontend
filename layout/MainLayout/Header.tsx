@@ -1838,7 +1838,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                                     ) : null}
 
                                     {hideMenu(PERMISSION_MESSAGE_SYSTEM) ? (
-                                      <Link href="/seller-rfq-request?tab=product-messages">
+                                      <Link href="/messages">
                                         <DropdownMenuItem
                                           dir={langDir}
                                           translate="no"
