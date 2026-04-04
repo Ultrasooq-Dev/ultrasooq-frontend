@@ -43,6 +43,10 @@ const customStyles = {
     ...base,
     zIndex: 20,
   }),
+  menuPortal: (base: any) => ({
+    ...base,
+    zIndex: 9999,
+  }),
 };
 
 type ProductLocationAndCustomizationSectionProps = {
@@ -498,6 +502,8 @@ const ProductLocationAndCustomizationSection: React.FC<
                     styles={customStyles}
                     instanceId="productCountryId"
                     placeholder={t("select")}
+                    menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                    menuPosition="fixed"
                   />
                 )}
               />
@@ -532,6 +538,8 @@ const ProductLocationAndCustomizationSection: React.FC<
                         styles={customStyles}
                         instanceId="productStateId"
                         placeholder={t("select")}
+                        menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                        menuPosition="fixed"
                       />
                     )}
                   />
@@ -567,6 +575,8 @@ const ProductLocationAndCustomizationSection: React.FC<
                         styles={customStyles}
                         instanceId="productCityId"
                         placeholder={t("select")}
+                        menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                        menuPosition="fixed"
                       />
                     )}
                   />
@@ -662,6 +672,8 @@ const ProductLocationAndCustomizationSection: React.FC<
                 styles={customStyles}
                 instanceId="sellCountryIds"
                 placeholder={t("select")}
+                menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                menuPosition="fixed"
               />
             )}
           />
@@ -702,6 +714,8 @@ const ProductLocationAndCustomizationSection: React.FC<
                   styles={customStyles}
                   instanceId="sellStateIds"
                   placeholder={t("select")}
+                  menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                  menuPosition="fixed"
                 />
               )}
             />
@@ -731,6 +745,8 @@ const ProductLocationAndCustomizationSection: React.FC<
                   value={selectedCities}
                   styles={customStyles}
                   instanceId="sellCityIds"
+                  menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                  menuPosition="fixed"
                 />
               )}
             />
@@ -758,6 +774,8 @@ const ProductLocationAndCustomizationSection: React.FC<
                 styles={customStyles}
                 instanceId="placeOfOriginId"
                 placeholder={t("select")}
+                menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                menuPosition="fixed"
               />
             )}
           />

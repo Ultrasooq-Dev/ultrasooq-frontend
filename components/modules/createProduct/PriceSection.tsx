@@ -37,6 +37,10 @@ const customStyles = {
     ...base,
     zIndex: 20,
   }),
+  menuPortal: (base: any) => ({
+    ...base,
+    zIndex: 9999,
+  }),
 };
 
 type PriceSectionProps = {
@@ -294,6 +298,10 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                             zIndex: 20,
                             borderRadius: '0.75rem',
                           }),
+                          menuPortal: (base: any) => ({
+                            ...base,
+                            zIndex: 9999,
+                          }),
                           option: (base: any, state: any) => ({
                             ...base,
                             backgroundColor: state.isSelected ? '#f97316' : state.isFocused ? '#fed7aa' : 'white',
@@ -302,6 +310,8 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                         }}
                         instanceId="productPriceList.[0].consumerType"
                         placeholder={t("select")}
+                        menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                        menuPosition="fixed"
                       />
                     )}
                   />
@@ -356,6 +366,10 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                             zIndex: 20,
                             borderRadius: '0.75rem',
                           }),
+                          menuPortal: (base: any) => ({
+                            ...base,
+                            zIndex: 9999,
+                          }),
                           option: (base: any, state: any) => ({
                             ...base,
                             backgroundColor: state.isSelected ? '#f97316' : state.isFocused ? '#fed7aa' : 'white',
@@ -364,6 +378,8 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                         }}
                         instanceId="productPriceList.[0].sellType"
                         placeholder={t("sell_type")}
+                        menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                        menuPosition="fixed"
                       />
                     )}
                   />

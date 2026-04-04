@@ -35,6 +35,10 @@ const customStyles = {
     ...base,
     zIndex: 20,
   }),
+  menuPortal: (base: any) => ({
+    ...base,
+    zIndex: 9999,
+  }),
 };
 
 type ManageProductAsideProps = {
@@ -246,6 +250,8 @@ const ManageProductAside: React.FC<ManageProductAsideProps> = ({
                       instanceId="productCondition"
                       placeholder={t("select")}
                       isRtl={langDir == "rtl"}
+                      menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                      menuPosition="fixed"
                       // isDisabled={!watchIsProductConditionRequired}
                     />
                   )}
@@ -492,6 +498,8 @@ const ManageProductAside: React.FC<ManageProductAsideProps> = ({
                       styles={customStyles}
                       instanceId="consumerType"
                       isRtl={langDir == "rtl"}
+                      menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                      menuPosition="fixed"
                       // isDisabled={!watchIsConsumerTypeRequired}
                     />
                   )}
@@ -541,6 +549,8 @@ const ManageProductAside: React.FC<ManageProductAsideProps> = ({
                       styles={customStyles}
                       instanceId="sellType"
                       isRtl={langDir == "rtl"}
+                      menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                      menuPosition="fixed"
                       // isDisabled={!watchIsSellTypeRequired}
                     />
                   )}

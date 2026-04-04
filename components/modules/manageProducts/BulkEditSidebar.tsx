@@ -659,6 +659,10 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
       backgroundColor: state.isSelected ? "#3b82f6" : state.isFocused ? "#f3f4f6" : "white",
       color: state.isSelected ? "white" : "#374151",
     }),
+    menuPortal: (base: any) => ({
+      ...base,
+      zIndex: 9999,
+    }),
   };
 
   // Fetch states when countries are selected
@@ -947,6 +951,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                       styles={customStyles}
                       instanceId="sellCountryIds"
                       placeholder={t("select")}
+                      menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                      menuPosition="fixed"
                       onBlur={field.onBlur}
                       name={field.name}
                       ref={field.ref}
@@ -991,6 +997,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                       styles={customStyles}
                       instanceId="sellStateIds"
                       placeholder={selectedCountries.length > 0 ? t("select") : "Select countries first"}
+                      menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                      menuPosition="fixed"
                       onBlur={field.onBlur}
                       name={field.name}
                       ref={field.ref}
@@ -1024,6 +1032,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                       styles={customStyles}
                       instanceId="sellCityIds"
                       placeholder={selectedStates.length > 0 ? t("select") : "Select states first"}
+                      menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                      menuPosition="fixed"
                       onBlur={field.onBlur}
                       name={field.name}
                       ref={field.ref}
@@ -1053,6 +1063,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                       styles={customStyles}
                       instanceId="placeOfOriginId"
                       placeholder={memoizedAllCountries.length > 0 ? t("select") : "Loading countries..."}
+                      menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                      menuPosition="fixed"
                       onBlur={field.onBlur}
                       name={field.name}
                       ref={field.ref}
