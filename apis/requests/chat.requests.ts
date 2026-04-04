@@ -183,3 +183,63 @@ export const selectSuggestedProducts = (payload: {
     },
   });
 };
+
+// ─── Messaging System — Real Backend Endpoints ───────────────
+
+import http from "../http";
+
+// Channel summary for P1 — returns counts per channel
+export const getChannelSummary = async () => {
+  const { data } = await http.get("/chat/channels/summary");
+  return data;
+};
+
+// Channel conversations for P2 — returns tree items for a channel
+export const getChannelConversations = async (
+  channelId: string,
+  page = 1,
+  limit = 50,
+) => {
+  const { data } = await http.get(
+    `/chat/channels/${channelId}/conversations`,
+    { params: { page, limit } },
+  );
+  return data;
+};
+
+// Toggle pin on a room
+export const togglePinRoom = async (roomId: number) => {
+  const { data } = await http.patch(`/chat/rooms/${roomId}/pin`);
+  return data;
+};
+
+// Toggle archive on a room
+export const toggleArchiveRoom = async (roomId: number) => {
+  const { data } = await http.patch(`/chat/rooms/${roomId}/archive`);
+  return data;
+};
+
+// Delete / leave a room
+export const deleteRoom = async (roomId: number) => {
+  const { data } = await http.delete(`/chat/rooms/${roomId}`);
+  return data;
+};
+
+// RFQ products for P6 — returns products for a room
+export const getRfqProductsForRoom = async (roomId: number) => {
+  const { data } = await http.get(`/chat/rooms/${roomId}/rfq-products`);
+  return data;
+};
+
+// Update RFQ alternative price/stock
+export const updateRfqAlternative = async (
+  roomId: number,
+  productId: number,
+  payload: { price?: number; stock?: number },
+) => {
+  const { data } = await http.put(
+    `/chat/rooms/${roomId}/rfq-products/${productId}`,
+    payload,
+  );
+  return data;
+};

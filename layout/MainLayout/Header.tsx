@@ -107,7 +107,7 @@ const ButtonLink: React.FC<ButtonLinkProps> = ({
 const STATIC_NAV_ITEMS = [
   { id: "store", href: "/trending", translationKey: "store", icon: menuBarIconList[1] },
   { id: "buy_group", href: "/buygroup", translationKey: "buy_group", icon: menuBarIconList[2] },
-  { id: "rfq", href: "/rfq", translationKey: "rfq", icon: menuBarIconList[4] },
+  { id: "rfq", href: "/product-hub?mode=rfq", translationKey: "rfq", icon: menuBarIconList[4] },
 ];
 
 const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
@@ -234,13 +234,11 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
 
   // Debounced function to update URL
   const updateURL = debounce((newTerm) => {
-    if (typeof window === "undefined") return; // Prevent SSR issues
-    const params = new URLSearchParams(window.location.search);
+    if (typeof window === "undefined") return;
     if (newTerm) {
-      params.set("term", newTerm);
-      router.replace(`/search?${params.toString()}`); // Update URL dynamically
+      router.replace(`/product-hub?mode=search&q=${encodeURIComponent(newTerm)}`);
     } else {
-      router.replace(`/trending`); // Update URL dynamically
+      router.replace(`/trending`);
     }
   }, 300);
 
@@ -1840,7 +1838,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                                     ) : null}
 
                                     {hideMenu(PERMISSION_MESSAGE_SYSTEM) ? (
-                                      <Link href="/seller-rfq-request?tab=product-messages">
+                                      <Link href="/messages">
                                         <DropdownMenuItem
                                           dir={langDir}
                                           translate="no"

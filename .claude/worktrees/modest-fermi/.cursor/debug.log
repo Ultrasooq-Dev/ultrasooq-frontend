@@ -1,0 +1,2 @@
+{"location":"BasicInformationSection.tsx:512","message":"Subcategory dropdown render","data":{"index":0,"dropdownValue":"","listIds":["99"],"selectedCategoryIds":["99"],"itemId":99,"childrenIds":[100,101]},"timestamp":1768652591193,"sessionId":"debug-session","hypothesisId":"D"}
+{"location":"BasicInformationSection.tsx:512","message":"Subcategory dropdown render","data":{"index":0,"dropdownValue":"","listIds":["99"],"selectedCategoryIds":["99"],"itemId":99,"childrenIds":[100,101]},"timestamp":1768652591190,"sessionId":"debug-session","hypothesisId":"D"}
