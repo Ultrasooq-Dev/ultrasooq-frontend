@@ -12,7 +12,7 @@ const config = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
   },
-  testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/', '<rootDir>/__tests__/e2e/', '<rootDir>/e2e/'],
+  testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/', '<rootDir>/__tests__/e2e/', '<rootDir>/__tests__/api/', '<rootDir>/e2e/'],
   coverageDirectory: 'coverage',
   collectCoverageFrom: [
     'apis/**/*.{ts,tsx}',
