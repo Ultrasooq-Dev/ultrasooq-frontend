@@ -24,7 +24,7 @@ export const fetchUnifiedSearch = async (
     priceMax?: number;
   },
 ): Promise<UnifiedSearchResponse> => {
-  const { data } = await http.get('/product/search/unified', {
+  const { data } = await http.get('product/search/unified', {
     params: { q: query, ...params },
   });
   return data;

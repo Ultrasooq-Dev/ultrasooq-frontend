@@ -69,7 +69,7 @@ export default function ProductSearch({ onClose, onAddProduct, locale }: Product
     if (!q) return;
     setLoading(true); setSearched(true); setShowSuggestions(false);
     try {
-      const res = await http.get("/product/search/unified", { params: { q, page: pageNum, limit: 10 } });
+      const res = await http.get("product/search/unified", { params: { q, page: pageNum, limit: 10 } });
       const products = res.data?.data?.data ?? res.data?.data ?? res.data ?? [];
       const mapped: ProductResult[] = products.map((p: any) => ({
         id: p.id,
