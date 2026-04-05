@@ -123,19 +123,20 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
   // Reset page when search term changes
   useEffect(() => { setSearchPage(1); }, [searchTerm]);
 
-  // ── Real product search — uses main store search (same as header search) ──
+  // ── Real product search — uses unified intelligent search ──
   const productSearchQuery = useQuery({
     queryKey: ["product-hub-search", searchTerm, searchPage],
     queryFn: async () => {
       if (!searchTerm) return { data: [], totalCount: 0 };
       try {
-        const res = await http({ method: "GET", url: "/product/getAllProduct", params: { page: searchPage, limit: PRODUCTS_PER_PAGE, term: searchTerm } });
+        const res = await http({ method: "GET", url: "/product/search/unified", params: { q: searchTerm, page: searchPage, limit: PRODUCTS_PER_PAGE } });
         const data = res.data?.data ?? [];
         const totalCount = res.data?.totalCount ?? 0;
-        if (Array.isArray(data) && data.length > 0) return { data, totalCount };
+        return { data: Array.isArray(data) ? data : [], totalCount };
       } catch {}
+      // Fallback to traditional search
       try {
-        const res = await http({ method: "GET", url: "/product/searchExistingProducts", params: { page: searchPage, limit: PRODUCTS_PER_PAGE, term: searchTerm } });
+        const res = await http({ method: "GET", url: "/product/getAllProduct", params: { page: searchPage, limit: PRODUCTS_PER_PAGE, term: searchTerm } });
         return { data: res.data?.data ?? [], totalCount: res.data?.totalCount ?? 0 };
       } catch {}
       return { data: [], totalCount: 0 };
