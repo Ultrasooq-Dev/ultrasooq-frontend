@@ -415,14 +415,14 @@ export const CHAT_REQUEST_MESSAGE = {
   },
 };
 
-export const STORE_MENU_ID = 8;
-export const BUYGROUP_MENU_ID = 9;
-export const FACTORIES_MENU_ID = 10;
-export const RFQ_MENU_ID = 11;
+export const STORE_MENU_ID = 1;       // Product Menu root
+export const BUYGROUP_MENU_ID = 1;    // Product Menu root (same tree)
+export const FACTORIES_MENU_ID = 1;   // Product Menu root (same tree)
+export const RFQ_MENU_ID = 1;         // Product Menu root (same tree)
 
-export const PRODUCT_CATEGORY_ID = 1042;
-export const SERVICE_CATEGORY_ID = 1043;
-export const BUSINESS_TYPE_CATEGORY_ID = 1044;
+export const PRODUCT_CATEGORY_ID = 1;    // "Product Menu" root
+export const SERVICE_CATEGORY_ID = 2;    // "Service Menu" root
+export const BUSINESS_TYPE_CATEGORY_ID = 2886;  // "Business Types" root
 
 export const LANGUAGES = [
   { locale: "en", name: "English", direction: "ltr", flag: "🇺🇸" },

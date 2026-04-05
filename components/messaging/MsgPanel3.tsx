@@ -116,11 +116,12 @@ const MOCK_P3: Record<string, Array<{ id: string; name: string; lastMsg: string;
 interface MsgPanel3Props {
   channelId: string | null;
   selectedId: string | null;
+  collapsed?: boolean;
   onSelect: (id: string) => void;
   locale: string;
 }
 
-export default function MsgPanel3({ channelId, selectedId, onSelect, locale }: MsgPanel3Props) {
+export default function MsgPanel3({ channelId, selectedId, collapsed, onSelect, locale }: MsgPanel3Props) {
   const isAr = locale === "ar";
   const [search, setSearch] = useState("");
   const people = channelId ? (MOCK_P3[channelId] ?? []) : [];
@@ -129,18 +130,59 @@ export default function MsgPanel3({ channelId, selectedId, onSelect, locale }: M
     ? people.filter((p) => p.name.toLowerCase().includes(search.toLowerCase()))
     : people;
 
+  // ─── COLLAPSED: 130px — centered avatar + name ───
+  if (collapsed) {
+    return (
+      <div className="flex flex-col h-full min-h-0 border-e border-border bg-background">
+        <div className="flex-1 overflow-y-auto">
+          {people.length === 0 && (
+            <div className="flex flex-col items-center justify-center py-8 text-muted-foreground">
+              <User className="h-8 w-8 mb-2 opacity-15" />
+            </div>
+          )}
+          {people.map((p) => (
+            <button key={p.id} type="button" onClick={() => onSelect(p.id)}
+              className={cn(
+                "flex flex-col w-full items-center gap-1 px-1.5 py-2.5 text-center transition-colors border-b border-border/20",
+                p.id === selectedId ? "bg-primary/5" : "hover:bg-muted/50"
+              )}>
+              <div className="relative">
+                <div className={cn(
+                  "h-9 w-9 rounded-full flex items-center justify-center text-xs font-bold",
+                  p.id === selectedId ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                )}>
+                  {p.name.charAt(0)}
+                </div>
+                {p.online && <div className="absolute bottom-0 end-0 h-2.5 w-2.5 rounded-full bg-green-500 border-2 border-background" />}
+                {p.unread > 0 && (
+                  <span className="absolute -top-1 -end-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary text-[8px] font-bold text-primary-foreground px-0.5 border-2 border-background">
+                    {p.unread}
+                  </span>
+                )}
+              </div>
+              <span className={cn("text-[10px] leading-tight w-full truncate", p.unread > 0 ? "font-bold" : "font-medium")}>
+                {p.name.split(" · ")[0].split(" ").slice(0, 2).join(" ")}
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // ─── EXPANDED: 260px — full detail ───
   return (
     <div className="flex flex-col h-full min-h-0 border-e border-border bg-background">
       {/* Search */}
-      <div className="px-2 py-2 border-b border-border shrink-0">
+      <div className="px-3 py-2 border-b border-border shrink-0">
         <div className="relative">
-          <Search className="absolute start-2 top-1/2 -translate-y-1/2 h-3 w-3 text-muted-foreground" />
+          <Search className="absolute start-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder={isAr ? "بحث..." : "Search people..."}
-            className="w-full rounded-md border bg-muted/50 ps-7 pe-2 py-1.5 text-[10px] placeholder:text-muted-foreground outline-none focus:ring-1 focus:ring-primary"
+            className="w-full rounded-md border bg-muted/50 ps-8 pe-3 py-1.5 text-xs placeholder:text-muted-foreground outline-none focus:ring-1 focus:ring-primary"
           />
         </div>
       </div>
@@ -149,8 +191,8 @@ export default function MsgPanel3({ channelId, selectedId, onSelect, locale }: M
       <div className="flex-1 overflow-y-auto">
         {filtered.length === 0 && (
           <div className="flex flex-col items-center justify-center py-8 text-muted-foreground">
-            <User className="h-8 w-8 mb-2 opacity-15" />
-            <p className="text-[10px]">{isAr ? "لا توجد محادثات" : "No conversations"}</p>
+            <User className="h-10 w-10 mb-2 opacity-15" />
+            <p className="text-xs">{isAr ? "لا توجد محادثات" : "No conversations"}</p>
           </div>
         )}
 
@@ -160,21 +202,21 @@ export default function MsgPanel3({ channelId, selectedId, onSelect, locale }: M
             type="button"
             onClick={() => onSelect(p.id)}
             className={cn(
-              "flex w-full items-center gap-2.5 px-3 py-2.5 text-start transition-colors border-b border-border/30",
+              "flex w-full items-center gap-3 px-3 py-3 text-start transition-colors border-b border-border/30",
               p.id === selectedId ? "bg-primary/5" : "hover:bg-muted/50"
             )}
           >
             {/* Avatar */}
             <div className="relative shrink-0">
               <div className={cn(
-                "h-9 w-9 rounded-full flex items-center justify-center text-[11px] font-bold",
+                "h-10 w-10 rounded-full flex items-center justify-center text-sm font-bold",
                 p.id === selectedId ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
               )}>
                 {p.name.charAt(0)}
               </div>
               {/* Online dot */}
               {p.online && (
-                <div className="absolute bottom-0 end-0 h-2.5 w-2.5 rounded-full bg-green-500 border-2 border-background" />
+                <div className="absolute bottom-0 end-0 h-3 w-3 rounded-full bg-green-500 border-2 border-background" />
               )}
             </div>
 
@@ -182,15 +224,15 @@ export default function MsgPanel3({ channelId, selectedId, onSelect, locale }: M
             <div className="flex-1 min-w-0">
               <div className="flex items-center justify-between">
                 <span className={cn(
-                  "text-[11px] truncate",
+                  "text-sm truncate",
                   p.unread > 0 ? "font-bold" : "font-medium"
                 )}>
                   {p.name}
                 </span>
-                <span className="text-[8px] text-muted-foreground shrink-0 ms-1">{timeAgo(p.time)}</span>
+                <span className="text-[10px] text-muted-foreground shrink-0 ms-2">{timeAgo(p.time)}</span>
               </div>
               <p className={cn(
-                "text-[10px] truncate mt-0.5",
+                "text-xs truncate mt-0.5",
                 p.unread > 0 ? "text-foreground" : "text-muted-foreground"
               )}>
                 {p.lastMsg}
@@ -199,7 +241,7 @@ export default function MsgPanel3({ channelId, selectedId, onSelect, locale }: M
 
             {/* Unread */}
             {p.unread > 0 && (
-              <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-primary text-[8px] font-bold text-primary-foreground px-0.5 shrink-0">
+              <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground px-1 shrink-0">
                 {p.unread}
               </span>
             )}

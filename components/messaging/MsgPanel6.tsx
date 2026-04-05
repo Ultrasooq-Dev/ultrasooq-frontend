@@ -6,8 +6,9 @@ import { useSocket } from "@/context/SocketContext";
 import { track } from "@/lib/analytics";
 import {
   ShoppingBag, ShoppingCart, Send, Star, Package, ChevronDown, FileText,
-  Pencil, Trash2, Info, ChevronLeft, Eye, Pin, Archive,
+  Pencil, Trash2, Info, ChevronLeft, Eye, Pin, Archive, Plus,
 } from "lucide-react";
+import ProductSearch from "./ProductSearch";
 
 // No mock data — real products come from useMessageStore via useMessageData hook
 
@@ -23,11 +24,12 @@ interface RfqProductItem {
 }
 
 // ─── Product Card — role-aware ───────────────
-function RfqProductCard({ item, role, locale, onViewSpecs, onPriceChange, onStockChange }: {
+function RfqProductCard({ item, role, locale, onViewSpecs, onPriceChange, onStockChange, onAddFromStore }: {
   item: RfqProductItem; role: Role; locale: string;
   onViewSpecs?: (altId: string) => void;
   onPriceChange?: (altId: string, price: number) => void;
   onStockChange?: (altId: string, stock: number) => void;
+  onAddFromStore?: () => void;
 }) {
   const isAr = locale === "ar";
   const isVendor = role === "vendor";
@@ -169,7 +171,8 @@ function RfqProductCard({ item, role, locale, onViewSpecs, onPriceChange, onStoc
 
       {/* Vendor: add from store */}
       {expanded && isVendor && (
-        <button type="button" className="flex items-center gap-1 ps-12 pe-4 py-2 text-sm text-primary hover:bg-muted/20 w-full border-t border-border/20">
+        <button type="button" onClick={() => onAddFromStore?.()}
+          className="flex items-center gap-1 ps-12 pe-4 py-2 text-sm text-primary hover:bg-muted/20 w-full border-t border-border/20">
           + {isAr ? "أضف من متجرك" : "Add from Store"}
         </button>
       )}
@@ -188,6 +191,7 @@ export default function MsgPanel6({ personId, role, locale }: MsgPanel6Props) {
   const isVendor = role === "vendor";
   const [tab, setTab] = useState<"list" | "specs">("list");
   const [viewingAltId, setViewingAltId] = useState<string | null>(null);
+  const [showProductSearch, setShowProductSearch] = useState(false);
 
   // ─── Read RFQ products from Zustand store, fallback to mock ───
   const { socket } = useSocket();
@@ -250,6 +254,30 @@ export default function MsgPanel6({ personId, role, locale }: MsgPanel6Props) {
 
   if (!personId) return null;
 
+  // Handle product added from search
+  const handleAddFromStore = useCallback((product: any) => {
+    // TODO: Add to RFQ products in store when wired to real API
+    track("messaging_product_added_from_store", {
+      productId: product.id,
+      productName: product.name,
+      price: product.price,
+      roomId: chatRoomId,
+    });
+  }, [chatRoomId]);
+
+  // Show ProductSearch overlay
+  if (showProductSearch) {
+    return (
+      <div className="flex flex-col h-full min-h-0 min-w-0 bg-background border-s border-border">
+        <ProductSearch
+          onClose={() => setShowProductSearch(false)}
+          onAddProduct={handleAddFromStore}
+          locale={locale}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col h-full min-h-0 min-w-0 bg-background border-s border-border">
       {/* Tabs */}
@@ -287,6 +315,24 @@ export default function MsgPanel6({ personId, role, locale }: MsgPanel6Props) {
           </div>
 
           <div className="flex-1 overflow-y-auto min-h-0">
+            {/* Vendor: Add from Store — always visible */}
+            {isVendor && (
+              <button type="button" onClick={() => setShowProductSearch(true)}
+                className="flex w-full items-center justify-center gap-2 px-4 py-3 border-b border-dashed border-primary/30 text-primary hover:bg-primary/5 transition-colors">
+                <Plus className="h-4 w-4" />
+                <span className="text-sm font-semibold">{isAr ? "أضف منتج من متجرك" : "Add Product from Store"}</span>
+              </button>
+            )}
+
+            {/* Empty state */}
+            {productData.items.length === 0 && !isVendor && (
+              <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
+                <Package className="h-10 w-10 mb-3 opacity-15" />
+                <p className="text-sm">{isAr ? "لا توجد منتجات بعد" : "No products yet"}</p>
+                <p className="text-xs opacity-60 mt-1">{isAr ? "البائع لم يضف منتجات" : "Vendor hasn't added products"}</p>
+              </div>
+            )}
+
             {productData.items.map((item) => (
               <RfqProductCard
                 key={item.id}
@@ -296,6 +342,7 @@ export default function MsgPanel6({ personId, role, locale }: MsgPanel6Props) {
                 onViewSpecs={(altId) => { setViewingAltId(altId); setTab("specs"); }}
                 onPriceChange={(altId, price) => handlePriceChange(item.id, altId, price)}
                 onStockChange={(altId, stock) => handleStockChange(item.id, altId, stock)}
+                onAddFromStore={() => setShowProductSearch(true)}
               />
             ))}
 
