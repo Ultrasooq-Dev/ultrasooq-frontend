@@ -43,16 +43,22 @@ interface SessionPanelProps {
 
 export default function SessionPanel({ selectedId, collapsed, initialMode = "rfq", newSearchQuery, rfqSessions = [], rfqLoading, externalSessions = [], onToggleCollapse, onSelect, onNewSession, onSessionRemoved, locale }: SessionPanelProps) {
   const isAr = locale === "ar";
-  const [searchSessions, setSearchSessions] = useState<Session[]>(() => {
-    if (typeof window === "undefined") return [];
+  const [searchSessions, setSearchSessions] = useState<Session[]>([]);
+  const sessionsLoaded = React.useRef(false);
+
+  // Load from localStorage on mount (client-only)
+  React.useEffect(() => {
+    if (sessionsLoaded.current) return;
+    sessionsLoaded.current = true;
     try {
       const stored = localStorage.getItem("rfq_local_sessions");
-      return stored ? JSON.parse(stored) : [];
-    } catch { return []; }
-  });
+      if (stored) setSearchSessions(JSON.parse(stored));
+    } catch {}
+  }, []);
 
-  // Persist local sessions to localStorage
+  // Persist to localStorage on change
   React.useEffect(() => {
+    if (!sessionsLoaded.current) return;
     try { localStorage.setItem("rfq_local_sessions", JSON.stringify(searchSessions)); } catch {}
   }, [searchSessions]);
   const [tab, setTab] = useState<"rfq" | "search">(initialMode);
@@ -93,13 +99,14 @@ export default function SessionPanel({ selectedId, collapsed, initialMode = "rfq
   const statusDot: Record<string, string> = { draft: "bg-amber-500", submitted: "bg-blue-500", quoted: "bg-green-500" };
   const statusLabel: Record<string, string> = { draft: isAr ? "مسودة" : "Draft", submitted: isAr ? "مرسل" : "Sent", quoted: isAr ? "تم" : "Quoted" };
 
-  const [hiddenIds, setHiddenIds] = useState<Set<string>>(() => {
-    if (typeof window === "undefined") return new Set();
+  const [hiddenIds, setHiddenIds] = useState<Set<string>>(new Set());
+
+  React.useEffect(() => {
     try {
       const stored = localStorage.getItem("rfq_hidden_sessions");
-      return new Set(stored ? JSON.parse(stored) : []);
-    } catch { return new Set(); }
-  });
+      if (stored) setHiddenIds(new Set(JSON.parse(stored)));
+    } catch {}
+  }, []);
 
   const filtered = allSessions.filter((s) => s.type === tab && !s.archived && !hiddenIds.has(s.id));
   const archived = allSessions.filter((s) => s.type === tab && (s.archived || hiddenIds.has(s.id)));

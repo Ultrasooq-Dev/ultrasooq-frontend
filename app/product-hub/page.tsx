@@ -23,27 +23,36 @@ export default function ProductHubPage() {
   const initialMode = urlMode === "search" ? "search" : "rfq";
   const searchQuery = searchParams?.get("q") ?? "";
 
-  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(() => {
-    if (typeof window === "undefined") return null;
-    try { return localStorage.getItem("rfq_selected_session") || null; } catch { return null; }
-  });
+  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(null);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [selectedItemName, setSelectedItemName] = useState<string | null>(null);
   const [sessionsCollapsed, setSessionsCollapsed] = useState(false);
   const [cartCollapsed, setCartCollapsed] = useState(false);
-  const [autoCreatedSessions, setAutoCreatedSessions] = useState<Array<{ id: string; title: string }>>(() => {
-    if (typeof window === "undefined") return [];
-    try { return JSON.parse(localStorage.getItem("rfq_auto_sessions") || "[]"); } catch { return []; }
-  });
+  const [autoCreatedSessions, setAutoCreatedSessions] = useState<Array<{ id: string; title: string }>>([]);
 
-  // Persist selected session and auto-created sessions
+  // Load persisted state from localStorage on mount (client-only)
+  const persistLoaded = useRef(false);
   useEffect(() => {
+    if (persistLoaded.current) return;
+    persistLoaded.current = true;
+    try {
+      const sess = localStorage.getItem("rfq_selected_session");
+      if (sess) setSelectedSessionId(sess);
+      const auto = localStorage.getItem("rfq_auto_sessions");
+      if (auto) setAutoCreatedSessions(JSON.parse(auto));
+    } catch {}
+  }, []);
+
+  // Persist to localStorage on change
+  useEffect(() => {
+    if (!persistLoaded.current) return;
     try {
       if (selectedSessionId) localStorage.setItem("rfq_selected_session", selectedSessionId);
       else localStorage.removeItem("rfq_selected_session");
     } catch {}
   }, [selectedSessionId]);
   useEffect(() => {
+    if (!persistLoaded.current) return;
     try { localStorage.setItem("rfq_auto_sessions", JSON.stringify(autoCreatedSessions)); } catch {}
   }, [autoCreatedSessions]);
 
