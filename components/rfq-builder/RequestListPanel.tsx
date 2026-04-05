@@ -35,12 +35,13 @@ interface RequestListPanelProps {
   selectedItemId: string | null;
   onSelectItem: (id: string, name?: string) => void;
   onItemRemoved?: (id: string) => void;
+  onRequestSession?: () => string; // returns new sessionId
   searchQuery?: string;
   sessionId?: string | null;
   locale: string;
 }
 
-export default function RequestListPanel({ selectedItemId, onSelectItem, onItemRemoved, searchQuery, sessionId, locale }: RequestListPanelProps) {
+export default function RequestListPanel({ selectedItemId, onSelectItem, onItemRemoved, onRequestSession, searchQuery, sessionId, locale }: RequestListPanelProps) {
   const isAr = locale === "ar";
   const [inputText, setInputText] = useState("");
   const [attachments, setAttachments] = useState<string[]>([]);
@@ -188,6 +189,8 @@ export default function RequestListPanel({ selectedItemId, onSelectItem, onItemR
     const text = name.trim();
     // AI mode: can search with just attachments (no text needed)
     if (!text && attachments.length === 0) return;
+    // Auto-create session if none exists
+    ensureSession();
     if (!text && attachments.length > 0 && searchMode === "ai") {
       // AI reads attachments only
       const newItem: RequestItem = {
@@ -227,14 +230,19 @@ export default function RequestListPanel({ selectedItemId, onSelectItem, onItemR
   };
 
   // Initialize items when session/query changes
+  const prevSessionRef = useRef<string | null | undefined>(undefined);
   useEffect(() => {
     if (searchQuery) {
       setItems([{ id: "new-search-1", name: searchQuery, quantity: 1, type: "SIMILAR", attachments: [] }]);
-    } else if (sessionId) {
-      setItems([]); // New session starts empty — user adds items
-    } else {
-      setItems([]);
+    } else if (sessionId && prevSessionRef.current !== undefined && prevSessionRef.current !== sessionId) {
+      // Skip clearing if this session was just auto-created by ensureSession()
+      if (autoCreatedRef.current) {
+        autoCreatedRef.current = false;
+      } else {
+        setItems([]);
+      }
     }
+    prevSessionRef.current = sessionId;
   }, [sessionId, searchQuery]);
 
   const deleteItem = (id: string) => {
@@ -243,18 +251,15 @@ export default function RequestListPanel({ selectedItemId, onSelectItem, onItemR
     track("rfq_item_deleted", { itemId: id });
   };
 
-  // No session selected — show empty state
-  if (!sessionId) {
-    return (
-      <div className="flex flex-col h-full min-h-0 border-e border-border bg-background">
-        <div className="flex-1 flex flex-col items-center justify-center text-muted-foreground p-4">
-          <FileText className="h-10 w-10 mb-2 opacity-15" />
-          <p className="text-xs font-medium">{isAr ? "اختر جلسة" : "Select a session"}</p>
-          <p className="text-[10px] opacity-60 mt-1 text-center">{isAr ? "اختر جلسة من القائمة أو أنشئ جلسة جديدة" : "Pick a session from the sidebar or create a new one"}</p>
-        </div>
-      </div>
-    );
-  }
+  // Auto-create session when user adds first item without a session
+  const autoCreatedRef = useRef(false);
+  const ensureSession = () => {
+    if (!sessionId && onRequestSession) {
+      autoCreatedRef.current = true;
+      return onRequestSession();
+    }
+    return sessionId;
+  };
 
   return (
     <div className="flex flex-col h-full min-h-0 border-e border-border bg-background">

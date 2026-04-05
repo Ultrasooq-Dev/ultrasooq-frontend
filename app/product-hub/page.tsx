@@ -23,11 +23,29 @@ export default function ProductHubPage() {
   const initialMode = urlMode === "search" ? "search" : "rfq";
   const searchQuery = searchParams?.get("q") ?? "";
 
-  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(null);
+  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(() => {
+    if (typeof window === "undefined") return null;
+    try { return localStorage.getItem("rfq_selected_session") || null; } catch { return null; }
+  });
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [selectedItemName, setSelectedItemName] = useState<string | null>(null);
   const [sessionsCollapsed, setSessionsCollapsed] = useState(false);
   const [cartCollapsed, setCartCollapsed] = useState(false);
+  const [autoCreatedSessions, setAutoCreatedSessions] = useState<Array<{ id: string; title: string }>>(() => {
+    if (typeof window === "undefined") return [];
+    try { return JSON.parse(localStorage.getItem("rfq_auto_sessions") || "[]"); } catch { return []; }
+  });
+
+  // Persist selected session and auto-created sessions
+  useEffect(() => {
+    try {
+      if (selectedSessionId) localStorage.setItem("rfq_selected_session", selectedSessionId);
+      else localStorage.removeItem("rfq_selected_session");
+    } catch {}
+  }, [selectedSessionId]);
+  useEffect(() => {
+    try { localStorage.setItem("rfq_auto_sessions", JSON.stringify(autoCreatedSessions)); } catch {}
+  }, [autoCreatedSessions]);
 
   // ── Step 1: Fetch real RFQ sessions ──
   const rfqSessionsQuery = useAllRfqQuotesByBuyerId(
@@ -96,6 +114,7 @@ export default function ProductHubPage() {
         newSearchQuery={searchQuery || undefined}
         rfqSessions={rfqSessions}
         rfqLoading={rfqSessionsQuery.isLoading}
+        externalSessions={autoCreatedSessions}
         onToggleCollapse={() => setSessionsCollapsed(!sessionsCollapsed)}
         onSelect={(id) => {
           setSelectedSessionId(id);
@@ -104,11 +123,12 @@ export default function ProductHubPage() {
           trackEvent("rfq_session_selected", { sessionId: id });
         }}
         onNewSession={() => {
-          setSelectedSessionId(null);
+          const newId = `new-rfq-${Date.now()}`;
+          setSelectedSessionId(newId);
           setSelectedItemId(null);
           setSelectedItemName(null);
           setNewSearchQuery(null);
-          trackEvent("rfq_new_session");
+          trackEvent("rfq_new_session", { sessionId: newId });
         }}
         onSessionRemoved={(id) => {
           if (id === selectedSessionId) {
@@ -123,7 +143,7 @@ export default function ProductHubPage() {
       />
 
       <RequestListPanel
-        selectedItemId={selectedSessionId ? selectedItemId : null}
+        selectedItemId={selectedItemId}
         onSelectItem={(id, name) => {
           setSelectedItemId(id);
           setSelectedItemName(name ?? null);
@@ -136,13 +156,20 @@ export default function ProductHubPage() {
           }
           trackEvent("rfq_item_removed", { itemId: id });
         }}
+        onRequestSession={() => {
+          const newId = `rfq-${Date.now()}`;
+          setSelectedSessionId(newId);
+          setAutoCreatedSessions((prev) => [...prev, { id: newId, title: "New RFQ" }]);
+          trackEvent("rfq_auto_session", { sessionId: newId });
+          return newId;
+        }}
         searchQuery={newSearchQuery ?? undefined}
         sessionId={selectedSessionId}
         locale={locale}
       />
 
       <ItemDetailPanel
-        selectedItemId={selectedSessionId ? selectedItemId : null}
+        selectedItemId={selectedItemId}
         searchTerm={selectedItemName ?? undefined}
         onAddToCart={(productId) => {
           trackEvent("rfq_add_to_cart", { productId });

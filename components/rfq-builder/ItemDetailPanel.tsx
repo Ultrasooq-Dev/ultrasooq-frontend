@@ -719,67 +719,7 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
         {/* ═══ PRODUCTS TAB — Vendor view: manage offerings per request ═══ */}
         {activeTab === "products" && (
           <div className="p-3 space-y-2">
-            {/* Vendor product offerings per requested item */}
-            {[
-              { name: searchTerm ?? "Product", offered: [
-                { id: "off-1", name: "Sony WH-1000XM5 (256GB)", price: 420, stock: 45, note: "" },
-              ]},
-            ].map((req, ri) => (
-              <div key={ri} className="rounded-lg border border-border overflow-hidden">
-                {/* Requested item header */}
-                <div className="flex items-center gap-2 px-3 py-2 bg-muted/30">
-                  <ShoppingCart className="h-3.5 w-3.5 text-primary shrink-0" />
-                  <span className="text-[10px] font-bold flex-1">{req.name}</span>
-                  <button type="button" className="text-[8px] text-primary font-semibold">+ {isAr ? "أضف منتج" : "Add from Store"}</button>
-                </div>
 
-                {/* Offered products */}
-                {req.offered.map((p) => (
-                  <div key={p.id} className="border-t border-border/50 px-3 py-2 space-y-1.5">
-                    <div className="flex items-center gap-2">
-                      <div className="h-7 w-7 rounded bg-muted flex items-center justify-center shrink-0">
-                        <ShoppingCart className="h-3 w-3 text-muted-foreground/30" />
-                      </div>
-                      <span className="text-[10px] font-semibold flex-1 truncate">{p.name}</span>
-                      <button type="button" className="text-[7px] text-destructive">
-                        {isAr ? "إزالة" : "Remove"}
-                      </button>
-                    </div>
-                    {/* Price + Stock + Note inline */}
-                    <div className="flex items-center gap-2">
-                      <div className="flex items-center gap-1">
-                        <span className="text-[8px] text-muted-foreground">{isAr ? "السعر" : "Price"}</span>
-                        <input type="number" defaultValue={p.price}
-                          className="w-14 h-5 text-[9px] font-bold text-green-600 text-end border border-border rounded px-1 bg-background outline-none focus:ring-1 focus:ring-green-500" />
-                        <span className="text-[7px] text-muted-foreground">OMR</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <span className="text-[8px] text-muted-foreground">{isAr ? "المخزون" : "Stock"}</span>
-                        <input type="number" defaultValue={p.stock}
-                          className="w-10 h-5 text-[9px] text-end border border-border rounded px-1 bg-background outline-none focus:ring-1 focus:ring-primary" />
-                      </div>
-                      <div className="flex-1">
-                        <input type="text" placeholder={isAr ? "ملاحظة..." : "Note..."}
-                          defaultValue={p.note}
-                          className="w-full h-5 text-[8px] border border-border rounded px-1.5 bg-background outline-none focus:ring-1 focus:ring-primary placeholder:text-muted-foreground" />
-                      </div>
-                    </div>
-                  </div>
-                ))}
-
-                {/* Add more from store */}
-                <button type="button" className="flex w-full items-center justify-center gap-1 py-1.5 border-t border-dashed border-border/50 text-[9px] text-muted-foreground hover:text-primary hover:bg-muted/30">
-                  + {isAr ? "أضف منتج آخر من متجرك" : "Add another product from your store"}
-                </button>
-              </div>
-            ))}
-
-            {/* Divider */}
-            <div className="flex items-center gap-2 py-1">
-              <div className="flex-1 h-px bg-border" />
-              <span className="text-[8px] text-muted-foreground">{isAr ? "أو ابحث عن منتجات" : "or search for products"}</span>
-              <div className="flex-1 h-px bg-border" />
-            </div>
 
             {/* Create RFQ + AI Suggest */}
             <div className="flex gap-2">

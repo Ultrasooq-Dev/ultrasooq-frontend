@@ -33,6 +33,7 @@ interface SessionPanelProps {
   newSearchQuery?: string;
   rfqSessions?: RfqSession[];
   rfqLoading?: boolean;
+  externalSessions?: Array<{ id: string; title: string }>;
   onToggleCollapse: () => void;
   onSelect: (id: string) => void;
   onNewSession: () => void;
@@ -40,9 +41,20 @@ interface SessionPanelProps {
   locale: string;
 }
 
-export default function SessionPanel({ selectedId, collapsed, initialMode = "rfq", newSearchQuery, rfqSessions = [], rfqLoading, onToggleCollapse, onSelect, onNewSession, onSessionRemoved, locale }: SessionPanelProps) {
+export default function SessionPanel({ selectedId, collapsed, initialMode = "rfq", newSearchQuery, rfqSessions = [], rfqLoading, externalSessions = [], onToggleCollapse, onSelect, onNewSession, onSessionRemoved, locale }: SessionPanelProps) {
   const isAr = locale === "ar";
-  const [searchSessions, setSearchSessions] = useState<Session[]>([]);
+  const [searchSessions, setSearchSessions] = useState<Session[]>(() => {
+    if (typeof window === "undefined") return [];
+    try {
+      const stored = localStorage.getItem("rfq_local_sessions");
+      return stored ? JSON.parse(stored) : [];
+    } catch { return []; }
+  });
+
+  // Persist local sessions to localStorage
+  React.useEffect(() => {
+    try { localStorage.setItem("rfq_local_sessions", JSON.stringify(searchSessions)); } catch {}
+  }, [searchSessions]);
   const [tab, setTab] = useState<"rfq" | "search">(initialMode);
   const searchCreated = React.useRef(false);
 
@@ -65,9 +77,14 @@ export default function SessionPanel({ selectedId, collapsed, initialMode = "rfq
   }, [newSearchQuery]);
 
   // Combine real RFQ sessions + local search sessions
+  // Merge: real RFQ sessions + local search sessions + auto-created sessions from Panel 2
+  const externalAsSessions: Session[] = externalSessions
+    .filter((e) => !searchSessions.some((s) => s.id === e.id) && !rfqSessions.some((s) => String(s.id) === e.id))
+    .map((e) => ({ id: e.id, title: e.title, itemCount: 0, date: isAr ? "الآن" : "Now", status: "draft" as const, type: "rfq" as const }));
   const allSessions: Session[] = [
     ...rfqSessions.map((s) => ({ ...s, status: s.status as Session["status"] })),
     ...searchSessions,
+    ...externalAsSessions,
   ];
   const [menuOpenId, setMenuOpenId] = useState<string | null>(null);
   const [showArchived, setShowArchived] = useState(false);
@@ -76,8 +93,16 @@ export default function SessionPanel({ selectedId, collapsed, initialMode = "rfq
   const statusDot: Record<string, string> = { draft: "bg-amber-500", submitted: "bg-blue-500", quoted: "bg-green-500" };
   const statusLabel: Record<string, string> = { draft: isAr ? "مسودة" : "Draft", submitted: isAr ? "مرسل" : "Sent", quoted: isAr ? "تم" : "Quoted" };
 
-  const filtered = allSessions.filter((s) => s.type === tab && !s.archived);
-  const archived = allSessions.filter((s) => s.type === tab && s.archived);
+  const [hiddenIds, setHiddenIds] = useState<Set<string>>(() => {
+    if (typeof window === "undefined") return new Set();
+    try {
+      const stored = localStorage.getItem("rfq_hidden_sessions");
+      return new Set(stored ? JSON.parse(stored) : []);
+    } catch { return new Set(); }
+  });
+
+  const filtered = allSessions.filter((s) => s.type === tab && !s.archived && !hiddenIds.has(s.id));
+  const archived = allSessions.filter((s) => s.type === tab && (s.archived || hiddenIds.has(s.id)));
 
   const toggleFav = (id: string) => {
     setSearchSessions((p) => p.map((s) => s.id === id ? { ...s, favorite: !s.favorite } : s));
@@ -89,9 +114,19 @@ export default function SessionPanel({ selectedId, collapsed, initialMode = "rfq
     onSessionRemoved?.(id);
   };
   const deleteSession = (id: string) => {
-    setSearchSessions((p) => p.filter((s) => s.id !== id));
+    // Soft delete: hide the session (works for ALL session sources)
+    setHiddenIds((prev) => {
+      const next = new Set(prev);
+      next.add(id);
+      try { localStorage.setItem("rfq_hidden_sessions", JSON.stringify([...next])); } catch {}
+      return next;
+    });
+    // Also archive in local sessions if it exists there
+    setSearchSessions((p) => p.map((s) => s.id === id ? { ...s, archived: true } : s));
     setMenuOpenId(null);
-    onSessionRemoved?.(id);
+    if (id === selectedId) {
+      onSessionRemoved?.(id);
+    }
   };
 
   // Sort: favorites first, then by date
