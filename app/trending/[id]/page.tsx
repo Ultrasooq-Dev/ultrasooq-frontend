@@ -52,6 +52,7 @@ import { Button } from "@/components/ui/button";
 import { IoCloseSharp } from "react-icons/io5";
 import dynamic from "next/dynamic";
 import RelatedServices from "@/components/modules/trending/RelatedServices";
+import { ProductRecommendations } from "@/components/modules/recommendations/ProductRecommendations";
 
 const ProductChat = dynamic(
   () => import("@/components/modules/chat/productChat/ProductChat"),
@@ -1377,6 +1378,11 @@ const ProductDetailsPage = () => {
           calculateTagIds={calculateTagIds}
           productId={searchParams?.id as string}
         />
+
+        {/* Recommendation Carousels */}
+        {searchParams?.id && (
+          <ProductRecommendations productId={Number(searchParams?.id)} />
+        )}
       </div>
 
       <Footer />
