@@ -157,7 +157,7 @@ export const fetchAllWalletTransactions = (payload: {
 }) => {
   return axios({
     method: "GET",
-    url: urlcat(`${getApiUrl()}/admin/transactions`, payload),
+    url: urlcat(`${getApiUrl()}/admin/wallets/transactions`, payload),
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",

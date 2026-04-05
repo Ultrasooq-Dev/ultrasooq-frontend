@@ -331,3 +331,108 @@ export const addOrderTracking = (payload: {
     },
   });
 };
+
+// ================================================================
+// DELIVERY MANAGEMENT API REQUESTS
+// ================================================================
+
+export const confirmReceipt = (payload: { orderProductId: number }) => {
+  return axios({
+    method: "POST",
+    url: `${getApiUrl()}/order/buyer/confirm-receipt`,
+    data: payload,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
+    },
+  });
+};
+
+export const fetchDeliveryTimeline = (payload: { orderProductId: number }) => {
+  return axios({
+    method: "GET",
+    url: urlcat(`${getApiUrl()}/order/delivery-timeline`, payload),
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
+    },
+  });
+};
+
+export const uploadDeliveryProof = (payload: {
+  orderProductId: number;
+  proofUrl: string;
+}) => {
+  return axios({
+    method: "POST",
+    url: `${getApiUrl()}/order/vendor/upload-delivery-proof`,
+    data: payload,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
+    },
+  });
+};
+
+export const fetchPickupCode = (payload: { orderProductId: number }) => {
+  return axios({
+    method: "GET",
+    url: urlcat(`${getApiUrl()}/order/pickup-code`, payload),
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
+    },
+  });
+};
+
+export const confirmPickup = (payload: {
+  orderProductId: number;
+  code: string;
+}) => {
+  return axios({
+    method: "POST",
+    url: `${getApiUrl()}/order/vendor/confirm-pickup`,
+    data: payload,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
+    },
+  });
+};
+
+export const fetchPendingPickups = (payload: {
+  page: number;
+  limit: number;
+}) => {
+  return axios({
+    method: "GET",
+    url: urlcat(`${getApiUrl()}/order/vendor/pending-pickups`, payload),
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
+    },
+  });
+};
+
+export const setPickupWindow = (payload: {
+  orderProductId: number;
+  pickupWindowStart: string;
+  pickupWindowEnd: string;
+}) => {
+  return axios({
+    method: "PATCH",
+    url: `${getApiUrl()}/order/vendor/set-pickup-window`,
+    data: payload,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
+    },
+  });
+};

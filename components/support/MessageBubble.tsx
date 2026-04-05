@@ -231,7 +231,7 @@ export default function MessageBubble({
         )}
 
         {/* Feedback buttons (only on bot messages) */}
-        {isBot && (message.contentType as string) !== "status" && message.contentType !== "menu" && (
+        {isBot && message.contentType !== "menu" && (
           <div className="flex items-center gap-1.5 pt-0.5">
             <button
               type="button"

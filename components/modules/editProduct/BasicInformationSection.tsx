@@ -39,6 +39,10 @@ const customStyles = {
     ...base,
     zIndex: 20,
   }),
+  menuPortal: (base: any) => ({
+    ...base,
+    zIndex: 9999,
+  }),
 };
 
 type ProductImageProps = {
@@ -294,6 +298,8 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
                               )}
                               styles={customStyles}
                               instanceId="productCondition"
+                              menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                              menuPosition="fixed"
                             />
                           )}
                         />

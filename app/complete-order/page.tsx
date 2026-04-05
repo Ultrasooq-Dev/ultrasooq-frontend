@@ -42,9 +42,7 @@ import LoaderWithMessage from "@/components/shared/LoaderWithMessage";
 import { useWalletBalance } from "@/apis/queries/wallet.queries";
 
 // Load Stripe with your public key
-const stripePromise = loadStripe(
-  "pk_test_51QuptGPQ2VnoEyMPay2u4FyltporIQfMh9hWcp2EEresPjx07AuT4lFLuvnNrvO7ksqtaepmRQHfYs4FLia8lIV500i83tXYMR",
-);
+const stripePromise = process.env.NEXT_PUBLIC_STRIPE_KEY ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY) : null;
 
 const CompleteOrderPage = () => {
   const t = useTranslations();
@@ -66,8 +64,9 @@ const CompleteOrderPage = () => {
   const [advanceAmount, setAdvanceAmount] = useState(0);
   const [isRedirectingToPaymob, setIsRedirectingToPaymob] = useState<boolean>(false);
   const [paymentLink, setPaymentLink] = useState<string>();
-  const [emiPeriod, setEmiPeriod] = useState<number>(6);
-  const [emiAmount, setEmiAmount] = useState<number>(0);
+  // EMI disabled — backend fixes pending (hardcoded amount, cron disabled)
+  // const [emiPeriod, setEmiPeriod] = useState<number>(6);
+  // const [emiAmount, setEmiAmount] = useState<number>(0);
 
   // Load AmwalPay Smartbox script
   useEffect(() => {
@@ -250,6 +249,8 @@ const CompleteOrderPage = () => {
         }
       }
     } else {
+      // Guest checkout is disabled - redirect to login
+      router.push("/login?redirect=/checkout");
     }
   };
 
@@ -457,44 +458,43 @@ const CompleteOrderPage = () => {
     orderStore.setTotal(0);
   };
 
-  const handleCreateEmiPayment = async (orderId: number) => {
-    const data: { [key: string]: any } = {
-      amount: emiAmount * 1000,
-      billing_data: {
-        first_name: orderStore.orders.firstName,
-        last_name: orderStore.orders.lastName,
-        email: orderStore.orders.email,
-        phone_number: orderStore.orders.phone,
-        apartment: orderStore.orders.billingAddress,
-        building: 'NA',
-        street: 'NA',
-        floor: 'NA',
-        city: orderStore.orders.billingCity,
-        state: orderStore.orders.billingProvince,
-        country: orderStore.orders.billingCountry,
-      },
-      extras: {
-        orderId: orderId,
-        paymentType: paymentType,
-      },
-      special_reference: referenceOrderId(orderId)
-    };
-
-    const response = await createEMIPayment.mutateAsync(data);
-
-    if (response?.status) {
-      setIsRedirectingToPaymob(true);
-      window.location.assign(
-        `${process.env.NEXT_PUBLIC_PAYMOB_PAYMENT_URL}?publicKey=${process.env.NEXT_PUBLIC_PAYMOB_PUBLIC_KEY}&clientSecret=${(response.data as any).client_secret}`,
-      );
-    } else {
-      toast({
-        title: t("something_went_wrong"),
-        description: response.message,
-        variant: "danger",
-      });
-    }
-  };
+  // EMI disabled — backend fixes pending (hardcoded amount, cron disabled)
+  // const handleCreateEmiPayment = async (orderId: number) => {
+  //   const data: { [key: string]: any } = {
+  //     amount: emiAmount * 1000,
+  //     billing_data: {
+  //       first_name: orderStore.orders.firstName,
+  //       last_name: orderStore.orders.lastName,
+  //       email: orderStore.orders.email,
+  //       phone_number: orderStore.orders.phone,
+  //       apartment: orderStore.orders.billingAddress,
+  //       building: 'NA',
+  //       street: 'NA',
+  //       floor: 'NA',
+  //       city: orderStore.orders.billingCity,
+  //       state: orderStore.orders.billingProvince,
+  //       country: orderStore.orders.billingCountry,
+  //     },
+  //     extras: {
+  //       orderId: orderId,
+  //       paymentType: paymentType,
+  //     },
+  //     special_reference: referenceOrderId(orderId)
+  //   };
+  //   const response = await createEMIPayment.mutateAsync(data);
+  //   if (response?.status) {
+  //     setIsRedirectingToPaymob(true);
+  //     window.location.assign(
+  //       `${process.env.NEXT_PUBLIC_PAYMOB_PAYMENT_URL}?publicKey=${process.env.NEXT_PUBLIC_PAYMOB_PUBLIC_KEY}&clientSecret=${(response.data as any).client_secret}`,
+  //     );
+  //   } else {
+  //     toast({
+  //       title: t("something_went_wrong"),
+  //       description: response.message,
+  //       variant: "danger",
+  //     });
+  //   }
+  // };
 
   return (
     <div className="min-h-screen bg-muted">
@@ -799,6 +799,7 @@ const CompleteOrderPage = () => {
                     </div>
                   )}
                   
+                  {/* EMI disabled — backend fixes pending (hardcoded amount, cron disabled)
                   {paymentType == "EMI" && (
                     <div className="bg-primary/5 border border-primary/20 rounded-lg p-3">
                       <div className="flex justify-between items-center">
@@ -811,6 +812,7 @@ const CompleteOrderPage = () => {
                       </div>
                     </div>
                   )}
+                  */}
                 </div>
                 
                 <div className="px-6 pb-6">

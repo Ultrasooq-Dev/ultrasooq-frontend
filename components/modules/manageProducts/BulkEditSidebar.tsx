@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { SELL_TYPE_LIST, CONSUMER_TYPE_LIST, PRODUCT_CONDITION_LIST, ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import { getCookie } from "cookies-next";
-import ReactSelect, { MultiValue } from "react-select";
+import ReactSelect, { MultiValue, GroupBase } from "react-select";
 import { IOption } from "@/utils/types/common.types";
 import {
   useCountries,
@@ -659,6 +659,26 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
       backgroundColor: state.isSelected ? "#3b82f6" : state.isFocused ? "#f3f4f6" : "white",
       color: state.isSelected ? "white" : "#374151",
     }),
+    menuPortal: (base: any) => ({
+      ...base,
+      zIndex: 9999,
+    }),
+    groupHeading: (base: any) => ({
+      ...base,
+      fontSize: "10px",
+      fontWeight: 700,
+      color: "#6b7280",
+      textTransform: "uppercase" as const,
+      letterSpacing: "0.05em",
+      padding: "4px 8px 2px",
+      backgroundColor: "#f9fafb",
+      borderBottom: "1px solid #e5e7eb",
+    }),
+    group: (base: any) => ({
+      ...base,
+      paddingTop: 0,
+      paddingBottom: 0,
+    }),
   };
 
   // Fetch states when countries are selected
@@ -725,6 +745,26 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
       setSelectedCities([]);
     }
   }, [selectedStates]);
+
+  // Build grouped state options: states grouped by their parent country name
+  const groupedStateOptions = useMemo<GroupBase<IOption>[]>(() => {
+    return selectedCountries
+      .map((country) => ({
+        label: country.label,
+        options: statesByCountry[country.value] || [],
+      }))
+      .filter((group) => group.options.length > 0);
+  }, [selectedCountries, statesByCountry]);
+
+  // Build grouped city options: cities grouped by their parent state name
+  const groupedCityOptions = useMemo<GroupBase<IOption>[]>(() => {
+    return selectedStates
+      .map((state) => ({
+        label: state.label,
+        options: citiesByState[state.value] || [],
+      }))
+      .filter((group) => group.options.length > 0);
+  }, [selectedStates, citiesByState]);
 
   // Synchronize form values with local state on mount
   useEffect(() => {
@@ -947,6 +987,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                       styles={customStyles}
                       instanceId="sellCountryIds"
                       placeholder={t("select")}
+                      menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                      menuPosition="fixed"
                       onBlur={field.onBlur}
                       name={field.name}
                       ref={field.ref}
@@ -983,14 +1025,13 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                         setSelectedCities(updatedCities);
                         form.setValue("sellCityIds", updatedCities);
                       }}
-                      options={selectedCountries.length > 0 
-                        ? selectedCountries.flatMap((country) => statesByCountry[country.value] || [])
-                        : []
-                      }
+                      options={selectedCountries.length > 0 ? groupedStateOptions : []}
                       value={selectedStates}
                       styles={customStyles}
                       instanceId="sellStateIds"
                       placeholder={selectedCountries.length > 0 ? t("select") : "Select countries first"}
+                      menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                      menuPosition="fixed"
                       onBlur={field.onBlur}
                       name={field.name}
                       ref={field.ref}
@@ -1016,14 +1057,13 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                         field.onChange(newCities);
                         setSelectedCities([...newCities]);
                       }}
-                      options={selectedStates.length > 0 
-                        ? selectedStates.flatMap((state) => citiesByState[state.value] || [])
-                        : []
-                      }
+                      options={selectedStates.length > 0 ? groupedCityOptions : []}
                       value={selectedCities}
                       styles={customStyles}
                       instanceId="sellCityIds"
                       placeholder={selectedStates.length > 0 ? t("select") : "Select states first"}
+                      menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                      menuPosition="fixed"
                       onBlur={field.onBlur}
                       name={field.name}
                       ref={field.ref}
@@ -1053,6 +1093,8 @@ const BulkEditSidebar: React.FC<BulkEditSidebarProps> = ({
                       styles={customStyles}
                       instanceId="placeOfOriginId"
                       placeholder={memoizedAllCountries.length > 0 ? t("select") : "Loading countries..."}
+                      menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                      menuPosition="fixed"
                       onBlur={field.onBlur}
                       name={field.name}
                       ref={field.ref}

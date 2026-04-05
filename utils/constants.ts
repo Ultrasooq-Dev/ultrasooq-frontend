@@ -263,6 +263,7 @@ export const DELIVERY_STATUS: { [key: string]: string } = {
   SHIPPED: "order_shipped",
   OFD: "order_out_for_delivery",
   DELIVERED: "order_delivered",
+  RECEIVED: "order_received",
   CANCELLED: "order_cancelled",
 };
 
@@ -271,6 +272,7 @@ export const SELLER_DELIVERY_STATUS: { [key: string]: string } = {
   SHIPPED: "order_shipped",
   OFD: "order_out_for_delivery",
   DELIVERED: "order_delivered",
+  RECEIVED: "order_received",
   CANCELLED: "order_cancelled",
 };
 
@@ -292,9 +294,23 @@ export const STATUS_LIST: { label: string; value: string }[] = [
     value: "DELIVERED",
   },
   {
+    label: "status_received",
+    value: "RECEIVED",
+  },
+  {
     label: "status_cancelled",
     value: "CANCELLED",
   },
+];
+
+export const CARRIER_OPTIONS: { label: string; value: string }[] = [
+  { label: "Aramex", value: "aramex" },
+  { label: "DHL", value: "dhl" },
+  { label: "FedEx", value: "fedex" },
+  { label: "UPS", value: "ups" },
+  { label: "SMSA Express", value: "smsa" },
+  { label: "Zajil", value: "zajil" },
+  { label: "Other", value: "other" },
 ];
 
 export const formattedDate = (formatDate: string | undefined, locale?: string) =>

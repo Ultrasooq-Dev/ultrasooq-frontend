@@ -20,8 +20,10 @@ import {
   RotateCcw,
   Copy,
 } from "lucide-react";
-import { useOrderById } from "@/apis/queries/orders.queries";
+import { useOrderById, useConfirmReceipt, usePickupCode } from "@/apis/queries/orders.queries";
 import { useParams } from "next/navigation";
+import ConfirmReceiptButton from "@/components/modules/delivery/ConfirmReceiptButton";
+import PickupCodeDisplay from "@/components/modules/delivery/PickupCodeDisplay";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -82,6 +84,13 @@ const MyOrderDetailsPage = () => {
   const otherOrderDetails =
     orderByIdQuery.data?.otherData?.[0]?.order_orderProducts;
 
+  const shippingType = orderDetails?.orderShippingDetail?.orderShippingType;
+  const confirmReceiptMutation = useConfirmReceipt();
+  const pickupCodeQuery = usePickupCode(
+    Number(searchParams?.id) || 0,
+    shippingType === "PICKUP" && ["CONFIRMED", "SHIPPED", "OFD", "DELIVERED"].includes(orderDetails?.orderProductStatus || ""),
+  );
+
   // Helper functions for status display
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -94,6 +103,8 @@ const MyOrderDetailsPage = () => {
       case "OFD":
         return <Truck className="h-4 w-4" />;
       case "DELIVERED":
+        return <CheckCircle className="h-4 w-4" />;
+      case "RECEIVED":
         return <CheckCircle className="h-4 w-4" />;
       case "CANCELLED":
         return <XCircle className="h-4 w-4" />;
@@ -114,6 +125,8 @@ const MyOrderDetailsPage = () => {
         return "bg-warning/10 text-warning";
       case "DELIVERED":
         return "bg-success/10 text-success";
+      case "RECEIVED":
+        return "bg-emerald-100 text-emerald-800";
       case "CANCELLED":
         return "bg-destructive/10 text-destructive";
       default:
@@ -287,8 +300,17 @@ const MyOrderDetailsPage = () => {
                       className="w-full justify-start"
                       variant="outline"
                       size="lg"
+                      onClick={() => {
+                        const apiUrl = typeof window !== 'undefined'
+                          ? `http://${window.location.hostname}:3000/api/v1`
+                          : '';
+                        window.open(
+                          `${apiUrl}/order/invoice?orderProductId=${searchParams?.id}`,
+                          '_blank',
+                        );
+                      }}
                     >
-                      <Download className="mr-2 h-4 w-4" />
+                      <Download className="me-2 h-4 w-4" />
                       {t("download_invoice")}
                     </Button>
                     {orderDetails?.orderShippingDetail?.receipt && (
@@ -663,6 +685,20 @@ const MyOrderDetailsPage = () => {
                             </div>
                           </div>
                         </div>
+                        {/* Track Package external link */}
+                        {(orderDetails?.orderShippingDetail as any)?.carrierTrackingUrl && (
+                          <div className="mt-3">
+                            <a
+                              href={(orderDetails?.orderShippingDetail as any)?.carrierTrackingUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+                            >
+                              <Truck className="h-4 w-4" />
+                              {t("track_package")}
+                            </a>
+                          </div>
+                        )}
                         {tracking?.notes ? (
                           <div className="mt-3 text-sm">
                             <div className="text-muted-foreground">{t("notes")}</div>
@@ -885,8 +921,80 @@ const MyOrderDetailsPage = () => {
                             )}
                         </div>
                       </div>
+
+                      {/* Received (6th step — buyer confirms receipt) */}
+                      {orderDetails?.orderProductStatus !== "CANCELLED" && (
+                        <div className="relative flex items-start gap-6">
+                          <div
+                            className={cn(
+                              "relative z-10 flex h-12 w-12 items-center justify-center rounded-full shadow-md",
+                              orderDetails?.orderProductStatus === "RECEIVED"
+                                ? "bg-emerald-100"
+                                : "bg-muted",
+                            )}
+                          >
+                            {orderDetails?.orderProductStatus === "RECEIVED" ? (
+                              <CheckCircle className="h-6 w-6 text-emerald-600" />
+                            ) : (
+                              <Clock className="h-6 w-6 text-muted-foreground" />
+                            )}
+                          </div>
+                          <div className="flex-1 pt-1">
+                            <h4 className="mb-1 font-semibold text-foreground">
+                              {t("status_received")}
+                            </h4>
+                            <p className="text-sm text-muted-foreground">
+                              {orderDetails?.orderProductStatus === "RECEIVED"
+                                ? formatDate(orderDetails?.updatedAt ?? "")
+                                : t("pending")}
+                            </p>
+                            {/* Confirm Receipt Button for buyer when DELIVERED */}
+                            {orderDetails?.orderProductStatus === "DELIVERED" && (
+                              <div className="mt-3 max-w-xs">
+                                <ConfirmReceiptButton
+                                  orderProductId={Number(searchParams?.id)}
+                                  autoConfirmAt={(orderDetails?.orderShippingDetail as any)?.autoConfirmAt}
+                                  onConfirm={async () => {
+                                    await confirmReceiptMutation.mutateAsync({
+                                      orderProductId: Number(searchParams?.id),
+                                    });
+                                    orderByIdQuery.refetch();
+                                  }}
+                                  isLoading={confirmReceiptMutation.isPending}
+                                />
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
+
+                  {/* Pickup Code Display — for PICKUP orders */}
+                  {shippingType === "PICKUP" && pickupCodeQuery.data?.data && (
+                    <div className="mt-6">
+                      <PickupCodeDisplay
+                        code={pickupCodeQuery.data.data.code}
+                        status={pickupCodeQuery.data.data.status}
+                        qrPayload={pickupCodeQuery.data.data.qrPayload}
+                        pickupWindowStart={pickupCodeQuery.data.data.pickupWindowStart}
+                        pickupWindowEnd={pickupCodeQuery.data.data.pickupWindowEnd}
+                        expiresAt={pickupCodeQuery.data.data.expiresAt}
+                      />
+                    </div>
+                  )}
+
+                  {/* Delivery Proof Image — if seller uploaded */}
+                  {(orderDetails?.orderShippingDetail as any)?.proofOfDeliveryUrl && (
+                    <div className="mt-6 rounded-lg border p-4">
+                      <h4 className="mb-2 text-sm font-semibold">{t("proof_of_delivery")}</h4>
+                      <img
+                        src={(orderDetails?.orderShippingDetail as any)?.proofOfDeliveryUrl}
+                        alt="Delivery proof"
+                        className="max-h-48 rounded-md object-cover"
+                      />
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             )}

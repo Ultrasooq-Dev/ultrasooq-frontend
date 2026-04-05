@@ -38,6 +38,10 @@ const customStyles = {
     maxHeight: 200,
     overflowY: "auto",
   }),
+  menuPortal: (base: any) => ({
+    ...base,
+    zIndex: 9999,
+  }),
 };
 
 interface Step3Props {
@@ -129,6 +133,8 @@ const Step3VendorDetails: React.FC<Step3Props> = ({ activeProductType }) => {
                   styles={customStyles}
                   instanceId="productCondition"
                   placeholder={t("select")}
+                  menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                  menuPosition="fixed"
                 />
               )}
             />

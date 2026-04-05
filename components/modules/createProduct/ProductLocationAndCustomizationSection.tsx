@@ -7,7 +7,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Controller, useFormContext } from "react-hook-form";
-import ReactSelect, { MultiValue } from "react-select";
+import ReactSelect, { MultiValue, GroupBase } from "react-select";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import {
@@ -42,6 +42,26 @@ const customStyles = {
   menu: (base: any) => ({
     ...base,
     zIndex: 20,
+  }),
+  menuPortal: (base: any) => ({
+    ...base,
+    zIndex: 9999,
+  }),
+  groupHeading: (base: any) => ({
+    ...base,
+    fontSize: "11px",
+    fontWeight: 700,
+    color: "#6b7280",
+    textTransform: "uppercase" as const,
+    letterSpacing: "0.05em",
+    padding: "6px 12px 4px",
+    backgroundColor: "#f9fafb",
+    borderBottom: "1px solid #e5e7eb",
+  }),
+  group: (base: any) => ({
+    ...base,
+    paddingTop: 0,
+    paddingBottom: 0,
   }),
 };
 
@@ -107,6 +127,26 @@ const ProductLocationAndCustomizationSection: React.FC<
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [countriesNewQuery?.data?.data?.length]);
+
+  // Build grouped state options: states grouped by their parent country name
+  const groupedStateOptions = useMemo<GroupBase<OptionType>[]>(() => {
+    return selectedCountries
+      .map((country) => ({
+        label: country.label,
+        options: statesByCountry[country.value] || [],
+      }))
+      .filter((group) => group.options.length > 0);
+  }, [selectedCountries, statesByCountry]);
+
+  // Build grouped city options: cities grouped by their parent state name
+  const groupedCityOptions = useMemo<GroupBase<OptionType>[]>(() => {
+    return selectedStates
+      .map((state) => ({
+        label: state.label,
+        options: citiesByState[state.value] || [],
+      }))
+      .filter((group) => group.options.length > 0);
+  }, [selectedStates, citiesByState]);
 
   // Fetch States When Country is Selected
   useEffect(() => {
@@ -498,6 +538,8 @@ const ProductLocationAndCustomizationSection: React.FC<
                     styles={customStyles}
                     instanceId="productCountryId"
                     placeholder={t("select")}
+                    menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                    menuPosition="fixed"
                   />
                 )}
               />
@@ -532,6 +574,8 @@ const ProductLocationAndCustomizationSection: React.FC<
                         styles={customStyles}
                         instanceId="productStateId"
                         placeholder={t("select")}
+                        menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                        menuPosition="fixed"
                       />
                     )}
                   />
@@ -567,6 +611,8 @@ const ProductLocationAndCustomizationSection: React.FC<
                         styles={customStyles}
                         instanceId="productCityId"
                         placeholder={t("select")}
+                        menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                        menuPosition="fixed"
                       />
                     )}
                   />
@@ -662,6 +708,8 @@ const ProductLocationAndCustomizationSection: React.FC<
                 styles={customStyles}
                 instanceId="sellCountryIds"
                 placeholder={t("select")}
+                menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                menuPosition="fixed"
               />
             )}
           />
@@ -695,13 +743,13 @@ const ProductLocationAndCustomizationSection: React.FC<
                     setSelectedCities(updatedCities);
                     formContext.setValue("sellCityIds", updatedCities);
                   }}
-                  options={selectedCountries.flatMap(
-                    (country) => statesByCountry[country.value] || [],
-                  )}
+                  options={groupedStateOptions}
                   value={selectedStates}
                   styles={customStyles}
                   instanceId="sellStateIds"
                   placeholder={t("select")}
+                  menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                  menuPosition="fixed"
                 />
               )}
             />
@@ -725,12 +773,12 @@ const ProductLocationAndCustomizationSection: React.FC<
                     field.onChange(newValues);
                     setSelectedCities([...newValues]);
                   }}
-                  options={selectedStates.flatMap(
-                    (state) => citiesByState[state.value] || [],
-                  )}
+                  options={groupedCityOptions}
                   value={selectedCities}
                   styles={customStyles}
                   instanceId="sellCityIds"
+                  menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                  menuPosition="fixed"
                 />
               )}
             />
@@ -758,6 +806,8 @@ const ProductLocationAndCustomizationSection: React.FC<
                 styles={customStyles}
                 instanceId="placeOfOriginId"
                 placeholder={t("select")}
+                menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                menuPosition="fixed"
               />
             )}
           />

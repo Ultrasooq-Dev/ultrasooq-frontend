@@ -27,6 +27,12 @@ import { useTranslations } from "next-intl";
 import { useAuth } from "@/context/AuthContext";
 import { convertDate, convertTime } from "@/utils/helper";
 import AddReceipt from "@/components/modules/sellerOrderDetails/AddReceipt";
+import DeliveryProofUpload from "@/components/modules/delivery/DeliveryProofUpload";
+import PickupVerification from "@/components/modules/delivery/PickupVerification";
+import PickupWindowPicker from "@/components/modules/delivery/PickupWindowPicker";
+import { useConfirmPickup, useUploadDeliveryProof, useSetPickupWindow, useAddOrderTracking } from "@/apis/queries/orders.queries";
+import { CARRIER_OPTIONS } from "@/utils/constants";
+import { useToast } from "@/components/ui/use-toast";
 
 const MyOrderDetailsPage = ({ }) => {
   const t = useTranslations();
@@ -42,6 +48,13 @@ const MyOrderDetailsPage = ({ }) => {
   const [isAddReceiptModalOpen, setIsAddReceiptModalOpen] = useState(false);
   const handleToggleAddReceiptModal = () =>
     setIsAddReceiptModalOpen(!isAddReceiptModalOpen);
+
+  // Tracking form state
+  const [trackingNumber, setTrackingNumber] = useState("");
+  const [selectedCarrier, setSelectedCarrier] = useState("");
+  const [trackingNotes, setTrackingNotes] = useState("");
+  const addTrackingMutation = useAddOrderTracking();
+  const { toast } = useToast();
 
   const orderByIdQuery = useOrderBySellerId(
     {
@@ -157,6 +170,15 @@ const MyOrderDetailsPage = ({ }) => {
                                 className="downloadInvoice-btn theme-primary-btn"
                                 dir={langDir}
                                 translate="no"
+                                onClick={() => {
+                                  const apiUrl = typeof window !== 'undefined'
+                                    ? `http://${window.location.hostname}:3000/api/v1`
+                                    : '';
+                                  window.open(
+                                    `${apiUrl}/order/invoice?orderProductId=${searchParams?.id}`,
+                                    '_blank',
+                                  );
+                                }}
                               >
                                 <LiaFileInvoiceSolid /> {t("download_invoice")}
                               </Button>
@@ -245,6 +267,177 @@ const MyOrderDetailsPage = ({ }) => {
                     </div>
                   </div>
                 ) : null}
+
+                {/* Shipment Tracking Form — for THIRDPARTY and SELLERDROP orders */}
+                {orderDetails?.orderShippingDetail &&
+                  ["THIRDPARTY", "SELLERDROP"].includes(orderDetails?.orderShippingDetail?.orderShippingType || "") &&
+                  ["CONFIRMED", "SHIPPED", "OFD"].includes(orderDetails?.orderProductStatus || "") && (
+                  <div className="my-order-item">
+                    <div className="my-order-card">
+                      <h3 className="mb-3 font-bold" dir={langDir} translate="no">
+                        {t("tracking_added") || "Add Tracking Information"}
+                      </h3>
+                      {/* Show existing tracking info if already added */}
+                      {orderDetails?.breakdown?.tracking?.trackingNumber ? (
+                        <div className="mb-3 rounded border bg-muted/30 p-3 text-sm">
+                          <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+                            <div>
+                              <span className="font-semibold">{t("tracking_number")}:</span>{" "}
+                              {orderDetails.breakdown.tracking.trackingNumber}
+                            </div>
+                            <div>
+                              <span className="font-semibold">{t("carrier")}:</span>{" "}
+                              {orderDetails.breakdown.tracking.carrier || "-"}
+                            </div>
+                            <div>
+                              <span className="font-semibold">{t("added")}:</span>{" "}
+                              {orderDetails.breakdown.tracking.addedAt
+                                ? formattedDate(orderDetails.breakdown.tracking.addedAt, selectedLocale)
+                                : "-"}
+                            </div>
+                          </div>
+                          {(orderDetails?.orderShippingDetail as any)?.carrierTrackingUrl && (
+                            <a
+                              href={(orderDetails?.orderShippingDetail as any)?.carrierTrackingUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="mt-2 inline-block text-sm font-medium text-primary underline"
+                            >
+                              {t("track_package")} →
+                            </a>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="space-y-3">
+                          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                            <div>
+                              <label className="mb-1 block text-xs font-medium">{t("tracking_number")}</label>
+                              <input
+                                type="text"
+                                value={trackingNumber}
+                                onChange={(e) => setTrackingNumber(e.target.value)}
+                                placeholder="e.g. 1Z999AA10123456784"
+                                className="w-full rounded border px-3 py-2 text-sm"
+                                dir="ltr"
+                              />
+                            </div>
+                            <div>
+                              <label className="mb-1 block text-xs font-medium">{t("carrier")}</label>
+                              <select
+                                value={selectedCarrier}
+                                onChange={(e) => setSelectedCarrier(e.target.value)}
+                                className="w-full rounded border px-3 py-2 text-sm"
+                              >
+                                <option value="">{t("select")}...</option>
+                                {CARRIER_OPTIONS.map((c) => (
+                                  <option key={c.value} value={c.value}>
+                                    {c.label}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+                          </div>
+                          <div>
+                            <label className="mb-1 block text-xs font-medium">{t("notes")}</label>
+                            <input
+                              type="text"
+                              value={trackingNotes}
+                              onChange={(e) => setTrackingNotes(e.target.value)}
+                              placeholder={t("notes")}
+                              className="w-full rounded border px-3 py-2 text-sm"
+                            />
+                          </div>
+                          <Button
+                            className="theme-primary-btn"
+                            disabled={!trackingNumber.trim() || !selectedCarrier || addTrackingMutation.isPending}
+                            onClick={async () => {
+                              try {
+                                const res = await addTrackingMutation.mutateAsync({
+                                  orderProductId: Number(searchParams?.id),
+                                  trackingNumber: trackingNumber.trim(),
+                                  carrier: selectedCarrier,
+                                  notes: trackingNotes.trim(),
+                                });
+                                if (res?.status) {
+                                  toast({ title: t("tracking_added"), variant: "success" });
+                                  setTrackingNumber("");
+                                  setSelectedCarrier("");
+                                  setTrackingNotes("");
+                                  orderByIdQuery.refetch();
+                                }
+                              } catch {
+                                toast({ title: t("error"), variant: "danger" });
+                              }
+                            }}
+                          >
+                            {addTrackingMutation.isPending ? t("loading") : t("save")}
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Delivery Management Components */}
+                {orderDetails?.orderShippingDetail && (
+                  <div className="my-order-item">
+                    <div className="my-order-card space-y-4">
+                      {/* Delivery Proof Upload — for SELLERDROP orders */}
+                      {orderDetails?.orderShippingDetail?.orderShippingType === "SELLERDROP" &&
+                        ["DELIVERED", "OFD"].includes(orderDetails?.orderProductStatus || "") && (
+                          <DeliveryProofUpload
+                            orderProductId={Number(searchParams?.id)}
+                            existingProofUrl={(orderDetails?.orderShippingDetail as any)?.proofOfDeliveryUrl}
+                            onUpload={async (file) => {
+                              // TODO: Upload file to S3 first, then return URL
+                              // For now, the seller can use the existing AddReceipt component
+                              return null;
+                            }}
+                            onSubmitProof={async (proofUrl) => {
+                              // Uses the delivery proof upload API
+                            }}
+                          />
+                        )}
+
+                      {/* Pickup Verification — for PICKUP orders */}
+                      {orderDetails?.orderShippingDetail?.orderShippingType === "PICKUP" &&
+                        orderDetails?.orderProductStatus === "CONFIRMED" && (
+                          <>
+                            <PickupVerification
+                              orderProductId={Number(searchParams?.id)}
+                              onVerify={async (code) => {
+                                try {
+                                  const res = await (await import("@/apis/requests/orders.requests")).confirmPickup({
+                                    orderProductId: Number(searchParams?.id),
+                                    code,
+                                  });
+                                  if (res?.data?.status) {
+                                    orderByIdQuery.refetch();
+                                    return true;
+                                  }
+                                  return false;
+                                } catch {
+                                  return false;
+                                }
+                              }}
+                            />
+                            <PickupWindowPicker
+                              orderProductId={Number(searchParams?.id)}
+                              onSave={async (start, end) => {
+                                try {
+                                  await (await import("@/apis/requests/orders.requests")).setPickupWindow({
+                                    orderProductId: Number(searchParams?.id),
+                                    pickupWindowStart: start,
+                                    pickupWindowEnd: end,
+                                  });
+                                } catch {}
+                              }}
+                            />
+                          </>
+                        )}
+                    </div>
+                  </div>
+                )}
 
                 {orderByIdQuery.isLoading ? (
                   <Skeleton className="h-44" />
@@ -703,6 +896,7 @@ const MyOrderDetailsPage = ({ }) => {
             orderProductStatus={orderDetails?.orderProductStatus}
             orderProductDate={orderDetails?.orderProductDate ? orderDetails?.orderProductDate : ""}
             deliveryAfter={orderDetails?.orderProduct_productPrice?.deliveryAfter || 1}
+            shippingType={orderDetails?.orderShippingDetail?.orderShippingType}
           />
         </DialogContent>
       </Dialog>

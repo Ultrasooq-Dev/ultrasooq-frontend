@@ -1041,93 +1041,8 @@ const CheckoutPage = () => {
       orderStore.setTotal(totalAmount);
       router.push("/complete-order");
     } else {
-      // if (!guestEmail) {
-      //   toast({
-      //     title: t("please_enter_email_address"),
-      //     variant: "danger",
-      //   });
-      //   return;
-      // }
-      // if (!validator.isEmail(guestEmail)) {
-      //   toast({
-      //     title: t("please_enter_valid_email_address"),
-      //     variant: "danger",
-      //   });
-      //   return;
-      // }
-      // let guestOrderDetails: any = {
-      //   guestUser: {
-      //     firstName: "",
-      //     lastName: "",
-      //     email: "",
-      //     cc: "",
-      //     phoneNumber: "",
-      //   },
-      // };
-      // if (!guestShippingAddress) {
-      //   toast({
-      //     title: t("please_add_a_shipping_address"),
-      //     variant: "danger",
-      //   });
-      //   return;
-      // }
-      // if (guestShippingAddress) {
-      //   guestOrderDetails = {
-      //     ...guestOrderDetails,
-      //     firstName: guestShippingAddress.firstName,
-      //     lastName: guestShippingAddress.lastName,
-      //     email: "",
-      //     cc: guestShippingAddress.cc,
-      //     phone: guestShippingAddress.phoneNumber,
-      //     shippingAddress: guestShippingAddress.address,
-      //     shippingTown: guestShippingAddress.town,
-      //     shippingCity: guestShippingAddress.city,
-      //     shippingProvince: guestShippingAddress.state,
-      //     shippingCountry: guestShippingAddress.country,
-      //     shippingPostCode: guestShippingAddress.postCode,
-      //   };
-      // }
-      // if (!guestBillingAddress) {
-      //   toast({
-      //     title: t("please_add_a_billing_address"),
-      //     variant: "danger",
-      //   });
-      //   return;
-      // }
-      // if (guestBillingAddress) {
-      //   guestOrderDetails = {
-      //     ...guestOrderDetails,
-      //     billingAddress: guestBillingAddress.address,
-      //     billingCity: guestBillingAddress.city,
-      //     billingTown: guestBillingAddress.town,
-      //     billingProvince: guestBillingAddress.state,
-      //     billingCountry: guestBillingAddress.country,
-      //     billingPostCode: guestBillingAddress.postCode,
-      //   };
-      // }
-      // const data = {
-      //   ...guestOrderDetails,
-      //   email: guestEmail,
-      //   paymentMethod: "cash",
-      //   cartIds: memoizedCartList?.map((item: CartItem) => item.id) || [],
-      // };
-      // if (
-      //   data.firstName !== "" &&
-      //   data.lastName !== "" &&
-      //   data.cc != "" &&
-      //   data.phone !== ""
-      // ) {
-      //   data.guestUser = {
-      //     firstName: data.firstName,
-      //     lastName: data.lastName,
-      //     email: guestEmail,
-      //     cc: data.cc,
-      //     phoneNumber: data.phone,
-      //   };
-      // }
-      // orderStore.setOrders(data);
-      // orderStore.setTotal(totalAmount);
-      // router.push("/complete-order");
+      // Guest checkout is disabled - redirect to login
+      router.push("/login?redirect=/checkout");
     }
   };
 
@@ -1142,8 +1057,10 @@ const CheckoutPage = () => {
       setHaveAccessToken(true);
     } else {
       setHaveAccessToken(false);
+      // Guest checkout is disabled - redirect unauthenticated users to login
+      router.push("/login?redirect=/checkout");
     }
-  }, [accessToken]);
+  }, [accessToken, router]);
 
   return (
     <div className="min-h-screen bg-muted">

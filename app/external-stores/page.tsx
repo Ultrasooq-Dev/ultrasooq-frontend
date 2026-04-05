@@ -502,7 +502,7 @@ const SubscribedProductsList = ({ storeId }: { storeId: number }) => {
                 {/* Product Image */}
                 <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg border border-gray-200">
                   {productImage && validator.isURL(productImage) ? (
-                    productImage.includes("puremoon.s3.amazonaws.com") ? (
+                    productImage.includes("ultrasooq.s3.amazonaws.com") ? (
                       <Image
                         src={productImage}
                         alt={product.productName || "Product"}

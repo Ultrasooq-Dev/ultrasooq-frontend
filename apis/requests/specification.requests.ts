@@ -224,7 +224,7 @@ export const suggestCategories = (data: {
 }) => {
   return axios({
     method: "POST",
-    url: `${getApiUrl()}/product/suggestCategories`,
+    url: `${getApiUrl()}/product/ai-match-category`,
     headers: authHeaders(),
     data,
   });
@@ -237,7 +237,7 @@ export const generateSpecValues = (data: {
 }) => {
   return axios({
     method: "POST",
-    url: `${getApiUrl()}/product/generateSpecValues`,
+    url: `${getApiUrl()}/product/ai-generate-details`,
     headers: authHeaders(),
     data,
   });
