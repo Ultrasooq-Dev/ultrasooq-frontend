@@ -3,6 +3,8 @@ import {
   fetchPersonalRecs,
   fetchProductRecs,
   fetchTrendingRecs,
+  fetchCartRecs,
+  fetchPostPurchaseRecs,
 } from '../requests/recommendation.requests';
 
 export const usePersonalRecs = (limit = 20, enabled = true) =>
@@ -35,5 +37,21 @@ export const useTrendingRecs = (
     queryKey: ['recommendations', 'trending', categoryId, limit],
     queryFn: () => fetchTrendingRecs(categoryId, limit),
     enabled,
+    staleTime: 5 * 60 * 1000,
+  });
+
+export const useCartRecs = (limit = 10, enabled = true) =>
+  useQuery({
+    queryKey: ['recommendations', 'cart', limit],
+    queryFn: () => fetchCartRecs(limit),
+    enabled,
+    staleTime: 2 * 60 * 1000,
+  });
+
+export const usePostPurchaseRecs = (orderId: number, limit = 10, enabled = true) =>
+  useQuery({
+    queryKey: ['recommendations', 'post-purchase', orderId, limit],
+    queryFn: () => fetchPostPurchaseRecs(orderId, limit),
+    enabled: enabled && !!orderId,
     staleTime: 5 * 60 * 1000,
   });

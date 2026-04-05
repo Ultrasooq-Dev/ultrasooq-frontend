@@ -60,3 +60,18 @@ export const postRecommendationFeedback = async (feedback: {
 }): Promise<void> => {
   await http.post('/recommendations/feedback', feedback);
 };
+
+export const fetchCartRecs = async (limit = 10): Promise<RecommendationResponse> => {
+  const { data } = await http.get('/recommendations/cart', { params: { limit } });
+  return data;
+};
+
+export const fetchPostPurchaseRecs = async (
+  orderId: number,
+  limit = 10,
+): Promise<RecommendationResponse> => {
+  const { data } = await http.get(`/recommendations/post-purchase/${orderId}`, {
+    params: { limit },
+  });
+  return data;
+};
