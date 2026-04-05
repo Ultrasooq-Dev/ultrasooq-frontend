@@ -75,3 +75,16 @@ export const fetchPostPurchaseRecs = async (
   });
   return data;
 };
+
+export interface FlowNudge {
+  type: string;
+  message: string;
+  ctaText: string;
+  ctaUrl: string;
+  confidence: number;
+}
+
+export const fetchFlowNudge = async (): Promise<FlowNudge[]> => {
+  const { data } = await http.get('/recommendations/flow-nudge');
+  return data;
+};

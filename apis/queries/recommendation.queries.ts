@@ -5,6 +5,7 @@ import {
   fetchTrendingRecs,
   fetchCartRecs,
   fetchPostPurchaseRecs,
+  fetchFlowNudge,
 } from '../requests/recommendation.requests';
 
 export const usePersonalRecs = (limit = 20, enabled = true) =>
@@ -54,4 +55,12 @@ export const usePostPurchaseRecs = (orderId: number, limit = 10, enabled = true)
     queryFn: () => fetchPostPurchaseRecs(orderId, limit),
     enabled: enabled && !!orderId,
     staleTime: 5 * 60 * 1000,
+  });
+
+export const useFlowNudge = (enabled = true) =>
+  useQuery({
+    queryKey: ['recommendations', 'flow-nudge'],
+    queryFn: fetchFlowNudge,
+    enabled,
+    staleTime: 10 * 60 * 1000,
   });
