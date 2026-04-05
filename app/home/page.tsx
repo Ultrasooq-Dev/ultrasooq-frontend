@@ -15,6 +15,7 @@ import {
 } from "@/apis/queries/wishlist.queries";
 import HeroBanner from "@/components/modules/home/HeroBanner";
 import TrendingCategories from "@/components/modules/home/TrendingCategories";
+import { HomeRecommendations } from "@/components/modules/recommendations/HomeRecommendations";
 import CategorySidebar from "@/components/modules/trending/CategorySidebar";
 import ProductCard from "@/components/modules/trending/ProductCard";
 import Footer from "@/components/shared/Footer";
@@ -1320,6 +1321,8 @@ function HomePage() {
           </div>
         </section>
       ) : null}
+
+      <HomeRecommendations />
 
       <Footer />
     </>
