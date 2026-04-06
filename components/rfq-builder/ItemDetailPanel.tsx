@@ -682,7 +682,11 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
               ) : (
                 <div className="rounded-lg border border-border p-4 text-center">
                   <p className="text-xs text-muted-foreground">{isAr ? "لا توجد تقييمات بعد" : "No reviews yet"}</p>
-                  <p className="text-[10px] text-muted-foreground/60 mt-1">{isAr ? "كن أول من يقيم هذا المنتج" : "Be the first to review this product"}</p>
+                  <button type="button"
+                    onClick={() => { setSelectedProductId(vp.id); setReqMode("rfq"); setViewingProductId(null); setActiveTab("customize"); }}
+                    className="text-[10px] text-primary font-medium mt-1 hover:underline">
+                    {isAr ? "كن أول من يقيم هذا المنتج" : "Be the first to review this product →"}
+                  </button>
                 </div>
               )}
             </div>
@@ -691,11 +695,19 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
             <div>
               <div className="flex items-center justify-between mb-1.5">
                 <h3 className="text-[11px] font-semibold">{isAr ? "أسئلة وأجوبة" : "Q&A"}</h3>
-                <button type="button" className="text-[10px] text-primary">{isAr ? "اسأل سؤال" : "Ask a question"}</button>
+                <button type="button"
+                  onClick={() => { setSelectedProductId(vp.id); setReqMode("rfq"); setViewingProductId(null); setActiveTab("customize"); }}
+                  className="text-[10px] text-primary hover:underline">
+                  {isAr ? "اسأل سؤال" : "Ask a question"}
+                </button>
               </div>
               <div className="rounded-lg border border-border p-4 text-center">
                 <p className="text-xs text-muted-foreground">{isAr ? "لا توجد أسئلة بعد" : "No questions yet"}</p>
-                <p className="text-[10px] text-muted-foreground/60 mt-1">{isAr ? "اسأل البائع عن هذا المنتج" : "Ask the seller about this product"}</p>
+                <button type="button"
+                  onClick={() => { setSelectedProductId(vp.id); setReqMode("rfq"); setViewingProductId(null); setActiveTab("customize"); }}
+                  className="text-[10px] text-primary font-medium mt-1 hover:underline">
+                  {isAr ? "اسأل البائع عن هذا المنتج" : "Ask the seller about this product →"}
+                </button>
               </div>
             </div>
           </div>
@@ -719,7 +731,7 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
               className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-green-600 text-white hover:bg-green-700 py-2 text-xs font-bold">
               <CreditCard className="h-3.5 w-3.5" /> {isAr ? "شراء" : "Buy"} — {vp.price * detailQty} OMR
             </button>
-            <button type="button" onClick={() => { onAddToCart(vp.id); setViewingProductId(null); }}
+            <button type="button" onClick={() => { setSelectedProductId(vp.id); setReqMode("rfq"); setViewingProductId(null); setActiveTab("customize"); }}
               className="flex items-center justify-center gap-1 rounded-lg border border-primary text-primary hover:bg-primary/5 px-3 py-2 text-xs font-semibold">
               <FileText className="h-3.5 w-3.5" /> RFQ
             </button>
