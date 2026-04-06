@@ -407,10 +407,9 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
     setDiscountOnly(false);
   };
 
-  // Try real products first, fall back to mock
-  const selectedProduct = (realProducts ?? []).find((p: any) => p.id === selectedProductId)
-    ?? MOCK_PRODUCTS.find((p) => p.id === selectedProductId);
-  // Try real buy listings first, then mock vendor listings
+  // Real products only — no mock fallback
+  const selectedProduct = (realProducts ?? []).find((p: any) => p.id === selectedProductId);
+  // Real buy listings only
   const viewingProduct = (buyListings ?? []).find((p: any) => p.id === viewingProductId)
     ?? ALL_VENDOR_LISTINGS.find((p) => p.id === viewingProductId);
   // Vendor listings: try mock first, then create from real product data
