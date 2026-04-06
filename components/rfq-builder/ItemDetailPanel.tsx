@@ -431,6 +431,8 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
     : [];
 
 
+  const [detailQty, setDetailQty] = useState(1);
+
   // ── Fetch full product detail when viewing ──
   const productDetailQuery = useQuery({
     queryKey: ["product-detail", viewingProductId],
@@ -448,31 +450,41 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
   // ═══ FULL PRODUCT DETAIL VIEW (takes over panel) ═══
   if (viewingProductId && (viewingProduct || productDetailQuery.data)) {
     const detail = productDetailQuery.data;
-    // Merge: listing data (price, seller) + detail data (description, images, specs)
+    const priceEntry = detail?.product_productPrice?.[0];
+    const sellerDetail = priceEntry?.adminDetail;
+    const sellerName = sellerDetail?.companyName || sellerDetail?.accountName
+      || (sellerDetail?.firstName ? `${sellerDetail.firstName} ${sellerDetail.lastName || ""}`.trim() : null)
+      || viewingProduct?.seller || "Seller";
+    const realPrice = viewingProduct?.price || Number(priceEntry?.offerPrice || detail?.offerPrice || detail?.productPrice || 0);
+    const realOriginalPrice = Number(priceEntry?.productPrice || detail?.productPrice || realPrice);
+    const realStock = priceEntry?.stock ?? viewingProduct?.stock ?? 0;
+    const realReviewCount = detail?.productReview?.length || 0;
+    const realRating = detail?.averageRating || (realReviewCount > 0 ? detail.productReview.reduce((s: number, r: any) => s + (r.rating || 0), 0) / realReviewCount : 0);
+    const sellerProfile = sellerDetail?.userProfile?.[0];
+
     const vp = {
       ...(viewingProduct || {}),
       id: viewingProductId,
       name: detail?.productName || viewingProduct?.name || "Product",
-      seller: viewingProduct?.seller || detail?.product_productPrice?.[0]?.adminDetail?.firstName || "Vendor",
-      price: viewingProduct?.price || Number(detail?.offerPrice || detail?.productPrice || 0),
-      originalPrice: viewingProduct?.originalPrice || Number(detail?.productPrice || viewingProduct?.price || 0),
-      discount: 0,
-      rating: viewingProduct?.rating || detail?.averageRating || 4.0,
-      stock: viewingProduct?.stock || detail?.product_productPrice?.[0]?.stock || 50,
-      warranty: "Standard",
-      shipping: viewingProduct?.delivery || "3-5 days",
-      origin: "International",
-      description: detail?.description || detail?.shortDescription || viewingProduct?.name || "No description available",
-      specs: detail?.productSpecValues?.map((s: any) => [s.specTemplate?.name || s.key, s.value]) || viewingProduct?.specs || [],
+      seller: sellerName,
+      sellerVerified: !!sellerProfile,
+      sellerLocation: sellerProfile?.companyAddress || detail?.placeOfOrigin?.countryName || "",
+      price: realPrice,
+      originalPrice: realOriginalPrice,
+      discount: realOriginalPrice > realPrice ? Math.round((1 - realPrice / realOriginalPrice) * 100) : 0,
+      rating: realRating,
+      reviewCount: realReviewCount,
+      stock: realStock,
+      condition: priceEntry?.productCondition || "New",
+      delivery: priceEntry?.deliveryAfter ? `${priceEntry.deliveryAfter} days` : viewingProduct?.delivery || "3-5 days",
+      description: detail?.description || detail?.shortDescription || "",
+      specs: detail?.productSpecValues?.map((s: any) => [s.specTemplate?.name || s.key, s.value]) || [],
       images: detail?.productImages?.filter((img: any) => img.image)?.map((img: any) => img.image) || [],
       reviews: detail?.productReview || [],
       brand: detail?.brand?.brandName || "",
       category: detail?.category?.name || "",
       skuNo: detail?.skuNo || "",
     };
-    if (vp.originalPrice > vp.price) {
-      vp.discount = Math.round((1 - vp.price / vp.originalPrice) * 100);
-    }
     const bulkPricing = [
       { min: 1, max: 9, price: vp.price },
       { min: 10, max: 49, price: Math.round(vp.price * 0.95) },
@@ -537,14 +549,18 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
                 <h2 className="text-base font-bold">{selectedProduct?.name ?? vp.seller}</h2>
                 <div className="flex items-center gap-2 mt-1">
                   <span className="text-xl font-bold text-green-600">{vp.price} OMR</span>
-                  <span className="text-sm text-muted-foreground line-through">{vp.originalPrice} OMR</span>
-                  <span className="text-xs bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-1.5 py-0.5 rounded font-semibold">-{vp.discount}%</span>
+                  {vp.discount > 0 && (
+                    <>
+                      <span className="text-sm text-muted-foreground line-through">{vp.originalPrice} OMR</span>
+                      <span className="text-xs bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-1.5 py-0.5 rounded font-semibold">-{vp.discount}%</span>
+                    </>
+                  )}
                 </div>
                 <div className="flex items-center gap-1 mt-1.5">
                   {[1, 2, 3, 4, 5].map((s) => (
                     <Star key={s} className={cn("h-3.5 w-3.5", s <= Math.round(vp.rating) ? "fill-amber-400 text-amber-400" : "text-muted-foreground/20")} />
                   ))}
-                  <span className="text-xs text-muted-foreground ms-1">{vp.rating} ({Math.floor(vp.rating * 50)})</span>
+                  <span className="text-xs text-muted-foreground ms-1">{vp.rating > 0 ? vp.rating.toFixed(1) : "—"} ({vp.reviewCount})</span>
                 </div>
               </div>
 
@@ -556,15 +572,15 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
                   </div>
                   <div className="min-w-0">
                     <span className="text-[10px] font-semibold block truncate">{vp.seller}</span>
-                    <span className="text-[8px] text-green-600 flex items-center gap-0.5"><Check className="h-2 w-2" />{isAr ? "موثق" : "Verified"}</span>
+                    {vp.sellerVerified && <span className="text-[8px] text-green-600 flex items-center gap-0.5"><Check className="h-2 w-2" />{isAr ? "موثق" : "Verified"}</span>}
                   </div>
                 </div>
                 <div className="flex items-center justify-between text-[9px] text-muted-foreground">
-                  <span className="flex items-center gap-0.5"><MapPin className="h-2.5 w-2.5" /> {vp.origin}</span>
-                  <span className="flex items-center gap-0.5"><Star className="h-2.5 w-2.5 fill-amber-400 text-amber-400" /> {vp.rating}</span>
+                  {vp.sellerLocation && <span className="flex items-center gap-0.5"><MapPin className="h-2.5 w-2.5" /> {vp.sellerLocation}</span>}
+                  <span className="flex items-center gap-0.5"><Star className="h-2.5 w-2.5 fill-amber-400 text-amber-400" /> {vp.rating > 0 ? vp.rating.toFixed(1) : "—"}</span>
                 </div>
                 <div className="text-[8px] text-muted-foreground mt-1">
-                  <Star className="h-2.5 w-2.5 fill-amber-400 text-amber-400 inline" /> {vp.rating} · {vp.stock} {isAr ? "متوفر" : "in stock"}
+                  {vp.stock > 0 ? <span className="text-green-600">{vp.stock} {isAr ? "متوفر" : "in stock"}</span> : <span className="text-amber-600">{isAr ? "اتصل للتوفر" : "Contact for availability"}</span>}
                 </div>
                 <button type="button" className="w-full mt-1.5 text-[9px] font-medium text-primary border border-primary/30 rounded py-1 hover:bg-primary/5">
                   {isAr ? "زيارة المتجر" : "Visit Store"}
@@ -580,14 +596,16 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
                 {vp.skuNo && <span className="bg-muted px-2 py-0.5 rounded text-muted-foreground">SKU: {vp.skuNo}</span>}
               </div>
               <div className="flex flex-wrap gap-1.5">
-                <span className="flex items-center gap-1 text-[9px] bg-green-50 dark:bg-green-950/20 text-green-700 px-1.5 py-0.5 rounded">
-                  <Zap className="h-2.5 w-2.5" /> {vp.stock}
+                {vp.stock > 0 && (
+                  <span className="flex items-center gap-1 text-[9px] bg-green-50 dark:bg-green-950/20 text-green-700 px-1.5 py-0.5 rounded">
+                    <Zap className="h-2.5 w-2.5" /> {vp.stock} {isAr ? "متوفر" : "in stock"}
+                  </span>
+                )}
+                <span className="flex items-center gap-1 text-[9px] bg-muted px-1.5 py-0.5 rounded">
+                  <Shield className="h-2.5 w-2.5" /> {vp.condition}
                 </span>
                 <span className="flex items-center gap-1 text-[9px] bg-muted px-1.5 py-0.5 rounded">
-                  <Shield className="h-2.5 w-2.5" /> {vp.warranty}
-                </span>
-                <span className="flex items-center gap-1 text-[9px] bg-muted px-1.5 py-0.5 rounded">
-                  <Truck className="h-2.5 w-2.5" /> {vp.shipping}
+                  <Truck className="h-2.5 w-2.5" /> {vp.delivery}
                 </span>
               </div>
             </div>
@@ -687,12 +705,19 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
         <div className="border-t border-border px-4 py-2.5 shrink-0">
           <div className="flex items-center gap-2">
             <div className="flex items-center">
-              <button type="button" className="flex h-8 w-8 items-center justify-center rounded-s-md border border-border bg-muted text-muted-foreground"><Minus className="h-3 w-3" /></button>
-              <div className="flex h-8 w-12 items-center justify-center border-y border-border bg-background text-sm font-semibold">1</div>
-              <button type="button" className="flex h-8 w-8 items-center justify-center rounded-e-md border border-border bg-muted text-muted-foreground"><Plus className="h-3 w-3" /></button>
+              <button type="button" onClick={() => setDetailQty((q) => Math.max(1, q - 1))}
+                className="flex h-8 w-8 items-center justify-center rounded-s-md border border-border bg-muted text-muted-foreground hover:bg-muted/80">
+                <Minus className="h-3 w-3" />
+              </button>
+              <div className="flex h-8 w-12 items-center justify-center border-y border-border bg-background text-sm font-semibold">{detailQty}</div>
+              <button type="button" onClick={() => setDetailQty((q) => q + 1)}
+                className="flex h-8 w-8 items-center justify-center rounded-e-md border border-border bg-muted text-muted-foreground hover:bg-muted/80">
+                <Plus className="h-3 w-3" />
+              </button>
             </div>
-            <button type="button" className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-green-600 text-white hover:bg-green-700 py-2 text-xs font-bold">
-              <CreditCard className="h-3.5 w-3.5" /> {isAr ? "شراء" : "Buy"} — {vp.price} OMR
+            <button type="button" onClick={() => { onAddToCart(vp.id); }}
+              className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-green-600 text-white hover:bg-green-700 py-2 text-xs font-bold">
+              <CreditCard className="h-3.5 w-3.5" /> {isAr ? "شراء" : "Buy"} — {vp.price * detailQty} OMR
             </button>
             <button type="button" onClick={() => { onAddToCart(vp.id); setViewingProductId(null); }}
               className="flex items-center justify-center gap-1 rounded-lg border border-primary text-primary hover:bg-primary/5 px-3 py-2 text-xs font-semibold">
