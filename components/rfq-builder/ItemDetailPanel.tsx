@@ -129,14 +129,14 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
     queryFn: async () => {
       if (!searchTerm) return { data: [], totalCount: 0 };
       try {
-        const res = await http({ method: "GET", url: "product/search/unified", params: { q: searchTerm, page: searchPage, limit: PRODUCTS_PER_PAGE } });
+        const res = await http({ method: "GET", url: "/product/search/unified", params: { q: searchTerm, page: searchPage, limit: PRODUCTS_PER_PAGE } });
         const data = res.data?.data ?? [];
         const totalCount = res.data?.totalCount ?? 0;
         return { data: Array.isArray(data) ? data : [], totalCount };
       } catch {}
       // Fallback to traditional search
       try {
-        const res = await http({ method: "GET", url: "product/getAllProduct", params: { page: searchPage, limit: PRODUCTS_PER_PAGE, term: searchTerm } });
+        const res = await http({ method: "GET", url: "/product/getAllProduct", params: { page: searchPage, limit: PRODUCTS_PER_PAGE, term: searchTerm } });
         return { data: res.data?.data ?? [], totalCount: res.data?.totalCount ?? 0 };
       } catch {}
       return { data: [], totalCount: 0 };
