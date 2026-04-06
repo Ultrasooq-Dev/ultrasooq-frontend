@@ -158,20 +158,65 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
   const totalProductCount = productSearchQuery?.data?.totalCount ?? 0;
   const totalPages = Math.ceil(totalProductCount / PRODUCTS_PER_PAGE);
 
+  // Group by model (deduplicate by product name) — show unique models, not duplicate listings
   const realProducts = useMemo(() => {
     const data = productSearchQuery?.data?.data ?? [];
     if (!Array.isArray(data) || data.length === 0) return null;
-    return data.map((p: any) => ({
-      id: p.id,
-      name: p.productName ?? p.name ?? `Product #${p.id}`,
-      price: Number(p.offerPrice ?? p.productPrice ?? 0),
-      rating: p.rating ?? 4.0,
-      reviews: p.reviewCount ?? 0,
-      seller: p.adminName ?? p.sellerName ?? "Vendor",
+
+    // Group by normalized product name → unique models
+    const modelMap = new Map<string, {
+      id: number;
+      name: string;
+      minPrice: number;
+      maxPrice: number;
+      sellers: number;
+      bestRating: number;
+      totalReviews: number;
+      allIds: number[];
+    }>();
+
+    for (const p of data) {
+      const name = (p.productName ?? p.name ?? `Product #${p.id}`).trim();
+      // Normalize: trim to first 80 chars for grouping (handles slight title variations)
+      const key = name.substring(0, 80).toLowerCase();
+      const price = Number(p.offerPrice ?? p.productPrice ?? 0);
+
+      if (modelMap.has(key)) {
+        const model = modelMap.get(key)!;
+        model.minPrice = Math.min(model.minPrice, price);
+        model.maxPrice = Math.max(model.maxPrice, price);
+        model.sellers++;
+        model.bestRating = Math.max(model.bestRating, p.rating ?? 4.0);
+        model.totalReviews += p.reviewCount ?? 0;
+        model.allIds.push(p.id);
+      } else {
+        modelMap.set(key, {
+          id: p.id,
+          name,
+          minPrice: price,
+          maxPrice: price,
+          sellers: 1,
+          bestRating: p.rating ?? 4.0,
+          totalReviews: p.reviewCount ?? 0,
+          allIds: [p.id],
+        });
+      }
+    }
+
+    return Array.from(modelMap.values()).map((m) => ({
+      id: m.id,
+      name: m.name,
+      price: m.minPrice,
+      priceRange: m.minPrice !== m.maxPrice ? `${m.minPrice} - ${m.maxPrice}` : null,
+      rating: m.bestRating,
+      reviews: m.totalReviews,
+      seller: m.sellers > 1 ? `${m.sellers} sellers` : "1 seller",
       delivery: "3-5 days",
       inStock: true,
-      stock: p.stock ?? 50,
+      stock: 50,
       specs: [] as string[][],
+      sellersCount: m.sellers,
+      allIds: m.allIds,
     }));
   }, [productSearchQuery?.data]);
 
@@ -886,20 +931,21 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
                     <ShoppingCart className="h-4 w-4 text-muted-foreground/40" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between gap-2">
-                      <span className={cn("text-xs font-semibold", isSel && "text-primary")}>{p.name}</span>
-                      <span className="text-sm font-bold text-primary shrink-0">{p.price} OMR</span>
+                    <div className="flex items-start justify-between gap-2">
+                      <span className={cn("text-xs font-semibold line-clamp-2", isSel && "text-primary")}>{p.name}</span>
+                      <div className="text-end shrink-0">
+                        <span className="text-sm font-bold text-primary">{p.price} OMR</span>
+                        {p.priceRange && <span className="text-[8px] text-muted-foreground block">{p.priceRange}</span>}
+                      </div>
                     </div>
                     <div className="flex items-center gap-2 mt-0.5">
                       <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
                       <span className="text-[10px]">{p.rating} ({p.reviews})</span>
                       <span className="text-[9px] text-muted-foreground">• {p.seller}</span>
-                      {p.inStock ? (
-                        <span className="text-[9px] text-green-600 flex items-center gap-0.5 ms-auto">
-                          <Zap className="h-2.5 w-2.5" /> {p.stock} {isAr ? "متوفر" : "in stock"}
+                      {p.sellersCount > 1 && (
+                        <span className="text-[9px] bg-blue-100 text-blue-700 px-1.5 rounded-full font-medium">
+                          {p.sellersCount} {isAr ? "بائع" : "sellers"}
                         </span>
-                      ) : (
-                        <span className="text-[9px] text-amber-600 ms-auto">{isAr ? "طلب فقط" : "RFQ only"}</span>
                       )}
                     </div>
                     <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
