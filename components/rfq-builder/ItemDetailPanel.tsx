@@ -1010,22 +1010,51 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
                     <div
                       key={`rec-${p.id}`}
                       onClick={() => { setSelectedProductId(p.id); onSelectProduct?.(p); }}
+                      role="button"
+                      tabIndex={0}
                       className={cn(
-                        "flex items-center gap-2 rounded-lg border p-2 mb-1 cursor-pointer transition-all",
-                        isSel ? "border-primary bg-primary/5 shadow-sm" : "border-border/50 border-dashed hover:border-primary/30 bg-background/50"
+                        "flex items-start gap-3 p-3 rounded-lg border transition-colors cursor-pointer",
+                        isSel ? "border-primary bg-primary/5 ring-1 ring-primary/20" : "border-border/50 border-dashed hover:border-primary/30 bg-background/50"
                       )}
                     >
-                      <div className="h-9 w-9 rounded bg-muted/50 flex items-center justify-center shrink-0">
-                        <ShoppingCart className="h-3.5 w-3.5 text-muted-foreground/20" />
+                      <div className="h-12 w-12 rounded-lg bg-muted/50 flex items-center justify-center shrink-0">
+                        <ShoppingCart className="h-4 w-4 text-muted-foreground/20" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-1">
-                          <span className="text-[10px] font-semibold truncate block">{p.name}</span>
-                          <span className="text-[7px] bg-purple-100 text-purple-700 px-1 rounded shrink-0">{isAr ? "مقترح" : "Suggested"}</span>
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-1.5">
+                              <span className={cn("text-xs font-semibold line-clamp-2", isSel && "text-primary")}>{p.name}</span>
+                              <span className="text-[8px] bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded shrink-0">{isAr ? "مقترح" : "Suggested"}</span>
+                            </div>
+                          </div>
+                          <div className="text-end shrink-0">
+                            <span className="text-sm font-bold text-primary">{p.price} OMR</span>
+                          </div>
                         </div>
-                        <span className="text-[8px] text-muted-foreground">{p.seller}</span>
+                        <div className="flex items-center gap-2 mt-0.5">
+                          <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
+                          <span className="text-[10px]">{p.rating} ({p.reviews})</span>
+                          <span className="text-[9px] text-muted-foreground">• {p.seller}</span>
+                          {p.sellersCount > 1 && (
+                            <span className="text-[9px] bg-blue-100 text-blue-700 px-1.5 rounded-full font-medium">
+                              {p.sellersCount} {isAr ? "بائع" : "sellers"}
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-1.5 mt-1.5">
+                          <button type="button"
+                            onClick={(e) => { e.stopPropagation(); setSelectedProductId(p.id); setReqMode("rfq"); setActiveTab("customize"); }}
+                            className="flex items-center gap-1 rounded bg-primary text-primary-foreground hover:bg-primary/90 px-2 py-1 text-[10px] font-semibold">
+                            <FileText className="h-3 w-3" /> RFQ
+                          </button>
+                          <button type="button"
+                            onClick={(e) => { e.stopPropagation(); setSelectedProductId(p.id); setActiveTab("buynow"); }}
+                            className="flex items-center gap-1 rounded bg-green-600 text-white hover:bg-green-700 px-2 py-1 text-[10px] font-semibold">
+                            <ShoppingCart className="h-3 w-3" /> {isAr ? "شراء / تخصيص" : "Buy / Customize"}
+                          </button>
+                        </div>
                       </div>
-                      <span className="text-[11px] font-bold text-primary shrink-0">{p.price} OMR</span>
                     </div>
                   );
                 })}
