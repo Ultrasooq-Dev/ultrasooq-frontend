@@ -3,6 +3,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import http from "@/apis/http";
+import { getApiUrl } from "@/config/api";
 import { track } from "@/lib/analytics";
 import {
   Star, ShoppingCart, Send, Paperclip, MapPin, Truck, Shield,
@@ -127,18 +128,26 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
   const productSearchQuery = useQuery({
     queryKey: ["product-hub-search", searchTerm, searchPage],
     queryFn: async () => {
-      if (!searchTerm) return { data: [], totalCount: 0 };
+      const cleanTerm = searchTerm?.trim();
+      if (!cleanTerm) return { data: [], totalCount: 0 };
       try {
-        const res = await http({ method: "GET", url: "/product/search/unified", params: { q: searchTerm, page: searchPage, limit: PRODUCTS_PER_PAGE } });
+        const res = await http.get(`${getApiUrl()}/product/search/unified`, { params: { q: cleanTerm, page: searchPage, limit: PRODUCTS_PER_PAGE } });
+        console.log("[Search] Unified response:", { status: res.status, dataLength: res.data?.data?.length, totalCount: res.data?.totalCount });
         const data = res.data?.data ?? [];
         const totalCount = res.data?.totalCount ?? 0;
-        return { data: Array.isArray(data) ? data : [], totalCount };
-      } catch {}
+        if (Array.isArray(data) && data.length > 0) return { data, totalCount };
+        console.log("[Search] Unified returned empty, trying fallback");
+      } catch (err: any) {
+        console.error("[Search] Unified search failed:", err?.response?.status, err?.message, err?.config?.url);
+      }
       // Fallback to traditional search
       try {
-        const res = await http({ method: "GET", url: "/product/getAllProduct", params: { page: searchPage, limit: PRODUCTS_PER_PAGE, term: searchTerm } });
+        const res = await http.get(`${getApiUrl()}/product/getAllProduct`, { params: { page: searchPage, limit: PRODUCTS_PER_PAGE, term: cleanTerm } });
+        console.log("[Search] Fallback response:", { status: res.status, dataLength: res.data?.data?.length, totalCount: res.data?.totalCount });
         return { data: res.data?.data ?? [], totalCount: res.data?.totalCount ?? 0 };
-      } catch {}
+      } catch (err: any) {
+        console.error("[Search] Fallback also failed:", err?.response?.status, err?.message);
+      }
       return { data: [], totalCount: 0 };
     },
     enabled: !!searchTerm && searchTerm.length >= 1,

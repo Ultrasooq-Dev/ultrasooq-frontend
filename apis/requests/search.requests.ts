@@ -1,4 +1,5 @@
 import http from '../http';
+import { getApiUrl } from '@/config/api';
 
 export interface UnifiedSearchResponse {
   status: boolean;
@@ -24,7 +25,7 @@ export const fetchUnifiedSearch = async (
     priceMax?: number;
   },
 ): Promise<UnifiedSearchResponse> => {
-  const { data } = await http.get('/product/search/unified', {
+  const { data } = await http.get(`${getApiUrl()}/product/search/unified`, {
     params: { q: query, ...params },
   });
   return data;

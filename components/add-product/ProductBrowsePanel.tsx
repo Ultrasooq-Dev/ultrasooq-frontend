@@ -6,6 +6,7 @@ import {
   Check, ArrowRight, Eye, Grid3X3, List, Plus, FileEdit,
 } from "lucide-react";
 import http from "@/apis/http";
+import { getApiUrl } from "@/config/api";
 
 interface ProductResult {
   id: number;
@@ -65,7 +66,7 @@ export default function ProductBrowsePanel({ searchTerm, selectedId, onSelect, o
     setSearched(true);
     setActiveSearch(term);
     try {
-      const res = await http.get("/product/search/unified", {
+      const res = await http.get(`${getApiUrl()}/product/search/unified`, {
         params: { q: term.trim(), page: pageNum, limit: 12 },
       });
       const products = res.data?.data?.data ?? res.data?.data ?? res.data ?? [];
