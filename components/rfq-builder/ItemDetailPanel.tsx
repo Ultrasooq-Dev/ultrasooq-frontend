@@ -223,44 +223,69 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
   const [activeTab, setActiveTab] = useState<"products" | "customize" | "buynow">("products");
   const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
 
-  // ── Recommended products: expand results when few matches ──
-  const topProductId = (realProducts ?? [])[0]?.id;
-  const needsRecommendations = (realProducts ?? []).length < 5;
+  // ── Recommended products: search-based similar products when few matches ──
+  const topProduct = (realProducts ?? [])[0];
+  const needsRecommendations = (realProducts ?? []).length < 5 && !!topProduct;
+  // Extract 2-3 key words from product name for broader search
+  const similarSearchTerm = useMemo(() => {
+    if (!topProduct?.name) return "";
+    const words = topProduct.name.split(/\s+/).filter((w: string) => w.length > 3);
+    // Take first 2-3 significant words (skip brand-like short words)
+    return words.slice(0, 3).join(" ");
+  }, [topProduct?.name]);
+
   const recommendedQuery = useQuery({
-    queryKey: ["product-hub-recommended", topProductId],
+    queryKey: ["product-hub-similar", similarSearchTerm],
     queryFn: async () => {
-      if (!topProductId) return { items: [] };
+      if (!similarSearchTerm) return { data: [], totalCount: 0 };
       try {
-        const res = await http.get(`${getApiUrl()}/recommendations/product/${topProductId}`, {
-          params: { type: "similar", limit: 10 },
+        const res = await http.get(`${getApiUrl()}/product/search/unified`, {
+          params: { q: similarSearchTerm, page: 1, limit: 10 },
         });
-        return res.data ?? { items: [] };
-      } catch { return { items: [] }; }
+        return { data: res.data?.data ?? [], totalCount: res.data?.totalCount ?? 0 };
+      } catch { return { data: [], totalCount: 0 }; }
     },
-    enabled: !!topProductId && needsRecommendations && activeTab === "products",
+    enabled: needsRecommendations && activeTab === "products" && similarSearchTerm.length > 3,
     staleTime: 60_000,
   });
 
-  // Map recommended products to same format
+  // Map and deduplicate recommended products
   const recommendedProducts = useMemo(() => {
-    const items = recommendedQuery?.data?.items ?? [];
+    const items = recommendedQuery?.data?.data ?? [];
     if (!Array.isArray(items) || items.length === 0) return [];
-    const existingIds = new Set((realProducts ?? []).map((p: any) => p.productId ?? p.id));
-    return items
-      .filter((p: any) => !existingIds.has(p.productId))
-      .map((p: any) => ({
-        id: p.productId,
-        name: p.productName ?? p.name ?? `Product #${p.productId}`,
-        price: Number(p.price ?? 0),
-        rating: 4.0,
-        reviews: 0,
-        seller: p.sellerName ?? "Vendor",
-        delivery: "3-5 days",
-        inStock: true,
-        stock: 50,
-        specs: [] as string[][],
-        isRecommended: true,
-      }));
+    // Deduplicate: exclude products already shown in main results (by name prefix)
+    const existingNames = new Set((realProducts ?? []).map((p: any) => (p.name || "").substring(0, 80).toLowerCase()));
+    const existingIds = new Set((realProducts ?? []).map((p: any) => p.id));
+
+    // Group similar results into models (same dedup as main results)
+    const modelMap = new Map<string, any>();
+    for (const p of items) {
+      const name = (p.productName ?? p.name ?? "").trim();
+      const key = name.substring(0, 80).toLowerCase();
+      if (existingNames.has(key) || existingIds.has(p.id)) continue;
+      if (modelMap.has(key)) {
+        modelMap.get(key).sellers++;
+      } else {
+        modelMap.set(key, {
+          id: p.id,
+          name,
+          price: Number(p.offerPrice ?? p.productPrice ?? 0),
+          rating: p.rating ?? 4.0,
+          reviews: p.reviewCount ?? 0,
+          seller: "1 seller",
+          sellers: 1,
+          delivery: "3-5 days",
+          inStock: true,
+          stock: 50,
+          specs: [] as string[][],
+          isRecommended: true,
+        });
+      }
+    }
+
+    return Array.from(modelMap.values())
+      .map(m => ({ ...m, seller: m.sellers > 1 ? `${m.sellers} sellers` : "1 seller", sellersCount: m.sellers }))
+      .slice(0, 6);
   }, [recommendedQuery?.data, realProducts]);
 
   // ── Buy/Customize: search all sellers for selected product ──
