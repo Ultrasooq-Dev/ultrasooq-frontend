@@ -175,6 +175,9 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
     }));
   }, [productSearchQuery?.data]);
 
+  const [activeTab, setActiveTab] = useState<"products" | "customize" | "buynow">("products");
+  const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
+
   // ── Recommended products: expand results when few matches ──
   const topProductId = (realProducts ?? [])[0]?.id;
   const needsRecommendations = (realProducts ?? []).length < 5;
@@ -251,8 +254,7 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
     }));
   }, [buySearchQuery?.data]);
 
-  const [activeTab, setActiveTab] = useState<"products" | "customize" | "buynow">("products");
-  const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
+  // (moved up — declared before recommended/buy queries that reference them)
   const [specsOpen, setSpecsOpen] = useState(true);
 
   // Reset product selection and tab when switching items
