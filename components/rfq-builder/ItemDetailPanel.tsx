@@ -432,40 +432,60 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
     : [];
 
 
+  // ── Fetch full product detail when viewing ──
+  const productDetailQuery = useQuery({
+    queryKey: ["product-detail", viewingProductId],
+    queryFn: async () => {
+      if (!viewingProductId) return null;
+      try {
+        const res = await http.get(`${getApiUrl()}/product/findOne`, { params: { productId: viewingProductId } });
+        return res.data?.data ?? res.data ?? null;
+      } catch { return null; }
+    },
+    enabled: !!viewingProductId,
+    staleTime: 60_000,
+  });
+
   // ═══ FULL PRODUCT DETAIL VIEW (takes over panel) ═══
-  if (viewingProductId && viewingProduct) {
-    // Normalize product data — real products have different field names
+  if (viewingProductId && (viewingProduct || productDetailQuery.data)) {
+    const detail = productDetailQuery.data;
+    // Merge: listing data (price, seller) + detail data (description, images, specs)
     const vp = {
-      ...viewingProduct,
-      seller: viewingProduct.seller || "Vendor",
-      price: viewingProduct.price || 0,
-      originalPrice: viewingProduct.originalPrice || viewingProduct.price || 0,
-      discount: viewingProduct.discount || (viewingProduct.originalPrice > viewingProduct.price ? Math.round((1 - viewingProduct.price / viewingProduct.originalPrice) * 100) : 0),
-      rating: viewingProduct.rating || 4.0,
-      stock: viewingProduct.stock || 50,
-      warranty: viewingProduct.warranty || "Standard",
-      shipping: viewingProduct.shipping || viewingProduct.delivery || "3-5 days",
-      origin: viewingProduct.origin || "International",
-      description: viewingProduct.description || viewingProduct.name || "No description available",
-      specs: viewingProduct.specs || [],
+      ...(viewingProduct || {}),
+      id: viewingProductId,
+      name: detail?.productName || viewingProduct?.name || "Product",
+      seller: viewingProduct?.seller || detail?.product_productPrice?.[0]?.adminDetail?.firstName || "Vendor",
+      price: viewingProduct?.price || Number(detail?.offerPrice || detail?.productPrice || 0),
+      originalPrice: viewingProduct?.originalPrice || Number(detail?.productPrice || viewingProduct?.price || 0),
+      discount: 0,
+      rating: viewingProduct?.rating || detail?.averageRating || 4.0,
+      stock: viewingProduct?.stock || detail?.product_productPrice?.[0]?.stock || 50,
+      warranty: "Standard",
+      shipping: viewingProduct?.delivery || "3-5 days",
+      origin: "International",
+      description: detail?.description || detail?.shortDescription || viewingProduct?.name || "No description available",
+      specs: detail?.productSpecValues?.map((s: any) => [s.specTemplate?.name || s.key, s.value]) || viewingProduct?.specs || [],
+      images: detail?.productImages?.filter((img: any) => img.image)?.map((img: any) => img.image) || [],
+      reviews: detail?.productReview || [],
+      brand: detail?.brand?.brandName || "",
+      category: detail?.category?.name || "",
+      skuNo: detail?.skuNo || "",
     };
-    const mockImages = [1, 2, 3, 4];
-    const mockColors = [
-      { name: "Black", hex: "#1a1a1a", selected: true },
-      { name: "Silver", hex: "#c0c0c0", selected: false },
-      { name: "Blue", hex: "#2563eb", selected: false },
-    ];
+    if (vp.originalPrice > vp.price) {
+      vp.discount = Math.round((1 - vp.price / vp.originalPrice) * 100);
+    }
     const bulkPricing = [
       { min: 1, max: 9, price: vp.price },
       { min: 10, max: 49, price: Math.round(vp.price * 0.95) },
       { min: 50, max: 99, price: Math.round(vp.price * 0.9) },
       { min: 100, max: null, price: Math.round(vp.price * 0.85) },
     ];
-    const mockReviews = [
-      { user: "Ahmed K.", rating: 5, text: "Excellent noise cancelling. Best for office use.", date: "Mar 15" },
-      { user: "Sara M.", rating: 4, text: "Great sound quality but a bit tight for large heads.", date: "Mar 10" },
-      { user: "Omar A.", rating: 5, text: "Battery lasts forever. Very comfortable for long flights.", date: "Feb 28" },
-    ];
+    const productReviews = (vp.reviews || []).map((r: any) => ({
+      user: r.user?.firstName || r.userName || "User",
+      rating: r.rating || 4,
+      text: r.description || r.title || "",
+      date: r.createdAt ? new Date(r.createdAt).toLocaleDateString("en", { month: "short", day: "numeric" }) : "",
+    }));
 
     return (
       <div className="flex flex-col h-full min-h-0 bg-background">
@@ -480,25 +500,34 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
 
         {/* Scrollable detail */}
         <div className="flex-1 overflow-y-auto">
-          {/* Image gallery */}
+          {/* Image gallery — real images or placeholder */}
           <div className="bg-muted/20 p-4">
-            <div className="flex gap-2">
-              {/* Main image */}
-              <div className="flex-1 h-48 rounded-lg bg-muted flex items-center justify-center">
-                <ShoppingCart className="h-16 w-16 text-muted-foreground/15" />
-              </div>
-              {/* Thumbnail strip */}
-              <div className="flex flex-col gap-1.5 w-14">
-                {mockImages.map((_, i) => (
-                  <div key={i} className={cn(
-                    "h-11 rounded border-2 bg-muted flex items-center justify-center cursor-pointer",
-                    i === 0 ? "border-primary" : "border-transparent hover:border-muted-foreground/30"
-                  )}>
-                    <ShoppingCart className="h-3 w-3 text-muted-foreground/20" />
+            {vp.images.length > 0 ? (
+              <div className="flex gap-2">
+                <div className="flex-1 h-48 rounded-lg overflow-hidden bg-muted">
+                  <img src={vp.images[0]} alt={vp.name} className="h-full w-full object-contain" />
+                </div>
+                {vp.images.length > 1 && (
+                  <div className="flex flex-col gap-1.5 w-14">
+                    {vp.images.slice(0, 4).map((img: string, i: number) => (
+                      <div key={i} className={cn("h-11 rounded border-2 overflow-hidden bg-muted cursor-pointer", i === 0 ? "border-primary" : "border-transparent hover:border-muted-foreground/30")}>
+                        <img src={img} alt="" className="h-full w-full object-cover" />
+                      </div>
+                    ))}
                   </div>
-                ))}
+                )}
               </div>
-            </div>
+            ) : (
+              <div className="flex-1 h-32 rounded-lg bg-muted flex items-center justify-center">
+                <ShoppingCart className="h-12 w-12 text-muted-foreground/10" />
+              </div>
+            )}
+            {productDetailQuery.isLoading && (
+              <div className="flex items-center justify-center py-2">
+                <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                <span className="text-xs text-muted-foreground ms-2">{isAr ? "جاري التحميل..." : "Loading details..."}</span>
+              </div>
+            )}
           </div>
 
           <div className="px-4 py-3 space-y-4">
@@ -542,18 +571,12 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
               </div>
             </div>
 
-            {/* Color selection + badges row */}
+            {/* Product info + badges row */}
             <div className="flex items-end gap-4">
-              <div>
-                <h3 className="text-[11px] font-semibold mb-1.5">{isAr ? "اللون" : "Color"}: <span className="font-normal text-muted-foreground">Black</span></h3>
-                <div className="flex gap-2">
-                  {mockColors.map((c) => (
-                    <button key={c.name} type="button" className={cn(
-                      "h-8 w-8 rounded-full border-2 transition-all",
-                      c.selected ? "border-primary ring-2 ring-primary/20" : "border-border hover:border-muted-foreground"
-                    )} style={{ backgroundColor: c.hex }} title={c.name} />
-                  ))}
-                </div>
+              <div className="flex flex-wrap gap-2 text-[10px]">
+                {vp.brand && <span className="bg-muted px-2 py-0.5 rounded font-medium">{vp.brand}</span>}
+                {vp.category && <span className="bg-muted px-2 py-0.5 rounded">{vp.category}</span>}
+                {vp.skuNo && <span className="bg-muted px-2 py-0.5 rounded text-muted-foreground">SKU: {vp.skuNo}</span>}
               </div>
               <div className="flex flex-wrap gap-1.5">
                 <span className="flex items-center gap-1 text-[9px] bg-green-50 dark:bg-green-950/20 text-green-700 px-1.5 py-0.5 rounded">
@@ -615,11 +638,11 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
             {/* Reviews */}
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <h3 className="text-[11px] font-semibold">{isAr ? "التقييمات" : "Reviews"} ({mockReviews.length})</h3>
+                <h3 className="text-[11px] font-semibold">{isAr ? "التقييمات" : "Reviews"} ({productReviews.length})</h3>
                 <button type="button" className="text-[10px] text-primary">{isAr ? "عرض الكل" : "View all"}</button>
               </div>
               <div className="space-y-2">
-                {mockReviews.map((r, i) => (
+                {productReviews.map((r, i) => (
                   <div key={i} className="rounded-lg border border-border p-2.5">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-1.5">
