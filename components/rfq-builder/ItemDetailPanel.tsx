@@ -410,7 +410,9 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
   // Try real products first, fall back to mock
   const selectedProduct = (realProducts ?? []).find((p: any) => p.id === selectedProductId)
     ?? MOCK_PRODUCTS.find((p) => p.id === selectedProductId);
-  const viewingProduct = ALL_VENDOR_LISTINGS.find((p) => p.id === viewingProductId);
+  // Try real buy listings first, then mock vendor listings
+  const viewingProduct = (buyListings ?? []).find((p: any) => p.id === viewingProductId)
+    ?? ALL_VENDOR_LISTINGS.find((p) => p.id === viewingProductId);
   // Vendor listings: try mock first, then create from real product data
   const vendorListings = selectedProductId
     ? (VENDOR_LISTINGS[selectedProductId] ?? (selectedProduct ? [{
@@ -432,6 +434,21 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
 
   // ═══ FULL PRODUCT DETAIL VIEW (takes over panel) ═══
   if (viewingProductId && viewingProduct) {
+    // Normalize product data — real products have different field names
+    const vp = {
+      ...viewingProduct,
+      seller: viewingProduct.seller || "Vendor",
+      price: viewingProduct.price || 0,
+      originalPrice: viewingProduct.originalPrice || viewingProduct.price || 0,
+      discount: viewingProduct.discount || (viewingProduct.originalPrice > viewingProduct.price ? Math.round((1 - viewingProduct.price / viewingProduct.originalPrice) * 100) : 0),
+      rating: viewingProduct.rating || 4.0,
+      stock: viewingProduct.stock || 50,
+      warranty: viewingProduct.warranty || "Standard",
+      shipping: viewingProduct.shipping || viewingProduct.delivery || "3-5 days",
+      origin: viewingProduct.origin || "International",
+      description: viewingProduct.description || viewingProduct.name || "No description available",
+      specs: viewingProduct.specs || [],
+    };
     const mockImages = [1, 2, 3, 4];
     const mockColors = [
       { name: "Black", hex: "#1a1a1a", selected: true },
@@ -439,10 +456,10 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
       { name: "Blue", hex: "#2563eb", selected: false },
     ];
     const bulkPricing = [
-      { min: 1, max: 9, price: viewingProduct.price },
-      { min: 10, max: 49, price: Math.round(viewingProduct.price * 0.95) },
-      { min: 50, max: 99, price: Math.round(viewingProduct.price * 0.9) },
-      { min: 100, max: null, price: Math.round(viewingProduct.price * 0.85) },
+      { min: 1, max: 9, price: vp.price },
+      { min: 10, max: 49, price: Math.round(vp.price * 0.95) },
+      { min: 50, max: 99, price: Math.round(vp.price * 0.9) },
+      { min: 100, max: null, price: Math.round(vp.price * 0.85) },
     ];
     const mockReviews = [
       { user: "Ahmed K.", rating: 5, text: "Excellent noise cancelling. Best for office use.", date: "Mar 15" },
@@ -458,7 +475,7 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
             className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground">
             <ChevronDown className="h-3.5 w-3.5 rotate-90" /> {isAr ? "رجوع" : "Back"}
           </button>
-          <span className="ms-auto text-xs text-muted-foreground">{viewingProduct.seller}</span>
+          <span className="ms-auto text-xs text-muted-foreground">{vp.seller}</span>
         </div>
 
         {/* Scrollable detail */}
@@ -489,17 +506,17 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
             <div className="flex gap-4">
               {/* Product info */}
               <div className="flex-1 min-w-0">
-                <h2 className="text-base font-bold">{selectedProduct?.name ?? viewingProduct.seller}</h2>
+                <h2 className="text-base font-bold">{selectedProduct?.name ?? vp.seller}</h2>
                 <div className="flex items-center gap-2 mt-1">
-                  <span className="text-xl font-bold text-green-600">{viewingProduct.price} OMR</span>
-                  <span className="text-sm text-muted-foreground line-through">{viewingProduct.originalPrice} OMR</span>
-                  <span className="text-xs bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-1.5 py-0.5 rounded font-semibold">-{viewingProduct.discount}%</span>
+                  <span className="text-xl font-bold text-green-600">{vp.price} OMR</span>
+                  <span className="text-sm text-muted-foreground line-through">{vp.originalPrice} OMR</span>
+                  <span className="text-xs bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-1.5 py-0.5 rounded font-semibold">-{vp.discount}%</span>
                 </div>
                 <div className="flex items-center gap-1 mt-1.5">
                   {[1, 2, 3, 4, 5].map((s) => (
-                    <Star key={s} className={cn("h-3.5 w-3.5", s <= Math.round(viewingProduct.rating) ? "fill-amber-400 text-amber-400" : "text-muted-foreground/20")} />
+                    <Star key={s} className={cn("h-3.5 w-3.5", s <= Math.round(vp.rating) ? "fill-amber-400 text-amber-400" : "text-muted-foreground/20")} />
                   ))}
-                  <span className="text-xs text-muted-foreground ms-1">{viewingProduct.rating} ({Math.floor(viewingProduct.rating * 50)})</span>
+                  <span className="text-xs text-muted-foreground ms-1">{vp.rating} ({Math.floor(vp.rating * 50)})</span>
                 </div>
               </div>
 
@@ -507,16 +524,16 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
               <div className="shrink-0 w-36 rounded-lg border border-border p-2.5 bg-muted/10">
                 <div className="flex items-center gap-2 mb-1.5">
                   <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs font-bold shrink-0">
-                    {viewingProduct.seller.charAt(0)}
+                    {vp.seller.charAt(0)}
                   </div>
                   <div className="min-w-0">
-                    <span className="text-[10px] font-semibold block truncate">{viewingProduct.seller}</span>
+                    <span className="text-[10px] font-semibold block truncate">{vp.seller}</span>
                     <span className="text-[8px] text-green-600 flex items-center gap-0.5"><Check className="h-2 w-2" />{isAr ? "موثق" : "Verified"}</span>
                   </div>
                 </div>
                 <div className="flex items-center justify-between text-[9px] text-muted-foreground">
-                  <span className="flex items-center gap-0.5"><MapPin className="h-2.5 w-2.5" /> {viewingProduct.origin}</span>
-                  <span className="flex items-center gap-0.5"><Star className="h-2.5 w-2.5 fill-amber-400 text-amber-400" /> {viewingProduct.rating}</span>
+                  <span className="flex items-center gap-0.5"><MapPin className="h-2.5 w-2.5" /> {vp.origin}</span>
+                  <span className="flex items-center gap-0.5"><Star className="h-2.5 w-2.5 fill-amber-400 text-amber-400" /> {vp.rating}</span>
                 </div>
                 <div className="text-[8px] text-muted-foreground mt-1">98% {isAr ? "إيجابي" : "positive"} · 500+ {isAr ? "طلب" : "orders"}</div>
                 <button type="button" className="w-full mt-1.5 text-[9px] font-medium text-primary border border-primary/30 rounded py-1 hover:bg-primary/5">
@@ -540,13 +557,13 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
               </div>
               <div className="flex flex-wrap gap-1.5">
                 <span className="flex items-center gap-1 text-[9px] bg-green-50 dark:bg-green-950/20 text-green-700 px-1.5 py-0.5 rounded">
-                  <Zap className="h-2.5 w-2.5" /> {viewingProduct.stock}
+                  <Zap className="h-2.5 w-2.5" /> {vp.stock}
                 </span>
                 <span className="flex items-center gap-1 text-[9px] bg-muted px-1.5 py-0.5 rounded">
-                  <Shield className="h-2.5 w-2.5" /> {viewingProduct.warranty}
+                  <Shield className="h-2.5 w-2.5" /> {vp.warranty}
                 </span>
                 <span className="flex items-center gap-1 text-[9px] bg-muted px-1.5 py-0.5 rounded">
-                  <Truck className="h-2.5 w-2.5" /> {viewingProduct.shipping}
+                  <Truck className="h-2.5 w-2.5" /> {vp.shipping}
                 </span>
               </div>
             </div>
@@ -566,7 +583,7 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
                     <span className={cn("text-xs font-bold", i === 2 ? "text-green-600" : "")}>{tier.price} OMR</span>
                     {i > 0 && (
                       <span className="text-[8px] text-green-600 block">
-                        {isAr ? "وفر" : "Save"} {Math.round((1 - tier.price / viewingProduct.price) * 100)}%
+                        {isAr ? "وفر" : "Save"} {Math.round((1 - tier.price / vp.price) * 100)}%
                       </span>
                     )}
                   </div>
@@ -577,19 +594,21 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
             {/* Description */}
             <div>
               <h3 className="text-[11px] font-semibold mb-1">{isAr ? "الوصف" : "Description"}</h3>
-              <p className="text-xs text-muted-foreground leading-relaxed">{viewingProduct.description}</p>
+              <p className="text-xs text-muted-foreground leading-relaxed">{vp.description}</p>
             </div>
 
             {/* Specifications */}
             <div>
               <h3 className="text-[11px] font-semibold mb-1">{isAr ? "المواصفات" : "Specifications"}</h3>
               <div className="rounded-lg border border-border overflow-hidden">
-                {viewingProduct.specs.map(([key, val], i) => (
+                {(vp.specs && vp.specs.length > 0) ? vp.specs.map(([key, val]: [string, string], i: number) => (
                   <div key={i} className={cn("flex items-center px-3 py-1.5 text-xs", i % 2 === 0 ? "bg-muted/30" : "bg-background")}>
                     <span className="text-muted-foreground w-24 shrink-0">{key}</span>
                     <span className="font-medium">{val}</span>
                   </div>
-                ))}
+                )) : (
+                  <div className="px-3 py-4 text-center text-xs text-muted-foreground">{isAr ? "لا توجد مواصفات" : "Specs will be available soon"}</div>
+                )}
               </div>
             </div>
 
@@ -649,9 +668,9 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
               <button type="button" className="flex h-8 w-8 items-center justify-center rounded-e-md border border-border bg-muted text-muted-foreground"><Plus className="h-3 w-3" /></button>
             </div>
             <button type="button" className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-green-600 text-white hover:bg-green-700 py-2 text-xs font-bold">
-              <CreditCard className="h-3.5 w-3.5" /> {isAr ? "شراء" : "Buy"} — {viewingProduct.price} OMR
+              <CreditCard className="h-3.5 w-3.5" /> {isAr ? "شراء" : "Buy"} — {vp.price} OMR
             </button>
-            <button type="button" onClick={() => { onAddToCart(viewingProduct.id); setViewingProductId(null); }}
+            <button type="button" onClick={() => { onAddToCart(vp.id); setViewingProductId(null); }}
               className="flex items-center justify-center gap-1 rounded-lg border border-primary text-primary hover:bg-primary/5 px-3 py-2 text-xs font-semibold">
               <FileText className="h-3.5 w-3.5" /> RFQ
             </button>
