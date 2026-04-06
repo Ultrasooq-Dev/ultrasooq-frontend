@@ -51,6 +51,27 @@ export default function RequestListPanel({ selectedItemId, onSelectItem, onItemR
   const lensInputRef = React.useRef<HTMLInputElement>(null);
   const excelInputRef = React.useRef<HTMLInputElement>(null);
   const [items, setItems] = useState<RequestItem[]>([]);
+  const itemsLoaded = useRef(false);
+
+  // Load items from localStorage on mount
+  useEffect(() => {
+    if (itemsLoaded.current || !sessionId) return;
+    itemsLoaded.current = true;
+    try {
+      const stored = localStorage.getItem(`rfq_items_${sessionId}`);
+      if (stored) setItems(JSON.parse(stored));
+    } catch {}
+  }, [sessionId]);
+
+  // Persist items to localStorage when they change
+  useEffect(() => {
+    if (!sessionId || !itemsLoaded.current) return;
+    try {
+      if (items.length > 0) localStorage.setItem(`rfq_items_${sessionId}`, JSON.stringify(items));
+      else localStorage.removeItem(`rfq_items_${sessionId}`);
+    } catch {}
+  }, [items, sessionId]);
+
   const [searchMode, setSearchMode] = useState<"search" | "ai">("search");
   const [toolLoading, setToolLoading] = useState<string | null>(null);
 
@@ -239,7 +260,11 @@ export default function RequestListPanel({ selectedItemId, onSelectItem, onItemR
       if (autoCreatedRef.current) {
         autoCreatedRef.current = false;
       } else {
-        setItems([]);
+        // Load items for the new session from localStorage
+        try {
+          const stored = sessionId ? localStorage.getItem(`rfq_items_${sessionId}`) : null;
+          setItems(stored ? JSON.parse(stored) : []);
+        } catch { setItems([]); }
       }
     }
     prevSessionRef.current = sessionId;
