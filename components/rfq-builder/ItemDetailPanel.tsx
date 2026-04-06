@@ -262,8 +262,23 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
   const selectedProduct = (realProducts ?? []).find((p: any) => p.id === selectedProductId)
     ?? MOCK_PRODUCTS.find((p) => p.id === selectedProductId);
   const viewingProduct = ALL_VENDOR_LISTINGS.find((p) => p.id === viewingProductId);
-  // Vendor listings for the selected product model
-  const vendorListings = selectedProductId ? (VENDOR_LISTINGS[selectedProductId] ?? []) : [];
+  // Vendor listings: try mock first, then create from real product data
+  const vendorListings = selectedProductId
+    ? (VENDOR_LISTINGS[selectedProductId] ?? (selectedProduct ? [{
+        id: selectedProduct.id,
+        seller: selectedProduct.seller || "Vendor",
+        rating: selectedProduct.rating || 4.0,
+        reviews: selectedProduct.reviews || 0,
+        price: selectedProduct.price || 0,
+        originalPrice: selectedProduct.price ? selectedProduct.price * 1.2 : 0,
+        discount: 15,
+        stock: selectedProduct.stock || 50,
+        delivery: selectedProduct.delivery || "3-5 days",
+        minOrder: 1,
+        condition: "New",
+        sellType: "retail",
+      }] : []))
+    : [];
 
 
   // ═══ FULL PRODUCT DETAIL VIEW (takes over panel) ═══
