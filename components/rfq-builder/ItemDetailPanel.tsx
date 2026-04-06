@@ -174,6 +174,47 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
       specs: [] as string[][],
     }));
   }, [productSearchQuery?.data]);
+
+  // ── Recommended products: expand results when few matches ──
+  const topProductId = (realProducts ?? [])[0]?.id;
+  const needsRecommendations = (realProducts ?? []).length < 5;
+  const recommendedQuery = useQuery({
+    queryKey: ["product-hub-recommended", topProductId],
+    queryFn: async () => {
+      if (!topProductId) return { items: [] };
+      try {
+        const res = await http.get(`${getApiUrl()}/recommendations/product/${topProductId}`, {
+          params: { type: "similar", limit: 10 },
+        });
+        return res.data ?? { items: [] };
+      } catch { return { items: [] }; }
+    },
+    enabled: !!topProductId && needsRecommendations && activeTab === "products",
+    staleTime: 60_000,
+  });
+
+  // Map recommended products to same format
+  const recommendedProducts = useMemo(() => {
+    const items = recommendedQuery?.data?.items ?? [];
+    if (!Array.isArray(items) || items.length === 0) return [];
+    const existingIds = new Set((realProducts ?? []).map((p: any) => p.productId ?? p.id));
+    return items
+      .filter((p: any) => !existingIds.has(p.productId))
+      .map((p: any) => ({
+        id: p.productId,
+        name: p.productName ?? p.name ?? `Product #${p.productId}`,
+        price: Number(p.price ?? 0),
+        rating: 4.0,
+        reviews: 0,
+        seller: p.sellerName ?? "Vendor",
+        delivery: "3-5 days",
+        inStock: true,
+        stock: 50,
+        specs: [] as string[][],
+        isRecommended: true,
+      }));
+  }, [recommendedQuery?.data, realProducts]);
+
   // ── Buy/Customize: search all sellers for selected product ──
   const selectedProductForBuy = (realProducts ?? []).find((p: any) => p.id === selectedProductId);
   const buySearchQuery = useQuery({
@@ -879,6 +920,44 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
                 </div>
               );
             })}
+
+            {/* ── Recommended models (when few results) ── */}
+            {recommendedProducts.length > 0 && (
+              <div className="mt-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="flex-1 h-px bg-border" />
+                  <span className="text-[9px] text-muted-foreground font-medium px-2">
+                    {isAr ? "منتجات مشابهة قد تهمك" : "Similar products you might like"}
+                  </span>
+                  <div className="flex-1 h-px bg-border" />
+                </div>
+                {recommendedProducts.map((p: any) => {
+                  const isSel = p.id === selectedProductId;
+                  return (
+                    <div
+                      key={`rec-${p.id}`}
+                      onClick={() => { setSelectedProductId(p.id); onSelectProduct?.(p); }}
+                      className={cn(
+                        "flex items-center gap-2 rounded-lg border p-2 mb-1 cursor-pointer transition-all",
+                        isSel ? "border-primary bg-primary/5 shadow-sm" : "border-border/50 border-dashed hover:border-primary/30 bg-background/50"
+                      )}
+                    >
+                      <div className="h-9 w-9 rounded bg-muted/50 flex items-center justify-center shrink-0">
+                        <ShoppingCart className="h-3.5 w-3.5 text-muted-foreground/20" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1">
+                          <span className="text-[10px] font-semibold truncate block">{p.name}</span>
+                          <span className="text-[7px] bg-purple-100 text-purple-700 px-1 rounded shrink-0">{isAr ? "مقترح" : "Suggested"}</span>
+                        </div>
+                        <span className="text-[8px] text-muted-foreground">{p.seller}</span>
+                      </div>
+                      <span className="text-[11px] font-bold text-primary shrink-0">{p.price} OMR</span>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         )}
 
