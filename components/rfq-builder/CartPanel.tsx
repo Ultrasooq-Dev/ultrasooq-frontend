@@ -1,7 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
-import { Minus, Plus, Trash2, ShoppingCart, Send, CreditCard, FileText, ChevronLeft, ChevronRight } from "lucide-react";
+import { Minus, Plus, Trash2, ShoppingCart, Send, CreditCard, FileText, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { useRfqCartListByUserId, useUpdateRfqCartWithLogin, useDeleteRfqCartItem, useAddRfqQuotes } from "@/apis/queries/rfq.queries";
+import { useAuth } from "@/context/AuthContext";
 
 interface CartItem {
   id: number;
@@ -9,18 +11,15 @@ interface CartItem {
   quantity: number;
   unitPrice: number;
   seller: string;
+  rfqCartId?: number;
 }
 
-const MOCK_RFQ: CartItem[] = [
-  { id: 1, name: "Sony WH-1000XM5", quantity: 50, unitPrice: 95, seller: "Tech Store Oman" },
-  { id: 3, name: "USB-C Cable 1.5m", quantity: 200, unitPrice: 2, seller: "Cable World" },
-];
-const MOCK_BUY: CartItem[] = [
-  { id: 101, name: "JBL Tune 770NC - Black", quantity: 5, unitPrice: 42, seller: "Audio World LLC" },
-  { id: 105, name: "Samsung AKG N700", quantity: 2, unitPrice: 62, seller: "Gulf Gadgets" },
-];
-
-function ItemCard({ item }: { item: CartItem }) {
+function ItemCard({ item, onUpdateQty, onDelete, isUpdating }: {
+  item: CartItem;
+  onUpdateQty: (id: number, qty: number) => void;
+  onDelete: (id: number) => void;
+  isUpdating: boolean;
+}) {
   return (
     <div className="rounded border border-border bg-background p-2">
       <div className="flex items-start justify-between gap-1">
@@ -28,15 +27,27 @@ function ItemCard({ item }: { item: CartItem }) {
           <span className="text-[10px] font-semibold block truncate">{item.name}</span>
           <span className="text-[8px] text-muted-foreground">{item.seller}</span>
         </div>
-        <button type="button" className="text-muted-foreground hover:text-destructive shrink-0">
+        <button type="button" onClick={() => onDelete(item.rfqCartId ?? item.id)}
+          disabled={isUpdating}
+          className="text-muted-foreground hover:text-destructive shrink-0 disabled:opacity-50">
           <Trash2 className="h-2.5 w-2.5" />
         </button>
       </div>
       <div className="flex items-center justify-between mt-1">
         <div className="flex items-center">
-          <button type="button" className="flex h-5 w-5 items-center justify-center rounded-s border border-border bg-muted text-muted-foreground"><Minus className="h-2 w-2" /></button>
-          <div className="flex h-5 w-8 items-center justify-center border-y border-border bg-background text-[9px] font-semibold">{item.quantity}</div>
-          <button type="button" className="flex h-5 w-5 items-center justify-center rounded-e border border-border bg-muted text-muted-foreground"><Plus className="h-2 w-2" /></button>
+          <button type="button" disabled={isUpdating || item.quantity <= 1}
+            onClick={() => onUpdateQty(item.id, item.quantity - 1)}
+            className="flex h-5 w-5 items-center justify-center rounded-s border border-border bg-muted text-muted-foreground disabled:opacity-30">
+            <Minus className="h-2 w-2" />
+          </button>
+          <div className="flex h-5 w-8 items-center justify-center border-y border-border bg-background text-[9px] font-semibold">
+            {isUpdating ? <Loader2 className="h-2.5 w-2.5 animate-spin" /> : item.quantity}
+          </div>
+          <button type="button" disabled={isUpdating}
+            onClick={() => onUpdateQty(item.id, item.quantity + 1)}
+            className="flex h-5 w-5 items-center justify-center rounded-e border border-border bg-muted text-muted-foreground disabled:opacity-30">
+            <Plus className="h-2 w-2" />
+          </button>
         </div>
         <span className="text-[10px] font-bold text-primary">{(item.quantity * item.unitPrice).toLocaleString()} OMR</span>
       </div>
@@ -53,12 +64,54 @@ interface CartPanelProps {
 export default function CartPanel({ locale, collapsed, onToggleCollapse }: CartPanelProps) {
   const isAr = locale === "ar";
   const [tab, setTab] = useState<"rfq" | "buy">("rfq");
+  const { user } = useAuth();
 
-  const rfq = MOCK_RFQ;
-  const buy = MOCK_BUY;
+  // Real cart data from backend
+  const rfqCartQuery = useRfqCartListByUserId({ page: 1, limit: 50 }, !!user?.id);
+  const updateCart = useUpdateRfqCartWithLogin();
+  const deleteCartItem = useDeleteRfqCartItem();
+  const submitRfq = useAddRfqQuotes();
+
+  // Map API response to CartItem format
+  const rfq: CartItem[] = (rfqCartQuery.data?.data?.data ?? rfqCartQuery.data?.data ?? []).map((item: any) => ({
+    id: item.rfqProductId ?? item.productId ?? item.id,
+    rfqCartId: item.id,
+    name: item.rfqProduct?.rfqProductName ?? item.product?.productName ?? item.productName ?? `Product #${item.id}`,
+    quantity: item.quantity ?? 1,
+    unitPrice: Number(item.offerPriceTo ?? item.offerPriceFrom ?? item.offerPrice ?? 0),
+    seller: item.rfqProduct?.admin?.firstName ?? item.seller ?? "Vendor",
+  }));
+  const buy: CartItem[] = []; // Buy cart not yet wired
   const items = tab === "rfq" ? rfq : buy;
   const total = items.reduce((s, i) => s + i.quantity * i.unitPrice, 0);
   const units = items.reduce((s, i) => s + i.quantity, 0);
+
+  const handleUpdateQty = (productId: number, qty: number) => {
+    updateCart.mutate({ productId, quantity: qty });
+  };
+
+  const handleDelete = (rfqCartId: number) => {
+    deleteCartItem.mutate({ rfqCartId });
+  };
+
+  const handleSubmitRfq = () => {
+    if (rfq.length === 0) return;
+    const rfqCartIds = rfq.map(r => r.rfqCartId).filter(Boolean) as number[];
+    if (rfqCartIds.length === 0) return;
+    submitRfq.mutate({
+      rfqCartIds,
+      firstName: user?.firstName ?? "",
+      lastName: user?.lastName ?? "",
+      phoneNumber: user?.phoneNumber ?? "",
+      cc: user?.cc ?? "",
+      address: "",
+      city: "",
+      province: "",
+      country: "",
+      postCode: "",
+      rfqDate: new Date().toISOString(),
+    });
+  };
 
   // ═══ COLLAPSED: icons only ═══
   if (collapsed) {
@@ -145,7 +198,12 @@ export default function CartPanel({ locale, collapsed, onToggleCollapse }: CartP
           </div>
         ) : (
           <div className="p-1.5 space-y-1">
-            {items.map((item) => <ItemCard key={item.id} item={item} />)}
+            {items.map((item) => (
+              <ItemCard key={item.rfqCartId ?? item.id} item={item}
+                onUpdateQty={handleUpdateQty}
+                onDelete={handleDelete}
+                isUpdating={updateCart.isPending || deleteCartItem.isPending} />
+            ))}
           </div>
         )}
       </div>
@@ -158,8 +216,11 @@ export default function CartPanel({ locale, collapsed, onToggleCollapse }: CartP
             <span className={cn("text-[11px] font-bold", tab === "rfq" ? "text-primary" : "text-green-600")}>{total.toLocaleString()} OMR</span>
           </div>
           {tab === "rfq" ? (
-            <button type="button" className="flex w-full items-center justify-center gap-1.5 rounded-md bg-primary py-2 text-primary-foreground text-[10px] font-bold hover:bg-primary/90">
-              <Send className="h-3 w-3" /> {isAr ? "إرسال" : "Submit RFQ"}
+            <button type="button" onClick={handleSubmitRfq}
+              disabled={submitRfq.isPending || rfq.length === 0}
+              className="flex w-full items-center justify-center gap-1.5 rounded-md bg-primary py-2 text-primary-foreground text-[10px] font-bold hover:bg-primary/90 disabled:opacity-50">
+              {submitRfq.isPending ? <Loader2 className="h-3 w-3 animate-spin" /> : <Send className="h-3 w-3" />}
+              {submitRfq.isPending ? (isAr ? "جاري الإرسال..." : "Submitting...") : (isAr ? "إرسال" : "Submit RFQ")}
             </button>
           ) : (
             <button type="button" className="flex w-full items-center justify-center gap-1.5 rounded-md bg-green-600 py-2 text-white text-[10px] font-bold hover:bg-green-700">

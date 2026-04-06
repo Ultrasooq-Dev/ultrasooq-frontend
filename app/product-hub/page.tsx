@@ -6,7 +6,7 @@ import SessionPanel from "@/components/rfq-builder/SessionPanel";
 import RequestListPanel from "@/components/rfq-builder/RequestListPanel";
 import ItemDetailPanel from "@/components/rfq-builder/ItemDetailPanel";
 import CartPanel from "@/components/rfq-builder/CartPanel";
-import { useAllRfqQuotesByBuyerId } from "@/apis/queries/rfq.queries";
+import { useAllRfqQuotesByBuyerId, useUpdateRfqCartWithLogin } from "@/apis/queries/rfq.queries";
 import { usePageView, useTrackEvent } from "@/lib/analytics";
 
 export default function ProductHubPage() {
@@ -55,6 +55,9 @@ export default function ProductHubPage() {
     if (!persistLoaded.current) return;
     try { localStorage.setItem("rfq_auto_sessions", JSON.stringify(autoCreatedSessions)); } catch {}
   }, [autoCreatedSessions]);
+
+  // ── Add to RFQ cart mutation ──
+  const addToRfqCart = useUpdateRfqCartWithLogin();
 
   // ── Step 1: Fetch real RFQ sessions ──
   const rfqSessionsQuery = useAllRfqQuotesByBuyerId(
@@ -181,6 +184,7 @@ export default function ProductHubPage() {
         selectedItemId={selectedItemId}
         searchTerm={selectedItemName ?? undefined}
         onAddToCart={(productId) => {
+          addToRfqCart.mutate({ productId, quantity: 1 });
           trackEvent("rfq_add_to_cart", { productId });
         }}
         locale={locale}

@@ -258,7 +258,9 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
     setDiscountOnly(false);
   };
 
-  const selectedProduct = MOCK_PRODUCTS.find((p) => p.id === selectedProductId);
+  // Try real products first, fall back to mock
+  const selectedProduct = (realProducts ?? []).find((p: any) => p.id === selectedProductId)
+    ?? MOCK_PRODUCTS.find((p) => p.id === selectedProductId);
   const viewingProduct = ALL_VENDOR_LISTINGS.find((p) => p.id === viewingProductId);
   // Vendor listings for the selected product model
   const vendorListings = selectedProductId ? (VENDOR_LISTINGS[selectedProductId] ?? []) : [];
@@ -856,12 +858,20 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
               </button>
               {specsOpen && selectedProduct && (
                 <div className="grid grid-cols-3 gap-px bg-border">
-                  {selectedProduct.specs.map(([key, val], i) => (
-                    <div key={i} className="bg-background px-2.5 py-1.5">
-                      <span className="text-[9px] text-muted-foreground block">{key}</span>
-                      <span className="text-[10px] font-medium">{val}</span>
-                    </div>
-                  ))}
+                  {(selectedProduct.specs && selectedProduct.specs.length > 0)
+                    ? selectedProduct.specs.map(([key, val]: [string, string], i: number) => (
+                        <div key={i} className="bg-background px-2.5 py-1.5">
+                          <span className="text-[9px] text-muted-foreground block">{key}</span>
+                          <span className="text-[10px] font-medium">{val}</span>
+                        </div>
+                      ))
+                    : (
+                      <div className="col-span-3 bg-background px-3 py-4 text-center">
+                        <p className="text-[10px] text-muted-foreground">{isAr ? "لا توجد مواصفات متاحة" : "No specs available yet"}</p>
+                        <p className="text-[9px] text-muted-foreground/60 mt-1">{isAr ? "المواصفات ستُستخرج تلقائياً" : "Specs will be auto-extracted from product description"}</p>
+                      </div>
+                    )
+                  }
                 </div>
               )}
             </div>
