@@ -1228,20 +1228,20 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
 
             <div className="space-y-1 overflow-hidden">
               {buyListings.map((p: any) => (
-                <div key={p.id} className="flex items-center gap-2 rounded border border-border hover:border-primary/30 px-2 py-1.5 transition-colors bg-background overflow-hidden">
+                <div key={p.id} className="flex items-center gap-3 rounded-lg border border-border hover:border-primary/30 px-3 py-2.5 transition-colors bg-background overflow-hidden">
                   {/* Seller avatar */}
-                  <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center text-primary text-[8px] font-bold shrink-0">
+                  <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm font-bold shrink-0">
                     {(p.seller || "V").charAt(0)}
                   </div>
                   {/* Info */}
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1">
-                      <span className="text-[9px] font-semibold truncate">{p.seller}</span>
-                      <Star className="h-2 w-2 fill-amber-400 text-amber-400 shrink-0" />
-                      <span className="text-[8px]">{p.rating}</span>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-sm font-semibold truncate">{p.seller}</span>
+                      <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400 shrink-0" />
+                      <span className="text-xs">{p.rating}</span>
                     </div>
-                    <div className="flex items-center gap-1.5 text-[8px] text-muted-foreground">
-                      <span className={p.inStock ? "text-green-600" : "text-destructive"}>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
+                      <span className={p.inStock ? "text-green-600 font-medium" : "text-destructive"}>
                         {p.stock} {isAr ? "متوفر" : "in stock"}
                       </span>
                       <span>·</span>
@@ -1249,20 +1249,20 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
                     </div>
                   </div>
                   {/* Price */}
-                  <div className="text-end shrink-0 me-1">
-                    <span className="text-xs font-bold text-green-600">{p.price}</span>
-                    <span className="text-[7px] text-green-600 ms-0.5">OMR</span>
+                  <div className="text-end shrink-0 me-2">
+                    <span className="text-lg font-bold text-green-600">{p.price}</span>
+                    <span className="text-xs text-green-600 ms-0.5">OMR</span>
                   </div>
                   {/* Actions */}
-                  <div className="flex items-center gap-1 shrink-0">
+                  <div className="flex items-center gap-1.5 shrink-0">
                     <button type="button" onClick={(e) => { e.stopPropagation(); onAddToCart(p.id); }}
-                      className="rounded bg-green-600 text-white hover:bg-green-700 px-2 py-1 text-[8px] font-semibold">
+                      className="rounded-md bg-green-600 text-white hover:bg-green-700 px-3 py-1.5 text-xs font-semibold">
                       {isAr ? "شراء" : "Buy"}
                     </button>
                     <button type="button"
                       onClick={(e) => { e.stopPropagation(); setSelectedProductId(p.id); setReqMode("vendor"); setActiveTab("customize"); }}
-                      className="rounded border border-amber-400 text-amber-700 hover:bg-amber-50 px-1.5 py-1 text-[8px]">
-                      <Wrench className="h-2.5 w-2.5" />
+                      className="rounded-md border border-amber-400 text-amber-700 hover:bg-amber-50 px-2 py-1.5">
+                      <Wrench className="h-3.5 w-3.5" />
                     </button>
                   </div>
                 </div>
