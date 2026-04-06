@@ -40,6 +40,10 @@ export default function ProductHubPage() {
       if (sess) setSelectedSessionId(sess);
       const auto = localStorage.getItem("rfq_auto_sessions");
       if (auto) setAutoCreatedSessions(JSON.parse(auto));
+      const itemId = localStorage.getItem("rfq_selected_item_id");
+      if (itemId) setSelectedItemId(itemId);
+      const itemName = localStorage.getItem("rfq_selected_item_name");
+      if (itemName) setSelectedItemName(itemName);
     } catch {}
   }, []);
 
@@ -51,6 +55,15 @@ export default function ProductHubPage() {
       else localStorage.removeItem("rfq_selected_session");
     } catch {}
   }, [selectedSessionId]);
+  useEffect(() => {
+    if (!persistLoaded.current) return;
+    try {
+      if (selectedItemId) localStorage.setItem("rfq_selected_item_id", selectedItemId);
+      else localStorage.removeItem("rfq_selected_item_id");
+      if (selectedItemName) localStorage.setItem("rfq_selected_item_name", selectedItemName);
+      else localStorage.removeItem("rfq_selected_item_name");
+    } catch {}
+  }, [selectedItemId, selectedItemName]);
   useEffect(() => {
     if (!persistLoaded.current) return;
     try { localStorage.setItem("rfq_auto_sessions", JSON.stringify(autoCreatedSessions)); } catch {}
