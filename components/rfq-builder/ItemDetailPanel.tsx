@@ -174,6 +174,42 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
       specs: [] as string[][],
     }));
   }, [productSearchQuery?.data]);
+  // ── Buy/Customize: search all sellers for selected product ──
+  const selectedProductForBuy = (realProducts ?? []).find((p: any) => p.id === selectedProductId);
+  const buySearchQuery = useQuery({
+    queryKey: ["product-buy-search", selectedProductId, selectedProductForBuy?.name],
+    queryFn: async () => {
+      if (!selectedProductForBuy?.name) return { data: [], totalCount: 0 };
+      try {
+        // Search for the same product name — finds all sellers' listings
+        const res = await http.get(`${getApiUrl()}/product/search/unified`, {
+          params: { q: selectedProductForBuy.name.substring(0, 50), page: 1, limit: 20 },
+        });
+        return { data: res.data?.data ?? [], totalCount: res.data?.totalCount ?? 0 };
+      } catch { return { data: [], totalCount: 0 }; }
+    },
+    enabled: !!selectedProductId && !!selectedProductForBuy?.name && activeTab === "buynow",
+    staleTime: 60_000,
+  });
+
+  // Map buy results to vendor listing format
+  const buyListings = useMemo(() => {
+    const data = buySearchQuery?.data?.data ?? [];
+    if (!Array.isArray(data) || data.length === 0) return [];
+    return data.map((p: any) => ({
+      id: p.id,
+      name: p.productName ?? "Product",
+      seller: p.adminName ?? p.sellerName ?? "Vendor",
+      price: Number(p.offerPrice ?? p.productPrice ?? 0),
+      originalPrice: Number(p.productPrice ?? p.offerPrice ?? 0),
+      rating: p.rating ?? p.averageRating ?? 4.0,
+      reviews: p.reviewCount ?? 0,
+      stock: p.stock ?? 50,
+      delivery: "3-5 days",
+      inStock: true,
+    }));
+  }, [buySearchQuery?.data]);
+
   const [activeTab, setActiveTab] = useState<"products" | "customize" | "buynow">("products");
   const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
   const [specsOpen, setSpecsOpen] = useState(true);
@@ -1042,63 +1078,72 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
                 </div>
                 <div className="flex-1 min-w-0">
                   <span className="text-[11px] font-bold block truncate">{selectedProduct.name}</span>
-                  <span className="text-[9px] text-muted-foreground">{vendorListings.length} {isAr ? "مورد يبيع هذا المنتج" : "vendors selling this product"}</span>
+                  <span className="text-[9px] text-muted-foreground">
+                    {buySearchQuery?.isLoading ? (isAr ? "جاري البحث..." : "Searching sellers...") : `${buyListings.length} ${isAr ? "عرض لهذا المنتج" : "listings for this product"}`}
+                  </span>
                 </div>
                 <span className="text-xs font-bold text-primary">{selectedProduct.price} OMR</span>
               </div>
             )}
 
-            {vendorListings.length === 0 && (
+            {!buySearchQuery?.isLoading && buyListings.length === 0 && (
               <div className="text-center py-8 text-muted-foreground">
                 <ShoppingCart className="h-8 w-8 mx-auto mb-2 opacity-20" />
                 <p className="text-xs">{isAr ? "اختر منتج من قائمة المنتجات أولاً" : "Select a product from the Products tab first"}</p>
               </div>
             )}
 
+            {buySearchQuery?.isLoading && (
+              <div className="flex items-center justify-center py-8">
+                <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+              </div>
+            )}
+
             <div className="space-y-1.5">
-              {vendorListings.map((p) => (
-                <div key={p.id} className="flex items-center gap-2 rounded-lg border border-border hover:border-primary/30 p-2 transition-colors bg-background">
-                  {/* Vendor avatar */}
-                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-[10px] font-bold shrink-0">
-                    {p.seller.charAt(0)}
-                  </div>
-
-                  {/* Vendor info */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1">
-                      <button type="button" onClick={() => setViewingProductId(p.id)} className="text-[11px] font-bold truncate text-start hover:text-primary hover:underline transition-colors">
-                        {p.seller}
-                      </button>
-                      <Star className="h-2.5 w-2.5 fill-amber-400 text-amber-400 shrink-0" />
-                      <span className="text-[9px]">{p.rating}</span>
+              {buyListings.map((p: any) => (
+                <div key={p.id} className="rounded-lg border border-border hover:border-primary/30 p-2.5 transition-colors bg-background">
+                  {/* Product name + seller */}
+                  <div className="flex items-start justify-between gap-2 mb-1.5">
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[10px] font-semibold line-clamp-2">{p.name}</p>
+                      <div className="flex items-center gap-1 mt-0.5">
+                        <div className="h-4 w-4 rounded-full bg-primary/10 flex items-center justify-center text-primary text-[7px] font-bold shrink-0">
+                          {(p.seller || "V").charAt(0)}
+                        </div>
+                        <span className="text-[8px] text-muted-foreground">{p.seller}</span>
+                        <Star className="h-2 w-2 fill-amber-400 text-amber-400 shrink-0" />
+                        <span className="text-[8px]">{p.rating}</span>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-1 text-[8px] text-muted-foreground">
-                      <span>{p.origin}</span>
-                      <span>·</span>
-                      <span>{p.warranty}</span>
-                      <span>·</span>
-                      <span>{p.shipping}</span>
-                      {p.minOrder > 1 && <><span>·</span><span className="text-amber-600">Min:{p.minOrder}</span></>}
+                    <div className="text-end shrink-0">
+                      <span className="text-sm font-bold text-green-600">{p.price}</span>
+                      <span className="text-[8px] text-green-600 ms-0.5">OMR</span>
+                      {p.originalPrice > p.price && (
+                        <div className="text-[8px] text-muted-foreground line-through">{p.originalPrice} OMR</div>
+                      )}
                     </div>
                   </div>
 
-                  {/* Price */}
-                  <div className="text-end shrink-0 me-1">
-                    <span className="text-sm font-bold text-green-600">{p.price}</span>
-                    <span className="text-[8px] text-green-600 ms-0.5">OMR</span>
-                    <div className="text-[8px] text-muted-foreground"><span className="line-through">{p.originalPrice}</span> <span className="text-green-600 font-medium">-{p.discount}%</span></div>
+                  {/* Details row */}
+                  <div className="flex items-center gap-2 text-[8px] text-muted-foreground mb-1.5">
+                    <span className={p.inStock ? "text-green-600" : "text-destructive"}>
+                      {p.inStock ? `${p.stock} ${isAr ? "متوفر" : "in stock"}` : (isAr ? "نفذ" : "Out of stock")}
+                    </span>
+                    <span>·</span>
+                    <span>{p.delivery}</span>
+                    {p.reviews > 0 && <><span>·</span><span>{p.reviews} {isAr ? "تقييم" : "reviews"}</span></>}
                   </div>
 
-                  {/* Actions — compact */}
-                  <div className="flex items-center gap-1 shrink-0">
-                    <button type="button"
-                      className="flex items-center gap-1 rounded bg-green-600 text-white hover:bg-green-700 px-2 py-1.5 text-[9px] font-semibold">
+                  {/* Actions */}
+                  <div className="flex items-center gap-1.5">
+                    <button type="button" onClick={() => onAddToCart(p.id)}
+                      className="flex-1 flex items-center justify-center gap-1 rounded bg-green-600 text-white hover:bg-green-700 py-1.5 text-[9px] font-semibold">
                       <CreditCard className="h-3 w-3" /> {isAr ? "شراء" : "Buy"}
                     </button>
                     <button type="button"
-                      onClick={() => { setReqMode("vendor"); setActiveTab("customize"); }}
-                      className="flex items-center gap-1 rounded border border-amber-400 text-amber-700 hover:bg-amber-50 px-2 py-1.5 text-[9px] font-semibold">
-                      <Wrench className="h-3 w-3" />
+                      onClick={() => { setSelectedProductId(p.id); setReqMode("vendor"); setActiveTab("customize"); }}
+                      className="flex items-center justify-center gap-1 rounded border border-amber-400 text-amber-700 hover:bg-amber-50 px-3 py-1.5 text-[9px] font-semibold">
+                      <Wrench className="h-3 w-3" /> {isAr ? "تخصيص" : "Customize"}
                     </button>
                   </div>
                 </div>
