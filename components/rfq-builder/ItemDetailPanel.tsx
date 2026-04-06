@@ -566,6 +566,9 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
                 <div className="text-[8px] text-muted-foreground mt-1">
                   <Star className="h-2.5 w-2.5 fill-amber-400 text-amber-400 inline" /> {vp.rating} · {vp.stock} {isAr ? "متوفر" : "in stock"}
                 </div>
+                <button type="button" className="w-full mt-1.5 text-[9px] font-medium text-primary border border-primary/30 rounded py-1 hover:bg-primary/5">
+                  {isAr ? "زيارة المتجر" : "Visit Store"}
+                </button>
               </div>
             </div>
 
@@ -633,10 +636,12 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
               </div>
             </div>
 
-            {/* Reviews — only show when real reviews exist */}
-            {productReviews.length > 0 && (
-              <div>
-                <h3 className="text-[11px] font-semibold mb-1.5">{isAr ? "التقييمات" : "Reviews"} ({productReviews.length})</h3>
+            {/* Reviews */}
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <h3 className="text-[11px] font-semibold">{isAr ? "التقييمات" : "Reviews"} ({productReviews.length})</h3>
+              </div>
+              {productReviews.length > 0 ? (
                 <div className="space-y-2">
                   {productReviews.map((r: any, i: number) => (
                     <div key={i} className="rounded-lg border border-border p-2.5">
@@ -656,10 +661,25 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
                     </div>
                   ))}
                 </div>
-              </div>
-            )}
+              ) : (
+                <div className="rounded-lg border border-border p-4 text-center">
+                  <p className="text-xs text-muted-foreground">{isAr ? "لا توجد تقييمات بعد" : "No reviews yet"}</p>
+                  <p className="text-[10px] text-muted-foreground/60 mt-1">{isAr ? "كن أول من يقيم هذا المنتج" : "Be the first to review this product"}</p>
+                </div>
+              )}
+            </div>
 
-            {/* Q&A section — will be populated from real data when available */}
+            {/* Q&A */}
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <h3 className="text-[11px] font-semibold">{isAr ? "أسئلة وأجوبة" : "Q&A"}</h3>
+                <button type="button" className="text-[10px] text-primary">{isAr ? "اسأل سؤال" : "Ask a question"}</button>
+              </div>
+              <div className="rounded-lg border border-border p-4 text-center">
+                <p className="text-xs text-muted-foreground">{isAr ? "لا توجد أسئلة بعد" : "No questions yet"}</p>
+                <p className="text-[10px] text-muted-foreground/60 mt-1">{isAr ? "اسأل البائع عن هذا المنتج" : "Ask the seller about this product"}</p>
+              </div>
+            </div>
           </div>
         </div>
 
