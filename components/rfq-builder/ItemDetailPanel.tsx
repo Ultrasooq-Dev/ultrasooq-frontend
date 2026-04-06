@@ -1280,47 +1280,93 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
               </div>
             )}
 
-            <div className="space-y-1 overflow-hidden">
-              {buyListings.map((p: any) => (
-                <div key={p.id} className="flex items-center gap-3 rounded-lg border border-border hover:border-primary/30 px-3 py-2.5 transition-colors bg-background overflow-hidden">
-                  {/* Seller avatar */}
-                  <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm font-bold shrink-0">
-                    {(p.seller || "V").charAt(0)}
-                  </div>
-                  {/* Info */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-sm font-semibold truncate">{p.seller}</span>
-                      <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400 shrink-0" />
-                      <span className="text-xs">{p.rating}</span>
+            <div className="space-y-2 overflow-hidden">
+              {buyListings.map((p: any) => {
+                const isExpanded = viewingProductId === p.id;
+                return (
+                  <div key={p.id} className="rounded-lg border border-border hover:border-primary/30 transition-colors bg-background overflow-hidden">
+                    {/* Main row — always visible */}
+                    <div className="flex items-center gap-3 px-3 py-2.5 cursor-pointer"
+                      onClick={() => setViewingProductId(isExpanded ? null : p.id)}>
+                      {/* Seller avatar */}
+                      <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm font-bold shrink-0">
+                        {(p.seller || "V").charAt(0)}
+                      </div>
+                      {/* Info */}
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-semibold line-clamp-1">{p.name}</p>
+                        <div className="flex items-center gap-1.5 mt-0.5">
+                          <span className="text-[10px] text-muted-foreground">{p.seller}</span>
+                          <Star className="h-3 w-3 fill-amber-400 text-amber-400 shrink-0" />
+                          <span className="text-[10px]">{p.rating}</span>
+                          <span className="text-[10px] text-muted-foreground">·</span>
+                          <span className={cn("text-[10px]", p.inStock ? "text-green-600" : "text-destructive")}>
+                            {p.stock} {isAr ? "متوفر" : "in stock"}
+                          </span>
+                        </div>
+                      </div>
+                      {/* Price */}
+                      <div className="text-end shrink-0">
+                        <span className="text-lg font-bold text-green-600">{p.price}</span>
+                        <span className="text-xs text-green-600 ms-0.5">OMR</span>
+                      </div>
+                      {/* Expand arrow */}
+                      <ChevronDown className={cn("h-4 w-4 text-muted-foreground shrink-0 transition-transform", isExpanded && "rotate-180")} />
                     </div>
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
-                      <span className={p.inStock ? "text-green-600 font-medium" : "text-destructive"}>
-                        {p.stock} {isAr ? "متوفر" : "in stock"}
-                      </span>
-                      <span>·</span>
-                      <span>{p.delivery}</span>
-                    </div>
+
+                    {/* Expanded detail — shown on click */}
+                    {isExpanded && (
+                      <div className="border-t border-border px-3 py-2.5 bg-muted/20 space-y-2">
+                        {/* Full product name */}
+                        <p className="text-xs font-medium">{p.name}</p>
+                        {/* Details grid */}
+                        <div className="grid grid-cols-3 gap-2 text-[10px]">
+                          <div>
+                            <span className="text-muted-foreground block">{isAr ? "السعر" : "Price"}</span>
+                            <span className="font-bold text-green-600">{p.price} OMR</span>
+                          </div>
+                          <div>
+                            <span className="text-muted-foreground block">{isAr ? "المخزون" : "Stock"}</span>
+                            <span className="font-semibold">{p.stock} {isAr ? "قطعة" : "pcs"}</span>
+                          </div>
+                          <div>
+                            <span className="text-muted-foreground block">{isAr ? "التوصيل" : "Delivery"}</span>
+                            <span>{p.delivery}</span>
+                          </div>
+                          <div>
+                            <span className="text-muted-foreground block">{isAr ? "البائع" : "Seller"}</span>
+                            <span className="font-semibold">{p.seller}</span>
+                          </div>
+                          <div>
+                            <span className="text-muted-foreground block">{isAr ? "التقييم" : "Rating"}</span>
+                            <span className="flex items-center gap-0.5"><Star className="h-3 w-3 fill-amber-400 text-amber-400" /> {p.rating}</span>
+                          </div>
+                          <div>
+                            <span className="text-muted-foreground block">{isAr ? "الحالة" : "Condition"}</span>
+                            <span>{isAr ? "جديد" : "New"}</span>
+                          </div>
+                        </div>
+                        {/* Actions */}
+                        <div className="flex items-center gap-2 pt-1">
+                          <button type="button" onClick={(e) => { e.stopPropagation(); onAddToCart(p.id); }}
+                            className="flex-1 flex items-center justify-center gap-1.5 rounded-md bg-green-600 text-white hover:bg-green-700 py-2 text-xs font-semibold">
+                            <CreditCard className="h-3.5 w-3.5" /> {isAr ? "شراء الآن" : "Buy Now"}
+                          </button>
+                          <button type="button" onClick={(e) => { e.stopPropagation(); onAddToCart(p.id); }}
+                            className="flex-1 flex items-center justify-center gap-1.5 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 py-2 text-xs font-semibold">
+                            <FileText className="h-3.5 w-3.5" /> {isAr ? "طلب أسعار" : "Add to RFQ"}
+                          </button>
+                          <button type="button"
+                            onClick={(e) => { e.stopPropagation(); setSelectedProductId(p.id); setReqMode("vendor"); setActiveTab("customize"); }}
+                            className="flex items-center justify-center gap-1.5 rounded-md border border-amber-400 text-amber-700 hover:bg-amber-50 px-3 py-2 text-xs font-semibold">
+                            <Wrench className="h-3.5 w-3.5" /> {isAr ? "تخصيص" : "Customize"}
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  {/* Price */}
-                  <div className="text-end shrink-0 me-2">
-                    <span className="text-lg font-bold text-green-600">{p.price}</span>
-                    <span className="text-xs text-green-600 ms-0.5">OMR</span>
-                  </div>
-                  {/* Actions */}
-                  <div className="flex items-center gap-1.5 shrink-0">
-                    <button type="button" onClick={(e) => { e.stopPropagation(); onAddToCart(p.id); }}
-                      className="rounded-md bg-green-600 text-white hover:bg-green-700 px-3 py-1.5 text-xs font-semibold">
-                      {isAr ? "شراء" : "Buy"}
-                    </button>
-                    <button type="button"
-                      onClick={(e) => { e.stopPropagation(); setSelectedProductId(p.id); setReqMode("vendor"); setActiveTab("customize"); }}
-                      className="rounded-md border border-amber-400 text-amber-700 hover:bg-amber-50 px-2 py-1.5">
-                      <Wrench className="h-3.5 w-3.5" />
-                    </button>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
