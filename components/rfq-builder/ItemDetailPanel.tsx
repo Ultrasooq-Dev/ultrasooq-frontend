@@ -563,10 +563,9 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
                   <span className="flex items-center gap-0.5"><MapPin className="h-2.5 w-2.5" /> {vp.origin}</span>
                   <span className="flex items-center gap-0.5"><Star className="h-2.5 w-2.5 fill-amber-400 text-amber-400" /> {vp.rating}</span>
                 </div>
-                <div className="text-[8px] text-muted-foreground mt-1">98% {isAr ? "إيجابي" : "positive"} · 500+ {isAr ? "طلب" : "orders"}</div>
-                <button type="button" className="w-full mt-1.5 text-[9px] font-medium text-primary border border-primary/30 rounded py-1 hover:bg-primary/5">
-                  {isAr ? "زيارة المتجر" : "Visit Store"}
-                </button>
+                <div className="text-[8px] text-muted-foreground mt-1">
+                  <Star className="h-2.5 w-2.5 fill-amber-400 text-amber-400 inline" /> {vp.rating} · {vp.stock} {isAr ? "متوفر" : "in stock"}
+                </div>
               </div>
             </div>
 
@@ -634,50 +633,33 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
               </div>
             </div>
 
-            {/* Reviews */}
-            <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <h3 className="text-[11px] font-semibold">{isAr ? "التقييمات" : "Reviews"} ({productReviews.length})</h3>
-                <button type="button" className="text-[10px] text-primary">{isAr ? "عرض الكل" : "View all"}</button>
-              </div>
-              <div className="space-y-2">
-                {productReviews.map((r, i) => (
-                  <div key={i} className="rounded-lg border border-border p-2.5">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1.5">
-                        <div className="h-6 w-6 rounded-full bg-muted flex items-center justify-center text-[9px] font-bold">{r.user.charAt(0)}</div>
-                        <span className="text-[11px] font-semibold">{r.user}</span>
+            {/* Reviews — only show when real reviews exist */}
+            {productReviews.length > 0 && (
+              <div>
+                <h3 className="text-[11px] font-semibold mb-1.5">{isAr ? "التقييمات" : "Reviews"} ({productReviews.length})</h3>
+                <div className="space-y-2">
+                  {productReviews.map((r: any, i: number) => (
+                    <div key={i} className="rounded-lg border border-border p-2.5">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1.5">
+                          <div className="h-6 w-6 rounded-full bg-muted flex items-center justify-center text-[9px] font-bold">{r.user?.charAt(0) || "U"}</div>
+                          <span className="text-[11px] font-semibold">{r.user}</span>
+                        </div>
+                        <div className="flex items-center gap-0.5">
+                          {[1, 2, 3, 4, 5].map((s) => (
+                            <Star key={s} className={cn("h-2.5 w-2.5", s <= r.rating ? "fill-amber-400 text-amber-400" : "text-muted-foreground/20")} />
+                          ))}
+                        </div>
                       </div>
-                      <div className="flex items-center gap-0.5">
-                        {[1, 2, 3, 4, 5].map((s) => (
-                          <Star key={s} className={cn("h-2.5 w-2.5", s <= r.rating ? "fill-amber-400 text-amber-400" : "text-muted-foreground/20")} />
-                        ))}
-                      </div>
+                      <p className="text-[10px] text-muted-foreground mt-1">{r.text}</p>
+                      <span className="text-[8px] text-muted-foreground/60 mt-0.5 block">{r.date}</span>
                     </div>
-                    <p className="text-[10px] text-muted-foreground mt-1">{r.text}</p>
-                    <span className="text-[8px] text-muted-foreground/60 mt-0.5 block">{r.date}</span>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
-            {/* Q&A section */}
-            <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <h3 className="text-[11px] font-semibold">{isAr ? "أسئلة وأجوبة" : "Q&A"} (2)</h3>
-                <button type="button" className="text-[10px] text-primary">{isAr ? "اسأل سؤال" : "Ask a question"}</button>
-              </div>
-              <div className="space-y-2">
-                <div className="rounded-lg border border-border p-2.5">
-                  <p className="text-[11px] font-medium">Q: Does it work with PS5?</p>
-                  <p className="text-[10px] text-muted-foreground mt-0.5">A: Yes, via Bluetooth or 3.5mm cable. — <span className="text-primary">Seller</span></p>
-                </div>
-                <div className="rounded-lg border border-border p-2.5">
-                  <p className="text-[11px] font-medium">Q: Can I use it for calls on laptop?</p>
-                  <p className="text-[10px] text-muted-foreground mt-0.5">A: Yes, multipoint supports 2 devices simultaneously. — <span className="text-primary">Seller</span></p>
-                </div>
-              </div>
-            </div>
+            {/* Q&A section — will be populated from real data when available */}
           </div>
         </div>
 
