@@ -651,7 +651,7 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
   }
 
   return (
-    <div className="flex flex-col h-full min-h-0 bg-background">
+    <div className="flex flex-col h-full min-h-0 min-w-0 bg-background overflow-hidden">
       {/* Item header */}
       <div className="px-4 py-2.5 border-b border-border shrink-0">
         <h3 className="text-sm font-bold">{searchTerm ?? selectedItemId ?? ""}</h3>
@@ -1226,9 +1226,9 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
               </div>
             )}
 
-            <div className="space-y-1">
+            <div className="space-y-1 overflow-hidden">
               {buyListings.map((p: any) => (
-                <div key={p.id} className="flex items-center gap-2 rounded border border-border hover:border-primary/30 px-2 py-1.5 transition-colors bg-background">
+                <div key={p.id} className="flex items-center gap-2 rounded border border-border hover:border-primary/30 px-2 py-1.5 transition-colors bg-background overflow-hidden">
                   {/* Seller avatar */}
                   <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center text-primary text-[8px] font-bold shrink-0">
                     {(p.seller || "V").charAt(0)}
