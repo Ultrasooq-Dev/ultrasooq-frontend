@@ -145,7 +145,12 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
           const matchesChip = (p: any, chip: typeof FILTER_CHIPS[0]) => {
             const cp = chip.params;
             if (cp.productType && p.productType !== cp.productType) return false;
-            if (cp.sellType) return true; // sellType filtering needs ProductPrice data — pass through for now
+            if (cp.sellType) {
+              // Check if any ProductPrice entry matches the sellType
+              const prices = p.product_productPrice ?? [];
+              const hasSellType = prices.some((pp: any) => pp.sellType === cp.sellType && !pp.deletedAt);
+              if (!hasSellType) return false;
+            }
             if (cp.hasDiscount === "true" && !(Number(p.offerPrice) > 0 && Number(p.offerPrice) < Number(p.productPrice))) return false;
             if (cp.isCustomProduct === "true" && p.isCustomProduct !== true) return false;
             // Chips with no params (vendor_store, service) — show all
@@ -323,41 +328,63 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
       .slice(0, 6);
   }, [recommendedQuery?.data, realProducts]);
 
-  // ── Buy/Customize: search all sellers for selected product ──
+  // ── Buy/Customize: fetch SAME product detail with ALL sellers ──
   const selectedProductForBuy = (realProducts ?? []).find((p: any) => p.id === selectedProductId);
-  const buySearchQuery = useQuery({
-    queryKey: ["product-buy-search", selectedProductId, selectedProductForBuy?.name],
+  const buyDetailQuery = useQuery({
+    queryKey: ["product-buy-detail", selectedProductId],
     queryFn: async () => {
-      if (!selectedProductForBuy?.name) return { data: [], totalCount: 0 };
+      if (!selectedProductId) return null;
       try {
-        // Search for the same product name — finds all sellers' listings
-        const res = await http.get(`${getApiUrl()}/product/search/unified`, {
-          params: { q: selectedProductForBuy.name.substring(0, 50), page: 1, limit: 20 },
+        const res = await http.get(`${getApiUrl()}/product/findOne`, {
+          params: { productId: selectedProductId },
         });
-        return { data: res.data?.data ?? [], totalCount: res.data?.totalCount ?? 0 };
-      } catch { return { data: [], totalCount: 0 }; }
+        return res.data?.data ?? res.data ?? null;
+      } catch { return null; }
     },
-    enabled: !!selectedProductId && !!selectedProductForBuy?.name && activeTab === "buynow",
+    enabled: !!selectedProductId && activeTab === "buynow",
     staleTime: 60_000,
   });
+  // Keep old name for compatibility in JSX
+  const buySearchQuery = { isLoading: buyDetailQuery.isLoading, data: buyDetailQuery.data };
 
-  // Map buy results to vendor listing format
+  // Map ALL sellers from product_productPrice into individual listing cards
   const buyListings = useMemo(() => {
-    const data = buySearchQuery?.data?.data ?? [];
-    if (!Array.isArray(data) || data.length === 0) return [];
-    return data.map((p: any) => ({
-      id: p.id,
-      name: p.productName ?? "Product",
-      seller: p.adminName ?? p.sellerName ?? "Vendor",
-      price: Number(p.offerPrice ?? p.productPrice ?? 0),
-      originalPrice: Number(p.productPrice ?? p.offerPrice ?? 0),
-      rating: p.rating ?? p.averageRating ?? 4.0,
-      reviews: p.reviewCount ?? 0,
-      stock: p.stock ?? 50,
-      delivery: "3-5 days",
-      inStock: true,
-    }));
-  }, [buySearchQuery?.data]);
+    const detail = buyDetailQuery.data;
+    if (!detail) return [];
+    const priceEntries = detail.product_productPrice ?? [];
+    if (priceEntries.length === 0) return [];
+
+    return priceEntries
+      .filter((pp: any) => !pp.deletedAt && pp.status !== "DELETE")
+      .map((pp: any) => {
+        const admin = pp.adminDetail;
+        const sellerName = admin?.companyName || admin?.accountName
+          || (admin?.firstName ? `${admin.firstName} ${admin.lastName || ""}`.trim() : null)
+          || "Seller";
+        return {
+          id: `${detail.id}-${pp.id}`,
+          productId: detail.id,
+          priceId: pp.id,
+          name: detail.productName ?? "Product",
+          seller: sellerName,
+          sellerAvatar: admin?.profilePicture || null,
+          price: Number(pp.offerPrice ?? pp.productPrice ?? detail.offerPrice ?? 0),
+          originalPrice: Number(pp.productPrice ?? detail.productPrice ?? 0),
+          rating: detail.averageRating ?? 4.0,
+          reviews: detail.productReview?.length ?? 0,
+          stock: pp.stock ?? 0,
+          delivery: pp.deliveryAfter ? `${pp.deliveryAfter} days` : "3-5 days",
+          inStock: (pp.stock ?? 0) > 0,
+          sellType: pp.sellType ?? "NORMALSELL",
+          condition: pp.productCondition ?? "New",
+          brand: detail.brand?.brandName ?? "",
+          category: detail.category?.name ?? "",
+          description: detail.description ?? detail.shortDescription ?? "",
+          minOrder: pp.minOrder ?? 1,
+          warranty: pp.warranty ?? "",
+        };
+      });
+  }, [buyDetailQuery.data]);
 
   // (moved up — declared before recommended/buy queries that reference them)
   const [specsOpen, setSpecsOpen] = useState(true);
@@ -1659,92 +1686,69 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
             )}
 
             <div className="space-y-2 overflow-hidden">
-              {buyListings.map((p: any) => {
-                const isExpanded = viewingProductId === p.id;
-                return (
-                  <div key={p.id} className="rounded-lg border border-border hover:border-primary/30 transition-colors bg-background overflow-hidden">
-                    {/* Main row — always visible */}
-                    <div className="flex items-center gap-3 px-3 py-2.5 cursor-pointer"
-                      onClick={() => setViewingProductId(isExpanded ? null : p.id)}>
-                      {/* Seller avatar */}
-                      <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm font-bold shrink-0">
-                        {(p.seller || "V").charAt(0)}
-                      </div>
-                      {/* Info */}
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs font-semibold line-clamp-1">{p.name}</p>
-                        <div className="flex items-center gap-1.5 mt-0.5">
-                          <span className="text-[10px] text-muted-foreground">{p.seller}</span>
-                          <Star className="h-3 w-3 fill-amber-400 text-amber-400 shrink-0" />
-                          <span className="text-[10px]">{p.rating}</span>
-                          <span className="text-[10px] text-muted-foreground">·</span>
-                          <span className={cn("text-[10px]", p.inStock ? "text-green-600" : "text-destructive")}>
-                            {p.stock} {isAr ? "متوفر" : "in stock"}
-                          </span>
-                        </div>
-                      </div>
-                      {/* Price */}
-                      <div className="text-end shrink-0">
-                        <span className="text-lg font-bold text-green-600">{p.price}</span>
-                        <span className="text-xs text-green-600 ms-0.5">OMR</span>
-                      </div>
-                      {/* Expand arrow */}
-                      <ChevronDown className={cn("h-4 w-4 text-muted-foreground shrink-0 transition-transform", isExpanded && "rotate-180")} />
+              {buyListings.map((p: any) => (
+                <div key={p.id} className="rounded-lg border border-border hover:border-primary/30 transition-colors bg-background p-3">
+                  {/* Product info */}
+                  <div className="flex items-start gap-3">
+                    <div className="h-12 w-12 rounded-lg bg-muted flex items-center justify-center shrink-0">
+                      <ShoppingCart className="h-4 w-4 text-muted-foreground/40" />
                     </div>
-
-                    {/* Expanded detail — shown on click */}
-                    {isExpanded && (
-                      <div className="border-t border-border px-3 py-2.5 bg-muted/20 space-y-2">
-                        {/* Full product name */}
-                        <p className="text-xs font-medium">{p.name}</p>
-                        {/* Details grid */}
-                        <div className="grid grid-cols-3 gap-2 text-[10px]">
-                          <div>
-                            <span className="text-muted-foreground block">{isAr ? "السعر" : "Price"}</span>
-                            <span className="font-bold text-green-600">{p.price} OMR</span>
-                          </div>
-                          <div>
-                            <span className="text-muted-foreground block">{isAr ? "المخزون" : "Stock"}</span>
-                            <span className="font-semibold">{p.stock} {isAr ? "قطعة" : "pcs"}</span>
-                          </div>
-                          <div>
-                            <span className="text-muted-foreground block">{isAr ? "التوصيل" : "Delivery"}</span>
-                            <span>{p.delivery}</span>
-                          </div>
-                          <div>
-                            <span className="text-muted-foreground block">{isAr ? "البائع" : "Seller"}</span>
-                            <span className="font-semibold">{p.seller}</span>
-                          </div>
-                          <div>
-                            <span className="text-muted-foreground block">{isAr ? "التقييم" : "Rating"}</span>
-                            <span className="flex items-center gap-0.5"><Star className="h-3 w-3 fill-amber-400 text-amber-400" /> {p.rating}</span>
-                          </div>
-                          <div>
-                            <span className="text-muted-foreground block">{isAr ? "الحالة" : "Condition"}</span>
-                            <span>{isAr ? "جديد" : "New"}</span>
-                          </div>
-                        </div>
-                        {/* Actions */}
-                        <div className="flex items-center gap-2 pt-1">
-                          <button type="button" onClick={(e) => { e.stopPropagation(); onAddToCart(p.id); }}
-                            className="flex-1 flex items-center justify-center gap-1.5 rounded-md bg-green-600 text-white hover:bg-green-700 py-2 text-xs font-semibold">
-                            <CreditCard className="h-3.5 w-3.5" /> {isAr ? "شراء الآن" : "Buy Now"}
-                          </button>
-                          <button type="button" onClick={(e) => { e.stopPropagation(); onAddToCart(p.id); }}
-                            className="flex-1 flex items-center justify-center gap-1.5 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 py-2 text-xs font-semibold">
-                            <FileText className="h-3.5 w-3.5" /> {isAr ? "طلب أسعار" : "Add to RFQ"}
-                          </button>
-                          <button type="button"
-                            onClick={(e) => { e.stopPropagation(); setSelectedProductId(p.id); setReqMode("vendor"); setActiveTab("customize"); }}
-                            className="flex items-center justify-center gap-1.5 rounded-md border border-amber-400 text-amber-700 hover:bg-amber-50 px-3 py-2 text-xs font-semibold">
-                            <Wrench className="h-3.5 w-3.5" /> {isAr ? "تخصيص" : "Customize"}
-                          </button>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-2">
+                        <span className="text-xs font-semibold line-clamp-2">{p.name}</span>
+                        <div className="text-end shrink-0">
+                          <span className="text-sm font-bold text-primary">{p.price} OMR</span>
+                          {p.originalPrice > p.price && (
+                            <span className="text-[9px] text-muted-foreground line-through block">{p.originalPrice} OMR</span>
+                          )}
                         </div>
                       </div>
-                    )}
+                      <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
+                        <span className="text-[10px] text-muted-foreground">{p.seller}</span>
+                        <Star className="h-3 w-3 fill-amber-400 text-amber-400 shrink-0" />
+                        <span className="text-[10px]">{p.rating} ({p.reviews})</span>
+                        <span className="text-[10px] text-muted-foreground">·</span>
+                        <span className={cn("text-[10px]", p.inStock ? "text-green-600" : "text-destructive")}>
+                          {p.stock > 0 ? `${p.stock} ${isAr ? "متوفر" : "in stock"}` : (isAr ? "غير متوفر" : "Out of stock")}
+                        </span>
+                        {p.brand && <span className="text-[9px] bg-muted px-1 rounded">{p.brand}</span>}
+                        <span className="text-[9px] text-muted-foreground">· {p.delivery}</span>
+                      </div>
+                      {p.description && (
+                        <p className="text-[9px] text-muted-foreground mt-1 line-clamp-2">{p.description}</p>
+                      )}
+                    </div>
                   </div>
-                );
-              })}
+                  {/* Actions — quantity stepper + Cart + Message */}
+                  <div className="flex items-center gap-1.5 mt-2 flex-wrap">
+                    <div className="flex items-center rounded border border-border">
+                      <button type="button" onClick={() => setCardQty(p.productId, getCardQty(p.productId) - 1)}
+                        disabled={getCardQty(p.productId) <= 0}
+                        className="flex h-7 w-7 items-center justify-center text-muted-foreground hover:text-foreground disabled:opacity-30">
+                        <Minus className="h-3 w-3" />
+                      </button>
+                      <span className="flex h-7 w-9 items-center justify-center border-x border-border text-[11px] font-bold">{getCardQty(p.productId)}</span>
+                      <button type="button" onClick={() => setCardQty(p.productId, getCardQty(p.productId) + 1)}
+                        className="flex h-7 w-7 items-center justify-center text-muted-foreground hover:text-foreground">
+                        <Plus className="h-3 w-3" />
+                      </button>
+                    </div>
+                    <button type="button" onClick={() => onAddToCart(p.productId)}
+                      className="flex items-center gap-1 rounded bg-primary text-primary-foreground hover:bg-primary/90 px-3 py-1.5 text-[10px] font-semibold">
+                      <ShoppingCart className="h-3 w-3" /> {isAr ? "سلة" : "Cart"}
+                    </button>
+                    <button type="button"
+                      className="flex items-center gap-1 rounded bg-blue-600 text-white hover:bg-blue-700 px-3 py-1.5 text-[10px] font-semibold">
+                      <MessageSquare className="h-3 w-3" /> {isAr ? "رسالة" : "Message"}
+                    </button>
+                    <button type="button"
+                      onClick={() => { setSelectedProductId(p.productId); setReqMode("vendor"); setActiveTab("customize"); }}
+                      className="flex items-center gap-1 rounded bg-amber-600 text-white hover:bg-amber-700 px-3 py-1.5 text-[10px] font-semibold">
+                      <Wrench className="h-3 w-3" /> {isAr ? "تخصيص" : "Customize"}
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         )}
