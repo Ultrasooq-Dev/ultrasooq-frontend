@@ -1,7 +1,11 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
-import { Plus, Paperclip, X, Package, ChevronRight, FileText, Trash2, ShoppingCart, Search, Loader2, Zap, ScanLine, Camera, Table2, FileSpreadsheet } from "lucide-react";
+import {
+  Plus, Paperclip, X, Package, ChevronRight, FileText, Trash2, ShoppingCart,
+  Search, Loader2, Zap, ScanLine, Camera, Table2, FileSpreadsheet,
+  Store, Users, Wrench, Percent, Briefcase, SlidersHorizontal,
+} from "lucide-react";
 import http from "@/apis/http";
 import { track } from "@/lib/analytics";
 import { extractTextFromImage, parseSpreadsheet, scanBarcodeFromImage } from "./tools";
@@ -17,18 +21,26 @@ export interface RequestItem {
   notes?: string;
 }
 
-// Mock items for UI preview
-const MOCK_ITEMS: RequestItem[] = [
-  { id: "1", name: "Wireless Headphones (Noise Cancelling)", quantity: 50, budgetFrom: 80, budgetTo: 100, type: "SAME", attachments: ["spec.pdf"] },
-  { id: "2", name: "Business Laptops 14-inch", quantity: 10, budgetFrom: 450, budgetTo: 600, type: "SIMILAR", attachments: [] },
-  { id: "3", name: "USB-C Cables 1.5m", quantity: 200, budgetFrom: 1, budgetTo: 3, type: "SAME", attachments: [] },
-  { id: "4", name: "Ergonomic Office Chairs", quantity: 25, budgetFrom: 80, budgetTo: 150, type: "SIMILAR", attachments: ["photo.jpg", "dims.pdf"] },
-  { id: "5", name: "27-inch Monitors 4K", quantity: 10, budgetFrom: 200, budgetTo: 350, type: "SAME", attachments: [] },
-  { id: "6", name: "Mechanical Keyboards RGB", quantity: 30, budgetFrom: 25, budgetTo: 50, type: "SIMILAR", attachments: [] },
-  { id: "7", name: "Webcam HD 1080p", quantity: 20, budgetFrom: 15, budgetTo: 30, type: "SAME", attachments: [] },
-  { id: "8", name: "Wireless Mouse Ergonomic", quantity: 50, budgetFrom: 10, budgetTo: 20, type: "SAME", attachments: [] },
-  { id: "9", name: "Standing Desk Electric", quantity: 5, budgetFrom: 300, budgetTo: 500, type: "SIMILAR", attachments: ["specs.pdf"] },
-  { id: "10", name: "LED Desk Lamps", quantity: 30, budgetFrom: 15, budgetTo: 30, type: "SAME", attachments: [] },
+// ─── Category filter chips (always visible in Panel 2) ──────────
+type CategoryChipKey = "retail" | "wholesale" | "buygroup" | "customizable" | "discount" | "rfq" | "vendor_store" | "service";
+
+interface CategoryChipDef {
+  key: CategoryChipKey;
+  label: string;
+  labelAr: string;
+  icon: React.ElementType;
+  activeClass: string;
+}
+
+const CATEGORY_CHIPS: CategoryChipDef[] = [
+  { key: "retail",        label: "Retail",       labelAr: "تجزئة",         icon: ShoppingCart,      activeClass: "bg-blue-100 dark:bg-blue-950/30 border-blue-300 dark:border-blue-700 text-blue-700 dark:text-blue-300" },
+  { key: "wholesale",     label: "Wholesale",    labelAr: "جملة",          icon: Package,           activeClass: "bg-indigo-100 dark:bg-indigo-950/30 border-indigo-300 dark:border-indigo-700 text-indigo-700 dark:text-indigo-300" },
+  { key: "buygroup",      label: "Buy Group",    labelAr: "مجموعة شراء",   icon: Users,             activeClass: "bg-violet-100 dark:bg-violet-950/30 border-violet-300 dark:border-violet-700 text-violet-700 dark:text-violet-300" },
+  { key: "customizable",  label: "Customizable", labelAr: "قابل للتخصيص",  icon: Wrench,            activeClass: "bg-amber-100 dark:bg-amber-950/30 border-amber-300 dark:border-amber-700 text-amber-700 dark:text-amber-300" },
+  { key: "discount",      label: "Discount",     labelAr: "خصم",           icon: Percent,           activeClass: "bg-rose-100 dark:bg-rose-950/30 border-rose-300 dark:border-rose-700 text-rose-700 dark:text-rose-300" },
+  { key: "rfq",           label: "RFQ",          labelAr: "طلب أسعار",     icon: FileText,          activeClass: "bg-primary/10 border-primary/30 text-primary" },
+  { key: "vendor_store",  label: "Vendor Store", labelAr: "متاجر البائعين", icon: Store,             activeClass: "bg-emerald-100 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-700 text-emerald-700 dark:text-emerald-300" },
+  { key: "service",       label: "Service",      labelAr: "خدمات",          icon: Briefcase,         activeClass: "bg-cyan-100 dark:bg-cyan-950/30 border-cyan-300 dark:border-cyan-700 text-cyan-700 dark:text-cyan-300" },
 ];
 
 interface RequestListPanelProps {
@@ -39,10 +51,23 @@ interface RequestListPanelProps {
   searchQuery?: string;
   sessionId?: string | null;
   locale: string;
+  activeCategories?: Set<string>;
+  onCategoryChange?: (categories: Set<string>) => void;
 }
 
-export default function RequestListPanel({ selectedItemId, onSelectItem, onItemRemoved, onRequestSession, searchQuery, sessionId, locale }: RequestListPanelProps) {
+export default function RequestListPanel({ selectedItemId, onSelectItem, onItemRemoved, onRequestSession, searchQuery, sessionId, locale, activeCategories, onCategoryChange }: RequestListPanelProps) {
   const isAr = locale === "ar";
+
+  // Category chips — use parent-controlled state if provided, otherwise local
+  const [localCategories, setLocalCategories] = useState<Set<string>>(new Set());
+  const chips = activeCategories ?? localCategories;
+  const toggleCategory = (key: string) => {
+    const next = new Set(chips);
+    if (next.has(key)) next.delete(key); else next.add(key);
+    if (onCategoryChange) onCategoryChange(next);
+    else setLocalCategories(next);
+  };
+
   const [inputText, setInputText] = useState("");
   const [attachments, setAttachments] = useState<string[]>([]);
   const fileInputRef = React.useRef<HTMLInputElement>(null);

@@ -29,6 +29,8 @@ export default function ProductHubPage() {
   const [sessionsCollapsed, setSessionsCollapsed] = useState(false);
   const [cartCollapsed, setCartCollapsed] = useState(false);
   const [autoCreatedSessions, setAutoCreatedSessions] = useState<Array<{ id: string; title: string }>>([]);
+  // Shared filter categories between Panel 2 and Panel 3
+  const [activeCategories, setActiveCategories] = useState<Set<string>>(new Set());
 
   // Load persisted state from localStorage on mount (client-only)
   const persistLoaded = useRef(false);
@@ -191,6 +193,8 @@ export default function ProductHubPage() {
         searchQuery={newSearchQuery ?? undefined}
         sessionId={selectedSessionId}
         locale={locale}
+        activeCategories={activeCategories}
+        onCategoryChange={setActiveCategories}
       />
 
       <ItemDetailPanel
@@ -201,6 +205,8 @@ export default function ProductHubPage() {
           trackEvent("rfq_add_to_cart", { productId });
         }}
         locale={locale}
+        activeCategories={activeCategories}
+        onCategoryChange={setActiveCategories}
       />
 
       <CartPanel
