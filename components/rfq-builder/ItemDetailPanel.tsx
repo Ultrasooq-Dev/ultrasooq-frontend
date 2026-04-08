@@ -508,6 +508,9 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
 
 
   const [detailQty, setDetailQty] = useState(1);
+  const [activeMediaIdx, setActiveMediaIdx] = useState(0);
+  // Reset media index when viewing different product
+  useEffect(() => { setActiveMediaIdx(0); }, [viewingProductId]);
   // Per-product quantity map for card steppers
   const [cardQtys, setCardQtys] = useState<Record<number, number>>({});
   const getCardQty = (id: number) => cardQtys[id] ?? 0;
@@ -560,6 +563,12 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
       description: detail?.description || detail?.shortDescription || "",
       specs: detail?.productSpecValues?.map((s: any) => [s.specTemplate?.name || s.key, s.value]) || [],
       images: detail?.productImages?.filter((img: any) => img.image)?.map((img: any) => img.image) || [],
+      videos: detail?.productImages?.filter((img: any) => img.video)?.map((img: any) => img.video) || [],
+      // Combined media: images first, then videos
+      media: [
+        ...(detail?.productImages?.filter((img: any) => img.image)?.map((img: any) => ({ type: "image" as const, src: img.image })) || []),
+        ...(detail?.productImages?.filter((img: any) => img.video)?.map((img: any) => ({ type: "video" as const, src: img.video })) || []),
+      ],
       reviews: detail?.productReview || [],
       brand: detail?.brand?.brandName || "",
       category: detail?.category?.name || "",
@@ -591,25 +600,64 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
 
         {/* Scrollable detail */}
         <div className="flex-1 overflow-y-auto">
-          {/* Image gallery — real images or placeholder */}
-          <div className="bg-muted/20 p-4">
-            {vp.images.length > 0 ? (
+          {/* Image/Video gallery — main + side thumbnails */}
+          <div className="bg-muted/20 p-3">
+            {vp.media.length > 0 ? (
               <div className="flex gap-2">
-                <div className="flex-1 h-48 rounded-lg overflow-hidden bg-muted">
-                  <img src={vp.images[0]} alt={vp.name} className="h-full w-full object-contain" />
+                {/* Main display */}
+                <div className="flex-1 h-56 rounded-lg overflow-hidden bg-muted relative">
+                  {vp.media[activeMediaIdx]?.type === "video" ? (
+                    <video
+                      src={vp.media[activeMediaIdx].src}
+                      controls
+                      className="h-full w-full object-contain"
+                    />
+                  ) : (
+                    <img
+                      src={vp.media[activeMediaIdx]?.src || vp.images[0]}
+                      alt={vp.name}
+                      className="h-full w-full object-contain"
+                    />
+                  )}
+                  {/* Media counter badge */}
+                  {vp.media.length > 1 && (
+                    <span className="absolute bottom-2 end-2 text-[9px] bg-black/60 text-white px-1.5 py-0.5 rounded">
+                      {activeMediaIdx + 1}/{vp.media.length}
+                    </span>
+                  )}
                 </div>
-                {vp.images.length > 1 && (
-                  <div className="flex flex-col gap-1.5 w-14">
-                    {vp.images.slice(0, 4).map((img: string, i: number) => (
-                      <div key={i} className={cn("h-11 rounded border-2 overflow-hidden bg-muted cursor-pointer", i === 0 ? "border-primary" : "border-transparent hover:border-muted-foreground/30")}>
-                        <img src={img} alt="" className="h-full w-full object-cover" />
-                      </div>
+                {/* Side thumbnails */}
+                {vp.media.length > 1 && (
+                  <div className="flex flex-col gap-1.5 w-14 overflow-y-auto max-h-56 scrollbar-thin">
+                    {vp.media.map((m: { type: string; src: string }, i: number) => (
+                      <button
+                        key={i}
+                        type="button"
+                        onClick={() => setActiveMediaIdx(i)}
+                        className={cn(
+                          "h-12 w-14 rounded border-2 overflow-hidden bg-muted shrink-0 relative",
+                          i === activeMediaIdx ? "border-primary ring-1 ring-primary/30" : "border-transparent hover:border-muted-foreground/30"
+                        )}
+                      >
+                        {m.type === "video" ? (
+                          <>
+                            <video src={m.src} className="h-full w-full object-cover" muted />
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                              <div className="h-4 w-4 rounded-full bg-white/80 flex items-center justify-center">
+                                <div className="w-0 h-0 border-t-[3px] border-b-[3px] border-s-[5px] border-transparent border-s-black/70 ms-0.5" />
+                              </div>
+                            </div>
+                          </>
+                        ) : (
+                          <img src={m.src} alt="" className="h-full w-full object-cover" />
+                        )}
+                      </button>
                     ))}
                   </div>
                 )}
               </div>
             ) : (
-              <div className="flex-1 h-32 rounded-lg bg-muted flex items-center justify-center">
+              <div className="flex-1 h-40 rounded-lg bg-muted flex items-center justify-center">
                 <ShoppingCart className="h-12 w-12 text-muted-foreground/10" />
               </div>
             )}
