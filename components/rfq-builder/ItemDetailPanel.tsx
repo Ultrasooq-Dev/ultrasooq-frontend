@@ -136,6 +136,28 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
   const hasActiveChips = activeChipsEarly.size > 0;
   const isBrowseMode = hasActiveChips && !searchTerm?.trim();
 
+  // Shared chip matcher — used by both browse and search modes
+  const matchesChip = (p: any, chip: typeof FILTER_CHIPS[0]) => {
+    const cp = chip.params;
+    const prices: any[] = p.product_productPrice ?? [];
+    if (cp.productType && p.productType !== cp.productType) return false;
+    if (cp.sellType) {
+      const hasSellType = prices.some((pp: any) => pp.sellType === cp.sellType && !pp.deletedAt && pp.status === "ACTIVE");
+      if (!hasSellType) return false;
+    }
+    if (cp.hasDiscount === "true") {
+      const hasDiscount = prices.some((pp: any) => Number(pp.offerPrice) > 0 && Number(pp.offerPrice) < Number(pp.productPrice))
+        || (Number(p.offerPrice) > 0 && Number(p.offerPrice) < Number(p.productPrice));
+      if (!hasDiscount) return false;
+    }
+    if (cp.isCustomProduct === "true") {
+      const isCustom = prices.some((pp: any) => pp.isCustomProduct === "true" || pp.isCustomProduct === true) || p.isCustomProduct === true;
+      if (!isCustom) return false;
+    }
+    if (Object.keys(cp).length === 0) return false;
+    return true;
+  };
+
   // ── Real product search — uses unified intelligent search ──
   // Fires on search term OR chip-only browse
   const productSearchQuery = useQuery({
@@ -157,36 +179,7 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
           });
           const allProducts = res.data?.data ?? [];
 
-          // OR logic: product passes if it matches ANY active chip's criteria
-          const matchesChip = (p: any, chip: typeof FILTER_CHIPS[0]) => {
-            const cp = chip.params;
-            const prices: any[] = p.product_productPrice ?? [];
-            // productType is on Product level
-            if (cp.productType && p.productType !== cp.productType) return false;
-            // sellType is on ProductPrice level
-            if (cp.sellType) {
-              const hasSellType = prices.some((pp: any) => pp.sellType === cp.sellType && !pp.deletedAt && pp.status === "ACTIVE");
-              if (!hasSellType) return false;
-            }
-            // Discount: check ProductPrice level (offerPrice < productPrice)
-            if (cp.hasDiscount === "true") {
-              const hasDiscount = prices.some((pp: any) =>
-                Number(pp.offerPrice) > 0 && Number(pp.offerPrice) < Number(pp.productPrice)
-              ) || (Number(p.offerPrice) > 0 && Number(p.offerPrice) < Number(p.productPrice));
-              if (!hasDiscount) return false;
-            }
-            // Customizable: check ProductPrice level (isCustomProduct field)
-            if (cp.isCustomProduct === "true") {
-              const isCustom = prices.some((pp: any) =>
-                pp.isCustomProduct === "true" || pp.isCustomProduct === true
-              ) || p.isCustomProduct === true;
-              if (!isCustom) return false;
-            }
-            // Chips with no params (vendor_store, service) — not implemented yet
-            if (Object.keys(cp).length === 0) return false;
-            return true;
-          };
-
+          // OR logic using shared matchesChip
           const filtered = activeChipDefs.length > 0
             ? allProducts.filter((p: any) => activeChipDefs.some((chip) => matchesChip(p, chip)))
             : allProducts;
@@ -202,21 +195,37 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
       }
 
       // ── Search mode: term + optional chip filters ──
+      // For single chip, pass params to backend. For multi/no chips, filter client-side after search.
+      const singleChipParams = activeChipDefs.length === 1 ? activeChipDefs[0].params : {};
+      let searchData: any[] = [];
+      let searchTotal = 0;
+
       try {
         const res = await http.get(`${getApiUrl()}/product/search/unified`, {
-          params: { q: cleanTerm, page: searchPage, limit: PRODUCTS_PER_PAGE, ...chipFilterParamsEarly },
+          params: { q: cleanTerm, page: searchPage, limit: hasActiveChips ? 50 : PRODUCTS_PER_PAGE, ...singleChipParams },
         });
-        const data = res.data?.data ?? [];
-        const totalCount = res.data?.totalCount ?? 0;
-        if (Array.isArray(data) && data.length > 0) return { data, totalCount };
+        searchData = res.data?.data ?? [];
+        searchTotal = res.data?.totalCount ?? 0;
       } catch (err: any) {
         console.error("[Search] Unified failed:", err?.response?.status, err?.message);
+        // Fallback to traditional search
+        try {
+          const res = await http.get(`${getApiUrl()}/product/getAllProduct`, { params: { page: searchPage, limit: hasActiveChips ? 50 : PRODUCTS_PER_PAGE, term: cleanTerm } });
+          searchData = res.data?.data ?? [];
+          searchTotal = res.data?.totalCount ?? 0;
+        } catch {}
       }
-      // Fallback to traditional search
-      try {
-        const res = await http.get(`${getApiUrl()}/product/getAllProduct`, { params: { page: searchPage, limit: PRODUCTS_PER_PAGE, term: cleanTerm } });
-        return { data: res.data?.data ?? [], totalCount: res.data?.totalCount ?? 0 };
-      } catch {}
+
+      // If multi-chip active, apply client-side OR filtering on search results
+      if (activeChipDefs.length > 1 && searchData.length > 0) {
+        searchData = searchData.filter((p: any) => activeChipDefs.some((chip) => matchesChip(p, chip)));
+        searchTotal = searchData.length;
+      }
+
+      if (searchData.length > 0) {
+        const page = searchData.slice(0, PRODUCTS_PER_PAGE);
+        return { data: page, totalCount: searchTotal };
+      }
       return { data: [], totalCount: 0 };
     },
     enabled: (!!searchTerm && searchTerm.length >= 1) || hasActiveChips,
