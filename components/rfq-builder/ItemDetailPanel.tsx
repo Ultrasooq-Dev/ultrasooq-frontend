@@ -26,48 +26,22 @@ import { useVendorBusinessCategories } from "@/hooks/useVendorBusinessCategories
 import { useCurrentAccount } from "@/apis/queries/auth.queries";
 import { useCategory } from "@/apis/queries/category.queries";
 import {
-  Star, ShoppingCart, Send, Paperclip, MapPin, Truck, Shield,
-  MessageSquare, FileText, X, Image, Edit3, ChevronDown, ChevronUp,
-  Check, Eye, CreditCard, Zap, Minus, Plus, SlidersHorizontal, ArrowUpDown, RotateCcw, Wrench, ChevronRight, Loader2,
-  Store, Package, Users, Tag, Percent, Briefcase, Layers, LayoutGrid, List, Clock,
+  Star, ShoppingCart, Send, Paperclip,
+  MessageSquare, FileText, X, Image, ChevronDown, ChevronUp,
+  Eye, Zap, Plus, Wrench, Loader2, Tag,
 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
-// ─── Filter chip definitions ────────────────────────────────────
-type FilterChipKey = "retail" | "wholesale" | "buygroup" | "customizable" | "discount" | "rfq" | "vendor_store" | "service";
-
-interface FilterChipDef {
-  key: FilterChipKey;
-  label: string;
-  labelAr: string;
-  icon: React.ElementType;
-  color: string;       // Tailwind ring/bg color suffix
-  /** Maps to backend query params */
-  params: Record<string, string>;
-}
-
-// Active/inactive styles per chip — fully spelled out for Tailwind JIT
-const CHIP_STYLES: Record<string, { active: string; inactive: string }> = {
-  blue:    { active: "bg-blue-100 dark:bg-blue-950/30 border-blue-300 dark:border-blue-700 text-blue-700 dark:text-blue-300 ring-1 ring-blue-200", inactive: "" },
-  indigo:  { active: "bg-indigo-100 dark:bg-indigo-950/30 border-indigo-300 dark:border-indigo-700 text-indigo-700 dark:text-indigo-300 ring-1 ring-indigo-200", inactive: "" },
-  violet:  { active: "bg-violet-100 dark:bg-violet-950/30 border-violet-300 dark:border-violet-700 text-violet-700 dark:text-violet-300 ring-1 ring-violet-200", inactive: "" },
-  amber:   { active: "bg-amber-100 dark:bg-amber-950/30 border-amber-300 dark:border-amber-700 text-amber-700 dark:text-amber-300 ring-1 ring-amber-200", inactive: "" },
-  rose:    { active: "bg-rose-100 dark:bg-rose-950/30 border-rose-300 dark:border-rose-700 text-rose-700 dark:text-rose-300 ring-1 ring-rose-200", inactive: "" },
-  primary: { active: "bg-primary/10 border-primary/30 text-primary ring-1 ring-primary/20", inactive: "" },
-  emerald: { active: "bg-emerald-100 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-700 text-emerald-700 dark:text-emerald-300 ring-1 ring-emerald-200", inactive: "" },
-  cyan:    { active: "bg-cyan-100 dark:bg-cyan-950/30 border-cyan-300 dark:border-cyan-700 text-cyan-700 dark:text-cyan-300 ring-1 ring-cyan-200", inactive: "" },
-};
-
-const FILTER_CHIPS: FilterChipDef[] = [
-  { key: "retail",        label: "Retail",        labelAr: "تجزئة",         icon: ShoppingCart, color: "blue",    params: { productType: "P", sellType: "NORMALSELL" } },
-  { key: "wholesale",     label: "Wholesale",     labelAr: "جملة",          icon: Package,      color: "indigo",  params: { productType: "F" } },
-  { key: "buygroup",      label: "Buy Group",     labelAr: "مجموعة شراء",   icon: Users,        color: "violet",  params: { sellType: "BUYGROUP" } },
-  { key: "customizable",  label: "Customizable",  labelAr: "قابل للتخصيص",  icon: Wrench,       color: "amber",   params: { isCustomProduct: "true" } },
-  { key: "discount",      label: "Discount",      labelAr: "خصم",           icon: Percent,      color: "rose",    params: { hasDiscount: "true" } },
-  { key: "rfq",           label: "RFQ",           labelAr: "طلب أسعار",     icon: FileText,     color: "primary", params: { productType: "R" } },
-  { key: "vendor_store",  label: "Vendor Store",  labelAr: "متاجر البائعين", icon: Store,        color: "emerald", params: {} },
-  { key: "service",       label: "Service",       labelAr: "خدمات",          icon: Briefcase,    color: "cyan",    params: {} },
-];
+// ─── Extracted components ───────────────────────────────────────
+import {
+  FilterChipBar, SortViewBar, AdvancedFilterPanel,
+  FILTER_CHIPS, CHIP_STYLES, CATEGORY_FILTERS,
+  type FilterChipKey, type FilterChipDef,
+} from "./cards/FilterChipBar";
+import { ProductGridCard } from "./cards/ProductGridCard";
+import { ProductListCard } from "./cards/ProductListCard";
+import { ProductDetailView } from "./panels/ProductDetailView";
+import { BuyTab } from "./panels/BuyTab";
 
 // ─── Component ──────────────────────────────────────────────────
 interface ItemDetailPanelProps {
@@ -485,30 +459,6 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
   const [stockOnly, setStockOnly] = useState(true);
   const [discountOnly, setDiscountOnly] = useState(false);
 
-  // Mock category filters — in production, fetched from GET /specification/filters/{categoryId}
-  const CATEGORY_FILTERS: Array<{
-    key: string; name: string; nameAr?: string; dataType: "TEXT" | "NUMBER" | "SELECT" | "MULTI_SELECT" | "BOOLEAN";
-    unit?: string; options?: string; groupName?: string;
-  }> = [
-    { key: "anc_type", name: "Noise Cancelling", nameAr: "إلغاء الضوضاء", dataType: "SELECT", options: "Active ANC,Passive,Adaptive ANC,None", groupName: "Audio" },
-    { key: "bluetooth", name: "Bluetooth", nameAr: "بلوتوث", dataType: "SELECT", options: "5.0,5.1,5.2,5.3", groupName: "Connectivity" },
-    { key: "battery_hours", name: "Battery Life", nameAr: "عمر البطارية", dataType: "NUMBER", unit: "hrs", groupName: "Power" },
-    { key: "driver_size", name: "Driver Size", nameAr: "حجم المحرك", dataType: "NUMBER", unit: "mm", groupName: "Audio" },
-    { key: "weight", name: "Weight", nameAr: "الوزن", dataType: "NUMBER", unit: "g", groupName: "Physical" },
-    { key: "foldable", name: "Foldable", nameAr: "قابل للطي", dataType: "BOOLEAN", groupName: "Physical" },
-    { key: "multipoint", name: "Multipoint", nameAr: "تعدد الاتصال", dataType: "BOOLEAN", groupName: "Connectivity" },
-    { key: "warranty", name: "Warranty", nameAr: "الكفالة", dataType: "SELECT", options: "6 months,1 year,2 years,3 years", groupName: "Support" },
-    { key: "delivery", name: "Delivery", nameAr: "التوصيل", dataType: "SELECT", options: "1-2 days,3-5 days,5-7 days,7+ days", groupName: "Shipping" },
-  ];
-
-  // Group filters by groupName
-  const filterGroups = CATEGORY_FILTERS.reduce<Record<string, typeof CATEGORY_FILTERS>>((acc, f) => {
-    const group = f.groupName ?? "Other";
-    if (!acc[group]) acc[group] = [];
-    acc[group].push(f);
-    return acc;
-  }, {});
-
   const setFilterValue = (key: string, value: any) => {
     setFilterValues((prev) => {
       const next = { ...prev };
@@ -574,27 +524,17 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
       }]
     : [];
 
+  // Per-product quantity map for card steppers
+  const [cardQtys, setCardQtys] = useState<Record<number, number>>({});
+  const getCardQty = (id: number) => cardQtys[id] ?? 0;
+  const setCardQty = (id: number, qty: number) => setCardQtys((prev) => ({ ...prev, [id]: Math.max(0, qty) }));
 
-  const [detailQty, setDetailQty] = useState(1);
-  const [activeMediaIdx, setActiveMediaIdx] = useState(0);
   // Buygroup disclaimer popup
   const [buygroupDisclaimerOpen, setBuygroupDisclaimerOpen] = useState(false);
   const [hasSeenBuygroupDisclaimer, setHasSeenBuygroupDisclaimer] = useState(false);
   const [buygroupPendingProductId, setBuygroupPendingProductId] = useState<number | null>(null);
   const [buygroupPendingQty, setBuygroupPendingQty] = useState(1);
   const [buygroupTimeLeft, setBuygroupTimeLeft] = useState<string | null>(null);
-  // Inline question/review input on product detail
-  const [askingQuestion, setAskingQuestion] = useState(false);
-  const [questionText, setQuestionText] = useState("");
-  const [writingReview, setWritingReview] = useState(false);
-  const [reviewText, setReviewText] = useState("");
-  const [reviewRating, setReviewRating] = useState(5);
-  // Reset media index when viewing different product
-  useEffect(() => { setActiveMediaIdx(0); }, [viewingProductId]);
-  // Per-product quantity map for card steppers
-  const [cardQtys, setCardQtys] = useState<Record<number, number>>({});
-  const getCardQty = (id: number) => cardQtys[id] ?? 0;
-  const setCardQty = (id: number, qty: number) => setCardQtys((prev) => ({ ...prev, [id]: Math.max(0, qty) }));
 
   // ── Fetch full product detail when viewing ──
   const productDetailQuery = useQuery({
@@ -629,52 +569,12 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
     tick(); const iv = setInterval(tick, 1000); return () => clearInterval(iv);
   }, [productDetailQuery?.data, isAr]);
 
-  // ═══ FULL PRODUCT DETAIL VIEW (takes over panel) ═══
-  if (viewingProductId && (viewingProduct || productDetailQuery.data)) {
+  // ── Pricing calculation for ProductDetailView ──
+  const computeDetailPricing = () => {
     const detail = productDetailQuery.data;
     const priceEntry = detail?.product_productPrice?.[0];
-    const sellerDetail = priceEntry?.adminDetail;
-    const sellerName = sellerDetail?.companyName || sellerDetail?.accountName
-      || (sellerDetail?.firstName ? `${sellerDetail.firstName} ${sellerDetail.lastName || ""}`.trim() : null)
-      || viewingProduct?.seller || "Seller";
-    const realPrice = viewingProduct?.price || Number(priceEntry?.offerPrice || detail?.offerPrice || detail?.productPrice || 0);
-    const realOriginalPrice = Number(priceEntry?.productPrice || detail?.productPrice || realPrice);
-    const realStock = priceEntry?.stock ?? viewingProduct?.stock ?? 0;
-    const realReviewCount = detail?.productReview?.length || 0;
-    const realRating = detail?.averageRating || (realReviewCount > 0 ? detail.productReview.reduce((s: number, r: any) => s + (r.rating || 0), 0) / realReviewCount : 0);
-    const sellerProfile = sellerDetail?.userProfile?.[0];
-
-    const vp = {
-      ...(viewingProduct || {}),
-      id: viewingProductId,
-      name: detail?.productName || viewingProduct?.name || "Product",
-      seller: sellerName,
-      sellerVerified: !!sellerProfile,
-      sellerLocation: sellerProfile?.companyAddress || detail?.placeOfOrigin?.countryName || "",
-      price: realPrice,
-      originalPrice: realOriginalPrice,
-      discount: realOriginalPrice > realPrice ? Math.round((1 - realPrice / realOriginalPrice) * 100) : 0,
-      rating: realRating,
-      reviewCount: realReviewCount,
-      stock: realStock,
-      condition: priceEntry?.productCondition || "New",
-      delivery: priceEntry?.deliveryAfter ? `${priceEntry.deliveryAfter} days` : viewingProduct?.delivery || "3-5 days",
-      description: detail?.description || detail?.shortDescription || "",
-      specs: detail?.productSpecValues?.map((s: any) => [s.specTemplate?.name || s.key, s.value]) || [],
-      images: detail?.productImages?.filter((img: any) => img.image)?.map((img: any) => img.image) || [],
-      videos: detail?.productImages?.filter((img: any) => img.video)?.map((img: any) => img.video) || [],
-      // Combined media: images first, then videos
-      media: [
-        ...(detail?.productImages?.filter((img: any) => img.image)?.map((img: any) => ({ type: "image" as const, src: img.image })) || []),
-        ...(detail?.productImages?.filter((img: any) => img.video)?.map((img: any) => ({ type: "video" as const, src: img.video })) || []),
-      ],
-      reviews: detail?.productReview || [],
-      brand: detail?.brand?.brandName || "",
-      category: detail?.category?.name || "",
-      skuNo: detail?.skuNo || "",
-    };
-    // ── Real pricing — EXACT same logic as ProductDescriptionCard ──
     const ppEntry = priceEntry || {};
+
     const pricingInfo = {
       consumerDiscount: ppEntry.consumerDiscount ?? 0,
       consumerDiscountType: ppEntry.consumerDiscountType ?? null,
@@ -688,7 +588,6 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
       askForPrice: ppEntry.askForPrice === "true",
       sellType: ppEntry.sellType ?? "NORMALSELL",
       enableChat: ppEntry.enableChat ?? false,
-      // Buy Group fields
       dateOpen: ppEntry.dateOpen ?? null,
       dateClose: ppEntry.dateClose ?? null,
       startTime: ppEntry.startTime ?? null,
@@ -706,10 +605,8 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
       const price = Number(ppEntry.productPrice ?? detail?.productPrice ?? 0);
       const offerPriceValue = Number(ppEntry.offerPrice ?? detail?.offerPrice ?? 0);
 
-      // Step 1: If offerPrice differs from productPrice, use it directly
       if (offerPriceValue > 0 && offerPriceValue !== price) return offerPriceValue;
 
-      // Step 2: Discount calculation based on consumerType + tradeRole + category match
       const rawConsumerType = pricingInfo.consumerType || "CONSUMER";
       const productConsumerType = typeof rawConsumerType === "string" ? rawConsumerType.toUpperCase().trim() : "CONSUMER";
       const isVendorType = productConsumerType === "VENDOR" || productConsumerType === "VENDORS";
@@ -720,14 +617,13 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
         vendorBusinessCategoryIds,
         categoryId || 0,
         categoryLocation,
-        [] // categoryConnections — would need useCategory query for full support
+        []
       );
 
       let discount = pricingInfo.consumerDiscount || 0;
       let discountType = pricingInfo.consumerDiscountType;
 
       if (currentTradeRole && currentTradeRole !== "BUYER") {
-        // User is VENDOR
         if (isCategoryMatch) {
           if (pricingInfo.vendorDiscount > 0) {
             discount = pricingInfo.vendorDiscount;
@@ -744,16 +640,14 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
           }
         }
       } else {
-        // User is BUYER
         if (isConsumerType || isEveryoneType) {
           discount = pricingInfo.consumerDiscount || 0;
           discountType = pricingInfo.consumerDiscountType;
         } else {
-          discount = 0; // VENDORS-only product — no discount for buyers
+          discount = 0;
         }
       }
 
-      // Step 3: Apply discount
       if (discount > 0 && discountType) {
         if (discountType === "PERCENTAGE") return Number((price - (price * discount) / 100).toFixed(2));
         if (discountType === "FLAT") return Number((price - discount).toFixed(2));
@@ -765,813 +659,67 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
     const originalPrice = Number(ppEntry.productPrice ?? detail?.productPrice ?? 0);
     const hasCalcDiscount = originalPrice > calculatedPrice && calculatedPrice > 0;
     const calcDiscountPct = hasCalcDiscount ? Math.round((1 - calculatedPrice / originalPrice) * 100) : 0;
-    const productReviews = (vp.reviews || []).map((r: any) => ({
-      user: r.user?.firstName || r.userName || "User",
-      rating: r.rating || 4,
-      text: r.description || r.title || "",
-      date: r.createdAt ? new Date(r.createdAt).toLocaleDateString("en", { month: "short", day: "numeric" }) : "",
-    }));
 
+    return { pricingInfo, calculatedPrice, originalPrice, hasCalcDiscount, calcDiscountPct };
+  };
+
+  const openBuygroupDisclaimer = (priceId: number, qty: number) => {
+    setBuygroupPendingProductId(priceId);
+    setBuygroupPendingQty(qty);
+    setBuygroupDisclaimerOpen(true);
+  };
+
+  const currencySymbol = currency?.symbol || "OMR ";
+
+  // ── Shared card props for ProductGridCard / ProductListCard ──
+  const cardCallbacks = {
+    onSelectProduct: onSelectProduct ?? (() => {}),
+    onSetSelectedProductId: setSelectedProductId,
+    onSetActiveTab: setActiveTab,
+    onSetReqMode: setReqMode,
+  };
+
+  // ═══ FULL PRODUCT DETAIL VIEW (takes over panel) ═══
+  if (viewingProductId && (viewingProduct || productDetailQuery.data)) {
+    const pricing = computeDetailPricing();
     return (
-      <div className="flex flex-col h-full min-h-0 bg-background">
-        {/* Back header */}
-        <div className="flex items-center gap-2 px-4 py-2 border-b border-border shrink-0">
-          <button type="button" onClick={() => setViewingProductId(null)}
-            className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground">
-            <ChevronDown className="h-3.5 w-3.5 rotate-90" /> {isAr ? "رجوع" : "Back"}
-          </button>
-          <span className="ms-auto text-xs text-muted-foreground">{vp.seller}</span>
-        </div>
-
-        {/* Scrollable detail */}
-        <div className="flex-1 overflow-y-auto">
-          {/* Image/Video gallery — main + side thumbnails */}
-          <div className="bg-muted/20 p-3">
-            {vp.media.length > 0 ? (
-              <div className="flex gap-2">
-                {/* Main display */}
-                <div className="flex-1 h-56 rounded-lg overflow-hidden bg-muted relative">
-                  {vp.media[activeMediaIdx]?.type === "video" ? (
-                    <video
-                      src={vp.media[activeMediaIdx].src}
-                      controls
-                      className="h-full w-full object-contain"
-                    />
-                  ) : (
-                    <img
-                      src={vp.media[activeMediaIdx]?.src || vp.images[0]}
-                      alt={vp.name}
-                      className="h-full w-full object-contain"
-                    />
-                  )}
-                  {/* Media counter badge */}
-                  {vp.media.length > 1 && (
-                    <span className="absolute bottom-2 end-2 text-[9px] bg-black/60 text-white px-1.5 py-0.5 rounded">
-                      {activeMediaIdx + 1}/{vp.media.length}
-                    </span>
-                  )}
-                </div>
-                {/* Side thumbnails */}
-                {vp.media.length > 1 && (
-                  <div className="flex flex-col gap-1.5 w-14 overflow-y-auto max-h-56 scrollbar-thin">
-                    {vp.media.map((m: { type: string; src: string }, i: number) => (
-                      <button
-                        key={i}
-                        type="button"
-                        onClick={() => setActiveMediaIdx(i)}
-                        className={cn(
-                          "h-12 w-14 rounded border-2 overflow-hidden bg-muted shrink-0 relative",
-                          i === activeMediaIdx ? "border-primary ring-1 ring-primary/30" : "border-transparent hover:border-muted-foreground/30"
-                        )}
-                      >
-                        {m.type === "video" ? (
-                          <>
-                            <video src={m.src} className="h-full w-full object-cover" muted />
-                            <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                              <div className="h-4 w-4 rounded-full bg-white/80 flex items-center justify-center">
-                                <div className="w-0 h-0 border-t-[3px] border-b-[3px] border-s-[5px] border-transparent border-s-black/70 ms-0.5" />
-                              </div>
-                            </div>
-                          </>
-                        ) : (
-                          <img src={m.src} alt="" className="h-full w-full object-cover" />
-                        )}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="flex-1 h-40 rounded-lg bg-muted flex items-center justify-center">
-                <ShoppingCart className="h-12 w-12 text-muted-foreground/10" />
-              </div>
-            )}
-            {productDetailQuery.isLoading && (
-              <div className="flex items-center justify-center py-2">
-                <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                <span className="text-xs text-muted-foreground ms-2">{isAr ? "جاري التحميل..." : "Loading details..."}</span>
-              </div>
-            )}
-          </div>
-
-          <div className="px-4 py-3 space-y-4">
-            {/* Title + Seller side by side */}
-            <div className="flex gap-4">
-              {/* Product info */}
-              <div className="flex-1 min-w-0">
-                <h2 className="text-base font-bold">{selectedProduct?.name ?? vp.seller}</h2>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className="text-xl font-bold text-green-600">{vp.price} OMR</span>
-                  {vp.discount > 0 && (
-                    <>
-                      <span className="text-sm text-muted-foreground line-through">{vp.originalPrice} OMR</span>
-                      <span className="text-xs bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-1.5 py-0.5 rounded font-semibold">-{vp.discount}%</span>
-                    </>
-                  )}
-                </div>
-                <div className="flex items-center gap-1 mt-1.5">
-                  {[1, 2, 3, 4, 5].map((s) => (
-                    <Star key={s} className={cn("h-3.5 w-3.5", s <= Math.round(vp.rating) ? "fill-amber-400 text-amber-400" : "text-muted-foreground/20")} />
-                  ))}
-                  <span className="text-xs text-muted-foreground ms-1">{vp.rating > 0 ? vp.rating.toFixed(1) : "—"} ({vp.reviewCount})</span>
-                </div>
-              </div>
-
-              {/* Seller card — beside product name */}
-              <div className="shrink-0 w-36 rounded-lg border border-border p-2.5 bg-muted/10">
-                <div className="flex items-center gap-2 mb-1.5">
-                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs font-bold shrink-0">
-                    {vp.seller.charAt(0)}
-                  </div>
-                  <div className="min-w-0">
-                    <span className="text-[10px] font-semibold block truncate">{vp.seller}</span>
-                    {vp.sellerVerified && <span className="text-[8px] text-green-600 flex items-center gap-0.5"><Check className="h-2 w-2" />{isAr ? "موثق" : "Verified"}</span>}
-                  </div>
-                </div>
-                <div className="flex items-center justify-between text-[9px] text-muted-foreground">
-                  {vp.sellerLocation && <span className="flex items-center gap-0.5"><MapPin className="h-2.5 w-2.5" /> {vp.sellerLocation}</span>}
-                  <span className="flex items-center gap-0.5"><Star className="h-2.5 w-2.5 fill-amber-400 text-amber-400" /> {vp.rating > 0 ? vp.rating.toFixed(1) : "—"}</span>
-                </div>
-                <div className="text-[8px] text-muted-foreground mt-1">
-                  {vp.stock > 0 ? <span className="text-green-600">{vp.stock} {isAr ? "متوفر" : "in stock"}</span> : <span className="text-amber-600">{isAr ? "اتصل للتوفر" : "Contact for availability"}</span>}
-                </div>
-                <button type="button" className="w-full mt-1.5 text-[9px] font-medium text-primary border border-primary/30 rounded py-1 hover:bg-primary/5">
-                  {isAr ? "زيارة المتجر" : "Visit Store"}
-                </button>
-              </div>
-            </div>
-
-            {/* Product info + badges row */}
-            <div className="flex items-end gap-4">
-              <div className="flex flex-wrap gap-2 text-[10px]">
-                {vp.brand && <span className="bg-muted px-2 py-0.5 rounded font-medium">{vp.brand}</span>}
-                {vp.category && <span className="bg-muted px-2 py-0.5 rounded">{vp.category}</span>}
-                {vp.skuNo && <span className="bg-muted px-2 py-0.5 rounded text-muted-foreground">SKU: {vp.skuNo}</span>}
-              </div>
-              <div className="flex flex-wrap gap-1.5">
-                {vp.stock > 0 && (
-                  <span className="flex items-center gap-1 text-[9px] bg-green-50 dark:bg-green-950/20 text-green-700 px-1.5 py-0.5 rounded">
-                    <Zap className="h-2.5 w-2.5" /> {vp.stock} {isAr ? "متوفر" : "in stock"}
-                  </span>
-                )}
-                <span className="flex items-center gap-1 text-[9px] bg-muted px-1.5 py-0.5 rounded">
-                  <Shield className="h-2.5 w-2.5" /> {vp.condition}
-                </span>
-                <span className="flex items-center gap-1 text-[9px] bg-muted px-1.5 py-0.5 rounded">
-                  <Truck className="h-2.5 w-2.5" /> {vp.delivery}
-                </span>
-              </div>
-            </div>
-
-            {/* Pricing & Rules — EXACT logic from ProductDescriptionCard */}
-            <div className="space-y-2">
-              <h3 className="text-[11px] font-semibold">{isAr ? "التسعير والقواعد" : "Pricing & Rules"}</h3>
-
-              {/* Ask for price */}
-              {pricingInfo.askForPrice ? (
-                <div className="rounded-lg border border-amber-300 bg-amber-50/50 dark:bg-amber-950/10 p-3 text-center">
-                  <p className="text-xs font-semibold text-amber-700">{isAr ? "اتصل بالبائع للحصول على السعر" : "Contact seller for pricing"}</p>
-                  <button type="button" className="mt-1.5 flex items-center gap-1 mx-auto rounded bg-amber-600 text-white hover:bg-amber-700 px-3 py-1.5 text-[10px] font-semibold">
-                    <MessageSquare className="h-3 w-3" /> {isAr ? "رسالة" : "Message Seller"}
-                  </button>
-                </div>
-              ) : (
-                <>
-                  {/* Price display — uses calculated price */}
-                  <div className="flex items-baseline gap-2 flex-wrap">
-                    <span className="text-lg font-bold text-foreground">{(currency?.symbol || "OMR ")}{calculatedPrice}</span>
-                    {hasCalcDiscount && (
-                      <>
-                        <span className="text-xs text-muted-foreground line-through">{(currency?.symbol || "OMR ")}{originalPrice}</span>
-                        <span className="text-[10px] font-semibold text-green-600">-{calcDiscountPct}%</span>
-                      </>
-                    )}
-                  </div>
-
-                  {/* Buy Group timer — live countdown */}
-                  {pricingInfo.sellType === "BUYGROUP" && pricingInfo.dateClose && (
-                    <div className="rounded-lg border border-amber-300/50 bg-amber-50/30 dark:bg-amber-950/10 p-2.5">
-                      <div className="flex items-center gap-1.5 text-[10px]">
-                        <Clock className="h-3 w-3 text-amber-600" />
-                        <span className="font-semibold text-amber-700">{isAr ? "مجموعة شراء" : "Group Buy"}</span>
-                        {buygroupTimeLeft && (
-                          <span className={cn(
-                            "px-1.5 py-0.5 rounded-full text-[9px] font-bold text-white",
-                            buygroupTimeLeft === (isAr ? "انتهى" : "Expired") ? "bg-muted-foreground" :
-                            buygroupTimeLeft === (isAr ? "لم يبدأ بعد" : "Not Started") ? "bg-amber-500" :
-                            "bg-destructive"
-                          )}>
-                            {buygroupTimeLeft}
-                          </span>
-                        )}
-                      </div>
-                      {(pricingInfo.minCustomer || pricingInfo.maxCustomer) && (
-                        <div className="text-[9px] text-muted-foreground mt-1">
-                          {pricingInfo.minCustomer && `${isAr ? "الحد الأدنى" : "Min"} ${pricingInfo.minCustomer} ${isAr ? "مشتري" : "buyers"}`}
-                          {pricingInfo.minCustomer && pricingInfo.maxCustomer && " — "}
-                          {pricingInfo.maxCustomer && `${isAr ? "الحد الأقصى" : "Max"} ${pricingInfo.maxCustomer} ${isAr ? "مشتري" : "buyers"}`}
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                  <div className="grid grid-cols-2 gap-1.5">
-                    {/* Sell type */}
-                    <div className="rounded border border-border p-2">
-                      <span className="text-[9px] text-muted-foreground block">{isAr ? "نوع البيع" : "Sell Type"}</span>
-                      <span className="text-[10px] font-semibold">
-                        {pricingInfo.sellType === "NORMALSELL" ? (isAr ? "تجزئة" : "Retail") :
-                         pricingInfo.sellType === "BUYGROUP" ? (isAr ? "مجموعة شراء" : "Buy Group") :
-                         pricingInfo.sellType === "WHOLESALE_PRODUCT" ? (isAr ? "جملة" : "Wholesale") :
-                         pricingInfo.sellType === "TRIAL_PRODUCT" ? (isAr ? "تجريبي" : "Trial") :
-                         pricingInfo.sellType}
-                      </span>
-                    </div>
-
-                    {/* Consumer type */}
-                    <div className="rounded border border-border p-2">
-                      <span className="text-[9px] text-muted-foreground block">{isAr ? "الفئة المستهدفة" : "Target"}</span>
-                      <span className="text-[10px] font-semibold">
-                        {pricingInfo.consumerType === "CONSUMER" ? (isAr ? "مستهلكين" : "Consumers") :
-                         pricingInfo.consumerType === "VENDORS" ? (isAr ? "تجار فقط" : "Vendors Only") :
-                         pricingInfo.consumerType === "EVERYONE" ? (isAr ? "الجميع" : "Everyone") :
-                         pricingInfo.consumerType}
-                      </span>
-                    </div>
-
-                    {/* Discount details (raw, before role-based calculation) */}
-                    {pricingInfo.consumerDiscount > 0 && (
-                      <div className="rounded border border-green-200 bg-green-50/50 dark:bg-green-950/10 p-2">
-                        <span className="text-[9px] text-muted-foreground block">{isAr ? "خصم المستهلك" : "Consumer Discount"}</span>
-                        <span className="text-[10px] font-bold text-green-600">
-                          {pricingInfo.consumerDiscountType === "FLAT" ? `${pricingInfo.consumerDiscount} OMR off` : `${pricingInfo.consumerDiscount}%`}
-                        </span>
-                      </div>
-                    )}
-                    {pricingInfo.vendorDiscount > 0 && (
-                      <div className="rounded border border-blue-200 bg-blue-50/50 dark:bg-blue-950/10 p-2">
-                        <span className="text-[9px] text-muted-foreground block">{isAr ? "خصم التجار" : "Vendor Discount"}</span>
-                        <span className="text-[10px] font-bold text-blue-600">
-                          {pricingInfo.vendorDiscountType === "FLAT" ? `${pricingInfo.vendorDiscount} OMR off` : `${pricingInfo.vendorDiscount}%`}
-                        </span>
-                      </div>
-                    )}
-
-                    {/* Quantity limits */}
-                    {(pricingInfo.minQuantity > 1 || pricingInfo.maxQuantity) && (
-                      <div className="rounded border border-border p-2">
-                        <span className="text-[9px] text-muted-foreground block">{isAr ? "الكمية" : "Quantity"}</span>
-                        <span className="text-[10px] font-semibold">
-                          {isAr ? "من" : "Min"} {pricingInfo.minQuantity}
-                          {pricingInfo.maxQuantity && ` — ${isAr ? "إلى" : "Max"} ${pricingInfo.maxQuantity}`}
-                        </span>
-                      </div>
-                    )}
-
-                    {/* Stock */}
-                    <div className="rounded border border-border p-2">
-                      <span className="text-[9px] text-muted-foreground block">{isAr ? "المخزون" : "Stock"}</span>
-                      <span className={cn("text-[10px] font-semibold", vp.stock > 0 ? "text-green-600" : "text-destructive")}>
-                        {vp.stock > 0 ? `${vp.stock} ${isAr ? "قطعة" : "available"}` : (isAr ? "غير متوفر" : "Out of stock")}
-                      </span>
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
-
-            {/* Description */}
-            <div>
-              <h3 className="text-[11px] font-semibold mb-1">{isAr ? "الوصف" : "Description"}</h3>
-              <p className="text-xs text-muted-foreground leading-relaxed">{vp.description}</p>
-            </div>
-
-            {/* Specifications */}
-            <div>
-              <h3 className="text-[11px] font-semibold mb-1">{isAr ? "المواصفات" : "Specifications"}</h3>
-              <div className="rounded-lg border border-border overflow-hidden">
-                {(vp.specs && vp.specs.length > 0) ? vp.specs.map(([key, val]: string[], i: number) => (
-                  <div key={i} className={cn("flex items-center px-3 py-1.5 text-xs", i % 2 === 0 ? "bg-muted/30" : "bg-background")}>
-                    <span className="text-muted-foreground w-24 shrink-0">{key}</span>
-                    <span className="font-medium">{val}</span>
-                  </div>
-                )) : (
-                  <div className="px-3 py-4 text-center text-xs text-muted-foreground">{isAr ? "لا توجد مواصفات" : "Specs will be available soon"}</div>
-                )}
-              </div>
-            </div>
-
-            {/* Reviews */}
-            <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <h3 className="text-[11px] font-semibold">{isAr ? "التقييمات" : "Reviews"} ({productReviews.length})</h3>
-              </div>
-              {productReviews.length > 0 ? (
-                <div className="space-y-2">
-                  {productReviews.map((r: any, i: number) => (
-                    <div key={i} className="rounded-lg border border-border p-2.5">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-1.5">
-                          <div className="h-6 w-6 rounded-full bg-muted flex items-center justify-center text-[9px] font-bold">{r.user?.charAt(0) || "U"}</div>
-                          <span className="text-[11px] font-semibold">{r.user}</span>
-                        </div>
-                        <div className="flex items-center gap-0.5">
-                          {[1, 2, 3, 4, 5].map((s) => (
-                            <Star key={s} className={cn("h-2.5 w-2.5", s <= r.rating ? "fill-amber-400 text-amber-400" : "text-muted-foreground/20")} />
-                          ))}
-                        </div>
-                      </div>
-                      <p className="text-[10px] text-muted-foreground mt-1">{r.text}</p>
-                      <span className="text-[8px] text-muted-foreground/60 mt-0.5 block">{r.date}</span>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="space-y-2">
-                  {/* Inline review input */}
-                  {writingReview && (
-                    <div className="rounded-lg border border-amber-300/50 bg-amber-50/30 dark:bg-amber-950/10 p-2.5 space-y-2">
-                      <div className="flex items-center gap-1">
-                        <span className="text-[10px] text-muted-foreground me-1">{isAr ? "تقييمك" : "Your rating"}</span>
-                        {[1, 2, 3, 4, 5].map((r) => (
-                          <button key={r} type="button" onClick={() => setReviewRating(r)} className="p-0.5">
-                            <Star className={cn("h-4 w-4", r <= reviewRating ? "fill-amber-400 text-amber-400" : "text-muted-foreground/20")} />
-                          </button>
-                        ))}
-                      </div>
-                      <textarea
-                        value={reviewText}
-                        onChange={(e) => setReviewText(e.target.value)}
-                        placeholder={isAr ? "اكتب تقييمك..." : "Write your review..."}
-                        rows={3}
-                        className="w-full text-xs rounded border border-border bg-background px-2.5 py-2 outline-none focus:ring-1 focus:ring-amber-400 resize-none placeholder:text-muted-foreground"
-                      />
-                      <div className="flex items-center gap-2">
-                        <button type="button"
-                          disabled={!reviewText.trim()}
-                          onClick={() => {
-                            // TODO: POST to /product/review API
-                            track("product_review_submitted", { productId: vp.id, rating: reviewRating });
-                            setReviewText(""); setWritingReview(false); setReviewRating(5);
-                          }}
-                          className="flex items-center gap-1 rounded bg-amber-600 text-white hover:bg-amber-700 disabled:opacity-50 px-3 py-1.5 text-[10px] font-semibold">
-                          <Send className="h-3 w-3" /> {isAr ? "إرسال" : "Submit"}
-                        </button>
-                        <button type="button" onClick={() => { setWritingReview(false); setReviewText(""); }}
-                          className="text-[10px] text-muted-foreground hover:text-foreground px-2 py-1.5">
-                          {isAr ? "إلغاء" : "Cancel"}
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                  <div className="rounded-lg border border-border p-4 text-center">
-                    <p className="text-xs text-muted-foreground">{isAr ? "لا توجد تقييمات بعد" : "No reviews yet"}</p>
-                    <button type="button"
-                      onClick={() => setWritingReview(true)}
-                      className="text-[10px] text-primary font-medium mt-1 hover:underline">
-                      {isAr ? "كن أول من يقيم هذا المنتج" : "Be the first to review this product →"}
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Q&A */}
-            <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <h3 className="text-[11px] font-semibold">{isAr ? "أسئلة وأجوبة" : "Q&A"}</h3>
-                <button type="button"
-                  onClick={() => setAskingQuestion(!askingQuestion)}
-                  className="text-[10px] text-primary hover:underline">
-                  {askingQuestion ? (isAr ? "إلغاء" : "Cancel") : (isAr ? "اسأل سؤال" : "Ask a question")}
-                </button>
-              </div>
-              {/* Inline question input */}
-              {askingQuestion && (
-                <div className="rounded-lg border border-primary/30 bg-primary/5 p-2.5 mb-2 space-y-2">
-                  <textarea
-                    value={questionText}
-                    onChange={(e) => setQuestionText(e.target.value)}
-                    placeholder={isAr ? "اكتب سؤالك عن هذا المنتج..." : "Write your question about this product..."}
-                    rows={3}
-                    className="w-full text-xs rounded border border-border bg-background px-2.5 py-2 outline-none focus:ring-1 focus:ring-primary resize-none placeholder:text-muted-foreground"
-                  />
-                  <div className="flex items-center gap-2">
-                    <button type="button"
-                      disabled={!questionText.trim()}
-                      onClick={() => {
-                        // TODO: POST to /product/question API
-                        track("product_question_asked", { productId: vp.id, text: questionText });
-                        setQuestionText(""); setAskingQuestion(false);
-                      }}
-                      className="flex items-center gap-1 rounded bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 px-3 py-1.5 text-[10px] font-semibold">
-                      <Send className="h-3 w-3" /> {isAr ? "إرسال" : "Submit"}
-                    </button>
-                    <button type="button" onClick={() => { setAskingQuestion(false); setQuestionText(""); }}
-                      className="text-[10px] text-muted-foreground hover:text-foreground px-2 py-1.5">
-                      {isAr ? "إلغاء" : "Cancel"}
-                    </button>
-                  </div>
-                </div>
-              )}
-              <div className="rounded-lg border border-border p-4 text-center">
-                <p className="text-xs text-muted-foreground">{isAr ? "لا توجد أسئلة بعد" : "No questions yet"}</p>
-                <button type="button"
-                  onClick={() => setAskingQuestion(true)}
-                  className="text-[10px] text-primary font-medium mt-1 hover:underline">
-                  {isAr ? "اسأل البائع عن هذا المنتج" : "Ask the seller about this product →"}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Sticky bottom: qty + add to cart + RFQ option */}
-        <div className="border-t border-border px-4 py-2.5 shrink-0">
-          <div className="flex items-center gap-2">
-            <div className="flex items-center">
-              <button type="button" onClick={() => setDetailQty((q) => Math.max(1, q - 1))}
-                className="flex h-8 w-8 items-center justify-center rounded-s-md border border-border bg-muted text-muted-foreground hover:bg-muted/80">
-                <Minus className="h-3 w-3" />
-              </button>
-              <div className="flex h-8 w-12 items-center justify-center border-y border-border bg-background text-sm font-semibold">{detailQty}</div>
-              <button type="button" onClick={() => setDetailQty((q) => q + 1)}
-                className="flex h-8 w-8 items-center justify-center rounded-e-md border border-border bg-muted text-muted-foreground hover:bg-muted/80">
-                <Plus className="h-3 w-3" />
-              </button>
-            </div>
-            {/* Buy/Book button — connects to real cart with productPriceId */}
-            <button type="button" onClick={() => {
-              const ppId = priceEntry?.id;
-              if (!ppId) return;
-              if (pricingInfo.sellType === "BUYGROUP" && !hasSeenBuygroupDisclaimer) {
-                setBuygroupPendingProductId(ppId);
-                setBuygroupPendingQty(detailQty);
-                setBuygroupDisclaimerOpen(true);
-                return;
-              }
-              onAddToCart(ppId, detailQty);
-            }}
-              className={cn("flex-1 flex items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-bold",
-                pricingInfo.sellType === "BUYGROUP" ? "bg-amber-600 text-white hover:bg-amber-700" : "bg-green-600 text-white hover:bg-green-700")}>
-              <CreditCard className="h-3.5 w-3.5" />
-              {pricingInfo.sellType === "BUYGROUP" ? (isAr ? "حجز" : "Book") : (isAr ? "شراء" : "Buy")} — {calculatedPrice * detailQty} {currency?.symbol || "OMR"}
-            </button>
-            {/* RFQ button — connects to RFQ cart */}
-            <button type="button" onClick={() => {
-              onAddToRfqCart?.(vp.id);
-              setSelectedProductId(vp.id); setReqMode("rfq"); setViewingProductId(null); setActiveTab("customize");
-            }}
-              className="flex items-center justify-center gap-1 rounded-lg border border-primary text-primary hover:bg-primary/5 px-3 py-2 text-xs font-semibold">
-              <FileText className="h-3.5 w-3.5" /> RFQ
-            </button>
-          </div>
-        </div>
-      </div>
+      <ProductDetailView
+        locale={locale}
+        currencySymbol={currencySymbol}
+        viewingProductId={viewingProductId}
+        viewingProduct={viewingProduct}
+        productDetailQuery={productDetailQuery}
+        selectedProduct={selectedProduct}
+        calculatedPrice={pricing.calculatedPrice}
+        originalPrice={pricing.originalPrice}
+        hasCalcDiscount={pricing.hasCalcDiscount}
+        calcDiscountPct={pricing.calcDiscountPct}
+        pricingInfo={pricing.pricingInfo}
+        buygroupTimeLeft={buygroupTimeLeft}
+        onBack={() => setViewingProductId(null)}
+        onAddToCart={onAddToCart}
+        onAddToRfqCart={onAddToRfqCart}
+        onSetSelectedProductId={setSelectedProductId}
+        onSetReqMode={setReqMode}
+        onSetViewingProductId={setViewingProductId}
+        onSetActiveTab={setActiveTab}
+        hasSeenBuygroupDisclaimer={hasSeenBuygroupDisclaimer}
+        onOpenBuygroupDisclaimer={openBuygroupDisclaimer}
+      />
     );
   }
 
-  // ═══ Grid card — matches buygroup page ProductCard layout ═══
-  const renderGridCard = (p: any, opts?: { isRecommended?: boolean }) => {
-    const isBg = p.isBuygroup || p.sellType === "BUYGROUP";
-    const hasDiscount = p.originalPrice && p.originalPrice > p.price && p.price > 0;
-    const discountPct = hasDiscount ? Math.round((1 - p.price / p.originalPrice) * 100) : 0;
-    const totalStock = p.stock ?? 0;
-    const soldCount = p.sold ?? 0;
-    const remaining = Math.max(0, totalStock - soldCount);
-    const soldPct = totalStock > 0 ? Math.round((soldCount / totalStock) * 100) : 0;
-    const remainPct = 100 - soldPct;
-
-    // Buygroup timer — compute inline (no useEffect needed, parent timer updates)
-    let cardTimer: string | null = null;
-    if (isBg && p.dateClose) {
-      const getTs = (ds: string, ts?: string) => { const d = new Date(ds); if (ts) { const [h, m] = ts.split(":").map(Number); d.setHours(h || 0, m || 0, 0, 0); } return d.getTime(); };
-      const now = Date.now();
-      const startTs = p.dateOpen ? getTs(p.dateOpen, p.startTime) : 0;
-      const endTs = getTs(p.dateClose, p.endTime);
-      if (startTs && now < startTs) cardTimer = isAr ? "لم يبدأ" : "Coming Soon";
-      else if (now > endTs) cardTimer = isAr ? "انتهى" : "Expired";
-      else {
-        const ms = endTs - now; const s = Math.floor(ms / 1000);
-        cardTimer = `${Math.floor(s / 86400)} ${isAr ? "يوم" : "Days"}; ${String(Math.floor((s % 86400) / 3600)).padStart(2, "0")}:${String(Math.floor((s % 3600) / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
-      }
-    }
-    const isExpired = cardTimer === (isAr ? "انتهى" : "Expired");
-    const isComingSoon = cardTimer === (isAr ? "لم يبدأ" : "Coming Soon");
-
-    return (
-      <div
-        key={`grid-${p.id}`}
-        className={cn(
-          "flex flex-col rounded-xl border bg-background shadow-sm overflow-hidden transition-all hover:shadow-md",
-          p.id === selectedProductId ? "border-primary ring-2 ring-primary/20" : "border-border"
-        )}
-      >
-        {/* Image area + timer badge + action icons */}
-        <div className="relative bg-muted/30 h-36 flex items-center justify-center group">
-          {p.image ? (
-            <img src={p.image} alt="" className="h-full w-full object-contain p-2" />
-          ) : (
-            <ShoppingCart className="h-10 w-10 text-muted-foreground/15" />
-          )}
-          {/* Timer badge (buygroup) */}
-          {cardTimer && (
-            <span className={cn(
-              "absolute top-2 end-2 px-2 py-0.5 rounded text-[9px] font-bold text-white",
-              isExpired ? "bg-muted-foreground" : isComingSoon ? "bg-amber-500" : "bg-destructive"
-            )}>
-              {cardTimer}
-            </span>
-          )}
-          {/* Discount badge */}
-          {hasDiscount && !isBg && (
-            <span className="absolute top-2 start-2 px-1.5 py-0.5 rounded bg-rose-500 text-white text-[9px] font-bold">
-              -{discountPct}%
-            </span>
-          )}
-          {/* Hover action icons */}
-          <div className="absolute top-2 end-2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity" style={cardTimer ? { top: "2rem" } : {}}>
-            <button type="button" onClick={(e) => { e.stopPropagation(); setSelectedProductId(p.id); setActiveTab("buynow"); onSelectProduct?.(p); }}
-              className="flex h-7 w-7 items-center justify-center rounded-full bg-white/80 shadow hover:bg-white" title={isAr ? "عرض" : "View"}>
-              <Eye className="h-3.5 w-3.5 text-muted-foreground" />
-            </button>
-          </div>
-          {/* Suggested badge */}
-          {opts?.isRecommended && (
-            <span className="absolute bottom-2 start-2 text-[8px] bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded font-medium">{isAr ? "مقترح" : "Suggested"}</span>
-          )}
-        </div>
-
-        {/* Product info */}
-        <div className="p-2.5 flex-1 flex flex-col">
-          <button type="button"
-            onClick={() => { setSelectedProductId(p.id); setActiveTab("buynow"); onSelectProduct?.(p); }}
-            className="text-[11px] font-semibold line-clamp-2 leading-tight text-start hover:text-primary transition-colors">
-            {p.name}
-          </button>
-          {/* Rating */}
-          <div className="flex items-center gap-0.5 mt-1">
-            {[1, 2, 3, 4, 5].map((s) => (
-              <Star key={s} className={cn("h-3 w-3", s <= Math.round(p.rating ?? 0) ? "fill-amber-400 text-amber-400" : "text-muted-foreground/20")} />
-            ))}
-            <span className="text-[9px] text-muted-foreground ms-0.5">({p.reviews ?? 0})</span>
-          </div>
-          <span className="text-[9px] text-muted-foreground mt-0.5">{p.seller}</span>
-
-          {/* Price */}
-          <div className="mt-auto pt-2">
-            <span className="text-sm font-bold text-primary">{currency?.symbol || "OMR"}{p.price}</span>
-            {hasDiscount && (
-              <span className="text-[9px] text-muted-foreground line-through ms-1">{currency?.symbol || "OMR"}{p.originalPrice}</span>
-            )}
-          </div>
-        </div>
-
-        {/* Quantity stepper */}
-        <div className="px-2.5 pb-1">
-          <span className="text-[9px] text-muted-foreground">{isAr ? "الكمية" : "Quantity"}</span>
-          <div className="flex items-center justify-center gap-0 mt-0.5" onClick={(e) => e.stopPropagation()}>
-            <button type="button" onClick={() => setCardQty(p.id, Math.max(0, getCardQty(p.id) - 1))}
-              disabled={getCardQty(p.id) <= 0}
-              className="flex h-7 w-7 items-center justify-center rounded-s border border-border bg-muted text-muted-foreground disabled:opacity-30">
-              <Minus className="h-3 w-3" />
-            </button>
-            <div className="flex h-7 w-10 items-center justify-center border-y border-border bg-background text-xs font-bold">
-              {getCardQty(p.id)}
-            </div>
-            <button type="button" onClick={() => setCardQty(p.id, getCardQty(p.id) + 1)}
-              className="flex h-7 w-7 items-center justify-center rounded-e border border-border bg-muted text-muted-foreground">
-              <Plus className="h-3 w-3" />
-            </button>
-          </div>
-        </div>
-
-        {/* Action button */}
-        <div className="px-2.5 pb-2">
-          {isExpired ? (
-            <div className="w-full py-2 text-center rounded-lg bg-muted text-muted-foreground text-[10px] font-semibold">
-              {isAr ? "انتهى" : "Expired"}
-            </div>
-          ) : isComingSoon ? (
-            <div className="w-full py-2 text-center rounded-lg bg-amber-100 text-amber-700 text-[10px] font-semibold">
-              {isAr ? "قريباً" : "Coming Soon"}
-            </div>
-          ) : isBg ? (
-            <button type="button"
-              onClick={(e) => { e.stopPropagation(); setSelectedProductId(p.id); setActiveTab("buynow"); }}
-              className="w-full flex items-center justify-center gap-1.5 rounded-lg bg-gradient-to-r from-rose-400 to-rose-500 text-white py-2 text-[11px] font-bold hover:from-rose-500 hover:to-rose-600 transition-all">
-              <ShoppingCart className="h-3.5 w-3.5" /> {isAr ? "حجز" : "Book"}
-            </button>
-          ) : (
-            <div className="flex gap-1">
-              <button type="button"
-                onClick={(e) => { e.stopPropagation(); setSelectedProductId(p.id); setActiveTab("buynow"); }}
-                className="flex-1 flex items-center justify-center gap-1 rounded-lg bg-green-600 text-white py-2 text-[10px] font-bold hover:bg-green-700">
-                <ShoppingCart className="h-3 w-3" /> {isAr ? "شراء" : "Buy"}
-              </button>
-              <button type="button"
-                onClick={(e) => { e.stopPropagation(); setSelectedProductId(p.id); setReqMode("rfq"); setActiveTab("customize"); }}
-                className="flex-1 flex items-center justify-center gap-1 rounded-lg bg-amber-600 text-white py-2 text-[10px] font-bold hover:bg-amber-700">
-                <FileText className="h-3 w-3" /> RFQ
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* Progress bar (buygroup only) */}
-        {isBg && totalStock > 0 && (
-          <div className="px-2.5 pb-2">
-            <div className="h-1.5 rounded-full bg-muted overflow-hidden">
-              <div className="h-full rounded-full bg-gradient-to-r from-amber-400 to-rose-500 transition-all" style={{ width: `${Math.max(5, remainPct)}%` }} />
-            </div>
-            <div className="flex items-center justify-between mt-0.5 text-[8px] text-muted-foreground">
-              <span>{isAr ? "تم البيع" : "Sold"}: {soldCount}</span>
-              <span>{remainPct}% {isAr ? "متبقي" : "left"}</span>
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  };
-
-  // ═══ List card — matches same features as grid card ═══
-  const renderListCard = (p: any, opts?: { isRecommended?: boolean; showSelection?: boolean }) => {
-    const isBg = p.isBuygroup || p.sellType === "BUYGROUP";
-    const hasDiscount = p.originalPrice && p.originalPrice > p.price && p.price > 0;
-    const discountPct = hasDiscount ? Math.round((1 - p.price / p.originalPrice) * 100) : 0;
-    const totalStock = p.stock ?? 0;
-    const soldCount = p.sold ?? 0;
-    const remainPct = totalStock > 0 ? 100 - Math.round((soldCount / totalStock) * 100) : 100;
-    const isSel = opts?.showSelection && p.id === selectedProductId;
-
-    // Buygroup timer inline
-    let cardTimer: string | null = null;
-    if (isBg && p.dateClose) {
-      const getTs = (ds: string, ts?: string) => { const d = new Date(ds); if (ts) { const [h, m] = ts.split(":").map(Number); d.setHours(h || 0, m || 0, 0, 0); } return d.getTime(); };
-      const now = Date.now();
-      const startTs = p.dateOpen ? getTs(p.dateOpen, p.startTime) : 0;
-      const endTs = getTs(p.dateClose, p.endTime);
-      if (startTs && now < startTs) cardTimer = isAr ? "لم يبدأ" : "Coming Soon";
-      else if (now > endTs) cardTimer = isAr ? "انتهى" : "Expired";
-      else { const ms = endTs - now; const s = Math.floor(ms / 1000); cardTimer = `${Math.floor(s / 86400)} ${isAr ? "يوم" : "Days"}; ${String(Math.floor((s % 86400) / 3600)).padStart(2, "0")}:${String(Math.floor((s % 3600) / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`; }
-    }
-    const isExpired = cardTimer === (isAr ? "انتهى" : "Expired");
-    const isComingSoon = cardTimer === (isAr ? "لم يبدأ" : "Coming Soon");
-
-    return (
-      <div
-        key={p.id}
-        onClick={() => { setSelectedProductId(p.id); setActiveTab("buynow"); onSelectProduct?.(p); }}
-        role="button"
-        tabIndex={0}
-        className={cn(
-          "flex items-start gap-3 p-3 rounded-lg border transition-colors cursor-pointer",
-          isSel ? "border-primary bg-primary/5 ring-1 ring-primary/20" : "border-border hover:border-primary/30"
-        )}
-      >
-        {/* Image + badges */}
-        <div className="relative h-16 w-16 rounded-lg bg-muted flex items-center justify-center shrink-0 overflow-hidden">
-          {p.image ? (
-            <img src={p.image} alt="" className="h-full w-full object-contain" />
-          ) : (
-            <ShoppingCart className="h-5 w-5 text-muted-foreground/20" />
-          )}
-          {cardTimer && (
-            <span className={cn(
-              "absolute top-0 end-0 px-1 py-0.5 text-[7px] font-bold text-white rounded-bl",
-              isExpired ? "bg-muted-foreground" : isComingSoon ? "bg-amber-500" : "bg-destructive"
-            )}>
-              {isBg && !isExpired && !isComingSoon ? cardTimer.split(";")[0] : (isExpired ? "!" : "...")}
-            </span>
-          )}
-          {hasDiscount && !isBg && (
-            <span className="absolute top-0 start-0 px-1 py-0.5 text-[7px] font-bold text-white bg-rose-500 rounded-br">
-              -{discountPct}%
-            </span>
-          )}
-        </div>
-
-        <div className="flex-1 min-w-0">
-          {/* Name + price row */}
-          <div className="flex items-start justify-between gap-2">
-            <div className="min-w-0 flex-1">
-              <span className={cn("text-xs font-semibold line-clamp-2", isSel && "text-primary")}>{p.name}</span>
-              {opts?.isRecommended && <span className="text-[8px] bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded ms-1">{isAr ? "مقترح" : "Suggested"}</span>}
-            </div>
-            <div className="text-end shrink-0">
-              <span className="text-sm font-bold text-primary">{p.price} OMR</span>
-              {hasDiscount && <span className="text-[8px] text-muted-foreground line-through block">{p.originalPrice} OMR</span>}
-            </div>
-          </div>
-
-          {/* Rating + seller + stock */}
-          <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
-            <div className="flex items-center gap-0.5">
-              {[1, 2, 3, 4, 5].map((s) => (
-                <Star key={s} className={cn("h-2.5 w-2.5", s <= Math.round(p.rating ?? 0) ? "fill-amber-400 text-amber-400" : "text-muted-foreground/20")} />
-              ))}
-            </div>
-            <span className="text-[9px] text-muted-foreground">({p.reviews})</span>
-            <span className="text-[9px] text-muted-foreground">• {p.seller}</span>
-            {totalStock > 0 && <span className={cn("text-[9px]", p.inStock ? "text-green-600" : "text-destructive")}>{p.inStock ? `${totalStock} ${isAr ? "متوفر" : "in stock"}` : (isAr ? "نفذ" : "Out")}</span>}
-            {cardTimer && <span className={cn("text-[8px] font-bold px-1 py-0.5 rounded text-white", isExpired ? "bg-muted-foreground" : isComingSoon ? "bg-amber-500" : "bg-destructive")}>{cardTimer}</span>}
-          </div>
-
-          {/* Buygroup progress bar */}
-          {isBg && totalStock > 0 && (
-            <div className="mt-1">
-              <div className="h-1 rounded-full bg-muted overflow-hidden">
-                <div className="h-full rounded-full bg-gradient-to-r from-amber-400 to-rose-500" style={{ width: `${Math.max(5, remainPct)}%` }} />
-              </div>
-              <div className="flex items-center justify-between text-[7px] text-muted-foreground mt-0.5">
-                <span>{isAr ? "تم البيع" : "Sold"}: {soldCount}</span>
-                <span>{remainPct}% {isAr ? "متبقي" : "left"}</span>
-              </div>
-            </div>
-          )}
-
-          {/* Action buttons */}
-          <div className="flex items-center gap-1.5 mt-1.5">
-            {isExpired ? (
-              <span className="text-[10px] font-semibold text-muted-foreground bg-muted px-2 py-1 rounded">{isAr ? "انتهى" : "Expired"}</span>
-            ) : isComingSoon ? (
-              <span className="text-[10px] font-semibold text-amber-700 bg-amber-100 px-2 py-1 rounded">{isAr ? "قريباً" : "Coming Soon"}</span>
-            ) : isBg ? (
-              <button type="button"
-                onClick={(e) => { e.stopPropagation(); setSelectedProductId(p.id); setActiveTab("buynow"); }}
-                className="flex items-center gap-1 rounded bg-gradient-to-r from-rose-400 to-rose-500 text-white hover:from-rose-500 hover:to-rose-600 px-3 py-1 text-[10px] font-semibold">
-                <ShoppingCart className="h-3 w-3" /> {isAr ? "حجز" : "Book"}
-              </button>
-            ) : (
-              <>
-                <button type="button"
-                  onClick={(e) => { e.stopPropagation(); setSelectedProductId(p.id); setActiveTab("buynow"); }}
-                  className="flex items-center gap-1 rounded bg-green-600 text-white hover:bg-green-700 px-2 py-1 text-[10px] font-semibold">
-                  <ShoppingCart className="h-3 w-3" /> {isAr ? "شراء / تخصيص" : "Buy / Customize"}
-                </button>
-                <button type="button"
-                  onClick={(e) => { e.stopPropagation(); setSelectedProductId(p.id); setReqMode("rfq"); setActiveTab("customize"); }}
-                  className="flex items-center gap-1 rounded bg-amber-600 text-white hover:bg-amber-700 px-2 py-1 text-[10px] font-semibold">
-                  <FileText className="h-3 w-3" /> RFQ
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  // ═══ Shared top bar — always renders (even with no selected item) ═══
+  // ═══ Shared top bar — always renders ═══
   const chipBar = (
-    <div className="border-b border-border shrink-0">
-      <div className="flex items-center gap-1 px-2 py-1.5 bg-muted/20 overflow-x-auto scrollbar-thin">
-        {FILTER_CHIPS.map((chip) => {
-          const Icon = chip.icon;
-          const isActive = activeChips.has(chip.key);
-          const styles = CHIP_STYLES[chip.color] || CHIP_STYLES.blue;
-          return (
-            <button
-              key={chip.key}
-              type="button"
-              onClick={() => toggleChip(chip.key)}
-              className={cn(
-                "flex items-center gap-1 text-[10px] font-medium px-2 py-1 rounded-full border whitespace-nowrap transition-all shrink-0",
-                isActive
-                  ? styles.active
-                  : "bg-background border-border text-muted-foreground hover:border-foreground/20 hover:text-foreground"
-              )}
-            >
-              <Icon className="h-3 w-3" />
-              {isAr ? chip.labelAr : chip.label}
-            </button>
-          );
-        })}
-
-        <div className="h-4 w-px bg-border shrink-0" />
-
-        {/* Filters toggle */}
-        <button type="button" onClick={() => setFiltersOpen(!filtersOpen)}
-          className={cn("flex items-center gap-1 text-[10px] font-medium px-2 py-1 rounded-full border whitespace-nowrap transition-all shrink-0",
-            filtersOpen ? "bg-primary/10 border-primary/30 text-primary ring-1 ring-primary/20" : "bg-background border-border text-muted-foreground hover:border-foreground/20 hover:text-foreground")}>
-          <SlidersHorizontal className="h-3 w-3" />
-          {isAr ? "فلاتر" : "Filters"}
-          {activeFilterCount > 0 && (
-            <span className="flex h-3.5 min-w-3.5 items-center justify-center rounded-full bg-primary text-primary-foreground text-[7px] font-bold px-0.5">
-              {activeFilterCount}
-            </span>
-          )}
-        </button>
-
-        {/* Clear all */}
-        {activeFilterCount > 0 && (
-          <button type="button" onClick={clearAllFilters}
-            className="flex items-center gap-0.5 text-[9px] text-muted-foreground hover:text-destructive shrink-0 ms-auto">
-            <RotateCcw className="h-2.5 w-2.5" /> {isAr ? "مسح" : "Clear"}
-          </button>
-        )}
-      </div>
-    </div>
+    <FilterChipBar
+      locale={locale}
+      activeChips={activeChips}
+      toggleChip={toggleChip}
+      filtersOpen={filtersOpen}
+      setFiltersOpen={setFiltersOpen}
+      activeFilterCount={activeFilterCount}
+      clearAllFilters={clearAllFilters}
+    />
   );
 
   // ═══ No item selected AND no product action pending — show chips + browse/empty ═══
@@ -1584,49 +732,33 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
         {hasActiveChips ? (
           <>
           {/* Sort + view toggle for browse mode */}
-          <div className="flex items-center gap-2 px-3 py-1 bg-muted/20 border-b border-border shrink-0">
-            <ArrowUpDown className="h-3 w-3 text-muted-foreground shrink-0" />
-            <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}
-              className="text-[10px] bg-background border border-border rounded px-1.5 py-0.5 outline-none">
-              <option value="price-asc">{isAr ? "السعر: الأقل" : "Price: Low→High"}</option>
-              <option value="price-desc">{isAr ? "السعر: الأعلى" : "Price: High→Low"}</option>
-              <option value="rating-desc">{isAr ? "التقييم: الأعلى" : "Rating: Best"}</option>
-              <option value="discount-desc">{isAr ? "الخصم: الأكبر" : "Discount: Biggest"}</option>
-            </select>
-            <div className="flex items-center rounded border border-border ms-auto">
-              <button type="button" onClick={() => setViewMode("list")}
-                className={cn("flex h-6 w-6 items-center justify-center transition-colors",
-                  viewMode === "list" ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground")}>
-                <List className="h-3 w-3" />
-              </button>
-              <button type="button" onClick={() => setViewMode("grid")}
-                className={cn("flex h-6 w-6 items-center justify-center border-s border-border transition-colors",
-                  viewMode === "grid" ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground")}>
-                <LayoutGrid className="h-3 w-3" />
-              </button>
-            </div>
+          <div className="border-b border-border shrink-0">
+            <SortViewBar
+              locale={locale}
+              sortBy={sortBy}
+              setSortBy={setSortBy}
+              viewMode={viewMode}
+              setViewMode={setViewMode}
+              activeChips={activeChips}
+            />
           </div>
-          {/* Advanced filters panel — expands when Filters button clicked */}
+          {/* Advanced filters panel */}
           {filtersOpen && (
-            <div className="px-3 py-2.5 bg-muted/10 border-b border-border shrink-0">
-              <div className="flex items-center gap-4 pb-2 mb-2 border-b border-border/30">
-                <div className="flex items-center gap-0.5">
-                  <span className="text-[9px] text-muted-foreground me-1">{isAr ? "تقييم" : "Rating"}</span>
-                  {[1, 2, 3, 4, 5].map((r) => (
-                    <button key={r} type="button" onClick={() => setMinRating(minRating === r ? 0 : r)} className="p-0.5">
-                      <Star className={cn("h-3.5 w-3.5", r <= minRating ? "fill-amber-400 text-amber-400" : "text-muted-foreground/20")} />
-                    </button>
-                  ))}
-                </div>
-                <label className="flex items-center gap-1 cursor-pointer">
-                  <input type="checkbox" checked={stockOnly} onChange={(e) => setStockOnly(e.target.checked)} className="rounded border-border text-primary h-3 w-3" />
-                  <span className="text-[9px]">{isAr ? "متوفر" : "In Stock"}</span>
-                </label>
-                <label className="flex items-center gap-1 cursor-pointer">
-                  <input type="checkbox" checked={discountOnly} onChange={(e) => setDiscountOnly(e.target.checked)} className="rounded border-border text-primary h-3 w-3" />
-                  <span className="text-[9px]">{isAr ? "خصم" : "Discount"}</span>
-                </label>
-              </div>
+            <div className="border-b border-border shrink-0">
+              <AdvancedFilterPanel
+                locale={locale}
+                filtersOpen={filtersOpen}
+                minRating={minRating}
+                setMinRating={setMinRating}
+                stockOnly={stockOnly}
+                setStockOnly={setStockOnly}
+                discountOnly={discountOnly}
+                setDiscountOnly={setDiscountOnly}
+                filterValues={filterValues}
+                setFilterValue={setFilterValue}
+                toggleMultiSelect={toggleMultiSelect}
+                showCategoryFilters={false}
+              />
             </div>
           )}
           <div className="flex-1 overflow-y-auto">
@@ -1672,10 +804,29 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
               {/* Browse product cards — list or grid */}
               {viewMode === "grid" ? (
                 <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
-                  {(realProducts ?? []).map((p) => renderGridCard(p))}
+                  {(realProducts ?? []).map((p) => (
+                    <ProductGridCard
+                      key={`grid-${p.id}`}
+                      product={p}
+                      locale={locale}
+                      currencySymbol={currencySymbol}
+                      selectedProductId={selectedProductId}
+                      cardQty={getCardQty(p.id)}
+                      onSetCardQty={setCardQty}
+                      {...cardCallbacks}
+                    />
+                  ))}
                 </div>
               ) : (
-                (realProducts ?? []).map((p) => renderListCard(p))
+                (realProducts ?? []).map((p) => (
+                  <ProductListCard
+                    key={p.id}
+                    product={p}
+                    locale={locale}
+                    selectedProductId={selectedProductId}
+                    {...cardCallbacks}
+                  />
+                ))
               )}
             </div>
           </div>
@@ -1745,153 +896,32 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
       {/* ═══ SORT + ADVANCED FILTERS — below tabs ═══ */}
       {(activeTab === "products" || activeTab === "buynow") && (
         <div className="border-b border-border shrink-0">
-            {/* Sort row */}
-            <div className="flex items-center gap-2 px-3 py-1 bg-muted/20">
-              <ArrowUpDown className="h-3 w-3 text-muted-foreground shrink-0" />
-              <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}
-                className="text-[10px] bg-background border border-border rounded px-1.5 py-0.5 outline-none">
-                <option value="price-asc">{isAr ? "السعر: الأقل" : "Price: Low→High"}</option>
-                <option value="price-desc">{isAr ? "السعر: الأعلى" : "Price: High→Low"}</option>
-                <option value="rating-desc">{isAr ? "التقييم: الأعلى" : "Rating: Best"}</option>
-                <option value="delivery-asc">{isAr ? "التوصيل: الأسرع" : "Delivery: Fastest"}</option>
-                <option value="discount-desc">{isAr ? "الخصم: الأكبر" : "Discount: Biggest"}</option>
-              </select>
-
-              {/* View mode toggle */}
-              <div className="flex items-center rounded border border-border ms-auto">
-                <button type="button" onClick={() => setViewMode("list")}
-                  className={cn("flex h-6 w-6 items-center justify-center transition-colors",
-                    viewMode === "list" ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground")}>
-                  <List className="h-3 w-3" />
-                </button>
-                <button type="button" onClick={() => setViewMode("grid")}
-                  className={cn("flex h-6 w-6 items-center justify-center border-s border-border transition-colors",
-                    viewMode === "grid" ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground")}>
-                  <LayoutGrid className="h-3 w-3" />
-                </button>
-              </div>
-
-              {/* Active chip summary */}
-              {activeChips.size > 0 && (
-                <div className="flex items-center gap-1">
-                  <Layers className="h-3 w-3 text-muted-foreground" />
-                  <span className="text-[9px] text-muted-foreground">
-                    {activeChips.size} {isAr ? "فلتر نشط" : "active"}
-                  </span>
-                </div>
-              )}
-            </div>
+            <SortViewBar
+              locale={locale}
+              sortBy={sortBy}
+              setSortBy={setSortBy}
+              viewMode={viewMode}
+              setViewMode={setViewMode}
+              activeChips={activeChips}
+              includeDeliverySort
+            />
 
             {/* Expanded dynamic filter panel — driven by category SpecTemplate */}
             {filtersOpen && (
-              <div className="px-3 py-2.5 bg-muted/10 border-t border-border/50">
-                {/* Base filters: Rating + Stock + Discount */}
-                <div className="flex items-center gap-4 pb-2 mb-2 border-b border-border/30">
-                  <div className="flex items-center gap-0.5">
-                    <span className="text-[9px] text-muted-foreground me-1">{isAr ? "تقييم" : "Rating"}</span>
-                    {[1, 2, 3, 4, 5].map((r) => (
-                      <button key={r} type="button" onClick={() => setMinRating(minRating === r ? 0 : r)} className="p-0.5">
-                        <Star className={cn("h-3.5 w-3.5", r <= minRating ? "fill-amber-400 text-amber-400" : "text-muted-foreground/20")} />
-                      </button>
-                    ))}
-                  </div>
-                  <label className="flex items-center gap-1 cursor-pointer">
-                    <input type="checkbox" checked={stockOnly} onChange={(e) => setStockOnly(e.target.checked)} className="rounded border-border text-primary h-3 w-3" />
-                    <span className="text-[9px]">{isAr ? "متوفر" : "In Stock"}</span>
-                  </label>
-                  <label className="flex items-center gap-1 cursor-pointer">
-                    <input type="checkbox" checked={discountOnly} onChange={(e) => setDiscountOnly(e.target.checked)} className="rounded border-border text-primary h-3 w-3" />
-                    <span className="text-[9px]">{isAr ? "خصم" : "Discount"}</span>
-                  </label>
-                </div>
-
-                {/* Dynamic category filters — grouped */}
-                {Object.entries(filterGroups).map(([groupName, groupFilters]) => (
-                  <div key={groupName} className="mb-2.5">
-                    <span className="text-[8px] font-bold text-muted-foreground/60 uppercase tracking-widest">{groupName}</span>
-                    <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 mt-1">
-                      {groupFilters.map((f) => {
-                        const label = isAr && f.nameAr ? f.nameAr : f.name;
-                        const val = filterValues[f.key];
-
-                        // SELECT — dropdown
-                        if (f.dataType === "SELECT") {
-                          const opts = (f.options ?? "").split(",").map((o) => o.trim()).filter(Boolean);
-                          return (
-                            <div key={f.key}>
-                              <label className="text-[9px] text-muted-foreground block mb-0.5">{label}</label>
-                              <select value={val ?? ""} onChange={(e) => setFilterValue(f.key, e.target.value)}
-                                className="w-full text-[10px] bg-background border border-border rounded px-1.5 py-0.5 outline-none focus:ring-1 focus:ring-primary">
-                                <option value="">{isAr ? "الكل" : "Any"}</option>
-                                {opts.map((o) => <option key={o} value={o}>{o}</option>)}
-                              </select>
-                            </div>
-                          );
-                        }
-
-                        // MULTI_SELECT — pill chips
-                        if (f.dataType === "MULTI_SELECT") {
-                          const opts = (f.options ?? "").split(",").map((o) => o.trim()).filter(Boolean);
-                          const selected: Set<string> = val instanceof Set ? val : new Set();
-                          return (
-                            <div key={f.key} className="col-span-2">
-                              <label className="text-[9px] text-muted-foreground block mb-0.5">{label}</label>
-                              <div className="flex flex-wrap gap-1">
-                                {opts.map((o) => (
-                                  <button key={o} type="button" onClick={() => toggleMultiSelect(f.key, o)}
-                                    className={cn("text-[9px] px-1.5 py-0.5 rounded-full border transition-colors",
-                                      selected.has(o) ? "bg-primary/10 border-primary/30 text-primary" : "bg-background border-border text-muted-foreground")}>
-                                    {o}
-                                  </button>
-                                ))}
-                              </div>
-                            </div>
-                          );
-                        }
-
-                        // NUMBER — min-max range
-                        if (f.dataType === "NUMBER") {
-                          const range = val ?? [null, null];
-                          return (
-                            <div key={f.key}>
-                              <label className="text-[9px] text-muted-foreground block mb-0.5">{label}{f.unit ? ` (${f.unit})` : ""}</label>
-                              <div className="flex items-center gap-1">
-                                <input type="number" placeholder="min" value={range[0] ?? ""}
-                                  onChange={(e) => setFilterValue(f.key, [e.target.value ? Number(e.target.value) : null, range[1]])}
-                                  className="w-14 text-[10px] border border-border rounded px-1.5 py-0.5 bg-background outline-none focus:ring-1 focus:ring-primary" />
-                                <span className="text-[8px] text-muted-foreground">–</span>
-                                <input type="number" placeholder="max" value={range[1] ?? ""}
-                                  onChange={(e) => setFilterValue(f.key, [range[0], e.target.value ? Number(e.target.value) : null])}
-                                  className="w-14 text-[10px] border border-border rounded px-1.5 py-0.5 bg-background outline-none focus:ring-1 focus:ring-primary" />
-                              </div>
-                            </div>
-                          );
-                        }
-
-                        // BOOLEAN — checkbox
-                        if (f.dataType === "BOOLEAN") {
-                          return (
-                            <label key={f.key} className="flex items-center gap-1.5 cursor-pointer">
-                              <input type="checkbox" checked={!!val} onChange={(e) => setFilterValue(f.key, e.target.checked || undefined)}
-                                className="rounded border-border text-primary h-3 w-3" />
-                              <span className="text-[10px]">{label}</span>
-                            </label>
-                          );
-                        }
-
-                        // TEXT — input
-                        return (
-                          <div key={f.key}>
-                            <label className="text-[9px] text-muted-foreground block mb-0.5">{label}</label>
-                            <input type="text" value={val ?? ""} onChange={(e) => setFilterValue(f.key, e.target.value)}
-                              placeholder={label} className="w-full text-[10px] border border-border rounded px-1.5 py-0.5 bg-background outline-none focus:ring-1 focus:ring-primary" />
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <AdvancedFilterPanel
+                locale={locale}
+                filtersOpen={filtersOpen}
+                minRating={minRating}
+                setMinRating={setMinRating}
+                stockOnly={stockOnly}
+                setStockOnly={setStockOnly}
+                discountOnly={discountOnly}
+                setDiscountOnly={setDiscountOnly}
+                filterValues={filterValues}
+                setFilterValue={setFilterValue}
+                toggleMultiSelect={toggleMultiSelect}
+                showCategoryFilters
+              />
             )}
           </div>
         )}
@@ -1905,7 +935,6 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
         {/* ═══ PRODUCTS TAB — Vendor view: manage offerings per request ═══ */}
         {activeTab === "products" && (
           <div className="p-3 space-y-2">
-
 
             {/* Create RFQ + AI Suggest — only on search or RFQ filter */}
             {(!!searchTerm || activeChips.has("rfq")) && <div className="flex gap-2">
@@ -1973,10 +1002,30 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
             {/* Product list — list or grid view */}
             {viewMode === "grid" ? (
               <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
-                {(realProducts ?? []).map((p) => renderGridCard(p))}
+                {(realProducts ?? []).map((p) => (
+                  <ProductGridCard
+                    key={`grid-${p.id}`}
+                    product={p}
+                    locale={locale}
+                    currencySymbol={currencySymbol}
+                    selectedProductId={selectedProductId}
+                    cardQty={getCardQty(p.id)}
+                    onSetCardQty={setCardQty}
+                    {...cardCallbacks}
+                  />
+                ))}
               </div>
             ) : (
-              (realProducts ?? []).map((p) => renderListCard(p, { showSelection: true }))
+              (realProducts ?? []).map((p) => (
+                <ProductListCard
+                  key={p.id}
+                  product={p}
+                  locale={locale}
+                  selectedProductId={selectedProductId}
+                  showSelection
+                  {...cardCallbacks}
+                />
+              ))
             )}
 
             {/* ── Recommended models (when few results) ── */}
@@ -1989,7 +1038,17 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
                   </span>
                   <div className="flex-1 h-px bg-border" />
                 </div>
-                {recommendedProducts.map((p: any) => renderListCard(p, { isRecommended: true, showSelection: true }))}
+                {recommendedProducts.map((p: any) => (
+                  <ProductListCard
+                    key={p.id}
+                    product={p}
+                    locale={locale}
+                    selectedProductId={selectedProductId}
+                    isRecommended
+                    showSelection
+                    {...cardCallbacks}
+                  />
+                ))}
               </div>
             )}
           </div>
@@ -2182,214 +1241,22 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
 
         {/* ═══ BUY / CUSTOMIZE TAB — vendors for selected product ═══ */}
         {activeTab === "buynow" && (
-          <div className="p-3">
-            {/* Selected product header */}
-            {selectedProduct && (
-              <div className="flex items-center gap-2 mb-3 p-2 rounded-lg bg-muted/30 border border-border">
-                <div className="h-8 w-8 rounded bg-muted flex items-center justify-center shrink-0">
-                  <ShoppingCart className="h-3.5 w-3.5 text-muted-foreground/30" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <button type="button" onClick={() => setViewingProductId(selectedProduct.id)}
-                    className="text-[11px] font-bold block truncate text-primary hover:underline text-start">
-                    {selectedProduct.name}
-                  </button>
-                  <span className="text-[9px] text-muted-foreground">
-                    {buySearchQuery?.isLoading ? (isAr ? "جاري البحث..." : "Searching sellers...") : `${buyListings.length} ${isAr ? "عرض لهذا المنتج" : "listings for this product"}`}
-                  </span>
-                </div>
-                <span className="text-xs font-bold text-primary">{selectedProduct.price} OMR</span>
-              </div>
-            )}
-
-            {!buySearchQuery?.isLoading && buyListings.length === 0 && (
-              <div className="text-center py-8 text-muted-foreground">
-                <ShoppingCart className="h-8 w-8 mx-auto mb-2 opacity-20" />
-                <p className="text-xs">{isAr ? "اختر منتج من قائمة المنتجات أولاً" : "Select a product from the Products tab first"}</p>
-              </div>
-            )}
-
-            {buySearchQuery?.isLoading && (
-              <div className="flex items-center justify-center py-8">
-                <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-              </div>
-            )}
-
-            {viewMode === "grid" ? (
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
-              {buyListings.map((p: any) => renderGridCard({
-                ...p,
-                id: p.productId,
-                name: p.name,
-                price: p.price,
-                originalPrice: p.originalPrice,
-                rating: p.rating,
-                reviews: p.reviews,
-                seller: p.seller,
-                stock: p.stock,
-                inStock: p.inStock,
-                sellType: p.sellType,
-                isBuygroup: p.sellType === "BUYGROUP",
-                dateOpen: p.dateOpen,
-                dateClose: p.dateClose,
-                startTime: p.startTime,
-                endTime: p.endTime,
-                image: null,
-                sold: 0,
-              }))}
-            </div>
-            ) : (
-            <div className="space-y-2 overflow-hidden">
-              {buyListings.map((p: any) => {
-                const isBg = p.sellType === "BUYGROUP";
-                const hasDisc = p.originalPrice > p.price && p.price > 0;
-                const discPct = hasDisc ? Math.round((1 - p.price / p.originalPrice) * 100) : 0;
-                const totalStock = p.stock ?? 0;
-                const soldCount = 0; // TODO: track sold
-                const remainPct = totalStock > 0 ? 100 - Math.round((soldCount / totalStock) * 100) : 100;
-
-                // Buygroup timer — compute inline from buyDetailQuery data
-                let timer: string | null = null;
-                if (isBg) {
-                  const detail = buyDetailQuery?.data;
-                  const bgPp = detail?.product_productPrice?.find((pp: any) => pp.sellType === "BUYGROUP") || detail?.product_productPrice?.[0];
-                  const dc = bgPp?.dateClose;
-                  if (dc) {
-                    const getTs = (ds: string, ts?: string) => { const d = new Date(ds); if (ts) { const [h, m] = ts.split(":").map(Number); d.setHours(h || 0, m || 0, 0, 0); } return d.getTime(); };
-                    const now = Date.now();
-                    const startTs = bgPp?.dateOpen ? getTs(bgPp.dateOpen, bgPp.startTime) : 0;
-                    const endTs = getTs(dc, bgPp?.endTime);
-                    if (startTs && now < startTs) timer = isAr ? "لم يبدأ" : "Coming Soon";
-                    else if (now > endTs) timer = isAr ? "انتهى" : "Expired";
-                    else { const ms = endTs - now; const s = Math.floor(ms / 1000); timer = `${Math.floor(s / 86400)} ${isAr ? "يوم" : "Days"}; ${String(Math.floor((s % 86400) / 3600)).padStart(2, "0")}:${String(Math.floor((s % 3600) / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`; }
-                  } else if (buygroupTimeLeft) {
-                    timer = buygroupTimeLeft; // fallback to global timer
-                  }
-                }
-                const isExp = timer === (isAr ? "انتهى" : "Expired");
-                const isSoon = timer === (isAr ? "لم يبدأ" : "Coming Soon") || timer === (isAr ? "لم يبدأ بعد" : "Not Started");
-
-                return (
-                  <div key={p.id} className="rounded-lg border border-border hover:border-primary/30 transition-colors bg-background overflow-hidden">
-                    {/* Timer bar for buygroup */}
-                    {isBg && timer && (
-                      <div className={cn("flex items-center justify-between px-3 py-1 text-[9px] font-bold text-white",
-                        isExp ? "bg-muted-foreground" : isSoon ? "bg-amber-500" : "bg-destructive")}>
-                        <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {isBg ? (isAr ? "مجموعة شراء" : "Buy Group") : ""}</span>
-                        <span>{timer}</span>
-                      </div>
-                    )}
-
-                    <div className="p-3">
-                      {/* Product info */}
-                      <div className="flex items-start gap-3">
-                        <div className="h-14 w-14 rounded-lg bg-muted flex items-center justify-center shrink-0 overflow-hidden relative">
-                          <ShoppingCart className="h-5 w-5 text-muted-foreground/20" />
-                          {hasDisc && (
-                            <span className="absolute top-0 start-0 px-1 py-0.5 text-[7px] font-bold text-white bg-rose-500 rounded-br">
-                              -{discPct}%
-                            </span>
-                          )}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-start justify-between gap-2">
-                            <button type="button" onClick={() => setViewingProductId(p.productId)}
-                              className="text-xs font-semibold line-clamp-2 text-foreground hover:text-primary hover:underline transition-colors text-start">
-                              {p.name}
-                            </button>
-                            <div className="text-end shrink-0">
-                              <span className="text-sm font-bold text-primary">{p.price} OMR</span>
-                              {hasDisc && <span className="text-[9px] text-muted-foreground line-through block">{p.originalPrice} OMR</span>}
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
-                            <span className="text-[10px] text-muted-foreground">{p.seller}</span>
-                            <div className="flex items-center gap-0.5">
-                              {[1,2,3,4,5].map(s => <Star key={s} className={cn("h-2.5 w-2.5", s <= Math.round(p.rating) ? "fill-amber-400 text-amber-400" : "text-muted-foreground/20")} />)}
-                            </div>
-                            <span className="text-[9px] text-muted-foreground">({p.reviews})</span>
-                            <span className="text-[9px] text-muted-foreground">·</span>
-                            <span className={cn("text-[9px]", p.inStock ? "text-green-600" : "text-destructive")}>
-                              {totalStock > 0 ? `${totalStock} ${isAr ? "متوفر" : "in stock"}` : (isAr ? "غير متوفر" : "Out of stock")}
-                            </span>
-                            {p.brand && <span className="text-[8px] bg-muted px-1 rounded">{p.brand}</span>}
-                            <span className="text-[8px] text-muted-foreground">· {p.delivery}</span>
-                          </div>
-                          {p.description && <p className="text-[9px] text-muted-foreground mt-1 line-clamp-2">{p.description}</p>}
-                        </div>
-                      </div>
-
-                      {/* Buygroup progress bar */}
-                      {isBg && totalStock > 0 && (
-                        <div className="mt-2">
-                          <div className="h-1.5 rounded-full bg-muted overflow-hidden">
-                            <div className="h-full rounded-full bg-gradient-to-r from-amber-400 to-rose-500" style={{ width: `${Math.max(5, remainPct)}%` }} />
-                          </div>
-                          <div className="flex items-center justify-between text-[8px] text-muted-foreground mt-0.5">
-                            <span>{isAr ? "تم البيع" : "Sold"}: {soldCount}</span>
-                            <span>{remainPct}% {isAr ? "متبقي" : "left"}</span>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Actions */}
-                      <div className="flex items-center gap-1.5 mt-2 flex-wrap">
-                        {/* Quantity stepper */}
-                        <div className="flex items-center rounded border border-border">
-                          <button type="button" onClick={() => setCardQty(p.productId, getCardQty(p.productId) - 1)}
-                            disabled={getCardQty(p.productId) <= 0 || isExp || isSoon}
-                            className="flex h-7 w-7 items-center justify-center text-muted-foreground hover:text-foreground disabled:opacity-30">
-                            <Minus className="h-3 w-3" />
-                          </button>
-                          <span className="flex h-7 w-9 items-center justify-center border-x border-border text-[11px] font-bold">{getCardQty(p.productId)}</span>
-                          <button type="button" onClick={() => setCardQty(p.productId, getCardQty(p.productId) + 1)}
-                            disabled={isExp || isSoon}
-                            className="flex h-7 w-7 items-center justify-center text-muted-foreground hover:text-foreground disabled:opacity-30">
-                            <Plus className="h-3 w-3" />
-                          </button>
-                        </div>
-
-                        {/* Button states */}
-                        {isExp ? (
-                          <span className="text-[10px] font-semibold text-muted-foreground bg-muted px-3 py-1.5 rounded">{isAr ? "انتهى" : "Expired"}</span>
-                        ) : isSoon ? (
-                          <span className="text-[10px] font-semibold text-amber-700 bg-amber-100 px-3 py-1.5 rounded">{isAr ? "قريباً" : "Coming Soon"}</span>
-                        ) : (
-                          <>
-                            <button type="button" onClick={() => {
-                              if (isBg && !hasSeenBuygroupDisclaimer) {
-                                setBuygroupPendingProductId(p.priceId);
-                                setBuygroupPendingQty(getCardQty(p.productId) || 1);
-                                setBuygroupDisclaimerOpen(true);
-                                return;
-                              }
-                              onAddToCart(p.priceId, getCardQty(p.productId) || 1);
-                            }}
-                              className={cn("flex items-center gap-1 rounded px-3 py-1.5 text-[10px] font-semibold",
-                                isBg ? "bg-gradient-to-r from-rose-400 to-rose-500 text-white hover:from-rose-500 hover:to-rose-600" : "bg-primary text-primary-foreground hover:bg-primary/90")}>
-                              <ShoppingCart className="h-3 w-3" /> {isBg ? (isAr ? "حجز" : "Book") : (isAr ? "سلة" : "Cart")}
-                            </button>
-                            {!isBg && p.enableChat && (
-                              <button type="button" className="flex items-center gap-1 rounded bg-blue-600 text-white hover:bg-blue-700 px-3 py-1.5 text-[10px] font-semibold">
-                                <MessageSquare className="h-3 w-3" /> {isAr ? "رسالة" : "Message"}
-                              </button>
-                            )}
-                            {!isBg && p.isCustomProduct && (
-                              <button type="button" onClick={() => { setSelectedProductId(p.productId); setReqMode("vendor"); setActiveTab("customize"); }}
-                                className="flex items-center gap-1 rounded bg-amber-600 text-white hover:bg-amber-700 px-3 py-1.5 text-[10px] font-semibold">
-                                <Wrench className="h-3 w-3" /> {isAr ? "تخصيص" : "Customize"}
-                              </button>
-                            )}
-                          </>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-            )}
-          </div>
+          <BuyTab
+            locale={locale}
+            selectedProduct={selectedProduct}
+            buyListings={buyListings}
+            buyDetailQuery={buyDetailQuery}
+            buygroupTimeLeft={buygroupTimeLeft}
+            getCardQty={getCardQty}
+            setCardQty={setCardQty}
+            onAddToCart={onAddToCart}
+            onSetSelectedProductId={setSelectedProductId}
+            onSetViewingProductId={setViewingProductId}
+            onSetReqMode={setReqMode}
+            onSetActiveTab={setActiveTab}
+            hasSeenBuygroupDisclaimer={hasSeenBuygroupDisclaimer}
+            onOpenBuygroupDisclaimer={openBuygroupDisclaimer}
+          />
         )}
 
       </div>
@@ -2404,7 +1271,6 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
           >
             <MessageSquare className="h-3 w-3 text-primary" />
             <span className="text-[10px] font-semibold">{isAr ? "محادثة" : "Discussion"}</span>
-            {/* message count badge placeholder */}
             {/* Usage counter */}
             <span className={cn(
               "text-[7px] font-bold px-1 py-0.5 rounded ms-auto me-1",
