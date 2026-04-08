@@ -2208,11 +2208,26 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
                 const soldCount = 0; // TODO: track sold
                 const remainPct = totalStock > 0 ? 100 - Math.round((soldCount / totalStock) * 100) : 100;
 
-                // Buygroup timer
+                // Buygroup timer — compute inline from buyDetailQuery data
                 let timer: string | null = null;
-                if (isBg && buygroupTimeLeft) timer = buygroupTimeLeft;
+                if (isBg) {
+                  const detail = buyDetailQuery?.data;
+                  const bgPp = detail?.product_productPrice?.find((pp: any) => pp.sellType === "BUYGROUP") || detail?.product_productPrice?.[0];
+                  const dc = bgPp?.dateClose;
+                  if (dc) {
+                    const getTs = (ds: string, ts?: string) => { const d = new Date(ds); if (ts) { const [h, m] = ts.split(":").map(Number); d.setHours(h || 0, m || 0, 0, 0); } return d.getTime(); };
+                    const now = Date.now();
+                    const startTs = bgPp?.dateOpen ? getTs(bgPp.dateOpen, bgPp.startTime) : 0;
+                    const endTs = getTs(dc, bgPp?.endTime);
+                    if (startTs && now < startTs) timer = isAr ? "لم يبدأ" : "Coming Soon";
+                    else if (now > endTs) timer = isAr ? "انتهى" : "Expired";
+                    else { const ms = endTs - now; const s = Math.floor(ms / 1000); timer = `${Math.floor(s / 86400)} ${isAr ? "يوم" : "Days"}; ${String(Math.floor((s % 86400) / 3600)).padStart(2, "0")}:${String(Math.floor((s % 3600) / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`; }
+                  } else if (buygroupTimeLeft) {
+                    timer = buygroupTimeLeft; // fallback to global timer
+                  }
+                }
                 const isExp = timer === (isAr ? "انتهى" : "Expired");
-                const isSoon = timer === (isAr ? "لم يبدأ بعد" : "Not Started");
+                const isSoon = timer === (isAr ? "لم يبدأ" : "Coming Soon") || timer === (isAr ? "لم يبدأ بعد" : "Not Started");
 
                 return (
                   <div key={p.id} className="rounded-lg border border-border hover:border-primary/30 transition-colors bg-background overflow-hidden">
