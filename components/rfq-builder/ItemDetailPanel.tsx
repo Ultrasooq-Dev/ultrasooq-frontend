@@ -580,12 +580,22 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
       category: detail?.category?.name || "",
       skuNo: detail?.skuNo || "",
     };
-    const bulkPricing = [
-      { min: 1, max: 9, price: vp.price },
-      { min: 10, max: 49, price: Math.round(vp.price * 0.95) },
-      { min: 50, max: 99, price: Math.round(vp.price * 0.9) },
-      { min: 100, max: null, price: Math.round(vp.price * 0.85) },
-    ];
+    // Real pricing data from ProductPrice entry
+    const ppEntry = priceEntry || {};
+    const pricingInfo = {
+      consumerDiscount: ppEntry.consumerDiscount ?? 0,
+      consumerDiscountType: ppEntry.consumerDiscountType ?? "percentage",
+      vendorDiscount: ppEntry.vendorDiscount ?? 0,
+      vendorDiscountType: ppEntry.vendorDiscountType ?? "percentage",
+      consumerType: ppEntry.consumerType ?? "CONSUMER",
+      minQuantity: ppEntry.minQuantityPerCustomer ?? ppEntry.minQuantity ?? 1,
+      maxQuantity: ppEntry.maxQuantityPerCustomer ?? ppEntry.maxQuantity ?? null,
+      minOrder: ppEntry.minQuantity ?? 1,
+      maxOrder: ppEntry.maxQuantity ?? null,
+      askForPrice: ppEntry.askForPrice === "true",
+      sellType: ppEntry.sellType ?? "NORMALSELL",
+      enableChat: ppEntry.enableChat ?? false,
+    };
     const productReviews = (vp.reviews || []).map((r: any) => ({
       user: r.user?.firstName || r.userName || "User",
       rating: r.rating || 4,
@@ -744,27 +754,84 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
               </div>
             </div>
 
-            {/* Bulk pricing tiers */}
-            <div>
-              <h3 className="text-[11px] font-semibold mb-1.5">{isAr ? "أسعار الجملة" : "Bulk Pricing"}</h3>
-              <div className="grid grid-cols-4 gap-1">
-                {bulkPricing.map((tier, i) => (
-                  <div key={i} className={cn(
-                    "rounded border text-center py-1.5 px-1",
-                    i === 2 ? "border-green-300 bg-green-50 dark:bg-green-950/20" : "border-border"
-                  )}>
-                    <span className="text-[9px] text-muted-foreground block">
-                      {tier.min}{tier.max ? `-${tier.max}` : "+"} {isAr ? "قطعة" : "units"}
-                    </span>
-                    <span className={cn("text-xs font-bold", i === 2 ? "text-green-600" : "")}>{tier.price} OMR</span>
-                    {i > 0 && (
-                      <span className="text-[8px] text-green-600 block">
-                        {isAr ? "وفر" : "Save"} {Math.round((1 - tier.price / vp.price) * 100)}%
-                      </span>
+            {/* Pricing & Rules — real data from ProductPrice */}
+            <div className="space-y-2">
+              <h3 className="text-[11px] font-semibold">{isAr ? "التسعير والقواعد" : "Pricing & Rules"}</h3>
+
+              {/* Ask for price */}
+              {pricingInfo.askForPrice ? (
+                <div className="rounded-lg border border-amber-300 bg-amber-50/50 dark:bg-amber-950/10 p-3 text-center">
+                  <p className="text-xs font-semibold text-amber-700">{isAr ? "اتصل بالبائع للحصول على السعر" : "Contact seller for pricing"}</p>
+                  <button type="button" className="mt-1.5 flex items-center gap-1 mx-auto rounded bg-amber-600 text-white hover:bg-amber-700 px-3 py-1.5 text-[10px] font-semibold">
+                    <MessageSquare className="h-3 w-3" /> {isAr ? "رسالة" : "Message Seller"}
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 gap-1.5">
+                  {/* Price card */}
+                  <div className="rounded border border-border p-2">
+                    <span className="text-[9px] text-muted-foreground block">{isAr ? "السعر" : "Price"}</span>
+                    <span className="text-sm font-bold text-primary">{vp.price} OMR</span>
+                    {vp.discount > 0 && (
+                      <div className="flex items-center gap-1 mt-0.5">
+                        <span className="text-[9px] text-muted-foreground line-through">{vp.originalPrice} OMR</span>
+                        <span className="text-[9px] font-bold text-green-600">-{vp.discount}%</span>
+                      </div>
                     )}
                   </div>
-                ))}
-              </div>
+
+                  {/* Sell type */}
+                  <div className="rounded border border-border p-2">
+                    <span className="text-[9px] text-muted-foreground block">{isAr ? "نوع البيع" : "Sell Type"}</span>
+                    <span className="text-[10px] font-semibold">
+                      {pricingInfo.sellType === "NORMALSELL" ? (isAr ? "تجزئة" : "Retail") :
+                       pricingInfo.sellType === "BUYGROUP" ? (isAr ? "مجموعة شراء" : "Buy Group") :
+                       pricingInfo.sellType === "WHOLESALE_PRODUCT" ? (isAr ? "جملة" : "Wholesale") :
+                       pricingInfo.sellType === "TRIAL_PRODUCT" ? (isAr ? "تجريبي" : "Trial") :
+                       pricingInfo.sellType}
+                    </span>
+                  </div>
+
+                  {/* Consumer discount */}
+                  {pricingInfo.consumerDiscount > 0 && (
+                    <div className="rounded border border-green-200 bg-green-50/50 dark:bg-green-950/10 p-2">
+                      <span className="text-[9px] text-muted-foreground block">{isAr ? "خصم المستهلك" : "Consumer Discount"}</span>
+                      <span className="text-[10px] font-bold text-green-600">
+                        {pricingInfo.consumerDiscountType === "fixed" ? `${pricingInfo.consumerDiscount} OMR` : `${pricingInfo.consumerDiscount}%`}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Vendor discount */}
+                  {pricingInfo.vendorDiscount > 0 && (
+                    <div className="rounded border border-blue-200 bg-blue-50/50 dark:bg-blue-950/10 p-2">
+                      <span className="text-[9px] text-muted-foreground block">{isAr ? "خصم التجار" : "Vendor Discount"}</span>
+                      <span className="text-[10px] font-bold text-blue-600">
+                        {pricingInfo.vendorDiscountType === "fixed" ? `${pricingInfo.vendorDiscount} OMR` : `${pricingInfo.vendorDiscount}%`}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Quantity limits */}
+                  {(pricingInfo.minQuantity > 1 || pricingInfo.maxQuantity) && (
+                    <div className="rounded border border-border p-2">
+                      <span className="text-[9px] text-muted-foreground block">{isAr ? "الكمية" : "Quantity"}</span>
+                      <span className="text-[10px] font-semibold">
+                        {isAr ? "من" : "Min"} {pricingInfo.minQuantity}
+                        {pricingInfo.maxQuantity && ` — ${isAr ? "إلى" : "Max"} ${pricingInfo.maxQuantity}`}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Stock */}
+                  <div className="rounded border border-border p-2">
+                    <span className="text-[9px] text-muted-foreground block">{isAr ? "المخزون" : "Stock"}</span>
+                    <span className={cn("text-[10px] font-semibold", vp.stock > 0 ? "text-green-600" : "text-destructive")}>
+                      {vp.stock > 0 ? `${vp.stock} ${isAr ? "قطعة" : "available"}` : (isAr ? "غير متوفر" : "Out of stock")}
+                    </span>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Description */}
