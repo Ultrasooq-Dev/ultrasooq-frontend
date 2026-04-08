@@ -7,7 +7,12 @@ import RequestListPanel from "@/components/rfq-builder/RequestListPanel";
 import ItemDetailPanel from "@/components/rfq-builder/ItemDetailPanel";
 import CartPanel from "@/components/rfq-builder/CartPanel";
 import { useAllRfqQuotesByBuyerId, useUpdateRfqCartWithLogin } from "@/apis/queries/rfq.queries";
+import { useUpdateCartWithLogin, useUpdateCartByDevice } from "@/apis/queries/cart.queries";
 import { usePageView, useTrackEvent } from "@/lib/analytics";
+import { useToast } from "@/components/ui/use-toast";
+import { getCookie } from "cookies-next";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
+import { getOrCreateDeviceId } from "@/utils/helper";
 
 export default function ProductHubPage() {
   const { user, langDir } = useAuth();
@@ -73,6 +78,10 @@ export default function ProductHubPage() {
 
   // ── Add to RFQ cart mutation ──
   const addToRfqCart = useUpdateRfqCartWithLogin();
+  const addToCartAuth = useUpdateCartWithLogin();
+  const addToCartDevice = useUpdateCartByDevice();
+  const { toast } = useToast();
+  const haveAccessToken = !!getCookie(ULTRASOOQ_TOKEN_KEY);
 
   // ── Step 1: Fetch real RFQ sessions ──
   const rfqSessionsQuery = useAllRfqQuotesByBuyerId(
@@ -200,8 +209,29 @@ export default function ProductHubPage() {
       <ItemDetailPanel
         selectedItemId={selectedItemId}
         searchTerm={selectedItemName ?? undefined}
-        onAddToCart={(productId) => {
-          addToRfqCart.mutate({ productId, quantity: 1 });
+        onAddToCart={async (productPriceId, quantity) => {
+          const qty = quantity || 1;
+          try {
+            if (haveAccessToken) {
+              const res = await addToCartAuth.mutateAsync({ productPriceId, quantity: qty });
+              if (res?.status) toast({ title: "Added to cart", variant: "success" });
+            } else {
+              const deviceId = getOrCreateDeviceId() || "unknown";
+              const res = await addToCartDevice.mutateAsync({ productPriceId, quantity: qty, deviceId });
+              if (res?.status) toast({ title: "Added to cart", variant: "success" });
+            }
+          } catch (err: any) {
+            toast({ title: "Failed to add to cart", description: err?.message || "Please try again", variant: "destructive" });
+          }
+          trackEvent("product_add_to_cart", { productPriceId, quantity: qty });
+        }}
+        onAddToRfqCart={async (productId) => {
+          try {
+            const res = await addToRfqCart.mutateAsync({ productId, quantity: 1 });
+            if (res?.status) toast({ title: "Added to RFQ cart", variant: "success" });
+          } catch (err: any) {
+            toast({ title: "Failed to add to RFQ cart", description: err?.message || "Please try again", variant: "destructive" });
+          }
           trackEvent("rfq_add_to_cart", { productId });
         }}
         locale={locale}
@@ -213,6 +243,9 @@ export default function ProductHubPage() {
         locale={locale}
         collapsed={cartCollapsed}
         onToggleCollapse={() => setCartCollapsed(!cartCollapsed)}
+        onViewProduct={(productId) => {
+          window.open(`/trending/${productId}`, "_blank");
+        }}
       />
     </div>
   );

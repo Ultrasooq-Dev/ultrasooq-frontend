@@ -3,53 +3,81 @@ import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Minus, Plus, Trash2, ShoppingCart, Send, CreditCard, FileText, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { useRfqCartListByUserId, useUpdateRfqCartWithLogin, useDeleteRfqCartItem, useAddRfqQuotes } from "@/apis/queries/rfq.queries";
+import { useCartListByUserId, useUpdateCartWithLogin, useDeleteCartItem } from "@/apis/queries/cart.queries";
 import { useAuth } from "@/context/AuthContext";
 
 interface CartItem {
   id: number;
+  cartId?: number;
+  rfqCartId?: number;
+  productId?: number;
   name: string;
   quantity: number;
   unitPrice: number;
   seller: string;
-  rfqCartId?: number;
+  image?: string;
 }
 
-function ItemCard({ item, onUpdateQty, onDelete, isUpdating }: {
+function ItemCard({ item, onUpdateQty, onDelete, onViewProduct, isUpdating, isAr }: {
   item: CartItem;
-  onUpdateQty: (id: number, qty: number) => void;
-  onDelete: (id: number) => void;
+  onUpdateQty: (item: CartItem, qty: number) => void;
+  onDelete: (item: CartItem) => void;
+  onViewProduct?: (productId: number) => void;
   isUpdating: boolean;
+  isAr?: boolean;
 }) {
+  const unitTotal = item.quantity * item.unitPrice;
   return (
-    <div className="rounded border border-border bg-background p-2">
-      <div className="flex items-start justify-between gap-1">
-        <div className="min-w-0">
-          <span className="text-[10px] font-semibold block truncate">{item.name}</span>
-          <span className="text-[8px] text-muted-foreground">{item.seller}</span>
+    <div className="rounded-lg border border-border bg-background overflow-hidden">
+      {/* Top: image + info + delete */}
+      <div className="flex gap-2 p-2">
+        {/* Product image */}
+        <button type="button"
+          onClick={() => item.productId && onViewProduct?.(item.productId)}
+          className="h-14 w-14 rounded-md bg-muted flex items-center justify-center shrink-0 overflow-hidden hover:ring-2 hover:ring-primary/30 transition-all">
+          {item.image ? (
+            <img src={item.image} alt="" className="h-full w-full object-cover" />
+          ) : (
+            <ShoppingCart className="h-5 w-5 text-muted-foreground/20" />
+          )}
+        </button>
+        <div className="flex-1 min-w-0">
+          {/* Product name — clickable, shows full name in 2 lines */}
+          <button type="button"
+            onClick={() => item.productId && onViewProduct?.(item.productId)}
+            className="text-[10px] font-semibold line-clamp-2 text-start hover:text-primary transition-colors w-full leading-tight">
+            {item.name}
+          </button>
+          <div className="flex items-center gap-1 mt-0.5">
+            <span className="text-[8px] text-muted-foreground">{item.seller}</span>
+            <span className="text-[8px] text-muted-foreground">•</span>
+            <span className="text-[8px] text-muted-foreground">{item.unitPrice} OMR/{isAr ? "قطعة" : "ea"}</span>
+          </div>
         </div>
-        <button type="button" onClick={() => onDelete(item.rfqCartId ?? item.id)}
+        <button type="button" onClick={() => onDelete(item)}
           disabled={isUpdating}
-          className="text-muted-foreground hover:text-destructive shrink-0 disabled:opacity-50">
-          <Trash2 className="h-2.5 w-2.5" />
+          className="text-muted-foreground hover:text-destructive shrink-0 disabled:opacity-50 self-start mt-0.5">
+          <Trash2 className="h-3 w-3" />
         </button>
       </div>
-      <div className="flex items-center justify-between mt-1">
-        <div className="flex items-center">
+      {/* Bottom: qty stepper + total price */}
+      <div className="flex items-center justify-between px-2 py-1.5 bg-muted/30 border-t border-border/50">
+        <div className="flex items-center rounded-md border border-border overflow-hidden">
           <button type="button" disabled={isUpdating || item.quantity <= 1}
-            onClick={() => onUpdateQty(item.id, item.quantity - 1)}
-            className="flex h-5 w-5 items-center justify-center rounded-s border border-border bg-muted text-muted-foreground disabled:opacity-30">
-            <Minus className="h-2 w-2" />
+            onClick={() => onUpdateQty(item, item.quantity - 1)}
+            className="flex h-7 w-7 items-center justify-center bg-background text-muted-foreground hover:text-foreground disabled:opacity-30 transition-colors">
+            <Minus className="h-3 w-3" />
           </button>
-          <div className="flex h-5 w-8 items-center justify-center border-y border-border bg-background text-[9px] font-semibold">
-            {isUpdating ? <Loader2 className="h-2.5 w-2.5 animate-spin" /> : item.quantity}
+          <div className="flex h-7 w-9 items-center justify-center border-x border-border bg-background text-xs font-bold">
+            {isUpdating ? <Loader2 className="h-3 w-3 animate-spin" /> : item.quantity}
           </div>
           <button type="button" disabled={isUpdating}
-            onClick={() => onUpdateQty(item.id, item.quantity + 1)}
-            className="flex h-5 w-5 items-center justify-center rounded-e border border-border bg-muted text-muted-foreground disabled:opacity-30">
-            <Plus className="h-2 w-2" />
+            onClick={() => onUpdateQty(item, item.quantity + 1)}
+            className="flex h-7 w-7 items-center justify-center bg-background text-muted-foreground hover:text-foreground disabled:opacity-30 transition-colors">
+            <Plus className="h-3 w-3" />
           </button>
         </div>
-        <span className="text-[10px] font-bold text-primary">{(item.quantity * item.unitPrice).toLocaleString()} OMR</span>
+        <span className="text-xs font-bold text-primary">{unitTotal > 0 ? unitTotal.toLocaleString() : "0"} OMR</span>
       </div>
     </div>
   );
@@ -59,39 +87,76 @@ interface CartPanelProps {
   locale: string;
   collapsed: boolean;
   onToggleCollapse: () => void;
+  onViewProduct?: (productId: number) => void;
 }
 
-export default function CartPanel({ locale, collapsed, onToggleCollapse }: CartPanelProps) {
+export default function CartPanel({ locale, collapsed, onToggleCollapse, onViewProduct }: CartPanelProps) {
   const isAr = locale === "ar";
   const [tab, setTab] = useState<"rfq" | "buy">("rfq");
   const { user } = useAuth();
 
   // Real cart data from backend
   const rfqCartQuery = useRfqCartListByUserId({ page: 1, limit: 50 }, !!user?.id);
-  const updateCart = useUpdateRfqCartWithLogin();
-  const deleteCartItem = useDeleteRfqCartItem();
+  const updateRfqCart = useUpdateRfqCartWithLogin();
+  const deleteRfqItem = useDeleteRfqCartItem();
   const submitRfq = useAddRfqQuotes();
 
-  // Map API response to CartItem format
+  // Regular cart data
+  const buyCartQuery = useCartListByUserId({ page: 1, limit: 50 }, !!user?.id);
+  const updateBuyCart = useUpdateCartWithLogin();
+  const deleteBuyItem = useDeleteCartItem();
+
+  // Map RFQ cart
   const rfq: CartItem[] = (rfqCartQuery.data?.data?.data ?? rfqCartQuery.data?.data ?? []).map((item: any) => ({
     id: item.rfqProductId ?? item.productId ?? item.id,
+    productId: item.rfqProductId ?? item.productId,
     rfqCartId: item.id,
     name: item.rfqProduct?.rfqProductName ?? item.product?.productName ?? item.productName ?? `Product #${item.id}`,
     quantity: item.quantity ?? 1,
     unitPrice: Number(item.offerPriceTo ?? item.offerPriceFrom ?? item.offerPrice ?? 0),
     seller: item.rfqProduct?.admin?.firstName ?? item.seller ?? "Vendor",
   }));
-  const buy: CartItem[] = []; // Buy cart not yet wired
+
+  // Map Buy cart — data from cart.service.ts list(): productPriceDetails → productPrice_product
+  const buyCartItems: any[] = buyCartQuery.data?.data ?? [];
+  const buy: CartItem[] = buyCartItems
+    .filter((item: any) => item.cartType === "DEFAULT" || !item.cartType)
+    .map((item: any) => {
+      const ppd = item.productPriceDetails || {};
+      const product = ppd.productPrice_product || {};
+      const firstImage = product.productImages?.[0]?.image || ppd.productPrice_productSellerImage?.[0]?.image || null;
+      return {
+        id: item.productPriceId ?? item.productId ?? item.id,
+        cartId: item.id,
+        productId: item.productId ?? product.id,
+        name: product.productName ?? `Product #${item.productId ?? item.id}`,
+        quantity: item.quantity ?? 1,
+        unitPrice: Number(ppd.offerPrice ?? ppd.productPrice ?? 0),
+        seller: ppd.adminDetail?.firstName
+          ? `${ppd.adminDetail.firstName} ${ppd.adminDetail.lastName || ""}`.trim()
+          : "Seller",
+        image: firstImage,
+      };
+    });
   const items = tab === "rfq" ? rfq : buy;
   const total = items.reduce((s, i) => s + i.quantity * i.unitPrice, 0);
   const units = items.reduce((s, i) => s + i.quantity, 0);
 
-  const handleUpdateQty = (productId: number, qty: number) => {
-    updateCart.mutate({ productId, quantity: qty });
+  const handleUpdateQty = (item: CartItem, qty: number) => {
+    if (tab === "rfq") {
+      updateRfqCart.mutate({ productId: item.id, quantity: qty });
+    } else {
+      // Buy cart needs productPriceId — use cartId to identify
+      if (item.cartId) updateBuyCart.mutate({ productPriceId: item.id, quantity: qty });
+    }
   };
 
-  const handleDelete = (rfqCartId: number) => {
-    deleteCartItem.mutate({ rfqCartId });
+  const handleDelete = (item: CartItem) => {
+    if (tab === "rfq" && item.rfqCartId) {
+      deleteRfqItem.mutate({ rfqCartId: item.rfqCartId });
+    } else if (tab === "buy" && item.cartId) {
+      deleteBuyItem.mutate({ cartId: item.cartId });
+    }
   };
 
   const handleSubmitRfq = () => {
@@ -199,10 +264,12 @@ export default function CartPanel({ locale, collapsed, onToggleCollapse }: CartP
         ) : (
           <div className="p-1.5 space-y-1">
             {items.map((item) => (
-              <ItemCard key={item.rfqCartId ?? item.id} item={item}
+              <ItemCard key={item.rfqCartId ?? item.cartId ?? item.id} item={item}
                 onUpdateQty={handleUpdateQty}
                 onDelete={handleDelete}
-                isUpdating={updateCart.isPending || deleteCartItem.isPending} />
+                onViewProduct={onViewProduct}
+                isUpdating={updateRfqCart.isPending || deleteRfqItem.isPending || updateBuyCart.isPending || deleteBuyItem.isPending}
+                isAr={isAr} />
             ))}
           </div>
         )}
@@ -223,7 +290,8 @@ export default function CartPanel({ locale, collapsed, onToggleCollapse }: CartP
               {submitRfq.isPending ? (isAr ? "جاري الإرسال..." : "Submitting...") : (isAr ? "إرسال" : "Submit RFQ")}
             </button>
           ) : (
-            <button type="button" className="flex w-full items-center justify-center gap-1.5 rounded-md bg-green-600 py-2 text-white text-[10px] font-bold hover:bg-green-700">
+            <button type="button" onClick={() => window.location.href = "/checkout"}
+              className="flex w-full items-center justify-center gap-1.5 rounded-md bg-green-600 py-2 text-white text-[10px] font-bold hover:bg-green-700">
               <CreditCard className="h-3 w-3" /> {isAr ? "الدفع" : "Checkout"}
             </button>
           )}

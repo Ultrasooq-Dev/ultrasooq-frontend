@@ -29,8 +29,9 @@ import {
   Star, ShoppingCart, Send, Paperclip, MapPin, Truck, Shield,
   MessageSquare, FileText, X, Image, Edit3, ChevronDown, ChevronUp,
   Check, Eye, CreditCard, Zap, Minus, Plus, SlidersHorizontal, ArrowUpDown, RotateCcw, Wrench, ChevronRight, Loader2,
-  Store, Package, Users, Tag, Percent, Briefcase, Layers, LayoutGrid, List,
+  Store, Package, Users, Tag, Percent, Briefcase, Layers, LayoutGrid, List, Clock,
 } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 // ─── Filter chip definitions ────────────────────────────────────
 type FilterChipKey = "retail" | "wholesale" | "buygroup" | "customizable" | "discount" | "rfq" | "vendor_store" | "service";
@@ -72,14 +73,15 @@ const FILTER_CHIPS: FilterChipDef[] = [
 interface ItemDetailPanelProps {
   selectedItemId: string | null;
   searchTerm?: string;
-  onAddToCart: (productId: number) => void;
+  onAddToCart: (productPriceId: number, quantity?: number) => void;
+  onAddToRfqCart?: (productId: number) => void;
   onSelectProduct?: (product: any) => void;
   locale: string;
   activeCategories?: Set<string>;
   onCategoryChange?: (categories: Set<string>) => void;
 }
 
-export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCart, onSelectProduct, locale, activeCategories, onCategoryChange }: ItemDetailPanelProps) {
+export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCart, onAddToRfqCart, onSelectProduct, locale, activeCategories, onCategoryChange }: ItemDetailPanelProps) {
   const isAr = locale === "ar";
   // Auth & pricing context — same hooks as ProductDescriptionCard
   const { user, currency } = useAuth();
@@ -158,17 +160,30 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
           // OR logic: product passes if it matches ANY active chip's criteria
           const matchesChip = (p: any, chip: typeof FILTER_CHIPS[0]) => {
             const cp = chip.params;
+            const prices: any[] = p.product_productPrice ?? [];
+            // productType is on Product level
             if (cp.productType && p.productType !== cp.productType) return false;
+            // sellType is on ProductPrice level
             if (cp.sellType) {
-              // Check if any ProductPrice entry matches the sellType
-              const prices = p.product_productPrice ?? [];
-              const hasSellType = prices.some((pp: any) => pp.sellType === cp.sellType && !pp.deletedAt);
+              const hasSellType = prices.some((pp: any) => pp.sellType === cp.sellType && !pp.deletedAt && pp.status === "ACTIVE");
               if (!hasSellType) return false;
             }
-            if (cp.hasDiscount === "true" && !(Number(p.offerPrice) > 0 && Number(p.offerPrice) < Number(p.productPrice))) return false;
-            if (cp.isCustomProduct === "true" && p.isCustomProduct !== true) return false;
-            // Chips with no params (vendor_store, service) — show all
-            if (Object.keys(cp).length === 0) return true;
+            // Discount: check ProductPrice level (offerPrice < productPrice)
+            if (cp.hasDiscount === "true") {
+              const hasDiscount = prices.some((pp: any) =>
+                Number(pp.offerPrice) > 0 && Number(pp.offerPrice) < Number(pp.productPrice)
+              ) || (Number(p.offerPrice) > 0 && Number(p.offerPrice) < Number(p.productPrice));
+              if (!hasDiscount) return false;
+            }
+            // Customizable: check ProductPrice level (isCustomProduct field)
+            if (cp.isCustomProduct === "true") {
+              const isCustom = prices.some((pp: any) =>
+                pp.isCustomProduct === "true" || pp.isCustomProduct === true
+              ) || p.isCustomProduct === true;
+              if (!isCustom) return false;
+            }
+            // Chips with no params (vendor_store, service) — not implemented yet
+            if (Object.keys(cp).length === 0) return false;
             return true;
           };
 
@@ -257,21 +272,41 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
       }
     }
 
-    return Array.from(modelMap.values()).map((m) => ({
-      id: m.id,
-      name: m.name,
-      price: m.minPrice,
-      priceRange: m.minPrice !== m.maxPrice ? `${m.minPrice} - ${m.maxPrice}` : null,
-      rating: m.bestRating,
-      reviews: m.totalReviews,
-      seller: m.sellers > 1 ? `${m.sellers} sellers` : "1 seller",
-      delivery: "3-5 days",
-      inStock: true,
-      stock: 50,
-      specs: [] as string[][],
-      sellersCount: m.sellers,
-      allIds: m.allIds,
-    }));
+    return Array.from(modelMap.values()).map((m) => {
+      // Find original raw product for enrichment
+      const rawProduct = data.find((p: any) => p.id === m.id);
+      const pp = rawProduct?.product_productPrice?.[0];
+      return {
+        id: m.id,
+        name: m.name,
+        price: m.minPrice,
+        originalPrice: Number(pp?.productPrice ?? rawProduct?.productPrice ?? m.minPrice),
+        priceRange: m.minPrice !== m.maxPrice ? `${m.minPrice} - ${m.maxPrice}` : null,
+        rating: m.bestRating,
+        reviews: m.totalReviews,
+        seller: m.sellers > 1 ? `${m.sellers} sellers` : "1 seller",
+        delivery: pp?.deliveryAfter ? `${pp.deliveryAfter} days` : "3-5 days",
+        inStock: (pp?.stock ?? 0) > 0,
+        stock: pp?.stock ?? 0,
+        specs: [] as string[][],
+        sellersCount: m.sellers,
+        allIds: m.allIds,
+        // Buygroup + pricing fields from ProductPrice
+        sellType: pp?.sellType ?? "NORMALSELL",
+        isBuygroup: pp?.sellType === "BUYGROUP",
+        dateOpen: pp?.dateOpen ?? null,
+        dateClose: pp?.dateClose ?? null,
+        startTime: pp?.startTime ?? null,
+        endTime: pp?.endTime ?? null,
+        minCustomer: pp?.minCustomer ?? null,
+        maxCustomer: pp?.maxCustomer ?? null,
+        sold: 0, // TODO: track sold count
+        enableChat: pp?.enableChat === true,
+        isCustomProduct: pp?.isCustomProduct === "true" || pp?.isCustomProduct === true,
+        consumerType: pp?.consumerType ?? "CONSUMER",
+        image: rawProduct?.productImages?.[0]?.image ?? null,
+      };
+    });
   }, [productSearchQuery?.data]);
 
   const [activeTab, setActiveTab] = useState<"products" | "customize" | "buynow">("products");
@@ -396,6 +431,8 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
           description: detail.description ?? detail.shortDescription ?? "",
           minOrder: pp.minOrder ?? 1,
           warranty: pp.warranty ?? "",
+          enableChat: pp.enableChat === true,
+          isCustomProduct: pp.isCustomProduct === "true" || pp.isCustomProduct === true,
         };
       });
   }, [buyDetailQuery.data]);
@@ -501,7 +538,8 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
   // Real products only — no mock fallback
   const selectedProduct = (realProducts ?? []).find((p: any) => p.id === selectedProductId);
   // Real buy listings only
-  const viewingProduct = (buyListings ?? []).find((p: any) => p.id === viewingProductId);
+  // buyListings use composite string id (productId-priceId), so match by productId
+  const viewingProduct = (buyListings ?? []).find((p: any) => p.productId === viewingProductId);
   // Vendor listings from real search data
   const vendorListings = selectedProductId && selectedProduct
     ? [{
@@ -523,6 +561,12 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
 
   const [detailQty, setDetailQty] = useState(1);
   const [activeMediaIdx, setActiveMediaIdx] = useState(0);
+  // Buygroup disclaimer popup
+  const [buygroupDisclaimerOpen, setBuygroupDisclaimerOpen] = useState(false);
+  const [hasSeenBuygroupDisclaimer, setHasSeenBuygroupDisclaimer] = useState(false);
+  const [buygroupPendingProductId, setBuygroupPendingProductId] = useState<number | null>(null);
+  const [buygroupPendingQty, setBuygroupPendingQty] = useState(1);
+  const [buygroupTimeLeft, setBuygroupTimeLeft] = useState<string | null>(null);
   // Inline question/review input on product detail
   const [askingQuestion, setAskingQuestion] = useState(false);
   const [questionText, setQuestionText] = useState("");
@@ -549,6 +593,25 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
     enabled: !!viewingProductId,
     staleTime: 60_000,
   });
+
+  // Buygroup countdown timer — watches product detail data
+  useEffect(() => {
+    const detail = productDetailQuery?.data;
+    const pp = detail?.product_productPrice?.[0];
+    if (!pp || pp.sellType !== "BUYGROUP" || !pp.dateClose) { setBuygroupTimeLeft(null); return; }
+    const getTs = (ds: string, ts?: string) => { const d = new Date(ds); if (ts) { const [h, m] = ts.split(":").map(Number); d.setHours(h || 0, m || 0, 0, 0); } return d.getTime(); };
+    const startTs = pp.dateOpen ? getTs(pp.dateOpen, pp.startTime) : 0;
+    const endTs = getTs(pp.dateClose, pp.endTime);
+    const fmt = (ms: number) => { const s = Math.floor(ms / 1000); const d = Math.floor(s / 86400); return `${d} ${isAr ? "يوم" : "Days"}; ${String(Math.floor((s % 86400) / 3600)).padStart(2, "0")}:${String(Math.floor((s % 3600) / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`; };
+    const tick = () => {
+      const now = Date.now();
+      if (startTs && now < startTs) { setBuygroupTimeLeft(isAr ? "لم يبدأ بعد" : "Not Started"); return; }
+      const ms = endTs - now;
+      if (ms <= 0) { setBuygroupTimeLeft(isAr ? "انتهى" : "Expired"); return; }
+      setBuygroupTimeLeft(fmt(ms));
+    };
+    tick(); const iv = setInterval(tick, 1000); return () => clearInterval(iv);
+  }, [productDetailQuery?.data, isAr]);
 
   // ═══ FULL PRODUCT DETAIL VIEW (takes over panel) ═══
   if (viewingProductId && (viewingProduct || productDetailQuery.data)) {
@@ -869,15 +932,22 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
                     )}
                   </div>
 
-                  {/* Buy Group timer */}
+                  {/* Buy Group timer — live countdown */}
                   {pricingInfo.sellType === "BUYGROUP" && pricingInfo.dateClose && (
                     <div className="rounded-lg border border-amber-300/50 bg-amber-50/30 dark:bg-amber-950/10 p-2.5">
                       <div className="flex items-center gap-1.5 text-[10px]">
+                        <Clock className="h-3 w-3 text-amber-600" />
                         <span className="font-semibold text-amber-700">{isAr ? "مجموعة شراء" : "Group Buy"}</span>
-                        <span className="text-muted-foreground">•</span>
-                        <span className="text-amber-600">
-                          {isAr ? "ينتهي" : "Ends"}: {new Date(pricingInfo.dateClose).toLocaleDateString("en", { month: "short", day: "numeric", year: "numeric" })}
-                        </span>
+                        {buygroupTimeLeft && (
+                          <span className={cn(
+                            "px-1.5 py-0.5 rounded-full text-[9px] font-bold text-white",
+                            buygroupTimeLeft === (isAr ? "انتهى" : "Expired") ? "bg-muted-foreground" :
+                            buygroupTimeLeft === (isAr ? "لم يبدأ بعد" : "Not Started") ? "bg-amber-500" :
+                            "bg-destructive"
+                          )}>
+                            {buygroupTimeLeft}
+                          </span>
+                        )}
                       </div>
                       {(pricingInfo.minCustomer || pricingInfo.maxCustomer) && (
                         <div className="text-[9px] text-muted-foreground mt-1">
@@ -1114,11 +1184,28 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
                 <Plus className="h-3 w-3" />
               </button>
             </div>
-            <button type="button" onClick={() => { onAddToCart(vp.id); }}
-              className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-green-600 text-white hover:bg-green-700 py-2 text-xs font-bold">
-              <CreditCard className="h-3.5 w-3.5" /> {isAr ? "شراء" : "Buy"} — {vp.price * detailQty} OMR
+            {/* Buy/Book button — connects to real cart with productPriceId */}
+            <button type="button" onClick={() => {
+              const ppId = priceEntry?.id;
+              if (!ppId) return;
+              if (pricingInfo.sellType === "BUYGROUP" && !hasSeenBuygroupDisclaimer) {
+                setBuygroupPendingProductId(ppId);
+                setBuygroupPendingQty(detailQty);
+                setBuygroupDisclaimerOpen(true);
+                return;
+              }
+              onAddToCart(ppId, detailQty);
+            }}
+              className={cn("flex-1 flex items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-bold",
+                pricingInfo.sellType === "BUYGROUP" ? "bg-amber-600 text-white hover:bg-amber-700" : "bg-green-600 text-white hover:bg-green-700")}>
+              <CreditCard className="h-3.5 w-3.5" />
+              {pricingInfo.sellType === "BUYGROUP" ? (isAr ? "حجز" : "Book") : (isAr ? "شراء" : "Buy")} — {calculatedPrice * detailQty} {currency?.symbol || "OMR"}
             </button>
-            <button type="button" onClick={() => { setSelectedProductId(vp.id); setReqMode("rfq"); setViewingProductId(null); setActiveTab("customize"); }}
+            {/* RFQ button — connects to RFQ cart */}
+            <button type="button" onClick={() => {
+              onAddToRfqCart?.(vp.id);
+              setSelectedProductId(vp.id); setReqMode("rfq"); setViewingProductId(null); setActiveTab("customize");
+            }}
               className="flex items-center justify-center gap-1 rounded-lg border border-primary text-primary hover:bg-primary/5 px-3 py-2 text-xs font-semibold">
               <FileText className="h-3.5 w-3.5" /> RFQ
             </button>
@@ -1128,48 +1215,168 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
     );
   }
 
-  // ═══ Grid card for product (discovery only — no buy actions) ═══
-  const renderGridCard = (p: any, opts?: { isRecommended?: boolean }) => (
-    <div
-      key={`grid-${p.id}`}
-      onClick={() => { setSelectedProductId(p.id); setActiveTab("buynow"); onSelectProduct?.(p); }}
-      role="button"
-      tabIndex={0}
-      className={cn(
-        "flex flex-col rounded-lg border transition-colors cursor-pointer overflow-hidden",
-        p.id === selectedProductId ? "border-primary ring-1 ring-primary/20" : "border-border hover:border-primary/30"
-      )}
-    >
-      {/* Image placeholder */}
-      <div className="h-32 bg-muted flex items-center justify-center">
-        <ShoppingCart className="h-8 w-8 text-muted-foreground/20" />
-      </div>
-      {/* Info */}
-      <div className="p-2 flex-1 flex flex-col">
-        <span className="text-[11px] font-semibold line-clamp-2 leading-tight">{p.name}</span>
-        <div className="flex items-center gap-1 mt-1">
-          <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
-          <span className="text-[9px]">({p.reviews ?? 0})</span>
-          {opts?.isRecommended && <span className="text-[7px] bg-purple-100 text-purple-700 px-1 rounded">{isAr ? "مقترح" : "Suggested"}</span>}
+  // ═══ Grid card — matches buygroup page ProductCard layout ═══
+  const renderGridCard = (p: any, opts?: { isRecommended?: boolean }) => {
+    const isBg = p.isBuygroup || p.sellType === "BUYGROUP";
+    const hasDiscount = p.originalPrice && p.originalPrice > p.price && p.price > 0;
+    const discountPct = hasDiscount ? Math.round((1 - p.price / p.originalPrice) * 100) : 0;
+    const totalStock = p.stock ?? 0;
+    const soldCount = p.sold ?? 0;
+    const remaining = Math.max(0, totalStock - soldCount);
+    const soldPct = totalStock > 0 ? Math.round((soldCount / totalStock) * 100) : 0;
+    const remainPct = 100 - soldPct;
+
+    // Buygroup timer — compute inline (no useEffect needed, parent timer updates)
+    let cardTimer: string | null = null;
+    if (isBg && p.dateClose) {
+      const getTs = (ds: string, ts?: string) => { const d = new Date(ds); if (ts) { const [h, m] = ts.split(":").map(Number); d.setHours(h || 0, m || 0, 0, 0); } return d.getTime(); };
+      const now = Date.now();
+      const startTs = p.dateOpen ? getTs(p.dateOpen, p.startTime) : 0;
+      const endTs = getTs(p.dateClose, p.endTime);
+      if (startTs && now < startTs) cardTimer = isAr ? "لم يبدأ" : "Coming Soon";
+      else if (now > endTs) cardTimer = isAr ? "انتهى" : "Expired";
+      else {
+        const ms = endTs - now; const s = Math.floor(ms / 1000);
+        cardTimer = `${Math.floor(s / 86400)} ${isAr ? "يوم" : "Days"}; ${String(Math.floor((s % 86400) / 3600)).padStart(2, "0")}:${String(Math.floor((s % 3600) / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
+      }
+    }
+    const isExpired = cardTimer === (isAr ? "انتهى" : "Expired");
+    const isComingSoon = cardTimer === (isAr ? "لم يبدأ" : "Coming Soon");
+
+    return (
+      <div
+        key={`grid-${p.id}`}
+        className={cn(
+          "flex flex-col rounded-xl border bg-background shadow-sm overflow-hidden transition-all hover:shadow-md",
+          p.id === selectedProductId ? "border-primary ring-2 ring-primary/20" : "border-border"
+        )}
+      >
+        {/* Image area + timer badge + action icons */}
+        <div className="relative bg-muted/30 h-36 flex items-center justify-center group">
+          {p.image ? (
+            <img src={p.image} alt="" className="h-full w-full object-contain p-2" />
+          ) : (
+            <ShoppingCart className="h-10 w-10 text-muted-foreground/15" />
+          )}
+          {/* Timer badge (buygroup) */}
+          {cardTimer && (
+            <span className={cn(
+              "absolute top-2 end-2 px-2 py-0.5 rounded text-[9px] font-bold text-white",
+              isExpired ? "bg-muted-foreground" : isComingSoon ? "bg-amber-500" : "bg-destructive"
+            )}>
+              {cardTimer}
+            </span>
+          )}
+          {/* Discount badge */}
+          {hasDiscount && !isBg && (
+            <span className="absolute top-2 start-2 px-1.5 py-0.5 rounded bg-rose-500 text-white text-[9px] font-bold">
+              -{discountPct}%
+            </span>
+          )}
+          {/* Hover action icons */}
+          <div className="absolute top-2 end-2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity" style={cardTimer ? { top: "2rem" } : {}}>
+            <button type="button" onClick={(e) => { e.stopPropagation(); setSelectedProductId(p.id); setActiveTab("buynow"); onSelectProduct?.(p); }}
+              className="flex h-7 w-7 items-center justify-center rounded-full bg-white/80 shadow hover:bg-white" title={isAr ? "عرض" : "View"}>
+              <Eye className="h-3.5 w-3.5 text-muted-foreground" />
+            </button>
+          </div>
+          {/* Suggested badge */}
+          {opts?.isRecommended && (
+            <span className="absolute bottom-2 start-2 text-[8px] bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded font-medium">{isAr ? "مقترح" : "Suggested"}</span>
+          )}
         </div>
-        <span className="text-[9px] text-muted-foreground mt-0.5">{p.seller ?? "1 seller"}</span>
-        <span className="text-sm font-bold text-primary mt-auto pt-1">{p.price} OMR</span>
+
+        {/* Product info */}
+        <div className="p-2.5 flex-1 flex flex-col">
+          <button type="button"
+            onClick={() => { setSelectedProductId(p.id); setActiveTab("buynow"); onSelectProduct?.(p); }}
+            className="text-[11px] font-semibold line-clamp-2 leading-tight text-start hover:text-primary transition-colors">
+            {p.name}
+          </button>
+          {/* Rating */}
+          <div className="flex items-center gap-0.5 mt-1">
+            {[1, 2, 3, 4, 5].map((s) => (
+              <Star key={s} className={cn("h-3 w-3", s <= Math.round(p.rating ?? 0) ? "fill-amber-400 text-amber-400" : "text-muted-foreground/20")} />
+            ))}
+            <span className="text-[9px] text-muted-foreground ms-0.5">({p.reviews ?? 0})</span>
+          </div>
+          <span className="text-[9px] text-muted-foreground mt-0.5">{p.seller}</span>
+
+          {/* Price */}
+          <div className="mt-auto pt-2">
+            <span className="text-sm font-bold text-primary">{currency?.symbol || "OMR"}{p.price}</span>
+            {hasDiscount && (
+              <span className="text-[9px] text-muted-foreground line-through ms-1">{currency?.symbol || "OMR"}{p.originalPrice}</span>
+            )}
+          </div>
+        </div>
+
+        {/* Quantity stepper */}
+        <div className="px-2.5 pb-1">
+          <span className="text-[9px] text-muted-foreground">{isAr ? "الكمية" : "Quantity"}</span>
+          <div className="flex items-center justify-center gap-0 mt-0.5" onClick={(e) => e.stopPropagation()}>
+            <button type="button" onClick={() => setCardQty(p.id, Math.max(0, getCardQty(p.id) - 1))}
+              disabled={getCardQty(p.id) <= 0}
+              className="flex h-7 w-7 items-center justify-center rounded-s border border-border bg-muted text-muted-foreground disabled:opacity-30">
+              <Minus className="h-3 w-3" />
+            </button>
+            <div className="flex h-7 w-10 items-center justify-center border-y border-border bg-background text-xs font-bold">
+              {getCardQty(p.id)}
+            </div>
+            <button type="button" onClick={() => setCardQty(p.id, getCardQty(p.id) + 1)}
+              className="flex h-7 w-7 items-center justify-center rounded-e border border-border bg-muted text-muted-foreground">
+              <Plus className="h-3 w-3" />
+            </button>
+          </div>
+        </div>
+
+        {/* Action button */}
+        <div className="px-2.5 pb-2">
+          {isExpired ? (
+            <div className="w-full py-2 text-center rounded-lg bg-muted text-muted-foreground text-[10px] font-semibold">
+              {isAr ? "انتهى" : "Expired"}
+            </div>
+          ) : isComingSoon ? (
+            <div className="w-full py-2 text-center rounded-lg bg-amber-100 text-amber-700 text-[10px] font-semibold">
+              {isAr ? "قريباً" : "Coming Soon"}
+            </div>
+          ) : isBg ? (
+            <button type="button"
+              onClick={(e) => { e.stopPropagation(); setSelectedProductId(p.id); setActiveTab("buynow"); }}
+              className="w-full flex items-center justify-center gap-1.5 rounded-lg bg-gradient-to-r from-rose-400 to-rose-500 text-white py-2 text-[11px] font-bold hover:from-rose-500 hover:to-rose-600 transition-all">
+              <ShoppingCart className="h-3.5 w-3.5" /> {isAr ? "حجز" : "Book"}
+            </button>
+          ) : (
+            <div className="flex gap-1">
+              <button type="button"
+                onClick={(e) => { e.stopPropagation(); setSelectedProductId(p.id); setActiveTab("buynow"); }}
+                className="flex-1 flex items-center justify-center gap-1 rounded-lg bg-green-600 text-white py-2 text-[10px] font-bold hover:bg-green-700">
+                <ShoppingCart className="h-3 w-3" /> {isAr ? "شراء" : "Buy"}
+              </button>
+              <button type="button"
+                onClick={(e) => { e.stopPropagation(); setSelectedProductId(p.id); setReqMode("rfq"); setActiveTab("customize"); }}
+                className="flex-1 flex items-center justify-center gap-1 rounded-lg bg-amber-600 text-white py-2 text-[10px] font-bold hover:bg-amber-700">
+                <FileText className="h-3 w-3" /> RFQ
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Progress bar (buygroup only) */}
+        {isBg && totalStock > 0 && (
+          <div className="px-2.5 pb-2">
+            <div className="h-1.5 rounded-full bg-muted overflow-hidden">
+              <div className="h-full rounded-full bg-gradient-to-r from-amber-400 to-rose-500 transition-all" style={{ width: `${Math.max(5, remainPct)}%` }} />
+            </div>
+            <div className="flex items-center justify-between mt-0.5 text-[8px] text-muted-foreground">
+              <span>{isAr ? "تم البيع" : "Sold"}: {soldCount}</span>
+              <span>{remainPct}% {isAr ? "متبقي" : "left"}</span>
+            </div>
+          </div>
+        )}
       </div>
-      {/* Actions — discovery only: Buy/Customize or RFQ */}
-      <div className="flex items-center gap-1 px-2 pb-2">
-        <button type="button"
-          onClick={(e) => { e.stopPropagation(); setSelectedProductId(p.id); setActiveTab("buynow"); }}
-          className="flex-1 flex items-center justify-center gap-1 rounded bg-green-600 text-white hover:bg-green-700 py-1.5 text-[9px] font-semibold">
-          <ShoppingCart className="h-3 w-3" /> {isAr ? "شراء" : "Buy"}
-        </button>
-        <button type="button"
-          onClick={(e) => { e.stopPropagation(); setSelectedProductId(p.id); setReqMode("rfq"); setActiveTab("customize"); }}
-          className="flex-1 flex items-center justify-center gap-1 rounded bg-amber-600 text-white hover:bg-amber-700 py-1.5 text-[9px] font-semibold">
-          <FileText className="h-3 w-3" /> RFQ
-        </button>
-      </div>
-    </div>
-  );
+    );
+  };
 
   // ═══ Shared top bar — always renders (even with no selected item) ═══
   const chipBar = (
@@ -1730,7 +1937,7 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
                   return (
                     <div
                       key={`rec-${p.id}`}
-                      onClick={() => { setSelectedProductId(p.id); onSelectProduct?.(p); }}
+                      onClick={() => { setSelectedProductId(p.id); setActiveTab("buynow"); onSelectProduct?.(p); }}
                       role="button"
                       tabIndex={0}
                       className={cn(
@@ -1790,7 +1997,7 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
             {/* ── Action buttons at TOP ── */}
             {selectedProduct && (
               <div className="flex gap-2">
-                <button type="button" onClick={() => onAddToCart(selectedProduct.id)}
+                <button type="button" onClick={() => onAddToRfqCart?.(selectedProduct.id)}
                   className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 py-2 text-[11px] font-bold">
                   <ShoppingCart className="h-3.5 w-3.5" /> {isAr ? "أضف لسلة الأسعار" : "Add to RFQ Cart"}
                 </button>
@@ -2055,19 +2262,35 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
                         <Plus className="h-3 w-3" />
                       </button>
                     </div>
-                    <button type="button" onClick={() => onAddToCart(p.productId)}
-                      className="flex items-center gap-1 rounded bg-primary text-primary-foreground hover:bg-primary/90 px-3 py-1.5 text-[10px] font-semibold">
-                      <ShoppingCart className="h-3 w-3" /> {isAr ? "سلة" : "Cart"}
+                    {/* Cart/Book button — connects to real cart system */}
+                    <button type="button" onClick={() => {
+                      if (p.sellType === "BUYGROUP" && !hasSeenBuygroupDisclaimer) {
+                        setBuygroupPendingProductId(p.priceId);
+                        setBuygroupPendingQty(getCardQty(p.productId) || 1);
+                        setBuygroupDisclaimerOpen(true);
+                        return;
+                      }
+                      onAddToCart(p.priceId, getCardQty(p.productId) || 1);
+                    }}
+                      className={cn("flex items-center gap-1 rounded px-3 py-1.5 text-[10px] font-semibold",
+                        p.sellType === "BUYGROUP" ? "bg-amber-600 text-white hover:bg-amber-700" : "bg-primary text-primary-foreground hover:bg-primary/90")}>
+                      <ShoppingCart className="h-3 w-3" /> {p.sellType === "BUYGROUP" ? (isAr ? "حجز" : "Book") : (isAr ? "سلة" : "Cart")}
                     </button>
-                    <button type="button"
-                      className="flex items-center gap-1 rounded bg-blue-600 text-white hover:bg-blue-700 px-3 py-1.5 text-[10px] font-semibold">
-                      <MessageSquare className="h-3 w-3" /> {isAr ? "رسالة" : "Message"}
-                    </button>
-                    <button type="button"
-                      onClick={() => { setSelectedProductId(p.productId); setReqMode("vendor"); setActiveTab("customize"); }}
-                      className="flex items-center gap-1 rounded bg-amber-600 text-white hover:bg-amber-700 px-3 py-1.5 text-[10px] font-semibold">
-                      <Wrench className="h-3 w-3" /> {isAr ? "تخصيص" : "Customize"}
-                    </button>
+                    {/* Message — only if vendor enabled chat AND not buygroup */}
+                    {p.sellType !== "BUYGROUP" && p.enableChat && (
+                      <button type="button"
+                        className="flex items-center gap-1 rounded bg-blue-600 text-white hover:bg-blue-700 px-3 py-1.5 text-[10px] font-semibold">
+                        <MessageSquare className="h-3 w-3" /> {isAr ? "رسالة" : "Message"}
+                      </button>
+                    )}
+                    {/* Customize — only if product is customizable AND not buygroup */}
+                    {p.sellType !== "BUYGROUP" && p.isCustomProduct && (
+                      <button type="button"
+                        onClick={() => { setSelectedProductId(p.productId); setReqMode("vendor"); setActiveTab("customize"); }}
+                        className="flex items-center gap-1 rounded bg-amber-600 text-white hover:bg-amber-700 px-3 py-1.5 text-[10px] font-semibold">
+                        <Wrench className="h-3 w-3" /> {isAr ? "تخصيص" : "Customize"}
+                      </button>
+                    )}
                   </div>
                 </div>
               ))}
@@ -2133,6 +2356,63 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
         </div>
       )}
 
+      {/* ═══ Buygroup Disclaimer Popup — exact copy from ProductCard ═══ */}
+      <Dialog open={buygroupDisclaimerOpen} onOpenChange={setBuygroupDisclaimerOpen}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold text-foreground mb-4">
+              {isAr ? "كيف تعمل مجموعات الشراء" : "How Buygroups Work"}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 text-muted-foreground">
+            <div>
+              <h3 className="font-semibold text-foreground mb-2">{isAr ? "ما هي مجموعة الشراء؟" : "What is a Buygroup?"}</h3>
+              <p className="text-sm leading-relaxed">
+                {isAr
+                  ? "مجموعة الشراء هي نظام شراء جماعي حيث يجتمع عدة عملاء لشراء المنتجات بأسعار أفضل. عندما تحجز منتجًا في مجموعة شراء، فأنت تحجز مكانك لهذا المنتج."
+                  : "A buygroup is a collective purchasing system where multiple customers come together to purchase products at better prices. When you book a product in a buygroup, you're reserving your spot for that item."}
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-foreground mb-2">{isAr ? "كيف يعمل:" : "How It Works:"}</h3>
+              <ul className="list-disc list-inside space-y-2 text-sm leading-relaxed">
+                <li>{isAr ? "اختر الكمية التي تريد حجزها" : "Select the quantity you want to book"}</li>
+                <li>{isAr ? "اضغط \"حجز\" لتأكيد مكانك" : 'Click "Book" to reserve your items'}</li>
+                <li>{isAr ? "انتظر حتى تصل المجموعة للعدد المطلوب" : "Wait for the buygroup to reach the required number of participants"}</li>
+                <li>{isAr ? "بمجرد اكتمال المجموعة، سيتم إخطارك للدفع" : "Once the buygroup is complete, you'll be notified and can proceed with payment"}</li>
+                <li>{isAr ? "يتم تأكيد حجزك فقط بعد وصول المجموعة لهدفها" : "Your booking is confirmed only after the buygroup reaches its target"}</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold text-foreground mb-2">{isAr ? "ملاحظات مهمة:" : "Important Notes:"}</h3>
+              <ul className="list-disc list-inside space-y-2 text-sm leading-relaxed">
+                <li>{isAr ? "حجزك هو حجز وليس شراء فوري" : "Your booking is a reservation, not an immediate purchase"}</li>
+                <li>{isAr ? "يمكنك إلغاء حجزك قبل إغلاق المجموعة" : "You can cancel your booking before the buygroup closes"}</li>
+                <li>{isAr ? "إذا لم تصل المجموعة لهدفها، سيتم إلغاء حجزك تلقائيًا" : "If the buygroup doesn't reach its target, your booking will be automatically cancelled"}</li>
+                <li>{isAr ? "ستتلقى إشعارات حول حالة المجموعة" : "You'll receive notifications about the buygroup status"}</li>
+              </ul>
+            </div>
+          </div>
+          <div className="flex items-center justify-end gap-3 mt-6 pt-4 border-t border-border">
+            <button onClick={() => setBuygroupDisclaimerOpen(false)}
+              className="px-4 py-2 text-sm font-medium text-muted-foreground bg-card border border-border rounded hover:bg-muted transition-colors">
+              {isAr ? "إلغاء" : "Cancel"}
+            </button>
+            <button onClick={() => {
+              setBuygroupDisclaimerOpen(false);
+              setHasSeenBuygroupDisclaimer(true);
+              if (buygroupPendingProductId) {
+                onAddToCart(buygroupPendingProductId, buygroupPendingQty);
+                setBuygroupPendingProductId(null);
+                setBuygroupPendingQty(1);
+              }
+            }}
+              className="px-4 py-2 text-sm font-medium text-white bg-primary rounded hover:bg-primary/90 transition-colors">
+              {isAr ? "أفهم، متابعة" : "I Understand, Proceed"}
+            </button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
