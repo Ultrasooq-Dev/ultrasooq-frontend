@@ -173,13 +173,13 @@ export default function RequestListPanel({ selectedItemId, onSelectItem, onItemR
   };
 
   // AI usage: 50/day — same counter as Panel 3
-  const [aiSearchUsed] = useState(() => {
-    if (typeof window === "undefined") return 0;
+  const [aiSearchUsed, setAiSearchUsed] = useState(0);
+  useEffect(() => {
     try {
       const stored = JSON.parse(localStorage.getItem("us_ai_search") ?? "{}");
-      return stored.date === new Date().toDateString() ? (stored.count ?? 0) : 0;
-    } catch { return 0; }
-  });
+      setAiSearchUsed(stored.date === new Date().toDateString() ? (stored.count ?? 0) : 0);
+    } catch {}
+  }, []);
   const aiSearchLeft = 50 - aiSearchUsed;
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);

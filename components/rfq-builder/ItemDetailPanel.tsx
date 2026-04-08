@@ -65,15 +65,16 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
   const [searchPage, setSearchPage] = useState(1);
 
   // AI usage: 50/day free — TODO: track via API, for now localStorage
-  const [aiUsedToday] = useState(() => {
-    if (typeof window === "undefined") return 0;
+  const [aiUsedToday, setAiUsedToday] = useState(0);
+  const [aiResetHours, setAiResetHours] = useState(24);
+  useEffect(() => {
     try {
       const stored = JSON.parse(localStorage.getItem("us_ai_suggest") ?? "{}");
       const today = new Date().toDateString();
-      return stored.date === today ? (stored.count ?? 0) : 0;
-    } catch { return 0; }
-  });
-  const aiResetHours = Math.max(1, 24 - new Date().getHours());
+      setAiUsedToday(stored.date === today ? (stored.count ?? 0) : 0);
+      setAiResetHours(Math.max(1, 24 - new Date().getHours()));
+    } catch {}
+  }, []);
   const PRODUCTS_PER_PAGE = 5;
 
   // ── Filter chips state — synced with parent (Panel 2 shares same state) ──
