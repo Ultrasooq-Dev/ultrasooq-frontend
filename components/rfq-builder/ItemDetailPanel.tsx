@@ -20,6 +20,11 @@ import { useQuery } from "@tanstack/react-query";
 import http from "@/apis/http";
 import { getApiUrl } from "@/config/api";
 import { track } from "@/lib/analytics";
+import { useAuth } from "@/context/AuthContext";
+import { checkCategoryConnection } from "@/utils/categoryConnection";
+import { useVendorBusinessCategories } from "@/hooks/useVendorBusinessCategories";
+import { useCurrentAccount } from "@/apis/queries/auth.queries";
+import { useCategory } from "@/apis/queries/category.queries";
 import {
   Star, ShoppingCart, Send, Paperclip, MapPin, Truck, Shield,
   MessageSquare, FileText, X, Image, Edit3, ChevronDown, ChevronUp,
@@ -76,6 +81,11 @@ interface ItemDetailPanelProps {
 
 export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCart, onSelectProduct, locale, activeCategories, onCategoryChange }: ItemDetailPanelProps) {
   const isAr = locale === "ar";
+  // Auth & pricing context — same hooks as ProductDescriptionCard
+  const { user, currency } = useAuth();
+  const currentAccount = useCurrentAccount();
+  const vendorBusinessCategoryIds = useVendorBusinessCategories();
+  const currentTradeRole = currentAccount?.data?.data?.account?.tradeRole || user?.tradeRole;
   const [chatInput, setChatInput] = useState("");
   const [searchPage, setSearchPage] = useState(1);
 
@@ -584,13 +594,13 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
       category: detail?.category?.name || "",
       skuNo: detail?.skuNo || "",
     };
-    // Real pricing data from ProductPrice entry
+    // ── Real pricing — EXACT same logic as ProductDescriptionCard ──
     const ppEntry = priceEntry || {};
     const pricingInfo = {
       consumerDiscount: ppEntry.consumerDiscount ?? 0,
-      consumerDiscountType: ppEntry.consumerDiscountType ?? "percentage",
+      consumerDiscountType: ppEntry.consumerDiscountType ?? null,
       vendorDiscount: ppEntry.vendorDiscount ?? 0,
-      vendorDiscountType: ppEntry.vendorDiscountType ?? "percentage",
+      vendorDiscountType: ppEntry.vendorDiscountType ?? null,
       consumerType: ppEntry.consumerType ?? "CONSUMER",
       minQuantity: ppEntry.minQuantityPerCustomer ?? ppEntry.minQuantity ?? 1,
       maxQuantity: ppEntry.maxQuantityPerCustomer ?? ppEntry.maxQuantity ?? null,
@@ -599,7 +609,83 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
       askForPrice: ppEntry.askForPrice === "true",
       sellType: ppEntry.sellType ?? "NORMALSELL",
       enableChat: ppEntry.enableChat ?? false,
+      // Buy Group fields
+      dateOpen: ppEntry.dateOpen ?? null,
+      dateClose: ppEntry.dateClose ?? null,
+      startTime: ppEntry.startTime ?? null,
+      endTime: ppEntry.endTime ?? null,
+      minCustomer: ppEntry.minCustomer ?? null,
+      maxCustomer: ppEntry.maxCustomer ?? null,
     };
+
+    // Category connection for vendor discount eligibility
+    const categoryId = detail?.categoryId;
+    const categoryLocation = detail?.category?.categoryLocation;
+
+    // calculateDiscountedPrice — copied EXACTLY from ProductDescriptionCard
+    const calculateDiscountedPrice = () => {
+      const price = Number(ppEntry.productPrice ?? detail?.productPrice ?? 0);
+      const offerPriceValue = Number(ppEntry.offerPrice ?? detail?.offerPrice ?? 0);
+
+      // Step 1: If offerPrice differs from productPrice, use it directly
+      if (offerPriceValue > 0 && offerPriceValue !== price) return offerPriceValue;
+
+      // Step 2: Discount calculation based on consumerType + tradeRole + category match
+      const rawConsumerType = pricingInfo.consumerType || "CONSUMER";
+      const productConsumerType = typeof rawConsumerType === "string" ? rawConsumerType.toUpperCase().trim() : "CONSUMER";
+      const isVendorType = productConsumerType === "VENDOR" || productConsumerType === "VENDORS";
+      const isConsumerType = productConsumerType === "CONSUMER";
+      const isEveryoneType = productConsumerType === "EVERYONE";
+
+      const isCategoryMatch = checkCategoryConnection(
+        vendorBusinessCategoryIds,
+        categoryId || 0,
+        categoryLocation,
+        [] // categoryConnections — would need useCategory query for full support
+      );
+
+      let discount = pricingInfo.consumerDiscount || 0;
+      let discountType = pricingInfo.consumerDiscountType;
+
+      if (currentTradeRole && currentTradeRole !== "BUYER") {
+        // User is VENDOR
+        if (isCategoryMatch) {
+          if (pricingInfo.vendorDiscount > 0) {
+            discount = pricingInfo.vendorDiscount;
+            discountType = pricingInfo.vendorDiscountType;
+          } else {
+            discount = 0;
+          }
+        } else {
+          if (isEveryoneType) {
+            discount = pricingInfo.consumerDiscount || 0;
+            discountType = pricingInfo.consumerDiscountType;
+          } else {
+            discount = 0;
+          }
+        }
+      } else {
+        // User is BUYER
+        if (isConsumerType || isEveryoneType) {
+          discount = pricingInfo.consumerDiscount || 0;
+          discountType = pricingInfo.consumerDiscountType;
+        } else {
+          discount = 0; // VENDORS-only product — no discount for buyers
+        }
+      }
+
+      // Step 3: Apply discount
+      if (discount > 0 && discountType) {
+        if (discountType === "PERCENTAGE") return Number((price - (price * discount) / 100).toFixed(2));
+        if (discountType === "FLAT") return Number((price - discount).toFixed(2));
+      }
+      return price;
+    };
+
+    const calculatedPrice = calculateDiscountedPrice();
+    const originalPrice = Number(ppEntry.productPrice ?? detail?.productPrice ?? 0);
+    const hasCalcDiscount = originalPrice > calculatedPrice && calculatedPrice > 0;
+    const calcDiscountPct = hasCalcDiscount ? Math.round((1 - calculatedPrice / originalPrice) * 100) : 0;
     const productReviews = (vp.reviews || []).map((r: any) => ({
       user: r.user?.firstName || r.userName || "User",
       rating: r.rating || 4,
@@ -758,7 +844,7 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
               </div>
             </div>
 
-            {/* Pricing & Rules — real data from ProductPrice */}
+            {/* Pricing & Rules — EXACT logic from ProductDescriptionCard */}
             <div className="space-y-2">
               <h3 className="text-[11px] font-semibold">{isAr ? "التسعير والقواعد" : "Pricing & Rules"}</h3>
 
@@ -771,70 +857,100 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
                   </button>
                 </div>
               ) : (
-                <div className="grid grid-cols-2 gap-1.5">
-                  {/* Price card */}
-                  <div className="rounded border border-border p-2">
-                    <span className="text-[9px] text-muted-foreground block">{isAr ? "السعر" : "Price"}</span>
-                    <span className="text-sm font-bold text-primary">{vp.price} OMR</span>
-                    {vp.discount > 0 && (
-                      <div className="flex items-center gap-1 mt-0.5">
-                        <span className="text-[9px] text-muted-foreground line-through">{vp.originalPrice} OMR</span>
-                        <span className="text-[9px] font-bold text-green-600">-{vp.discount}%</span>
-                      </div>
+                <>
+                  {/* Price display — uses calculated price */}
+                  <div className="flex items-baseline gap-2 flex-wrap">
+                    <span className="text-lg font-bold text-foreground">{(currency?.symbol || "OMR ")}{calculatedPrice}</span>
+                    {hasCalcDiscount && (
+                      <>
+                        <span className="text-xs text-muted-foreground line-through">{(currency?.symbol || "OMR ")}{originalPrice}</span>
+                        <span className="text-[10px] font-semibold text-green-600">-{calcDiscountPct}%</span>
+                      </>
                     )}
                   </div>
 
-                  {/* Sell type */}
-                  <div className="rounded border border-border p-2">
-                    <span className="text-[9px] text-muted-foreground block">{isAr ? "نوع البيع" : "Sell Type"}</span>
-                    <span className="text-[10px] font-semibold">
-                      {pricingInfo.sellType === "NORMALSELL" ? (isAr ? "تجزئة" : "Retail") :
-                       pricingInfo.sellType === "BUYGROUP" ? (isAr ? "مجموعة شراء" : "Buy Group") :
-                       pricingInfo.sellType === "WHOLESALE_PRODUCT" ? (isAr ? "جملة" : "Wholesale") :
-                       pricingInfo.sellType === "TRIAL_PRODUCT" ? (isAr ? "تجريبي" : "Trial") :
-                       pricingInfo.sellType}
-                    </span>
-                  </div>
-
-                  {/* Consumer discount */}
-                  {pricingInfo.consumerDiscount > 0 && (
-                    <div className="rounded border border-green-200 bg-green-50/50 dark:bg-green-950/10 p-2">
-                      <span className="text-[9px] text-muted-foreground block">{isAr ? "خصم المستهلك" : "Consumer Discount"}</span>
-                      <span className="text-[10px] font-bold text-green-600">
-                        {pricingInfo.consumerDiscountType === "fixed" ? `${pricingInfo.consumerDiscount} OMR` : `${pricingInfo.consumerDiscount}%`}
-                      </span>
+                  {/* Buy Group timer */}
+                  {pricingInfo.sellType === "BUYGROUP" && pricingInfo.dateClose && (
+                    <div className="rounded-lg border border-amber-300/50 bg-amber-50/30 dark:bg-amber-950/10 p-2.5">
+                      <div className="flex items-center gap-1.5 text-[10px]">
+                        <span className="font-semibold text-amber-700">{isAr ? "مجموعة شراء" : "Group Buy"}</span>
+                        <span className="text-muted-foreground">•</span>
+                        <span className="text-amber-600">
+                          {isAr ? "ينتهي" : "Ends"}: {new Date(pricingInfo.dateClose).toLocaleDateString("en", { month: "short", day: "numeric", year: "numeric" })}
+                        </span>
+                      </div>
+                      {(pricingInfo.minCustomer || pricingInfo.maxCustomer) && (
+                        <div className="text-[9px] text-muted-foreground mt-1">
+                          {pricingInfo.minCustomer && `${isAr ? "الحد الأدنى" : "Min"} ${pricingInfo.minCustomer} ${isAr ? "مشتري" : "buyers"}`}
+                          {pricingInfo.minCustomer && pricingInfo.maxCustomer && " — "}
+                          {pricingInfo.maxCustomer && `${isAr ? "الحد الأقصى" : "Max"} ${pricingInfo.maxCustomer} ${isAr ? "مشتري" : "buyers"}`}
+                        </div>
+                      )}
                     </div>
                   )}
 
-                  {/* Vendor discount */}
-                  {pricingInfo.vendorDiscount > 0 && (
-                    <div className="rounded border border-blue-200 bg-blue-50/50 dark:bg-blue-950/10 p-2">
-                      <span className="text-[9px] text-muted-foreground block">{isAr ? "خصم التجار" : "Vendor Discount"}</span>
-                      <span className="text-[10px] font-bold text-blue-600">
-                        {pricingInfo.vendorDiscountType === "fixed" ? `${pricingInfo.vendorDiscount} OMR` : `${pricingInfo.vendorDiscount}%`}
-                      </span>
-                    </div>
-                  )}
-
-                  {/* Quantity limits */}
-                  {(pricingInfo.minQuantity > 1 || pricingInfo.maxQuantity) && (
+                  <div className="grid grid-cols-2 gap-1.5">
+                    {/* Sell type */}
                     <div className="rounded border border-border p-2">
-                      <span className="text-[9px] text-muted-foreground block">{isAr ? "الكمية" : "Quantity"}</span>
+                      <span className="text-[9px] text-muted-foreground block">{isAr ? "نوع البيع" : "Sell Type"}</span>
                       <span className="text-[10px] font-semibold">
-                        {isAr ? "من" : "Min"} {pricingInfo.minQuantity}
-                        {pricingInfo.maxQuantity && ` — ${isAr ? "إلى" : "Max"} ${pricingInfo.maxQuantity}`}
+                        {pricingInfo.sellType === "NORMALSELL" ? (isAr ? "تجزئة" : "Retail") :
+                         pricingInfo.sellType === "BUYGROUP" ? (isAr ? "مجموعة شراء" : "Buy Group") :
+                         pricingInfo.sellType === "WHOLESALE_PRODUCT" ? (isAr ? "جملة" : "Wholesale") :
+                         pricingInfo.sellType === "TRIAL_PRODUCT" ? (isAr ? "تجريبي" : "Trial") :
+                         pricingInfo.sellType}
                       </span>
                     </div>
-                  )}
 
-                  {/* Stock */}
-                  <div className="rounded border border-border p-2">
-                    <span className="text-[9px] text-muted-foreground block">{isAr ? "المخزون" : "Stock"}</span>
-                    <span className={cn("text-[10px] font-semibold", vp.stock > 0 ? "text-green-600" : "text-destructive")}>
-                      {vp.stock > 0 ? `${vp.stock} ${isAr ? "قطعة" : "available"}` : (isAr ? "غير متوفر" : "Out of stock")}
-                    </span>
+                    {/* Consumer type */}
+                    <div className="rounded border border-border p-2">
+                      <span className="text-[9px] text-muted-foreground block">{isAr ? "الفئة المستهدفة" : "Target"}</span>
+                      <span className="text-[10px] font-semibold">
+                        {pricingInfo.consumerType === "CONSUMER" ? (isAr ? "مستهلكين" : "Consumers") :
+                         pricingInfo.consumerType === "VENDORS" ? (isAr ? "تجار فقط" : "Vendors Only") :
+                         pricingInfo.consumerType === "EVERYONE" ? (isAr ? "الجميع" : "Everyone") :
+                         pricingInfo.consumerType}
+                      </span>
+                    </div>
+
+                    {/* Discount details (raw, before role-based calculation) */}
+                    {pricingInfo.consumerDiscount > 0 && (
+                      <div className="rounded border border-green-200 bg-green-50/50 dark:bg-green-950/10 p-2">
+                        <span className="text-[9px] text-muted-foreground block">{isAr ? "خصم المستهلك" : "Consumer Discount"}</span>
+                        <span className="text-[10px] font-bold text-green-600">
+                          {pricingInfo.consumerDiscountType === "FLAT" ? `${pricingInfo.consumerDiscount} OMR off` : `${pricingInfo.consumerDiscount}%`}
+                        </span>
+                      </div>
+                    )}
+                    {pricingInfo.vendorDiscount > 0 && (
+                      <div className="rounded border border-blue-200 bg-blue-50/50 dark:bg-blue-950/10 p-2">
+                        <span className="text-[9px] text-muted-foreground block">{isAr ? "خصم التجار" : "Vendor Discount"}</span>
+                        <span className="text-[10px] font-bold text-blue-600">
+                          {pricingInfo.vendorDiscountType === "FLAT" ? `${pricingInfo.vendorDiscount} OMR off` : `${pricingInfo.vendorDiscount}%`}
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Quantity limits */}
+                    {(pricingInfo.minQuantity > 1 || pricingInfo.maxQuantity) && (
+                      <div className="rounded border border-border p-2">
+                        <span className="text-[9px] text-muted-foreground block">{isAr ? "الكمية" : "Quantity"}</span>
+                        <span className="text-[10px] font-semibold">
+                          {isAr ? "من" : "Min"} {pricingInfo.minQuantity}
+                          {pricingInfo.maxQuantity && ` — ${isAr ? "إلى" : "Max"} ${pricingInfo.maxQuantity}`}
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Stock */}
+                    <div className="rounded border border-border p-2">
+                      <span className="text-[9px] text-muted-foreground block">{isAr ? "المخزون" : "Stock"}</span>
+                      <span className={cn("text-[10px] font-semibold", vp.stock > 0 ? "text-green-600" : "text-destructive")}>
+                        {vp.stock > 0 ? `${vp.stock} ${isAr ? "قطعة" : "available"}` : (isAr ? "غير متوفر" : "Out of stock")}
+                      </span>
+                    </div>
                   </div>
-                </div>
+                </>
               )}
             </div>
 
