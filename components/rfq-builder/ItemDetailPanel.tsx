@@ -20,6 +20,7 @@ import { useQuery } from "@tanstack/react-query";
 import http from "@/apis/http";
 import { getApiUrl } from "@/config/api";
 import { track } from "@/lib/analytics";
+import Link from "next/link";
 import {
   Star, ShoppingCart, Send, Paperclip, MapPin, Truck, Shield,
   MessageSquare, FileText, X, Image, Edit3, ChevronDown, ChevronUp,
@@ -1078,7 +1079,16 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
     <div className="flex flex-col h-full min-h-0 min-w-0 bg-background overflow-hidden">
       {/* Item header */}
       <div className="px-4 py-2 border-b border-border shrink-0">
-        <h3 className="text-sm font-bold truncate">{searchTerm ?? selectedProduct?.name ?? selectedItemId ?? ""}</h3>
+        <h3 className="text-sm font-bold truncate">
+          {selectedProductId ? (
+            <Link href={`/trending/${selectedProductId}`} target="_blank"
+              className="hover:text-primary hover:underline transition-colors">
+              {searchTerm ?? selectedProduct?.name ?? selectedItemId ?? ""}
+            </Link>
+          ) : (
+            searchTerm ?? selectedItemId ?? ""
+          )}
+        </h3>
       </div>
 
       {/* ═══ CATEGORY CHIPS — always fixed at top, never hidden ═══ */}
@@ -1663,7 +1673,10 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
                   <ShoppingCart className="h-3.5 w-3.5 text-muted-foreground/30" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <span className="text-[11px] font-bold block truncate">{selectedProduct.name}</span>
+                  <Link href={`/trending/${selectedProduct.id}`} target="_blank"
+                    className="text-[11px] font-bold block truncate text-primary hover:underline">
+                    {selectedProduct.name}
+                  </Link>
                   <span className="text-[9px] text-muted-foreground">
                     {buySearchQuery?.isLoading ? (isAr ? "جاري البحث..." : "Searching sellers...") : `${buyListings.length} ${isAr ? "عرض لهذا المنتج" : "listings for this product"}`}
                   </span>
@@ -1695,7 +1708,10 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-2">
-                        <span className="text-xs font-semibold line-clamp-2">{p.name}</span>
+                        <Link href={`/trending/${p.productId}`} target="_blank"
+                          className="text-xs font-semibold line-clamp-2 text-foreground hover:text-primary hover:underline transition-colors">
+                          {p.name}
+                        </Link>
                         <div className="text-end shrink-0">
                           <span className="text-sm font-bold text-primary">{p.price} OMR</span>
                           {p.originalPrice > p.price && (
