@@ -433,6 +433,13 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
           warranty: pp.warranty ?? "",
           enableChat: pp.enableChat === true,
           isCustomProduct: pp.isCustomProduct === "true" || pp.isCustomProduct === true,
+          // Buygroup date fields for grid card
+          dateOpen: pp.dateOpen ?? null,
+          dateClose: pp.dateClose ?? null,
+          startTime: pp.startTime ?? null,
+          endTime: pp.endTime ?? null,
+          minCustomer: pp.minCustomer ?? null,
+          maxCustomer: pp.maxCustomer ?? null,
         };
       });
   }, [buyDetailQuery.data]);
@@ -2199,6 +2206,30 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
               </div>
             )}
 
+            {viewMode === "grid" ? (
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
+              {buyListings.map((p: any) => renderGridCard({
+                ...p,
+                id: p.productId,
+                name: p.name,
+                price: p.price,
+                originalPrice: p.originalPrice,
+                rating: p.rating,
+                reviews: p.reviews,
+                seller: p.seller,
+                stock: p.stock,
+                inStock: p.inStock,
+                sellType: p.sellType,
+                isBuygroup: p.sellType === "BUYGROUP",
+                dateOpen: p.dateOpen,
+                dateClose: p.dateClose,
+                startTime: p.startTime,
+                endTime: p.endTime,
+                image: null,
+                sold: 0,
+              }))}
+            </div>
+            ) : (
             <div className="space-y-2 overflow-hidden">
               {buyListings.map((p: any) => {
                 const isBg = p.sellType === "BUYGROUP";
@@ -2348,6 +2379,7 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
                 );
               })}
             </div>
+            )}
           </div>
         )}
 
