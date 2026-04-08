@@ -47,8 +47,10 @@ import {
   LANGUAGES,
   PRODUCT_CATEGORY_ID,
   ULTRASOOQ_TOKEN_KEY,
+  ULTRASOOQ_REFRESH_TOKEN_KEY,
   menuBarIconList,
 } from "@/utils/constants";
+import { forceLogout } from "@/utils/forceLogout";
 import { getInitials, getOrCreateDeviceId } from "@/utils/helper";
 import { useQueryClient } from "@tanstack/react-query";
 import { deleteCookie, getCookie, setCookie } from "cookies-next";
@@ -316,20 +318,16 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
 
   const handleLogout = async () => {
     setIsLoggedIn(false);
-    deleteCookie(ULTRASOOQ_TOKEN_KEY);
+    // Clear React Query cache and user state first (immediate UI feedback)
     queryClient.clear();
     clearUser();
-    await signOut({
-      redirect: false,
-      callbackUrl: "/login",
-    });
     toast({
       title: t("logout_successful"),
       description: t("you_have_successfully_logged_out"),
       variant: "success",
     });
-
-    router.push("/login");
+    // Full logout: revoke backend token → clear cookies → signOut NextAuth → redirect
+    await forceLogout();
   };
 
   const wrapperRef = useRef(null);

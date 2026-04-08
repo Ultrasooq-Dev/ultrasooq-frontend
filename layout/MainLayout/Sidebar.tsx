@@ -34,8 +34,9 @@ import {
   UserCheckIcon,
   WalletIcon,
 } from "lucide-react";
-import { getCookie, deleteCookie } from "cookies-next";
+import { getCookie } from "cookies-next";
 import { ULTRASOOQ_TOKEN_KEY, ULTRASOOQ_REFRESH_TOKEN_KEY } from "@/utils/constants";
+import { forceLogout } from "@/utils/forceLogout";
 import { useCurrentAccount } from "@/apis/queries/auth.queries";
 import { useMe } from "@/apis/queries/user.queries";
 import { useQueryClient } from "@tanstack/react-query";
@@ -424,31 +425,20 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
         isLogout: true,
         onClick: async () => {
           try {
-            // Delete auth cookies
-            deleteCookie(ULTRASOOQ_TOKEN_KEY);
-            deleteCookie(ULTRASOOQ_REFRESH_TOKEN_KEY);
-            // Clear React Query cache
+            // Clear React Query cache and user state (immediate UI feedback)
             queryClient.clear();
-            // Clear user from AuthContext
             clearUser();
-            // Sign out from NextAuth
-            await signOut({
-              redirect: false,
-              callbackUrl: "/login",
-            });
             // Close sidebar on mobile
             if (typeof window !== "undefined" && window.innerWidth < 768) {
               closeSidebar();
             }
-            // Show success toast
             toast({
               title: t("logout_successful"),
               description: t("you_have_successfully_logged_out"),
               variant: "success",
             });
-            // Force a full page reload to ensure all components re-initialize with updated cookie state
-            // This ensures the Header component re-reads the cookie and shows login/register buttons
-            window.location.href = "/login";
+            // Full logout: revoke backend token → clear cookies → signOut NextAuth → redirect
+            await forceLogout();
           } catch (error) {
             console.error("Logout error:", error);
             toast({

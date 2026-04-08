@@ -1,9 +1,10 @@
 "use client";
 
 import { setUserLocale } from "@/src/services/locale";
-import { CURRENCIES, LANGUAGES, ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
+import { CURRENCIES, LANGUAGES, ULTRASOOQ_TOKEN_KEY, ULTRASOOQ_REFRESH_TOKEN_KEY } from "@/utils/constants";
 import { fetchMe } from "@/apis/requests/user.requests";
 import { getCookie } from "cookies-next";
+import { forceLogout } from "@/utils/forceLogout";
 import React, {
   createContext,
   startTransition,
@@ -74,9 +75,8 @@ export const AuthProvider: React.FC<{
             .catch((err) => {
               const status = err?.response?.status;
               if (status === 401) {
-                // Token is truly invalid - clear it so user gets a clean login redirect
-                document.cookie =
-                  "ultrasooq_accessToken=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+                // Token is truly invalid — full logout then redirect to login
+                forceLogout();
               } else if (retryCount < maxRetries) {
                 // Network error or server issue - retry after a delay
                 retryCount++;

@@ -3,9 +3,10 @@ import axios, {
   InternalAxiosRequestConfig,
   AxiosError,
 } from "axios";
-import { getCookie, setCookie, deleteCookie } from "cookies-next";
+import { getCookie, setCookie } from "cookies-next";
 import { ULTRASOOQ_TOKEN_KEY, ULTRASOOQ_REFRESH_TOKEN_KEY } from "@/utils/constants";
 import { getApiUrl } from "@/config/api";
+import { forceLogout } from "@/utils/forceLogout";
 
 const http: AxiosInstance = axios.create({
   timeout: 30000,
@@ -38,16 +39,8 @@ function processQueue(error: unknown, token: string | null = null) {
   failedQueue = [];
 }
 
-/**
- * Clear all auth tokens and redirect to login page.
- */
-function forceLogout() {
-  deleteCookie(ULTRASOOQ_TOKEN_KEY);
-  deleteCookie(ULTRASOOQ_REFRESH_TOKEN_KEY);
-  if (typeof window !== "undefined") {
-    window.location.href = "/login";
-  }
-}
+// forceLogout is imported from @/utils/forceLogout
+// It revokes the refresh token on backend, clears cookies, signs out NextAuth, then redirects.
 
 // ─── Request interceptor ──────────────────────────────────────
 http.interceptors.request.use(
