@@ -24,7 +24,6 @@ import { useAuth } from "@/context/AuthContext";
 import { checkCategoryConnection } from "@/utils/categoryConnection";
 import { useVendorBusinessCategories } from "@/hooks/useVendorBusinessCategories";
 import { useCurrentAccount } from "@/apis/queries/auth.queries";
-import { useCategory } from "@/apis/queries/category.queries";
 import {
   Star, ShoppingCart, Send, Paperclip,
   MessageSquare, FileText, X, Image, ChevronDown, ChevronUp,
