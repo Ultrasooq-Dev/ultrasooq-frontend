@@ -1378,6 +1378,134 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
     );
   };
 
+  // ═══ List card — matches same features as grid card ═══
+  const renderListCard = (p: any, opts?: { isRecommended?: boolean; showSelection?: boolean }) => {
+    const isBg = p.isBuygroup || p.sellType === "BUYGROUP";
+    const hasDiscount = p.originalPrice && p.originalPrice > p.price && p.price > 0;
+    const discountPct = hasDiscount ? Math.round((1 - p.price / p.originalPrice) * 100) : 0;
+    const totalStock = p.stock ?? 0;
+    const soldCount = p.sold ?? 0;
+    const remainPct = totalStock > 0 ? 100 - Math.round((soldCount / totalStock) * 100) : 100;
+    const isSel = opts?.showSelection && p.id === selectedProductId;
+
+    // Buygroup timer inline
+    let cardTimer: string | null = null;
+    if (isBg && p.dateClose) {
+      const getTs = (ds: string, ts?: string) => { const d = new Date(ds); if (ts) { const [h, m] = ts.split(":").map(Number); d.setHours(h || 0, m || 0, 0, 0); } return d.getTime(); };
+      const now = Date.now();
+      const startTs = p.dateOpen ? getTs(p.dateOpen, p.startTime) : 0;
+      const endTs = getTs(p.dateClose, p.endTime);
+      if (startTs && now < startTs) cardTimer = isAr ? "لم يبدأ" : "Coming Soon";
+      else if (now > endTs) cardTimer = isAr ? "انتهى" : "Expired";
+      else { const ms = endTs - now; const s = Math.floor(ms / 1000); cardTimer = `${Math.floor(s / 86400)} ${isAr ? "يوم" : "Days"}; ${String(Math.floor((s % 86400) / 3600)).padStart(2, "0")}:${String(Math.floor((s % 3600) / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`; }
+    }
+    const isExpired = cardTimer === (isAr ? "انتهى" : "Expired");
+    const isComingSoon = cardTimer === (isAr ? "لم يبدأ" : "Coming Soon");
+
+    return (
+      <div
+        key={p.id}
+        onClick={() => { setSelectedProductId(p.id); setActiveTab("buynow"); onSelectProduct?.(p); }}
+        role="button"
+        tabIndex={0}
+        className={cn(
+          "flex items-start gap-3 p-3 rounded-lg border transition-colors cursor-pointer",
+          isSel ? "border-primary bg-primary/5 ring-1 ring-primary/20" : "border-border hover:border-primary/30"
+        )}
+      >
+        {/* Image + badges */}
+        <div className="relative h-16 w-16 rounded-lg bg-muted flex items-center justify-center shrink-0 overflow-hidden">
+          {p.image ? (
+            <img src={p.image} alt="" className="h-full w-full object-contain" />
+          ) : (
+            <ShoppingCart className="h-5 w-5 text-muted-foreground/20" />
+          )}
+          {cardTimer && (
+            <span className={cn(
+              "absolute top-0 end-0 px-1 py-0.5 text-[7px] font-bold text-white rounded-bl",
+              isExpired ? "bg-muted-foreground" : isComingSoon ? "bg-amber-500" : "bg-destructive"
+            )}>
+              {isBg && !isExpired && !isComingSoon ? cardTimer.split(";")[0] : (isExpired ? "!" : "...")}
+            </span>
+          )}
+          {hasDiscount && !isBg && (
+            <span className="absolute top-0 start-0 px-1 py-0.5 text-[7px] font-bold text-white bg-rose-500 rounded-br">
+              -{discountPct}%
+            </span>
+          )}
+        </div>
+
+        <div className="flex-1 min-w-0">
+          {/* Name + price row */}
+          <div className="flex items-start justify-between gap-2">
+            <div className="min-w-0 flex-1">
+              <span className={cn("text-xs font-semibold line-clamp-2", isSel && "text-primary")}>{p.name}</span>
+              {opts?.isRecommended && <span className="text-[8px] bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded ms-1">{isAr ? "مقترح" : "Suggested"}</span>}
+            </div>
+            <div className="text-end shrink-0">
+              <span className="text-sm font-bold text-primary">{p.price} OMR</span>
+              {hasDiscount && <span className="text-[8px] text-muted-foreground line-through block">{p.originalPrice} OMR</span>}
+            </div>
+          </div>
+
+          {/* Rating + seller + stock */}
+          <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
+            <div className="flex items-center gap-0.5">
+              {[1, 2, 3, 4, 5].map((s) => (
+                <Star key={s} className={cn("h-2.5 w-2.5", s <= Math.round(p.rating ?? 0) ? "fill-amber-400 text-amber-400" : "text-muted-foreground/20")} />
+              ))}
+            </div>
+            <span className="text-[9px] text-muted-foreground">({p.reviews})</span>
+            <span className="text-[9px] text-muted-foreground">• {p.seller}</span>
+            {totalStock > 0 && <span className={cn("text-[9px]", p.inStock ? "text-green-600" : "text-destructive")}>{p.inStock ? `${totalStock} ${isAr ? "متوفر" : "in stock"}` : (isAr ? "نفذ" : "Out")}</span>}
+            {cardTimer && <span className={cn("text-[8px] font-bold px-1 py-0.5 rounded text-white", isExpired ? "bg-muted-foreground" : isComingSoon ? "bg-amber-500" : "bg-destructive")}>{cardTimer}</span>}
+          </div>
+
+          {/* Buygroup progress bar */}
+          {isBg && totalStock > 0 && (
+            <div className="mt-1">
+              <div className="h-1 rounded-full bg-muted overflow-hidden">
+                <div className="h-full rounded-full bg-gradient-to-r from-amber-400 to-rose-500" style={{ width: `${Math.max(5, remainPct)}%` }} />
+              </div>
+              <div className="flex items-center justify-between text-[7px] text-muted-foreground mt-0.5">
+                <span>{isAr ? "تم البيع" : "Sold"}: {soldCount}</span>
+                <span>{remainPct}% {isAr ? "متبقي" : "left"}</span>
+              </div>
+            </div>
+          )}
+
+          {/* Action buttons */}
+          <div className="flex items-center gap-1.5 mt-1.5">
+            {isExpired ? (
+              <span className="text-[10px] font-semibold text-muted-foreground bg-muted px-2 py-1 rounded">{isAr ? "انتهى" : "Expired"}</span>
+            ) : isComingSoon ? (
+              <span className="text-[10px] font-semibold text-amber-700 bg-amber-100 px-2 py-1 rounded">{isAr ? "قريباً" : "Coming Soon"}</span>
+            ) : isBg ? (
+              <button type="button"
+                onClick={(e) => { e.stopPropagation(); setSelectedProductId(p.id); setActiveTab("buynow"); }}
+                className="flex items-center gap-1 rounded bg-gradient-to-r from-rose-400 to-rose-500 text-white hover:from-rose-500 hover:to-rose-600 px-3 py-1 text-[10px] font-semibold">
+                <ShoppingCart className="h-3 w-3" /> {isAr ? "حجز" : "Book"}
+              </button>
+            ) : (
+              <>
+                <button type="button"
+                  onClick={(e) => { e.stopPropagation(); setSelectedProductId(p.id); setActiveTab("buynow"); }}
+                  className="flex items-center gap-1 rounded bg-green-600 text-white hover:bg-green-700 px-2 py-1 text-[10px] font-semibold">
+                  <ShoppingCart className="h-3 w-3" /> {isAr ? "شراء / تخصيص" : "Buy / Customize"}
+                </button>
+                <button type="button"
+                  onClick={(e) => { e.stopPropagation(); setSelectedProductId(p.id); setReqMode("rfq"); setActiveTab("customize"); }}
+                  className="flex items-center gap-1 rounded bg-amber-600 text-white hover:bg-amber-700 px-2 py-1 text-[10px] font-semibold">
+                  <FileText className="h-3 w-3" /> RFQ
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   // ═══ Shared top bar — always renders (even with no selected item) ═══
   const chipBar = (
     <div className="border-b border-border shrink-0">
@@ -1531,45 +1659,7 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
                   {(realProducts ?? []).map((p) => renderGridCard(p))}
                 </div>
               ) : (
-                (realProducts ?? []).map((p) => (
-                  <div
-                    key={p.id}
-                    onClick={() => { setSelectedProductId(p.id); setActiveTab("buynow"); onSelectProduct?.(p); }}
-                    role="button"
-                    tabIndex={0}
-                    className="flex items-start gap-3 p-3 rounded-lg border border-border hover:border-primary/30 transition-colors cursor-pointer"
-                  >
-                    <div className="h-12 w-12 rounded-lg bg-muted flex items-center justify-center shrink-0">
-                      <ShoppingCart className="h-4 w-4 text-muted-foreground/40" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between gap-2">
-                        <span className="text-xs font-semibold line-clamp-2">{p.name}</span>
-                        <div className="text-end shrink-0">
-                          <span className="text-sm font-bold text-primary">{p.price} OMR</span>
-                          {p.priceRange && <span className="text-[8px] text-muted-foreground block">{p.priceRange}</span>}
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 mt-0.5">
-                        <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
-                        <span className="text-[10px]">{p.rating} ({p.reviews})</span>
-                        <span className="text-[9px] text-muted-foreground">• {p.seller}</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 mt-1.5">
-                        <button type="button"
-                          onClick={(e) => { e.stopPropagation(); setSelectedProductId(p.id); setActiveTab("buynow"); }}
-                          className="flex items-center gap-1 rounded bg-green-600 text-white hover:bg-green-700 px-2 py-1 text-[10px] font-semibold">
-                          <ShoppingCart className="h-3 w-3" /> {isAr ? "شراء / تخصيص" : "Buy / Customize"}
-                        </button>
-                        <button type="button"
-                          onClick={(e) => { e.stopPropagation(); setSelectedProductId(p.id); setReqMode("rfq"); setActiveTab("customize"); }}
-                          className="flex items-center gap-1 rounded bg-amber-600 text-white hover:bg-amber-700 px-2 py-1 text-[10px] font-semibold">
-                          <FileText className="h-3 w-3" /> RFQ
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))
+                (realProducts ?? []).map((p) => renderListCard(p))
               )}
             </div>
           </div>
@@ -1870,56 +1960,7 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
                 {(realProducts ?? []).map((p) => renderGridCard(p))}
               </div>
             ) : (
-              (realProducts ?? []).map((p) => {
-                const isSel = p.id === selectedProductId;
-                return (
-                  <div
-                    key={p.id}
-                    onClick={() => { setSelectedProductId(p.id); setActiveTab("buynow"); onSelectProduct?.(p); }}
-                    role="button"
-                    tabIndex={0}
-                    className={cn(
-                      "flex items-start gap-3 p-3 rounded-lg border transition-colors cursor-pointer",
-                      isSel ? "border-primary bg-primary/5 ring-1 ring-primary/20" : "border-border hover:border-primary/30"
-                    )}
-                  >
-                    <div className="h-12 w-12 rounded-lg bg-muted flex items-center justify-center shrink-0">
-                      <ShoppingCart className="h-4 w-4 text-muted-foreground/40" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between gap-2">
-                        <span className={cn("text-xs font-semibold line-clamp-2", isSel && "text-primary")}>{p.name}</span>
-                        <div className="text-end shrink-0">
-                          <span className="text-sm font-bold text-primary">{p.price} OMR</span>
-                          {p.priceRange && <span className="text-[8px] text-muted-foreground block">{p.priceRange}</span>}
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 mt-0.5">
-                        <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
-                        <span className="text-[10px]">{p.rating} ({p.reviews})</span>
-                        <span className="text-[9px] text-muted-foreground">• {p.seller}</span>
-                        {p.sellersCount > 1 && (
-                          <span className="text-[9px] bg-blue-100 text-blue-700 px-1.5 rounded-full font-medium">
-                            {p.sellersCount} {isAr ? "بائع" : "sellers"}
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-1.5 mt-1.5">
-                        <button type="button"
-                          onClick={(e) => { e.stopPropagation(); setSelectedProductId(p.id); setActiveTab("buynow"); }}
-                          className="flex items-center gap-1 rounded bg-green-600 text-white hover:bg-green-700 px-2 py-1 text-[10px] font-semibold">
-                          <ShoppingCart className="h-3 w-3" /> {isAr ? "شراء / تخصيص" : "Buy / Customize"}
-                        </button>
-                        <button type="button"
-                          onClick={(e) => { e.stopPropagation(); setSelectedProductId(p.id); setReqMode("rfq"); setActiveTab("customize"); }}
-                          className="flex items-center gap-1 rounded bg-amber-600 text-white hover:bg-amber-700 px-2 py-1 text-[10px] font-semibold">
-                          <FileText className="h-3 w-3" /> RFQ
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })
+              (realProducts ?? []).map((p) => renderListCard(p, { showSelection: true }))
             )}
 
             {/* ── Recommended models (when few results) ── */}
@@ -1932,60 +1973,7 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
                   </span>
                   <div className="flex-1 h-px bg-border" />
                 </div>
-                {recommendedProducts.map((p: any) => {
-                  const isSel = p.id === selectedProductId;
-                  return (
-                    <div
-                      key={`rec-${p.id}`}
-                      onClick={() => { setSelectedProductId(p.id); setActiveTab("buynow"); onSelectProduct?.(p); }}
-                      role="button"
-                      tabIndex={0}
-                      className={cn(
-                        "flex items-start gap-3 p-3 rounded-lg border transition-colors cursor-pointer",
-                        isSel ? "border-primary bg-primary/5 ring-1 ring-primary/20" : "border-border/50 border-dashed hover:border-primary/30 bg-background/50"
-                      )}
-                    >
-                      <div className="h-12 w-12 rounded-lg bg-muted/50 flex items-center justify-center shrink-0">
-                        <ShoppingCart className="h-4 w-4 text-muted-foreground/20" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between gap-2">
-                          <div className="min-w-0 flex-1">
-                            <div className="flex items-center gap-1.5">
-                              <span className={cn("text-xs font-semibold line-clamp-2", isSel && "text-primary")}>{p.name}</span>
-                              <span className="text-[8px] bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded shrink-0">{isAr ? "مقترح" : "Suggested"}</span>
-                            </div>
-                          </div>
-                          <div className="text-end shrink-0">
-                            <span className="text-sm font-bold text-primary">{p.price} OMR</span>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2 mt-0.5">
-                          <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
-                          <span className="text-[10px]">{p.rating} ({p.reviews})</span>
-                          <span className="text-[9px] text-muted-foreground">• {p.seller}</span>
-                          {p.sellersCount > 1 && (
-                            <span className="text-[9px] bg-blue-100 text-blue-700 px-1.5 rounded-full font-medium">
-                              {p.sellersCount} {isAr ? "بائع" : "sellers"}
-                            </span>
-                          )}
-                        </div>
-                        <div className="flex items-center gap-1.5 mt-1.5">
-                          <button type="button"
-                            onClick={(e) => { e.stopPropagation(); setSelectedProductId(p.id); setActiveTab("buynow"); }}
-                            className="flex items-center gap-1 rounded bg-green-600 text-white hover:bg-green-700 px-2 py-1 text-[10px] font-semibold">
-                            <ShoppingCart className="h-3 w-3" /> {isAr ? "شراء / تخصيص" : "Buy / Customize"}
-                          </button>
-                          <button type="button"
-                            onClick={(e) => { e.stopPropagation(); setSelectedProductId(p.id); setReqMode("rfq"); setActiveTab("customize"); }}
-                            className="flex items-center gap-1 rounded bg-amber-600 text-white hover:bg-amber-700 px-2 py-1 text-[10px] font-semibold">
-                            <FileText className="h-3 w-3" /> RFQ
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
+                {recommendedProducts.map((p: any) => renderListCard(p, { isRecommended: true, showSelection: true }))}
               </div>
             )}
           </div>
