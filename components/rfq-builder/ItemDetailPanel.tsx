@@ -136,8 +136,12 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
       // ── Browse mode: no search term, chips only → use getAllProduct + OR filter ──
       if (!cleanTerm && hasFilters) {
         try {
+          // Pass allSellTypes=true so BUYGROUP/WHOLESALE/TRIAL products also appear
+          const needsAllTypes = activeChipDefs.some((c) =>
+            c.key === "buygroup" || c.key === "wholesale" || c.key === "discount" || c.key === "service" || c.key === "vendor_store"
+          );
           const res = await http.get(`${getApiUrl()}/product/getAllProduct`, {
-            params: { page: 1, limit: 200 }, // fetch large set, OR-filter client-side
+            params: { page: 1, limit: 200, ...(needsAllTypes ? { allSellTypes: "true" } : {}) },
           });
           const allProducts = res.data?.data ?? [];
 
