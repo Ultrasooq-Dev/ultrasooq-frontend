@@ -509,6 +509,12 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
 
   const [detailQty, setDetailQty] = useState(1);
   const [activeMediaIdx, setActiveMediaIdx] = useState(0);
+  // Inline question/review input on product detail
+  const [askingQuestion, setAskingQuestion] = useState(false);
+  const [questionText, setQuestionText] = useState("");
+  const [writingReview, setWritingReview] = useState(false);
+  const [reviewText, setReviewText] = useState("");
+  const [reviewRating, setReviewRating] = useState(5);
   // Reset media index when viewing different product
   useEffect(() => { setActiveMediaIdx(0); }, [viewingProductId]);
   // Per-product quantity map for card steppers
@@ -808,13 +814,51 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
                   ))}
                 </div>
               ) : (
-                <div className="rounded-lg border border-border p-4 text-center">
-                  <p className="text-xs text-muted-foreground">{isAr ? "لا توجد تقييمات بعد" : "No reviews yet"}</p>
-                  <button type="button"
-                    onClick={() => { setSelectedProductId(vp.id); setReqMode("rfq"); setViewingProductId(null); setActiveTab("customize"); }}
-                    className="text-[10px] text-primary font-medium mt-1 hover:underline">
-                    {isAr ? "كن أول من يقيم هذا المنتج" : "Be the first to review this product →"}
-                  </button>
+                <div className="space-y-2">
+                  {/* Inline review input */}
+                  {writingReview && (
+                    <div className="rounded-lg border border-amber-300/50 bg-amber-50/30 dark:bg-amber-950/10 p-2.5 space-y-2">
+                      <div className="flex items-center gap-1">
+                        <span className="text-[10px] text-muted-foreground me-1">{isAr ? "تقييمك" : "Your rating"}</span>
+                        {[1, 2, 3, 4, 5].map((r) => (
+                          <button key={r} type="button" onClick={() => setReviewRating(r)} className="p-0.5">
+                            <Star className={cn("h-4 w-4", r <= reviewRating ? "fill-amber-400 text-amber-400" : "text-muted-foreground/20")} />
+                          </button>
+                        ))}
+                      </div>
+                      <textarea
+                        value={reviewText}
+                        onChange={(e) => setReviewText(e.target.value)}
+                        placeholder={isAr ? "اكتب تقييمك..." : "Write your review..."}
+                        rows={3}
+                        className="w-full text-xs rounded border border-border bg-background px-2.5 py-2 outline-none focus:ring-1 focus:ring-amber-400 resize-none placeholder:text-muted-foreground"
+                      />
+                      <div className="flex items-center gap-2">
+                        <button type="button"
+                          disabled={!reviewText.trim()}
+                          onClick={() => {
+                            // TODO: POST to /product/review API
+                            track("product_review_submitted", { productId: vp.id, rating: reviewRating });
+                            setReviewText(""); setWritingReview(false); setReviewRating(5);
+                          }}
+                          className="flex items-center gap-1 rounded bg-amber-600 text-white hover:bg-amber-700 disabled:opacity-50 px-3 py-1.5 text-[10px] font-semibold">
+                          <Send className="h-3 w-3" /> {isAr ? "إرسال" : "Submit"}
+                        </button>
+                        <button type="button" onClick={() => { setWritingReview(false); setReviewText(""); }}
+                          className="text-[10px] text-muted-foreground hover:text-foreground px-2 py-1.5">
+                          {isAr ? "إلغاء" : "Cancel"}
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                  <div className="rounded-lg border border-border p-4 text-center">
+                    <p className="text-xs text-muted-foreground">{isAr ? "لا توجد تقييمات بعد" : "No reviews yet"}</p>
+                    <button type="button"
+                      onClick={() => setWritingReview(true)}
+                      className="text-[10px] text-primary font-medium mt-1 hover:underline">
+                      {isAr ? "كن أول من يقيم هذا المنتج" : "Be the first to review this product →"}
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
@@ -824,15 +868,43 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
               <div className="flex items-center justify-between mb-1.5">
                 <h3 className="text-[11px] font-semibold">{isAr ? "أسئلة وأجوبة" : "Q&A"}</h3>
                 <button type="button"
-                  onClick={() => { setSelectedProductId(vp.id); setReqMode("rfq"); setViewingProductId(null); setActiveTab("customize"); }}
+                  onClick={() => setAskingQuestion(!askingQuestion)}
                   className="text-[10px] text-primary hover:underline">
-                  {isAr ? "اسأل سؤال" : "Ask a question"}
+                  {askingQuestion ? (isAr ? "إلغاء" : "Cancel") : (isAr ? "اسأل سؤال" : "Ask a question")}
                 </button>
               </div>
+              {/* Inline question input */}
+              {askingQuestion && (
+                <div className="rounded-lg border border-primary/30 bg-primary/5 p-2.5 mb-2 space-y-2">
+                  <textarea
+                    value={questionText}
+                    onChange={(e) => setQuestionText(e.target.value)}
+                    placeholder={isAr ? "اكتب سؤالك عن هذا المنتج..." : "Write your question about this product..."}
+                    rows={3}
+                    className="w-full text-xs rounded border border-border bg-background px-2.5 py-2 outline-none focus:ring-1 focus:ring-primary resize-none placeholder:text-muted-foreground"
+                  />
+                  <div className="flex items-center gap-2">
+                    <button type="button"
+                      disabled={!questionText.trim()}
+                      onClick={() => {
+                        // TODO: POST to /product/question API
+                        track("product_question_asked", { productId: vp.id, text: questionText });
+                        setQuestionText(""); setAskingQuestion(false);
+                      }}
+                      className="flex items-center gap-1 rounded bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 px-3 py-1.5 text-[10px] font-semibold">
+                      <Send className="h-3 w-3" /> {isAr ? "إرسال" : "Submit"}
+                    </button>
+                    <button type="button" onClick={() => { setAskingQuestion(false); setQuestionText(""); }}
+                      className="text-[10px] text-muted-foreground hover:text-foreground px-2 py-1.5">
+                      {isAr ? "إلغاء" : "Cancel"}
+                    </button>
+                  </div>
+                </div>
+              )}
               <div className="rounded-lg border border-border p-4 text-center">
                 <p className="text-xs text-muted-foreground">{isAr ? "لا توجد أسئلة بعد" : "No questions yet"}</p>
                 <button type="button"
-                  onClick={() => { setSelectedProductId(vp.id); setReqMode("rfq"); setViewingProductId(null); setActiveTab("customize"); }}
+                  onClick={() => setAskingQuestion(true)}
                   className="text-[10px] text-primary font-medium mt-1 hover:underline">
                   {isAr ? "اسأل البائع عن هذا المنتج" : "Ask the seller about this product →"}
                 </button>
