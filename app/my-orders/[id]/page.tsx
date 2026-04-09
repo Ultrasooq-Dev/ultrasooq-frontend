@@ -222,12 +222,52 @@ function ChatSection({
     "Please confirm receipt once you've received the product.",
   ];
 
-  const stages = [
-    { key: "CONFIRMED", label: "Mark as Confirmed", icon: CheckCircle2, color: "text-blue-600" },
-    { key: "SHIPPED", label: "Mark as Shipped", icon: Truck, color: "text-violet-600" },
-    { key: "OFD", label: "Out for Delivery", icon: Truck, color: "text-amber-600" },
-    { key: "DELIVERED", label: "Mark as Delivered", icon: PackageCheck, color: "text-emerald-600" },
+  const [stageLocation, setStageLocation] = useState("");
+  const [stageNotes, setStageNotes] = useState("");
+  const [stageMessages, setStageMessages] = useState<Array<{ stage: string; location: string; time: string; notes: string }>>([]);
+
+  // Aramex / DHL / FedEx style delivery stages
+  const deliveryStages = [
+    { group: "Pickup", stages: [
+      { key: "shipment_created", label: "Shipment Created", emoji: "📋", msg: "Shipment label has been created" },
+      { key: "picked_up", label: "Picked Up from Seller", emoji: "📦", msg: "Package picked up from seller" },
+    ]},
+    { group: "In Transit", stages: [
+      { key: "at_origin_facility", label: "At Origin Facility", emoji: "🏭", msg: "Package arrived at origin sorting facility" },
+      { key: "departed_origin", label: "Departed Origin", emoji: "✈️", msg: "Package has departed origin facility" },
+      { key: "in_transit", label: "In Transit", emoji: "🚚", msg: "Package is in transit" },
+      { key: "at_destination_facility", label: "At Destination Facility", emoji: "🏬", msg: "Package arrived at destination facility" },
+      { key: "customs_clearance", label: "Customs Clearance", emoji: "🛃", msg: "Package is in customs clearance" },
+      { key: "cleared_customs", label: "Cleared Customs", emoji: "✅", msg: "Package has cleared customs" },
+    ]},
+    { group: "Last Mile", stages: [
+      { key: "at_local_hub", label: "At Local Hub", emoji: "📍", msg: "Package arrived at local delivery hub" },
+      { key: "out_for_delivery", label: "Out for Delivery", emoji: "🛵", msg: "Package is out for delivery" },
+      { key: "delivery_attempt", label: "Delivery Attempted", emoji: "🚪", msg: "Delivery attempted — recipient not available" },
+      { key: "delivered", label: "Delivered", emoji: "✅", msg: "Package has been delivered" },
+    ]},
+    { group: "Exceptions", stages: [
+      { key: "held_at_facility", label: "Held at Facility", emoji: "⏸️", msg: "Package held at facility — awaiting instructions" },
+      { key: "returned", label: "Returned to Sender", emoji: "↩️", msg: "Package is being returned to sender" },
+      { key: "delayed", label: "Delayed", emoji: "⚠️", msg: "Delivery delayed due to unforeseen circumstances" },
+    ]},
   ];
+
+  const handleStageSelect = (stage: { key: string; label: string; emoji: string; msg: string }) => {
+    const locationText = stageLocation ? ` — ${stageLocation}` : "";
+    const notesText = stageNotes ? `\n${stageNotes}` : "";
+    const fullMessage = `${stage.emoji} ${stage.msg}${locationText}${notesText}`;
+    setMessage(fullMessage);
+    setStageMessages((prev) => [...prev, {
+      stage: stage.label,
+      location: stageLocation,
+      time: new Date().toISOString(),
+      notes: stageNotes,
+    }]);
+    setStageLocation("");
+    setStageNotes("");
+    setShowStageMenu(false);
+  };
 
   const confirmActions = [
     { key: "freelancer", label: "Connect Freelancer for Delivery", icon: User, desc: "Assign a freelancer to deliver this order" },
@@ -313,7 +353,7 @@ function ChatSection({
           Attachment
         </button>
 
-        {/* Stage — update delivery step */}
+        {/* Stage — Aramex/DHL style delivery tracking updates */}
         <div className="relative">
           <button
             type="button"
@@ -329,35 +369,69 @@ function ChatSection({
             Stage
           </button>
           {showStageMenu && (
-            <div className="absolute bottom-full start-0 mb-2 w-56 rounded-lg border border-border bg-card shadow-xl z-20">
-              <div className="border-b border-border px-3 py-2">
-                <span className="text-[11px] font-semibold text-muted-foreground">Update Delivery Stage</span>
+            <div className="absolute bottom-full start-0 mb-2 w-80 rounded-xl border border-border bg-card shadow-2xl z-20">
+              <div className="border-b border-border px-4 py-2.5">
+                <span className="text-xs font-bold">Delivery Stage Update</span>
+                <p className="text-[10px] text-muted-foreground">Select a stage — it will be sent as a tracking message</p>
               </div>
-              <div className="p-1">
-                {stages.map((s) => (
-                  <button
-                    key={s.key}
-                    type="button"
-                    className={cn(
-                      "flex w-full items-center gap-2 rounded-md px-3 py-2 text-xs font-medium transition-colors hover:bg-muted",
-                      status === s.key && "bg-muted",
-                    )}
-                  >
-                    <s.icon className={cn("h-3.5 w-3.5", s.color)} />
-                    {s.label}
-                    {status === s.key && (
-                      <span className="ms-auto rounded-full bg-emerald-100 px-1.5 py-0.5 text-[9px] font-bold text-emerald-700">
-                        Current
+
+              {/* Location + Notes input */}
+              <div className="border-b border-border px-4 py-2.5 space-y-2">
+                <div className="flex items-center gap-2">
+                  <MapPin className="h-3 w-3 text-muted-foreground shrink-0" />
+                  <input
+                    type="text"
+                    value={stageLocation}
+                    onChange={(e) => setStageLocation(e.target.value)}
+                    placeholder="Location (e.g. Dubai Hub, Muscat Center)"
+                    className="flex-1 rounded border border-border bg-muted/30 px-2 py-1.5 text-[11px] outline-none focus:border-primary"
+                  />
+                </div>
+                <input
+                  type="text"
+                  value={stageNotes}
+                  onChange={(e) => setStageNotes(e.target.value)}
+                  placeholder="Additional notes (optional)"
+                  className="w-full rounded border border-border bg-muted/30 px-2 py-1.5 text-[11px] outline-none focus:border-primary"
+                />
+              </div>
+
+              {/* Stage groups */}
+              <div className="max-h-64 overflow-y-auto p-1">
+                {deliveryStages.map((group) => (
+                  <div key={group.group}>
+                    <div className="px-3 py-1.5">
+                      <span className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground/60">
+                        {group.group}
                       </span>
-                    )}
-                  </button>
+                    </div>
+                    {group.stages.map((s) => (
+                      <button
+                        key={s.key}
+                        type="button"
+                        onClick={() => handleStageSelect(s)}
+                        className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-start transition-colors hover:bg-muted"
+                      >
+                        <span className="text-sm">{s.emoji}</span>
+                        <div className="flex-1 min-w-0">
+                          <span className="text-[11px] font-semibold">{s.label}</span>
+                          <p className="text-[10px] text-muted-foreground truncate">{s.msg}</p>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
                 ))}
               </div>
-              <div className="border-t border-border px-3 py-2">
-                <button type="button" className="flex items-center gap-1.5 text-[11px] font-medium text-primary hover:underline">
-                  <Truck className="h-3 w-3" />
-                  Connect Delivery API
-                </button>
+
+              {/* Delivery API connect */}
+              <div className="border-t border-border px-4 py-2.5">
+                <div className="flex items-center justify-between">
+                  <button type="button" className="flex items-center gap-1.5 text-[11px] font-medium text-primary hover:underline">
+                    <Truck className="h-3 w-3" />
+                    Connect Aramex / DHL API
+                  </button>
+                  <span className="text-[9px] text-muted-foreground">Auto-sync tracking</span>
+                </div>
               </div>
             </div>
           )}
