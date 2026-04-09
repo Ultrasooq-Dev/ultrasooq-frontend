@@ -32,10 +32,20 @@ import { useTranslations } from "next-intl";
 import { useAuth } from "@/context/AuthContext";
 import Pagination from "@/components/shared/Pagination";
 import { cn } from "@/lib/utils";
+import { useUpdateOrderStatus } from "@/apis/queries/orders.queries";
+import { useQueryClient } from "@tanstack/react-query";
+import { useToast } from "@/components/ui/use-toast";
+
+const STATUS_MAP: Record<string, string> = {
+  CONFIRMED: "processing", SHIPPED: "shipped", OFD: "ofd", DELIVERED: "delivered",
+};
 
 const MyOrdersPage = () => {
   const t = useTranslations();
   const { langDir, currency } = useAuth();
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  const bulkUpdateStatus = useUpdateOrderStatus();
   const [activeTab, setActiveTab] = useState<"buying" | "selling">("buying");
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
   const [page, setPage] = useState<number>(1);
@@ -398,38 +408,32 @@ const MyOrdersPage = () => {
                   {selectedIds.size} selected
                 </span>
                 <div className="h-4 w-px bg-border" />
-                <button type="button"
-                  onClick={() => {
-                    selectedIds.forEach((oid) => { /* TODO: batch API call */ });
-                    setSelectedIds(new Set());
-                  }}
-                  className="flex items-center gap-1.5 rounded-lg bg-blue-500 px-3 py-1.5 text-xs font-semibold text-white hover:bg-blue-600">
-                  <CheckCircle className="h-3.5 w-3.5" /> Confirm All
-                </button>
-                <button type="button"
-                  onClick={() => {
-                    selectedIds.forEach((oid) => { /* TODO: batch API call */ });
-                    setSelectedIds(new Set());
-                  }}
-                  className="flex items-center gap-1.5 rounded-lg bg-indigo-500 px-3 py-1.5 text-xs font-semibold text-white hover:bg-indigo-600">
-                  <Truck className="h-3.5 w-3.5" /> Ship All
-                </button>
-                <button type="button"
-                  onClick={() => {
-                    selectedIds.forEach((oid) => { /* TODO: batch API call */ });
-                    setSelectedIds(new Set());
-                  }}
-                  className="flex items-center gap-1.5 rounded-lg bg-amber-500 px-3 py-1.5 text-xs font-semibold text-white hover:bg-amber-600">
-                  <Truck className="h-3.5 w-3.5" /> Mark OFD
-                </button>
-                <button type="button"
-                  onClick={() => {
-                    selectedIds.forEach((oid) => { /* TODO: batch API call */ });
-                    setSelectedIds(new Set());
-                  }}
-                  className="flex items-center gap-1.5 rounded-lg bg-emerald-500 px-3 py-1.5 text-xs font-semibold text-white hover:bg-emerald-600">
-                  <PackageCheck className="h-3.5 w-3.5" /> Deliver All
-                </button>
+                {[
+                  { status: "CONFIRMED", label: "Confirm All", color: "bg-blue-500 hover:bg-blue-600", icon: CheckCircle },
+                  { status: "SHIPPED", label: "Ship All", color: "bg-indigo-500 hover:bg-indigo-600", icon: Truck },
+                  { status: "OFD", label: "Mark OFD", color: "bg-amber-500 hover:bg-amber-600", icon: Truck },
+                  { status: "DELIVERED", label: "Deliver All", color: "bg-emerald-500 hover:bg-emerald-600", icon: PackageCheck },
+                ].map((action) => (
+                  <button key={action.status} type="button"
+                    disabled={bulkUpdateStatus.isPending}
+                    onClick={async () => {
+                      const ids = Array.from(selectedIds);
+                      const apiStatus = STATUS_MAP[action.status] || action.status.toLowerCase();
+                      try {
+                        await Promise.all(ids.map((oid) =>
+                          bulkUpdateStatus.mutateAsync({ orderProductId: oid, status: apiStatus })
+                        ));
+                        queryClient.invalidateQueries({ queryKey: ["orders-by-seller-id"] });
+                        toast({ title: `${ids.length} orders updated to ${action.status}`, variant: "success" });
+                        setSelectedIds(new Set());
+                      } catch {
+                        toast({ title: "Some orders failed to update", variant: "danger" });
+                      }
+                    }}
+                    className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold text-white disabled:opacity-50 ${action.color}`}>
+                    <action.icon className="h-3.5 w-3.5" /> {action.label}
+                  </button>
+                ))}
                 <div className="flex-1" />
                 <button type="button" onClick={() => setSelectedIds(new Set())}
                   className="text-xs font-medium text-muted-foreground hover:text-foreground">
@@ -522,8 +526,8 @@ const MyOrdersPage = () => {
                           return next;
                         });
                       }}
-                      onStatusChange={(opId, newStatus) => {
-                        // TODO: call backend API to update status
+                      onStatusChange={() => {
+                        queryClient.invalidateQueries({ queryKey: ["orders-by-seller-id"] });
                       }}
                     />
                   ) : (

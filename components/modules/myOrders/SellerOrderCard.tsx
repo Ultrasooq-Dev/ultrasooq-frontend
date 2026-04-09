@@ -6,10 +6,13 @@ import PlaceholderImage from "@/public/images/product-placeholder.png";
 import { useAuth } from "@/context/AuthContext";
 import { formattedDate } from "@/utils/constants";
 import { cn } from "@/lib/utils";
+import { useUpdateOrderStatus, useAddOrderTracking } from "@/apis/queries/orders.queries";
+import { useQueryClient } from "@tanstack/react-query";
+import { useToast } from "@/components/ui/use-toast";
 import {
   CheckCircle2, Truck, PackageCheck, Clock, XCircle, Package,
   ChevronDown, Download, MessageCircle, Eye, MapPin, Zap,
-  Star, Phone, Mail, User,
+  Star, Phone, Mail, User, Loader2,
 } from "lucide-react";
 
 type Props = {
@@ -83,15 +86,42 @@ export default function SellerOrderCard({
   const progress = currentIdx >= 0 ? (currentIdx / (FLOW.length - 1)) * 100 : 0;
   const Icon = current.icon;
 
+  // Status mapping: frontend enum → backend API string
+  const STATUS_MAP: Record<string, string> = {
+    PLACED: "pending", CONFIRMED: "processing", SHIPPED: "shipped",
+    OFD: "ofd", DELIVERED: "delivered", CANCELLED: "cancelled",
+  };
+
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  const updateStatusMutation = useUpdateOrderStatus();
+  const addTrackingMutation = useAddOrderTracking();
+
   const handleSetStatus = (key: string) => {
-    setLocalStatus(key);
-    onStatusChange?.(id, key);
+    const apiStatus = STATUS_MAP[key] || key.toLowerCase();
+    setLocalStatus(key); // optimistic UI
     setShowMenu(false);
+    updateStatusMutation.mutate(
+      { orderProductId: id, status: apiStatus },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ["orders-by-seller-id"] });
+          queryClient.invalidateQueries({ queryKey: ["orders"] });
+          toast({ title: `Order updated to ${key}`, variant: "success" });
+        },
+        onError: () => {
+          setLocalStatus(orderStatus); // revert on failure
+          toast({ title: "Failed to update status", variant: "danger" });
+        },
+      },
+    );
   };
 
   const handleAdvance = () => {
     if (next) handleSetStatus(next.key);
   };
+
+  const isUpdating = updateStatusMutation.isPending;
 
   return (
     <div className="group rounded-2xl border border-border bg-card overflow-hidden transition-all hover:shadow-lg hover:border-border/80">
@@ -204,10 +234,10 @@ export default function SellerOrderCard({
         <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-border pt-4">
           {/* Quick advance button */}
           {!isCancelled && !isDelivered && next && (
-            <button type="button" onClick={handleAdvance}
-              className="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-primary/90">
-              <next.icon className="h-3.5 w-3.5" />
-              Mark as {next.label}
+            <button type="button" onClick={handleAdvance} disabled={isUpdating}
+              className="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-primary/90 disabled:opacity-50">
+              {isUpdating ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <next.icon className="h-3.5 w-3.5" />}
+              {isUpdating ? "Updating..." : `Mark as ${next.label}`}
             </button>
           )}
 
@@ -230,9 +260,17 @@ export default function SellerOrderCard({
                     {QUICK_STAGES.map((s) => (
                       <button key={s.key} type="button"
                         onClick={() => {
-                          // Map to order status
+                          // Map stage to order status + persist tracking
                           const map: Record<string, string> = { picked_up: "CONFIRMED", in_transit: "SHIPPED", at_hub: "OFD", out_delivery: "OFD", delivered: "DELIVERED", delayed: localStatus };
-                          handleSetStatus(map[s.key] || localStatus);
+                          const newStatus = map[s.key] || localStatus;
+                          if (newStatus !== localStatus) handleSetStatus(newStatus);
+                          // Also persist as tracking event
+                          addTrackingMutation.mutate({
+                            orderProductId: id,
+                            trackingNumber: s.key,
+                            carrier: stageLocation || "Manual Update",
+                            notes: `${s.emoji} ${s.label}${stageLocation ? ` — ${stageLocation}` : ""}`,
+                          });
                           setShowStages(false);
                           setStageLocation("");
                         }}
