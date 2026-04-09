@@ -185,6 +185,20 @@ function RfqMiniCard({
   );
 }
 
+// ── Star Rating Display ─────────────────────────────────────────
+function Stars({ rating, max = 5 }: { rating: number; max?: number }) {
+  return (
+    <div className="flex items-center gap-0.5">
+      {Array.from({ length: max }, (_, i) => (
+        <svg key={i} className={cn("h-3.5 w-3.5", i < Math.round(rating) ? "text-amber-400" : "text-border")}
+          fill="currentColor" viewBox="0 0 20 20">
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+        </svg>
+      ))}
+    </div>
+  );
+}
+
 // ── Panel 3: Detail Preview ─────────────────────────────────────
 function DetailPanel({ rfq, currency, onQuote }: { rfq: any | null; currency: { symbol: string }; onQuote: () => void }) {
   if (!rfq) {
@@ -192,7 +206,7 @@ function DetailPanel({ rfq, currency, onQuote }: { rfq: any | null; currency: { 
       <div className="flex h-full flex-col items-center justify-center text-center px-8 bg-muted/20">
         <Eye className="mb-3 h-10 w-10 text-muted-foreground/15" />
         <p className="text-sm font-semibold text-muted-foreground/40">Select an RFQ</p>
-        <p className="mt-1 text-xs text-muted-foreground/30">Click on a request to see details</p>
+        <p className="mt-1 text-xs text-muted-foreground/30">Click on a request to preview details</p>
       </div>
     );
   }
@@ -201,81 +215,140 @@ function DetailPanel({ rfq, currency, onQuote }: { rfq: any | null; currency: { 
   const address = rfq.rfqQuotesUser_rfqQuotes?.rfqQuotes_rfqQuoteAddress;
   const buyer = rfq.buyerIDDetail;
 
+  // Mock ratings (replace with real data when available)
+  const rfqRating = 4.2;
+  const totalRating = 4.5;
+  const rfqCount = 7;
+  const orderCount = 23;
+  const memberSince = "Mar 2025";
+
   return (
     <div className="flex h-full flex-col bg-card">
-      {/* Header */}
-      <div className="shrink-0 border-b border-border px-5 py-4">
-        <div className="flex items-center gap-3">
-          {buyer?.profilePicture ? (
-            <img src={buyer.profilePicture} className="h-10 w-10 rounded-full object-cover" alt="" />
-          ) : (
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
-              {buyer?.firstName?.[0] || "?"}
+      {/* ── Customer Profile Section ────────────────── */}
+      <div className="shrink-0 border-b border-border">
+        {/* Profile header */}
+        <div className="px-6 py-5">
+          <div className="flex items-start gap-4">
+            {buyer?.profilePicture ? (
+              <img src={buyer.profilePicture} className="h-14 w-14 rounded-2xl object-cover ring-2 ring-border" alt="" />
+            ) : (
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-lg font-bold text-primary ring-2 ring-primary/20">
+                {buyer?.firstName?.[0] || "?"}
+              </div>
+            )}
+            <div className="flex-1">
+              <h2 className="text-base font-bold">{buyer?.firstName} {buyer?.lastName || ""}</h2>
+              {address?.address && (
+                <p className="flex items-center gap-1 mt-0.5 text-xs text-muted-foreground">
+                  <MapPin className="h-3 w-3" /> {address.address}
+                </p>
+              )}
+              <p className="text-[10px] text-muted-foreground mt-0.5">Member since {memberSince}</p>
             </div>
-          )}
-          <div>
-            <p className="text-sm font-bold">{buyer?.firstName} {buyer?.lastName || ""}</p>
-            {address?.address && (
-              <p className="flex items-center gap-1 text-xs text-muted-foreground">
-                <MapPin className="h-3 w-3" /> {address.address}
-              </p>
+          </div>
+
+          {/* Ratings */}
+          <div className="mt-4 grid grid-cols-2 gap-3">
+            <div className="rounded-xl border border-border p-3">
+              <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">RFQ Rating</p>
+              <div className="flex items-center gap-2 mt-1">
+                <span className="text-xl font-black text-amber-600">{rfqRating}</span>
+                <div>
+                  <Stars rating={rfqRating} />
+                  <p className="text-[9px] text-muted-foreground mt-0.5">{rfqCount} RFQs completed</p>
+                </div>
+              </div>
+            </div>
+            <div className="rounded-xl border border-border p-3">
+              <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">Overall Rating</p>
+              <div className="flex items-center gap-2 mt-1">
+                <span className="text-xl font-black text-emerald-600">{totalRating}</span>
+                <div>
+                  <Stars rating={totalRating} />
+                  <p className="text-[9px] text-muted-foreground mt-0.5">{orderCount} orders total</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Buyer stats */}
+          <div className="mt-3 flex items-center gap-4 text-[10px] text-muted-foreground">
+            <span className="flex items-center gap-1"><Users className="h-3 w-3" /> {rfqCount} RFQs</span>
+            <span className="flex items-center gap-1"><Package className="h-3 w-3" /> {orderCount} Orders</span>
+            {address?.rfqDate && (
+              <span className="flex items-center gap-1">
+                <Clock className="h-3 w-3" /> Need by {new Date(address.rfqDate).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+              </span>
             )}
           </div>
         </div>
-        {address?.rfqDate && (
-          <p className="mt-2 flex items-center gap-1 text-xs text-muted-foreground">
-            <Clock className="h-3 w-3" /> Delivery by {new Date(address.rfqDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
-          </p>
-        )}
       </div>
 
-      {/* Products */}
-      <div className="flex-1 overflow-y-auto px-5 py-4">
-        <h3 className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-3">
-          Requested Products ({products.length})
-        </h3>
-        <div className="space-y-3">
-          {products.map((p: any, i: number) => {
-            const pd = p.rfqProductDetails || {};
-            const pImg = pd.productImages?.[0]?.image;
-            const pImgUrl = pImg && validator.isURL(pImg) ? pImg : null;
-            return (
-              <div key={i} className="rounded-xl border border-border p-3">
-                <div className="flex gap-3">
-                  <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-muted">
-                    {pImgUrl ? <Image src={pImgUrl} alt="" width={64} height={64} className="h-full w-full object-cover" />
-                      : <Package className="m-4 h-8 w-8 text-muted-foreground/15" />}
+      {/* ── Requested Products ──────────────────────── */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="px-6 py-4">
+          <h3 className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-3">
+            Requested Products ({products.length})
+          </h3>
+          <div className="space-y-3">
+            {products.map((p: any, i: number) => {
+              const pd = p.rfqProductDetails || {};
+              const pImg = pd.productImages?.[0]?.image;
+              const pImgUrl = pImg && validator.isURL(pImg) ? pImg : null;
+              return (
+                <div key={i} className="rounded-xl border border-border overflow-hidden">
+                  {/* Product image banner */}
+                  <div className="h-32 bg-muted relative overflow-hidden">
+                    {pImgUrl ? (
+                      <Image src={pImgUrl} alt="" fill className="object-cover" />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center">
+                        <Package className="h-8 w-8 text-muted-foreground/15" />
+                      </div>
+                    )}
+                    {p.productType && (
+                      <span className={cn("absolute top-2 start-2 rounded-md px-2 py-0.5 text-[9px] font-bold text-white",
+                        p.productType === "SAME" ? "bg-emerald-500" : "bg-blue-500")}>
+                        {p.productType === "SAME" ? "Exact Match" : "Similar OK"}
+                      </span>
+                    )}
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-[13px] font-semibold leading-snug line-clamp-2">{pd.productName || `Product ${i + 1}`}</p>
-                    <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-muted-foreground">
-                      {p.quantity && <span className="flex items-center gap-1"><Layers className="h-3 w-3" /> Qty: {p.quantity}</span>}
-                      {p.offerPriceFrom && <span className="flex items-center gap-1"><DollarSign className="h-3 w-3" /> {currency.symbol}{p.offerPriceFrom}{p.offerPriceTo ? ` - ${currency.symbol}${p.offerPriceTo}` : ""}</span>}
-                      {p.productType && (
-                        <span className={cn("rounded-full px-2 py-0.5 text-[9px] font-bold",
-                          p.productType === "SAME" ? "bg-emerald-100 text-emerald-700" : "bg-blue-100 text-blue-700")}>
-                          {p.productType === "SAME" ? "Exact" : "Similar OK"}
+                  <div className="p-3">
+                    <p className="text-[13px] font-semibold leading-snug">{pd.productName || `Product ${i + 1}`}</p>
+                    <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-muted-foreground">
+                      {p.quantity && (
+                        <span className="flex items-center gap-1">
+                          <Layers className="h-3 w-3" /> Qty: <span className="font-semibold text-foreground">{p.quantity}</span>
+                        </span>
+                      )}
+                      {(p.offerPriceFrom || p.offerPriceTo) && (
+                        <span className="flex items-center gap-1">
+                          <DollarSign className="h-3 w-3" />
+                          Budget: <span className="font-semibold text-foreground">
+                            {currency.symbol}{p.offerPriceFrom || 0}
+                            {p.offerPriceTo ? ` — ${currency.symbol}${p.offerPriceTo}` : ""}
+                          </span>
                         </span>
                       )}
                     </div>
+                    {p.note && (
+                      <p className="mt-2 text-[11px] text-muted-foreground leading-relaxed rounded-lg bg-muted/30 px-3 py-2 italic">
+                        &ldquo;{p.note}&rdquo;
+                      </p>
+                    )}
                   </div>
                 </div>
-                {p.note && (
-                  <p className="mt-2 text-[11px] text-muted-foreground leading-relaxed rounded-lg bg-muted/30 px-3 py-2">
-                    &ldquo;{p.note}&rdquo;
-                  </p>
-                )}
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
 
-        {/* Last message preview */}
+        {/* Last message */}
         {rfq.lastUnreadMessage?.content && (
-          <div className="mt-4">
-            <h3 className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2">Last Message</h3>
+          <div className="px-6 pb-4">
+            <h3 className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2">Latest Message</h3>
             <div className="rounded-xl bg-primary/5 border border-primary/10 p-3">
-              <p className="text-xs">{rfq.lastUnreadMessage.content}</p>
+              <p className="text-xs leading-relaxed">{rfq.lastUnreadMessage.content}</p>
               <p className="mt-1 text-[9px] text-muted-foreground">
                 {new Date(rfq.lastUnreadMessage.createdAt).toLocaleDateString()}
               </p>
@@ -284,15 +357,15 @@ function DetailPanel({ rfq, currency, onQuote }: { rfq: any | null; currency: { 
         )}
       </div>
 
-      {/* Action */}
+      {/* ── Actions ────────────────────────────────── */}
       <div className="shrink-0 border-t border-border p-4 space-y-2">
         <button type="button" onClick={onQuote}
           className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-3 text-sm font-bold text-white hover:bg-primary/90 transition-colors">
-          <Send className="h-4 w-4" /> Quote & Chat
+          <Send className="h-4 w-4" /> Send Quote
         </button>
         <button type="button" onClick={onQuote}
           className="flex w-full items-center justify-center gap-2 rounded-xl border border-border py-2.5 text-xs font-medium text-muted-foreground hover:bg-muted transition-colors">
-          <Eye className="h-3.5 w-3.5" /> View Full Details
+          <MessageCircle className="h-3.5 w-3.5" /> Open Chat
         </button>
       </div>
     </div>
@@ -363,7 +436,7 @@ export default function SellerRfqListPage() {
       className="h-[calc(100vh-64px)] overflow-hidden"
       style={{
         display: "grid",
-        gridTemplateColumns: `${col1} 1fr 380px`,
+        gridTemplateColumns: `${col1} 300px 1fr`,
         gridTemplateRows: "1fr",
         transition: "grid-template-columns 0.2s ease",
       }}
