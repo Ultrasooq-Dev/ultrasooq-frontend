@@ -174,7 +174,7 @@ function RfqMiniCard({
             {budget && <><span>·</span><span className="font-semibold text-foreground">{currency.symbol}{Number(budget).toFixed(0)}</span></>}
           </div>
           <div className="flex items-center gap-2 mt-1">
-            {buyer && <span className="text-[10px] text-muted-foreground">{buyer.firstName}</span>}
+            {buyer && <span className="text-[10px] text-muted-foreground">{maskName(buyer.firstName)}</span>}
             {rfq.unreadMsgCount > 0 && (
               <span className="rounded-full bg-primary px-1.5 py-0.5 text-[8px] font-bold text-white">{rfq.unreadMsgCount} new</span>
             )}
@@ -183,6 +183,15 @@ function RfqMiniCard({
       </div>
     </button>
   );
+}
+
+// ── Mask buyer name: "Ahmed" → "Ah***" ─────────────────────────
+function maskName(name?: string): string {
+  if (!name || name.length <= 2) return name || "***";
+  return name.slice(0, 2) + "***";
+}
+function maskFullName(first?: string, last?: string): string {
+  return `${maskName(first)}${last ? " " + maskName(last) : ""}`;
 }
 
 // ── Star Rating Display ─────────────────────────────────────────
@@ -237,7 +246,7 @@ function DetailPanel({ rfq, currency, onQuote }: { rfq: any | null; currency: { 
               </div>
             )}
             <div className="flex-1">
-              <h2 className="text-base font-bold">{buyer?.firstName} {buyer?.lastName || ""}</h2>
+              <h2 className="text-base font-bold">{maskFullName(buyer?.firstName, buyer?.lastName)}</h2>
               {address?.address && (
                 <p className="flex items-center gap-1 mt-0.5 text-xs text-muted-foreground">
                   <MapPin className="h-3 w-3" /> {address.address}
