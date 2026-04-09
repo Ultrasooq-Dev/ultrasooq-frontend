@@ -537,3 +537,65 @@ export const useSetPickupWindow = () => {
     },
   });
 };
+
+// ─── Complaint + Refund + Bulk + Stage hooks ────────────────────
+
+export const useSubmitComplaint = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (payload: { orderProductId: number; reason: string; description: string }) => {
+      const { submitComplaint } = await import("@/apis/requests/orders.requests");
+      const res = await submitComplaint(payload);
+      return res?.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
+      queryClient.invalidateQueries({ queryKey: ["order-by-id"] });
+    },
+  });
+};
+
+export const useRequestRefund = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (payload: { orderProductId: number; reason: string; notes?: string; amount?: number }) => {
+      const { requestRefund } = await import("@/apis/requests/orders.requests");
+      const res = await requestRefund(payload);
+      return res?.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
+      queryClient.invalidateQueries({ queryKey: ["order-by-id"] });
+    },
+  });
+};
+
+export const useBulkUpdateOrderStatus = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (payload: { orderProductIds: number[]; status: string; notes?: string }) => {
+      const { bulkUpdateOrderStatus } = await import("@/apis/requests/orders.requests");
+      const res = await bulkUpdateOrderStatus(payload);
+      return res?.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["orders-by-seller-id"] });
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
+    },
+  });
+};
+
+export const useAddDeliveryStageUpdate = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (payload: { orderProductId: number; stage: string; note?: string; location?: string }) => {
+      const { addDeliveryStageUpdate } = await import("@/apis/requests/orders.requests");
+      const res = await addDeliveryStageUpdate(payload);
+      return res?.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["delivery-timeline"] });
+      queryClient.invalidateQueries({ queryKey: ["order-by-id"] });
+    },
+  });
+};
