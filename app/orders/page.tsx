@@ -14,6 +14,9 @@ import {
   ShoppingBag,
   TrendingUp,
   Store,
+  Truck,
+  PackageCheck,
+  CheckCircle,
 } from "lucide-react";
 import BuyerOrderCard from "@/components/modules/myOrders/BuyerOrderCard";
 import SellerOrderCard from "@/components/modules/myOrders/SellerOrderCard";
@@ -35,6 +38,7 @@ const MyOrdersPage = () => {
   const t = useTranslations();
   const { langDir, currency } = useAuth();
   const [activeTab, setActiveTab] = useState<"buying" | "selling">("buying");
+  const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
   const [page, setPage] = useState<number>(1);
   const [limit] = useState<number>(40);
   const searchRef = useRef<HTMLInputElement>(null);
@@ -447,8 +451,74 @@ const MyOrdersPage = () => {
               </CardContent>
             </Card>
 
+            {/* Bulk Action Bar — seller only */}
+            {activeTab === "selling" && selectedIds.size > 0 && (
+              <div className="mb-4 flex flex-wrap items-center gap-3 rounded-xl border border-primary/20 bg-primary/5 px-5 py-3">
+                <span className="text-sm font-semibold text-primary">
+                  {selectedIds.size} selected
+                </span>
+                <div className="h-4 w-px bg-border" />
+                <button type="button"
+                  onClick={() => {
+                    selectedIds.forEach((oid) => { /* TODO: batch API call */ });
+                    setSelectedIds(new Set());
+                  }}
+                  className="flex items-center gap-1.5 rounded-lg bg-blue-500 px-3 py-1.5 text-xs font-semibold text-white hover:bg-blue-600">
+                  <CheckCircle className="h-3.5 w-3.5" /> Confirm All
+                </button>
+                <button type="button"
+                  onClick={() => {
+                    selectedIds.forEach((oid) => { /* TODO: batch API call */ });
+                    setSelectedIds(new Set());
+                  }}
+                  className="flex items-center gap-1.5 rounded-lg bg-indigo-500 px-3 py-1.5 text-xs font-semibold text-white hover:bg-indigo-600">
+                  <Truck className="h-3.5 w-3.5" /> Ship All
+                </button>
+                <button type="button"
+                  onClick={() => {
+                    selectedIds.forEach((oid) => { /* TODO: batch API call */ });
+                    setSelectedIds(new Set());
+                  }}
+                  className="flex items-center gap-1.5 rounded-lg bg-amber-500 px-3 py-1.5 text-xs font-semibold text-white hover:bg-amber-600">
+                  <Truck className="h-3.5 w-3.5" /> Mark OFD
+                </button>
+                <button type="button"
+                  onClick={() => {
+                    selectedIds.forEach((oid) => { /* TODO: batch API call */ });
+                    setSelectedIds(new Set());
+                  }}
+                  className="flex items-center gap-1.5 rounded-lg bg-emerald-500 px-3 py-1.5 text-xs font-semibold text-white hover:bg-emerald-600">
+                  <PackageCheck className="h-3.5 w-3.5" /> Deliver All
+                </button>
+                <div className="flex-1" />
+                <button type="button" onClick={() => setSelectedIds(new Set())}
+                  className="text-xs font-medium text-muted-foreground hover:text-foreground">
+                  Clear selection
+                </button>
+              </div>
+            )}
+
+            {/* Select all checkbox — seller only */}
+            {activeTab === "selling" && (ordersQuery?.data?.data as any)?.length > 0 && (
+              <div className="mb-3 flex items-center gap-2 px-1">
+                <input
+                  type="checkbox"
+                  checked={selectedIds.size > 0 && selectedIds.size === (ordersQuery?.data?.data as any)?.length}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setSelectedIds(new Set((ordersQuery?.data?.data as any)?.map((i: any) => i.id)));
+                    } else {
+                      setSelectedIds(new Set());
+                    }
+                  }}
+                  className="h-4 w-4 rounded border-border text-primary focus:ring-primary/30 cursor-pointer"
+                />
+                <span className="text-xs text-muted-foreground">Select all</span>
+              </div>
+            )}
+
             {/* Orders List */}
-            <div className="space-y-6">
+            <div className="space-y-4">
               {ordersQuery.isLoading ? (
                 Array.from({ length: 3 }, (_, i) => (
                   <Card key={i} className="mb-2 p-6">
@@ -495,9 +565,25 @@ const MyOrdersPage = () => {
                       orderProductDate={item.orderProductDate || item.createdAt}
                       updatedAt={item.updatedAt}
                       serviceFeature={item.serviceFeatures?.[0]?.serviceFeature}
+                      buyerName={
+                        item.orderProduct_order?.order_user
+                          ? `${item.orderProduct_order.order_user.firstName || ""} ${item.orderProduct_order.order_user.lastName || ""}`.trim()
+                          : item.buyerName || undefined
+                      }
+                      buyerEmail={item.orderProduct_order?.order_user?.email}
+                      buyerPhone={item.orderProduct_order?.order_user?.phoneNumber}
+                      buyerRating={4.2}
+                      buyerOrderCount={item.orderProduct_order?.order_user?.orderCount}
+                      selected={selectedIds.has(item.id)}
+                      onSelect={(oid, checked) => {
+                        setSelectedIds((prev) => {
+                          const next = new Set(prev);
+                          checked ? next.add(oid) : next.delete(oid);
+                          return next;
+                        });
+                      }}
                       onStatusChange={(opId, newStatus) => {
                         // TODO: call backend API to update status
-                        // updateOrderStatus.mutate({ orderProductId: opId, status: newStatus })
                       }}
                     />
                   ) : (

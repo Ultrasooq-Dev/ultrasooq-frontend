@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import {
   CheckCircle2, Truck, PackageCheck, Clock, XCircle, Package,
   ChevronDown, Download, MessageCircle, Eye, MapPin, Zap,
+  Star, Phone, Mail, User,
 } from "lucide-react";
 
 type Props = {
@@ -25,6 +26,12 @@ type Props = {
   updatedAt: string;
   serviceFeature?: any;
   buyerName?: string;
+  buyerEmail?: string;
+  buyerPhone?: string;
+  buyerRating?: number;
+  buyerOrderCount?: number;
+  selected?: boolean;
+  onSelect?: (id: number, checked: boolean) => void;
   onStatusChange?: (orderProductId: number, newStatus: string) => void;
 };
 
@@ -57,7 +64,8 @@ const QUICK_STAGES = [
 export default function SellerOrderCard({
   id, orderProductType, productId, purchasePrice, productName, produtctImage,
   orderQuantity, orderId, orderStatus, orderProductDate, updatedAt,
-  serviceFeature, buyerName, onStatusChange,
+  serviceFeature, buyerName, buyerEmail, buyerPhone, buyerRating, buyerOrderCount,
+  selected, onSelect, onStatusChange,
 }: Props) {
   const { currency, selectedLocale } = useAuth();
   const [localStatus, setLocalStatus] = useState(orderStatus);
@@ -93,7 +101,19 @@ export default function SellerOrderCard({
       </div>
 
       <div className="p-5">
-        <div className="flex gap-5">
+        <div className="flex gap-4">
+          {/* Checkbox for bulk select */}
+          {onSelect && (
+            <div className="flex items-start pt-1">
+              <input
+                type="checkbox"
+                checked={selected || false}
+                onChange={(e) => onSelect(id, e.target.checked)}
+                className="h-4 w-4 rounded border-border text-primary focus:ring-primary/30 cursor-pointer"
+              />
+            </div>
+          )}
+
           {/* Image */}
           <Link href={`/orders/${id}`} className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-muted/50 ring-1 ring-border transition-all group-hover:ring-primary/20">
             <Image
@@ -123,9 +143,44 @@ export default function SellerOrderCard({
             <div className="mt-1.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
               <span className="font-mono">#{orderId}</span>
               <span>Qty: {orderQuantity || 1}</span>
-              {buyerName && <span>Buyer: <span className="font-medium text-foreground">{buyerName}</span></span>}
               <span>{orderProductDate ? formattedDate(orderProductDate, selectedLocale) : ""}</span>
             </div>
+
+            {/* Customer info row */}
+            {buyerName && (
+              <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-lg bg-muted/40 px-3 py-1.5">
+                <span className="flex items-center gap-1 text-[11px] font-medium">
+                  <User className="h-3 w-3 text-muted-foreground" />
+                  {buyerName}
+                </span>
+                {buyerPhone && (
+                  <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
+                    <Phone className="h-3 w-3" /> {buyerPhone}
+                  </span>
+                )}
+                {buyerEmail && (
+                  <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
+                    <Mail className="h-3 w-3" /> {buyerEmail}
+                  </span>
+                )}
+                {/* Customer rating */}
+                <span className="flex items-center gap-0.5 ms-auto">
+                  {buyerRating != null && buyerRating > 0 ? (
+                    <>
+                      <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
+                      <span className="text-[11px] font-semibold text-amber-700 dark:text-amber-400">{buyerRating.toFixed(1)}</span>
+                    </>
+                  ) : (
+                    <span className="text-[10px] text-muted-foreground">New customer</span>
+                  )}
+                  {buyerOrderCount != null && buyerOrderCount > 0 && (
+                    <span className="ms-1.5 rounded bg-muted px-1.5 py-0.5 text-[9px] font-medium text-muted-foreground">
+                      {buyerOrderCount} orders
+                    </span>
+                  )}
+                </span>
+              </div>
+            )}
 
             {/* Status */}
             <div className="mt-3 flex items-center gap-2">
