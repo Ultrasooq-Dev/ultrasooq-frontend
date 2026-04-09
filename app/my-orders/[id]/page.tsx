@@ -31,6 +31,7 @@ import {
 import {
   useOrderById, useConfirmReceipt, usePickupCode,
   useUpdateOrderStatus, useAddOrderTracking, useDeliveryTimeline,
+  useSubmitComplaint, useRequestRefund,
 } from "@/apis/queries/orders.queries";
 import { useParams, useRouter } from "next/navigation";
 import ConfirmReceiptButton from "@/components/modules/delivery/ConfirmReceiptButton";
@@ -737,6 +738,8 @@ export default function MyOrderDetailsPage() {
     {};
   const ppd = order?.orderProduct_productPrice || {};
   const [liveStatus, setLiveStatus] = useState("");
+  const submitComplaintMutation = useSubmitComplaint();
+  const requestRefundMutation = useRequestRefund();
   const [showComplainModal, setShowComplainModal] = useState(false);
   const [showRefundModal, setShowRefundModal] = useState(false);
   const [complainText, setComplainText] = useState("");
@@ -1208,10 +1211,15 @@ export default function MyOrderDetailsPage() {
             <div className="sticky bottom-0 flex items-center justify-end gap-3 border-t border-border bg-card px-6 py-4">
               <button type="button" onClick={() => setShowComplainModal(false)}
                 className="rounded-lg border border-border px-4 py-2.5 text-sm font-medium hover:bg-muted">Cancel</button>
-              <button type="button" disabled={!complainType || !complainText.trim()}
-                onClick={() => { setShowComplainModal(false); setComplainType(""); setComplainText(""); }}
+              <button type="button" disabled={!complainType || !complainText.trim() || submitComplaintMutation.isPending}
+                onClick={() => {
+                  submitComplaintMutation.mutate(
+                    { orderProductId: Number(params?.id), reason: complainType, description: complainText },
+                    { onSuccess: () => { setShowComplainModal(false); setComplainType(""); setComplainText(""); } },
+                  );
+                }}
                 className="rounded-lg bg-amber-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-amber-600 disabled:cursor-not-allowed disabled:opacity-50">
-                Submit Complaint
+                {submitComplaintMutation.isPending ? "Submitting..." : "Submit Complaint"}
               </button>
             </div>
           </div>
@@ -1287,10 +1295,15 @@ export default function MyOrderDetailsPage() {
             <div className="sticky bottom-0 flex items-center justify-end gap-3 border-t border-border bg-card px-6 py-4">
               <button type="button" onClick={() => setShowRefundModal(false)}
                 className="rounded-lg border border-border px-4 py-2.5 text-sm font-medium hover:bg-muted">Cancel</button>
-              <button type="button" disabled={!refundReason}
-                onClick={() => { setShowRefundModal(false); setRefundReason(""); setRefundNotes(""); }}
+              <button type="button" disabled={!refundReason || requestRefundMutation.isPending}
+                onClick={() => {
+                  requestRefundMutation.mutate(
+                    { orderProductId: Number(params?.id), reason: refundReason, notes: refundNotes, amount: totalPrice },
+                    { onSuccess: () => { setShowRefundModal(false); setRefundReason(""); setRefundNotes(""); } },
+                  );
+                }}
                 className="rounded-lg bg-red-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-50">
-                Submit Refund Request
+                {requestRefundMutation.isPending ? "Submitting..." : "Submit Refund Request"}
               </button>
             </div>
           </div>

@@ -6,9 +6,11 @@ import PlaceholderImage from "@/public/images/product-placeholder.png";
 import { useAuth } from "@/context/AuthContext";
 import { formattedDate } from "@/utils/constants";
 import { cn } from "@/lib/utils";
+import { useSubmitComplaint, useRequestRefund } from "@/apis/queries/orders.queries";
+import { useToast } from "@/components/ui/use-toast";
 import {
   CheckCircle2, Truck, PackageCheck, Clock, XCircle, Package,
-  Download, Star, AlertTriangle, ReceiptText, MessageCircle, X, Eye,
+  Download, Star, AlertTriangle, ReceiptText, MessageCircle, X, Eye, Loader2,
 } from "lucide-react";
 
 type Props = {
@@ -43,6 +45,9 @@ export default function BuyerOrderCard({
   serviceFeature, sellerName,
 }: Props) {
   const { currency, selectedLocale } = useAuth();
+  const { toast } = useToast();
+  const submitComplaint = useSubmitComplaint();
+  const requestRefund = useRequestRefund();
   const [showComplaint, setShowComplaint] = useState(false);
   const [showRefund, setShowRefund] = useState(false);
   const [complainType, setComplainType] = useState("");
@@ -193,9 +198,26 @@ export default function BuyerOrderCard({
             <div className="sticky bottom-0 flex justify-end gap-2 border-t border-border bg-card px-5 py-3">
               <button type="button" onClick={() => { setShowComplaint(false); setComplainType(""); setComplainText(""); }}
                 className="rounded-lg border border-border px-3 py-2 text-xs font-medium hover:bg-muted">Cancel</button>
-              <button type="button" disabled={!complainType || !complainText.trim()}
-                onClick={() => { setShowComplaint(false); setComplainType(""); setComplainText(""); }}
-                className="rounded-lg bg-amber-500 px-4 py-2 text-xs font-semibold text-white hover:bg-amber-600 disabled:opacity-50">Submit</button>
+              <button type="button" disabled={!complainType || !complainText.trim() || submitComplaint.isPending}
+                onClick={() => {
+                  submitComplaint.mutate(
+                    { orderProductId: id, reason: complainType, description: complainText },
+                    {
+                      onSuccess: (data) => {
+                        if (data?.status) {
+                          toast({ title: "Complaint submitted", description: "We'll review it shortly", variant: "success" });
+                          setShowComplaint(false); setComplainType(""); setComplainText("");
+                        } else {
+                          toast({ title: "Failed", description: data?.message || "Could not submit complaint", variant: "danger" });
+                        }
+                      },
+                      onError: () => toast({ title: "Error", description: "Failed to submit complaint", variant: "danger" }),
+                    },
+                  );
+                }}
+                className="rounded-lg bg-amber-500 px-4 py-2 text-xs font-semibold text-white hover:bg-amber-600 disabled:opacity-50">
+                {submitComplaint.isPending ? <Loader2 className="h-3 w-3 animate-spin" /> : "Submit"}
+              </button>
             </div>
           </div>
         </div>
@@ -226,9 +248,26 @@ export default function BuyerOrderCard({
             <div className="sticky bottom-0 flex justify-end gap-2 border-t border-border bg-card px-5 py-3">
               <button type="button" onClick={() => { setShowRefund(false); setRefundReason(""); }}
                 className="rounded-lg border border-border px-3 py-2 text-xs font-medium hover:bg-muted">Cancel</button>
-              <button type="button" disabled={!refundReason}
-                onClick={() => { setShowRefund(false); setRefundReason(""); }}
-                className="rounded-lg bg-red-500 px-4 py-2 text-xs font-semibold text-white hover:bg-red-600 disabled:opacity-50">Submit</button>
+              <button type="button" disabled={!refundReason || requestRefund.isPending}
+                onClick={() => {
+                  requestRefund.mutate(
+                    { orderProductId: id, reason: refundReason, amount: total },
+                    {
+                      onSuccess: (data) => {
+                        if (data?.status) {
+                          toast({ title: "Refund requested", description: "We'll review within 24-48 hours", variant: "success" });
+                          setShowRefund(false); setRefundReason("");
+                        } else {
+                          toast({ title: "Failed", description: data?.message || "Could not submit refund", variant: "danger" });
+                        }
+                      },
+                      onError: () => toast({ title: "Error", description: "Failed to submit refund request", variant: "danger" }),
+                    },
+                  );
+                }}
+                className="rounded-lg bg-red-500 px-4 py-2 text-xs font-semibold text-white hover:bg-red-600 disabled:opacity-50">
+                {requestRefund.isPending ? <Loader2 className="h-3 w-3 animate-spin" /> : "Submit"}
+              </button>
             </div>
           </div>
         </div>
