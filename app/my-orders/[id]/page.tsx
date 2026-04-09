@@ -196,6 +196,26 @@ function AddressCard({
   );
 }
 
+// ─── Stage → Order status mapping ───────────────────────────────
+// Maps detailed courier stages to the 5 high-level order statuses
+const STAGE_TO_STATUS: Record<string, string> = {
+  shipment_created: "CONFIRMED",
+  picked_up: "CONFIRMED",
+  at_origin_facility: "SHIPPED",
+  departed_origin: "SHIPPED",
+  in_transit: "SHIPPED",
+  at_destination_facility: "SHIPPED",
+  customs_clearance: "SHIPPED",
+  cleared_customs: "SHIPPED",
+  at_local_hub: "OFD",
+  out_for_delivery: "OFD",
+  delivery_attempt: "OFD",
+  delivered: "DELIVERED",
+  held: "SHIPPED",
+  returned: "CANCELLED",
+  delayed: "SHIPPED",
+};
+
 // ─── Delivery stages data ───────────────────────────────────────
 const DELIVERY_STAGES = [
   { group: "Pickup", stages: [
@@ -240,11 +260,13 @@ function TrackingChatPanel({
   langDir,
   status,
   orderId,
+  onStatusChange,
 }: {
   sellerName: string;
   langDir: string;
   status: string;
   orderId: string;
+  onStatusChange?: (newStatus: string) => void;
 }) {
   const [message, setMessage] = useState("");
   const [stageLocation, setStageLocation] = useState("");
@@ -288,6 +310,9 @@ function TrackingChatPanel({
       location: loc || undefined,
       sender: "vendor",
     });
+    // Auto-update the top-level order status
+    const newStatus = STAGE_TO_STATUS[s.key];
+    if (newStatus && onStatusChange) onStatusChange(newStatus);
     setStageLocation("");
     setShowStageMenu(false);
   };
@@ -650,7 +675,8 @@ export default function MyOrderDetailsPage() {
     order?.orderProduct_product ||
     {};
   const ppd = order?.orderProduct_productPrice || {};
-  const status = order?.orderProductStatus || "CONFIRMED";
+  const [liveStatus, setLiveStatus] = useState("");
+  const status = liveStatus || order?.orderProductStatus || "CONFIRMED";
   const isService = order?.orderProductType === "SERVICE";
   const sellerName = ppd.adminDetail
     ? `${ppd.adminDetail.firstName} ${ppd.adminDetail.lastName || ""}`.trim()
@@ -942,7 +968,17 @@ export default function MyOrderDetailsPage() {
 
         {/* ── Row 4: Chat with Seller ─────────────────── */}
         <div className="mb-6">
-          <TrackingChatPanel sellerName={sellerName} langDir={langDir} status={status} orderId={orderInfo?.orderNo || String(params?.id)} />
+          <TrackingChatPanel
+            sellerName={sellerName}
+            langDir={langDir}
+            status={status}
+            orderId={orderInfo?.orderNo || String(params?.id)}
+            onStatusChange={(newStatus) => {
+              setLiveStatus(newStatus);
+              // TODO: call backend API to persist status change
+              // e.g. updateOrderStatus.mutate({ orderProductId: params?.id, status: newStatus })
+            }}
+          />
         </div>
 
         {/* ── Other items in same order ───────────────── */}
