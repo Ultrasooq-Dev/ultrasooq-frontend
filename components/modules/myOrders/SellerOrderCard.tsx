@@ -37,6 +37,7 @@ type SellerOrderCardProps = {
 };
 
 const STATUS_FLOW = [
+  { key: "PLACED", label: "Placed", icon: Clock, color: "text-gray-600", bg: "bg-gray-50 border-gray-200 dark:bg-gray-950/20 dark:border-gray-800" },
   { key: "CONFIRMED", label: "Confirmed", icon: CheckCircle2, color: "text-blue-600", bg: "bg-blue-50 border-blue-200 dark:bg-blue-950/20 dark:border-blue-800" },
   { key: "SHIPPED", label: "Shipped", icon: Truck, color: "text-violet-600", bg: "bg-violet-50 border-violet-200 dark:bg-violet-950/20 dark:border-violet-800" },
   { key: "OFD", label: "Out for Delivery", icon: Truck, color: "text-amber-600", bg: "bg-amber-50 border-amber-200 dark:bg-amber-950/20 dark:border-amber-800" },
