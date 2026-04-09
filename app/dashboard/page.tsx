@@ -1,8 +1,9 @@
 "use client";
-import React from "react";
+import React, { useMemo } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useMe } from "@/apis/queries/user.queries";
 import { useVendorOrderStats, useOrdersBySellerId } from "@/apis/queries/orders.queries";
+import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import Link from "next/link";
 import { withActiveUserGuard } from "@/components/shared/withRouteGuard";
 import { cn } from "@/lib/utils";
@@ -139,6 +140,82 @@ function QuickLink({ label, icon: Icon, href, badge }: {
   );
 }
 
+// ── Sales Chart ─────────────────────────────────────────────────
+function SalesChart({ orders, allOrders, currency }: { orders: any[]; allOrders: any[]; currency: { symbol: string } }) {
+  const chartData = useMemo(() => {
+    // Build last 14 days
+    const days: { date: string; label: string; revenue: number; orders: number }[] = [];
+    for (let i = 13; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const key = d.toISOString().slice(0, 10);
+      const label = d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+      days.push({ date: key, label, revenue: 0, orders: 0 });
+    }
+
+    // Aggregate orders by day
+    for (const item of allOrders) {
+      const orderDate = (item.orderProductDate || item.createdAt || "").slice(0, 10);
+      const day = days.find((d) => d.date === orderDate);
+      if (day && item.orderProductStatus !== "CANCELLED") {
+        day.orders += 1;
+        day.revenue += Number(item.customerPay || item.purchasePrice || 0) * (item.orderQuantity || 1);
+      }
+    }
+
+    return days;
+  }, [allOrders]);
+
+  const maxRevenue = Math.max(...chartData.map((d) => d.revenue), 1);
+
+  return (
+    <div className="h-[220px]">
+      <ResponsiveContainer width="100%" height="100%">
+        <AreaChart data={chartData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
+          <defs>
+            <linearGradient id="revenueGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#c2703e" stopOpacity={0.3} />
+              <stop offset="100%" stopColor="#c2703e" stopOpacity={0} />
+            </linearGradient>
+            <linearGradient id="ordersGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#5b8a72" stopOpacity={0.2} />
+              <stop offset="100%" stopColor="#5b8a72" stopOpacity={0} />
+            </linearGradient>
+          </defs>
+          <CartesianGrid strokeDasharray="3 3" stroke="#e8ddd0" strokeOpacity={0.5} />
+          <XAxis dataKey="label" tick={{ fontSize: 10, fill: "#8c7b6b" }} axisLine={false} tickLine={false} />
+          <YAxis tick={{ fontSize: 10, fill: "#8c7b6b" }} axisLine={false} tickLine={false} />
+          <Tooltip
+            contentStyle={{
+              backgroundColor: "#fff",
+              border: "1px solid #e8ddd0",
+              borderRadius: 16,
+              padding: "10px 14px",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.06)",
+              fontSize: 12,
+            }}
+            formatter={(value: any, dataKey: string) => [
+              dataKey === "revenue" ? `${currency.symbol}${Number(value).toFixed(2)}` : value,
+              dataKey === "revenue" ? "Revenue" : "Orders",
+            ]}
+            labelStyle={{ fontWeight: 700, color: "#2d2017", marginBottom: 4 }}
+          />
+          <Area type="monotone" dataKey="revenue" stroke="#c2703e" strokeWidth={2.5} fill="url(#revenueGrad)" dot={false} />
+          <Area type="monotone" dataKey="orders" stroke="#5b8a72" strokeWidth={1.5} fill="url(#ordersGrad)" dot={false} />
+        </AreaChart>
+      </ResponsiveContainer>
+      <div className="flex items-center justify-center gap-6 mt-2">
+        <span className="flex items-center gap-1.5 text-[10px] text-[#8c7b6b]">
+          <span className="h-2 w-2 rounded-full bg-[#c2703e]" /> Revenue
+        </span>
+        <span className="flex items-center gap-1.5 text-[10px] text-[#8c7b6b]">
+          <span className="h-2 w-2 rounded-full bg-[#5b8a72]" /> Orders
+        </span>
+      </div>
+    </div>
+  );
+}
+
 // ── Main Page ───────────────────────────────────────────────────
 function DashboardPage() {
   const { currency, user } = useAuth();
@@ -196,6 +273,20 @@ function DashboardPage() {
             icon={Clock} color="bg-[#d4a54a]" href="/orders" />
           <Stat label="Delivered" value={completed}
             icon={PackageCheck} color="bg-[#4a8fb8]" change={`${cancelled} returned`} href="/orders" />
+        </div>
+
+        {/* ── Sales Timeline Chart ────────────────────── */}
+        <div className={cn("rounded-3xl p-6 shadow-sm mb-8", T.card, "border", T.border)}>
+          <div className="flex items-center justify-between mb-5">
+            <div>
+              <h3 className={cn("text-[14px] font-bold", T.text)}>Sales Timeline</h3>
+              <p className={cn("text-[11px] mt-0.5", T.muted)}>Revenue & orders over the last 14 days</p>
+            </div>
+            <Link href="/analytics" className={cn("text-[11px] font-semibold hover:underline", T.accentText)}>
+              Full analytics →
+            </Link>
+          </div>
+          <SalesChart orders={orders} allOrders={sellerOrders.data?.data || []} currency={currency} />
         </div>
 
         {/* ── Middle ─────────────────────────────────── */}
