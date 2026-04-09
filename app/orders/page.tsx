@@ -251,7 +251,7 @@ const MyOrdersPage = () => {
 
         <div>
           {/* Horizontal Filter Bar */}
-          <div className="mb-6 flex flex-wrap items-center gap-3 rounded-xl border border-border bg-card px-5 py-3">
+          <div className="sticky top-0 z-20 mb-6 flex flex-wrap items-center gap-3 rounded-xl border border-border bg-card/95 backdrop-blur-sm px-5 py-3 shadow-sm">
             {/* Search */}
             <div className="relative flex-1 min-w-[200px] max-w-sm">
               <Search className="absolute top-1/2 start-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
