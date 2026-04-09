@@ -196,8 +196,46 @@ function AddressCard({
   );
 }
 
-// ─── Chat + Order Actions ───────────────────────────────────────
-function ChatSection({
+// ─── Delivery stages data ───────────────────────────────────────
+const DELIVERY_STAGES = [
+  { group: "Pickup", stages: [
+    { key: "shipment_created", label: "Shipment Created", emoji: "📋", msg: "Shipment label has been created" },
+    { key: "picked_up", label: "Picked Up", emoji: "📦", msg: "Package picked up from seller" },
+  ]},
+  { group: "In Transit", stages: [
+    { key: "at_origin_facility", label: "At Origin Facility", emoji: "🏭", msg: "Arrived at origin sorting facility" },
+    { key: "departed_origin", label: "Departed Origin", emoji: "✈️", msg: "Departed origin facility" },
+    { key: "in_transit", label: "In Transit", emoji: "🚚", msg: "In transit to destination" },
+    { key: "at_destination_facility", label: "At Destination", emoji: "🏬", msg: "Arrived at destination facility" },
+    { key: "customs_clearance", label: "Customs Clearance", emoji: "🛃", msg: "In customs clearance" },
+    { key: "cleared_customs", label: "Cleared Customs", emoji: "✅", msg: "Cleared customs" },
+  ]},
+  { group: "Last Mile", stages: [
+    { key: "at_local_hub", label: "At Local Hub", emoji: "📍", msg: "Arrived at local delivery hub" },
+    { key: "out_for_delivery", label: "Out for Delivery", emoji: "🛵", msg: "Out for delivery" },
+    { key: "delivery_attempt", label: "Delivery Attempted", emoji: "🚪", msg: "Delivery attempted — not available" },
+    { key: "delivered", label: "Delivered", emoji: "✅", msg: "Delivered successfully" },
+  ]},
+  { group: "Exceptions", stages: [
+    { key: "held", label: "Held at Facility", emoji: "⏸️", msg: "Held — awaiting instructions" },
+    { key: "returned", label: "Returned", emoji: "↩️", msg: "Returned to sender" },
+    { key: "delayed", label: "Delayed", emoji: "⚠️", msg: "Delayed" },
+  ]},
+];
+
+interface TrackingMessage {
+  id: string;
+  type: "stage" | "text" | "attachment" | "confirm";
+  emoji?: string;
+  stage?: string;
+  text: string;
+  location?: string;
+  time: string;
+  sender: "vendor" | "system" | "customer";
+}
+
+// ─── 2-Panel: Tracking Timeline + Chat ──────────────────────────
+function TrackingChatPanel({
   sellerName,
   langDir,
   status,
@@ -209,292 +247,354 @@ function ChatSection({
   orderId: string;
 }) {
   const [message, setMessage] = useState("");
-  const [showTemplates, setShowTemplates] = useState(false);
+  const [stageLocation, setStageLocation] = useState("");
   const [showStageMenu, setShowStageMenu] = useState(false);
+  const [showTemplates, setShowTemplates] = useState(false);
   const [showConfirmMenu, setShowConfirmMenu] = useState(false);
+  const messagesEndRef = React.useRef<HTMLDivElement>(null);
 
-  // Saved message templates (vendor-pinned)
+  // Messages = tracking updates + chat messages in one timeline
+  const [messages, setMessages] = useState<TrackingMessage[]>([
+    // Example pre-populated tracking history
+    { id: "1", type: "stage", emoji: "📋", stage: "Shipment Created", text: "Shipment label has been created", time: new Date(Date.now() - 3 * 86400000).toISOString(), sender: "system" },
+    { id: "2", type: "stage", emoji: "📦", stage: "Picked Up", text: "Package picked up from seller", location: "Seller Warehouse", time: new Date(Date.now() - 2.5 * 86400000).toISOString(), sender: "system" },
+  ]);
+
   const templates = [
     "Your order has been shipped. Tracking will be updated shortly.",
     "Your package is out for delivery today.",
     "Thank you for your order! We're preparing it now.",
-    "Your item has been handed to the courier.",
     "Please confirm receipt once you've received the product.",
   ];
 
-  const [stageLocation, setStageLocation] = useState("");
-  const [stageNotes, setStageNotes] = useState("");
-  const [stageMessages, setStageMessages] = useState<Array<{ stage: string; location: string; time: string; notes: string }>>([]);
-
-  // Aramex / DHL / FedEx style delivery stages
-  const deliveryStages = [
-    { group: "Pickup", stages: [
-      { key: "shipment_created", label: "Shipment Created", emoji: "📋", msg: "Shipment label has been created" },
-      { key: "picked_up", label: "Picked Up from Seller", emoji: "📦", msg: "Package picked up from seller" },
-    ]},
-    { group: "In Transit", stages: [
-      { key: "at_origin_facility", label: "At Origin Facility", emoji: "🏭", msg: "Package arrived at origin sorting facility" },
-      { key: "departed_origin", label: "Departed Origin", emoji: "✈️", msg: "Package has departed origin facility" },
-      { key: "in_transit", label: "In Transit", emoji: "🚚", msg: "Package is in transit" },
-      { key: "at_destination_facility", label: "At Destination Facility", emoji: "🏬", msg: "Package arrived at destination facility" },
-      { key: "customs_clearance", label: "Customs Clearance", emoji: "🛃", msg: "Package is in customs clearance" },
-      { key: "cleared_customs", label: "Cleared Customs", emoji: "✅", msg: "Package has cleared customs" },
-    ]},
-    { group: "Last Mile", stages: [
-      { key: "at_local_hub", label: "At Local Hub", emoji: "📍", msg: "Package arrived at local delivery hub" },
-      { key: "out_for_delivery", label: "Out for Delivery", emoji: "🛵", msg: "Package is out for delivery" },
-      { key: "delivery_attempt", label: "Delivery Attempted", emoji: "🚪", msg: "Delivery attempted — recipient not available" },
-      { key: "delivered", label: "Delivered", emoji: "✅", msg: "Package has been delivered" },
-    ]},
-    { group: "Exceptions", stages: [
-      { key: "held_at_facility", label: "Held at Facility", emoji: "⏸️", msg: "Package held at facility — awaiting instructions" },
-      { key: "returned", label: "Returned to Sender", emoji: "↩️", msg: "Package is being returned to sender" },
-      { key: "delayed", label: "Delayed", emoji: "⚠️", msg: "Delivery delayed due to unforeseen circumstances" },
-    ]},
+  const confirmActions = [
+    { key: "freelancer", label: "Connect Freelancer", icon: User, desc: "Assign freelancer for delivery" },
+    { key: "customer_pickup", label: "Customer Pickup", icon: PackageCheck, desc: "Customer will collect" },
+    { key: "delivery_partner", label: "Delivery Partner", icon: Truck, desc: "Assign delivery company" },
   ];
 
-  const handleStageSelect = (stage: { key: string; label: string; emoji: string; msg: string }) => {
-    const locationText = stageLocation ? ` — ${stageLocation}` : "";
-    const notesText = stageNotes ? `\n${stageNotes}` : "";
-    const fullMessage = `${stage.emoji} ${stage.msg}${locationText}${notesText}`;
-    setMessage(fullMessage);
-    setStageMessages((prev) => [...prev, {
-      stage: stage.label,
-      location: stageLocation,
-      time: new Date().toISOString(),
-      notes: stageNotes,
-    }]);
+  const addMessage = (msg: Omit<TrackingMessage, "id" | "time">) => {
+    setMessages((prev) => [...prev, { ...msg, id: `msg-${Date.now()}`, time: new Date().toISOString() }]);
+    setTimeout(() => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
+  };
+
+  const handleStageSelect = (s: { key: string; label: string; emoji: string; msg: string }) => {
+    const loc = stageLocation.trim();
+    addMessage({
+      type: "stage",
+      emoji: s.emoji,
+      stage: s.label,
+      text: s.msg + (loc ? ` — ${loc}` : ""),
+      location: loc || undefined,
+      sender: "vendor",
+    });
     setStageLocation("");
-    setStageNotes("");
     setShowStageMenu(false);
   };
 
-  const confirmActions = [
-    { key: "freelancer", label: "Connect Freelancer for Delivery", icon: User, desc: "Assign a freelancer to deliver this order" },
-    { key: "customer_pickup", label: "Customer Pickup Confirmed", icon: PackageCheck, desc: "Customer will collect the product" },
-    { key: "delivery_partner", label: "Assign Delivery Partner", icon: Truck, desc: "Connect with delivery company API" },
-  ];
+  const handleSend = () => {
+    if (!message.trim()) return;
+    addMessage({ type: "text", text: message.trim(), sender: "vendor" });
+    setMessage("");
+  };
+
+  const formatTime = (iso: string) => {
+    const d = new Date(iso);
+    const now = new Date();
+    const diffH = Math.floor((now.getTime() - d.getTime()) / 3600000);
+    if (diffH < 1) return "Just now";
+    if (diffH < 24) return `${diffH}h ago`;
+    return d.toLocaleDateString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+  };
 
   return (
     <div className="rounded-xl border border-border bg-card overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-border bg-muted/40 px-5 py-3">
         <div className="flex items-center gap-2">
-          <MessageCircle className="h-4 w-4 text-primary" />
-          <span className="text-sm font-semibold">Chat with {sellerName}</span>
+          <Truck className="h-4 w-4 text-primary" />
+          <span className="text-sm font-semibold">Order Tracking & Messages</span>
         </div>
         <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
-          Order #{orderId}
+          #{orderId}
         </span>
       </div>
 
-      {/* Messages area */}
-      <div className="h-64 overflow-y-auto bg-muted/10 p-4">
-        <div className="flex h-full flex-col items-center justify-center text-center">
-          <MessageCircle className="mb-2 h-8 w-8 text-muted-foreground/15" />
-          <p className="text-sm text-muted-foreground/50">
-            Start a conversation with the seller
-          </p>
-          <p className="mt-1 text-[11px] text-muted-foreground/30">
-            Messages, delivery updates, and attachments will appear here
-          </p>
-        </div>
-      </div>
+      {/* 2-panel layout */}
+      <div className="flex" style={{ height: 420 }}>
+        {/* ═══ Panel 1: Tracking Timeline ═══ */}
+        <div className="w-64 shrink-0 border-e border-border flex flex-col">
+          <div className="px-4 py-2.5 border-b border-border bg-muted/20">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+              Delivery Timeline
+            </span>
+          </div>
+          <div className="flex-1 overflow-y-auto px-4 py-3">
+            {/* Vertical timeline */}
+            <div className="relative">
+              {/* Vertical line */}
+              <div className="absolute start-[7px] top-2 bottom-2 w-[2px] bg-border" />
 
-      {/* Quick action buttons */}
-      <div className="relative flex items-center gap-2 border-t border-border bg-muted/20 px-4 py-2.5">
-        {/* Auto Text — pinned templates */}
-        <div className="relative">
-          <button
-            type="button"
-            onClick={() => { setShowTemplates(!showTemplates); setShowStageMenu(false); setShowConfirmMenu(false); }}
-            className={cn(
-              "flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors",
-              showTemplates
-                ? "bg-amber-500 text-white"
-                : "bg-amber-50 text-amber-700 hover:bg-amber-100 dark:bg-amber-950/30 dark:text-amber-400 dark:hover:bg-amber-950/50",
-            )}
-          >
-            <Zap className="h-3 w-3" />
-            Auto Text
-          </button>
-          {showTemplates && (
-            <div className="absolute bottom-full start-0 mb-2 w-72 rounded-lg border border-border bg-card shadow-xl z-20">
-              <div className="border-b border-border px-3 py-2">
-                <span className="text-[11px] font-semibold text-muted-foreground">Saved Templates</span>
-              </div>
-              <div className="max-h-48 overflow-y-auto p-1">
-                {templates.map((tpl, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    onClick={() => { setMessage(tpl); setShowTemplates(false); }}
-                    className="w-full rounded-md px-3 py-2 text-start text-xs hover:bg-muted transition-colors"
-                  >
-                    {tpl}
-                  </button>
-                ))}
-              </div>
-              <div className="border-t border-border px-3 py-2">
-                <button type="button" className="text-[11px] font-medium text-primary hover:underline">
-                  + Add new template
-                </button>
+              <div className="space-y-0">
+                {messages.filter((m) => m.type === "stage").map((m, i, arr) => {
+                  const isLast = i === arr.length - 1;
+                  return (
+                    <div key={m.id} className="relative flex gap-3 pb-5">
+                      {/* Dot */}
+                      <div className={cn(
+                        "relative z-10 mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2",
+                        isLast
+                          ? "border-emerald-500 bg-emerald-500"
+                          : "border-emerald-500 bg-card",
+                      )}>
+                        {isLast && <CheckCircle2 className="h-2.5 w-2.5 text-white" />}
+                      </div>
+                      {/* Content */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-xs">{m.emoji}</span>
+                          <span className="text-[11px] font-semibold leading-tight">{m.stage}</span>
+                        </div>
+                        {m.location && (
+                          <div className="mt-0.5 flex items-center gap-1 text-[10px] text-muted-foreground">
+                            <MapPin className="h-2.5 w-2.5" />
+                            {m.location}
+                          </div>
+                        )}
+                        <span className="mt-0.5 block text-[9px] text-muted-foreground/60">
+                          {formatTime(m.time)}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
-          )}
+
+            {messages.filter((m) => m.type === "stage").length === 0 && (
+              <div className="flex flex-col items-center justify-center py-8 text-center">
+                <Package className="mb-2 h-6 w-6 text-muted-foreground/15" />
+                <p className="text-[11px] text-muted-foreground/40">No tracking updates yet</p>
+              </div>
+            )}
+          </div>
+
+          {/* Stage quick-add at bottom of timeline */}
+          <div className="border-t border-border px-3 py-2">
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => { setShowStageMenu(!showStageMenu); setShowTemplates(false); setShowConfirmMenu(false); }}
+                className={cn(
+                  "flex w-full items-center justify-center gap-1.5 rounded-lg py-2 text-[11px] font-semibold transition-colors",
+                  showStageMenu
+                    ? "bg-emerald-500 text-white"
+                    : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-950/30 dark:text-emerald-400",
+                )}
+              >
+                <Package className="h-3 w-3" />
+                + Add Stage Update
+              </button>
+
+              {/* Stage dropdown */}
+              {showStageMenu && (
+                <div className="absolute bottom-full start-0 mb-2 w-72 rounded-xl border border-border bg-card shadow-2xl z-20">
+                  <div className="border-b border-border px-3 py-2">
+                    <span className="text-[11px] font-bold">Select Delivery Stage</span>
+                  </div>
+                  {/* Location input */}
+                  <div className="border-b border-border px-3 py-2">
+                    <div className="flex items-center gap-1.5">
+                      <MapPin className="h-3 w-3 text-muted-foreground" />
+                      <input
+                        type="text"
+                        value={stageLocation}
+                        onChange={(e) => setStageLocation(e.target.value)}
+                        placeholder="Location (Dubai Hub, Muscat...)"
+                        className="flex-1 rounded border border-border bg-muted/30 px-2 py-1 text-[11px] outline-none focus:border-primary"
+                      />
+                    </div>
+                  </div>
+                  <div className="max-h-52 overflow-y-auto p-1">
+                    {DELIVERY_STAGES.map((group) => (
+                      <div key={group.group}>
+                        <div className="px-2 py-1">
+                          <span className="text-[8px] font-bold uppercase tracking-widest text-muted-foreground/50">
+                            {group.group}
+                          </span>
+                        </div>
+                        {group.stages.map((s) => (
+                          <button
+                            key={s.key}
+                            type="button"
+                            onClick={() => handleStageSelect(s)}
+                            className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-start transition-colors hover:bg-muted"
+                          >
+                            <span className="text-xs">{s.emoji}</span>
+                            <span className="text-[11px] font-medium">{s.label}</span>
+                          </button>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                  <div className="border-t border-border px-3 py-2">
+                    <button type="button" className="flex items-center gap-1 text-[10px] font-medium text-primary hover:underline">
+                      <Truck className="h-3 w-3" /> Connect Aramex / DHL API
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
 
-        {/* Attachment — submit to delivery partner */}
-        <button
-          type="button"
-          className="flex items-center gap-1.5 rounded-lg bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-700 transition-colors hover:bg-blue-100 dark:bg-blue-950/30 dark:text-blue-400 dark:hover:bg-blue-950/50"
-        >
-          <FileText className="h-3 w-3" />
-          Attachment
-        </button>
+        {/* ═══ Panel 2: Messages / Chat ═══ */}
+        <div className="flex-1 flex flex-col min-w-0">
+          <div className="px-4 py-2.5 border-b border-border bg-muted/20">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+              Messages with {sellerName}
+            </span>
+          </div>
 
-        {/* Stage — Aramex/DHL style delivery tracking updates */}
-        <div className="relative">
-          <button
-            type="button"
-            onClick={() => { setShowStageMenu(!showStageMenu); setShowTemplates(false); setShowConfirmMenu(false); }}
-            className={cn(
-              "flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors",
-              showStageMenu
-                ? "bg-emerald-500 text-white"
-                : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-950/30 dark:text-emerald-400 dark:hover:bg-emerald-950/50",
-            )}
-          >
-            <Package className="h-3 w-3" />
-            Stage
-          </button>
-          {showStageMenu && (
-            <div className="absolute bottom-full start-0 mb-2 w-80 rounded-xl border border-border bg-card shadow-2xl z-20">
-              <div className="border-b border-border px-4 py-2.5">
-                <span className="text-xs font-bold">Delivery Stage Update</span>
-                <p className="text-[10px] text-muted-foreground">Select a stage — it will be sent as a tracking message</p>
-              </div>
-
-              {/* Location + Notes input */}
-              <div className="border-b border-border px-4 py-2.5 space-y-2">
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-3 w-3 text-muted-foreground shrink-0" />
-                  <input
-                    type="text"
-                    value={stageLocation}
-                    onChange={(e) => setStageLocation(e.target.value)}
-                    placeholder="Location (e.g. Dubai Hub, Muscat Center)"
-                    className="flex-1 rounded border border-border bg-muted/30 px-2 py-1.5 text-[11px] outline-none focus:border-primary"
-                  />
-                </div>
-                <input
-                  type="text"
-                  value={stageNotes}
-                  onChange={(e) => setStageNotes(e.target.value)}
-                  placeholder="Additional notes (optional)"
-                  className="w-full rounded border border-border bg-muted/30 px-2 py-1.5 text-[11px] outline-none focus:border-primary"
-                />
-              </div>
-
-              {/* Stage groups */}
-              <div className="max-h-64 overflow-y-auto p-1">
-                {deliveryStages.map((group) => (
-                  <div key={group.group}>
-                    <div className="px-3 py-1.5">
-                      <span className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground/60">
-                        {group.group}
+          {/* Message list */}
+          <div className="flex-1 overflow-y-auto p-4 space-y-3">
+            {messages.map((m) => (
+              <div key={m.id} className={cn(
+                "flex",
+                m.sender === "customer" ? "justify-start" : "justify-end",
+              )}>
+                <div className={cn(
+                  "max-w-[80%] rounded-xl px-3.5 py-2.5",
+                  m.type === "stage"
+                    ? "bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900"
+                    : m.type === "confirm"
+                      ? "bg-violet-50 dark:bg-violet-950/20 border border-violet-200 dark:border-violet-900"
+                      : m.sender === "vendor"
+                        ? "bg-primary/10 border border-primary/20"
+                        : "bg-muted",
+                )}>
+                  {/* Stage message */}
+                  {m.type === "stage" && (
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <span className="text-xs">{m.emoji}</span>
+                      <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wide">
+                        {m.stage}
                       </span>
                     </div>
-                    {group.stages.map((s) => (
-                      <button
-                        key={s.key}
-                        type="button"
-                        onClick={() => handleStageSelect(s)}
-                        className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-start transition-colors hover:bg-muted"
-                      >
-                        <span className="text-sm">{s.emoji}</span>
-                        <div className="flex-1 min-w-0">
-                          <span className="text-[11px] font-semibold">{s.label}</span>
-                          <p className="text-[10px] text-muted-foreground truncate">{s.msg}</p>
+                  )}
+                  {m.type === "confirm" && (
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <CheckCircle2 className="h-3 w-3 text-violet-500" />
+                      <span className="text-[10px] font-bold text-violet-700 dark:text-violet-400 uppercase tracking-wide">
+                        Confirmation
+                      </span>
+                    </div>
+                  )}
+                  <p className="text-[12px] leading-relaxed">{m.text}</p>
+                  {m.location && (
+                    <div className="mt-1 flex items-center gap-1 text-[10px] text-muted-foreground">
+                      <MapPin className="h-2.5 w-2.5" /> {m.location}
+                    </div>
+                  )}
+                  <span className="mt-1 block text-[9px] text-muted-foreground/50 text-end">
+                    {formatTime(m.time)}
+                  </span>
+                </div>
+              </div>
+            ))}
+            <div ref={messagesEndRef} />
+
+            {messages.length === 0 && (
+              <div className="flex h-full flex-col items-center justify-center text-center">
+                <MessageCircle className="mb-2 h-8 w-8 text-muted-foreground/10" />
+                <p className="text-[11px] text-muted-foreground/40">No messages yet</p>
+              </div>
+            )}
+          </div>
+
+          {/* Action buttons */}
+          <div className="relative flex items-center gap-1.5 border-t border-border bg-muted/20 px-3 py-2">
+            {/* Auto Text */}
+            <div className="relative">
+              <button type="button"
+                onClick={() => { setShowTemplates(!showTemplates); setShowStageMenu(false); setShowConfirmMenu(false); }}
+                className={cn("flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-[10px] font-semibold transition-colors",
+                  showTemplates ? "bg-amber-500 text-white" : "bg-amber-50 text-amber-700 hover:bg-amber-100 dark:bg-amber-950/30 dark:text-amber-400")}>
+                <Zap className="h-3 w-3" /> Templates
+              </button>
+              {showTemplates && (
+                <div className="absolute bottom-full start-0 mb-2 w-64 rounded-lg border border-border bg-card shadow-xl z-20">
+                  <div className="border-b border-border px-3 py-2">
+                    <span className="text-[10px] font-semibold text-muted-foreground">Quick Templates</span>
+                  </div>
+                  <div className="max-h-40 overflow-y-auto p-1">
+                    {templates.map((tpl, i) => (
+                      <button key={i} type="button"
+                        onClick={() => { setMessage(tpl); setShowTemplates(false); }}
+                        className="w-full rounded-md px-3 py-1.5 text-start text-[11px] hover:bg-muted transition-colors">
+                        {tpl}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Attachment */}
+            <button type="button"
+              className="flex items-center gap-1 rounded-lg bg-blue-50 px-2.5 py-1.5 text-[10px] font-semibold text-blue-700 hover:bg-blue-100 dark:bg-blue-950/30 dark:text-blue-400">
+              <FileText className="h-3 w-3" /> Attach
+            </button>
+
+            {/* Confirm */}
+            <div className="relative">
+              <button type="button"
+                onClick={() => { setShowConfirmMenu(!showConfirmMenu); setShowTemplates(false); setShowStageMenu(false); }}
+                className={cn("flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-[10px] font-semibold transition-colors",
+                  showConfirmMenu ? "bg-violet-500 text-white" : "bg-violet-50 text-violet-700 hover:bg-violet-100 dark:bg-violet-950/30 dark:text-violet-400")}>
+                <CheckCircle2 className="h-3 w-3" /> Confirm
+              </button>
+              {showConfirmMenu && (
+                <div className="absolute bottom-full start-0 mb-2 w-60 rounded-lg border border-border bg-card shadow-xl z-20">
+                  <div className="p-1">
+                    {confirmActions.map((a) => (
+                      <button key={a.key} type="button"
+                        onClick={() => {
+                          addMessage({ type: "confirm", text: a.desc, sender: "vendor" });
+                          setShowConfirmMenu(false);
+                        }}
+                        className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-start transition-colors hover:bg-muted">
+                        <a.icon className="h-3.5 w-3.5 text-violet-500" />
+                        <div>
+                          <span className="text-[11px] font-semibold">{a.label}</span>
+                          <p className="text-[9px] text-muted-foreground">{a.desc}</p>
                         </div>
                       </button>
                     ))}
                   </div>
-                ))}
-              </div>
-
-              {/* Delivery API connect */}
-              <div className="border-t border-border px-4 py-2.5">
-                <div className="flex items-center justify-between">
-                  <button type="button" className="flex items-center gap-1.5 text-[11px] font-medium text-primary hover:underline">
-                    <Truck className="h-3 w-3" />
-                    Connect Aramex / DHL API
-                  </button>
-                  <span className="text-[9px] text-muted-foreground">Auto-sync tracking</span>
                 </div>
-              </div>
+              )}
             </div>
-          )}
-        </div>
+          </div>
 
-        {/* Confirm — connect freelancer/customer */}
-        <div className="relative">
-          <button
-            type="button"
-            onClick={() => { setShowConfirmMenu(!showConfirmMenu); setShowTemplates(false); setShowStageMenu(false); }}
-            className={cn(
-              "flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors",
-              showConfirmMenu
-                ? "bg-violet-500 text-white"
-                : "bg-violet-50 text-violet-700 hover:bg-violet-100 dark:bg-violet-950/30 dark:text-violet-400 dark:hover:bg-violet-950/50",
-            )}
-          >
-            <CheckCircle2 className="h-3 w-3" />
-            Confirm
-          </button>
-          {showConfirmMenu && (
-            <div className="absolute bottom-full start-0 mb-2 w-72 rounded-lg border border-border bg-card shadow-xl z-20">
-              <div className="border-b border-border px-3 py-2">
-                <span className="text-[11px] font-semibold text-muted-foreground">Confirm & Assign</span>
-              </div>
-              <div className="p-1">
-                {confirmActions.map((a) => (
-                  <button
-                    key={a.key}
-                    type="button"
-                    className="flex w-full items-start gap-2.5 rounded-md px-3 py-2.5 text-start transition-colors hover:bg-muted"
-                  >
-                    <a.icon className="mt-0.5 h-4 w-4 shrink-0 text-violet-500" />
-                    <div>
-                      <span className="text-xs font-semibold">{a.label}</span>
-                      <p className="text-[10px] text-muted-foreground">{a.desc}</p>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
+          {/* Input */}
+          <div className="flex items-center gap-2 border-t border-border px-4 py-3">
+            <input
+              type="text"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              onKeyDown={(e) => { if (e.key === "Enter") handleSend(); }}
+              placeholder="Type a message..."
+              className="flex-1 rounded-lg border border-border bg-card px-3 py-2 text-sm outline-none focus:border-primary"
+              dir={langDir}
+            />
+            <button type="button" onClick={handleSend}
+              disabled={!message.trim()}
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-white hover:bg-primary/90 disabled:opacity-50">
+              <Send className="h-4 w-4" />
+            </button>
+          </div>
         </div>
-      </div>
-
-      {/* Message input */}
-      <div className="flex items-center gap-2 border-t border-border px-4 py-3">
-        <input
-          type="text"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          onKeyDown={(e) => { if (e.key === "Enter" && message.trim()) { /* send */ setMessage(""); } }}
-          placeholder="Type your message..."
-          className="flex-1 rounded-lg border border-border bg-card px-3 py-2 text-sm outline-none focus:border-primary"
-          dir={langDir}
-        />
-        <button
-          type="button"
-          className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-white transition-colors hover:bg-primary/90 disabled:opacity-50"
-          disabled={!message.trim()}
-        >
-          <Send className="h-4 w-4" />
-        </button>
       </div>
     </div>
   );
@@ -842,7 +942,7 @@ export default function MyOrderDetailsPage() {
 
         {/* ── Row 4: Chat with Seller ─────────────────── */}
         <div className="mb-6">
-          <ChatSection sellerName={sellerName} langDir={langDir} status={status} orderId={orderInfo?.orderNo || String(params?.id)} />
+          <TrackingChatPanel sellerName={sellerName} langDir={langDir} status={status} orderId={orderInfo?.orderNo || String(params?.id)} />
         </div>
 
         {/* ── Other items in same order ───────────────── */}
