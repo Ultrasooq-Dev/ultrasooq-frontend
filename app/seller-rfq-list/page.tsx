@@ -208,14 +208,31 @@ function Stars({ rating, max = 5 }: { rating: number; max?: number }) {
   );
 }
 
-// ── Panel 3: Detail Preview ─────────────────────────────────────
+// ── Requirement badges from note text ───────────────────────────
+const REQ_BADGES = [
+  { key: "quality", label: "Quality Cert", match: /quality|cert|iso/i },
+  { key: "warranty", label: "Warranty", match: /warranty|guarantee/i },
+  { key: "samples", label: "Samples", match: /sample/i },
+  { key: "custom_pkg", label: "Custom Pkg", match: /custom.*pack|packaging/i },
+  { key: "branding", label: "Branding", match: /brand|logo|print/i },
+  { key: "express", label: "Express", match: /express|urgent|fast|rush/i },
+  { key: "bulk", label: "Bulk", match: /bulk|wholesale|large.*order/i },
+  { key: "corporate", label: "Corporate", match: /corporate|company|business/i },
+];
+
+function extractRequirements(products: any[]): string[] {
+  const allText = products.map((p: any) => `${p.note || ""} ${p.rfqProductDetails?.productName || ""}`).join(" ");
+  return REQ_BADGES.filter((b) => b.match.test(allText)).map((b) => b.label);
+}
+
+// ── Panel 3: RFQ Detail ─────────────────────────────────────────
 function DetailPanel({ rfq, currency, onQuote }: { rfq: any | null; currency: { symbol: string }; onQuote: () => void }) {
   if (!rfq) {
     return (
       <div className="flex h-full flex-col items-center justify-center text-center px-8 bg-muted/20">
         <Eye className="mb-3 h-10 w-10 text-muted-foreground/15" />
         <p className="text-sm font-semibold text-muted-foreground/40">Select an RFQ</p>
-        <p className="mt-1 text-xs text-muted-foreground/30">Click on a request to preview details</p>
+        <p className="mt-1 text-xs text-muted-foreground/30">Click a request to see full details</p>
       </div>
     );
   }
@@ -223,127 +240,140 @@ function DetailPanel({ rfq, currency, onQuote }: { rfq: any | null; currency: { 
   const products = rfq.rfqQuotesUser_rfqQuotes?.rfqQuotesProducts || [];
   const address = rfq.rfqQuotesUser_rfqQuotes?.rfqQuotes_rfqQuoteAddress;
   const buyer = rfq.buyerIDDetail;
+  const requirements = extractRequirements(products);
 
-  // Mock ratings (replace with real data when available)
+  // Stats (mock — replace with real when API provides)
   const rfqRating = 4.2;
   const totalRating = 4.5;
   const rfqCount = 7;
   const orderCount = 23;
-  const memberSince = "Mar 2025";
 
   return (
     <div className="flex h-full flex-col bg-card">
-      {/* ── Customer Profile Section ────────────────── */}
-      <div className="shrink-0 border-b border-border">
-        {/* Profile header */}
-        <div className="px-6 py-5">
-          <div className="flex items-start gap-4">
-            {buyer?.profilePicture ? (
-              <img src={buyer.profilePicture} className="h-14 w-14 rounded-2xl object-cover ring-2 ring-border" alt="" />
-            ) : (
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-lg font-bold text-primary ring-2 ring-primary/20">
-                {buyer?.firstName?.[0] || "?"}
-              </div>
-            )}
-            <div className="flex-1">
-              <h2 className="text-base font-bold">{maskFullName(buyer?.firstName, buyer?.lastName)}</h2>
-              {address?.address && (
-                <p className="flex items-center gap-1 mt-0.5 text-xs text-muted-foreground">
-                  <MapPin className="h-3 w-3" /> {address.address}
-                </p>
-              )}
-              <p className="text-[10px] text-muted-foreground mt-0.5">Member since {memberSince}</p>
-            </div>
-          </div>
 
-          {/* Ratings */}
-          <div className="mt-4 grid grid-cols-2 gap-3">
-            <div className="rounded-xl border border-border p-3">
-              <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">RFQ Rating</p>
-              <div className="flex items-center gap-2 mt-1">
-                <span className="text-xl font-black text-amber-600">{rfqRating}</span>
-                <div>
-                  <Stars rating={rfqRating} />
-                  <p className="text-[9px] text-muted-foreground mt-0.5">{rfqCount} RFQs completed</p>
-                </div>
-              </div>
+      {/* ── Customer Section ────────────────────────── */}
+      <div className="shrink-0 border-b border-border px-5 py-4">
+        <div className="flex items-start gap-3">
+          {buyer?.profilePicture ? (
+            <img src={buyer.profilePicture} className="h-12 w-12 rounded-2xl object-cover ring-2 ring-border" alt="" />
+          ) : (
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-base font-bold text-primary">
+              {buyer?.firstName?.[0] || "?"}
             </div>
-            <div className="rounded-xl border border-border p-3">
-              <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">Overall Rating</p>
-              <div className="flex items-center gap-2 mt-1">
-                <span className="text-xl font-black text-emerald-600">{totalRating}</span>
-                <div>
-                  <Stars rating={totalRating} />
-                  <p className="text-[9px] text-muted-foreground mt-0.5">{orderCount} orders total</p>
-                </div>
-              </div>
+          )}
+          <div className="flex-1 min-w-0">
+            <h2 className="text-[14px] font-bold">{maskFullName(buyer?.firstName, buyer?.lastName)}</h2>
+            <div className="flex items-center gap-3 mt-0.5 text-[10px] text-muted-foreground">
+              {address?.address && <span className="flex items-center gap-1"><MapPin className="h-3 w-3" />{address.address.split(",")[0]}</span>}
+              {buyer?.phoneNumber && <span>{buyer.cc}{maskName(buyer.phoneNumber)}</span>}
             </div>
-          </div>
-
-          {/* Buyer stats */}
-          <div className="mt-3 flex items-center gap-4 text-[10px] text-muted-foreground">
-            <span className="flex items-center gap-1"><Users className="h-3 w-3" /> {rfqCount} RFQs</span>
-            <span className="flex items-center gap-1"><Package className="h-3 w-3" /> {orderCount} Orders</span>
-            {address?.rfqDate && (
-              <span className="flex items-center gap-1">
-                <Clock className="h-3 w-3" /> Need by {new Date(address.rfqDate).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
-              </span>
-            )}
           </div>
         </div>
+
+        {/* Ratings row */}
+        <div className="mt-3 flex items-center gap-4">
+          <div className="flex items-center gap-1.5">
+            <Stars rating={rfqRating} />
+            <span className="text-[11px] font-bold text-amber-600">{rfqRating}</span>
+            <span className="text-[9px] text-muted-foreground">RFQ ({rfqCount})</span>
+          </div>
+          <div className="h-3 w-px bg-border" />
+          <div className="flex items-center gap-1.5">
+            <Stars rating={totalRating} />
+            <span className="text-[11px] font-bold text-emerald-600">{totalRating}</span>
+            <span className="text-[9px] text-muted-foreground">Overall ({orderCount})</span>
+          </div>
+        </div>
+
+        {/* Delivery date */}
+        {address?.rfqDate && (
+          <div className="mt-2 flex items-center gap-1.5 text-[11px]">
+            <Clock className="h-3.5 w-3.5 text-muted-foreground" />
+            <span className="text-muted-foreground">Need by</span>
+            <span className="font-semibold">{new Date(address.rfqDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
+          </div>
+        )}
       </div>
 
-      {/* ── Requested Products ──────────────────────── */}
+      {/* ── Products + Specs ────────────────────────── */}
       <div className="flex-1 overflow-y-auto">
-        <div className="px-6 py-4">
-          <h3 className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-3">
-            Requested Products ({products.length})
-          </h3>
-          <div className="space-y-3">
+
+        {/* Requirements badges */}
+        {requirements.length > 0 && (
+          <div className="px-5 pt-4">
+            <h4 className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mb-2">Requirements</h4>
+            <div className="flex flex-wrap gap-1.5">
+              {requirements.map((r) => (
+                <span key={r} className="rounded-full border border-primary/20 bg-primary/5 px-2.5 py-1 text-[10px] font-semibold text-primary">
+                  ✓ {r}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Products */}
+        <div className="px-5 py-4">
+          <h4 className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mb-3">
+            Products ({products.length})
+          </h4>
+          <div className="space-y-4">
             {products.map((p: any, i: number) => {
               const pd = p.rfqProductDetails || {};
               const pImg = pd.productImages?.[0]?.image;
               const pImgUrl = pImg && validator.isURL(pImg) ? pImg : null;
+              const hasPrice = p.offerPrice || p.offerPriceFrom || p.offerPriceTo;
+
               return (
-                <div key={i} className="rounded-xl border border-border overflow-hidden">
-                  {/* Product image banner */}
-                  <div className="h-32 bg-muted relative overflow-hidden">
+                <div key={i} className="rounded-2xl border border-border overflow-hidden">
+                  {/* Image */}
+                  <div className="h-40 bg-muted relative overflow-hidden">
                     {pImgUrl ? (
                       <Image src={pImgUrl} alt="" fill className="object-cover" />
                     ) : (
-                      <div className="flex h-full w-full items-center justify-center">
-                        <Package className="h-8 w-8 text-muted-foreground/15" />
+                      <div className="flex h-full w-full items-center justify-center bg-gradient-to-b from-muted to-muted/50">
+                        <Package className="h-10 w-10 text-muted-foreground/10" />
                       </div>
                     )}
                     {p.productType && (
-                      <span className={cn("absolute top-2 start-2 rounded-md px-2 py-0.5 text-[9px] font-bold text-white",
+                      <span className={cn("absolute top-3 start-3 rounded-lg px-2.5 py-1 text-[10px] font-bold text-white shadow-sm",
                         p.productType === "SAME" ? "bg-emerald-500" : "bg-blue-500")}>
-                        {p.productType === "SAME" ? "Exact Match" : "Similar OK"}
+                        {p.productType === "SAME" ? "Exact Match Only" : "Similar Products OK"}
                       </span>
                     )}
                   </div>
-                  <div className="p-3">
-                    <p className="text-[13px] font-semibold leading-snug">{pd.productName || `Product ${i + 1}`}</p>
-                    <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-muted-foreground">
+
+                  {/* Details */}
+                  <div className="p-4">
+                    <h3 className="text-[14px] font-bold leading-snug">{pd.productName || `Product ${i + 1}`}</h3>
+
+                    {/* Specs grid */}
+                    <div className="mt-3 grid grid-cols-2 gap-2">
                       {p.quantity && (
-                        <span className="flex items-center gap-1">
-                          <Layers className="h-3 w-3" /> Qty: <span className="font-semibold text-foreground">{p.quantity}</span>
-                        </span>
+                        <div className="rounded-xl bg-muted/40 px-3 py-2">
+                          <p className="text-[9px] text-muted-foreground uppercase">Quantity</p>
+                          <p className="text-[15px] font-black">{p.quantity}</p>
+                        </div>
                       )}
-                      {(p.offerPriceFrom || p.offerPriceTo) && (
-                        <span className="flex items-center gap-1">
-                          <DollarSign className="h-3 w-3" />
-                          Budget: <span className="font-semibold text-foreground">
-                            {currency.symbol}{p.offerPriceFrom || 0}
-                            {p.offerPriceTo ? ` — ${currency.symbol}${p.offerPriceTo}` : ""}
-                          </span>
-                        </span>
+                      {hasPrice && (
+                        <div className="rounded-xl bg-muted/40 px-3 py-2">
+                          <p className="text-[9px] text-muted-foreground uppercase">Budget</p>
+                          <p className="text-[15px] font-black">
+                            {currency.symbol}{p.offerPrice || p.offerPriceFrom || 0}
+                            {p.offerPriceTo ? <span className="text-[11px] font-normal text-muted-foreground"> — {currency.symbol}{p.offerPriceTo}</span> : ""}
+                          </p>
+                        </div>
                       )}
                     </div>
+
+                    {/* Note / Description */}
                     {p.note && (
-                      <p className="mt-2 text-[11px] text-muted-foreground leading-relaxed rounded-lg bg-muted/30 px-3 py-2 italic">
-                        &ldquo;{p.note}&rdquo;
-                      </p>
+                      <div className="mt-3">
+                        <h5 className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mb-1.5">Buyer's Requirements</h5>
+                        <div className="rounded-xl bg-amber-50 border border-amber-100 px-4 py-3 text-[12px] leading-relaxed text-amber-900 dark:bg-amber-950/20 dark:border-amber-900 dark:text-amber-200">
+                          {p.note}
+                        </div>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -352,12 +382,20 @@ function DetailPanel({ rfq, currency, onQuote }: { rfq: any | null; currency: { 
           </div>
         </div>
 
+        {/* Attachments placeholder */}
+        <div className="px-5 pb-4">
+          <h4 className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mb-2">Attachments</h4>
+          <div className="rounded-xl border border-dashed border-border py-4 text-center">
+            <p className="text-[11px] text-muted-foreground/50">No attachments provided</p>
+          </div>
+        </div>
+
         {/* Last message */}
         {rfq.lastUnreadMessage?.content && (
-          <div className="px-6 pb-4">
-            <h3 className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2">Latest Message</h3>
+          <div className="px-5 pb-4">
+            <h4 className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mb-2">Latest Message</h4>
             <div className="rounded-xl bg-primary/5 border border-primary/10 p-3">
-              <p className="text-xs leading-relaxed">{rfq.lastUnreadMessage.content}</p>
+              <p className="text-[12px] leading-relaxed">{rfq.lastUnreadMessage.content}</p>
               <p className="mt-1 text-[9px] text-muted-foreground">
                 {new Date(rfq.lastUnreadMessage.createdAt).toLocaleDateString()}
               </p>
