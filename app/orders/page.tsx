@@ -15,7 +15,7 @@ import {
   TrendingUp,
   Store,
 } from "lucide-react";
-import OrderCard from "@/components/modules/myOrders/OrderCard";
+import BuyerOrderCard from "@/components/modules/myOrders/BuyerOrderCard";
 import SellerOrderCard from "@/components/modules/myOrders/SellerOrderCard";
 import { debounce } from "lodash";
 import { Label } from "@/components/ui/label";
@@ -501,97 +501,33 @@ const MyOrdersPage = () => {
                       }}
                     />
                   ) : (
-                  <Link key={item.id} href={`/my-orders/${item.id}`}>
-                    <Card className="mb-2 cursor-pointer transition-shadow duration-200 hover:shadow-lg">
-                      <CardContent className="p-6">
-                        <div className="flex items-start gap-4">
-                          {/* Product Image */}
-                          <div className="flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-lg bg-muted">
-                            {item.orderProduct_productPrice
-                              ?.productPrice_product?.productImages?.[0]
-                              ?.image ? (
-                              <img
-                                src={
-                                  item.orderProduct_productPrice
-                                    .productPrice_product.productImages[0].image
-                                }
-                                alt={
-                                  item.orderProduct_productPrice
-                                    ?.productPrice_product?.productName
-                                }
-                                className="h-full w-full rounded-lg object-cover"
-                              />
-                            ) : item.orderProduct_product?.productImages?.[0]
-                                ?.image ? (
-                              <img
-                                src={
-                                  item.orderProduct_product.productImages[0]
-                                    .image
-                                }
-                                alt={item.orderProduct_product?.productName}
-                                className="h-full w-full rounded-lg object-cover"
-                              />
-                            ) : (
-                              <Package className="h-8 w-8 text-muted-foreground" />
-                            )}
-                          </div>
-
-                          {/* Order Details */}
-                          <div className="min-w-0 flex-1">
-                            <div className="flex items-start justify-between">
-                              <div className="flex-1">
-                                <h3 className="mb-2 line-clamp-2 text-lg font-semibold text-foreground">
-                                  {item.orderProduct_productPrice
-                                    ?.productPrice_product?.productName ||
-                                    item.orderProduct_product?.productName ||
-                                    "Unknown Product"}
-                                </h3>
-                                <div className="mb-3 flex items-center gap-4 text-sm text-muted-foreground">
-                                  <span>
-                                    Order #{item.orderProduct_order?.orderNo || "N/A"}
-                                  </span>
-                                  <span>Qty: {item.orderQuantity || 0}</span>
-                                  <span className="font-semibold">
-                                    {currency?.symbol || "$"}
-                                    {item.orderProduct_order?.totalCustomerPay ||
-                                     item.purchasePrice ||
-                                     0}
-                                  </span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                  <Badge
-                                    className={`${getStatusColor(item.orderProductStatus)} flex items-center gap-1`}
-                                  >
-                                    {getStatusIcon(item.orderProductStatus)}
-                                    {item.orderProductStatus || "PENDING"}
-                                  </Badge>
-                                  <span className="text-sm text-muted-foreground">
-                                    {item.orderProductDate
-                                      ? new Date(
-                                          item.orderProductDate,
-                                        ).toLocaleDateString()
-                                      : item.orderProduct_order?.orderDate
-                                        ? new Date(
-                                            item.orderProduct_order.orderDate,
-                                          ).toLocaleDateString()
-                                        : item.orderProduct_order?.createdAt
-                                          ? new Date(
-                                              item.orderProduct_order.createdAt,
-                                            ).toLocaleDateString()
-                                          : item.createdAt
-                                            ? new Date(
-                                                item.createdAt,
-                                              ).toLocaleDateString()
-                                            : "N/A"}
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </Link>
+                    <BuyerOrderCard
+                      key={item.id}
+                      id={item.id}
+                      orderProductType={item.orderProductType}
+                      productId={item.productId || item.orderProduct_product?.id}
+                      purchasePrice={String(item.purchasePrice || item.salePrice || 0)}
+                      productName={
+                        item.orderProduct_productPrice?.productPrice_product?.productName ||
+                        item.orderProduct_product?.productName || "Product"
+                      }
+                      produtctImage={
+                        item.orderProduct_productPrice?.productPrice_product?.productImages ||
+                        item.orderProduct_product?.productImages
+                      }
+                      orderQuantity={item.orderQuantity}
+                      orderId={String(item.id)}
+                      orderNo={item.orderProduct_order?.orderNo || item.orderNo}
+                      orderStatus={item.orderProductStatus}
+                      orderProductDate={item.orderProductDate || item.createdAt}
+                      updatedAt={item.updatedAt}
+                      serviceFeature={item.serviceFeatures?.[0]?.serviceFeature}
+                      sellerName={
+                        item.orderProduct_productPrice?.adminDetail
+                          ? `${item.orderProduct_productPrice.adminDetail.firstName || ""} ${item.orderProduct_productPrice.adminDetail.lastName || ""}`.trim()
+                          : undefined
+                      }
+                    />
                   )
                 ))
               )}
