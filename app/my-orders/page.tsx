@@ -1,6 +1,6 @@
 "use client";
 import React, { useRef, useState } from "react";
-import { useOrders } from "@/apis/queries/orders.queries";
+import { useOrders, useOrdersBySellerId } from "@/apis/queries/orders.queries";
 import {
   Search,
   Filter,
@@ -13,6 +13,7 @@ import {
   Calendar,
   ShoppingBag,
   TrendingUp,
+  Store,
 } from "lucide-react";
 import OrderCard from "@/components/modules/myOrders/OrderCard";
 import { debounce } from "lodash";
@@ -32,6 +33,7 @@ import Pagination from "@/components/shared/Pagination";
 const MyOrdersPage = () => {
   const t = useTranslations();
   const { langDir, currency } = useAuth();
+  const [activeTab, setActiveTab] = useState<"buying" | "selling">("buying");
   const [page, setPage] = useState<number>(1);
   const [limit] = useState<number>(40);
   const searchRef = useRef<HTMLInputElement>(null);
@@ -79,7 +81,8 @@ const MyOrdersPage = () => {
     };
   };
 
-  const ordersQuery = useOrders({
+  // Buying orders (customer)
+  const buyingQuery = useOrders({
     page: page,
     limit: limit,
     term: searchTerm !== "" ? searchTerm : undefined,
@@ -87,6 +90,19 @@ const MyOrdersPage = () => {
     startDate: getYearDates(orderTime).startDate,
     endDate: getYearDates(orderTime).endDate,
   });
+
+  // Selling orders (vendor)
+  const sellingQuery = useOrdersBySellerId({
+    page: page,
+    limit: limit,
+    term: searchTerm !== "" ? searchTerm : undefined,
+    orderProductStatus: orderStatus,
+    startDate: getYearDates(orderTime).startDate,
+    endDate: getYearDates(orderTime).endDate,
+  });
+
+  // Use the active tab's query
+  const ordersQuery = activeTab === "buying" ? buyingQuery : sellingQuery;
 
   const handleDebounce = debounce((event: any) => {
     setSearchTerm(event.target.value);
@@ -184,6 +200,48 @@ const MyOrdersPage = () => {
                 {(ordersQuery?.data as any)?.totalCount || 0} Orders
               </Badge>
             </div>
+          </div>
+
+          {/* Buying / Selling Tabs */}
+          <div className="mt-6 flex gap-1 rounded-xl bg-muted p-1">
+            <button
+              type="button"
+              onClick={() => { setActiveTab("buying"); setPage(1); setOrderStatus(""); setOrderTime(""); }}
+              className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-semibold transition-all ${
+                activeTab === "buying"
+                  ? "bg-card text-primary shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <ShoppingBag className="h-4 w-4" />
+              My Purchases
+              {(buyingQuery?.data as any)?.totalCount > 0 && (
+                <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${
+                  activeTab === "buying" ? "bg-primary/10 text-primary" : "bg-muted-foreground/10"
+                }`}>
+                  {(buyingQuery?.data as any)?.totalCount || 0}
+                </span>
+              )}
+            </button>
+            <button
+              type="button"
+              onClick={() => { setActiveTab("selling"); setPage(1); setOrderStatus(""); setOrderTime(""); }}
+              className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-semibold transition-all ${
+                activeTab === "selling"
+                  ? "bg-card text-emerald-600 shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <Store className="h-4 w-4" />
+              My Sales
+              {(sellingQuery?.data as any)?.totalCount > 0 && (
+                <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${
+                  activeTab === "selling" ? "bg-emerald-500/10 text-emerald-600" : "bg-muted-foreground/10"
+                }`}>
+                  {(sellingQuery?.data as any)?.totalCount || 0}
+                </span>
+              )}
+            </button>
           </div>
         </div>
 
