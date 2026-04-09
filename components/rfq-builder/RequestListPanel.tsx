@@ -469,11 +469,24 @@ export default function RequestListPanel({ selectedItemId, onSelectItem, onItemR
         </div>
       </div>
 
-      {/* Items count */}
-      <div className="px-3 py-1.5 bg-muted/30 border-b border-border shrink-0">
+      {/* Items count + Clear All */}
+      <div className="px-3 py-1.5 bg-muted/30 border-b border-border shrink-0 flex items-center justify-between">
         <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
           {items.length} {isAr ? "عنصر" : "items"}
         </span>
+        <button
+          type="button"
+          disabled={items.length === 0}
+          onClick={() => {
+            setItems([]);
+            onItemRemoved?.("");
+            track("rfq_items_cleared", { count: items.length });
+          }}
+          className="flex items-center gap-1 text-[9px] font-medium text-destructive/70 hover:text-destructive disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+        >
+          <Trash2 className="h-3 w-3" />
+          {isAr ? "مسح الكل" : "Clear All"}
+        </button>
       </div>
 
       {/* Items list */}
