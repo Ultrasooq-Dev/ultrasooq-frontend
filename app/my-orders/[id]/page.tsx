@@ -419,73 +419,74 @@ function TrackingChatPanel({
           </div>
 
           {/* Stage quick-add at bottom of timeline — vendor only */}
-          {isVendor && <div className="border-t border-border px-3 py-2">
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => { setShowStageMenu(!showStageMenu); setShowTemplates(false); setShowConfirmMenu(false); }}
-                className={cn(
-                  "flex w-full items-center justify-center gap-1.5 rounded-lg py-2 text-[11px] font-semibold transition-colors",
-                  showStageMenu
-                    ? "bg-emerald-500 text-white"
-                    : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-950/30 dark:text-emerald-400",
-                )}
-              >
-                <Package className="h-3 w-3" />
-                + Add Stage Update
-              </button>
+          {isVendor && (
+            <div className="border-t border-border px-3 py-2">
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => { setShowStageMenu(!showStageMenu); setShowTemplates(false); setShowConfirmMenu(false); }}
+                  className={cn(
+                    "flex w-full items-center justify-center gap-1.5 rounded-lg py-2 text-[11px] font-semibold transition-colors",
+                    showStageMenu
+                      ? "bg-emerald-500 text-white"
+                      : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-950/30 dark:text-emerald-400",
+                  )}
+                >
+                  <Package className="h-3 w-3" />
+                  + Add Stage Update
+                </button>
 
-              {/* Stage dropdown */}
-              {showStageMenu && (
-                <div className="absolute bottom-full start-0 mb-2 w-72 rounded-xl border border-border bg-card shadow-2xl z-20">
-                  <div className="border-b border-border px-3 py-2">
-                    <span className="text-[11px] font-bold">Select Delivery Stage</span>
-                  </div>
-                  {/* Location input */}
-                  <div className="border-b border-border px-3 py-2">
-                    <div className="flex items-center gap-1.5">
-                      <MapPin className="h-3 w-3 text-muted-foreground" />
-                      <input
-                        type="text"
-                        value={stageLocation}
-                        onChange={(e) => setStageLocation(e.target.value)}
-                        placeholder="Location (Dubai Hub, Muscat...)"
-                        className="flex-1 rounded border border-border bg-muted/30 px-2 py-1 text-[11px] outline-none focus:border-primary"
-                      />
+                {/* Stage dropdown */}
+                {showStageMenu && (
+                  <div className="absolute bottom-full start-0 mb-2 w-72 rounded-xl border border-border bg-card shadow-2xl z-20">
+                    <div className="border-b border-border px-3 py-2">
+                      <span className="text-[11px] font-bold">Select Delivery Stage</span>
+                    </div>
+                    <div className="border-b border-border px-3 py-2">
+                      <div className="flex items-center gap-1.5">
+                        <MapPin className="h-3 w-3 text-muted-foreground" />
+                        <input
+                          type="text"
+                          value={stageLocation}
+                          onChange={(e) => setStageLocation(e.target.value)}
+                          placeholder="Location (Dubai Hub, Muscat...)"
+                          className="flex-1 rounded border border-border bg-muted/30 px-2 py-1 text-[11px] outline-none focus:border-primary"
+                        />
+                      </div>
+                    </div>
+                    <div className="max-h-52 overflow-y-auto p-1">
+                      {DELIVERY_STAGES.map((group) => (
+                        <div key={group.group}>
+                          <div className="px-2 py-1">
+                            <span className="text-[8px] font-bold uppercase tracking-widest text-muted-foreground/50">
+                              {group.group}
+                            </span>
+                          </div>
+                          {group.stages.map((s) => (
+                            <button
+                              key={s.key}
+                              type="button"
+                              onClick={() => handleStageSelect(s)}
+                              className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-start transition-colors hover:bg-muted"
+                            >
+                              <span className="text-xs">{s.emoji}</span>
+                              <span className="text-[11px] font-medium">{s.label}</span>
+                            </button>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                    <div className="border-t border-border px-3 py-2">
+                      <button type="button" className="flex items-center gap-1 text-[10px] font-medium text-primary hover:underline">
+                        <Truck className="h-3 w-3" /> Connect Aramex / DHL API
+                      </button>
                     </div>
                   </div>
-                  <div className="max-h-52 overflow-y-auto p-1">
-                    {DELIVERY_STAGES.map((group) => (
-                      <div key={group.group}>
-                        <div className="px-2 py-1">
-                          <span className="text-[8px] font-bold uppercase tracking-widest text-muted-foreground/50">
-                            {group.group}
-                          </span>
-                        </div>
-                        {group.stages.map((s) => (
-                          <button
-                            key={s.key}
-                            type="button"
-                            onClick={() => handleStageSelect(s)}
-                            className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-start transition-colors hover:bg-muted"
-                          >
-                            <span className="text-xs">{s.emoji}</span>
-                            <span className="text-[11px] font-medium">{s.label}</span>
-                          </button>
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                  <div className="border-t border-border px-3 py-2">
-                    <button type="button" className="flex items-center gap-1 text-[10px] font-medium text-primary hover:underline">
-                      <Truck className="h-3 w-3" /> Connect Aramex / DHL API
-                    </button>
-                  </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
-          </div>
-        </div>}
+          )}
+        </div>
 
         {/* ═══ Panel 2: Messages / Chat ═══ */}
         <div className="flex-1 flex flex-col min-w-0">
@@ -552,69 +553,71 @@ function TrackingChatPanel({
           </div>
 
           {/* Action buttons — vendor only */}
-          {isVendor && <div className="relative flex items-center gap-1.5 border-t border-border bg-muted/20 px-3 py-2">
-            {/* Auto Text */}
-            <div className="relative">
-              <button type="button"
-                onClick={() => { setShowTemplates(!showTemplates); setShowStageMenu(false); setShowConfirmMenu(false); }}
-                className={cn("flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-[10px] font-semibold transition-colors",
-                  showTemplates ? "bg-amber-500 text-white" : "bg-amber-50 text-amber-700 hover:bg-amber-100 dark:bg-amber-950/30 dark:text-amber-400")}>
-                <Zap className="h-3 w-3" /> Templates
-              </button>
-              {showTemplates && (
-                <div className="absolute bottom-full start-0 mb-2 w-64 rounded-lg border border-border bg-card shadow-xl z-20">
-                  <div className="border-b border-border px-3 py-2">
-                    <span className="text-[10px] font-semibold text-muted-foreground">Quick Templates</span>
+          {isVendor && (
+            <div className="relative flex items-center gap-1.5 border-t border-border bg-muted/20 px-3 py-2">
+              {/* Auto Text */}
+              <div className="relative">
+                <button type="button"
+                  onClick={() => { setShowTemplates(!showTemplates); setShowStageMenu(false); setShowConfirmMenu(false); }}
+                  className={cn("flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-[10px] font-semibold transition-colors",
+                    showTemplates ? "bg-amber-500 text-white" : "bg-amber-50 text-amber-700 hover:bg-amber-100 dark:bg-amber-950/30 dark:text-amber-400")}>
+                  <Zap className="h-3 w-3" /> Templates
+                </button>
+                {showTemplates && (
+                  <div className="absolute bottom-full start-0 mb-2 w-64 rounded-lg border border-border bg-card shadow-xl z-20">
+                    <div className="border-b border-border px-3 py-2">
+                      <span className="text-[10px] font-semibold text-muted-foreground">Quick Templates</span>
+                    </div>
+                    <div className="max-h-40 overflow-y-auto p-1">
+                      {templates.map((tpl, i) => (
+                        <button key={i} type="button"
+                          onClick={() => { setMessage(tpl); setShowTemplates(false); }}
+                          className="w-full rounded-md px-3 py-1.5 text-start text-[11px] hover:bg-muted transition-colors">
+                          {tpl}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                  <div className="max-h-40 overflow-y-auto p-1">
-                    {templates.map((tpl, i) => (
-                      <button key={i} type="button"
-                        onClick={() => { setMessage(tpl); setShowTemplates(false); }}
-                        className="w-full rounded-md px-3 py-1.5 text-start text-[11px] hover:bg-muted transition-colors">
-                        {tpl}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
 
-            {/* Attachment */}
-            <button type="button"
-              className="flex items-center gap-1 rounded-lg bg-blue-50 px-2.5 py-1.5 text-[10px] font-semibold text-blue-700 hover:bg-blue-100 dark:bg-blue-950/30 dark:text-blue-400">
-              <FileText className="h-3 w-3" /> Attach
-            </button>
-
-            {/* Confirm */}
-            <div className="relative">
+              {/* Attachment */}
               <button type="button"
-                onClick={() => { setShowConfirmMenu(!showConfirmMenu); setShowTemplates(false); setShowStageMenu(false); }}
-                className={cn("flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-[10px] font-semibold transition-colors",
-                  showConfirmMenu ? "bg-violet-500 text-white" : "bg-violet-50 text-violet-700 hover:bg-violet-100 dark:bg-violet-950/30 dark:text-violet-400")}>
-                <CheckCircle2 className="h-3 w-3" /> Confirm
+                className="flex items-center gap-1 rounded-lg bg-blue-50 px-2.5 py-1.5 text-[10px] font-semibold text-blue-700 hover:bg-blue-100 dark:bg-blue-950/30 dark:text-blue-400">
+                <FileText className="h-3 w-3" /> Attach
               </button>
-              {showConfirmMenu && (
-                <div className="absolute bottom-full start-0 mb-2 w-60 rounded-lg border border-border bg-card shadow-xl z-20">
-                  <div className="p-1">
-                    {confirmActions.map((a) => (
-                      <button key={a.key} type="button"
-                        onClick={() => {
-                          addMessage({ type: "confirm", text: a.desc, sender: "vendor" });
-                          setShowConfirmMenu(false);
-                        }}
-                        className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-start transition-colors hover:bg-muted">
-                        <a.icon className="h-3.5 w-3.5 text-violet-500" />
-                        <div>
-                          <span className="text-[11px] font-semibold">{a.label}</span>
-                          <p className="text-[9px] text-muted-foreground">{a.desc}</p>
-                        </div>
-                      </button>
-                    ))}
+
+              {/* Confirm */}
+              <div className="relative">
+                <button type="button"
+                  onClick={() => { setShowConfirmMenu(!showConfirmMenu); setShowTemplates(false); setShowStageMenu(false); }}
+                  className={cn("flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-[10px] font-semibold transition-colors",
+                    showConfirmMenu ? "bg-violet-500 text-white" : "bg-violet-50 text-violet-700 hover:bg-violet-100 dark:bg-violet-950/30 dark:text-violet-400")}>
+                  <CheckCircle2 className="h-3 w-3" /> Confirm
+                </button>
+                {showConfirmMenu && (
+                  <div className="absolute bottom-full start-0 mb-2 w-60 rounded-lg border border-border bg-card shadow-xl z-20">
+                    <div className="p-1">
+                      {confirmActions.map((a) => (
+                        <button key={a.key} type="button"
+                          onClick={() => {
+                            addMessage({ type: "confirm", text: a.desc, sender: "vendor" });
+                            setShowConfirmMenu(false);
+                          }}
+                          className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-start transition-colors hover:bg-muted">
+                          <a.icon className="h-3.5 w-3.5 text-violet-500" />
+                          <div>
+                            <span className="text-[11px] font-semibold">{a.label}</span>
+                            <p className="text-[9px] text-muted-foreground">{a.desc}</p>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
-          </div>}
+          )}
 
           {/* Input */}
           <div className="flex items-center gap-2 border-t border-border px-4 py-3">
