@@ -16,6 +16,7 @@ import {
   Store,
 } from "lucide-react";
 import OrderCard from "@/components/modules/myOrders/OrderCard";
+import SellerOrderCard from "@/components/modules/myOrders/SellerOrderCard";
 import { debounce } from "lodash";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -473,13 +474,39 @@ const MyOrdersPage = () => {
                 </Card>
               ) : (
                 (ordersQuery?.data?.data as any)?.map((item: any) => (
+                  activeTab === "selling" ? (
+                    <SellerOrderCard
+                      key={item.id}
+                      id={item.id}
+                      orderProductType={item.orderProductType}
+                      productId={item.productId || item.orderProduct_product?.id}
+                      purchasePrice={String(item.purchasePrice || item.salePrice || 0)}
+                      productName={
+                        item.orderProduct_productPrice?.productPrice_product?.productName ||
+                        item.orderProduct_product?.productName || "Product"
+                      }
+                      produtctImage={
+                        item.orderProduct_productPrice?.productPrice_product?.productImages ||
+                        item.orderProduct_product?.productImages
+                      }
+                      orderQuantity={item.orderQuantity}
+                      orderId={item.orderProduct_order?.orderNo || item.orderNo || String(item.id)}
+                      orderStatus={item.orderProductStatus}
+                      orderProductDate={item.orderProductDate || item.createdAt}
+                      updatedAt={item.updatedAt}
+                      serviceFeature={item.serviceFeatures?.[0]?.serviceFeature}
+                      onStatusChange={(opId, newStatus) => {
+                        // TODO: call backend API to update status
+                        // updateOrderStatus.mutate({ orderProductId: opId, status: newStatus })
+                      }}
+                    />
+                  ) : (
                   <Link key={item.id} href={`/my-orders/${item.id}`}>
                     <Card className="mb-2 cursor-pointer transition-shadow duration-200 hover:shadow-lg">
                       <CardContent className="p-6">
                         <div className="flex items-start gap-4">
                           {/* Product Image */}
                           <div className="flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-lg bg-muted">
-                            {/* Check for product image from productPrice (regular orders) or product (RFQ orders) */}
                             {item.orderProduct_productPrice
                               ?.productPrice_product?.productImages?.[0]
                               ?.image ? (
@@ -526,8 +553,8 @@ const MyOrdersPage = () => {
                                   <span>Qty: {item.orderQuantity || 0}</span>
                                   <span className="font-semibold">
                                     {currency?.symbol || "$"}
-                                    {item.orderProduct_order?.totalCustomerPay || 
-                                     item.purchasePrice || 
+                                    {item.orderProduct_order?.totalCustomerPay ||
+                                     item.purchasePrice ||
                                      0}
                                   </span>
                                 </div>
@@ -565,6 +592,7 @@ const MyOrdersPage = () => {
                       </CardContent>
                     </Card>
                   </Link>
+                  )
                 ))
               )}
             </div>
