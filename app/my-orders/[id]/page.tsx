@@ -24,6 +24,9 @@ import {
   ChevronDown,
   Star,
   ExternalLink,
+  AlertTriangle,
+  ReceiptText,
+  X,
 } from "lucide-react";
 import { useOrderById, useConfirmReceipt, usePickupCode } from "@/apis/queries/orders.queries";
 import { useParams, useRouter } from "next/navigation";
@@ -676,6 +679,12 @@ export default function MyOrderDetailsPage() {
     {};
   const ppd = order?.orderProduct_productPrice || {};
   const [liveStatus, setLiveStatus] = useState("");
+  const [showComplainModal, setShowComplainModal] = useState(false);
+  const [showRefundModal, setShowRefundModal] = useState(false);
+  const [complainText, setComplainText] = useState("");
+  const [complainType, setComplainType] = useState("");
+  const [refundReason, setRefundReason] = useState("");
+  const [refundNotes, setRefundNotes] = useState("");
   const status = liveStatus || order?.orderProductStatus || "CONFIRMED";
   const isService = order?.orderProductType === "SERVICE";
   const sellerName = ppd.adminDetail
@@ -790,13 +799,6 @@ export default function MyOrderDetailsPage() {
                 <Download className="h-4 w-4" />
                 {t("download_invoice")}
               </button>
-              <button
-                type="button"
-                className="flex w-full items-center gap-2 rounded-lg border border-border px-4 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted"
-              >
-                <HelpCircle className="h-4 w-4" />
-                {t("need_help")}
-              </button>
               {status === "DELIVERED" && (
                 <button
                   type="button"
@@ -806,6 +808,31 @@ export default function MyOrderDetailsPage() {
                   Write a Review
                 </button>
               )}
+              <button
+                type="button"
+                onClick={() => setShowComplainModal(true)}
+                className="flex w-full items-center gap-2 rounded-lg border border-amber-300 bg-amber-50 px-4 py-2.5 text-sm font-medium text-amber-700 transition-colors hover:bg-amber-100 dark:border-amber-800 dark:bg-amber-950/20 dark:text-amber-400"
+              >
+                <AlertTriangle className="h-4 w-4" />
+                File a Complaint
+              </button>
+              {["DELIVERED", "CONFIRMED", "SHIPPED", "OFD"].includes(status) && (
+                <button
+                  type="button"
+                  onClick={() => setShowRefundModal(true)}
+                  className="flex w-full items-center gap-2 rounded-lg border border-red-300 bg-red-50 px-4 py-2.5 text-sm font-medium text-red-700 transition-colors hover:bg-red-100 dark:border-red-800 dark:bg-red-950/20 dark:text-red-400"
+                >
+                  <ReceiptText className="h-4 w-4" />
+                  Request Refund
+                </button>
+              )}
+              <button
+                type="button"
+                className="flex w-full items-center gap-2 rounded-lg border border-border px-4 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted"
+              >
+                <HelpCircle className="h-4 w-4" />
+                {t("need_help")}
+              </button>
             </div>
           </div>
         </div>
@@ -1060,6 +1087,158 @@ export default function MyOrderDetailsPage() {
           </button>
         </div>
       </div>
+
+      {/* ═══ Complaint Modal ═══ */}
+      {showComplainModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+          <div className="w-full max-w-lg rounded-2xl border border-border bg-card shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 flex items-center justify-between border-b border-border bg-card px-6 py-4 z-10">
+              <div className="flex items-center gap-2">
+                <AlertTriangle className="h-5 w-5 text-amber-500" />
+                <h2 className="text-lg font-bold">File a Complaint</h2>
+              </div>
+              <button type="button" onClick={() => setShowComplainModal(false)}
+                className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted">
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+            <div className="p-6 space-y-4">
+              <div>
+                <label className="mb-1.5 block text-xs font-semibold text-muted-foreground">Order</label>
+                <p className="text-sm font-medium">#{orderInfo?.orderNo} — {product.productName || "Product"}</p>
+              </div>
+              <div>
+                <label className="mb-1.5 block text-xs font-semibold text-muted-foreground">Complaint Type</label>
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    { key: "damaged", label: "Damaged Item", emoji: "💔" },
+                    { key: "wrong_item", label: "Wrong Item", emoji: "❌" },
+                    { key: "missing_parts", label: "Missing Parts", emoji: "🧩" },
+                    { key: "not_as_described", label: "Not as Described", emoji: "📝" },
+                    { key: "late_delivery", label: "Late Delivery", emoji: "⏰" },
+                    { key: "poor_quality", label: "Poor Quality", emoji: "👎" },
+                    { key: "seller_issue", label: "Seller Issue", emoji: "🏪" },
+                    { key: "other", label: "Other", emoji: "💬" },
+                  ].map((t) => (
+                    <button key={t.key} type="button" onClick={() => setComplainType(t.key)}
+                      className={cn(
+                        "flex items-center gap-2 rounded-lg border px-3 py-2.5 text-xs font-medium transition-all",
+                        complainType === t.key
+                          ? "border-amber-400 bg-amber-50 text-amber-800 dark:bg-amber-950/30 dark:text-amber-300"
+                          : "border-border hover:bg-muted",
+                      )}>
+                      <span>{t.emoji}</span> {t.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label className="mb-1.5 block text-xs font-semibold text-muted-foreground">Describe your issue</label>
+                <textarea value={complainText} onChange={(e) => setComplainText(e.target.value)}
+                  placeholder="Tell us what went wrong..." rows={4}
+                  className="w-full rounded-lg border border-border bg-card px-3 py-2.5 text-sm outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 resize-none" />
+              </div>
+              <div>
+                <label className="mb-1.5 block text-xs font-semibold text-muted-foreground">Attach Evidence (optional)</label>
+                <div className="flex items-center justify-center rounded-lg border-2 border-dashed border-border py-6 text-center hover:border-amber-400 transition-colors cursor-pointer">
+                  <div>
+                    <Download className="mx-auto mb-1 h-5 w-5 text-muted-foreground/30" />
+                    <p className="text-xs text-muted-foreground">Drop images or click to upload</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="sticky bottom-0 flex items-center justify-end gap-3 border-t border-border bg-card px-6 py-4">
+              <button type="button" onClick={() => setShowComplainModal(false)}
+                className="rounded-lg border border-border px-4 py-2.5 text-sm font-medium hover:bg-muted">Cancel</button>
+              <button type="button" disabled={!complainType || !complainText.trim()}
+                onClick={() => { setShowComplainModal(false); setComplainType(""); setComplainText(""); }}
+                className="rounded-lg bg-amber-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-amber-600 disabled:cursor-not-allowed disabled:opacity-50">
+                Submit Complaint
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ═══ Refund Modal ═══ */}
+      {showRefundModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+          <div className="w-full max-w-lg rounded-2xl border border-border bg-card shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 flex items-center justify-between border-b border-border bg-card px-6 py-4 z-10">
+              <div className="flex items-center gap-2">
+                <ReceiptText className="h-5 w-5 text-red-500" />
+                <h2 className="text-lg font-bold">Request Refund</h2>
+              </div>
+              <button type="button" onClick={() => setShowRefundModal(false)}
+                className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted">
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+            <div className="p-6 space-y-4">
+              <div className="rounded-lg bg-muted/50 p-4">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">Order</span>
+                  <span className="font-semibold">#{orderInfo?.orderNo}</span>
+                </div>
+                <div className="mt-1 flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">Amount Paid</span>
+                  <span className="text-lg font-bold text-primary">{currency.symbol}{totalPrice.toFixed(2)}</span>
+                </div>
+              </div>
+              <div>
+                <label className="mb-1.5 block text-xs font-semibold text-muted-foreground">Reason for Refund</label>
+                <div className="space-y-2">
+                  {[
+                    { key: "defective", label: "Product is defective or damaged" },
+                    { key: "not_as_described", label: "Product not as described" },
+                    { key: "wrong_item", label: "Received wrong item" },
+                    { key: "no_longer_needed", label: "No longer needed" },
+                    { key: "found_better_price", label: "Found a better price" },
+                    { key: "late_delivery", label: "Delivery was too late" },
+                    { key: "other", label: "Other reason" },
+                  ].map((r) => (
+                    <button key={r.key} type="button" onClick={() => setRefundReason(r.key)}
+                      className={cn(
+                        "flex w-full items-center gap-3 rounded-lg border px-4 py-3 text-start text-sm transition-all",
+                        refundReason === r.key
+                          ? "border-red-400 bg-red-50 text-red-800 dark:bg-red-950/30 dark:text-red-300"
+                          : "border-border hover:bg-muted",
+                      )}>
+                      <div className={cn("flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2",
+                        refundReason === r.key ? "border-red-500 bg-red-500" : "border-muted-foreground/30")}>
+                        {refundReason === r.key && <CheckCircle2 className="h-2.5 w-2.5 text-white" />}
+                      </div>
+                      {r.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label className="mb-1.5 block text-xs font-semibold text-muted-foreground">Additional Details (optional)</label>
+                <textarea value={refundNotes} onChange={(e) => setRefundNotes(e.target.value)}
+                  placeholder="Any additional information..." rows={3}
+                  className="w-full rounded-lg border border-border bg-card px-3 py-2.5 text-sm outline-none focus:border-red-400 focus:ring-1 focus:ring-red-400 resize-none" />
+              </div>
+              <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 dark:border-amber-800 dark:bg-amber-950/20">
+                <p className="flex items-start gap-2 text-xs text-amber-700 dark:text-amber-400">
+                  <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                  Refund requests are reviewed within 24-48 hours. The refund will be processed to your original payment method.
+                </p>
+              </div>
+            </div>
+            <div className="sticky bottom-0 flex items-center justify-end gap-3 border-t border-border bg-card px-6 py-4">
+              <button type="button" onClick={() => setShowRefundModal(false)}
+                className="rounded-lg border border-border px-4 py-2.5 text-sm font-medium hover:bg-muted">Cancel</button>
+              <button type="button" disabled={!refundReason}
+                onClick={() => { setShowRefundModal(false); setRefundReason(""); setRefundNotes(""); }}
+                className="rounded-lg bg-red-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-50">
+                Submit Refund Request
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
