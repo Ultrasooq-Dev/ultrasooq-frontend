@@ -271,6 +271,8 @@ function TrackingChatPanel({
   orderId: string;
   onStatusChange?: (newStatus: string) => void;
 }) {
+  const [viewMode, setViewMode] = useState<"vendor" | "customer">("vendor");
+  const isVendor = viewMode === "vendor";
   const [message, setMessage] = useState("");
   const [stageLocation, setStageLocation] = useState("");
   const [showStageMenu, setShowStageMenu] = useState(false);
@@ -337,15 +339,24 @@ function TrackingChatPanel({
 
   return (
     <div className="rounded-xl border border-border bg-card overflow-hidden">
-      {/* Header */}
-      <div className="flex items-center justify-between border-b border-border bg-muted/40 px-5 py-3">
+      {/* Header with view toggle */}
+      <div className="flex items-center justify-between border-b border-border bg-muted/40 px-5 py-2.5">
         <div className="flex items-center gap-2">
           <Truck className="h-4 w-4 text-primary" />
           <span className="text-sm font-semibold">Order Tracking & Messages</span>
         </div>
-        <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
-          #{orderId}
-        </span>
+        <div className="flex items-center gap-1 rounded-lg bg-muted p-0.5">
+          <button type="button" onClick={() => setViewMode("customer")}
+            className={cn("rounded-md px-3 py-1 text-[10px] font-semibold transition-all",
+              !isVendor ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground")}>
+            Customer View
+          </button>
+          <button type="button" onClick={() => setViewMode("vendor")}
+            className={cn("rounded-md px-3 py-1 text-[10px] font-semibold transition-all",
+              isVendor ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground")}>
+            Vendor View
+          </button>
+        </div>
       </div>
 
       {/* 2-panel layout */}
@@ -407,8 +418,8 @@ function TrackingChatPanel({
             )}
           </div>
 
-          {/* Stage quick-add at bottom of timeline */}
-          <div className="border-t border-border px-3 py-2">
+          {/* Stage quick-add at bottom of timeline — vendor only */}
+          {isVendor && <div className="border-t border-border px-3 py-2">
             <div className="relative">
               <button
                 type="button"
@@ -474,13 +485,13 @@ function TrackingChatPanel({
               )}
             </div>
           </div>
-        </div>
+        </div>}
 
         {/* ═══ Panel 2: Messages / Chat ═══ */}
         <div className="flex-1 flex flex-col min-w-0">
           <div className="px-4 py-2.5 border-b border-border bg-muted/20">
             <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-              Messages with {sellerName}
+              {isVendor ? `Messages with Customer` : `Messages with ${sellerName}`}
             </span>
           </div>
 
@@ -540,8 +551,8 @@ function TrackingChatPanel({
             )}
           </div>
 
-          {/* Action buttons */}
-          <div className="relative flex items-center gap-1.5 border-t border-border bg-muted/20 px-3 py-2">
+          {/* Action buttons — vendor only */}
+          {isVendor && <div className="relative flex items-center gap-1.5 border-t border-border bg-muted/20 px-3 py-2">
             {/* Auto Text */}
             <div className="relative">
               <button type="button"
@@ -603,7 +614,7 @@ function TrackingChatPanel({
                 </div>
               )}
             </div>
-          </div>
+          </div>}
 
           {/* Input */}
           <div className="flex items-center gap-2 border-t border-border px-4 py-3">
