@@ -9,6 +9,8 @@ import {
 import http from "@/apis/http";
 import { track } from "@/lib/analytics";
 import { extractTextFromImage, parseSpreadsheet, scanBarcodeFromImage } from "./tools";
+import { useTrackProductSearch } from "@/apis/queries/product.queries";
+import { getOrCreateDeviceId } from "@/utils/helper";
 
 export interface RequestItem {
   id: string;
@@ -57,6 +59,9 @@ interface RequestListPanelProps {
 
 export default function RequestListPanel({ selectedItemId, onSelectItem, onItemRemoved, onRequestSession, searchQuery, sessionId, locale, activeCategories, onCategoryChange }: RequestListPanelProps) {
   const isAr = locale === "ar";
+
+  // Tracking hook
+  const trackSearch = useTrackProductSearch();
 
   // Category chips — use parent-controlled state if provided, otherwise local
   const [localCategories, setLocalCategories] = useState<Set<string>>(new Set());
@@ -267,6 +272,10 @@ export default function RequestListPanel({ selectedItemId, onSelectItem, onItemR
 
     if (newItems.length === 0) return;
     setItems((prev) => [...prev, ...newItems]);
+    // Track the search term
+    if (searchMode === "search" && text) {
+      trackSearch.mutate({ searchTerm: text, deviceId: getOrCreateDeviceId() || undefined });
+    }
     setInputText("");
     setAttachments([]);
     setSuggestions([]);

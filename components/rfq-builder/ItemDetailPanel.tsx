@@ -24,6 +24,8 @@ import { useAuth } from "@/context/AuthContext";
 import { checkCategoryConnection } from "@/utils/categoryConnection";
 import { useVendorBusinessCategories } from "@/hooks/useVendorBusinessCategories";
 import { useCurrentAccount } from "@/apis/queries/auth.queries";
+import { useTrackProductClick, useTrackProductSearch } from "@/apis/queries/product.queries";
+import { getOrCreateDeviceId } from "@/utils/helper";
 import {
   Star, ShoppingCart, Send, Paperclip,
   MessageSquare, FileText, X, Image, ChevronDown, ChevronUp,
@@ -63,6 +65,10 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
   const currentTradeRole = currentAccount?.data?.data?.account?.tradeRole || user?.tradeRole;
   const [chatInput, setChatInput] = useState("");
   const [searchPage, setSearchPage] = useState(1);
+
+  // Tracking hooks
+  const trackClick = useTrackProductClick();
+  const trackSearch = useTrackProductSearch();
 
   // AI usage: 50/day free — TODO: track via API, for now localStorage
   const [aiUsedToday, setAiUsedToday] = useState(0);
@@ -205,6 +211,17 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
     enabled: (!!searchTerm && searchTerm.length >= 1) || hasActiveChips,
     staleTime: 30_000,
   });
+
+  // Track search when results arrive for a search term
+  useEffect(() => {
+    if (searchTerm && searchTerm.trim().length >= 1 && productSearchQuery.isSuccess) {
+      trackSearch.mutate({
+        searchTerm: searchTerm.trim(),
+        deviceId: getOrCreateDeviceId() || undefined,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchTerm, productSearchQuery.isSuccess]);
 
   // Map real products
   const totalProductCount = productSearchQuery?.data?.totalCount ?? 0;
@@ -674,7 +691,10 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
   // ── Shared card props for ProductGridCard / ProductListCard ──
   const cardCallbacks = {
     onSelectProduct: onSelectProduct ?? (() => {}),
-    onSetSelectedProductId: setSelectedProductId,
+    onSetSelectedProductId: (id: number) => {
+      setSelectedProductId(id);
+      trackClick.mutate({ productId: id, clickSource: 'rfq_panel', deviceId: getOrCreateDeviceId() || undefined });
+    },
     onSetActiveTab: setActiveTab,
     onSetReqMode: setReqMode,
   };

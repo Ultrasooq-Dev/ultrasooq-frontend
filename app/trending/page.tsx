@@ -11,6 +11,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import {
   useAllProducts,
   useProductVariant,
+  useTrackProductClick,
 } from "@/apis/queries/product.queries";
 import { useDropshipProducts } from "@/apis/queries/dropship.queries";
 import ProductCard from "@/components/modules/trending/ProductCard";
@@ -148,6 +149,7 @@ const TrendingPage = (props0: TrendingPageProps) => {
   const deleteCartItem = useDeleteCartItem();
   const updateCartWithLogin = useUpdateCartWithLogin();
   const updateCartByDevice = useUpdateCartByDevice();
+  const trackClick = useTrackProductClick();
 
   const allProductsQuery = useAllProducts({
     page,
@@ -1874,30 +1876,34 @@ const TrendingPage = (props0: TrendingPageProps) => {
                               });
                           }
                           return (
-                            <ProductCard
+                            <div
                               key={item.id}
-                              productVariants={
-                                productVariants.find(
-                                  (variant: any) =>
-                                    variant.productId == item.id,
-                                )?.object || []
-                              }
-                              item={item}
-                              onWishlist={() =>
-                                handleAddToWishlist(
-                                  item.id,
-                                  item?.productWishlist,
-                                )
-                              }
-                              inWishlist={item?.inWishlist}
-                              haveAccessToken={haveAccessToken}
-                              isInteractive
-                              productQuantity={cartItem?.quantity || 0}
-                              productVariant={cartItem?.object}
-                              cartId={cartItem?.id}
-                              relatedCart={relatedCart}
-                              isAddedToCart={cartItem ? true : false}
-                            />
+                              onClick={() => trackClick.mutate({ productId: item.id, clickSource: 'trending_page', deviceId: deviceId || undefined })}
+                            >
+                              <ProductCard
+                                productVariants={
+                                  productVariants.find(
+                                    (variant: any) =>
+                                      variant.productId == item.id,
+                                  )?.object || []
+                                }
+                                item={item}
+                                onWishlist={() =>
+                                  handleAddToWishlist(
+                                    item.id,
+                                    item?.productWishlist,
+                                  )
+                                }
+                                inWishlist={item?.inWishlist}
+                                haveAccessToken={haveAccessToken}
+                                isInteractive
+                                productQuantity={cartItem?.quantity || 0}
+                                productVariant={cartItem?.object}
+                                cartId={cartItem?.id}
+                                relatedCart={relatedCart}
+                                isAddedToCart={cartItem ? true : false}
+                              />
+                            </div>
                           );
                         })}
                       </div>
