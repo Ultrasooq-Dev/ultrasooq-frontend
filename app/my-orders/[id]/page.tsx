@@ -271,7 +271,7 @@ function TrackingChatPanel({
   orderId: string;
   onStatusChange?: (newStatus: string) => void;
 }) {
-  const [viewMode, setViewMode] = useState<"vendor" | "customer">("vendor");
+  const [viewMode, setViewMode] = useState<"vendor" | "customer">("customer");
   const isVendor = viewMode === "vendor";
   const [message, setMessage] = useState("");
   const [stageLocation, setStageLocation] = useState("");
