@@ -8,15 +8,13 @@ import {
   Clock,
   CheckCircle,
   Truck,
+  PackageCheck,
   XCircle,
   X,
   Calendar,
   ShoppingBag,
   TrendingUp,
   Store,
-  Truck,
-  PackageCheck,
-  CheckCircle,
 } from "lucide-react";
 import BuyerOrderCard from "@/components/modules/myOrders/BuyerOrderCard";
 import SellerOrderCard from "@/components/modules/myOrders/SellerOrderCard";
