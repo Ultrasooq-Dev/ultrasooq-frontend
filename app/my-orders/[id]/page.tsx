@@ -28,7 +28,10 @@ import {
   ReceiptText,
   X,
 } from "lucide-react";
-import { useOrderById, useConfirmReceipt, usePickupCode } from "@/apis/queries/orders.queries";
+import {
+  useOrderById, useConfirmReceipt, usePickupCode,
+  useUpdateOrderStatus, useAddOrderTracking, useDeliveryTimeline,
+} from "@/apis/queries/orders.queries";
 import { useParams, useRouter } from "next/navigation";
 import ConfirmReceiptButton from "@/components/modules/delivery/ConfirmReceiptButton";
 import PickupCodeDisplay from "@/components/modules/delivery/PickupCodeDisplay";
@@ -37,6 +40,8 @@ import Link from "next/link";
 import PlaceholderImage from "@/public/images/product-placeholder.png";
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/context/AuthContext";
+import { useQueryClient } from "@tanstack/react-query";
+import { useToast } from "@/components/ui/use-toast";
 import { convertDate, convertTime } from "@/utils/helper";
 import { cn } from "@/lib/utils";
 import { formattedDate } from "@/utils/constants";
@@ -280,12 +285,31 @@ function TrackingChatPanel({
   const [showConfirmMenu, setShowConfirmMenu] = useState(false);
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
 
-  // Messages = tracking updates + chat messages in one timeline
-  const [messages, setMessages] = useState<TrackingMessage[]>([
-    // Example pre-populated tracking history
-    { id: "1", type: "stage", emoji: "📋", stage: "Shipment Created", text: "Shipment label has been created", time: new Date(Date.now() - 3 * 86400000).toISOString(), sender: "system" },
-    { id: "2", type: "stage", emoji: "📦", stage: "Picked Up", text: "Package picked up from seller", location: "Seller Warehouse", time: new Date(Date.now() - 2.5 * 86400000).toISOString(), sender: "system" },
-  ]);
+  // Load real delivery timeline from API
+  const orderProductId = orderId.replace(/[^0-9]/g, "") || "0";
+  const timelineQuery = useDeliveryTimeline(Number(orderProductId));
+  const updateStatusMutation = useUpdateOrderStatus();
+  const addTrackingMutation = useAddOrderTracking();
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  const [messages, setMessages] = useState<TrackingMessage[]>([]);
+
+  // Populate messages from real timeline data
+  React.useEffect(() => {
+    if (timelineQuery.data?.data?.length) {
+      setMessages(timelineQuery.data.data.map((ev: any) => ({
+        id: String(ev.id),
+        type: "stage" as const,
+        emoji: ev.event === "TRACKING_ADDED" ? "📦" : ev.event === "RECEIVED" ? "✅" : "📋",
+        stage: ev.event,
+        text: ev.note || ev.event.replace(/_/g, " "),
+        location: ev.metadata?.location,
+        time: ev.createdAt,
+        sender: (ev.actor === "BUYER" ? "customer" : "vendor") as "customer" | "vendor",
+      })));
+    }
+  }, [timelineQuery.data]);
 
   const templates = [
     "Your order has been shipped. Tracking will be updated shortly.",
@@ -305,19 +329,39 @@ function TrackingChatPanel({
     setTimeout(() => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
   };
 
+  const STATUS_MAP: Record<string, string> = {
+    CONFIRMED: "processing", SHIPPED: "shipped", OFD: "ofd", DELIVERED: "delivered", CANCELLED: "cancelled",
+  };
+
   const handleStageSelect = (s: { key: string; label: string; emoji: string; msg: string }) => {
     const loc = stageLocation.trim();
+    // Optimistic UI — add message immediately
     addMessage({
-      type: "stage",
-      emoji: s.emoji,
-      stage: s.label,
+      type: "stage", emoji: s.emoji, stage: s.label,
       text: s.msg + (loc ? ` — ${loc}` : ""),
-      location: loc || undefined,
-      sender: "vendor",
+      location: loc || undefined, sender: "vendor",
     });
+
+    // Persist tracking to backend
+    addTrackingMutation.mutate({
+      orderProductId: Number(orderProductId),
+      trackingNumber: s.key,
+      carrier: loc || "Manual Update",
+      notes: `${s.emoji} ${s.label}${loc ? ` — ${loc}` : ""}`,
+    }, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["delivery-timeline"] });
+        queryClient.invalidateQueries({ queryKey: ["order-by-id"] });
+      },
+    });
+
     // Auto-update the top-level order status
     const newStatus = STAGE_TO_STATUS[s.key];
-    if (newStatus && onStatusChange) onStatusChange(newStatus);
+    if (newStatus) {
+      const apiStatus = STATUS_MAP[newStatus] || newStatus.toLowerCase();
+      updateStatusMutation.mutate({ orderProductId: Number(orderProductId), status: apiStatus });
+      if (onStatusChange) onStatusChange(newStatus);
+    }
     setStageLocation("");
     setShowStageMenu(false);
   };
@@ -1044,8 +1088,7 @@ export default function MyOrderDetailsPage() {
                   return next;
                 });
               }
-              // TODO: call backend API to persist status change
-              // e.g. updateOrderStatus.mutate({ orderProductId: params?.id, status: newStatus })
+              // API call handled inside TrackingChatPanel via useUpdateOrderStatus + useAddOrderTracking
             }}
           />
         </div>
