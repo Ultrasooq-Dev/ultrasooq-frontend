@@ -32,7 +32,7 @@ import { useTranslations } from "next-intl";
 import { useAuth } from "@/context/AuthContext";
 import Pagination from "@/components/shared/Pagination";
 import { cn } from "@/lib/utils";
-import { useUpdateOrderStatus } from "@/apis/queries/orders.queries";
+import { useUpdateOrderStatus, useOrderStatusSync } from "@/apis/queries/orders.queries";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -46,6 +46,7 @@ const MyOrdersPage = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const bulkUpdateStatus = useUpdateOrderStatus();
+  useOrderStatusSync(); // auto-refresh when seller updates order status in real-time
   const [activeTab, setActiveTab] = useState<"buying" | "selling">("buying");
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
   const [page, setPage] = useState<number>(1);

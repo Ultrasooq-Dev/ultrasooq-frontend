@@ -4,6 +4,25 @@ import {
   useInfiniteQuery,
   useQueryClient,
 } from "@tanstack/react-query";
+import { useEffect } from "react";
+
+/**
+ * Hook: auto-invalidate order queries when real-time order:status socket event fires.
+ * Use in any page that shows order data.
+ */
+export const useOrderStatusSync = () => {
+  const queryClient = useQueryClient();
+  useEffect(() => {
+    const handler = () => {
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
+      queryClient.invalidateQueries({ queryKey: ["orders-by-seller-id"] });
+      queryClient.invalidateQueries({ queryKey: ["order-by-id"] });
+      queryClient.invalidateQueries({ queryKey: ["delivery-timeline"] });
+    };
+    window.addEventListener("order:status:update", handler);
+    return () => window.removeEventListener("order:status:update", handler);
+  }, [queryClient]);
+};
 import {
   createEMIPayment,
   createOrder,
