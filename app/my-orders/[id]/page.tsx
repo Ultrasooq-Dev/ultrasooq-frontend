@@ -1,12 +1,11 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   Package,
   Clock,
-  CheckCircle,
+  CheckCircle2,
   Truck,
   XCircle,
-  Star,
   Download,
   HelpCircle,
   MapPin,
@@ -15,1107 +14,814 @@ import {
   User,
   Phone,
   ArrowLeft,
-  ShoppingBag,
   FileText,
   RotateCcw,
   Copy,
+  PackageCheck,
+  MessageCircle,
+  Send,
+  Zap,
+  ChevronDown,
+  Star,
+  ExternalLink,
 } from "lucide-react";
 import { useOrderById, useConfirmReceipt, usePickupCode } from "@/apis/queries/orders.queries";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import ConfirmReceiptButton from "@/components/modules/delivery/ConfirmReceiptButton";
 import PickupCodeDisplay from "@/components/modules/delivery/PickupCodeDisplay";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import OtherItemCard from "@/components/modules/myOrderDetails/OtherItemCard";
-import { Skeleton } from "@/components/ui/skeleton";
-import Footer from "@/components/shared/Footer";
 import Link from "next/link";
-import { MONTHS, formattedDate } from "@/utils/constants";
-import { cn } from "@/lib/utils";
 import PlaceholderImage from "@/public/images/product-placeholder.png";
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/context/AuthContext";
 import { convertDate, convertTime } from "@/utils/helper";
+import { cn } from "@/lib/utils";
+import { formattedDate } from "@/utils/constants";
 
-const MyOrderDetailsPage = () => {
-  const t = useTranslations();
-  const { langDir, currency, selectedLocale } = useAuth();
-  const searchParams = useParams();
+/* ═══════════════════════════════════════════════════════════════════
+   ORDER DETAIL PAGE — Inspired by reference design:
+   ┌─────────────────────────────────────────────────┐
+   │ Breadcrumb                                       │
+   │ ┌──Delivery──┐ ┌──Billing──┐ ┌──Actions──┐      │
+   │ │ address    │ │ address   │ │ invoice   │      │
+   │ └────────────┘ └───────────┘ └───────────┘      │
+   │ ┌─ Product ──────── Timeline ─── Date ──┐       │
+   │ │ [img] Name    ●──●──●──●──●   Apr 9   │       │
+   │ │       Seller  Placed Confirmed...      │       │
+   │ │       $130                   Need Help │       │
+   │ └───────────────────────────────────────┘       │
+   │ ┌─ Chat with Seller ───────────────────┐       │
+   │ │  [messages]                           │       │
+   │ │  [auto text] [stage] [confirm]        │       │
+   │ │  [input] [send]                       │       │
+   │ └──────────────────────────────────────┘       │
+   └─────────────────────────────────────────────────┘
+   ═══════════════════════════════════════════════════════════════════ */
 
-  // Safe copy helper for tracking number
-  const copyToClipboard = async (text: string) => {
-    try {
-      if (
-        typeof navigator !== "undefined" &&
-        (navigator as any).clipboard &&
-        (window as any).isSecureContext
-      ) {
-        await (navigator as any).clipboard.writeText(text);
-      } else {
-        const ta = document.createElement("textarea");
-        ta.value = text;
-        ta.style.position = "fixed";
-        ta.style.left = "-9999px";
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand("copy");
-        document.body.removeChild(ta);
-      }
-    } catch (_) {}
-  };
+// ─── Status config ──────────────────────────────────────────────
+const STEPS = [
+  { key: "PLACED", label: "Order Received" },
+  { key: "CONFIRMED", label: "Order Confirmed" },
+  { key: "SHIPPED", label: "Shipped" },
+  { key: "OFD", label: "Out for delivery" },
+  { key: "DELIVERED", label: "Delivered" },
+];
 
-  const orderByIdQuery = useOrderById(
-    {
-      orderProductId: searchParams?.id ? (searchParams.id as string) : "",
-    },
-    !!searchParams?.id,
-  );
-  const orderDetails = orderByIdQuery.data?.data;
-  const shippingDetails =
-    orderByIdQuery.data?.data?.orderProduct_order?.order_orderAddress?.find(
-      (item) => item?.addressType === "SHIPPING",
+function stepIndex(status: string): number {
+  if (status === "CANCELLED") return -1;
+  const map: Record<string, number> = { PLACED: 0, CONFIRMED: 1, SHIPPED: 2, OFD: 3, DELIVERED: 4 };
+  return map[status] ?? 0;
+}
+
+// ─── Horizontal Timeline ────────────────────────────────────────
+function OrderTimeline({
+  status,
+  dates,
+}: {
+  status: string;
+  dates: Record<string, string>;
+}) {
+  const activeIdx = stepIndex(status);
+  const isCancelled = status === "CANCELLED";
+
+  if (isCancelled) {
+    return (
+      <div className="flex items-center gap-2 rounded-lg bg-red-50 dark:bg-red-950/20 px-4 py-3">
+        <XCircle className="h-5 w-5 text-red-500" />
+        <span className="text-sm font-semibold text-red-600">Order Cancelled</span>
+      </div>
     );
-  const billingDetails =
-    orderByIdQuery.data?.data?.orderProduct_order?.order_orderAddress?.find(
-      (item) => item?.addressType === "BILLING",
-    );
-  const otherOrderDetails =
-    orderByIdQuery.data?.otherData?.[0]?.order_orderProducts;
-
-  const shippingType = orderDetails?.orderShippingDetail?.orderShippingType;
-  const confirmReceiptMutation = useConfirmReceipt();
-  const pickupCodeQuery = usePickupCode(
-    Number(searchParams?.id) || 0,
-    shippingType === "PICKUP" && ["CONFIRMED", "SHIPPED", "OFD", "DELIVERED"].includes(orderDetails?.orderProductStatus || ""),
-  );
-
-  // Helper functions for status display
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "PLACED":
-        return <Clock className="h-4 w-4" />;
-      case "CONFIRMED":
-        return <CheckCircle className="h-4 w-4" />;
-      case "SHIPPED":
-        return <Truck className="h-4 w-4" />;
-      case "OFD":
-        return <Truck className="h-4 w-4" />;
-      case "DELIVERED":
-        return <CheckCircle className="h-4 w-4" />;
-      case "RECEIVED":
-        return <CheckCircle className="h-4 w-4" />;
-      case "CANCELLED":
-        return <XCircle className="h-4 w-4" />;
-      default:
-        return <Clock className="h-4 w-4" />;
-    }
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "PLACED":
-        return "bg-muted text-foreground";
-      case "CONFIRMED":
-        return "bg-primary/10 text-primary";
-      case "SHIPPED":
-        return "bg-info/10 text-info";
-      case "OFD":
-        return "bg-warning/10 text-warning";
-      case "DELIVERED":
-        return "bg-success/10 text-success";
-      case "RECEIVED":
-        return "bg-emerald-100 text-emerald-800";
-      case "CANCELLED":
-        return "bg-destructive/10 text-destructive";
-      default:
-        return "bg-muted text-foreground";
-    }
-  };
-
-  function formatDate(inputDate: string): string {
-    const dateObj = new Date(inputDate);
-    return dateObj.toLocaleDateString(selectedLocale || "ar", {
-      weekday: "short",
-      day: "numeric",
-      month: "short",
-    });
   }
 
   return (
-    <>
-      <div className="min-h-screen bg-muted">
-        <div className="w-full px-6 py-8 lg:px-12">
-          {/* Breadcrumb Navigation */}
-          <nav className="mb-8">
-            <ol className="flex items-center space-x-2 text-sm text-muted-foreground">
-              <li>
-                <Link
-                  href="/home"
-                  className="transition-colors hover:text-foreground"
-                  dir={langDir}
-                >
-                  {t("home")}
-                </Link>
-              </li>
-              <li className="flex items-center">
-                <span className="mx-2">/</span>
-                <Link
-                  href="/my-orders"
-                  className="transition-colors hover:text-foreground"
-                  dir={langDir}
-                >
-                  {t("my_orders")}
-                </Link>
-              </li>
-              <li className="flex items-center">
-                <span className="mx-2">/</span>
-                <span className="font-medium text-foreground">
-                  {orderDetails?.orderProduct_order?.orderNo || t("loading")}
-                </span>
-              </li>
-            </ol>
-          </nav>
+    <div className="flex items-start gap-0">
+      {STEPS.map((step, i) => {
+        const isActive = activeIdx >= i;
+        const isCurrent = activeIdx === i;
+        const dateKey = step.key.toLowerCase();
+        const dateStr = dates[dateKey] || dates[step.key] || "";
 
-          {/* Header */}
-          <div className="mb-8">
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <div className="flex items-center gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-indigo-600 shadow-lg">
-                  <ShoppingBag className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <h1
-                    className="text-3xl font-bold text-foreground"
-                    dir={langDir}
-                  >
-                    {t("order_details")}
-                  </h1>
-                  <p className="mt-1 text-muted-foreground" dir={langDir}>
-                    {t("order_number_prefix")}
-                    {orderDetails?.orderProduct_order?.orderNo || t("loading")}
-                  </p>
-                </div>
+        return (
+          <div key={step.key} className="flex items-start" style={{ flex: i < STEPS.length - 1 ? 1 : "none" }}>
+            {/* Step */}
+            <div className="flex flex-col items-center" style={{ minWidth: 60 }}>
+              <div
+                className={cn(
+                  "flex h-6 w-6 items-center justify-center rounded-full border-2 transition-all",
+                  isActive
+                    ? "border-emerald-500 bg-emerald-500 text-white"
+                    : "border-border bg-card text-muted-foreground",
+                  isCurrent && "ring-4 ring-emerald-500/20",
+                )}
+              >
+                {isActive ? (
+                  <CheckCircle2 className="h-3.5 w-3.5" />
+                ) : (
+                  <span className="text-[9px] font-bold">{i + 1}</span>
+                )}
               </div>
-              {orderDetails?.orderProductStatus && (
-                <Badge
-                  className={`${getStatusColor(orderDetails.orderProductStatus)} flex items-center gap-2 px-4 py-2 text-sm font-semibold`}
-                >
-                  {getStatusIcon(orderDetails.orderProductStatus)}
-                  {orderDetails.orderProductStatus}
-                </Badge>
+              <span
+                className={cn(
+                  "mt-1.5 text-center text-[10px] font-medium leading-tight",
+                  isActive ? "text-emerald-700 dark:text-emerald-400" : "text-muted-foreground",
+                )}
+              >
+                {step.label}
+              </span>
+              {dateStr && (
+                <span className="mt-0.5 text-[9px] text-muted-foreground">
+                  {new Date(dateStr).toLocaleDateString("en-US", {
+                    weekday: "short",
+                    day: "numeric",
+                    month: "short",
+                  })}
+                </span>
               )}
             </div>
-          </div>
 
-          {/* Address Information */}
-          {orderByIdQuery.isLoading ? (
-            <div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
-              <Skeleton className="h-48" />
-              <Skeleton className="h-48" />
-              <Skeleton className="h-48" />
-            </div>
-          ) : (
-            <div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
-              {/* Shipping Address */}
-              <Card className="shadow-md transition-shadow hover:shadow-lg">
-                <CardHeader className="bg-gradient-to-r from-primary/5 to-info/5">
-                  <CardTitle className="flex items-center gap-2">
-                    <MapPin className="h-5 w-5 text-primary" />
-                    {t("delivery_address")}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="pt-6">
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-2">
-                      <User className="h-4 w-4 text-muted-foreground" />
-                      <h3 className="font-semibold text-foreground" dir={langDir}>
-                        {shippingDetails?.firstName} {shippingDetails?.lastName}
-                      </h3>
-                    </div>
-                    <address
-                      className="leading-relaxed text-muted-foreground not-italic"
-                      dir={langDir}
-                    >
-                      {shippingDetails?.address}
-                      <br />
-                      <span className="text-muted-foreground">
-                        {t("pin")}: {shippingDetails?.postCode}
-                      </span>
-                    </address>
-                    <div className="flex items-center gap-2 border-t pt-2 text-muted-foreground">
-                      <Phone className="h-4 w-4" />
-                      <span dir={langDir}>{shippingDetails?.phone}</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Billing Address */}
-              <Card className="shadow-md transition-shadow hover:shadow-lg">
-                <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50">
-                  <CardTitle className="flex items-center gap-2">
-                    <CreditCard className="h-5 w-5 text-success" />
-                    {t("billing_address")}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="pt-6">
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-2">
-                      <User className="h-4 w-4 text-muted-foreground" />
-                      <h3 className="font-semibold text-foreground" dir={langDir}>
-                        {billingDetails?.firstName} {billingDetails?.lastName}
-                      </h3>
-                    </div>
-                    <address
-                      className="leading-relaxed text-muted-foreground not-italic"
-                      dir={langDir}
-                    >
-                      {billingDetails?.address}
-                      <br />
-                      <span className="text-muted-foreground">
-                        {t("pin")}: {billingDetails?.postCode}
-                      </span>
-                    </address>
-                    <div className="flex items-center gap-2 border-t pt-2 text-muted-foreground">
-                      <Phone className="h-4 w-4" />
-                      <span dir={langDir}>{billingDetails?.phone}</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Actions */}
-              <Card className="shadow-md transition-shadow hover:shadow-lg">
-                <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50">
-                  <CardTitle className="flex items-center gap-2">
-                    <FileText className="h-5 w-5 text-info" />
-                    {t("actions")}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="pt-6">
-                  <div className="space-y-3">
-                    <Button
-                      className="w-full justify-start"
-                      variant="outline"
-                      size="lg"
-                      onClick={() => {
-                        const apiUrl = typeof window !== 'undefined'
-                          ? `http://${window.location.hostname}:3000/api/v1`
-                          : '';
-                        window.open(
-                          `${apiUrl}/order/invoice?orderProductId=${searchParams?.id}`,
-                          '_blank',
-                        );
-                      }}
-                    >
-                      <Download className="me-2 h-4 w-4" />
-                      {t("download_invoice")}
-                    </Button>
-                    {orderDetails?.orderShippingDetail?.receipt && (
-                      <Button
-                        className="w-full justify-start"
-                        variant="outline"
-                        size="lg"
-                      >
-                        <Download className="mr-2 h-4 w-4" />
-                        {t("download_receipt")}
-                      </Button>
-                    )}
-                    <Button
-                      className="w-full justify-start"
-                      variant="outline"
-                      size="lg"
-                    >
-                      <HelpCircle className="mr-2 h-4 w-4" />
-                      {t("need_help")}
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          )}
-
-          {/* Order Summary Section */}
-          {orderDetails?.orderProduct_order && (
-            <Card className="mb-8 shadow-md">
-              <CardHeader className="bg-gradient-to-r from-primary/5 to-info/5">
-                <CardTitle className="flex items-center gap-2">
-                  <FileText className="h-5 w-5 text-primary" />
-                  {t("order_summary")}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pt-6">
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-muted-foreground">
-                      {t("order_number")}
-                    </label>
-                    <p className="text-lg font-semibold text-foreground">
-                      {orderDetails.orderProduct_order.orderNo || "N/A"}
-                    </p>
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-muted-foreground">
-                      {t("order_status")}
-                    </label>
-                    <p className="text-lg font-semibold text-foreground">
-                      {orderDetails.orderProduct_order.orderStatus || "N/A"}
-                    </p>
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-muted-foreground">
-                      {t("date_and_time")}
-                    </label>
-                    <p className="text-lg font-semibold text-foreground">
-                      {orderDetails.orderProduct_order.orderDate
-                        ? formatDate(orderDetails.orderProduct_order.orderDate)
-                        : orderDetails.orderProduct_order.createdAt
-                          ? formatDate(orderDetails.orderProduct_order.createdAt)
-                          : "N/A"}
-                    </p>
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-muted-foreground">
-                      {t("subtotal")}
-                    </label>
-                    <p className="text-lg font-semibold text-foreground">
-                      {currency.symbol}
-                      {orderDetails.orderProduct_order.totalPrice || 0}
-                    </p>
-                  </div>
-                  {(orderDetails.orderProduct_order.totalDiscount ?? 0) > 0 && (
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-muted-foreground">
-                        {t("discount")}
-                      </label>
-                      <p className="text-lg font-semibold text-success">
-                        -{currency.symbol}
-                        {orderDetails.orderProduct_order.totalDiscount || 0}
-                      </p>
-                    </div>
+            {/* Connector line */}
+            {i < STEPS.length - 1 && (
+              <div className="mt-3 flex-1 px-1">
+                <div
+                  className={cn(
+                    "h-[2px] w-full rounded-full transition-colors",
+                    activeIdx > i ? "bg-emerald-500" : "bg-border",
                   )}
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-muted-foreground">
-                      {t("total_amount")}
-                    </label>
-                    <p className="text-xl font-bold text-primary">
-                      {currency.symbol}
-                      {orderDetails.orderProduct_order.totalCustomerPay || 0}
-                    </p>
-                  </div>
-                  {orderDetails.orderProduct_order.paymentType !== 'DIRECT' && 
-                   (orderDetails.orderProduct_order.dueAmount ?? 0) > 0 && (
-                    <>
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium text-muted-foreground">
-                          {t("advance_paid")}
-                        </label>
-                        <p className="text-lg font-semibold text-foreground">
-                          {currency.symbol}
-                          {orderDetails.orderProduct_order.advanceAmount || 0}
-                        </p>
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium text-muted-foreground">
-                          {t("remaining_due")}
-                        </label>
-                        <p className="text-lg font-semibold text-warning">
-                          {currency.symbol}
-                          {orderDetails.orderProduct_order.dueAmount || 0}
-                        </p>
-                      </div>
-                    </>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Shipping & Product Details Row */}
-          <div className="mb-8 grid grid-cols-1 gap-8 lg:grid-cols-2">
-            {/* Shipping Details */}
-            {orderDetails?.orderShippingDetail &&
-              orderDetails?.orderProductType != "SERVICE" && (
-                <Card className="shadow-md">
-                  <CardHeader className="bg-gradient-to-r from-warning/5 to-warning/5">
-                    <CardTitle className="flex items-center gap-2">
-                      <Truck className="h-5 w-5 text-warning" />
-                      {t("shipping_details")}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-6">
-                    <div className="space-y-4">
-                      <div className="space-y-2">
-                        <h4 className="flex items-center gap-2 font-medium text-foreground">
-                          <Truck className="h-4 w-4 text-muted-foreground" />
-                          {t("shipping_mode")}
-                        </h4>
-                        <p className="text-muted-foreground">
-                          {orderDetails?.orderShippingDetail?.orderShippingType}
-                        </p>
-                      </div>
-                      <div className="space-y-2">
-                        <h4 className="flex items-center gap-2 font-medium text-foreground">
-                          <Package className="h-4 w-4 text-muted-foreground" />
-                          {t("delivery_charge")}
-                        </h4>
-                        <p className="text-muted-foreground">
-                          {currency.symbol}
-                          {orderDetails?.orderShippingDetail?.shippingCharge}
-                        </p>
-                      </div>
-                      {orderDetails?.orderShippingDetail?.orderShippingType ===
-                        "PICKUP" && (
-                        <>
-                          <div className="space-y-2">
-                            <h4 className="flex items-center gap-2 font-medium text-foreground">
-                              <Calendar className="h-4 w-4 text-muted-foreground" />
-                              {t("shipping_date")}
-                            </h4>
-                            <p className="text-muted-foreground">
-                              {convertDate(
-                                orderDetails?.orderShippingDetail?.shippingDate,
-                              )}
-                            </p>
-                          </div>
-                          <div className="space-y-2">
-                            <h4 className="flex items-center gap-2 font-medium text-foreground">
-                              <Clock className="h-4 w-4 text-muted-foreground" />
-                              {t("from_time")}
-                            </h4>
-                            <p className="text-muted-foreground">
-                              {convertTime(
-                                orderDetails?.orderShippingDetail?.fromTime,
-                              )}
-                            </p>
-                          </div>
-                          <div className="space-y-2">
-                            <h4 className="flex items-center gap-2 font-medium text-foreground">
-                              <Clock className="h-4 w-4 text-muted-foreground" />
-                              {t("to_time")}
-                            </h4>
-                            <p className="text-muted-foreground">
-                              {convertTime(
-                                orderDetails?.orderShippingDetail?.toTime,
-                              )}
-                            </p>
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-
-            {/* Product Details */}
-            {orderByIdQuery.isLoading ? (
-              <Card className="overflow-hidden border-0 shadow-lg">
-                <CardContent className="p-8">
-                  <div className="flex gap-6">
-                    <Skeleton className="h-32 w-32 rounded-xl" />
-                    <div className="flex-1 space-y-3">
-                      <Skeleton className="h-6 w-3/4" />
-                      <Skeleton className="h-4 w-1/2" />
-                      <Skeleton className="h-4 w-1/3" />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ) : (
-              <Card className="overflow-hidden border-0 shadow-lg">
-                <CardContent className="p-8">
-                  <div className="flex flex-col gap-8 lg:flex-row">
-                    {/* Product Image & Basic Info */}
-                    <div className="flex gap-6">
-                      <Link
-                        href={`/trending/${orderDetails?.orderProduct_product?.id}`}
-                        className="flex-shrink-0"
-                      >
-                        <div className="flex h-32 w-32 items-center justify-center overflow-hidden rounded-xl border-2 border-border bg-card shadow-md transition-shadow hover:shadow-lg">
-                          {orderDetails?.orderProductType === "SERVICE" ? (
-                            <Image
-                              src={PlaceholderImage}
-                              alt="service-preview"
-                              width={128}
-                              height={128}
-                              className="h-full w-full object-contain p-2"
-                            />
-                          ) : (
-                            <Image
-                              src={
-                                orderDetails?.orderProduct_productPrice
-                                  ?.productPrice_product?.productImages?.[0]
-                                  ?.image ||
-                                orderDetails?.orderProduct_product
-                                  ?.productImages?.[0]?.image ||
-                                PlaceholderImage
-                              }
-                              alt="product-preview"
-                              width={128}
-                              height={128}
-                              className="h-full w-full object-contain p-2"
-                            />
-                          )}
-                        </div>
-                      </Link>
-                      <div className="flex-1">
-                        <h3 className="mb-2 text-xl font-bold text-foreground">
-                          {orderDetails?.orderProductType === "SERVICE"
-                            ? orderDetails?.serviceFeatures
-                                ?.[0]?.serviceFeature?.name
-                            : orderDetails?.orderProduct_productPrice
-                                ?.productPrice_product?.productName ||
-                              orderDetails?.orderProduct_product?.productName ||
-                              t("unknown_product")}
-                        </h3>
-                        <div className="mb-3 flex items-center gap-6 text-sm text-muted-foreground">
-                          <span className="flex items-center gap-1">
-                            <Package className="h-4 w-4" />
-                            {t("quantity")}: {orderDetails?.orderQuantity || 0}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <Calendar className="h-4 w-4" />
-                            {orderDetails?.orderProductDate
-                              ? formatDate(orderDetails.orderProductDate)
-                              : orderDetails?.createdAt
-                                ? formatDate(orderDetails.createdAt)
-                                : "-"}
-                          </span>
-                        </div>
-                        <div className="text-2xl font-bold text-primary">
-                          {currency.symbol}
-                          {orderDetails?.orderProductType === "SERVICE"
-                            ? Number(orderDetails?.purchasePrice || 0) *
-                              (orderDetails?.orderQuantity ?? 0)
-                            : orderDetails?.orderProduct_productPrice
-                                  ?.offerPrice
-                              ? Number(
-                                  orderDetails?.orderProduct_productPrice
-                                    ?.offerPrice * (orderDetails?.orderQuantity ?? 0),
-                                )
-                              : orderDetails?.purchasePrice
-                                ? Number(
-                                    orderDetails?.purchasePrice *
-                                      (orderDetails?.orderQuantity ?? 0),
-                                  )
-                                : orderDetails?.salePrice
-                                  ? Number(
-                                      orderDetails?.salePrice *
-                                        (orderDetails?.orderQuantity ?? 0),
-                                    )
-                                  : 0}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                />
+              </div>
             )}
           </div>
+        );
+      })}
+    </div>
+  );
+}
 
-          {/* Order Tracking & Other Items Row */}
-          <div className="mb-8 grid grid-cols-1 gap-8 lg:grid-cols-2">
-            {/* Order Tracking Section */}
-            {orderByIdQuery.isLoading ? (
-              <Card className="border-0 shadow-lg">
-                <CardContent className="p-8">
-                  <Skeleton className="h-64" />
-                </CardContent>
-              </Card>
-            ) : (
-              <Card className="border-0 shadow-lg">
-                <CardHeader className="border-b bg-gradient-to-r from-green-50 to-emerald-50">
-                  <CardTitle className="flex items-center gap-2">
-                    <RotateCcw className="h-5 w-5 text-success" />
-                    {t("order_tracking")}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-8">
-                  {(() => {
-                    const tracking = (
-                      orderDetails?.breakdown?.tracking ||
-                      (orderDetails as Record<string, unknown>)?.tracking
-                    ) as import("@/types/order").OrderTrackingInfo | undefined;
-                    const showTracking = [
-                      "SHIPPED",
-                      "OFD",
-                      "DELIVERED",
-                    ].includes(orderDetails?.orderProductStatus || "");
-                    if (!showTracking || !tracking) return null;
-                    return (
-                      <div className="mb-8 rounded-lg border bg-card p-4">
-                        <h4 className="mb-3 font-semibold text-foreground">
-                          {t("tracking_details")}
-                        </h4>
-                        <div className="grid grid-cols-1 gap-4 text-sm md:grid-cols-3">
-                          <div>
-                            <div className="text-muted-foreground">{t("tracking_number")}</div>
-                            <div className="flex items-center gap-2 font-medium text-foreground">
-                              <span>{tracking?.trackingNumber || "-"}</span>
-                              {tracking?.trackingNumber ? (
-                                <button
-                                  type="button"
-                                  aria-label={t("copy")}
-                                  onClick={() =>
-                                    copyToClipboard(
-                                      String(tracking.trackingNumber),
-                                    )
-                                  }
-                                  className="inline-flex items-center rounded border px-2 py-1 text-xs"
-                                >
-                                  <Copy className="mr-1 h-3 w-3" /> {t("copy")}
-                                </button>
-                              ) : null}
-                            </div>
-                          </div>
-                          <div>
-                            <div className="text-muted-foreground">{t("carrier")}</div>
-                            <div className="font-medium text-foreground">
-                              {tracking?.carrier || "-"}
-                            </div>
-                          </div>
-                          <div>
-                            <div className="text-muted-foreground">{t("added")}</div>
-                            <div className="font-medium text-foreground">
-                              {tracking?.addedAt
-                                ? formattedDate(tracking.addedAt, selectedLocale)
-                                : "-"}
-                            </div>
-                          </div>
-                        </div>
-                        {/* Track Package external link */}
-                        {(orderDetails?.orderShippingDetail as any)?.carrierTrackingUrl && (
-                          <div className="mt-3">
-                            <a
-                              href={(orderDetails?.orderShippingDetail as any)?.carrierTrackingUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-                            >
-                              <Truck className="h-4 w-4" />
-                              {t("track_package")}
-                            </a>
-                          </div>
-                        )}
-                        {tracking?.notes ? (
-                          <div className="mt-3 text-sm">
-                            <div className="text-muted-foreground">{t("notes")}</div>
-                            <div className="text-foreground">
-                              {tracking.notes}
-                            </div>
-                          </div>
-                        ) : null}
-                      </div>
-                    );
-                  })()}
-                  <div className="relative">
-                    {/* Timeline */}
-                    <div className="absolute top-0 bottom-0 left-6 w-0.5 bg-muted"></div>
+// ─── Address Card ───────────────────────────────────────────────
+function AddressCard({
+  title,
+  icon: Icon,
+  iconColor,
+  name,
+  address,
+  phone,
+  pin,
+}: {
+  title: string;
+  icon: React.ElementType;
+  iconColor: string;
+  name: string;
+  address: string;
+  phone: string;
+  pin?: string;
+}) {
+  return (
+    <div className="rounded-xl border border-border bg-card p-5">
+      <h3 className="mb-3 flex items-center gap-2 text-sm font-bold text-foreground">
+        <Icon className={cn("h-4 w-4", iconColor)} />
+        {title}
+      </h3>
+      <div className="space-y-1.5 text-sm">
+        <p className="font-semibold">{name}</p>
+        <p className="text-muted-foreground leading-relaxed">{address}</p>
+        {pin && <p className="text-muted-foreground">Pin: {pin}</p>}
+        {phone && (
+          <p className="flex items-center gap-1.5 pt-1 text-muted-foreground">
+            <Phone className="h-3 w-3" />
+            {phone}
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
 
-                    <div className="space-y-6">
-                      {/* Order Placed */}
-                      <div className="relative flex items-start gap-6">
-                        <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full bg-success/10 shadow-md">
-                          <CheckCircle className="h-6 w-6 text-success" />
-                        </div>
-                        <div className="flex-1 pt-1">
-                          <h4 className="mb-1 font-semibold text-foreground">
-                            {t("placed")}
-                          </h4>
-                          <p className="text-sm text-muted-foreground">
-                            {orderDetails?.orderProductDate
-                              ? formatDate(orderDetails.orderProductDate)
-                              : orderDetails?.orderProduct_order?.orderDate
-                                ? formatDate(orderDetails.orderProduct_order.orderDate)
-                                : orderDetails?.orderProduct_order?.createdAt
-                                  ? formatDate(orderDetails.orderProduct_order.createdAt)
-                                  : orderDetails?.createdAt
-                                    ? formatDate(orderDetails.createdAt)
-                                    : "N/A"}
-                          </p>
-                        </div>
-                      </div>
+// ─── Chat + Order Actions ───────────────────────────────────────
+function ChatSection({
+  sellerName,
+  langDir,
+  status,
+  orderId,
+}: {
+  sellerName: string;
+  langDir: string;
+  status: string;
+  orderId: string;
+}) {
+  const [message, setMessage] = useState("");
+  const [showTemplates, setShowTemplates] = useState(false);
+  const [showStageMenu, setShowStageMenu] = useState(false);
+  const [showConfirmMenu, setShowConfirmMenu] = useState(false);
 
-                      {/* Order Confirmed */}
-                      <div className="relative flex items-start gap-6">
-                        <div
-                          className={cn(
-                            "relative z-10 flex h-12 w-12 items-center justify-center rounded-full shadow-md",
-                            [
-                              "CANCELLED",
-                              "DELIVERED",
-                              "OFD",
-                              "SHIPPED",
-                              "CONFIRMED",
-                            ].includes(orderDetails?.orderProductStatus || "")
-                              ? "bg-primary/10"
-                              : "bg-muted",
-                          )}
-                        >
-                          {[
-                            "CANCELLED",
-                            "DELIVERED",
-                            "OFD",
-                            "SHIPPED",
-                            "CONFIRMED",
-                          ].includes(orderDetails?.orderProductStatus || "") ? (
-                            <CheckCircle className="h-6 w-6 text-primary" />
-                          ) : (
-                            <Clock className="h-6 w-6 text-muted-foreground" />
-                          )}
-                        </div>
-                        <div className="flex-1 pt-1">
-                          <h4 className="mb-1 font-semibold text-foreground">
-                            {t("order_confirmed")}
-                          </h4>
-                          <p className="text-sm text-muted-foreground">
-                            {[
-                              "CANCELLED",
-                              "DELIVERED",
-                              "OFD",
-                              "SHIPPED",
-                              "CONFIRMED",
-                            ].includes(orderDetails?.orderProductStatus || "")
-                              ? (orderDetails?.orderProductDate
-                                  ? formatDate(orderDetails.orderProductDate)
-                                  : orderDetails?.orderProduct_order?.orderDate
-                                    ? formatDate(orderDetails.orderProduct_order.orderDate)
-                                    : orderDetails?.orderProduct_order?.createdAt
-                                      ? formatDate(orderDetails.orderProduct_order.createdAt)
-                                      : orderDetails?.createdAt
-                                        ? formatDate(orderDetails.createdAt)
-                                        : "N/A")
-                              : t("pending")}
-                          </p>
-                        </div>
-                      </div>
+  // Saved message templates (vendor-pinned)
+  const templates = [
+    "Your order has been shipped. Tracking will be updated shortly.",
+    "Your package is out for delivery today.",
+    "Thank you for your order! We're preparing it now.",
+    "Your item has been handed to the courier.",
+    "Please confirm receipt once you've received the product.",
+  ];
 
-                      {/* Shipped */}
-                      <div className="relative flex items-start gap-6">
-                        <div
-                          className={cn(
-                            "relative z-10 flex h-12 w-12 items-center justify-center rounded-full shadow-md",
-                            [
-                              "CANCELLED",
-                              "DELIVERED",
-                              "OFD",
-                              "SHIPPED",
-                            ].includes(orderDetails?.orderProductStatus || "")
-                              ? "bg-info/10"
-                              : "bg-muted",
-                          )}
-                        >
-                          {[
-                            "CANCELLED",
-                            "DELIVERED",
-                            "OFD",
-                            "SHIPPED",
-                          ].includes(orderDetails?.orderProductStatus || "") ? (
-                            <Truck className="h-6 w-6 text-info" />
-                          ) : (
-                            <Clock className="h-6 w-6 text-muted-foreground" />
-                          )}
-                        </div>
-                        <div className="flex-1 pt-1">
-                          <h4 className="mb-1 font-semibold text-foreground">
-                            {t("shipped")}
-                          </h4>
-                          <p className="text-sm text-muted-foreground">
-                            {[
-                              "CANCELLED",
-                              "DELIVERED",
-                              "OFD",
-                              "SHIPPED",
-                            ].includes(orderDetails?.orderProductStatus || "")
-                              ? formatDate(orderDetails?.updatedAt ?? "")
-                              : t("pending")}
-                          </p>
-                        </div>
-                      </div>
+  const stages = [
+    { key: "CONFIRMED", label: "Mark as Confirmed", icon: CheckCircle2, color: "text-blue-600" },
+    { key: "SHIPPED", label: "Mark as Shipped", icon: Truck, color: "text-violet-600" },
+    { key: "OFD", label: "Out for Delivery", icon: Truck, color: "text-amber-600" },
+    { key: "DELIVERED", label: "Mark as Delivered", icon: PackageCheck, color: "text-emerald-600" },
+  ];
 
-                      {/* Out for Delivery */}
-                      <div className="relative flex items-start gap-6">
-                        <div
-                          className={cn(
-                            "relative z-10 flex h-12 w-12 items-center justify-center rounded-full shadow-md",
-                            ["CANCELLED", "DELIVERED", "OFD"].includes(
-                              orderDetails?.orderProductStatus || "",
-                            )
-                              ? "bg-warning/10"
-                              : "bg-muted",
-                          )}
-                        >
-                          {["CANCELLED", "DELIVERED", "OFD"].includes(
-                            orderDetails?.orderProductStatus || "",
-                          ) ? (
-                            <Truck className="h-6 w-6 text-warning" />
-                          ) : (
-                            <Clock className="h-6 w-6 text-muted-foreground" />
-                          )}
-                        </div>
-                        <div className="flex-1 pt-1">
-                          <h4 className="mb-1 font-semibold text-foreground">
-                            {t("out_for_delivery")}
-                          </h4>
-                          <p className="text-sm text-muted-foreground">
-                            {["CANCELLED", "DELIVERED", "OFD"].includes(
-                              orderDetails?.orderProductStatus || "",
-                            )
-                              ? formatDate(orderDetails?.updatedAt ?? "")
-                              : t("pending")}
-                          </p>
-                        </div>
-                      </div>
+  const confirmActions = [
+    { key: "freelancer", label: "Connect Freelancer for Delivery", icon: User, desc: "Assign a freelancer to deliver this order" },
+    { key: "customer_pickup", label: "Customer Pickup Confirmed", icon: PackageCheck, desc: "Customer will collect the product" },
+    { key: "delivery_partner", label: "Assign Delivery Partner", icon: Truck, desc: "Connect with delivery company API" },
+  ];
 
-                      {/* Delivered/Cancelled */}
-                      <div className="relative flex items-start gap-6">
-                        <div
-                          className={cn(
-                            "relative z-10 flex h-12 w-12 items-center justify-center rounded-full shadow-md",
-                            ["CANCELLED", "DELIVERED"].includes(
-                              orderDetails?.orderProductStatus || "",
-                            )
-                              ? orderDetails?.orderProductStatus === "CANCELLED"
-                                ? "bg-destructive/10"
-                                : "bg-success/10"
-                              : "bg-muted",
-                          )}
-                        >
-                          {["CANCELLED", "DELIVERED"].includes(
-                            orderDetails?.orderProductStatus || "",
-                          ) ? (
-                            orderDetails?.orderProductStatus === "CANCELLED" ? (
-                              <XCircle className="h-6 w-6 text-destructive" />
-                            ) : (
-                              <CheckCircle className="h-6 w-6 text-success" />
-                            )
-                          ) : (
-                            <Clock className="h-6 w-6 text-muted-foreground" />
-                          )}
-                        </div>
-                        <div className="flex-1 pt-1">
-                          <h4 className="mb-1 font-semibold text-foreground">
-                            {orderDetails?.orderProductStatus === "CANCELLED"
-                              ? t("cancelled")
-                              : t("delivered")}
-                          </h4>
-                          <p className="text-sm text-muted-foreground">
-                            {["CANCELLED", "DELIVERED"].includes(
-                              orderDetails?.orderProductStatus || "",
-                            )
-                              ? formatDate(orderDetails?.updatedAt ?? "")
-                              : t("pending")}
-                          </p>
-                          {orderDetails?.orderProductStatus === "CANCELLED" &&
-                            orderDetails?.cancelReason && (
-                              <div className="mt-2 rounded-lg border border-destructive/20 bg-destructive/5 p-3">
-                                <p className="mb-1 text-xs font-medium text-destructive">
-                                  {t("cancellation_reason")}:
-                                </p>
-                                <p className="text-sm text-destructive">
-                                  {orderDetails.cancelReason}
-                                </p>
-                              </div>
-                            )}
-                        </div>
-                      </div>
+  return (
+    <div className="rounded-xl border border-border bg-card overflow-hidden">
+      {/* Header */}
+      <div className="flex items-center justify-between border-b border-border bg-muted/40 px-5 py-3">
+        <div className="flex items-center gap-2">
+          <MessageCircle className="h-4 w-4 text-primary" />
+          <span className="text-sm font-semibold">Chat with {sellerName}</span>
+        </div>
+        <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+          Order #{orderId}
+        </span>
+      </div>
 
-                      {/* Received (6th step — buyer confirms receipt) */}
-                      {orderDetails?.orderProductStatus !== "CANCELLED" && (
-                        <div className="relative flex items-start gap-6">
-                          <div
-                            className={cn(
-                              "relative z-10 flex h-12 w-12 items-center justify-center rounded-full shadow-md",
-                              orderDetails?.orderProductStatus === "RECEIVED"
-                                ? "bg-emerald-100"
-                                : "bg-muted",
-                            )}
-                          >
-                            {orderDetails?.orderProductStatus === "RECEIVED" ? (
-                              <CheckCircle className="h-6 w-6 text-emerald-600" />
-                            ) : (
-                              <Clock className="h-6 w-6 text-muted-foreground" />
-                            )}
-                          </div>
-                          <div className="flex-1 pt-1">
-                            <h4 className="mb-1 font-semibold text-foreground">
-                              {t("status_received")}
-                            </h4>
-                            <p className="text-sm text-muted-foreground">
-                              {orderDetails?.orderProductStatus === "RECEIVED"
-                                ? formatDate(orderDetails?.updatedAt ?? "")
-                                : t("pending")}
-                            </p>
-                            {/* Confirm Receipt Button for buyer when DELIVERED */}
-                            {orderDetails?.orderProductStatus === "DELIVERED" && (
-                              <div className="mt-3 max-w-xs">
-                                <ConfirmReceiptButton
-                                  orderProductId={Number(searchParams?.id)}
-                                  autoConfirmAt={(orderDetails?.orderShippingDetail as any)?.autoConfirmAt}
-                                  onConfirm={async () => {
-                                    await confirmReceiptMutation.mutateAsync({
-                                      orderProductId: Number(searchParams?.id),
-                                    });
-                                    orderByIdQuery.refetch();
-                                  }}
-                                  isLoading={confirmReceiptMutation.isPending}
-                                />
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Pickup Code Display — for PICKUP orders */}
-                  {shippingType === "PICKUP" && pickupCodeQuery.data?.data && (
-                    <div className="mt-6">
-                      <PickupCodeDisplay
-                        code={pickupCodeQuery.data.data.code}
-                        status={pickupCodeQuery.data.data.status}
-                        qrPayload={pickupCodeQuery.data.data.qrPayload}
-                        pickupWindowStart={pickupCodeQuery.data.data.pickupWindowStart}
-                        pickupWindowEnd={pickupCodeQuery.data.data.pickupWindowEnd}
-                        expiresAt={pickupCodeQuery.data.data.expiresAt}
-                      />
-                    </div>
-                  )}
-
-                  {/* Delivery Proof Image — if seller uploaded */}
-                  {(orderDetails?.orderShippingDetail as any)?.proofOfDeliveryUrl && (
-                    <div className="mt-6 rounded-lg border p-4">
-                      <h4 className="mb-2 text-sm font-semibold">{t("proof_of_delivery")}</h4>
-                      <img
-                        src={(orderDetails?.orderShippingDetail as any)?.proofOfDeliveryUrl}
-                        alt="Delivery proof"
-                        className="max-h-48 rounded-md object-cover"
-                      />
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Other Order Items */}
-            {otherOrderDetails && otherOrderDetails.length > 0 && (
-              <Card className="overflow-hidden border-0 shadow-lg">
-                <CardHeader className="border-b bg-gradient-to-r from-indigo-50 to-info/5">
-                  <CardTitle className="flex items-center gap-2">
-                    <Package className="h-5 w-5 text-info" />
-                    {t("other_items_in_order")}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-8">
-                  <div className="space-y-6">
-                    {otherOrderDetails.map((item: any) => (
-                      <div
-                        key={item?.id}
-                        className="flex gap-6 border-b pb-6 last:border-b-0 last:pb-0"
-                      >
-                        {/* Product Image */}
-                        <Link
-                          href={`/my-orders/${item?.id}`}
-                          className="flex-shrink-0"
-                        >
-                          <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-xl border-2 border-border bg-card shadow-md transition-shadow hover:shadow-lg">
-                            {item?.orderProductType === "SERVICE" ? (
-                              <Image
-                                src={PlaceholderImage}
-                                alt="service-preview"
-                                width={96}
-                                height={96}
-                                className="h-full w-full object-contain p-2"
-                              />
-                            ) : (
-                              <Image
-                                src={
-                                  item?.orderProduct_productPrice
-                                    ?.productPrice_product?.productImages?.[0]
-                                    ?.image ||
-                                  item?.orderProduct_product?.productImages?.[0]
-                                    ?.image ||
-                                  PlaceholderImage
-                                }
-                                alt="product-preview"
-                                width={96}
-                                height={96}
-                                className="h-full w-full object-contain p-2"
-                              />
-                            )}
-                          </div>
-                        </Link>
-
-                        {/* Product Info */}
-                        <div className="min-w-0 flex-1">
-                          <h3 className="mb-1 line-clamp-2 text-lg font-bold text-foreground">
-                            {item?.orderProductType === "SERVICE"
-                              ? item?.serviceFeatures?.serviceFeatures?.[0]
-                                  ?.name
-                              : item?.orderProduct_productPrice
-                                  ?.productPrice_product?.productName ||
-                                item?.orderProduct_product?.productName ||
-                                t("unknown_product")}
-                          </h3>
-                          <div className="mb-2 flex items-center gap-4 text-sm text-muted-foreground">
-                            <span className="flex items-center gap-1">
-                              <Package className="h-3 w-3" />
-                              {t("qty")}: {item?.orderQuantity || 0}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Calendar className="h-3 w-3" />
-                              {item?.orderProductDate
-                                ? formatDate(item.orderProductDate)
-                                : item?.createdAt
-                                  ? formatDate(item.createdAt)
-                                  : "-"}
-                            </span>
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <div className="text-xl font-bold text-primary">
-                              {currency.symbol}
-                              {item?.orderProductType === "SERVICE"
-                                ? Number(item?.purchasePrice || 0) *
-                                  (item?.orderQuantity || 0)
-                                : item?.orderProduct_productPrice?.offerPrice
-                                  ? Number(
-                                      item?.orderProduct_productPrice
-                                        ?.offerPrice * item?.orderQuantity,
-                                    )
-                                  : item?.purchasePrice
-                                    ? Number(
-                                        item?.purchasePrice *
-                                          item?.orderQuantity,
-                                      )
-                                    : item?.salePrice
-                                      ? Number(
-                                          item?.salePrice * item?.orderQuantity,
-                                        )
-                                      : 0}
-                            </div>
-                            <Badge
-                              className={`${getStatusColor(item?.orderProductStatus || "")} flex items-center gap-1`}
-                            >
-                              {getStatusIcon(item?.orderProductStatus || "")}
-                              {item?.orderProductStatus || t("loading")}
-                            </Badge>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-          </div>
+      {/* Messages area */}
+      <div className="h-64 overflow-y-auto bg-muted/10 p-4">
+        <div className="flex h-full flex-col items-center justify-center text-center">
+          <MessageCircle className="mb-2 h-8 w-8 text-muted-foreground/15" />
+          <p className="text-sm text-muted-foreground/50">
+            Start a conversation with the seller
+          </p>
+          <p className="mt-1 text-[11px] text-muted-foreground/30">
+            Messages, delivery updates, and attachments will appear here
+          </p>
         </div>
       </div>
 
-      <Footer />
-    </>
-  );
-};
+      {/* Quick action buttons */}
+      <div className="relative flex items-center gap-2 border-t border-border bg-muted/20 px-4 py-2.5">
+        {/* Auto Text — pinned templates */}
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => { setShowTemplates(!showTemplates); setShowStageMenu(false); setShowConfirmMenu(false); }}
+            className={cn(
+              "flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors",
+              showTemplates
+                ? "bg-amber-500 text-white"
+                : "bg-amber-50 text-amber-700 hover:bg-amber-100 dark:bg-amber-950/30 dark:text-amber-400 dark:hover:bg-amber-950/50",
+            )}
+          >
+            <Zap className="h-3 w-3" />
+            Auto Text
+          </button>
+          {showTemplates && (
+            <div className="absolute bottom-full start-0 mb-2 w-72 rounded-lg border border-border bg-card shadow-xl z-20">
+              <div className="border-b border-border px-3 py-2">
+                <span className="text-[11px] font-semibold text-muted-foreground">Saved Templates</span>
+              </div>
+              <div className="max-h-48 overflow-y-auto p-1">
+                {templates.map((tpl, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => { setMessage(tpl); setShowTemplates(false); }}
+                    className="w-full rounded-md px-3 py-2 text-start text-xs hover:bg-muted transition-colors"
+                  >
+                    {tpl}
+                  </button>
+                ))}
+              </div>
+              <div className="border-t border-border px-3 py-2">
+                <button type="button" className="text-[11px] font-medium text-primary hover:underline">
+                  + Add new template
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
 
-export default MyOrderDetailsPage;
+        {/* Attachment — submit to delivery partner */}
+        <button
+          type="button"
+          className="flex items-center gap-1.5 rounded-lg bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-700 transition-colors hover:bg-blue-100 dark:bg-blue-950/30 dark:text-blue-400 dark:hover:bg-blue-950/50"
+        >
+          <FileText className="h-3 w-3" />
+          Attachment
+        </button>
+
+        {/* Stage — update delivery step */}
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => { setShowStageMenu(!showStageMenu); setShowTemplates(false); setShowConfirmMenu(false); }}
+            className={cn(
+              "flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors",
+              showStageMenu
+                ? "bg-emerald-500 text-white"
+                : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-950/30 dark:text-emerald-400 dark:hover:bg-emerald-950/50",
+            )}
+          >
+            <Package className="h-3 w-3" />
+            Stage
+          </button>
+          {showStageMenu && (
+            <div className="absolute bottom-full start-0 mb-2 w-56 rounded-lg border border-border bg-card shadow-xl z-20">
+              <div className="border-b border-border px-3 py-2">
+                <span className="text-[11px] font-semibold text-muted-foreground">Update Delivery Stage</span>
+              </div>
+              <div className="p-1">
+                {stages.map((s) => (
+                  <button
+                    key={s.key}
+                    type="button"
+                    className={cn(
+                      "flex w-full items-center gap-2 rounded-md px-3 py-2 text-xs font-medium transition-colors hover:bg-muted",
+                      status === s.key && "bg-muted",
+                    )}
+                  >
+                    <s.icon className={cn("h-3.5 w-3.5", s.color)} />
+                    {s.label}
+                    {status === s.key && (
+                      <span className="ms-auto rounded-full bg-emerald-100 px-1.5 py-0.5 text-[9px] font-bold text-emerald-700">
+                        Current
+                      </span>
+                    )}
+                  </button>
+                ))}
+              </div>
+              <div className="border-t border-border px-3 py-2">
+                <button type="button" className="flex items-center gap-1.5 text-[11px] font-medium text-primary hover:underline">
+                  <Truck className="h-3 w-3" />
+                  Connect Delivery API
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Confirm — connect freelancer/customer */}
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => { setShowConfirmMenu(!showConfirmMenu); setShowTemplates(false); setShowStageMenu(false); }}
+            className={cn(
+              "flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors",
+              showConfirmMenu
+                ? "bg-violet-500 text-white"
+                : "bg-violet-50 text-violet-700 hover:bg-violet-100 dark:bg-violet-950/30 dark:text-violet-400 dark:hover:bg-violet-950/50",
+            )}
+          >
+            <CheckCircle2 className="h-3 w-3" />
+            Confirm
+          </button>
+          {showConfirmMenu && (
+            <div className="absolute bottom-full start-0 mb-2 w-72 rounded-lg border border-border bg-card shadow-xl z-20">
+              <div className="border-b border-border px-3 py-2">
+                <span className="text-[11px] font-semibold text-muted-foreground">Confirm & Assign</span>
+              </div>
+              <div className="p-1">
+                {confirmActions.map((a) => (
+                  <button
+                    key={a.key}
+                    type="button"
+                    className="flex w-full items-start gap-2.5 rounded-md px-3 py-2.5 text-start transition-colors hover:bg-muted"
+                  >
+                    <a.icon className="mt-0.5 h-4 w-4 shrink-0 text-violet-500" />
+                    <div>
+                      <span className="text-xs font-semibold">{a.label}</span>
+                      <p className="text-[10px] text-muted-foreground">{a.desc}</p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Message input */}
+      <div className="flex items-center gap-2 border-t border-border px-4 py-3">
+        <input
+          type="text"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={(e) => { if (e.key === "Enter" && message.trim()) { /* send */ setMessage(""); } }}
+          placeholder="Type your message..."
+          className="flex-1 rounded-lg border border-border bg-card px-3 py-2 text-sm outline-none focus:border-primary"
+          dir={langDir}
+        />
+        <button
+          type="button"
+          className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-white transition-colors hover:bg-primary/90 disabled:opacity-50"
+          disabled={!message.trim()}
+        >
+          <Send className="h-4 w-4" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ─── Copy helper ────────────────────────────────────────────────
+async function copyText(text: string) {
+  try {
+    if (navigator?.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.left = "-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+    }
+  } catch {}
+}
+
+// ─── Main Page ──────────────────────────────────────────────────
+export default function MyOrderDetailsPage() {
+  const t = useTranslations();
+  const { langDir, currency, selectedLocale } = useAuth();
+  const params = useParams();
+  const router = useRouter();
+
+  const orderQuery = useOrderById(
+    { orderProductId: params?.id ? (params.id as string) : "" },
+    !!params?.id,
+  );
+
+  const order = orderQuery.data?.data;
+  const orderInfo = order?.orderProduct_order;
+  const shipping = orderInfo?.order_orderAddress?.find((a: any) => a?.addressType === "SHIPPING");
+  const billing = orderInfo?.order_orderAddress?.find((a: any) => a?.addressType === "BILLING");
+  const otherItems = orderQuery.data?.otherData?.[0]?.order_orderProducts;
+  const shippingDetail = order?.orderShippingDetail;
+  const tracking = (order?.breakdown?.tracking || (order as any)?.tracking) as any;
+
+  const shippingType = shippingDetail?.orderShippingType;
+  const confirmMutation = useConfirmReceipt();
+  const pickupQuery = usePickupCode(
+    Number(params?.id) || 0,
+    shippingType === "PICKUP" && ["CONFIRMED", "SHIPPED", "OFD", "DELIVERED"].includes(order?.orderProductStatus || ""),
+  );
+
+  const product =
+    order?.orderProduct_productPrice?.productPrice_product ||
+    order?.orderProduct_product ||
+    {};
+  const ppd = order?.orderProduct_productPrice || {};
+  const status = order?.orderProductStatus || "CONFIRMED";
+  const isService = order?.orderProductType === "SERVICE";
+  const sellerName = ppd.adminDetail
+    ? `${ppd.adminDetail.firstName} ${ppd.adminDetail.lastName || ""}`.trim()
+    : "Seller";
+
+  const productImage =
+    product.productImages?.[0]?.image ||
+    order?.orderProduct_product?.productImages?.[0]?.image ||
+    null;
+
+  const totalPrice = isService
+    ? Number(order?.purchasePrice || 0) * (order?.orderQuantity ?? 0)
+    : ppd.offerPrice
+      ? Number(ppd.offerPrice) * (order?.orderQuantity ?? 0)
+      : Number(order?.purchasePrice || order?.salePrice || 0) * (order?.orderQuantity ?? 0);
+
+  const orderDate =
+    order?.orderProductDate ||
+    orderInfo?.orderDate ||
+    orderInfo?.createdAt ||
+    order?.createdAt;
+
+  // Build timeline dates
+  const timelineDates: Record<string, string> = {};
+  if (orderDate) timelineDates.placed = orderDate;
+  if (order?.confirmedAt || orderDate) timelineDates.confirmed = order?.confirmedAt || orderDate;
+  if (order?.shippedAt) timelineDates.shipped = order.shippedAt;
+  if (order?.ofdAt) timelineDates.ofd = order.ofdAt;
+  if (order?.deliveredAt) timelineDates.delivered = order.deliveredAt;
+
+  const formatDateShort = (d: string) =>
+    new Date(d).toLocaleDateString(selectedLocale || "en", {
+      weekday: "short",
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+
+  // ── Loading skeleton ──────────────────────────────────────────
+  if (orderQuery.isLoading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
+          <div className="mb-6 h-4 w-48 animate-pulse rounded bg-muted" />
+          <div className="mb-8 grid grid-cols-3 gap-4">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-44 animate-pulse rounded-xl border border-border bg-card" />
+            ))}
+          </div>
+          <div className="h-48 animate-pulse rounded-xl border border-border bg-card" />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-background">
+      <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6">
+        {/* ── Breadcrumb ──────────────────────────────── */}
+        <nav className="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
+          <Link href="/home" className="hover:text-foreground transition-colors">
+            {t("home")}
+          </Link>
+          <span>/</span>
+          <Link href="/my-orders" className="hover:text-foreground transition-colors">
+            {t("my_orders")}
+          </Link>
+          <span>/</span>
+          <span className="font-semibold text-foreground">{orderInfo?.orderNo || `#${params?.id}`}</span>
+        </nav>
+
+        {/* ── Row 1: Address + Actions ────────────────── */}
+        <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
+          <AddressCard
+            title={t("delivery_address")}
+            icon={MapPin}
+            iconColor="text-red-500"
+            name={`${shipping?.firstName || ""} ${shipping?.lastName || ""}`.trim() || "—"}
+            address={shipping?.address || "—"}
+            phone={shipping?.phone || "—"}
+            pin={shipping?.postCode}
+          />
+          <AddressCard
+            title={t("billing_address")}
+            icon={CreditCard}
+            iconColor="text-blue-500"
+            name={`${billing?.firstName || ""} ${billing?.lastName || ""}`.trim() || "—"}
+            address={billing?.address || "—"}
+            phone={billing?.phone || "—"}
+            pin={billing?.postCode}
+          />
+          <div className="rounded-xl border border-border bg-card p-5">
+            <h3 className="mb-3 flex items-center gap-2 text-sm font-bold text-foreground">
+              <FileText className="h-4 w-4 text-violet-500" />
+              More actions
+            </h3>
+            <div className="space-y-2">
+              <button
+                type="button"
+                onClick={() => {
+                  const api = typeof window !== "undefined" ? `http://${window.location.hostname}:3000/api/v1` : "";
+                  window.open(`${api}/order/invoice?orderProductId=${params?.id}`, "_blank");
+                }}
+                className="flex w-full items-center gap-2 rounded-lg bg-red-500 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-red-600"
+              >
+                <Download className="h-4 w-4" />
+                {t("download_invoice")}
+              </button>
+              <button
+                type="button"
+                className="flex w-full items-center gap-2 rounded-lg border border-border px-4 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted"
+              >
+                <HelpCircle className="h-4 w-4" />
+                {t("need_help")}
+              </button>
+              {status === "DELIVERED" && (
+                <button
+                  type="button"
+                  className="flex w-full items-center gap-2 rounded-lg border border-border px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary/5"
+                >
+                  <Star className="h-4 w-4" />
+                  Write a Review
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* ── Row 2: Product + Timeline ───────────────── */}
+        <div className="mb-6 rounded-xl border border-border bg-card">
+          <div className="flex flex-col gap-5 p-5 md:flex-row md:items-start">
+            {/* Product */}
+            <Link
+              href={`/trending/${product.id || order?.orderProduct_product?.id}`}
+              className="h-28 w-28 shrink-0 overflow-hidden rounded-xl border border-border bg-muted transition-opacity hover:opacity-80"
+            >
+              <Image
+                src={productImage || PlaceholderImage}
+                alt={product.productName || "Product"}
+                width={112}
+                height={112}
+                className="h-full w-full object-cover"
+              />
+            </Link>
+
+            <div className="flex-1 min-w-0">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <h2 className="text-base font-bold leading-snug line-clamp-2">
+                    {isService
+                      ? order?.serviceFeatures?.[0]?.serviceFeature?.name
+                      : product.productName || t("unknown_product")}
+                  </h2>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Seller: <span className="font-medium text-foreground">{sellerName}</span>
+                  </p>
+                  <div className="mt-1 flex items-baseline gap-2">
+                    <span className="text-xl font-bold text-primary">
+                      {currency.symbol}{totalPrice.toFixed(2)}
+                    </span>
+                    <span className="text-sm text-muted-foreground">
+                      Quantity x {order?.orderQuantity || 1}
+                    </span>
+                  </div>
+                </div>
+                <div className="shrink-0 text-end">
+                  {orderDate && (
+                    <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                      <Clock className="h-3.5 w-3.5" />
+                      Placed on {formatDateShort(orderDate)}
+                    </div>
+                  )}
+                  <button
+                    type="button"
+                    className="mt-1 flex items-center gap-1 text-xs font-medium text-red-500 hover:underline"
+                  >
+                    <HelpCircle className="h-3 w-3" />
+                    {t("need_help")}
+                  </button>
+                </div>
+              </div>
+
+              {/* Timeline */}
+              <div className="mt-5 rounded-lg border border-border/50 bg-muted/20 p-4">
+                <OrderTimeline status={status} dates={timelineDates} />
+              </div>
+            </div>
+          </div>
+
+          {/* Tracking details if shipped */}
+          {tracking && ["SHIPPED", "OFD", "DELIVERED"].includes(status) && (
+            <div className="border-t border-border px-5 py-4">
+              <div className="flex flex-wrap items-center gap-6 text-sm">
+                {tracking.trackingNumber && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-muted-foreground">Tracking:</span>
+                    <span className="font-mono font-medium">{tracking.trackingNumber}</span>
+                    <button type="button" onClick={() => copyText(tracking.trackingNumber)}
+                      className="rounded border border-border px-1.5 py-0.5 text-[10px] hover:bg-muted">
+                      <Copy className="h-3 w-3" />
+                    </button>
+                  </div>
+                )}
+                {tracking.carrier && (
+                  <div>
+                    <span className="text-muted-foreground">Carrier:</span>{" "}
+                    <span className="font-medium">{tracking.carrier}</span>
+                  </div>
+                )}
+                {(shippingDetail as any)?.carrierTrackingUrl && (
+                  <a
+                    href={(shippingDetail as any).carrierTrackingUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1 text-primary hover:underline"
+                  >
+                    Track Package <ExternalLink className="h-3 w-3" />
+                  </a>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Pickup code / Confirm receipt */}
+          {shippingType === "PICKUP" && pickupQuery.data?.data && (
+            <div className="border-t border-border px-5 py-4">
+              <PickupCodeDisplay code={pickupQuery.data.data.code} />
+            </div>
+          )}
+          {["OFD", "DELIVERED"].includes(status) && status !== "RECEIVED" && (
+            <div className="border-t border-border px-5 py-4">
+              <ConfirmReceiptButton
+                orderProductId={Number(params?.id)}
+                mutation={confirmMutation}
+                currentStatus={status}
+              />
+            </div>
+          )}
+        </div>
+
+        {/* ── Row 3: Order Summary ────────────────────── */}
+        {orderInfo && (
+          <div className="mb-6 rounded-xl border border-border bg-card p-5">
+            <h3 className="mb-4 text-sm font-bold">{t("order_summary")}</h3>
+            <div className="grid grid-cols-2 gap-x-8 gap-y-3 text-sm md:grid-cols-4">
+              <div>
+                <span className="text-muted-foreground">{t("order_number")}</span>
+                <p className="font-semibold">{orderInfo.orderNo}</p>
+              </div>
+              <div>
+                <span className="text-muted-foreground">{t("order_status")}</span>
+                <p className="font-semibold">{orderInfo.orderStatus}</p>
+              </div>
+              <div>
+                <span className="text-muted-foreground">{t("subtotal")}</span>
+                <p className="font-semibold">{currency.symbol}{orderInfo.totalPrice || 0}</p>
+              </div>
+              <div>
+                <span className="text-muted-foreground">{t("total_amount")}</span>
+                <p className="text-lg font-bold text-primary">{currency.symbol}{orderInfo.totalCustomerPay || 0}</p>
+              </div>
+              {orderInfo.paymentType !== "DIRECT" && (orderInfo.dueAmount ?? 0) > 0 && (
+                <>
+                  <div>
+                    <span className="text-muted-foreground">{t("advance_paid")}</span>
+                    <p className="font-semibold">{currency.symbol}{orderInfo.advanceAmount || 0}</p>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">{t("remaining_due")}</span>
+                    <p className="font-semibold text-amber-600">{currency.symbol}{orderInfo.dueAmount || 0}</p>
+                  </div>
+                </>
+              )}
+              {shippingDetail && !isService && (
+                <>
+                  <div>
+                    <span className="text-muted-foreground">{t("shipping_mode")}</span>
+                    <p className="font-semibold">{shippingDetail.orderShippingType}</p>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">{t("delivery_charge")}</span>
+                    <p className="font-semibold">{currency.symbol}{shippingDetail.shippingCharge || 0}</p>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* ── Row 4: Chat with Seller ─────────────────── */}
+        <div className="mb-6">
+          <ChatSection sellerName={sellerName} langDir={langDir} status={status} orderId={orderInfo?.orderNo || String(params?.id)} />
+        </div>
+
+        {/* ── Other items in same order ───────────────── */}
+        {otherItems && otherItems.length > 1 && (
+          <div className="mb-6 rounded-xl border border-border bg-card p-5">
+            <h3 className="mb-4 text-sm font-bold">Other items in this order</h3>
+            <div className="space-y-3">
+              {otherItems
+                .filter((item: any) => item.id !== Number(params?.id))
+                .map((item: any) => {
+                  const p = item.orderProduct_productPrice?.productPrice_product || item.orderProduct_product || {};
+                  const img = p.productImages?.[0]?.image;
+                  return (
+                    <Link
+                      key={item.id}
+                      href={`/my-orders/${item.id}`}
+                      className="flex items-center gap-3 rounded-lg border border-border/50 p-3 transition-colors hover:bg-muted/30"
+                    >
+                      <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-muted">
+                        <Image
+                          src={img || PlaceholderImage}
+                          alt=""
+                          width={48}
+                          height={48}
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium truncate">{p.productName || `Item #${item.id}`}</p>
+                        <p className="text-xs text-muted-foreground">Qty: {item.orderQuantity || 1}</p>
+                      </div>
+                      <span className="text-sm font-semibold">
+                        {currency.symbol}{Number(item.totalCustomerPay || 0).toFixed(2)}
+                      </span>
+                    </Link>
+                  );
+                })}
+            </div>
+          </div>
+        )}
+
+        {/* ── Back button ─────────────────────────────── */}
+        <div className="pb-8">
+          <button
+            type="button"
+            onClick={() => router.push("/my-orders")}
+            className="flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to My Orders
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
