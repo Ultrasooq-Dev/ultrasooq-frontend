@@ -250,75 +250,122 @@ const MyOrdersPage = () => {
         </div>
 
         <div>
-          {/* Horizontal Filter Bar */}
-          <div className="sticky top-0 z-20 mb-6 flex flex-wrap items-center gap-3 rounded-xl border border-border bg-card/95 backdrop-blur-sm px-5 py-3 shadow-sm">
-            {/* Search */}
-            <div className="relative flex-1 min-w-[200px] max-w-sm">
-              <Search className="absolute top-1/2 start-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <input
-                type="text"
-                placeholder={t("search_orders")}
-                onChange={handleDebounce}
-                ref={searchRef}
-                className="w-full rounded-lg border border-border bg-muted/30 py-2 pe-3 ps-10 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
-                dir={langDir}
-              />
-              {searchTerm !== "" && (
-                <button type="button" onClick={handleClearSearch}
-                  className="absolute top-1/2 end-3 -translate-y-1/2 text-muted-foreground hover:text-foreground">
-                  <X className="h-3.5 w-3.5" />
+          {/* Filter Bar — sticky */}
+          <div className="sticky top-0 z-20 mb-6 rounded-xl border border-border bg-card/95 backdrop-blur-sm shadow-sm">
+            {/* Row 1: Search + Status chips */}
+            <div className="flex flex-wrap items-center gap-3 px-5 py-3">
+              {/* Search */}
+              <div className="relative min-w-[200px] max-w-xs flex-1">
+                <Search className="absolute top-1/2 start-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <input
+                  type="text"
+                  placeholder={t("search_orders")}
+                  onChange={handleDebounce}
+                  ref={searchRef}
+                  className="w-full rounded-lg border border-border bg-muted/30 py-2 pe-3 ps-10 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                  dir={langDir}
+                />
+                {searchTerm !== "" && (
+                  <button type="button" onClick={handleClearSearch}
+                    className="absolute top-1/2 end-3 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+                )}
+              </div>
+
+              <div className="h-6 w-px bg-border" />
+
+              {/* Status chips */}
+              <div className="flex flex-wrap items-center gap-1.5">
+                {[
+                  { value: "", label: t("all"), color: "bg-primary" },
+                  { value: "CONFIRMED", label: t("confirmed"), color: "bg-blue-500" },
+                  { value: "SHIPPED", label: t("shipped"), color: "bg-indigo-500" },
+                  { value: "OFD", label: t("on_the_way"), color: "bg-amber-500" },
+                  { value: "DELIVERED", label: t("delivered"), color: "bg-emerald-500" },
+                  { value: "CANCELLED", label: t("cancelled"), color: "bg-red-500" },
+                ].map((s) => (
+                  <button key={s.value} type="button"
+                    onClick={() => { setOrderStatus(s.value); setPage(1); }}
+                    className={cn(
+                      "rounded-full px-3 py-1 text-xs font-medium transition-all",
+                      orderStatus === s.value
+                        ? `${s.color} text-white shadow-sm`
+                        : "bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground",
+                    )}>
+                    {s.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Result count */}
+              <span className="ms-auto text-xs text-muted-foreground">
+                {(ordersQuery?.data as any)?.totalCount || 0} results
+              </span>
+            </div>
+
+            {/* Row 2: Time + Sort + Clear */}
+            <div className="flex flex-wrap items-center gap-3 border-t border-border/50 px-5 py-2">
+              {/* Time dropdown */}
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                <Calendar className="h-3.5 w-3.5" />
+                <select
+                  value={orderTime}
+                  onChange={(e) => { setOrderTime(e.target.value); setPage(1); }}
+                  className="rounded-lg border border-border bg-muted/30 px-2 py-1 text-xs font-medium outline-none focus:border-primary cursor-pointer"
+                >
+                  <option value="">{t("all_time") || "All Time"}</option>
+                  <option value="last30">{t("last_30_days")}</option>
+                  <option value="2026">2026</option>
+                  <option value="2025">2025</option>
+                  <option value="2024">2024</option>
+                  <option value="older">{t("older")}</option>
+                </select>
+              </div>
+
+              <div className="h-4 w-px bg-border" />
+
+              {/* Sort */}
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                <TrendingUp className="h-3.5 w-3.5" />
+                <select
+                  className="rounded-lg border border-border bg-muted/30 px-2 py-1 text-xs font-medium outline-none focus:border-primary cursor-pointer"
+                >
+                  <option value="newest">Newest first</option>
+                  <option value="oldest">Oldest first</option>
+                  <option value="price_high">Price: High to Low</option>
+                  <option value="price_low">Price: Low to High</option>
+                </select>
+              </div>
+
+              <div className="flex-1" />
+
+              {/* Active filter tags */}
+              {orderStatus && (
+                <span className="flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
+                  Status: {orderStatus}
+                  <button type="button" onClick={() => setOrderStatus("")}>
+                    <X className="h-2.5 w-2.5" />
+                  </button>
+                </span>
+              )}
+              {orderTime && (
+                <span className="flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
+                  Time: {orderTime}
+                  <button type="button" onClick={() => setOrderTime("")}>
+                    <X className="h-2.5 w-2.5" />
+                  </button>
+                </span>
+              )}
+
+              {/* Clear all */}
+              {(orderStatus || orderTime || searchTerm) && (
+                <button type="button" onClick={() => { handleClearFilter(); handleClearSearch(); }}
+                  className="flex items-center gap-1 text-[11px] font-medium text-destructive hover:underline">
+                  <X className="h-3 w-3" /> Clear all
                 </button>
               )}
             </div>
-
-            <div className="h-6 w-px bg-border" />
-
-            {/* Status chips */}
-            <div className="flex flex-wrap items-center gap-1.5">
-              {[
-                { value: "", label: t("all") },
-                { value: "CONFIRMED", label: t("confirmed") },
-                { value: "SHIPPED", label: t("shipped") },
-                { value: "OFD", label: t("on_the_way") },
-                { value: "DELIVERED", label: t("delivered") },
-                { value: "CANCELLED", label: t("cancelled") },
-              ].map((s) => (
-                <button key={s.value} type="button"
-                  onClick={() => { setOrderStatus(s.value); setPage(1); }}
-                  className={cn(
-                    "rounded-full px-3 py-1 text-xs font-medium transition-all",
-                    orderStatus === s.value
-                      ? "bg-primary text-white shadow-sm"
-                      : "bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground",
-                  )}>
-                  {s.label}
-                </button>
-              ))}
-            </div>
-
-            <div className="h-6 w-px bg-border" />
-
-            {/* Time dropdown */}
-            <select
-              value={orderTime}
-              onChange={(e) => { setOrderTime(e.target.value); setPage(1); }}
-              className="rounded-lg border border-border bg-muted/30 px-3 py-1.5 text-xs font-medium outline-none focus:border-primary cursor-pointer"
-            >
-              <option value="">{t("all_time") || "All Time"}</option>
-              <option value="last30">{t("last_30_days")}</option>
-              <option value="2026">2026</option>
-              <option value="2025">2025</option>
-              <option value="2024">2024</option>
-              <option value="older">{t("older")}</option>
-            </select>
-
-            {/* Clear */}
-            {(orderStatus || orderTime || searchTerm) && (
-              <button type="button" onClick={() => { handleClearFilter(); handleClearSearch(); }}
-                className="flex items-center gap-1 text-xs font-medium text-destructive hover:underline">
-                <X className="h-3 w-3" /> Clear
-              </button>
-            )}
           </div>
 
           {/* Full width content */}
