@@ -31,6 +31,7 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/context/AuthContext";
 import Pagination from "@/components/shared/Pagination";
+import { cn } from "@/lib/utils";
 
 const MyOrdersPage = () => {
   const t = useTranslations();
@@ -248,206 +249,80 @@ const MyOrdersPage = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
-          {/* Filters Sidebar */}
-          <div className="lg:col-span-1">
-            <Card className="sticky top-8">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Filter className="h-5 w-5" />
-                  {t("filter")}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {/* Order Status Filter */}
-                <div>
-                  <h3 className="mb-3 flex items-center gap-2 font-semibold text-foreground">
-                    <Package className="h-4 w-4" />
-                    {t("order_status")}
-                  </h3>
-                  <RadioGroup
-                    className="space-y-3"
-                    value={orderStatus}
-                    onValueChange={setOrderStatus}
-                  >
-                    <div className="flex items-center space-x-3">
-                      <RadioGroupItem value="" id="ALL" />
-                      <Label
-                        htmlFor="ALL"
-                        className="cursor-pointer text-sm font-medium"
-                      >
-                        {t("all")}
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <RadioGroupItem value="CONFIRMED" id="CONFIRMED" />
-                      <Label
-                        htmlFor="CONFIRMED"
-                        className="cursor-pointer text-sm font-medium"
-                      >
-                        {t("confirmed")}
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <RadioGroupItem value="SHIPPED" id="SHIPPED" />
-                      <Label
-                        htmlFor="SHIPPED"
-                        className="cursor-pointer text-sm font-medium"
-                      >
-                        {t("shipped")}
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <RadioGroupItem value="OFD" id="OFD" />
-                      <Label
-                        htmlFor="OFD"
-                        className="cursor-pointer text-sm font-medium"
-                      >
-                        {t("on_the_way")}
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <RadioGroupItem value="DELIVERED" id="DELIVERED" />
-                      <Label
-                        htmlFor="DELIVERED"
-                        className="cursor-pointer text-sm font-medium"
-                      >
-                        {t("delivered")}
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <RadioGroupItem value="CANCELLED" id="CANCELLED" />
-                      <Label
-                        htmlFor="CANCELLED"
-                        className="cursor-pointer text-sm font-medium"
-                      >
-                        {t("cancelled")}
-                      </Label>
-                    </div>
-                  </RadioGroup>
-                </div>
+        <div>
+          {/* Horizontal Filter Bar */}
+          <div className="mb-6 flex flex-wrap items-center gap-3 rounded-xl border border-border bg-card px-5 py-3">
+            {/* Search */}
+            <div className="relative flex-1 min-w-[200px] max-w-sm">
+              <Search className="absolute top-1/2 start-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <input
+                type="text"
+                placeholder={t("search_orders")}
+                onChange={handleDebounce}
+                ref={searchRef}
+                className="w-full rounded-lg border border-border bg-muted/30 py-2 pe-3 ps-10 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                dir={langDir}
+              />
+              {searchTerm !== "" && (
+                <button type="button" onClick={handleClearSearch}
+                  className="absolute top-1/2 end-3 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              )}
+            </div>
 
-                <div className="border-t pt-6">
-                  {/* Order Time Filter */}
-                  <h3 className="mb-3 flex items-center gap-2 font-semibold text-foreground">
-                    <Calendar className="h-4 w-4" />
-                    {t("order_time")}
-                  </h3>
-                  <RadioGroup
-                    className="space-y-3"
-                    value={orderTime}
-                    onValueChange={setOrderTime}
-                  >
-                    <div className="flex items-center space-x-3">
-                      <RadioGroupItem value="last30" id="last30" />
-                      <Label
-                        htmlFor="last30"
-                        className="cursor-pointer text-sm font-medium"
-                      >
-                        {t("last_30_days")}
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <RadioGroupItem value="2024" id="2024" />
-                      <Label
-                        htmlFor="2024"
-                        className="cursor-pointer text-sm font-medium"
-                      >
-                        2024
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <RadioGroupItem value="2023" id="2023" />
-                      <Label
-                        htmlFor="2023"
-                        className="cursor-pointer text-sm font-medium"
-                      >
-                        2023
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <RadioGroupItem value="2022" id="2022" />
-                      <Label
-                        htmlFor="2022"
-                        className="cursor-pointer text-sm font-medium"
-                      >
-                        2022
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <RadioGroupItem value="2021" id="2021" />
-                      <Label
-                        htmlFor="2021"
-                        className="cursor-pointer text-sm font-medium"
-                      >
-                        2021
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <RadioGroupItem value="2020" id="2020" />
-                      <Label
-                        htmlFor="2020"
-                        className="cursor-pointer text-sm font-medium"
-                      >
-                        2020
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <RadioGroupItem value="older" id="older" />
-                      <Label
-                        htmlFor="older"
-                        className="cursor-pointer text-sm font-medium"
-                      >
-                        {t("older")}
-                      </Label>
-                    </div>
-                  </RadioGroup>
-                </div>
+            <div className="h-6 w-px bg-border" />
 
-                <div className="border-t pt-6">
-                  <Button
-                    variant="outline"
-                    onClick={handleClearFilter}
-                    className="w-full"
-                  >
-                    <X className="mr-2 h-4 w-4" />
-                    {t("clean_filter")}
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Status chips */}
+            <div className="flex flex-wrap items-center gap-1.5">
+              {[
+                { value: "", label: t("all") },
+                { value: "CONFIRMED", label: t("confirmed") },
+                { value: "SHIPPED", label: t("shipped") },
+                { value: "OFD", label: t("on_the_way") },
+                { value: "DELIVERED", label: t("delivered") },
+                { value: "CANCELLED", label: t("cancelled") },
+              ].map((s) => (
+                <button key={s.value} type="button"
+                  onClick={() => { setOrderStatus(s.value); setPage(1); }}
+                  className={cn(
+                    "rounded-full px-3 py-1 text-xs font-medium transition-all",
+                    orderStatus === s.value
+                      ? "bg-primary text-white shadow-sm"
+                      : "bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground",
+                  )}>
+                  {s.label}
+                </button>
+              ))}
+            </div>
+
+            <div className="h-6 w-px bg-border" />
+
+            {/* Time dropdown */}
+            <select
+              value={orderTime}
+              onChange={(e) => { setOrderTime(e.target.value); setPage(1); }}
+              className="rounded-lg border border-border bg-muted/30 px-3 py-1.5 text-xs font-medium outline-none focus:border-primary cursor-pointer"
+            >
+              <option value="">{t("all_time") || "All Time"}</option>
+              <option value="last30">{t("last_30_days")}</option>
+              <option value="2026">2026</option>
+              <option value="2025">2025</option>
+              <option value="2024">2024</option>
+              <option value="older">{t("older")}</option>
+            </select>
+
+            {/* Clear */}
+            {(orderStatus || orderTime || searchTerm) && (
+              <button type="button" onClick={() => { handleClearFilter(); handleClearSearch(); }}
+                className="flex items-center gap-1 text-xs font-medium text-destructive hover:underline">
+                <X className="h-3 w-3" /> Clear
+              </button>
+            )}
           </div>
 
-          {/* Main Content */}
-          <div className="lg:col-span-3">
-            {/* Search Bar */}
-            <Card className="mb-6">
-              <CardContent className="p-6">
-                <div className="flex gap-4">
-                  <div className="relative flex-1">
-                    <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-muted-foreground" />
-                    <Input
-                      type="text"
-                      placeholder={t("search_orders")}
-                      onChange={handleDebounce}
-                      ref={searchRef}
-                      className="pl-10"
-                      dir={langDir}
-                    />
-                    {searchTerm !== "" && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="absolute top-1/2 right-2 h-6 w-6 -translate-y-1/2 transform p-0"
-                        onClick={handleClearSearch}
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+          {/* Full width content */}
+          <div>
 
             {/* Bulk Action Bar — seller only */}
             {activeTab === "selling" && selectedIds.size > 0 && (
