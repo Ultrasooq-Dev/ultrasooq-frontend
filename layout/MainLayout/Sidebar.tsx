@@ -237,9 +237,9 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
           label: t("orders"),
           translationKey: "orders",
           shortLabel: getShortLabel("orders"),
-          path: "/seller-orders",
+          path: "/orders",
           onClick: () => {
-            router.push("/seller-orders");
+            router.push("/orders");
           },
         },
         {

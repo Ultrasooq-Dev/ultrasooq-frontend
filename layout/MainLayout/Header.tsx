@@ -530,8 +530,8 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
             </li>
             <li className="py-1.5 text-sm font-normal capitalize sm:text-base md:text-lg">
               <Link
-                href="/seller-orders"
-                className={getActiveClass("/seller-orders")}
+                href="/orders"
+                className={getActiveClass("/orders")}
                 translate="no"
               >
                 {t("orders")}
@@ -877,7 +877,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                                   </Link>
                                 )} */}
                                 {hideMenu(PERMISSION_ORDERS) && (
-                                  <Link href="/seller-orders">
+                                  <Link href="/orders">
                                     <DropdownMenuItem translate="no">
                                       {t("orders")}
                                     </DropdownMenuItem>
@@ -1790,7 +1790,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                                     ) : null} */}
 
                                     {hideMenu(PERMISSION_ORDERS) ? (
-                                      <Link href="/seller-orders">
+                                      <Link href="/orders">
                                         <DropdownMenuItem
                                           dir={langDir}
                                           translate="no"
