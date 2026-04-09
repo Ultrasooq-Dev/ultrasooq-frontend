@@ -700,12 +700,17 @@ export default function MyOrderDetailsPage() {
     order?.createdAt;
 
   // Build timeline dates
-  const timelineDates: Record<string, string> = {};
-  if (orderDate) timelineDates.placed = orderDate;
-  if (order?.confirmedAt || orderDate) timelineDates.confirmed = order?.confirmedAt || orderDate;
-  if (order?.shippedAt) timelineDates.shipped = order.shippedAt;
-  if (order?.ofdAt) timelineDates.ofd = order.ofdAt;
-  if (order?.deliveredAt) timelineDates.delivered = order.deliveredAt;
+  // Live timeline dates — updated when vendor clicks stages
+  const [liveDates, setLiveDates] = useState<Record<string, string>>({});
+
+  const timelineDates: Record<string, string> = {
+    ...(orderDate ? { placed: orderDate } : {}),
+    ...(order?.confirmedAt || orderDate ? { confirmed: order?.confirmedAt || orderDate } : {}),
+    ...(order?.shippedAt ? { shipped: order.shippedAt } : {}),
+    ...(order?.ofdAt ? { ofd: order.ofdAt } : {}),
+    ...(order?.deliveredAt ? { delivered: order.deliveredAt } : {}),
+    ...liveDates, // live updates override DB values
+  };
 
   const formatDateShort = (d: string) =>
     new Date(d).toLocaleDateString(selectedLocale || "en", {
@@ -974,7 +979,30 @@ export default function MyOrderDetailsPage() {
             status={status}
             orderId={orderInfo?.orderNo || String(params?.id)}
             onStatusChange={(newStatus) => {
+              const now = new Date().toISOString();
               setLiveStatus(newStatus);
+              // Update timeline date for the step that just changed
+              const statusToDateKey: Record<string, string> = {
+                CONFIRMED: "confirmed",
+                SHIPPED: "shipped",
+                OFD: "ofd",
+                DELIVERED: "delivered",
+              };
+              const dateKey = statusToDateKey[newStatus];
+              if (dateKey) {
+                setLiveDates((prev) => {
+                  const next = { ...prev, [dateKey]: now };
+                  // Also fill in earlier steps if they don't have dates yet
+                  const order = ["confirmed", "shipped", "ofd", "delivered"];
+                  const idx = order.indexOf(dateKey);
+                  for (let i = 0; i < idx; i++) {
+                    if (!next[order[i]] && !timelineDates[order[i]]) {
+                      next[order[i]] = now;
+                    }
+                  }
+                  return next;
+                });
+              }
               // TODO: call backend API to persist status change
               // e.g. updateOrderStatus.mutate({ orderProductId: params?.id, status: newStatus })
             }}
