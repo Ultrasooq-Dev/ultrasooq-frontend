@@ -1,1130 +1,447 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/context/AuthContext";
 import { useMe } from "@/apis/queries/user.queries";
-import { 
-  useVendorOrderStats, 
-  useVendorRecentOrders, 
-  useUpdateOrderStatus, 
-  useAddOrderTracking,
-  useOrdersBySellerId 
+import {
+  useVendorOrderStats,
+  useVendorRecentOrders,
+  useOrdersBySellerId,
 } from "@/apis/queries/orders.queries";
-import { useToast } from "@/components/ui/use-toast";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
-} from "@/components/ui/select";
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle, 
-  DialogTrigger 
-} from "@/components/ui/dialog";
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardHeader, 
-  CardTitle 
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { 
-  Package, 
-  TrendingUp, 
-  Clock, 
-  CheckCircle, 
-  XCircle, 
-  DollarSign,
-  Eye,
-  Edit,
-  Truck,
-  Calendar,
-  Filter,
-    Search,
-    X,
-    Phone,
-    MapPin,
-    ChevronLeft,
-    ChevronRight
-} from "lucide-react";
-import { format } from "date-fns";
-import Footer from "@/components/shared/Footer";
+import Link from "next/link";
+import Image from "next/image";
 import { withActiveUserGuard } from "@/components/shared/withRouteGuard";
+import { formattedDate } from "@/utils/constants";
+import { cn } from "@/lib/utils";
+import {
+  Package,
+  TrendingUp,
+  TrendingDown,
+  Clock,
+  CheckCircle2,
+  XCircle,
+  DollarSign,
+  Truck,
+  ShoppingBag,
+  BarChart3,
+  BoxIcon,
+  Users,
+  AlertTriangle,
+  ReceiptText,
+  ArrowRight,
+  ArrowUpRight,
+  Eye,
+  Star,
+  FileText,
+  MessageCircle,
+  Zap,
+  Settings,
+  PackageCheck,
+  Store,
+} from "lucide-react";
 
-const VendorDashboardPage = () => {
-  const t = useTranslations();
-  const { langDir, currency } = useAuth();
-  const { toast } = useToast();
-  const me = useMe();
+// ─── KPI Card ───────────────────────────────────────────────────
+function StatCard({
+  title,
+  value,
+  subtitle,
+  icon: Icon,
+  iconColor,
+  iconBg,
+  trend,
+  trendLabel,
+  href,
+}: {
+  title: string;
+  value: string | number;
+  subtitle?: string;
+  icon: React.ElementType;
+  iconColor: string;
+  iconBg: string;
+  trend?: number;
+  trendLabel?: string;
+  href?: string;
+}) {
+  const content = (
+    <div className={cn(
+      "rounded-2xl border border-border bg-card p-5 transition-all",
+      href && "hover:shadow-lg hover:border-border/80 cursor-pointer group",
+    )}>
+      <div className="flex items-start justify-between">
+        <div>
+          <p className="text-xs font-medium text-muted-foreground">{title}</p>
+          <p className="mt-1 text-2xl font-bold tracking-tight">{value}</p>
+          {subtitle && <p className="mt-0.5 text-[11px] text-muted-foreground">{subtitle}</p>}
+          {trend !== undefined && (
+            <div className={cn("mt-2 flex items-center gap-1 text-[11px] font-medium",
+              trend >= 0 ? "text-emerald-600" : "text-red-500")}>
+              {trend >= 0 ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
+              {trend >= 0 ? "+" : ""}{trend}% {trendLabel || "vs last month"}
+            </div>
+          )}
+        </div>
+        <div className={cn("flex h-11 w-11 items-center justify-center rounded-xl", iconBg)}>
+          <Icon className={cn("h-5 w-5", iconColor)} />
+        </div>
+      </div>
+      {href && (
+        <div className="mt-3 flex items-center gap-1 text-[11px] font-medium text-primary opacity-0 transition-opacity group-hover:opacity-100">
+          View details <ArrowUpRight className="h-3 w-3" />
+        </div>
+      )}
+    </div>
+  );
+  return href ? <Link href={href}>{content}</Link> : content;
+}
 
-  // Safe copy helper (works when navigator.clipboard is unavailable)
-  const copyToClipboard = async (text: string) => {
-    try {
-      if (typeof navigator !== "undefined" && (navigator as any).clipboard && (window as any).isSecureContext) {
-        await (navigator as any).clipboard.writeText(text);
-      } else {
-        const textarea = document.createElement("textarea");
-        textarea.value = text;
-        textarea.setAttribute("readonly", "");
-        textarea.style.position = "absolute";
-        textarea.style.left = "-9999px";
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand("copy");
-        document.body.removeChild(textarea);
-      }
-      toast({ title: t("copied"), description: t("address_copied_to_clipboard"), variant: "success" });
-    } catch (e) {
-      toast({ title: t("error"), description: t("failed_to_copy"), variant: "destructive" });
-    }
+// ─── Quick Link Card ────────────────────────────────────────────
+function QuickLink({
+  title,
+  description,
+  icon: Icon,
+  href,
+  color,
+  badge,
+}: {
+  title: string;
+  description: string;
+  icon: React.ElementType;
+  href: string;
+  color: string;
+  badge?: number;
+}) {
+  return (
+    <Link href={href}
+      className="group flex items-center gap-4 rounded-xl border border-border bg-card p-4 transition-all hover:shadow-md hover:border-border/80">
+      <div className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl", color)}>
+        <Icon className="h-5 w-5 text-white" />
+      </div>
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-semibold">{title}</span>
+          {badge != null && badge > 0 && (
+            <span className="rounded-full bg-red-500 px-1.5 py-0.5 text-[9px] font-bold text-white">{badge}</span>
+          )}
+        </div>
+        <p className="text-[11px] text-muted-foreground">{description}</p>
+      </div>
+      <ArrowRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-1" />
+    </Link>
+  );
+}
+
+// ─── Mini Order Row ─────────────────────────────────────────────
+function OrderRow({ item, currency }: { item: any; currency: { symbol: string } }) {
+  const status = item.orderProductStatus || "PLACED";
+  const statusColors: Record<string, string> = {
+    PLACED: "text-gray-600 bg-gray-50", CONFIRMED: "text-blue-600 bg-blue-50",
+    SHIPPED: "text-indigo-600 bg-indigo-50", OFD: "text-amber-600 bg-amber-50",
+    DELIVERED: "text-emerald-600 bg-emerald-50", CANCELLED: "text-red-500 bg-red-50",
   };
-
-  // State management
-  const [selectedOrder, setSelectedOrder] = useState<any>(null);
-  const [isOrderDetailsOpen, setIsOrderDetailsOpen] = useState(false);
-  const [isStatusUpdateOpen, setIsStatusUpdateOpen] = useState(false);
-  const [isTrackingOpen, setIsTrackingOpen] = useState(false);
-  const [isEditingTracking, setIsEditingTracking] = useState(false);
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [orderTypeTab, setOrderTypeTab] = useState<"ALL" | "BUYGROUP">("ALL");
-  const [dateRange, setDateRange] = useState("all");
-  const [searchTerm, setSearchTerm] = useState("");
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(20);
-
-  // Form states
-  const [newStatus, setNewStatus] = useState("");
-  const [statusNotes, setStatusNotes] = useState("");
-  const [trackingNumber, setTrackingNumber] = useState("");
-  const [carrier, setCarrier] = useState("");
-  const [trackingNotes, setTrackingNotes] = useState("");
-
-  // Debounce search term
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm);
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [searchTerm]);
-
-  // Reset page when filters change
-  useEffect(() => {
-    setPage(1);
-  }, [statusFilter, dateRange, debouncedSearchTerm, limit]);
-
-  // Clear all filters
-  const handleClearFilters = () => {
-    setStatusFilter("all");
-    setDateRange("all");
-    setSearchTerm("");
-    setPage(1);
-  };
-
-  // API calls
-  const { data: orderStats, isLoading: statsLoading, error: statsError } = useVendorOrderStats();
-const queryParams = {
-    page,
-    limit,
-    status: statusFilter === "all" ? undefined : statusFilter,
-    startDate: dateRange === "custom" ? undefined : getDateRange(dateRange).start,
-    endDate: dateRange === "custom" ? undefined : getDateRange(dateRange).end,
-    search: debouncedSearchTerm || undefined,
-    sellType: orderTypeTab === "BUYGROUP" ? "BUYGROUP" : "NON_BUYGROUP",
-  };
-  
-  const { data: recentOrders, isLoading: ordersLoading, error: ordersError } = useVendorRecentOrders(queryParams);
-
-
-  const updateStatusMutation = useUpdateOrderStatus();
-  const addTrackingMutation = useAddOrderTracking();
-
-  // Helper function to get date ranges
-  function getDateRange(range: string) {
-    const now = new Date();
-    const start = new Date();
-    const end = new Date();
-
-    switch (range) {
-      case "all":
-        return { start: undefined, end: undefined };
-      case "this_month":
-        start.setDate(1);
-        end.setMonth(now.getMonth() + 1, 0); // Last day of current month
-        break;
-      case "last_month":
-        start.setMonth(now.getMonth() - 1, 1);
-        end.setMonth(now.getMonth(), 0);
-        break;
-      case "this_year":
-        start.setMonth(0, 1);
-        end.setMonth(11, 31); // Last day of current year
-        break;
-      case "last_year":
-        start.setFullYear(now.getFullYear() - 1, 0, 1);
-        end.setFullYear(now.getFullYear() - 1, 11, 31);
-        break;
-      default:
-        return { start: undefined, end: undefined };
-    }
-
-    return {
-      start: start.toISOString().split('T')[0],
-      end: end.toISOString().split('T')[0]
-    };
-  }
-
-  // Handle status update
-  const handleStatusUpdate = async () => {
-    if (!selectedOrder || !newStatus) return;
-
-    try {
-      await updateStatusMutation.mutateAsync({
-        orderProductId: selectedOrder.id,
-        status: newStatus,
-        notes: statusNotes,
-      });
-
-      toast({
-        title: t("status_updated_successfully"),
-        description: t("order_status_has_been_updated"),
-        variant: "success",
-      });
-
-      setIsStatusUpdateOpen(false);
-      setNewStatus("");
-      setStatusNotes("");
-    } catch (error) {
-      toast({
-        title: t("error"),
-        description: t("failed_to_update_status"),
-        variant: "destructive",
-      });
-    }
-  };
-
-  // Handle tracking addition
-  const handleAddTracking = async () => {
-    if (!selectedOrder || !trackingNumber || !carrier) return;
-
-    try {
-      await addTrackingMutation.mutateAsync({
-        orderProductId: selectedOrder.id,
-        trackingNumber,
-        carrier,
-        notes: trackingNotes,
-      });
-
-      toast({
-        title: t("tracking_added_successfully"),
-        description: t("tracking_information_has_been_added"),
-        variant: "success",
-      });
-
-      setIsTrackingOpen(false);
-      setTrackingNumber("");
-      setCarrier("");
-      setTrackingNotes("");
-      setIsEditingTracking(false);
-    } catch (error) {
-      toast({
-        title: t("error"),
-        description: t("failed_to_add_tracking"),
-        variant: "destructive",
-      });
-    }
-  };
-
-  // Get status badge variant
-  const getStatusBadgeVariant = (status: string) => {
-    switch (status.toLowerCase()) {
-      case "pending":
-        return "secondary";
-      case "processing":
-        return "default";
-      case "shipped":
-        return "default";
-      case "delivered":
-        return "default";
-      case "cancelled":
-        return "destructive";
-      case "refunded":
-        return "outline";
-      default:
-        return "secondary";
-    }
-  };
-
-  // Get status icon
-  const getStatusIcon = (status: string) => {
-    switch (status.toLowerCase()) {
-      case "pending":
-        return <Clock className="h-4 w-4" />;
-      case "processing":
-        return <Package className="h-4 w-4" />;
-      case "shipped":
-        return <Truck className="h-4 w-4" />;
-      case "delivered":
-        return <CheckCircle className="h-4 w-4" />;
-      case "cancelled":
-        return <XCircle className="h-4 w-4" />;
-      default:
-        return <Clock className="h-4 w-4" />;
-    }
-  };
-
-  // Extract shipping address from various possible shapes
-  const getShippingFrom = (order: any) => {
-    const list =
-      order?.orderProduct_order?.order_orderAddress ||
-      order?.order_orderAddress ||
-      order?.order?.order_orderAddress ||
-      [];
-    const addr = Array.isArray(list)
-      ? list.find((a: any) => (a?.addressType || a?.addresstype || a?.type) === "SHIPPING") || list.find((a: any) => a?.addressType === "shipping")
-      : undefined;
-    return addr;
-  };
-
-  // Group buygroup orders by product when Buygroup tab is active
-  const groupedBuygroupOrders = React.useMemo(() => {
-    if (orderTypeTab !== "BUYGROUP" || !recentOrders?.data?.orders?.length) return [] as any[];
-    const map: Record<string, any> = {};
-    for (const o of recentOrders.data.orders) {
-      const item = o.items?.[0];
-      if (!item) continue;
-      const key = String(item.id);
-      if (!map[key]) {
-        map[key] = {
-          productId: item.id,
-          productName: item.name,
-          productImage: item.image,
-          orders: [],
-          totalQuantity: 0,
-        };
-      }
-      map[key].orders.push(o);
-      // Sum up the quantity for this product
-      map[key].totalQuantity += item.quantity || 1;
-    }
-    return Object.values(map);
-  }, [orderTypeTab, recentOrders?.data?.orders]);
-
-  const [expandedProductIds, setExpandedProductIds] = useState<Record<string, boolean>>({});
-  const toggleExpand = (pid: string | number) =>
-    setExpandedProductIds((prev) => ({ ...prev, [String(pid)]: !prev[String(pid)] }));
-
-  // Bulk status per product group (local state: selected status for group id)
-  const [groupBulkStatus, setGroupBulkStatus] = useState<Record<string, string>>({});
-  const [groupBulkLoading, setGroupBulkLoading] = useState<Record<string, boolean>>({});
-
-  const handleBulkUpdateGroup = async (group: any) => {
-    const pid = String(group.productId);
-    const status = groupBulkStatus[pid];
-    if (!status) return;
-    try {
-      setGroupBulkLoading((s) => ({ ...s, [pid]: true }));
-      // Update all orders in this group
-      for (const order of group.orders) {
-        await updateStatusMutation.mutateAsync({
-          orderProductId: order.id,
-          status,
-          notes: undefined,
-        });
-      }
-      toast({
-        title: t("status_updated_successfully"),
-        description: t("order_status_has_been_updated"),
-        variant: "success",
-      });
-    } catch (e) {
-      toast({ title: t("error"), description: t("failed_to_update_status"), variant: "destructive" });
-    } finally {
-      setGroupBulkLoading((s) => ({ ...s, [pid]: false }));
-    }
-  };
+  const product = item.orderProduct_productPrice?.productPrice_product || item.orderProduct_product || {};
+  const buyer = item.orderProduct_order?.order_user;
+  const img = product.productImages?.[0]?.image;
 
   return (
-    <>
-      <title dir={langDir} translate="no">{`${t("vendor_dashboard")} | Ultrasooq`}</title>
-      <div className="min-h-screen bg-muted">
-        <div className="w-full px-6 lg:px-12 py-8">
-          {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-foreground" dir={langDir}>
-              {t("vendor_dashboard")}
-            </h1>
-            <p className="text-muted-foreground mt-2" dir={langDir}>
-              {t("order_management")}
-            </p>
+    <Link href={`/orders/${item.id}`}
+      className="flex items-center gap-3 rounded-lg px-3 py-2.5 transition-colors hover:bg-muted/50">
+      <div className="h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-muted">
+        {img ? <img src={img} alt="" className="h-full w-full object-cover" /> : <Package className="m-2 h-6 w-6 text-muted-foreground/20" />}
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-xs font-semibold truncate">{product.productName || `Order #${item.id}`}</p>
+        <p className="text-[10px] text-muted-foreground">
+          {buyer ? `${buyer.firstName || ""} ${buyer.lastName || ""}`.trim() : "Customer"} · {item.orderQuantity || 1} item{(item.orderQuantity || 1) > 1 ? "s" : ""}
+        </p>
+      </div>
+      <div className="shrink-0 text-end">
+        <span className="text-xs font-bold">{currency.symbol}{Number(item.customerPay || item.purchasePrice || 0).toFixed(2)}</span>
+        <span className={cn("mt-0.5 block rounded-full px-2 py-0.5 text-[9px] font-semibold", statusColors[status] || statusColors.PLACED)}>
+          {status}
+        </span>
+      </div>
+    </Link>
+  );
+}
+
+// ─── Status Distribution Bar ────────────────────────────────────
+function StatusBar({ stats }: { stats: any }) {
+  const total = (stats?.totalOrders || 1);
+  const segments = [
+    { label: "Pending", count: stats?.pendingOrders || 0, color: "bg-amber-400" },
+    { label: "Completed", count: stats?.completedOrders || 0, color: "bg-emerald-500" },
+    { label: "Cancelled", count: stats?.cancelledOrders || 0, color: "bg-red-400" },
+  ];
+
+  return (
+    <div>
+      <div className="flex h-2 overflow-hidden rounded-full bg-muted">
+        {segments.map((s) => (
+          <div key={s.label} className={cn("transition-all", s.color)}
+            style={{ width: `${(s.count / total) * 100}%` }} />
+        ))}
+      </div>
+      <div className="mt-2 flex items-center gap-4">
+        {segments.map((s) => (
+          <div key={s.label} className="flex items-center gap-1.5">
+            <div className={cn("h-2 w-2 rounded-full", s.color)} />
+            <span className="text-[10px] text-muted-foreground">{s.label} ({s.count})</span>
           </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
-          {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  {t("total_orders")}
-                </CardTitle>
-                <Package className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {statsLoading ? "..." : orderStats?.data?.totalOrders || 0}
-                </div>
-              </CardContent>
-            </Card>
+// ─── Main Page ──────────────────────────────────────────────────
+function VendorDashboardPage() {
+  const t = useTranslations();
+  const { langDir, currency, user } = useAuth();
+  const me = useMe();
+  const orderStats = useVendorOrderStats();
+  const sellerOrders = useOrdersBySellerId({ page: 1, limit: 5 });
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  {t("pending_orders")}
-                </CardTitle>
-                <Clock className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-warning">
-                  {statsLoading ? "..." : orderStats?.data?.pendingOrders || 0}
-                </div>
-              </CardContent>
-            </Card>
+  const stats = orderStats.data?.data || {};
+  const recentOrders: any[] = sellerOrders.data?.data || [];
+  const sellerOrderTotal = (sellerOrders.data as any)?.totalCount || 0;
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  {t("completed_orders")}
-                </CardTitle>
-                <CheckCircle className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-success">
-                  {statsLoading ? "..." : orderStats?.data?.completedOrders || 0}
-                </div>
-              </CardContent>
-            </Card>
+  const greeting = (() => {
+    const h = new Date().getHours();
+    if (h < 12) return "Good morning";
+    if (h < 17) return "Good afternoon";
+    return "Good evening";
+  })();
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  {t("total_revenue")}
-                </CardTitle>
-                <DollarSign className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-success">
-                  {statsLoading ? "..." : `${currency.symbol}${orderStats?.data?.totalRevenue || 0}`}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+  const userName = me.data?.data?.firstName || user?.firstName || "Seller";
 
-          {/* Tabs for All / Buygroup */}
-          <div className="mb-6">
-            <div className="inline-flex rounded-lg bg-card shadow-sm border border-border overflow-hidden">
-              <button
-                type="button"
-                className={`px-4 py-2 text-sm font-medium transition-colors ${orderTypeTab === "ALL" ? "bg-primary text-white" : "text-muted-foreground hover:bg-muted"}`}
-                onClick={() => setOrderTypeTab("ALL")}
-              >
-                {t("all")}
-              </button>
-              <button
-                type="button"
-                className={`px-4 py-2 text-sm font-medium transition-colors ${orderTypeTab === "BUYGROUP" ? "bg-primary text-white" : "text-muted-foreground hover:bg-muted"}`}
-                onClick={() => setOrderTypeTab("BUYGROUP")}
-              >
-                {t("buygroup")}
-              </button>
+  return (
+    <div className="min-h-screen bg-background">
+      <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6">
+
+        {/* ── Header ─────────────────────────────────── */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold tracking-tight">
+                {greeting}, {userName}
+              </h1>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Here&apos;s what&apos;s happening with your store today
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <Link href="/analytics"
+                className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
+                <BarChart3 className="h-3.5 w-3.5" /> Analytics
+              </Link>
+              <Link href="/orders"
+                className="flex items-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-xs font-medium text-white hover:bg-primary/90 transition-colors">
+                <ShoppingBag className="h-3.5 w-3.5" /> Manage Orders
+              </Link>
             </div>
           </div>
-
-          {/* Filters */}
-          <Card className="mb-8">
-            <CardHeader>
-              <CardTitle>{t("filters")}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div>
-                  <Label htmlFor="search">{t("search")}</Label>
-                  <div className="relative">
-                    <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      id="search"
-                      placeholder={t("search_orders")}
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-10"
-                      dir={langDir}
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <Label htmlFor="status">{t("filter_by_status")}</Label>
-                  <Select value={statusFilter} onValueChange={setStatusFilter}>
-                    <SelectTrigger>
-                      <SelectValue placeholder={t("all_statuses")} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">{t("all_statuses")}</SelectItem>
-                      <SelectItem value="pending">{t("pending")}</SelectItem>
-                      <SelectItem value="processing">{t("processing")}</SelectItem>
-                      <SelectItem value="shipped">{t("shipped")}</SelectItem>
-                      <SelectItem value="delivered">{t("delivered")}</SelectItem>
-                      <SelectItem value="cancelled">{t("cancelled")}</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <Label htmlFor="dateRange">{t("date_range")}</Label>
-                  <Select value={dateRange} onValueChange={setDateRange}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Time</SelectItem>
-                      <SelectItem value="this_month">{t("this_month")}</SelectItem>
-                      <SelectItem value="last_month">{t("last_month")}</SelectItem>
-                      <SelectItem value="this_year">{t("this_year")}</SelectItem>
-                      <SelectItem value="last_year">{t("last_year")}</SelectItem>
-                      <SelectItem value="custom">{t("custom_range")}</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="flex items-end">
-                  <Button 
-                    className="w-full" 
-                    variant="outline"
-                    onClick={handleClearFilters}
-                  >
-                    <X className="h-4 w-4 mr-2" />
-                    {t("clear_filters")}
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Orders View */}
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between flex-wrap gap-4">
-                <div>
-                  <CardTitle>{t("recent_orders")}</CardTitle>
-                  <CardDescription>
-                    {t("manage_your_orders_and_track_their_status")}
-                  </CardDescription>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Label htmlFor="itemsPerPage" className="text-sm text-muted-foreground whitespace-nowrap">
-                    {t("items_per_page")}:
-                  </Label>
-                  <Select value={String(limit)} onValueChange={(value) => setLimit(Number(value))}>
-                    <SelectTrigger className="w-24">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="10">10</SelectItem>
-                      <SelectItem value="20">20</SelectItem>
-                      <SelectItem value="50">50</SelectItem>
-                      <SelectItem value="100">100</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              {ordersLoading ? (
-                <div className="text-center py-8">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto"></div>
-                  <p className="mt-2 text-muted-foreground">{t("loading")}</p>
-                </div>
-              ) : !recentOrders?.data?.orders?.length ? (
-                <div className="text-center py-8">
-                  <Package className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <p className="text-muted-foreground">{t("no_orders_found")}</p>
-                </div>
-              ) : orderTypeTab === "BUYGROUP" ? (
-                <div className="space-y-4">
-                  {groupedBuygroupOrders.map((group: any) => (
-                    <div key={group.productId} className="border rounded-lg overflow-hidden">
-                      <button type="button" className="w-full flex items-center justify-between p-4 bg-card hover:bg-muted" onClick={() => toggleExpand(group.productId)}>
-                        <div className="flex items-center gap-3 text-left">
-                          <div className="w-12 h-12 rounded-md overflow-hidden bg-muted flex items-center justify-center">
-                            {group.productImage ? (
-                              <img src={group.productImage} alt={group.productName} className="w-full h-full object-cover" />
-                            ) : (
-                              <Package className="h-6 w-6 text-muted-foreground" />
-                            )}
-                          </div>
-                          <div>
-                            <div className="font-semibold text-foreground">{group.productName}</div>
-                            <div className="text-xs text-muted-foreground">
-                              <span className="font-semibold">{group.orders.length} {group.orders.length === 1 ? t("order") : t("orders")}</span> · <span className="font-semibold">{t("total_quantity")}: {group.totalQuantity || 0}</span>
-                            </div>
-                          </div>
-                        </div>
-                        <span className="text-sm text-primary font-medium">{expandedProductIds[group.productId] ? t("hide") : t("show")}</span>
-                      </button>
-                      {expandedProductIds[group.productId] ? (
-                        <div className="divide-y">
-                          {/* Bulk status update for this product group */}
-                          <div className="p-4 bg-muted flex items-center justify-between gap-3">
-                            <div className="text-sm text-muted-foreground font-medium">
-                              {t("update_status")} · {group.orders.length} {group.orders.length === 1 ? t("order") : t("orders")}
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <Select value={groupBulkStatus[String(group.productId)] || ""} onValueChange={(v) => setGroupBulkStatus((s) => ({ ...s, [String(group.productId)]: v }))}>
-                                <SelectTrigger className="w-40">
-                                  <SelectValue placeholder={t("select_status")} />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="pending">{t("pending")}</SelectItem>
-                                  <SelectItem value="processing">{t("processing")}</SelectItem>
-                                  <SelectItem value="shipped">{t("shipped")}</SelectItem>
-                                  <SelectItem value="delivered">{t("delivered")}</SelectItem>
-                                  <SelectItem value="cancelled">{t("cancelled")}</SelectItem>
-                                </SelectContent>
-                              </Select>
-                              <Button size="sm" onClick={() => handleBulkUpdateGroup(group)} disabled={groupBulkLoading[String(group.productId)] || !groupBulkStatus[String(group.productId)]}>
-                                {groupBulkLoading[String(group.productId)] ? t("updating") : t("update_status")}
-                              </Button>
-                            </div>
-                          </div>
-                          {group.orders.map((order: any) => {
-                            const isProcessing = order.status?.toLowerCase() === "processing";
-                            const maskedCustomerName = isProcessing 
-                              ? order.customerName || t("unknown_customer")
-                              : (order.customerName ? order.customerName.substring(0, 3) + "xxxx" : "xxxx");
-                            
-                            return (
-                              <div key={order.id} className="p-4 flex items-center gap-4">
-                                <div className="flex-1">
-                                  <div className="text-sm text-muted-foreground">
-                                    <span className="font-medium">#{order.id}</span> · {maskedCustomerName} · {format(new Date(order.createdAt), "MMM dd, yyyy")}
-                                  </div>
-                                  {(() => {
-                                    const addr = getShippingFrom(order);
-                                    if (!addr) return null;
-                                    if (isProcessing) {
-                                      const snippet = [
-                                        `${addr.firstName || ""} ${addr.lastName || ""}`.trim(),
-                                        addr.city,
-                                        addr.postCode,
-                                        addr.country,
-                                      ].filter(Boolean).join(", ");
-                                      return <p className="text-xs text-muted-foreground">{snippet}</p>;
-                                    } else {
-                                      const maskedName = addr.firstName ? addr.firstName.substring(0, 2) + "xxx" : "xxxx";
-                                      const maskedCity = addr.city ? addr.city.substring(0, 2) + "xxx" : "xxxx";
-                                      const snippet = [
-                                        maskedName,
-                                        maskedCity,
-                                        "xxxx",
-                                        addr.country,
-                                      ].filter(Boolean).join(", ");
-                                      return <p className="text-xs text-muted-foreground">{snippet}</p>;
-                                    }
-                                  })()}
-                                  <div className="text-xs text-muted-foreground">{currency.symbol}{order.totalAmount || 0}</div>
-                                </div>
-                                <Badge variant={getStatusBadgeVariant(order.status)}>
-                                  <span className="flex items-center gap-1">
-                                    {getStatusIcon(order.status)}
-                                    {order.status}
-                                  </span>
-                                </Badge>
-                                <div className="flex gap-2">
-                                  <Button variant="outline" size="sm" onClick={() => { setSelectedOrder(order); setIsOrderDetailsOpen(true); }}>
-                                    <Eye className="h-4 w-4 mr-1" />{t("view_details")}
-                                  </Button>
-                                  <Button variant="outline" size="sm" onClick={() => { setSelectedOrder(order); setIsStatusUpdateOpen(true); }}>
-                                    <Edit className="h-4 w-4 mr-1" />{t("update_status")}
-                                  </Button>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      ) : null}
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="border-b">
-                        <th className="text-left py-3 px-4">{t("order_id")}</th>
-                        <th className="text-left py-3 px-4">{t("customer_name")}</th>
-                        <th className="text-left py-3 px-4">{t("order_date")}</th>
-                        <th className="text-left py-3 px-4">{t("order_status")}</th>
-                        <th className="text-left py-3 px-4">{t("order_total")}</th>
-                        <th className="text-left py-3 px-4">{t("payment_method")}</th>
-                        <th className="text-left py-3 px-4">{t("ship_to")}</th>
-                        <th className="text-left py-3 px-4">{t("actions")}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {recentOrders?.data?.orders?.map((order: any) => (
-                        <tr key={order.id} className="border-b hover:bg-muted">
-                          <td className="py-3 px-4 font-medium">#{order.id}</td>
-                          <td className="py-3 px-4">{order.customerName || t("unknown_customer")}</td>
-                          <td className="py-3 px-4">{format(new Date(order.createdAt), "MMM dd, yyyy")}</td>
-                          <td className="py-3 px-4">
-                            <Badge variant={getStatusBadgeVariant(order.status)}>
-                              <span className="flex items-center gap-1">{getStatusIcon(order.status)}{order.status}</span>
-                            </Badge>
-                          </td>
-                          <td className="py-3 px-4 font-medium">{currency.symbol}{order.totalAmount || 0}</td>
-                          <td className="py-3 px-4">
-                            <span className="inline-flex items-center rounded px-2 py-1 text-xs font-medium bg-muted text-muted-foreground">
-                              {order.paymentMethod || t("unknown")}
-                            </span>
-                          </td>
-                          <td className="py-3 px-4">
-                            {(() => {
-                              const shipping = getShippingFrom(order);
-                              const name = shipping ? `${shipping.firstName || ""} ${shipping.lastName || ""}`.trim() : "";
-                              const line = shipping
-                                ? [shipping?.city, shipping?.postCode, shipping?.country].filter(Boolean).join(", ")
-                                : "";
-                              return (
-                                <div className="max-w-[240px]">
-                                  <div className="truncate text-sm text-foreground">{name || t("not_provided")}</div>
-                                  <div className="truncate text-xs text-muted-foreground">{line}</div>
-                                </div>
-                              );
-                            })()}
-                          </td>
-                          <td className="py-3 px-4">
-                            <div className="flex gap-2">
-                              <Button variant="outline" size="sm" onClick={() => { setSelectedOrder(order); setIsOrderDetailsOpen(true); }}>
-                                <Eye className="h-4 w-4 mr-1" />{t("view_details")}
-                              </Button>
-                              <Button variant="outline" size="sm" onClick={() => { setSelectedOrder(order); setIsStatusUpdateOpen(true); }}>
-                                <Edit className="h-4 w-4 mr-1" />{t("update_status")}
-                              </Button>
-                              {order.status === "shipped" && !order?.tracking?.trackingNumber && (
-                                <Button variant="outline" size="sm" onClick={() => { 
-                                  setSelectedOrder(order); 
-                                  setTrackingNumber("");
-                                  setCarrier("");
-                                  setTrackingNotes("");
-                                  setIsEditingTracking(false);
-                                  setIsTrackingOpen(true); 
-                                }}>
-                                  <Truck className="h-4 w-4 mr-1" />{t("add_tracking")}
-                                </Button>
-                              )}
-                              {order.status === "shipped" && order?.tracking?.trackingNumber && (
-                                <Button variant="outline" size="sm" onClick={() => { 
-                                  setSelectedOrder(order); 
-                                  setTrackingNumber(order?.tracking?.trackingNumber || "");
-                                  setCarrier(order?.tracking?.carrier || "");
-                                  setTrackingNotes(order?.tracking?.notes || "");
-                                  setIsEditingTracking(true);
-                                  setIsTrackingOpen(true); 
-                                }}>
-                                  <Truck className="h-4 w-4 mr-1" />{t("edit_tracking")}
-                                </Button>
-                              )}
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-
-              {/* Pagination */}
-              {(() => {
-                if (!recentOrders?.data?.orders || recentOrders.data.orders.length === 0) return false;
-                
-                const pagination = recentOrders.data.pagination;
-                if (!pagination) return false;
-                
-                const totalItems = pagination.totalItems || 0;
-                const totalPages = pagination.totalPages || Math.ceil(totalItems / limit);
-                
-                // Show pagination if there's more than 1 page
-                return totalPages > 1;
-              })() && (
-                <div className="flex items-center justify-between mt-6 pt-4 border-t">
-                  <div className="text-sm text-muted-foreground">
-                    {(() => {
-                      const pagination = recentOrders!.data.pagination || {};
-                      const ordersCount = recentOrders!.data.orders?.length || 0;
-                      const totalItems = pagination.totalItems || ordersCount;
-                      const currentPage = pagination.currentPage || page;
-                      const itemsPerPage = limit;
-                      const start = (currentPage - 1) * itemsPerPage + 1;
-                      const end = Math.min(currentPage * itemsPerPage, totalItems);
-                      return `${t("showing")} ${start} ${t("to")} ${end} ${t("of")} ${totalItems} ${t("orders")}`;
-                    })()}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {(() => {
-                      const pagination = recentOrders!.data.pagination || {};
-                      const ordersCount = recentOrders!.data.orders?.length || 0;
-                      const totalItems = pagination.totalItems || ordersCount;
-                      const totalPages = pagination.totalPages || Math.ceil(totalItems / limit);
-                      const currentPage = pagination.currentPage || page;
-                      return (
-                        <>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => setPage((p) => Math.max(1, p - 1))}
-                            disabled={currentPage <= 1 || ordersLoading}
-                          >
-                            <ChevronLeft className="h-4 w-4" />
-                            {t("previous")}
-                          </Button>
-                          <div className="flex items-center gap-1">
-                            {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                              let pageNum;
-                              if (totalPages <= 5) {
-                                pageNum = i + 1;
-                              } else if (currentPage <= 3) {
-                                pageNum = i + 1;
-                              } else if (currentPage >= totalPages - 2) {
-                                pageNum = totalPages - 4 + i;
-                              } else {
-                                pageNum = currentPage - 2 + i;
-                              }
-                              return (
-                                <Button
-                                  key={pageNum}
-                                  variant={pageNum === currentPage ? "default" : "outline"}
-                                  size="sm"
-                                  onClick={() => setPage(pageNum)}
-                                  disabled={ordersLoading}
-                                  className="min-w-[40px]"
-                                >
-                                  {pageNum}
-                                </Button>
-                              );
-                            })}
-                          </div>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                            disabled={currentPage >= totalPages || ordersLoading}
-                          >
-                            {t("next")}
-                            <ChevronRight className="h-4 w-4" />
-                          </Button>
-                        </>
-                      );
-                    })()}
-                  </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
         </div>
 
-        {/* Order Details Modal */}
-        <Dialog open={isOrderDetailsOpen} onOpenChange={setIsOrderDetailsOpen}>
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>{t("order_details")}</DialogTitle>
-            </DialogHeader>
-            {selectedOrder && (() => {
-              const isProcessing = selectedOrder.status?.toLowerCase() === "processing";
-              const maskedCustomerName = isProcessing 
-                ? selectedOrder.customerName || t("unknown_customer")
-                : (selectedOrder.customerName ? selectedOrder.customerName.substring(0, 3) + "xxxx" : "xxxx");
-              const maskedEmail = isProcessing 
-                ? selectedOrder.customerEmail || t("not_provided")
-                : "xxxx@xxxx.xxx";
-              const maskedPhone = isProcessing 
-                ? selectedOrder.customerPhone || t("not_provided")
-                : "xxxx";
-              
-              return (
-                <>
-                  <div className="space-y-6">
-                    {/* Order Info */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <Card>
-                        <CardHeader>
-                          <CardTitle>{t("order_information")}</CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-2">
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">{t("order_number")}:</span>
-                            <span className="font-medium">{selectedOrder.orderNumber || `#${selectedOrder.id}`}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">{t("order_id")}:</span>
-                            <span className="font-medium">#{selectedOrder.id}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">{t("order_date")}:</span>
-                            <span>{format(new Date(selectedOrder.createdAt), "MMM dd, yyyy")}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">{t("order_time")}:</span>
-                            <span>{format(new Date(selectedOrder.createdAt), "HH:mm:ss")}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">{t("order_status")}:</span>
-                            <Badge variant={getStatusBadgeVariant(selectedOrder.status)}>
-                              {selectedOrder.status}
-                            </Badge>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">{t("order_total")}:</span>
-                            <span className="font-bold">{currency.symbol}{selectedOrder.totalAmount}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">{t("payment_method")}:</span>
-                            <span className="font-medium">{selectedOrder.paymentMethod || t("unknown")}</span>
-                          </div>
-                        </CardContent>
-                      </Card>
+        {/* ── KPI Cards ──────────────────────────────── */}
+        <div className="mb-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
+          <StatCard
+            title="Total Orders"
+            value={stats.totalOrders || 0}
+            subtitle={`${stats.thisMonthOrders || 0} this month`}
+            icon={Package}
+            iconColor="text-primary"
+            iconBg="bg-primary/10"
+            trend={stats.lastMonthOrders > 0 ? Math.round(((stats.thisMonthOrders || 0) / stats.lastMonthOrders - 1) * 100) : 0}
+            trendLabel="vs last month"
+            href="/orders"
+          />
+          <StatCard
+            title="Pending Orders"
+            value={stats.pendingOrders || 0}
+            subtitle="Need attention"
+            icon={Clock}
+            iconColor="text-amber-600"
+            iconBg="bg-amber-100 dark:bg-amber-950/30"
+            href="/orders"
+          />
+          <StatCard
+            title="Completed"
+            value={stats.completedOrders || 0}
+            subtitle={`${stats.cancelledOrders || 0} cancelled`}
+            icon={CheckCircle2}
+            iconColor="text-emerald-600"
+            iconBg="bg-emerald-100 dark:bg-emerald-950/30"
+            href="/orders"
+          />
+          <StatCard
+            title="Revenue"
+            value={`${currency.symbol}${Number(stats.totalRevenue || 0).toLocaleString()}`}
+            subtitle={`Avg ${currency.symbol}${stats.averageOrderValue || 0}/order`}
+            icon={DollarSign}
+            iconColor="text-green-600"
+            iconBg="bg-green-100 dark:bg-green-950/30"
+            href="/analytics"
+          />
+        </div>
 
-                      <Card>
-                        <CardHeader>
-                          <CardTitle>{t("customer_info")}</CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-2">
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">{t("customer_name")}:</span>
-                            <span>{maskedCustomerName}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">{t("email")}:</span>
-                            <span>{maskedEmail}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">{t("phone")}:</span>
-                            <span>{maskedPhone}</span>
-                          </div>
-                        </CardContent>
-                      </Card>
-                      <Card>
-                        <CardHeader>
-                          <CardTitle>{t("shipping_address")}</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          {(() => {
-                            const addr = getShippingFrom(selectedOrder);
-                            if (!addr)
-                              return <div className="text-muted-foreground">{t("not_provided")}</div>;
-                            
-                            if (isProcessing) {
-                              return (
-                                <div className="space-y-2 flex flex-col">
-                                  <div className="font-bold text-xl text-foreground flex items-center gap-2">
-                                    <span>{[addr.firstName, addr.lastName].filter(Boolean).join(" ")}</span>
-                                  </div>
-                                  <div className="flex items-center gap-2 text-muted-foreground text-base">
-                                    <Phone className="h-4 w-4" />
-                                    <span>{addr.phone || t("not_provided")}</span>
-                                  </div>
-                                  <div className="flex items-center gap-2 text-muted-foreground text-base">
-                                    <MapPin className="h-4 w-4" />
-                                    <span className="font-medium">{[addr.address, addr.city, addr.province, addr.postCode, addr.country].filter(Boolean).join(", ")}</span>
-                                  </div>
-                                  <Button variant="outline" size="sm" onClick={() => copyToClipboard(([
-                                    [addr.firstName, addr.lastName].filter(Boolean).join(" "),
-                                    addr.phone,
-                                    addr.address,
-                                    addr.city,
-                                    addr.province,
-                                    addr.postCode,
-                                    addr.country
-                                  ].filter(Boolean).join(", ")).trim())}>
-                                    {t("copy_address")}
-                                  </Button>
-                                </div>
-                              );
-                            } else {
-                              const maskedName = addr.firstName ? addr.firstName.substring(0, 2) + "xxx" : "xxxx";
-                              const maskedCity = addr.city ? addr.city.substring(0, 2) + "xxx" : "xxxx";
-                              return (
-                                <div className="space-y-2 flex flex-col">
-                                  <div className="font-bold text-xl text-foreground flex items-center gap-2">
-                                    <span>{maskedName}</span>
-                                  </div>
-                                  <div className="flex items-center gap-2 text-muted-foreground text-base">
-                                    <Phone className="h-4 w-4" />
-                                    <span>xxxx</span>
-                                  </div>
-                                  <div className="flex items-center gap-2 text-muted-foreground text-base">
-                                    <MapPin className="h-4 w-4" />
-                                    <span className="font-medium">{[maskedCity, "xxxx", addr.country].filter(Boolean).join(", ")}</span>
-                                  </div>
-                                </div>
-                              );
-                            }
-                          })()}
-                        </CardContent>
-                      </Card>
-                    </div>
-                  </div>
+        {/* ── Main Grid ──────────────────────────────── */}
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
 
-                  {/* Order Items */}
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>{t("order_items")}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        {selectedOrder.items?.map((item: any, index: number) => (
-                          <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
-                            <div className="flex items-center space-x-4">
-                              <div className="w-16 h-16 bg-muted rounded-lg flex items-center justify-center">
-                                {item.image ? (
-                                  <img 
-                                    src={item.image} 
-                                    alt={item.name} 
-                                    className="w-full h-full object-cover rounded-lg"
-                                    onError={(e) => {
-                                      e.currentTarget.style.display = 'none';
-                                      e.currentTarget.nextElementSibling?.classList.remove('hidden');
-                                    }}
-                                  />
-                                ) : null}
-                                <Package className={`h-8 w-8 text-muted-foreground ${item.image ? 'hidden' : ''}`} />
-                              </div>
-                              <div>
-                                <h4 className="font-medium">{item.name}</h4>
-                                <p className="text-sm text-muted-foreground">{t("quantity")}: {item.quantity}</p>
-                              </div>
-                            </div>
-                            <div className="text-right">
-                              <p className="font-medium">{currency.symbol}{item.price}</p>
-                              <p className="text-sm text-muted-foreground">{t("subtotal")}: {currency.symbol}{item.price * item.quantity}</p>
-                            </div>
-                          </div>
-                        ))}
+          {/* Left: Recent Orders + Status */}
+          <div className="space-y-6 lg:col-span-2">
+
+            {/* Order Status Distribution */}
+            <div className="rounded-2xl border border-border bg-card p-5">
+              <div className="mb-4 flex items-center justify-between">
+                <h2 className="text-sm font-bold">Order Status</h2>
+                <Link href="/orders" className="text-[11px] font-medium text-primary hover:underline">
+                  View all →
+                </Link>
+              </div>
+              <StatusBar stats={stats} />
+            </div>
+
+            {/* Recent Orders */}
+            <div className="rounded-2xl border border-border bg-card">
+              <div className="flex items-center justify-between border-b border-border px-5 py-4">
+                <h2 className="text-sm font-bold">Recent Orders</h2>
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] text-muted-foreground">{sellerOrderTotal} total</span>
+                  <Link href="/orders" className="text-[11px] font-medium text-primary hover:underline">
+                    View all →
+                  </Link>
+                </div>
+              </div>
+              <div className="divide-y divide-border/50">
+                {sellerOrders.isLoading ? (
+                  [...Array(3)].map((_, i) => (
+                    <div key={i} className="flex items-center gap-3 px-3 py-3">
+                      <div className="h-10 w-10 animate-pulse rounded-lg bg-muted" />
+                      <div className="flex-1 space-y-1.5">
+                        <div className="h-3 w-3/4 animate-pulse rounded bg-muted" />
+                        <div className="h-2.5 w-1/2 animate-pulse rounded bg-muted" />
                       </div>
-                    </CardContent>
-                  </Card>
-                </>
-              );
-            })()}
-          </DialogContent>
-        </Dialog>
-
-        {/* Status Update Modal */}
-        <Dialog open={isStatusUpdateOpen} onOpenChange={setIsStatusUpdateOpen}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>{t("update_status")}</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="status">{t("order_status")}</Label>
-                <Select value={newStatus} onValueChange={setNewStatus}>
-                  <SelectTrigger>
-                    <SelectValue placeholder={t("select_status")} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="pending">{t("pending")}</SelectItem>
-                    <SelectItem value="processing">{t("processing")}</SelectItem>
-                    <SelectItem value="shipped">{t("shipped")}</SelectItem>
-                    <SelectItem value="delivered">{t("delivered")}</SelectItem>
-                    <SelectItem value="cancelled">{t("cancelled")}</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label htmlFor="notes">{t("status_notes")}</Label>
-                <Textarea
-                  id="notes"
-                  placeholder={t("add_notes_about_status_update")}
-                  value={statusNotes}
-                  onChange={(e) => setStatusNotes(e.target.value)}
-                  dir={langDir}
-                />
-              </div>
-              <div className="flex justify-end space-x-2">
-                <Button variant="outline" onClick={() => setIsStatusUpdateOpen(false)}>
-                  {t("cancel")}
-                </Button>
-                <Button 
-                  onClick={handleStatusUpdate}
-                  disabled={updateStatusMutation.isPending || !newStatus}
-                >
-                  {updateStatusMutation.isPending ? t("updating") : t("update_status")}
-                </Button>
+                    </div>
+                  ))
+                ) : recentOrders.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center py-12 text-center">
+                    <Package className="mb-2 h-8 w-8 text-muted-foreground/15" />
+                    <p className="text-xs text-muted-foreground">No orders yet</p>
+                  </div>
+                ) : (
+                  recentOrders.map((item: any) => (
+                    <OrderRow key={item.id} item={item} currency={currency} />
+                  ))
+                )}
               </div>
             </div>
-          </DialogContent>
-        </Dialog>
+          </div>
 
-        {/* Add Tracking Modal */}
-        <Dialog open={isTrackingOpen} onOpenChange={(open) => { setIsTrackingOpen(open); if (!open) { setIsEditingTracking(false); } }}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>{isEditingTracking ? t("edit_tracking") : t("add_tracking")}</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="trackingNumber">{t("tracking_number")}</Label>
-                <Input
-                  id="trackingNumber"
-                  placeholder={t("enter_tracking_number")}
-                  value={trackingNumber}
-                  onChange={(e) => setTrackingNumber(e.target.value)}
-                  dir={langDir}
+          {/* Right: Quick Links + Alerts */}
+          <div className="space-y-6">
+
+            {/* Quick Links */}
+            <div className="rounded-2xl border border-border bg-card p-5">
+              <h2 className="mb-4 text-sm font-bold">Quick Links</h2>
+              <div className="space-y-2">
+                <QuickLink
+                  title="Orders"
+                  description="Manage buyer & seller orders"
+                  icon={ShoppingBag}
+                  href="/orders"
+                  color="bg-primary"
+                  badge={stats.pendingOrders || 0}
                 />
-              </div>
-              <div>
-                <Label htmlFor="carrier">{t("carrier")}</Label>
-                <Input
-                  id="carrier"
-                  placeholder={t("enter_carrier_name")}
-                  value={carrier}
-                  onChange={(e) => setCarrier(e.target.value)}
-                  dir={langDir}
+                <QuickLink
+                  title="Analytics"
+                  description="Views, revenue, conversion"
+                  icon={BarChart3}
+                  href="/analytics"
+                  color="bg-indigo-500"
                 />
-              </div>
-              <div>
-                <Label htmlFor="trackingNotes">{t("tracking_notes")}</Label>
-                <Textarea
-                  id="trackingNotes"
-                  placeholder={t("add_notes_about_tracking")}
-                  value={trackingNotes}
-                  onChange={(e) => setTrackingNotes(e.target.value)}
-                  dir={langDir}
+                <QuickLink
+                  title="Products"
+                  description="Manage your product catalog"
+                  icon={BoxIcon}
+                  href="/manage-products"
+                  color="bg-emerald-500"
                 />
-              </div>
-              <div className="flex justify-end space-x-2">
-                <Button variant="outline" onClick={() => setIsTrackingOpen(false)}>
-                  {t("cancel")}
-                </Button>
-                <Button onClick={handleAddTracking} disabled={addTrackingMutation.isPending || !trackingNumber || !carrier}>
-                  {addTrackingMutation.isPending ? t("updating") : (isEditingTracking ? t("update_tracking") : t("add_tracking"))}
-                </Button>
+                <QuickLink
+                  title="RFQ Requests"
+                  description="Buyer quote requests"
+                  icon={FileText}
+                  href="/seller-rfq-list"
+                  color="bg-amber-500"
+                />
+                <QuickLink
+                  title="Dropshipping"
+                  description="Manage dropship products"
+                  icon={Truck}
+                  href="/dropship-management"
+                  color="bg-violet-500"
+                />
+                <QuickLink
+                  title="Messages"
+                  description="Chat with buyers"
+                  icon={MessageCircle}
+                  href="/seller-rfq-request"
+                  color="bg-cyan-500"
+                />
               </div>
             </div>
-          </DialogContent>
-        </Dialog>
+
+            {/* Store Info */}
+            <div className="rounded-2xl border border-border bg-card p-5">
+              <h2 className="mb-4 text-sm font-bold">Your Store</h2>
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
+                    <Store className="h-6 w-6 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold">{me.data?.data?.companyName || userName + "'s Store"}</p>
+                    <p className="text-[11px] text-muted-foreground">
+                      ID: {me.data?.data?.uniqueId || "—"}
+                    </p>
+                  </div>
+                </div>
+                <div className="space-y-2 rounded-lg bg-muted/30 p-3">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-muted-foreground">Member since</span>
+                    <span className="font-medium">
+                      {me.data?.data?.createdAt
+                        ? new Date(me.data.data.createdAt).toLocaleDateString("en-US", { month: "short", year: "numeric" })
+                        : "—"}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-muted-foreground">Trade role</span>
+                    <span className="font-medium">{me.data?.data?.tradeRole || "MEMBER"}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-muted-foreground">Status</span>
+                    <span className="flex items-center gap-1 font-medium text-emerald-600">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Active
+                    </span>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <Link href="/company-profile"
+                    className="flex flex-1 items-center justify-center gap-1 rounded-lg border border-border py-2 text-[11px] font-medium text-muted-foreground hover:bg-muted transition-colors">
+                    <Settings className="h-3 w-3" /> Edit Profile
+                  </Link>
+                  <Link href="/manage-products"
+                    className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-primary/10 py-2 text-[11px] font-medium text-primary hover:bg-primary/20 transition-colors">
+                    <Zap className="h-3 w-3" /> Add Product
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <Footer />
-    </>
+    </div>
   );
-};
+}
 
 export default withActiveUserGuard(VendorDashboardPage);
