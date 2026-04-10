@@ -30,6 +30,9 @@ export default function SellerRfqListPage() {
   const [search, setSearch] = useState("");
   const [showRec, setShowRec] = useState(false);
   const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [typeFilter, setTypeFilter] = useState("");
+  const [budgetFilter, setBudgetFilter] = useState("");
+  const [sortBy, setSortBy] = useState("newest");
   const [detailId, setDetailId] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState<"list" | "detail">("list");
 
@@ -58,8 +61,33 @@ export default function SellerRfqListPage() {
           || s.rfq.buyerIDDetail?.firstName?.toLowerCase().includes(q);
       });
     }
+    if (typeFilter) {
+      items = items.filter(s => {
+        const prods = s.rfq.rfqQuotesUser_rfqQuotes?.rfqQuotesProducts || [];
+        return prods.some((p: any) => p.productType === typeFilter);
+      });
+    }
+    if (budgetFilter) {
+      items = items.filter(s => {
+        const prods = s.rfq.rfqQuotesUser_rfqQuotes?.rfqQuotesProducts || [];
+        const total = prods.reduce((sum: number, p: any) => sum + Number(p.offerPrice || p.offerPriceTo || 0), 0);
+        if (budgetFilter === "low") return total > 0 && total <= 100;
+        if (budgetFilter === "mid") return total > 100 && total <= 500;
+        if (budgetFilter === "high") return total > 500;
+        return true;
+      });
+    }
+    // Sort
+    if (sortBy === "newest") items.sort((a, b) => new Date(b.rfq.createdAt || 0).getTime() - new Date(a.rfq.createdAt || 0).getTime());
+    if (sortBy === "oldest") items.sort((a, b) => new Date(a.rfq.createdAt || 0).getTime() - new Date(b.rfq.createdAt || 0).getTime());
+    if (sortBy === "budget_high") items.sort((a, b) => {
+      const bA = (a.rfq.rfqQuotesUser_rfqQuotes?.rfqQuotesProducts || []).reduce((s: number, p: any) => s + Number(p.offerPrice || p.offerPriceTo || 0), 0);
+      const bB = (b.rfq.rfqQuotesUser_rfqQuotes?.rfqQuotesProducts || []).reduce((s: number, p: any) => s + Number(p.offerPrice || p.offerPriceTo || 0), 0);
+      return bB - bA;
+    });
+    if (sortBy === "items") items.sort((a, b) => (b.rfq.rfqQuotesUser_rfqQuotes?.rfqQuotesProducts?.length || 0) - (a.rfq.rfqQuotesUser_rfqQuotes?.rfqQuotesProducts?.length || 0));
     return items;
-  }, [scored, showRec, search]);
+  }, [scored, showRec, search, typeFilter, budgetFilter, sortBy]);
 
   const detailRfq = detailId ? allRfqs.find((r: any) => r.id === detailId) : null;
 
@@ -105,22 +133,82 @@ export default function SellerRfqListPage() {
         {activeTab === "list" && (
           <>
             {/* Filter bar */}
-            <div className="sticky top-0 z-10 flex items-center gap-3 rounded-xl border border-border bg-card/95 backdrop-blur-sm px-4 py-2.5 mb-4 shadow-sm">
-              <div className="relative flex-1 max-w-sm">
-                <Search className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search..."
-                  className="w-full rounded-lg border border-border bg-muted/30 py-2 pe-3 ps-10 text-sm outline-none focus:border-primary" />
-                {search && <button type="button" onClick={() => setSearch("")} className="absolute end-3 top-1/2 -translate-y-1/2"><X className="h-3.5 w-3.5 text-muted-foreground" /></button>}
+            <div className="sticky top-0 z-10 rounded-xl border border-border bg-card/95 backdrop-blur-sm mb-4 shadow-sm">
+              {/* Row 1: Search + Recommended */}
+              <div className="flex items-center gap-3 px-4 py-2.5">
+                <div className="relative flex-1 max-w-sm">
+                  <Search className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search products, buyers..."
+                    className="w-full rounded-lg border border-border bg-muted/30 py-2 pe-3 ps-10 text-sm outline-none focus:border-primary" />
+                  {search && <button type="button" onClick={() => setSearch("")} className="absolute end-3 top-1/2 -translate-y-1/2"><X className="h-3.5 w-3.5 text-muted-foreground" /></button>}
+                </div>
+                <button type="button" onClick={() => setShowRec(!showRec)}
+                  className={cn("flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold transition-all",
+                    showRec ? "bg-primary text-white" : "border border-border text-muted-foreground hover:bg-muted")}>
+                  <Sparkles className="h-3.5 w-3.5" /> Recommended
+                  <span className={cn("rounded-full px-1.5 py-0.5 text-[9px] font-bold", showRec ? "bg-white/20" : "bg-muted")}>
+                    {scored.filter(s => s.isRec).length}
+                  </span>
+                </button>
+                <span className="ms-auto text-xs text-muted-foreground">{filtered.length} results</span>
               </div>
-              <button type="button" onClick={() => setShowRec(!showRec)}
-                className={cn("flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold transition-all",
-                  showRec ? "bg-primary text-white" : "border border-border text-muted-foreground hover:bg-muted")}>
-                <Sparkles className="h-3.5 w-3.5" /> Recommended
-                <span className={cn("rounded-full px-1.5 py-0.5 text-[9px] font-bold", showRec ? "bg-white/20" : "bg-muted")}>
-                  {scored.filter(s => s.isRec).length}
-                </span>
-              </button>
-              <span className="ms-auto text-xs text-muted-foreground">{filtered.length} results</span>
+
+              {/* Row 2: Type + Budget + Sort + Active tags */}
+              <div className="flex flex-wrap items-center gap-2 border-t border-border/50 px-4 py-2">
+                {/* Product type */}
+                <span className="text-[10px] font-semibold text-muted-foreground">Type:</span>
+                {[
+                  { v: "", l: "All" },
+                  { v: "SAME", l: "Exact Match" },
+                  { v: "SIMILAR", l: "Similar OK" },
+                ].map(t => (
+                  <button key={t.v} type="button" onClick={() => setTypeFilter(t.v)}
+                    className={cn("rounded-full px-2.5 py-1 text-[10px] font-semibold transition-all",
+                      typeFilter === t.v ? "bg-primary text-white" : "bg-muted text-muted-foreground hover:bg-muted/80")}>
+                    {t.l}
+                  </button>
+                ))}
+
+                <div className="h-4 w-px bg-border" />
+
+                {/* Budget range */}
+                <span className="text-[10px] font-semibold text-muted-foreground">Budget:</span>
+                {[
+                  { v: "", l: "Any" },
+                  { v: "low", l: "< 100" },
+                  { v: "mid", l: "100-500" },
+                  { v: "high", l: "500+" },
+                ].map(b => (
+                  <button key={b.v} type="button" onClick={() => setBudgetFilter(b.v)}
+                    className={cn("rounded-full px-2.5 py-1 text-[10px] font-semibold transition-all",
+                      budgetFilter === b.v ? "bg-primary text-white" : "bg-muted text-muted-foreground hover:bg-muted/80")}>
+                    {b.l}
+                  </button>
+                ))}
+
+                <div className="h-4 w-px bg-border" />
+
+                {/* Sort */}
+                <span className="text-[10px] font-semibold text-muted-foreground">Sort:</span>
+                <select value={sortBy} onChange={e => setSortBy(e.target.value)}
+                  className="rounded-lg border border-border bg-muted/30 px-2 py-1 text-[10px] font-medium outline-none focus:border-primary cursor-pointer">
+                  <option value="newest">Newest</option>
+                  <option value="oldest">Oldest</option>
+                  <option value="budget_high">Budget: High→Low</option>
+                  <option value="items">Most Items</option>
+                </select>
+
+                {/* Clear all */}
+                {(typeFilter || budgetFilter || search || showRec) && (
+                  <>
+                    <div className="flex-1" />
+                    <button type="button" onClick={() => { setTypeFilter(""); setBudgetFilter(""); setSearch(""); setShowRec(false); }}
+                      className="flex items-center gap-1 text-[10px] font-medium text-destructive hover:underline">
+                      <X className="h-3 w-3" /> Clear all
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
 
             {/* Accordion list */}
