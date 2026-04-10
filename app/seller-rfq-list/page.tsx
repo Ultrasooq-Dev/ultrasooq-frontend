@@ -10,20 +10,17 @@ import validator from "validator";
 import {
   Sparkles, Search, Package, MapPin, DollarSign, Users,
   MessageCircle, X, Layers, Clock, Send, Star,
-  Phone, Mail, Award, FileText, Paperclip, Eye,
-  ShoppingCart, ChevronRight,
+  ChevronDown, ChevronUp, Phone, Mail,
+  FileText, Paperclip, Eye, List, Info,
 } from "lucide-react";
 
 function mask(n?: string) { return n && n.length > 2 ? n.slice(0, 2) + "***" : n || "***"; }
 function maskFull(f?: string, l?: string) { return `${mask(f)}${l ? " " + mask(l) : ""}`; }
-function Stars2({ r }: { r: number }) {
-  return <span className="inline-flex gap-0.5">{[1,2,3,4,5].map(i => <Star key={i} className={cn("h-3 w-3", i <= Math.round(r) ? "fill-amber-400 text-amber-400" : "text-border")} />)}</span>;
-}
 
 /* ═══════════════════════════════════════════════════════════════
-   2-PANEL: Compact list (left) + Scrollable detail (right)
-   Left panel uses tiny rows — 1 line per RFQ = see 20+ at once
-   Right panel shows everything about the selected RFQ
+   SINGLE PAGE — Two tabs:
+   Tab 1: "All RFQs" — expandable accordion list
+   Tab 2: "Details" — full detail view of selected RFQ
    ═══════════════════════════════════════════════════════════════ */
 
 export default function SellerRfqListPage() {
@@ -32,7 +29,9 @@ export default function SellerRfqListPage() {
   const hasPermission = checkPermission(PERMISSION_RFQ_SELLER_REQUESTS);
   const [search, setSearch] = useState("");
   const [showRec, setShowRec] = useState(false);
-  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [detailId, setDetailId] = useState<number | null>(null);
+  const [activeTab, setActiveTab] = useState<"list" | "detail">("list");
 
   useEffect(() => { if (!hasPermission) router.push("/home"); }, [hasPermission, router]);
 
@@ -62,87 +61,178 @@ export default function SellerRfqListPage() {
     return items;
   }, [scored, showRec, search]);
 
-  const selectedRfq = selectedId ? allRfqs.find((r: any) => r.id === selectedId) : null;
+  const detailRfq = detailId ? allRfqs.find((r: any) => r.id === detailId) : null;
+
+  const openDetail = (id: number) => { setDetailId(id); setActiveTab("detail"); };
+
   if (!hasPermission) return <div />;
 
   return (
-    <div className="h-[calc(100vh-64px)] flex overflow-hidden">
+    <div className="min-h-screen bg-background">
+      <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6">
 
-      {/* ═══ LEFT: Compact RFQ List ═══ */}
-      <div className="w-[260px] shrink-0 flex flex-col border-e border-border bg-card">
-        {/* Header + Search */}
-        <div className="shrink-0 p-3 border-b border-border space-y-2">
-          <div className="flex items-center justify-between">
-            <h2 className="text-sm font-bold">RFQ Requests</h2>
-            <span className="text-[10px] text-muted-foreground">{filtered.length}</span>
+        {/* Header */}
+        <div className="flex items-center justify-between mb-5">
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight">RFQ Requests</h1>
+            <p className="mt-0.5 text-sm text-muted-foreground">{allRfqs.length} requests from buyers</p>
           </div>
-          <div className="relative">
-            <Search className="absolute start-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-            <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search..."
-              className="w-full rounded-lg border border-border bg-muted/30 py-1.5 pe-2 ps-8 text-[11px] outline-none focus:border-primary" />
-            {search && <button type="button" onClick={() => setSearch("")} className="absolute end-2 top-1/2 -translate-y-1/2"><X className="h-3 w-3 text-muted-foreground" /></button>}
-          </div>
-          <button type="button" onClick={() => setShowRec(!showRec)}
-            className={cn("flex w-full items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-[10px] font-semibold transition-all",
-              showRec ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted")}>
-            <Sparkles className="h-3 w-3" /> Recommended
-            <span className={cn("ms-auto rounded-full px-1.5 py-0.5 text-[8px] font-bold", showRec ? "bg-primary text-white" : "bg-muted")}>{scored.filter(s => s.isRec).length}</span>
+          <a href="/rfq" className="flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2.5 text-xs font-bold text-white hover:bg-primary/90">
+            <Eye className="h-4 w-4" /> Browse Market
+          </a>
+        </div>
+
+        {/* Tabs */}
+        <div className="flex gap-1 rounded-xl border border-border bg-card p-1 mb-5">
+          <button type="button" onClick={() => setActiveTab("list")}
+            className={cn("flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-[13px] font-semibold transition-all",
+              activeTab === "list" ? "bg-primary text-white shadow-sm" : "text-muted-foreground hover:bg-muted")}>
+            <List className="h-4 w-4" /> All RFQs
+            <span className={cn("rounded-full px-2 py-0.5 text-[10px] font-bold",
+              activeTab === "list" ? "bg-white/20" : "bg-muted")}>{filtered.length}</span>
+          </button>
+          <button type="button" onClick={() => { if (detailId) setActiveTab("detail"); }}
+            className={cn("flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-[13px] font-semibold transition-all",
+              activeTab === "detail" ? "bg-primary text-white shadow-sm" : "text-muted-foreground hover:bg-muted",
+              !detailId && "opacity-40 cursor-not-allowed")}>
+            <Info className="h-4 w-4" /> Details
+            {detailRfq && <span className={cn("rounded-full px-2 py-0.5 text-[10px] font-bold",
+              activeTab === "detail" ? "bg-white/20" : "bg-muted")}>{maskFull(detailRfq.buyerIDDetail?.firstName)}</span>}
           </button>
         </div>
 
-        {/* List — compact rows */}
-        <div className="flex-1 overflow-y-auto">
-          {filtered.map(item => {
-            const r = item.rfq;
-            const buyer = r.buyerIDDetail;
-            const prods = r.rfqQuotesUser_rfqQuotes?.rfqQuotesProducts || [];
-            const budget = prods.reduce((s: number, p: any) => s + Number(p.offerPrice || p.offerPriceTo || 0), 0);
-            const isSelected = selectedId === r.id;
-
-            return (
-              <button key={r.id} type="button" onClick={() => setSelectedId(r.id)}
-                className={cn("w-full text-start flex items-center gap-2 px-3 py-2 border-b border-border/30 transition-all",
-                  isSelected ? "bg-primary/5 border-e-[3px] border-e-primary" : "hover:bg-muted/20")}>
-                <div className={cn("flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[9px] font-bold",
-                  isSelected ? "bg-primary text-white" : "bg-muted text-muted-foreground")}>{buyer?.firstName?.[0] || "?"}</div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-1">
-                    {item.isRec && <Sparkles className="h-2 w-2 text-primary shrink-0" />}
-                    <span className={cn("text-[11px] font-semibold truncate", isSelected && "text-primary")}>{maskFull(buyer?.firstName, buyer?.lastName)}</span>
-                    <span className="ms-auto text-[9px] text-muted-foreground">{prods.length}📦</span>
-                    {r.unreadMsgCount > 0 && <span className="rounded-full bg-primary px-1 py-px text-[7px] font-bold text-white">{r.unreadMsgCount}</span>}
-                  </div>
-                </div>
+        {/* ═══ TAB 1: List with expandable rows ═══ */}
+        {activeTab === "list" && (
+          <>
+            {/* Filter bar */}
+            <div className="sticky top-0 z-10 flex items-center gap-3 rounded-xl border border-border bg-card/95 backdrop-blur-sm px-4 py-2.5 mb-4 shadow-sm">
+              <div className="relative flex-1 max-w-sm">
+                <Search className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search..."
+                  className="w-full rounded-lg border border-border bg-muted/30 py-2 pe-3 ps-10 text-sm outline-none focus:border-primary" />
+                {search && <button type="button" onClick={() => setSearch("")} className="absolute end-3 top-1/2 -translate-y-1/2"><X className="h-3.5 w-3.5 text-muted-foreground" /></button>}
+              </div>
+              <button type="button" onClick={() => setShowRec(!showRec)}
+                className={cn("flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold transition-all",
+                  showRec ? "bg-primary text-white" : "border border-border text-muted-foreground hover:bg-muted")}>
+                <Sparkles className="h-3.5 w-3.5" /> Recommended
+                <span className={cn("rounded-full px-1.5 py-0.5 text-[9px] font-bold", showRec ? "bg-white/20" : "bg-muted")}>
+                  {scored.filter(s => s.isRec).length}
+                </span>
               </button>
-            );
-          })}
-          {filtered.length === 0 && !sellerRfqs.isLoading && (
-            <div className="flex flex-col items-center justify-center py-12 text-center">
-              <Package className="mb-2 h-6 w-6 text-muted-foreground/15" />
-              <p className="text-[10px] text-muted-foreground/40">No requests found</p>
+              <span className="ms-auto text-xs text-muted-foreground">{filtered.length} results</span>
             </div>
-          )}
-        </div>
-      </div>
 
-      {/* ═══ RIGHT: Full Detail (scrollable) ═══ */}
-      <div className="flex-1 min-w-0 overflow-y-auto bg-background">
-        {!selectedRfq ? (
-          <div className="flex h-full flex-col items-center justify-center text-center px-12">
-            <ShoppingCart className="mb-3 h-12 w-12 text-muted-foreground/10" />
-            <p className="text-base font-semibold text-muted-foreground/30">Select an RFQ</p>
-            <p className="mt-1 text-sm text-muted-foreground/20">Choose a request to see customer, products & send a quote</p>
-          </div>
-        ) : (() => {
-          const rfq = selectedRfq;
+            {/* Accordion list */}
+            <div className="space-y-2">
+              {filtered.length === 0 && (
+                <div className="rounded-2xl border border-border py-16 text-center">
+                  <Package className="mx-auto mb-2 h-8 w-8 text-muted-foreground/15" />
+                  <p className="text-sm text-muted-foreground/40">No RFQ requests found</p>
+                </div>
+              )}
+              {filtered.map(item => {
+                const r = item.rfq;
+                const buyer = r.buyerIDDetail;
+                const prods = r.rfqQuotesUser_rfqQuotes?.rfqQuotesProducts || [];
+                const isExpanded = expandedId === r.id;
+                const totalBudget = prods.reduce((s: number, p: any) => s + Number(p.offerPrice || p.offerPriceTo || 0), 0);
+
+                return (
+                  <div key={r.id} className={cn("rounded-xl border transition-all",
+                    isExpanded ? "border-primary shadow-md" : "border-border hover:shadow-sm")}>
+
+                    {/* Row header */}
+                    <button type="button" onClick={() => setExpandedId(isExpanded ? null : r.id)}
+                      className="w-full text-start flex items-center gap-3 px-4 py-3">
+                      <div className={cn("flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-xs font-bold",
+                        isExpanded ? "bg-primary text-white" : "bg-muted text-muted-foreground")}>{buyer?.firstName?.[0] || "?"}</div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1.5">
+                          {item.isRec && <Sparkles className="h-3 w-3 text-primary shrink-0" />}
+                          <span className={cn("text-sm font-semibold truncate", isExpanded && "text-primary")}>{maskFull(buyer?.firstName, buyer?.lastName)}</span>
+                          {r.unreadMsgCount > 0 && <span className="rounded-full bg-primary px-1.5 py-0.5 text-[8px] font-bold text-white">{r.unreadMsgCount}</span>}
+                        </div>
+                        <div className="flex items-center gap-3 mt-0.5 text-[11px] text-muted-foreground">
+                          <span>{prods.length} product{prods.length > 1 ? "s" : ""}</span>
+                          {totalBudget > 0 && <span className="font-semibold text-foreground">{currency.symbol}{totalBudget.toFixed(0)}</span>}
+                        </div>
+                      </div>
+                      {/* Thumbnails */}
+                      <div className="hidden sm:flex items-center gap-1">
+                        {prods.slice(0, 3).map((p: any, i: number) => {
+                          const img = p.rfqProductDetails?.productImages?.[0]?.image;
+                          const url = img && validator.isURL(img) ? img : null;
+                          return <div key={i} className="h-8 w-8 shrink-0 rounded-lg bg-muted border border-border overflow-hidden">
+                            {url ? <Image src={url} alt="" width={32} height={32} className="h-full w-full object-cover" />
+                              : <Package className="m-1 h-6 w-6 text-muted-foreground/10" />}
+                          </div>;
+                        })}
+                      </div>
+                      {isExpanded ? <ChevronUp className="h-4 w-4 text-primary shrink-0" /> : <ChevronDown className="h-4 w-4 text-muted-foreground/40 shrink-0" />}
+                    </button>
+
+                    {/* Expanded: quick product preview + "View Full Details" */}
+                    {isExpanded && (
+                      <div className="border-t border-border px-4 py-3 space-y-2">
+                        {prods.map((p: any, i: number) => {
+                          const pd = p.rfqProductDetails || {};
+                          const img = pd.productImages?.[0]?.image;
+                          const imgUrl = img && validator.isURL(img) ? img : null;
+                          const budget = p.offerPrice || p.offerPriceTo || p.offerPriceFrom;
+                          return (
+                            <div key={i} className="flex items-center gap-3 rounded-lg bg-muted/30 px-3 py-2">
+                              <div className="h-10 w-10 shrink-0 rounded-lg bg-muted overflow-hidden">
+                                {imgUrl ? <Image src={imgUrl} alt="" width={40} height={40} className="h-full w-full object-cover" />
+                                  : <Package className="m-2 h-6 w-6 text-muted-foreground/10" />}
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-[12px] font-semibold truncate">{pd.productName || `Product ${i + 1}`}</p>
+                                <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
+                                  {p.quantity && <span>Qty: {p.quantity}</span>}
+                                  {budget && <span className="font-semibold text-foreground">{currency.symbol}{Number(budget).toFixed(0)}</span>}
+                                  {p.productType && <span className={cn("rounded px-1 py-px text-[8px] font-bold text-white",
+                                    p.productType === "SAME" ? "bg-emerald-500" : "bg-blue-500")}>{p.productType}</span>}
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                        <div className="flex gap-2 pt-1">
+                          <button type="button" onClick={() => openDetail(r.id)}
+                            className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-primary py-2 text-xs font-bold text-white hover:bg-primary/90">
+                            <Eye className="h-3.5 w-3.5" /> View Full Details
+                          </button>
+                          <button type="button" onClick={() => router.push(`/seller-rfq-request?rfqId=${r.rfqQuotesId}&tab=rfq`)}
+                            className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-border py-2 text-xs font-medium text-muted-foreground hover:bg-muted">
+                            <Send className="h-3.5 w-3.5" /> Quote & Chat
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        )}
+
+        {/* ═══ TAB 2: Full Detail ═══ */}
+        {activeTab === "detail" && detailRfq && (() => {
+          const rfq = detailRfq;
           const products = rfq.rfqQuotesUser_rfqQuotes?.rfqQuotesProducts || [];
           const address = rfq.rfqQuotesUser_rfqQuotes?.rfqQuotes_rfqQuoteAddress;
           const buyer = rfq.buyerIDDetail;
 
           return (
-            <div className="max-w-4xl mx-auto px-6 py-6 space-y-6">
+            <div className="space-y-6">
+              {/* Back */}
+              <button type="button" onClick={() => setActiveTab("list")}
+                className="text-xs font-medium text-muted-foreground hover:text-foreground">
+                ← Back to all RFQs
+              </button>
 
-              {/* ── Customer Card ──────────────────────── */}
+              {/* Customer */}
               <div className="rounded-2xl border border-border bg-card p-5">
                 <div className="flex items-start gap-4">
                   <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-lg font-bold text-primary">
@@ -155,14 +245,16 @@ export default function SellerRfqListPage() {
                       {buyer?.phoneNumber && <span className="flex items-center gap-1"><Phone className="h-3 w-3" />{mask(buyer.phoneNumber)}</span>}
                     </div>
                   </div>
-                  <div className="shrink-0 flex flex-col items-end gap-1">
-                    <div className="flex items-center gap-1"><Stars2 r={4.2} /> <span className="text-xs font-bold text-amber-600">4.2</span></div>
-                    <span className="text-[9px] text-muted-foreground">7 RFQs · 23 Orders</span>
+                  <div className="shrink-0 text-end">
+                    <div className="flex items-center gap-1">
+                      {[1,2,3,4,5].map(i => <Star key={i} className={cn("h-3.5 w-3.5", i <= 4 ? "fill-amber-400 text-amber-400" : "text-border")} />)}
+                      <span className="text-sm font-bold text-amber-600 ms-1">4.2</span>
+                    </div>
+                    <p className="text-[10px] text-muted-foreground mt-0.5">7 RFQs · 23 Orders</p>
                   </div>
                 </div>
-
                 {address?.rfqDate && (
-                  <div className="mt-3 flex items-center gap-2 rounded-xl bg-amber-50 border border-amber-200 px-4 py-2.5 text-sm dark:bg-amber-950/20 dark:border-amber-800">
+                  <div className="mt-3 flex items-center gap-2 rounded-xl bg-amber-50 border border-amber-200 px-4 py-2 text-sm dark:bg-amber-950/20 dark:border-amber-800">
                     <Clock className="h-4 w-4 text-amber-600" />
                     <span className="font-medium text-amber-800 dark:text-amber-300">
                       Delivery by {new Date(address.rfqDate).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })}
@@ -171,7 +263,7 @@ export default function SellerRfqListPage() {
                 )}
               </div>
 
-              {/* ── Products ──────────────────────────── */}
+              {/* Products */}
               <div>
                 <h3 className="text-sm font-bold mb-3">Requested Products ({products.length})</h3>
                 <div className="space-y-4">
@@ -190,8 +282,7 @@ export default function SellerRfqListPage() {
                     return (
                       <div key={i} className="rounded-2xl border border-border bg-card overflow-hidden">
                         <div className="flex">
-                          {/* Image */}
-                          <div className="w-48 shrink-0 bg-muted relative overflow-hidden">
+                          <div className="w-44 shrink-0 bg-muted relative overflow-hidden">
                             {imgUrl ? <Image src={imgUrl} alt="" fill className="object-contain p-3" />
                               : <div className="flex h-full w-full items-center justify-center"><Package className="h-10 w-10 text-muted-foreground/10" /></div>}
                             {p.productType && (
@@ -201,46 +292,14 @@ export default function SellerRfqListPage() {
                               </span>
                             )}
                           </div>
-
-                          {/* Content */}
                           <div className="flex-1 p-4 space-y-3">
-                            <div className="flex items-start justify-between gap-3">
-                              <h4 className="text-[15px] font-bold leading-snug">{pd.productName || `Product ${i + 1}`}</h4>
-                              <span className="shrink-0 rounded-lg bg-muted px-2 py-0.5 text-[10px] font-bold">#{i + 1}</span>
-                            </div>
-
-                            {/* Specs */}
+                            <h4 className="text-[15px] font-bold leading-snug">{pd.productName || `Product ${i + 1}`}</h4>
                             <div className="flex gap-3">
-                              {p.quantity && (
-                                <div className="rounded-xl bg-muted/50 px-4 py-2">
-                                  <p className="text-[8px] font-bold text-muted-foreground uppercase">Qty</p>
-                                  <p className="text-xl font-black">{p.quantity}</p>
-                                </div>
-                              )}
-                              {budget && (
-                                <div className="rounded-xl bg-muted/50 px-4 py-2">
-                                  <p className="text-[8px] font-bold text-muted-foreground uppercase">Budget</p>
-                                  <p className="text-xl font-black">{currency.symbol}{Number(budget).toFixed(0)}</p>
-                                  {p.offerPriceFrom && p.offerPriceTo && <p className="text-[9px] text-muted-foreground">{currency.symbol}{p.offerPriceFrom} — {currency.symbol}{p.offerPriceTo}</p>}
-                                </div>
-                              )}
+                              {p.quantity && <div className="rounded-xl bg-muted/50 px-4 py-2"><p className="text-[8px] font-bold text-muted-foreground uppercase">Qty</p><p className="text-xl font-black">{p.quantity}</p></div>}
+                              {budget && <div className="rounded-xl bg-muted/50 px-4 py-2"><p className="text-[8px] font-bold text-muted-foreground uppercase">Budget</p><p className="text-xl font-black">{currency.symbol}{Number(budget).toFixed(0)}</p></div>}
                             </div>
-
-                            {/* Requirements */}
-                            {reqs.length > 0 && (
-                              <div className="flex flex-wrap gap-1.5">
-                                {reqs.map(r => (
-                                  <span key={r.l} className="rounded-full border border-primary/15 bg-primary/5 px-2 py-0.5 text-[9px] font-semibold text-primary">✓ {r.l}</span>
-                                ))}
-                              </div>
-                            )}
-
-                            {/* Note */}
-                            {note && (
-                              <div className="rounded-xl bg-amber-50 border border-amber-100 px-4 py-2.5 text-[12px] leading-relaxed text-amber-900 dark:bg-amber-950/20 dark:border-amber-800 dark:text-amber-300">
-                                {note}
-                              </div>
-                            )}
+                            {reqs.length > 0 && <div className="flex flex-wrap gap-1.5">{reqs.map(r => <span key={r.l} className="rounded-full border border-primary/15 bg-primary/5 px-2 py-0.5 text-[9px] font-semibold text-primary">✓ {r.l}</span>)}</div>}
+                            {note && <div className="rounded-xl bg-amber-50 border border-amber-100 px-4 py-2.5 text-[12px] leading-relaxed text-amber-900 dark:bg-amber-950/20 dark:border-amber-800 dark:text-amber-300">{note}</div>}
                           </div>
                         </div>
                       </div>
@@ -249,26 +308,36 @@ export default function SellerRfqListPage() {
                 </div>
               </div>
 
-              {/* ── Attachments ────────────────────────── */}
+              {/* Attachments */}
               <div className="rounded-2xl border border-dashed border-border bg-card p-4 text-center">
                 <Paperclip className="mx-auto h-5 w-5 text-muted-foreground/30 mb-1" />
                 <p className="text-[11px] text-muted-foreground/50">No attachments provided</p>
               </div>
 
-              {/* ── Actions ────────────────────────────── */}
+              {/* Actions */}
               <div className="flex gap-3">
                 <button type="button" onClick={() => router.push(`/seller-rfq-request?rfqId=${rfq.rfqQuotesId}&tab=rfq`)}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary py-3.5 text-sm font-bold text-white hover:bg-primary/90 transition-colors">
+                  className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary py-3.5 text-sm font-bold text-white hover:bg-primary/90">
                   <Send className="h-4 w-4" /> Send Quote
                 </button>
                 <button type="button" onClick={() => router.push(`/seller-rfq-request?rfqId=${rfq.rfqQuotesId}&tab=rfq`)}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-border py-3.5 text-sm font-medium text-muted-foreground hover:bg-muted transition-colors">
+                  className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-border py-3.5 text-sm font-medium text-muted-foreground hover:bg-muted">
                   <MessageCircle className="h-4 w-4" /> Open Chat
                 </button>
               </div>
             </div>
           );
         })()}
+
+        {activeTab === "detail" && !detailRfq && (
+          <div className="rounded-2xl border border-border py-20 text-center">
+            <Info className="mx-auto mb-2 h-8 w-8 text-muted-foreground/15" />
+            <p className="text-sm text-muted-foreground/40">No RFQ selected</p>
+            <button type="button" onClick={() => setActiveTab("list")} className="mt-3 text-xs font-medium text-primary hover:underline">
+              ← Go to list
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
