@@ -103,11 +103,11 @@ function P2({ rfqs, selectedId, onSelect, currency }: {
             return (
               <button key={r.id} type="button" onClick={() => onSelect(r.id)}
                 className={cn(
-                  "w-full text-start px-3 py-3 border-b border-border/50 transition-all",
+                  "w-full text-start px-3 py-2.5 border-b border-border/50 transition-all",
                   isSelected ? "bg-primary/5 border-e-2 border-e-primary" : "hover:bg-muted/30",
                 )}>
-                <div className="flex items-center gap-2.5">
-                  <div className={cn("flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[10px] font-bold",
+                <div className="flex items-start gap-2.5">
+                  <div className={cn("flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[10px] font-bold mt-0.5",
                     isSelected ? "bg-primary text-white" : "bg-muted text-muted-foreground")}>
                     {buyer?.firstName?.[0] || "?"}
                   </div>
@@ -117,16 +117,32 @@ function P2({ rfqs, selectedId, onSelect, currency }: {
                       <span className={cn("text-[11px] font-semibold truncate", isSelected ? "text-primary" : "")}>
                         {maskFull(buyer?.firstName, buyer?.lastName)}
                       </span>
-                    </div>
-                    <div className="flex items-center gap-1.5 mt-0.5 text-[9px] text-muted-foreground">
-                      <Package className="h-2.5 w-2.5" />
-                      <span>{products.length} product{products.length > 1 ? "s" : ""}</span>
                       {r.unreadMsgCount > 0 && (
-                        <span className="rounded-full bg-primary px-1 py-px text-[7px] font-bold text-white">{r.unreadMsgCount}</span>
+                        <span className="ms-auto rounded-full bg-primary px-1.5 py-px text-[7px] font-bold text-white">{r.unreadMsgCount}</span>
                       )}
                     </div>
+                    {/* Product image thumbnails */}
+                    <div className="flex items-center gap-1 mt-1.5">
+                      {products.slice(0, 4).map((p: any, pi: number) => {
+                        const pImg = p.rfqProductDetails?.productImages?.[0]?.image;
+                        const pImgUrl = pImg && validator.isURL(pImg) ? pImg : null;
+                        return (
+                          <div key={pi} className="h-8 w-8 shrink-0 overflow-hidden rounded bg-muted">
+                            {pImgUrl ? <Image src={pImgUrl} alt="" width={32} height={32} className="h-full w-full object-cover" />
+                              : <Package className="m-1.5 h-5 w-5 text-muted-foreground/15" />}
+                          </div>
+                        );
+                      })}
+                      {products.length > 4 && (
+                        <span className="text-[8px] font-bold text-muted-foreground">+{products.length - 4}</span>
+                      )}
+                      <span className="ms-auto text-[9px] text-muted-foreground">{products.length} item{products.length > 1 ? "s" : ""}</span>
+                    </div>
+                    {/* First product name */}
+                    <p className="mt-1 text-[9px] text-muted-foreground truncate">
+                      {products[0]?.rfqProductDetails?.productName || ""}
+                    </p>
                   </div>
-                  <ChevronRight className="h-3 w-3 text-muted-foreground/30" />
                 </div>
               </button>
             );
@@ -410,14 +426,14 @@ export default function SellerRfqListPage() {
     ? (selectedRfq.rfqQuotesUser_rfqQuotes?.rfqQuotesProducts || [])[selectedProductIdx]
     : null;
 
-  const col1 = filterCollapsed ? "48px" : "180px";
+  const col1 = filterCollapsed ? "48px" : "200px";
 
   if (!hasPermission) return <div />;
 
   return (
     <div className="h-[calc(100vh-64px)] overflow-hidden" style={{
       display: "grid",
-      gridTemplateColumns: `${col1} 220px 280px 1fr`,
+      gridTemplateColumns: `${col1} minmax(240px, 1.2fr) minmax(280px, 1fr) minmax(350px, 2fr)`,
       gridTemplateRows: "1fr",
       transition: "grid-template-columns 0.2s ease",
     }}>
