@@ -121,6 +121,31 @@ export function useMessageData() {
     setChannelItems("v_rfq", items);
   }, [isRfqChannel, rfqQuotesQuery.data, setChannelItems]);
 
+  // ─── P6 fallback: RFQ products for selected quote ──────────
+  useEffect(() => {
+    if (!isRfqChannel || !chatRoomId || !rfqQuotesQuery.data?.data) return;
+    const quotes: any[] = rfqQuotesQuery.data.data;
+    // Find the quote matching the selected chatRoomId
+    const quote = quotes.find((q: any) => String(q.rfqQuotesId || q.id) === chatRoomId);
+    if (!quote) return;
+
+    const products = quote.rfqQuotesUser_rfqQuotes?.rfqQuotesProducts || [];
+    const mappedProducts = products.map((p: any) => ({
+      id: String(p.id || p.rfqProductId),
+      requestedName: p.rfqProductDetails?.productName || `Product #${p.rfqProductId}`,
+      requestedQty: p.quantity || 1,
+      requestedBudget:
+        p.offerPriceFrom && p.offerPriceTo
+          ? `${p.offerPriceFrom}-${p.offerPriceTo} OMR`
+          : p.offerPrice
+            ? `${p.offerPrice} OMR`
+            : "N/A",
+      alternatives: [], // Seller will add their own products via "Add Product from Store"
+    }));
+
+    setRfqProducts(chatRoomId, mappedProducts);
+  }, [isRfqChannel, chatRoomId, rfqQuotesQuery.data, setRfqProducts]);
+
   // ─── P4/P5: Chat messages (when room selected) ────────────
   const { data: msgData } = useChatHistory(chatRoomId);
 
