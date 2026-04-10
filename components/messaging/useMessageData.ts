@@ -7,6 +7,7 @@ import {
   useChatHistory,
   useRfqProductsForRoom,
 } from "@/apis/queries/chat.queries";
+import { useAllRfqQuotesUsersBySellerId } from "@/apis/queries/rfq.queries";
 
 /**
  * Fetches real data from backend APIs and pushes it into the Zustand store.
@@ -73,6 +74,52 @@ export function useMessageData() {
       setChannelItems(selectedChannelId, items);
     }
   }, [selectedChannelId, convoData, setChannelItems]);
+
+  // ─── P2 fallback: RFQ quotes for vendor channel ────────────
+  const isRfqChannel = selectedChannelId === "v_rfq";
+  const rfqQuotesQuery = useAllRfqQuotesUsersBySellerId(
+    { page: 1, limit: 100 },
+    isRfqChannel, // only fetch when RFQ channel is selected
+  );
+
+  useEffect(() => {
+    if (!isRfqChannel || !rfqQuotesQuery.data?.data) return;
+    const quotes: any[] = rfqQuotesQuery.data.data;
+    if (quotes.length === 0) return;
+
+    // Map RFQ quotes → TreeItem[] for MsgPanel2
+    const items = quotes.map((q: any) => {
+      const buyer = q.buyerIDDetail || {};
+      const products = q.rfqQuotesUser_rfqQuotes?.rfqQuotesProducts || [];
+      const firstName = buyer.firstName || "Buyer";
+      const productNames = products.map((p: any) => p.rfqProductDetails?.productName || "Product").join(", ");
+      const totalQty = products.reduce((s: number, p: any) => s + (p.quantity || 0), 0);
+
+      return {
+        id: String(q.rfqQuotesId || q.id),
+        label: `${firstName} — ${products.length} product${products.length > 1 ? "s" : ""}`,
+        sublabel: productNames.slice(0, 50) + (productNames.length > 50 ? "..." : ""),
+        icon: "session" as const,
+        time: q.createdAt
+          ? Math.floor((Date.now() - new Date(q.createdAt).getTime()) / 60000)
+          : 999,
+        unread: q.unreadMsgCount ?? 0,
+        online: false,
+        children: products.map((p: any, i: number) => ({
+          id: `${q.rfqQuotesId || q.id}-p${i}`,
+          label: p.rfqProductDetails?.productName || `Product ${i + 1}`,
+          lastMsg: p.note ? p.note.slice(0, 40) : `Qty: ${p.quantity || 0}`,
+          time: q.createdAt
+            ? Math.floor((Date.now() - new Date(q.createdAt).getTime()) / 60000)
+            : 999,
+          unread: 0,
+          online: false,
+        })),
+      };
+    });
+
+    setChannelItems("v_rfq", items);
+  }, [isRfqChannel, rfqQuotesQuery.data, setChannelItems]);
 
   // ─── P4/P5: Chat messages (when room selected) ────────────
   const { data: msgData } = useChatHistory(chatRoomId);
