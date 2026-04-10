@@ -333,7 +333,7 @@ export default function SellerOrderCard({
             <Download className="h-3.5 w-3.5" /> Invoice
           </button>
 
-          <Link href={`/orders/${id}`}
+          <Link href={`/messages?channel=orders&orderId=${id}`}
             className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-xs font-medium text-muted-foreground hover:bg-muted hover:text-primary">
             <MessageCircle className="h-3.5 w-3.5" /> Chat
           </Link>
