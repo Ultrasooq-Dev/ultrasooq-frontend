@@ -10,122 +10,67 @@ import validator from "validator";
 import {
   Sparkles, Search, Package, MapPin, DollarSign, ChevronRight,
   Users, MessageCircle, Eye, X, Layers, SlidersHorizontal,
-  ChevronLeft, Clock, ArrowRight, Send,
+  ChevronLeft, Clock, Send, Filter, Star,
 } from "lucide-react";
 
 /* ═══════════════════════════════════════════════════════════════
-   3-PANEL LAYOUT — Product Hub style for seller RFQ discovery
-   Panel 1: Filters sidebar (collapsible)
-   Panel 2: RFQ card grid (scrollable)
-   Panel 3: RFQ detail preview (when selected)
+   4-PANEL RFQ EXPLORER
+   P1: Filters (collapsible)
+   P2: RFQ list (buyer cards)
+   P3: Product cart (items in selected RFQ)
+   P4: Product detail (specs of selected product)
    ═══════════════════════════════════════════════════════════════ */
 
-const CATEGORIES = [
-  { id: 3, name: "Electronics", emoji: "💻" },
-  { id: 292, name: "Fashion", emoji: "👗" },
-  { id: 662, name: "Home & Garden", emoji: "🏡" },
-  { id: 1025, name: "Health & Beauty", emoji: "💊" },
-  { id: 1443, name: "Automotive", emoji: "🚗" },
-  { id: 1544, name: "Baby & Kids", emoji: "👶" },
-  { id: 1698, name: "Food & Beverages", emoji: "🍕" },
-  { id: 1882, name: "Appliances", emoji: "🔌" },
-  { id: 1240, name: "Sports", emoji: "⚽" },
-  { id: 2250, name: "Industrial", emoji: "🏭" },
-  { id: 2353, name: "Construction", emoji: "🏗️" },
-  { id: 2715, name: "Agriculture", emoji: "🌾" },
+function maskName(n?: string) { return n && n.length > 2 ? n.slice(0, 2) + "***" : n || "***"; }
+function maskFull(f?: string, l?: string) { return `${maskName(f)}${l ? " " + maskName(l) : ""}`; }
+
+const CATS = [
+  { id: 3, name: "Electronics", e: "💻" }, { id: 292, name: "Fashion", e: "👗" },
+  { id: 662, name: "Home & Garden", e: "🏡" }, { id: 1025, name: "Health", e: "💊" },
+  { id: 1443, name: "Auto", e: "🚗" }, { id: 1698, name: "Food", e: "🍕" },
+  { id: 1882, name: "Appliances", e: "🔌" }, { id: 1240, name: "Sports", e: "⚽" },
+  { id: 2250, name: "Industrial", e: "🏭" }, { id: 2353, name: "Construction", e: "🏗️" },
 ];
 
-// ── Panel 1: Filter Sidebar ─────────────────────────────────────
-function FilterPanel({
-  collapsed, onToggle, search, onSearch, selectedCat, onCatChange,
-  typeFilter, onTypeChange, showRecommended, onRecommendedToggle, recCount, totalCount,
-}: {
-  collapsed: boolean; onToggle: () => void;
-  search: string; onSearch: (v: string) => void;
-  selectedCat: number | null; onCatChange: (id: number | null) => void;
-  typeFilter: string; onTypeChange: (v: string) => void;
-  showRecommended: boolean; onRecommendedToggle: () => void;
-  recCount: number; totalCount: number;
+// ── P1: Filter Sidebar ──────────────────────────────────────────
+function P1({ collapsed, onToggle, search, onSearch, showRec, onRecToggle, recCount, total }: {
+  collapsed: boolean; onToggle: () => void; search: string; onSearch: (v: string) => void;
+  showRec: boolean; onRecToggle: () => void; recCount: number; total: number;
 }) {
   if (collapsed) {
     return (
-      <div className="flex flex-col items-center py-4 gap-3 border-e border-border bg-card">
-        <button type="button" onClick={onToggle} className="p-2 rounded-lg hover:bg-muted text-muted-foreground">
-          <SlidersHorizontal className="h-4 w-4" />
-        </button>
-        <button type="button" onClick={onRecommendedToggle}
-          className={cn("p-2 rounded-lg", showRecommended ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted")}>
-          <Sparkles className="h-4 w-4" />
-        </button>
-        <button type="button" onClick={onToggle} className="p-2 rounded-lg hover:bg-muted text-muted-foreground">
-          <ChevronRight className="h-4 w-4" />
-        </button>
+      <div className="flex flex-col items-center gap-2 py-3 border-e border-border bg-card">
+        <button type="button" onClick={onToggle} className="p-2 rounded-lg hover:bg-muted text-muted-foreground"><Filter className="h-4 w-4" /></button>
+        <button type="button" onClick={onRecToggle} className={cn("p-2 rounded-lg", showRec ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted")}><Sparkles className="h-4 w-4" /></button>
+        <button type="button" onClick={onToggle} className="p-2 rounded-lg hover:bg-muted text-muted-foreground"><ChevronRight className="h-3 w-3" /></button>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col h-full border-e border-border bg-card overflow-hidden">
-      {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-border shrink-0">
-        <span className="text-xs font-bold">Filters</span>
-        <button type="button" onClick={onToggle} className="text-muted-foreground hover:text-foreground">
-          <ChevronLeft className="h-4 w-4" />
-        </button>
+    <div className="flex flex-col h-full border-e border-border bg-card">
+      <div className="flex items-center justify-between px-3 py-2.5 border-b border-border shrink-0">
+        <span className="text-[11px] font-bold">Filters</span>
+        <button type="button" onClick={onToggle} className="text-muted-foreground hover:text-foreground"><ChevronLeft className="h-3.5 w-3.5" /></button>
       </div>
-
-      <div className="flex-1 overflow-y-auto px-3 py-3 space-y-5">
-        {/* Search */}
+      <div className="flex-1 overflow-y-auto px-2.5 py-2.5 space-y-3">
         <div className="relative">
-          <Search className="absolute start-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-          <input type="text" value={search} onChange={(e) => onSearch(e.target.value)}
-            placeholder="Search..."
-            className="w-full rounded-lg border border-border bg-muted/30 py-2 pe-2 ps-8 text-xs outline-none focus:border-primary" />
+          <Search className="absolute start-2 top-1/2 -translate-y-1/2 h-3 w-3 text-muted-foreground" />
+          <input value={search} onChange={(e) => onSearch(e.target.value)} placeholder="Search..."
+            className="w-full rounded-lg border border-border bg-muted/30 py-1.5 pe-2 ps-7 text-[11px] outline-none focus:border-primary" />
         </div>
-
-        {/* Recommended toggle */}
-        <button type="button" onClick={onRecommendedToggle}
-          className={cn("flex w-full items-center gap-2 rounded-xl p-3 text-xs font-semibold transition-all",
-            showRecommended ? "bg-primary/10 text-primary border border-primary/20" : "bg-muted/50 text-muted-foreground hover:bg-muted")}>
-          <Sparkles className="h-4 w-4" />
+        <button type="button" onClick={onRecToggle}
+          className={cn("flex w-full items-center gap-2 rounded-lg p-2.5 text-[11px] font-semibold transition-all",
+            showRec ? "bg-primary/10 text-primary border border-primary/20" : "bg-muted/40 text-muted-foreground hover:bg-muted")}>
+          <Sparkles className="h-3.5 w-3.5" />
           <span className="flex-1 text-start">Recommended</span>
-          <span className={cn("rounded-full px-1.5 py-0.5 text-[9px] font-bold",
-            showRecommended ? "bg-primary text-white" : "bg-muted")}>{recCount}</span>
+          <span className={cn("rounded-full px-1.5 py-0.5 text-[8px] font-bold", showRec ? "bg-primary text-white" : "bg-muted")}>{recCount}</span>
         </button>
-
-        {/* Categories */}
         <div>
-          <h4 className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2">Categories</h4>
-          <div className="space-y-0.5">
-            <button type="button" onClick={() => onCatChange(null)}
-              className={cn("flex w-full items-center gap-2 rounded-lg px-3 py-2 text-[11px] font-medium transition-colors",
-                !selectedCat ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted")}>
-              All Categories
-              <span className="ms-auto text-[9px]">{totalCount}</span>
-            </button>
-            {CATEGORIES.map((c) => (
-              <button key={c.id} type="button" onClick={() => onCatChange(selectedCat === c.id ? null : c.id)}
-                className={cn("flex w-full items-center gap-2 rounded-lg px-3 py-2 text-[11px] font-medium transition-colors",
-                  selectedCat === c.id ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted")}>
-                <span>{c.emoji}</span>
-                <span className="truncate">{c.name}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Type */}
-        <div>
-          <h4 className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2">Product Type</h4>
-          {[
-            { v: "", l: "All types" },
-            { v: "SAME", l: "Exact match only" },
-            { v: "SIMILAR", l: "Similar accepted" },
-          ].map((t) => (
-            <button key={t.v} type="button" onClick={() => onTypeChange(t.v)}
-              className={cn("flex w-full items-center gap-2 rounded-lg px-3 py-2 text-[11px] font-medium transition-colors",
-                typeFilter === t.v ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted")}>
-              {t.l}
+          <h4 className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mb-1.5 px-1">Categories</h4>
+          {CATS.map((c) => (
+            <button key={c.id} type="button" className="flex w-full items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-[10px] font-medium text-muted-foreground hover:bg-muted transition-colors">
+              <span>{c.e}</span><span className="truncate">{c.name}</span>
             </button>
           ))}
         </div>
@@ -134,292 +79,292 @@ function FilterPanel({
   );
 }
 
-// ── Panel 2: RFQ Card ───────────────────────────────────────────
-function RfqMiniCard({
-  rfq, selected, recommended, reason, onClick, currency,
-}: {
-  rfq: any; selected: boolean; recommended?: boolean; reason?: string;
-  onClick: () => void; currency: { symbol: string };
+// ── P2: RFQ Buyer List ──────────────────────────────────────────
+function P2({ rfqs, selectedId, onSelect, currency }: {
+  rfqs: any[]; selectedId: number | null; onSelect: (id: number) => void; currency: { symbol: string };
 }) {
-  const products = rfq.rfqQuotesUser_rfqQuotes?.rfqQuotesProducts || [];
-  const buyer = rfq.buyerIDDetail;
-  const first = products[0]?.rfqProductDetails;
-  const img = first?.productImages?.[0]?.image;
-  const imageUrl = img && validator.isURL(img) ? img : null;
-  const budget = products[0]?.offerPriceTo || products[0]?.offerPriceFrom;
-
   return (
-    <button type="button" onClick={onClick}
-      className={cn(
-        "w-full text-start rounded-xl border p-3 transition-all",
-        selected
-          ? "border-primary bg-primary/5 shadow-md"
-          : "border-border bg-card hover:border-primary/30 hover:shadow-sm",
-      )}>
-      <div className="flex gap-3">
-        <div className="h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-muted">
-          {imageUrl ? <Image src={imageUrl} alt="" width={56} height={56} className="h-full w-full object-cover" />
-            : <Package className="m-3 h-8 w-8 text-muted-foreground/15" />}
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-1.5">
-            {recommended && <Sparkles className="h-3 w-3 text-primary shrink-0" />}
-            <p className={cn("text-[12px] font-semibold truncate", selected ? "text-primary" : "text-foreground")}>
-              {first?.productName || "RFQ Request"}
-            </p>
-          </div>
-          <div className="flex items-center gap-2 mt-1 text-[10px] text-muted-foreground">
-            <span>{products.length} item{products.length > 1 ? "s" : ""}</span>
-            {products[0]?.quantity && <><span>·</span><span>Qty {products[0].quantity}</span></>}
-            {budget && <><span>·</span><span className="font-semibold text-foreground">{currency.symbol}{Number(budget).toFixed(0)}</span></>}
-          </div>
-          <div className="flex items-center gap-2 mt-1">
-            {buyer && <span className="text-[10px] text-muted-foreground">{maskName(buyer.firstName)}</span>}
-            {rfq.unreadMsgCount > 0 && (
-              <span className="rounded-full bg-primary px-1.5 py-0.5 text-[8px] font-bold text-white">{rfq.unreadMsgCount} new</span>
-            )}
-          </div>
-        </div>
+    <div className="flex flex-col h-full border-e border-border bg-background">
+      <div className="shrink-0 px-3 py-2.5 border-b border-border bg-card">
+        <span className="text-[11px] font-bold">{rfqs.length} RFQ Requests</span>
       </div>
-    </button>
-  );
-}
-
-// ── Mask buyer name: "Ahmed" → "Ah***" ─────────────────────────
-function maskName(name?: string): string {
-  if (!name || name.length <= 2) return name || "***";
-  return name.slice(0, 2) + "***";
-}
-function maskFullName(first?: string, last?: string): string {
-  return `${maskName(first)}${last ? " " + maskName(last) : ""}`;
-}
-
-// ── Star Rating Display ─────────────────────────────────────────
-function Stars({ rating, max = 5 }: { rating: number; max?: number }) {
-  return (
-    <div className="flex items-center gap-0.5">
-      {Array.from({ length: max }, (_, i) => (
-        <svg key={i} className={cn("h-3.5 w-3.5", i < Math.round(rating) ? "text-amber-400" : "text-border")}
-          fill="currentColor" viewBox="0 0 20 20">
-          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-        </svg>
-      ))}
+      <div className="flex-1 overflow-y-auto">
+        {rfqs.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-12 text-center">
+            <Package className="mb-2 h-6 w-6 text-muted-foreground/15" />
+            <p className="text-[10px] text-muted-foreground/40">No requests</p>
+          </div>
+        ) : (
+          rfqs.map((item) => {
+            const r = item.rfq;
+            const buyer = r.buyerIDDetail;
+            const products = r.rfqQuotesUser_rfqQuotes?.rfqQuotesProducts || [];
+            const isSelected = selectedId === r.id;
+            return (
+              <button key={r.id} type="button" onClick={() => onSelect(r.id)}
+                className={cn(
+                  "w-full text-start px-3 py-3 border-b border-border/50 transition-all",
+                  isSelected ? "bg-primary/5 border-e-2 border-e-primary" : "hover:bg-muted/30",
+                )}>
+                <div className="flex items-center gap-2.5">
+                  <div className={cn("flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[10px] font-bold",
+                    isSelected ? "bg-primary text-white" : "bg-muted text-muted-foreground")}>
+                    {buyer?.firstName?.[0] || "?"}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1.5">
+                      {item.isRec && <Sparkles className="h-2.5 w-2.5 text-primary shrink-0" />}
+                      <span className={cn("text-[11px] font-semibold truncate", isSelected ? "text-primary" : "")}>
+                        {maskFull(buyer?.firstName, buyer?.lastName)}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1.5 mt-0.5 text-[9px] text-muted-foreground">
+                      <Package className="h-2.5 w-2.5" />
+                      <span>{products.length} product{products.length > 1 ? "s" : ""}</span>
+                      {r.unreadMsgCount > 0 && (
+                        <span className="rounded-full bg-primary px-1 py-px text-[7px] font-bold text-white">{r.unreadMsgCount}</span>
+                      )}
+                    </div>
+                  </div>
+                  <ChevronRight className="h-3 w-3 text-muted-foreground/30" />
+                </div>
+              </button>
+            );
+          })
+        )}
+      </div>
     </div>
   );
 }
 
-// ── Requirement badges from note text ───────────────────────────
-const REQ_BADGES = [
-  { key: "quality", label: "Quality Cert", match: /quality|cert|iso/i },
-  { key: "warranty", label: "Warranty", match: /warranty|guarantee/i },
-  { key: "samples", label: "Samples", match: /sample/i },
-  { key: "custom_pkg", label: "Custom Pkg", match: /custom.*pack|packaging/i },
-  { key: "branding", label: "Branding", match: /brand|logo|print/i },
-  { key: "express", label: "Express", match: /express|urgent|fast|rush/i },
-  { key: "bulk", label: "Bulk", match: /bulk|wholesale|large.*order/i },
-  { key: "corporate", label: "Corporate", match: /corporate|company|business/i },
-];
-
-function extractRequirements(products: any[]): string[] {
-  const allText = products.map((p: any) => `${p.note || ""} ${p.rfqProductDetails?.productName || ""}`).join(" ");
-  return REQ_BADGES.filter((b) => b.match.test(allText)).map((b) => b.label);
-}
-
-// ── Panel 3: RFQ Detail ─────────────────────────────────────────
-function DetailPanel({ rfq, currency, onQuote }: { rfq: any | null; currency: { symbol: string }; onQuote: () => void }) {
+// ── P3: Product Cart (items in selected RFQ) ────────────────────
+function P3({ rfq, selectedProductIdx, onSelectProduct, currency, onQuote }: {
+  rfq: any | null; selectedProductIdx: number | null;
+  onSelectProduct: (idx: number) => void; currency: { symbol: string }; onQuote: () => void;
+}) {
   if (!rfq) {
     return (
-      <div className="flex h-full flex-col items-center justify-center text-center px-8 bg-muted/20">
-        <Eye className="mb-3 h-10 w-10 text-muted-foreground/15" />
-        <p className="text-sm font-semibold text-muted-foreground/40">Select an RFQ</p>
-        <p className="mt-1 text-xs text-muted-foreground/30">Click a request to see full details</p>
+      <div className="flex h-full flex-col items-center justify-center text-center px-6 border-e border-border bg-muted/10">
+        <Users className="mb-2 h-6 w-6 text-muted-foreground/15" />
+        <p className="text-[11px] text-muted-foreground/40">Select an RFQ request</p>
       </div>
     );
   }
 
   const products = rfq.rfqQuotesUser_rfqQuotes?.rfqQuotesProducts || [];
-  const address = rfq.rfqQuotesUser_rfqQuotes?.rfqQuotes_rfqQuoteAddress;
   const buyer = rfq.buyerIDDetail;
-  const requirements = extractRequirements(products);
+  const address = rfq.rfqQuotesUser_rfqQuotes?.rfqQuotes_rfqQuoteAddress;
 
-  // Stats (mock — replace with real when API provides)
-  const rfqRating = 4.2;
-  const totalRating = 4.5;
-  const rfqCount = 7;
-  const orderCount = 23;
+  return (
+    <div className="flex h-full flex-col border-e border-border bg-card">
+      {/* Buyer header */}
+      <div className="shrink-0 px-4 py-3 border-b border-border">
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+            {buyer?.firstName?.[0] || "?"}
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-[12px] font-bold truncate">{maskFull(buyer?.firstName, buyer?.lastName)}</p>
+            <div className="flex items-center gap-2 text-[9px] text-muted-foreground">
+              {address?.address && <span className="flex items-center gap-0.5"><MapPin className="h-2.5 w-2.5" />{address.address.split(",")[0]}</span>}
+              {address?.rfqDate && <span className="flex items-center gap-0.5"><Clock className="h-2.5 w-2.5" />{new Date(address.rfqDate).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span>}
+            </div>
+          </div>
+        </div>
+        {/* Rating row */}
+        <div className="flex items-center gap-3 mt-2 text-[9px] text-muted-foreground">
+          <span className="flex items-center gap-1"><Star className="h-3 w-3 text-amber-400 fill-amber-400" /> 4.2 RFQ</span>
+          <span>·</span>
+          <span className="flex items-center gap-1"><Star className="h-3 w-3 text-emerald-400 fill-emerald-400" /> 4.5 Overall</span>
+          <span>·</span>
+          <span>7 RFQs · 23 Orders</span>
+        </div>
+      </div>
+
+      {/* Product count */}
+      <div className="shrink-0 px-4 py-2 border-b border-border bg-muted/20">
+        <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest">
+          Cart — {products.length} product{products.length > 1 ? "s" : ""}
+        </span>
+      </div>
+
+      {/* Product list */}
+      <div className="flex-1 overflow-y-auto">
+        {products.map((p: any, i: number) => {
+          const pd = p.rfqProductDetails || {};
+          const img = pd.productImages?.[0]?.image;
+          const imgUrl = img && validator.isURL(img) ? img : null;
+          const isSelected = selectedProductIdx === i;
+          const budget = p.offerPrice || p.offerPriceTo || p.offerPriceFrom;
+
+          return (
+            <button key={i} type="button" onClick={() => onSelectProduct(i)}
+              className={cn(
+                "w-full text-start px-3 py-3 border-b border-border/50 transition-all flex gap-3",
+                isSelected ? "bg-primary/5 border-e-2 border-e-primary" : "hover:bg-muted/20",
+              )}>
+              {/* Number */}
+              <div className={cn("flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[8px] font-bold mt-0.5",
+                isSelected ? "bg-primary text-white" : "bg-muted text-muted-foreground")}>{i + 1}</div>
+              {/* Image */}
+              <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-muted">
+                {imgUrl ? <Image src={imgUrl} alt="" width={48} height={48} className="h-full w-full object-cover" />
+                  : <Package className="m-2.5 h-7 w-7 text-muted-foreground/15" />}
+              </div>
+              {/* Info */}
+              <div className="flex-1 min-w-0">
+                <p className={cn("text-[11px] font-semibold truncate", isSelected ? "text-primary" : "")}>{pd.productName || `Product ${i + 1}`}</p>
+                <div className="flex items-center gap-2 mt-0.5 text-[9px] text-muted-foreground">
+                  {p.quantity && <span>Qty: {p.quantity}</span>}
+                  {budget && <span className="font-semibold text-foreground">{currency.symbol}{Number(budget).toFixed(0)}</span>}
+                  {p.productType && (
+                    <span className={cn("rounded px-1 py-px text-[7px] font-bold",
+                      p.productType === "SAME" ? "bg-emerald-100 text-emerald-700" : "bg-blue-100 text-blue-700")}>
+                      {p.productType === "SAME" ? "EXACT" : "SIMILAR"}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* CTA */}
+      <div className="shrink-0 border-t border-border p-3 space-y-1.5">
+        <button type="button" onClick={onQuote}
+          className="flex w-full items-center justify-center gap-1.5 rounded-xl bg-primary py-2.5 text-[12px] font-bold text-white hover:bg-primary/90">
+          <Send className="h-3.5 w-3.5" /> Send Quote
+        </button>
+        <button type="button" onClick={onQuote}
+          className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-border py-2 text-[10px] font-medium text-muted-foreground hover:bg-muted">
+          <MessageCircle className="h-3 w-3" /> Open Chat
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ── P4: Product Detail ──────────────────────────────────────────
+function P4({ product, currency }: { product: any | null; currency: { symbol: string } }) {
+  if (!product) {
+    return (
+      <div className="flex h-full flex-col items-center justify-center text-center px-8 bg-muted/10">
+        <Eye className="mb-2 h-8 w-8 text-muted-foreground/10" />
+        <p className="text-[11px] text-muted-foreground/40">Select a product to see details</p>
+      </div>
+    );
+  }
+
+  const pd = product.rfqProductDetails || {};
+  const img = pd.productImages?.[0]?.image;
+  const imgUrl = img && validator.isURL(img) ? img : null;
+  const hasPrice = product.offerPrice || product.offerPriceFrom || product.offerPriceTo;
+
+  // Auto-extract requirements from note
+  const note = product.note || "";
+  const reqs = [
+    { l: "Quality Cert", m: /quality|cert|iso/i },
+    { l: "Warranty", m: /warranty|guarantee/i },
+    { l: "Samples", m: /sample/i },
+    { l: "Custom Pkg", m: /custom.*pack|packaging/i },
+    { l: "Branding", m: /brand|logo|print/i },
+    { l: "Express", m: /express|urgent|fast|rush/i },
+    { l: "Bulk", m: /bulk|wholesale/i },
+    { l: "Corporate", m: /corporate|company|business/i },
+  ].filter((r) => r.m.test(note + " " + (pd.productName || "")));
 
   return (
     <div className="flex h-full flex-col bg-card">
-
-      {/* ── Customer Section ────────────────────────── */}
-      <div className="shrink-0 border-b border-border px-5 py-4">
-        <div className="flex items-start gap-3">
-          {buyer?.profilePicture ? (
-            <img src={buyer.profilePicture} className="h-12 w-12 rounded-2xl object-cover ring-2 ring-border" alt="" />
-          ) : (
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-base font-bold text-primary">
-              {buyer?.firstName?.[0] || "?"}
-            </div>
-          )}
-          <div className="flex-1 min-w-0">
-            <h2 className="text-[14px] font-bold">{maskFullName(buyer?.firstName, buyer?.lastName)}</h2>
-            <div className="flex items-center gap-3 mt-0.5 text-[10px] text-muted-foreground">
-              {address?.address && <span className="flex items-center gap-1"><MapPin className="h-3 w-3" />{address.address.split(",")[0]}</span>}
-              {buyer?.phoneNumber && <span>{buyer.cc}{maskName(buyer.phoneNumber)}</span>}
-            </div>
+      {/* Image */}
+      <div className="shrink-0 h-48 bg-muted relative overflow-hidden">
+        {imgUrl ? (
+          <Image src={imgUrl} alt="" fill className="object-contain p-2" />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center">
+            <Package className="h-12 w-12 text-muted-foreground/10" />
           </div>
-        </div>
-
-        {/* Ratings row */}
-        <div className="mt-3 flex items-center gap-4">
-          <div className="flex items-center gap-1.5">
-            <Stars rating={rfqRating} />
-            <span className="text-[11px] font-bold text-amber-600">{rfqRating}</span>
-            <span className="text-[9px] text-muted-foreground">RFQ ({rfqCount})</span>
-          </div>
-          <div className="h-3 w-px bg-border" />
-          <div className="flex items-center gap-1.5">
-            <Stars rating={totalRating} />
-            <span className="text-[11px] font-bold text-emerald-600">{totalRating}</span>
-            <span className="text-[9px] text-muted-foreground">Overall ({orderCount})</span>
-          </div>
-        </div>
-
-        {/* Delivery date */}
-        {address?.rfqDate && (
-          <div className="mt-2 flex items-center gap-1.5 text-[11px]">
-            <Clock className="h-3.5 w-3.5 text-muted-foreground" />
-            <span className="text-muted-foreground">Need by</span>
-            <span className="font-semibold">{new Date(address.rfqDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
-          </div>
+        )}
+        {product.productType && (
+          <span className={cn("absolute top-3 start-3 rounded-lg px-2.5 py-1 text-[10px] font-bold text-white shadow",
+            product.productType === "SAME" ? "bg-emerald-500" : "bg-blue-500")}>
+            {product.productType === "SAME" ? "Exact Match Only" : "Similar Products OK"}
+          </span>
         )}
       </div>
 
-      {/* ── Products + Specs ────────────────────────── */}
-      <div className="flex-1 overflow-y-auto">
+      {/* Content */}
+      <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
+        {/* Title */}
+        <h2 className="text-[16px] font-bold leading-snug">{pd.productName || "Product"}</h2>
+
+        {/* Specs grid */}
+        <div className="grid grid-cols-2 gap-2.5">
+          {product.quantity && (
+            <div className="rounded-xl bg-muted/40 p-3">
+              <p className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest">Quantity</p>
+              <p className="text-[22px] font-black leading-none mt-1">{product.quantity}</p>
+              <p className="text-[9px] text-muted-foreground mt-0.5">units requested</p>
+            </div>
+          )}
+          {hasPrice && (
+            <div className="rounded-xl bg-muted/40 p-3">
+              <p className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest">Budget</p>
+              <p className="text-[22px] font-black leading-none mt-1">
+                {currency.symbol}{product.offerPrice || product.offerPriceFrom || 0}
+              </p>
+              {product.offerPriceTo && (
+                <p className="text-[9px] text-muted-foreground mt-0.5">up to {currency.symbol}{product.offerPriceTo}</p>
+              )}
+            </div>
+          )}
+        </div>
 
         {/* Requirements badges */}
-        {requirements.length > 0 && (
-          <div className="px-5 pt-4">
+        {reqs.length > 0 && (
+          <div>
             <h4 className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mb-2">Requirements</h4>
             <div className="flex flex-wrap gap-1.5">
-              {requirements.map((r) => (
-                <span key={r} className="rounded-full border border-primary/20 bg-primary/5 px-2.5 py-1 text-[10px] font-semibold text-primary">
-                  ✓ {r}
+              {reqs.map((r) => (
+                <span key={r.l} className="rounded-full border border-primary/20 bg-primary/5 px-2.5 py-1 text-[10px] font-semibold text-primary">
+                  ✓ {r.l}
                 </span>
               ))}
             </div>
           </div>
         )}
 
-        {/* Products */}
-        <div className="px-5 py-4">
-          <h4 className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mb-3">
-            Products ({products.length})
-          </h4>
-          <div className="space-y-4">
-            {products.map((p: any, i: number) => {
-              const pd = p.rfqProductDetails || {};
-              const pImg = pd.productImages?.[0]?.image;
-              const pImgUrl = pImg && validator.isURL(pImg) ? pImg : null;
-              const hasPrice = p.offerPrice || p.offerPriceFrom || p.offerPriceTo;
-
-              return (
-                <div key={i} className="rounded-2xl border border-border overflow-hidden">
-                  {/* Image */}
-                  <div className="h-40 bg-muted relative overflow-hidden">
-                    {pImgUrl ? (
-                      <Image src={pImgUrl} alt="" fill className="object-cover" />
-                    ) : (
-                      <div className="flex h-full w-full items-center justify-center bg-gradient-to-b from-muted to-muted/50">
-                        <Package className="h-10 w-10 text-muted-foreground/10" />
-                      </div>
-                    )}
-                    {p.productType && (
-                      <span className={cn("absolute top-3 start-3 rounded-lg px-2.5 py-1 text-[10px] font-bold text-white shadow-sm",
-                        p.productType === "SAME" ? "bg-emerald-500" : "bg-blue-500")}>
-                        {p.productType === "SAME" ? "Exact Match Only" : "Similar Products OK"}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Details */}
-                  <div className="p-4">
-                    <h3 className="text-[14px] font-bold leading-snug">{pd.productName || `Product ${i + 1}`}</h3>
-
-                    {/* Specs grid */}
-                    <div className="mt-3 grid grid-cols-2 gap-2">
-                      {p.quantity && (
-                        <div className="rounded-xl bg-muted/40 px-3 py-2">
-                          <p className="text-[9px] text-muted-foreground uppercase">Quantity</p>
-                          <p className="text-[15px] font-black">{p.quantity}</p>
-                        </div>
-                      )}
-                      {hasPrice && (
-                        <div className="rounded-xl bg-muted/40 px-3 py-2">
-                          <p className="text-[9px] text-muted-foreground uppercase">Budget</p>
-                          <p className="text-[15px] font-black">
-                            {currency.symbol}{p.offerPrice || p.offerPriceFrom || 0}
-                            {p.offerPriceTo ? <span className="text-[11px] font-normal text-muted-foreground"> — {currency.symbol}{p.offerPriceTo}</span> : ""}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Note / Description */}
-                    {p.note && (
-                      <div className="mt-3">
-                        <h5 className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mb-1.5">Buyer's Requirements</h5>
-                        <div className="rounded-xl bg-amber-50 border border-amber-100 px-4 py-3 text-[12px] leading-relaxed text-amber-900 dark:bg-amber-950/20 dark:border-amber-900 dark:text-amber-200">
-                          {p.note}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Attachments placeholder */}
-        <div className="px-5 pb-4">
-          <h4 className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mb-2">Attachments</h4>
-          <div className="rounded-xl border border-dashed border-border py-4 text-center">
-            <p className="text-[11px] text-muted-foreground/50">No attachments provided</p>
-          </div>
-        </div>
-
-        {/* Last message */}
-        {rfq.lastUnreadMessage?.content && (
-          <div className="px-5 pb-4">
-            <h4 className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mb-2">Latest Message</h4>
-            <div className="rounded-xl bg-primary/5 border border-primary/10 p-3">
-              <p className="text-[12px] leading-relaxed">{rfq.lastUnreadMessage.content}</p>
-              <p className="mt-1 text-[9px] text-muted-foreground">
-                {new Date(rfq.lastUnreadMessage.createdAt).toLocaleDateString()}
-              </p>
+        {/* Buyer's notes */}
+        {note && (
+          <div>
+            <h4 className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mb-2">Buyer&apos;s Notes</h4>
+            <div className="rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 text-[12px] leading-relaxed text-amber-900 dark:bg-amber-950/20 dark:border-amber-800 dark:text-amber-300">
+              {note}
             </div>
           </div>
         )}
-      </div>
 
-      {/* ── Actions ────────────────────────────────── */}
-      <div className="shrink-0 border-t border-border p-4 space-y-2">
-        <button type="button" onClick={onQuote}
-          className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-3 text-sm font-bold text-white hover:bg-primary/90 transition-colors">
-          <Send className="h-4 w-4" /> Send Quote
-        </button>
-        <button type="button" onClick={onQuote}
-          className="flex w-full items-center justify-center gap-2 rounded-xl border border-border py-2.5 text-xs font-medium text-muted-foreground hover:bg-muted transition-colors">
-          <MessageCircle className="h-3.5 w-3.5" /> Open Chat
-        </button>
+        {/* Specs (from product if available) */}
+        <div>
+          <h4 className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mb-2">Specifications</h4>
+          <div className="rounded-xl border border-border p-3 text-[11px] text-muted-foreground">
+            <p className="italic">Specs will be auto-extracted from product description</p>
+          </div>
+        </div>
+
+        {/* Attachments */}
+        <div>
+          <h4 className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mb-2">Attachments</h4>
+          <div className="rounded-xl border border-dashed border-border py-4 text-center">
+            <p className="text-[10px] text-muted-foreground/40">No attachments</p>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-// ── Main Page ───────────────────────────────────────────────────
+// ── Main ────────────────────────────────────────────────────────
 export default function SellerRfqListPage() {
   const { currency } = useAuth();
   const router = useRouter();
@@ -427,34 +372,28 @@ export default function SellerRfqListPage() {
 
   const [filterCollapsed, setFilterCollapsed] = useState(false);
   const [search, setSearch] = useState("");
-  const [selectedCat, setSelectedCat] = useState<number | null>(null);
-  const [typeFilter, setTypeFilter] = useState("");
-  const [showRecommended, setShowRecommended] = useState(false);
-  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [showRec, setShowRec] = useState(false);
+  const [selectedRfqId, setSelectedRfqId] = useState<number | null>(null);
+  const [selectedProductIdx, setSelectedProductIdx] = useState<number | null>(null);
 
   useEffect(() => { if (!hasPermission) router.push("/home"); }, [hasPermission, router]);
 
   const sellerRfqs = useAllRfqQuotesUsersBySellerId({ page: 1, limit: 100 }, hasPermission);
   const allRfqs: any[] = sellerRfqs.data?.data || [];
 
-  // Score recommendations
   const scored = useMemo(() => {
     return allRfqs.map((rfq) => {
-      const products = rfq.rfqQuotesUser_rfqQuotes?.rfqQuotesProducts || [];
-      let score = 0; let reason = "";
-      if (rfq.unreadMsgCount > 0) { score += 4; reason = "New message"; }
-      if (products.some((p: any) => (p.quantity || 0) >= 10)) { score += 2; reason = reason || "Bulk order"; }
-      if (products.some((p: any) => p.productType === "SIMILAR")) { score += 1; reason = reason || "Similar OK"; }
-      if (products.length > 1) { score += 1; reason = reason || "Multi-item"; }
-      return { rfq, score, reason, isRec: score >= 2 };
+      const prods = rfq.rfqQuotesUser_rfqQuotes?.rfqQuotesProducts || [];
+      let s = 0; if (rfq.unreadMsgCount > 0) s += 4;
+      if (prods.some((p: any) => (p.quantity || 0) >= 10)) s += 2;
+      if (prods.some((p: any) => p.productType === "SIMILAR")) s += 1;
+      if (prods.length > 1) s += 1;
+      return { rfq, score: s, isRec: s >= 2 };
     }).sort((a, b) => b.score - a.score);
   }, [allRfqs]);
 
-  const recCount = scored.filter((s) => s.isRec).length;
-
-  // Filter
   const filtered = useMemo(() => {
-    let items = showRecommended ? scored.filter((s) => s.isRec) : scored;
+    let items = showRec ? scored.filter((s) => s.isRec) : scored;
     if (search) {
       const q = search.toLowerCase();
       items = items.filter((s) => {
@@ -463,101 +402,38 @@ export default function SellerRfqListPage() {
           || s.rfq.buyerIDDetail?.firstName?.toLowerCase().includes(q);
       });
     }
-    if (typeFilter) {
-      items = items.filter((s) => {
-        const prods = s.rfq.rfqQuotesUser_rfqQuotes?.rfqQuotesProducts || [];
-        return prods.some((p: any) => p.productType === typeFilter);
-      });
-    }
     return items;
-  }, [scored, showRecommended, search, typeFilter]);
+  }, [scored, showRec, search]);
 
-  const selectedRfq = selectedId ? allRfqs.find((r: any) => r.id === selectedId) : null;
+  const selectedRfq = selectedRfqId ? allRfqs.find((r: any) => r.id === selectedRfqId) : null;
+  const selectedProduct = selectedRfq && selectedProductIdx !== null
+    ? (selectedRfq.rfqQuotesUser_rfqQuotes?.rfqQuotesProducts || [])[selectedProductIdx]
+    : null;
 
-  const col1 = filterCollapsed ? "50px" : "220px";
+  const col1 = filterCollapsed ? "48px" : "180px";
 
   if (!hasPermission) return <div />;
 
   return (
-    <div
-      className="h-[calc(100vh-64px)] overflow-hidden"
-      style={{
-        display: "grid",
-        gridTemplateColumns: `${col1} 300px 1fr`,
-        gridTemplateRows: "1fr",
-        transition: "grid-template-columns 0.2s ease",
-      }}
-    >
-      {/* Panel 1: Filters */}
-      <FilterPanel
-        collapsed={filterCollapsed}
-        onToggle={() => setFilterCollapsed(!filterCollapsed)}
-        search={search}
-        onSearch={setSearch}
-        selectedCat={selectedCat}
-        onCatChange={setSelectedCat}
-        typeFilter={typeFilter}
-        onTypeChange={setTypeFilter}
-        showRecommended={showRecommended}
-        onRecommendedToggle={() => setShowRecommended(!showRecommended)}
-        recCount={recCount}
-        totalCount={allRfqs.length}
-      />
+    <div className="h-[calc(100vh-64px)] overflow-hidden" style={{
+      display: "grid",
+      gridTemplateColumns: `${col1} 220px 280px 1fr`,
+      gridTemplateRows: "1fr",
+      transition: "grid-template-columns 0.2s ease",
+    }}>
+      <P1 collapsed={filterCollapsed} onToggle={() => setFilterCollapsed(!filterCollapsed)}
+        search={search} onSearch={setSearch} showRec={showRec} onRecToggle={() => setShowRec(!showRec)}
+        recCount={scored.filter((s) => s.isRec).length} total={allRfqs.length} />
 
-      {/* Panel 2: RFQ List */}
-      <div className="flex flex-col h-full min-h-0 border-e border-border bg-muted/20">
-        <div className="shrink-0 px-4 py-3 border-b border-border bg-card">
-          <div className="flex items-center justify-between">
-            <h2 className="text-sm font-bold">
-              {showRecommended ? "Recommended" : "All Requests"}
-            </h2>
-            <span className="text-xs text-muted-foreground">{filtered.length} results</span>
-          </div>
-        </div>
-        <div className="flex-1 overflow-y-auto p-3 space-y-2">
-          {sellerRfqs.isLoading ? (
-            [...Array(5)].map((_, i) => (
-              <div key={i} className="rounded-xl border border-border bg-card p-3">
-                <div className="flex gap-3">
-                  <div className="h-14 w-14 animate-pulse rounded-lg bg-muted" />
-                  <div className="flex-1 space-y-2">
-                    <div className="h-3 w-3/4 animate-pulse rounded bg-muted" />
-                    <div className="h-2.5 w-1/2 animate-pulse rounded bg-muted" />
-                  </div>
-                </div>
-              </div>
-            ))
-          ) : filtered.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-16 text-center">
-              <Package className="mb-2 h-8 w-8 text-muted-foreground/15" />
-              <p className="text-xs text-muted-foreground/40">No RFQ requests found</p>
-            </div>
-          ) : (
-            filtered.map((item) => (
-              <RfqMiniCard
-                key={item.rfq.id}
-                rfq={item.rfq}
-                selected={selectedId === item.rfq.id}
-                recommended={item.isRec}
-                reason={item.reason}
-                onClick={() => setSelectedId(item.rfq.id)}
-                currency={currency}
-              />
-            ))
-          )}
-        </div>
-      </div>
+      <P2 rfqs={filtered} selectedId={selectedRfqId}
+        onSelect={(id) => { setSelectedRfqId(id); setSelectedProductIdx(0); }}
+        currency={currency} />
 
-      {/* Panel 3: Detail */}
-      <DetailPanel
-        rfq={selectedRfq}
-        currency={currency}
-        onQuote={() => {
-          if (selectedRfq) {
-            router.push(`/seller-rfq-request?rfqId=${selectedRfq.rfqQuotesId}&tab=rfq`);
-          }
-        }}
-      />
+      <P3 rfq={selectedRfq} selectedProductIdx={selectedProductIdx}
+        onSelectProduct={setSelectedProductIdx} currency={currency}
+        onQuote={() => selectedRfq && router.push(`/seller-rfq-request?rfqId=${selectedRfq.rfqQuotesId}&tab=rfq`)} />
+
+      <P4 product={selectedProduct} currency={currency} />
     </div>
   );
 }
