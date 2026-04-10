@@ -279,10 +279,21 @@ export default function SellerRfqListPage() {
                       { l: "Branding", m: /brand|logo/i }, { l: "Express", m: /express|urgent|fast/i },
                     ].filter(r => r.m.test(note + " " + (pd.productName || "")));
 
+                    // All 6 requirement checkboxes (matching buyer form)
+                    const allReqs = [
+                      { key: "quality", label: "Quality Cert", checked: /quality|cert|iso/i.test(note + " " + (pd.productName || "")) },
+                      { key: "warranty", label: "Warranty", checked: /warranty|guarantee/i.test(note) },
+                      { key: "samples", label: "Samples", checked: /sample/i.test(note) },
+                      { key: "custom_pkg", label: "Custom Pkg", checked: /custom.*pack|packaging/i.test(note) },
+                      { key: "branding", label: "Branding", checked: /brand|logo|print/i.test(note) },
+                      { key: "express", label: "Express", checked: /express|urgent|fast|rush/i.test(note) },
+                    ];
+
                     return (
                       <div key={i} className="rounded-2xl border border-border bg-card overflow-hidden">
+                        {/* Product header: image + title + specs */}
                         <div className="flex">
-                          <div className="w-44 shrink-0 bg-muted relative overflow-hidden">
+                          <div className="w-44 shrink-0 bg-muted relative overflow-hidden min-h-[140px]">
                             {imgUrl ? <Image src={imgUrl} alt="" fill className="object-contain p-3" />
                               : <div className="flex h-full w-full items-center justify-center"><Package className="h-10 w-10 text-muted-foreground/10" /></div>}
                             {p.productType && (
@@ -293,25 +304,63 @@ export default function SellerRfqListPage() {
                             )}
                           </div>
                           <div className="flex-1 p-4 space-y-3">
-                            <h4 className="text-[15px] font-bold leading-snug">{pd.productName || `Product ${i + 1}`}</h4>
+                            <div className="flex items-start justify-between">
+                              <h4 className="text-[15px] font-bold leading-snug">{pd.productName || `Product ${i + 1}`}</h4>
+                              <span className="shrink-0 rounded-lg bg-muted px-2 py-0.5 text-[10px] font-bold text-muted-foreground">#{i + 1}</span>
+                            </div>
                             <div className="flex gap-3">
                               {p.quantity && <div className="rounded-xl bg-muted/50 px-4 py-2"><p className="text-[8px] font-bold text-muted-foreground uppercase">Qty</p><p className="text-xl font-black">{p.quantity}</p></div>}
-                              {budget && <div className="rounded-xl bg-muted/50 px-4 py-2"><p className="text-[8px] font-bold text-muted-foreground uppercase">Budget</p><p className="text-xl font-black">{currency.symbol}{Number(budget).toFixed(0)}</p></div>}
+                              {budget && <div className="rounded-xl bg-muted/50 px-4 py-2"><p className="text-[8px] font-bold text-muted-foreground uppercase">Budget</p><p className="text-xl font-black">{currency.symbol}{Number(budget).toFixed(0)}</p>{p.offerPriceFrom && p.offerPriceTo && <p className="text-[9px] text-muted-foreground">{currency.symbol}{p.offerPriceFrom} — {currency.symbol}{p.offerPriceTo}</p>}</div>}
                             </div>
-                            {reqs.length > 0 && <div className="flex flex-wrap gap-1.5">{reqs.map(r => <span key={r.l} className="rounded-full border border-primary/15 bg-primary/5 px-2 py-0.5 text-[9px] font-semibold text-primary">✓ {r.l}</span>)}</div>}
-                            {note && <div className="rounded-xl bg-amber-50 border border-amber-100 px-4 py-2.5 text-[12px] leading-relaxed text-amber-900 dark:bg-amber-950/20 dark:border-amber-800 dark:text-amber-300">{note}</div>}
+                          </div>
+                        </div>
+
+                        {/* Specs & Requirements (per product) */}
+                        <div className="border-t border-border px-4 py-3 space-y-3">
+                          {/* Buyer's notes */}
+                          {note ? (
+                            <div>
+                              <h5 className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mb-1.5">Specs & Requirements</h5>
+                              <div className="rounded-xl bg-amber-50 border border-amber-100 px-4 py-3 text-[12px] leading-relaxed text-amber-900 dark:bg-amber-950/20 dark:border-amber-800 dark:text-amber-300">
+                                {note}
+                              </div>
+                            </div>
+                          ) : (
+                            <p className="text-[10px] text-muted-foreground italic">No specs or notes provided</p>
+                          )}
+
+                          {/* Requirement checkboxes — matching the buyer form exactly */}
+                          <div className="flex flex-wrap items-center gap-2">
+                            {allReqs.map(r => (
+                              <span key={r.key} className={cn(
+                                "flex items-center gap-1 rounded-lg border px-2.5 py-1 text-[10px] font-semibold",
+                                r.checked
+                                  ? "border-primary/30 bg-primary/5 text-primary"
+                                  : "border-border bg-muted/30 text-muted-foreground/50",
+                              )}>
+                                <span className={cn("flex h-3.5 w-3.5 items-center justify-center rounded border text-[8px]",
+                                  r.checked ? "border-primary bg-primary text-white" : "border-border bg-card")}>
+                                  {r.checked && "✓"}
+                                </span>
+                                {r.label}
+                              </span>
+                            ))}
+                          </div>
+
+                          {/* Attachments (per product) */}
+                          <div>
+                            <h5 className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mb-1.5 flex items-center gap-1">
+                              <Paperclip className="h-3 w-3" /> Attachments
+                            </h5>
+                            <div className="rounded-xl border border-dashed border-border py-3 text-center">
+                              <p className="text-[10px] text-muted-foreground/40">No attachments for this product</p>
+                            </div>
                           </div>
                         </div>
                       </div>
                     );
                   })}
                 </div>
-              </div>
-
-              {/* Attachments */}
-              <div className="rounded-2xl border border-dashed border-border bg-card p-4 text-center">
-                <Paperclip className="mx-auto h-5 w-5 text-muted-foreground/30 mb-1" />
-                <p className="text-[11px] text-muted-foreground/50">No attachments provided</p>
               </div>
 
               {/* Actions */}
