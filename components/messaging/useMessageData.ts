@@ -7,7 +7,7 @@ import {
   useChatHistory,
   useRfqProductsForRoom,
 } from "@/apis/queries/chat.queries";
-import { useAllRfqQuotesUsersBySellerId } from "@/apis/queries/rfq.queries";
+import { useAllRfqQuotesUsersBySellerId, useAllRfqQuotesByBuyerId } from "@/apis/queries/rfq.queries";
 
 /**
  * Fetches real data from backend APIs and pushes it into the Zustand store.
@@ -120,6 +120,74 @@ export function useMessageData() {
 
     setChannelItems("v_rfq", items);
   }, [isRfqChannel, rfqQuotesQuery.data, setChannelItems]);
+
+  // ─── P2 fallback: Customer RFQ quotes (c_rfq channel) ──────
+  const isCustomerRfq = selectedChannelId === "c_rfq";
+  const buyerRfqQuery = useAllRfqQuotesByBuyerId(
+    { page: 1, limit: 100 },
+    isCustomerRfq,
+  );
+
+  useEffect(() => {
+    if (!isCustomerRfq || !buyerRfqQuery.data?.data) return;
+    const quotes: any[] = buyerRfqQuery.data.data;
+    if (quotes.length === 0) return;
+
+    const items = quotes.map((q: any) => {
+      const products = q.rfqQuotesProducts || [];
+      const addr = q.rfqQuotes_rfqQuoteAddress;
+      const productNames = products.map((p: any) => p.rfqProductDetails?.productName || "Product").join(", ");
+
+      return {
+        id: String(q.id),
+        label: `RFQ #${q.id} — ${products.length} product${products.length > 1 ? "s" : ""}`,
+        sublabel: productNames.slice(0, 50) + (productNames.length > 50 ? "..." : ""),
+        icon: "session" as const,
+        time: q.createdAt
+          ? Math.floor((Date.now() - new Date(q.createdAt).getTime()) / 60000)
+          : 999,
+        unread: 0,
+        online: false,
+        children: products.map((p: any, i: number) => ({
+          id: `${q.id}-p${i}`,
+          label: p.rfqProductDetails?.productName || `Product ${i + 1}`,
+          lastMsg: p.note ? p.note.slice(0, 40) : `Qty: ${p.quantity || 0}`,
+          time: q.createdAt
+            ? Math.floor((Date.now() - new Date(q.createdAt).getTime()) / 60000)
+            : 999,
+          unread: 0,
+          online: false,
+        })),
+      };
+    });
+
+    setChannelItems("c_rfq", items);
+  }, [isCustomerRfq, buyerRfqQuery.data, setChannelItems]);
+
+  // ─── P6 fallback: Customer RFQ products for selected quote ──
+  useEffect(() => {
+    if (!isCustomerRfq || !chatRoomId || !buyerRfqQuery.data?.data) return;
+    const quotes: any[] = buyerRfqQuery.data.data;
+    const quoteId = chatRoomId.includes("-p") ? chatRoomId.split("-p")[0] : chatRoomId;
+    const quote = quotes.find((q: any) => String(q.id) === quoteId);
+    if (!quote) return;
+
+    const products = quote.rfqQuotesProducts || [];
+    const mappedProducts = products.map((p: any) => ({
+      id: String(p.id || p.rfqProductId),
+      requestedName: p.rfqProductDetails?.productName || `Product #${p.rfqProductId}`,
+      requestedQty: p.quantity || 1,
+      requestedBudget:
+        p.offerPriceFrom && p.offerPriceTo
+          ? `${p.offerPriceFrom}-${p.offerPriceTo} OMR`
+          : p.offerPrice
+            ? `${p.offerPrice} OMR`
+            : "N/A",
+      alternatives: [],
+    }));
+
+    setRfqProducts(chatRoomId, mappedProducts);
+  }, [isCustomerRfq, chatRoomId, buyerRfqQuery.data, setRfqProducts]);
 
   // ─── P6 fallback: RFQ products for selected quote ──────────
   useEffect(() => {
