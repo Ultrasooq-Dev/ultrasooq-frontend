@@ -69,7 +69,7 @@ export default function SellerRfqListPage() {
     <div className="h-[calc(100vh-64px)] flex overflow-hidden">
 
       {/* ═══ LEFT: Compact RFQ List ═══ */}
-      <div className="w-[320px] shrink-0 flex flex-col border-e border-border bg-card">
+      <div className="w-[260px] shrink-0 flex flex-col border-e border-border bg-card">
         {/* Header + Search */}
         <div className="shrink-0 p-3 border-b border-border space-y-2">
           <div className="flex items-center justify-between">
@@ -101,20 +101,16 @@ export default function SellerRfqListPage() {
 
             return (
               <button key={r.id} type="button" onClick={() => setSelectedId(r.id)}
-                className={cn("w-full text-start flex items-center gap-2.5 px-3 py-2.5 border-b border-border/40 transition-all",
-                  isSelected ? "bg-primary/5 border-e-[3px] border-e-primary" : "hover:bg-muted/30")}>
-                <div className={cn("flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[10px] font-bold",
+                className={cn("w-full text-start flex items-center gap-2 px-3 py-2 border-b border-border/30 transition-all",
+                  isSelected ? "bg-primary/5 border-e-[3px] border-e-primary" : "hover:bg-muted/20")}>
+                <div className={cn("flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[9px] font-bold",
                   isSelected ? "bg-primary text-white" : "bg-muted text-muted-foreground")}>{buyer?.firstName?.[0] || "?"}</div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1">
-                    {item.isRec && <Sparkles className="h-2.5 w-2.5 text-primary shrink-0" />}
+                    {item.isRec && <Sparkles className="h-2 w-2 text-primary shrink-0" />}
                     <span className={cn("text-[11px] font-semibold truncate", isSelected && "text-primary")}>{maskFull(buyer?.firstName, buyer?.lastName)}</span>
-                    {r.unreadMsgCount > 0 && <span className="ms-auto rounded-full bg-primary px-1 py-px text-[7px] font-bold text-white">{r.unreadMsgCount}</span>}
-                  </div>
-                  <div className="flex items-center gap-2 mt-0.5 text-[9px] text-muted-foreground">
-                    <span>{prods.length} item{prods.length > 1 ? "s" : ""}</span>
-                    {budget > 0 && <span className="font-semibold text-foreground">{currency.symbol}{budget.toFixed(0)}</span>}
-                    <span className="ms-auto">{new Date(r.createdAt || Date.now()).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span>
+                    <span className="ms-auto text-[9px] text-muted-foreground">{prods.length}📦</span>
+                    {r.unreadMsgCount > 0 && <span className="rounded-full bg-primary px-1 py-px text-[7px] font-bold text-white">{r.unreadMsgCount}</span>}
                   </div>
                 </div>
               </button>
