@@ -125,8 +125,9 @@ export function useMessageData() {
   useEffect(() => {
     if (!isRfqChannel || !chatRoomId || !rfqQuotesQuery.data?.data) return;
     const quotes: any[] = rfqQuotesQuery.data.data;
-    // Find the quote matching the selected chatRoomId
-    const quote = quotes.find((q: any) => String(q.rfqQuotesId || q.id) === chatRoomId);
+    // chatRoomId can be "8" (parent) or "8-p0" (child) — extract quote ID
+    const quoteId = chatRoomId.includes("-p") ? chatRoomId.split("-p")[0] : chatRoomId;
+    const quote = quotes.find((q: any) => String(q.rfqQuotesId || q.id) === quoteId);
     if (!quote) return;
 
     const products = quote.rfqQuotesUser_rfqQuotes?.rfqQuotesProducts || [];
