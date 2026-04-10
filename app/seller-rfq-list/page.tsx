@@ -291,7 +291,7 @@ export default function SellerRfqListPage() {
                             className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-primary py-2 text-xs font-bold text-white hover:bg-primary/90">
                             <Eye className="h-3.5 w-3.5" /> View Full Details
                           </button>
-                          <button type="button" onClick={() => router.push(`/messages?channel=rfq&rfqId=${r.rfqQuotesId}`)}
+                          <button type="button" onClick={() => router.push(`/seller-rfq-request?rfqId=${r.rfqQuotesId}&tab=rfq`)}
                             className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-border py-2 text-xs font-medium text-muted-foreground hover:bg-muted">
                             <Send className="h-3.5 w-3.5" /> Quote & Chat
                           </button>
@@ -453,11 +453,11 @@ export default function SellerRfqListPage() {
 
               {/* Actions */}
               <div className="flex gap-3">
-                <button type="button" onClick={() => router.push(`/messages?channel=rfq&rfqId=${rfq.rfqQuotesId}`)}
+                <button type="button" onClick={() => router.push(`/seller-rfq-request?rfqId=${rfq.rfqQuotesId}&tab=rfq`)}
                   className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary py-3.5 text-sm font-bold text-white hover:bg-primary/90">
                   <Send className="h-4 w-4" /> Send Quote
                 </button>
-                <button type="button" onClick={() => router.push(`/messages?channel=rfq&rfqId=${rfq.rfqQuotesId}`)}
+                <button type="button" onClick={() => router.push(`/seller-rfq-request?rfqId=${rfq.rfqQuotesId}&tab=rfq`)}
                   className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-border py-3.5 text-sm font-medium text-muted-foreground hover:bg-muted">
                   <MessageCircle className="h-4 w-4" /> Open Chat
                 </button>
