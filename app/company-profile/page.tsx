@@ -26,6 +26,7 @@ import { useTags } from "@/apis/queries/tags.queries";
 import CategoryTreeModal from "@/components/shared/CategoryTreeModal";
 import { FolderTree } from "lucide-react";
 import { PRODUCT_CATEGORY_ID } from "@/utils/constants";
+import { useRunCRPipeline } from "@/apis/queries/verification.queries";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { Label } from "@/components/ui/label";
@@ -273,6 +274,7 @@ export default function CompanyProfilePage() {
   const [categoryModalField, setCategoryModalField] = useState<string>("");
   const upload = useUploadFile();
   const createCompanyProfile = useCreateCompanyProfile();
+  const runCRPipeline = useRunCRPipeline();
 
   // Get the current account data
   const currentAccountData = currentAccount?.data?.data?.account;
@@ -438,6 +440,37 @@ export default function CompanyProfilePage() {
         description: response.message,
         variant: "success",
       });
+
+      // Trigger AI CR pipeline if CR document was uploaded
+      if (getCrUrl) {
+        toast({
+          title: "AI Processing CR Document...",
+          description: "Auto-filling company details from your Commercial Registration.",
+          variant: "default",
+        });
+        runCRPipeline.mutate(
+          { crDocumentUrl: getCrUrl },
+          {
+            onSuccess: (result) => {
+              if (result.status) {
+                toast({
+                  title: "CR Verified Successfully!",
+                  description: `Company: ${result.data?.extraction?.companyName || "Extracted"} — Profile auto-filled, ${result.data?.categoryMatches?.length || 0} categories matched.`,
+                  variant: "success",
+                });
+              }
+            },
+            onError: () => {
+              toast({
+                title: "CR processing failed",
+                description: "You can fill your profile manually.",
+                variant: "danger",
+              });
+            },
+          },
+        );
+      }
+
       form.reset();
       router.push("/company-profile-details");
     } else {
