@@ -242,7 +242,7 @@ export default function ProductViewPage() {
         {/* ══════ HERO SECTION ══════ */}
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 pt-6 pb-4">
           {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-[13px] text-[#8a7560] mb-8">
+          <nav className="flex items-center gap-2 text-[13px] text-[#8a7560] mb-4">
             <button onClick={() => router.back()} className="hover:text-[#c2703e] transition-colors"><ArrowLeft className="h-4 w-4" /></button>
             <span className="opacity-40">/</span>
             <a href="/trending" className="hover:text-[#c2703e] transition-colors">{t("store") || "Store"}</a>
@@ -251,18 +251,18 @@ export default function ProductViewPage() {
         </div>
 
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 pb-20">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
 
             {/* ── LEFT: Gallery ── */}
-            <div className="lg:col-span-7">
+            <div className="lg:col-span-6">
               <div className="sticky top-6">
                 {/* Main Image */}
-                <div className="relative rounded-3xl overflow-hidden bg-white shadow-[0_8px_40px_rgba(0,0,0,0.06)] group">
-                  <div className="aspect-[4/5] relative">
+                <div className="relative rounded-2xl overflow-hidden bg-white shadow-[0_4px_24px_rgba(0,0,0,0.06)] group">
+                  <div className="aspect-square relative">
                     {typeof images[selectedImg] === "string" ? (
-                      <img src={images[selectedImg] as string} alt={product.productName} className="w-full h-full object-contain p-6 sm:p-10 transition-transform duration-700 group-hover:scale-105" />
+                      <img src={images[selectedImg] as string} alt={product.productName} className="w-full h-full object-contain p-4 transition-transform duration-700 group-hover:scale-105" />
                     ) : (
-                      <Image src={images[selectedImg]} alt={product.productName || ""} fill className="object-contain p-6 sm:p-10" />
+                      <Image src={images[selectedImg]} alt={product.productName || ""} fill className="object-contain p-4" />
                     )}
 
                     {/* Badges */}
@@ -304,10 +304,10 @@ export default function ProductViewPage() {
 
                 {/* Thumbnails */}
                 {images.length > 1 && (
-                  <div className="flex gap-3 mt-4 overflow-x-auto pb-1 px-1">
+                  <div className="flex gap-2 mt-3 overflow-x-auto pb-1">
                     {images.map((img, i) => (
                       <button key={i} onClick={() => setSelectedImg(i)}
-                        className={cn("w-20 h-20 rounded-2xl overflow-hidden border-2 flex-shrink-0 transition-all duration-300 bg-white",
+                        className={cn("w-16 h-16 rounded-xl overflow-hidden border-2 flex-shrink-0 transition-all duration-300 bg-white",
                           selectedImg === i ? "border-[#c2703e] shadow-lg shadow-[#c2703e]/15 scale-105" : "border-transparent opacity-60 hover:opacity-100")}>
                         {typeof img === "string" ? (
                           <img src={img} alt="" className="w-full h-full object-cover" />
@@ -322,7 +322,7 @@ export default function ProductViewPage() {
             </div>
 
             {/* ── RIGHT: Product Info ── */}
-            <div className="lg:col-span-5 py-2">
+            <div className="lg:col-span-6">
 
               {/* Brand + Category */}
               <div className="flex items-center gap-3 mb-4">
@@ -335,12 +335,12 @@ export default function ProductViewPage() {
               </div>
 
               {/* Title */}
-              <h1 className="text-[28px] sm:text-[34px] font-bold leading-[1.15] text-[#2d2017] tracking-tight">
+              <h1 className="text-xl sm:text-2xl font-bold leading-tight text-[#2d2017]">
                 {product.productName}
               </h1>
 
               {/* Rating + Sold */}
-              <div className="flex items-center gap-4 mt-4">
+              <div className="flex items-center gap-3 mt-2 flex-wrap">
                 {reviews.length > 0 && (
                   <div className="flex items-center gap-1.5">
                     {[1, 2, 3, 4, 5].map((i) => (
@@ -356,7 +356,7 @@ export default function ProductViewPage() {
               </div>
 
               {/* ── Price Block ── */}
-              <div className="mt-8 p-6 rounded-2xl bg-white border border-[#e8dfd4] shadow-sm">
+              <div className="mt-5 p-5 rounded-2xl bg-white border border-[#e8dfd4] shadow-sm">
                 {askForPrice ? (
                   <div className="text-center py-4">
                     <span className="text-lg font-semibold text-[#c2703e]">{t("ask_for_price") || "Ask for Price"}</span>
@@ -364,7 +364,7 @@ export default function ProductViewPage() {
                 ) : (
                   <>
                     <div className="flex items-end gap-3 flex-wrap">
-                      <span className="text-[38px] font-extrabold text-[#2d2017] leading-none tracking-tight">${offerPrice.toFixed(2)}</span>
+                      <span className="text-3xl font-extrabold text-[#2d2017] leading-none">${offerPrice.toFixed(2)}</span>
                       {discount > 0 && (
                         <span className="text-lg text-[#b5a898] line-through mb-1">${price.toFixed(2)}</span>
                       )}
@@ -537,7 +537,7 @@ export default function ProductViewPage() {
               </div>
 
               {/* ── Action row ── */}
-              <div className="flex items-center gap-3 mt-5">
+              <div className="flex items-center gap-2 mt-4">
                 <button onClick={handleWishlist}
                   className={cn("flex-1 h-11 rounded-xl border text-sm font-medium flex items-center justify-center gap-2 transition-all",
                     inWishlist ? "bg-red-50 border-red-200 text-red-600" : "border-[#e8dfd4] text-[#8a7560] hover:border-[#c2703e] hover:text-[#c2703e]")}>
@@ -555,7 +555,7 @@ export default function ProductViewPage() {
               </div>
 
               {/* ── Product Details ── */}
-              <div className="mt-6 p-4 rounded-2xl bg-white border border-[#e8dfd4] space-y-3">
+              <div className="mt-4 p-3.5 rounded-2xl bg-white border border-[#e8dfd4] space-y-2.5">
                 {/* Delivery */}
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
@@ -643,7 +643,7 @@ export default function ProductViewPage() {
 
               {/* Short desc */}
               {product.product_productShortDescription?.length > 0 && (
-                <div className="mt-6 p-4 rounded-2xl bg-white border border-[#e8dfd4]">
+                <div className="mt-4 p-3.5 rounded-2xl bg-white border border-[#e8dfd4]">
                   {product.product_productShortDescription.map((sd: any, i: number) => (
                     <p key={i} className="text-sm leading-relaxed text-[#5a4d3e]" dir={langDir}>{sd.shortDescription}</p>
                   ))}
@@ -653,7 +653,7 @@ export default function ProductViewPage() {
           </div>
 
           {/* ══════ TABS ══════ */}
-          <div className="mt-16">
+          <div className="mt-10">
             <div className="flex items-center gap-1 border-b border-[#e8dfd4] overflow-x-auto">
               {[
                 { id: "description", label: t("description") || "Description" },
