@@ -358,47 +358,43 @@ export default function ProductViewPage() {
                   </div>
                 </div>
 
-                {/* Right: Seller Card (stretches to match left height) */}
-                <div className="flex-shrink-0 w-[240px] p-4 rounded-2xl bg-white border border-[#e8dfd4] shadow-sm flex flex-col justify-between hover:shadow-md hover:border-[#c2703e]/30 transition-all cursor-pointer"
+                {/* Right: Seller Card */}
+                <div className="flex-shrink-0 w-[220px] rounded-2xl overflow-hidden border border-[#e8dfd4] shadow-sm hover:shadow-md hover:border-[#c2703e]/30 transition-all cursor-pointer flex flex-col"
                   onClick={() => { if (seller?.id) router.push(`/company-profile-details?sellerId=${seller.id}`); }}>
-                  {/* Seller identity */}
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#c2703e] to-[#a85d32] flex items-center justify-center text-white font-bold text-base shadow-md shadow-[#c2703e]/20 flex-shrink-0">
+                  {/* Top: gradient header with avatar */}
+                  <div className="bg-gradient-to-br from-[#c2703e] to-[#a85d32] px-4 pt-4 pb-5 flex flex-col items-center relative">
+                    <div className="w-14 h-14 rounded-full bg-white/20 border-2 border-white/40 flex items-center justify-center text-white font-bold text-xl backdrop-blur-sm">
                       {sellerName.charAt(0).toUpperCase()}
                     </div>
-                    <div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-sm font-bold text-[#2d2017]">
-                          {sellerName.length <= 3 ? sellerName : sellerName.slice(0, 3) + "***"}
-                        </span>
-                        {seller?.tradeRole === "COMPANY" ? (
-                          <span className="inline-flex items-center gap-0.5 text-[9px] font-semibold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded-full"><ShieldCheck className="h-3 w-3" /> Company</span>
-                        ) : seller?.tradeRole === "FREELANCER" ? (
-                          <span className="inline-flex items-center gap-0.5 text-[9px] font-semibold text-purple-600 bg-purple-50 px-1.5 py-0.5 rounded-full"><Award className="h-3 w-3" /> Pro</span>
-                        ) : (
-                          <span className="inline-flex items-center gap-0.5 text-[9px] font-semibold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full"><Check className="h-3 w-3" /> Verified</span>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-0.5 mt-1">
-                        {[1, 2, 3, 4, 5].map((i) => <Star key={i} className="h-3 w-3 fill-amber-400 text-amber-400" />)}
-                        <span className="text-[10px] text-[#8a7560] ms-1">98%</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Stats + Store */}
-                  <div className="flex items-center justify-between mt-3 pt-3 border-t border-[#f0ebe4]">
-                    <div className="flex items-center gap-3 text-[11px] text-[#8a7560]">
-                      <span className="flex items-center gap-1"><Eye className="h-3 w-3" /> 2h ago</span>
-                      <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> ~1h</span>
-                    </div>
-                    <span className="text-[11px] text-[#c2703e] font-bold flex items-center gap-1">
-                      <Store className="h-3 w-3" /> Store
+                    <span className="text-sm font-bold text-white mt-2">
+                      {sellerName.length <= 3 ? sellerName : sellerName.slice(0, 3) + "***"}
+                    </span>
+                    {/* Badge on header */}
+                    <span className={cn("absolute top-2 end-2 inline-flex items-center gap-0.5 text-[9px] font-bold px-1.5 py-0.5 rounded-full",
+                      seller?.tradeRole === "COMPANY" ? "bg-white/20 text-white" :
+                      seller?.tradeRole === "FREELANCER" ? "bg-white/20 text-white" :
+                      "bg-white/20 text-white"
+                    )}>
+                      {seller?.tradeRole === "COMPANY" ? <><ShieldCheck className="h-2.5 w-2.5" /> Company</> :
+                       seller?.tradeRole === "FREELANCER" ? <><Award className="h-2.5 w-2.5" /> Pro</> :
+                       <><Check className="h-2.5 w-2.5" /> Verified</>}
                     </span>
                   </div>
-                  {otherSellers.length > 0 && (
-                    <div className="mt-2 text-[10px] text-[#c2703e] font-medium">+{otherSellers.length} other sellers</div>
-                  )}
+                  {/* Bottom: stats */}
+                  <div className="bg-white px-4 py-3 flex-1 flex flex-col justify-between">
+                    <div className="flex items-center justify-center gap-0.5">
+                      {[1, 2, 3, 4, 5].map((i) => <Star key={i} className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />)}
+                      <span className="text-xs font-semibold text-[#2d2017] ms-1.5">98%</span>
+                    </div>
+                    <div className="flex items-center justify-center gap-3 mt-2 text-[11px] text-[#8a7560]">
+                      <span className="flex items-center gap-1"><Eye className="h-3 w-3 text-emerald-500" /> 2h ago</span>
+                      <span className="flex items-center gap-1"><Clock className="h-3 w-3 text-blue-500" /> ~1h</span>
+                      <span className="flex items-center gap-1 text-[#c2703e] font-bold"><Store className="h-3 w-3" /> Store</span>
+                    </div>
+                    {otherSellers.length > 0 && (
+                      <div className="mt-2 text-center text-[10px] text-[#c2703e] font-medium">+{otherSellers.length} other sellers</div>
+                    )}
+                  </div>
                 </div>
               </div>
 
