@@ -524,16 +524,20 @@ export default function ProductViewPage() {
                           className="w-11 h-11 flex items-center justify-center hover:bg-[#f8f5f0] transition-colors"><Plus className="h-4 w-4 text-[#8a7560]" /></button>
                       </div>
                       <button onClick={handleAddToCart} disabled={stock === 0}
-                        className="flex-1 h-12 rounded-xl bg-[#2d2017] text-white font-semibold text-sm flex items-center justify-center gap-2 hover:bg-[#1a130d] transition-all active:scale-[0.98] disabled:opacity-40">
-                        <ShoppingCart className="h-4.5 w-4.5" />
-                        {isInCart ? t("update_cart") || "Update Cart" : t("add_to_cart") || "Add to Cart"}
+                        className={cn("flex-1 h-12 rounded-xl text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.98] disabled:opacity-40",
+                          isBuygroup ? "bg-[#c2703e] hover:bg-[#a85d32] shadow-lg shadow-[#c2703e]/20" : "bg-[#2d2017] hover:bg-[#1a130d]")}>
+                        {isBuygroup ? <Users className="h-4.5 w-4.5" /> : <ShoppingCart className="h-4.5 w-4.5" />}
+                        {isBuygroup ? "Book Your Spot" : isInCart ? t("update_cart") || "Update Cart" : t("add_to_cart") || "Add to Cart"}
+                        {isBuygroup && ` — $${(offerPrice * quantity).toFixed(2)}`}
                       </button>
                     </div>
-                    <button onClick={handleBuyNow}
-                      className="w-full h-12 rounded-xl bg-[#c2703e] text-white font-semibold text-sm flex items-center justify-center gap-2 hover:bg-[#a85d32] transition-all active:scale-[0.98] shadow-lg shadow-[#c2703e]/20">
-                      <Zap className="h-4.5 w-4.5" />
-                      {t("buy_now") || "Buy Now"} — ${(offerPrice * quantity).toFixed(2)}
-                    </button>
+                    {!isBuygroup && (
+                      <button onClick={handleBuyNow}
+                        className="w-full h-12 rounded-xl bg-[#c2703e] text-white font-semibold text-sm flex items-center justify-center gap-2 hover:bg-[#a85d32] transition-all active:scale-[0.98] shadow-lg shadow-[#c2703e]/20">
+                        <Zap className="h-4.5 w-4.5" />
+                        {t("buy_now") || "Buy Now"} — ${(offerPrice * quantity).toFixed(2)}
+                      </button>
+                    )}
                     {minQty > 1 && <p className="text-xs text-[#8a7560] text-center">Min order: {minQty} units</p>}
                   </div>
                 )}
