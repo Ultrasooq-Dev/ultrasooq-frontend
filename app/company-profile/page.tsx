@@ -23,8 +23,8 @@ import {
 } from "@/utils/constants";
 import AccordionMultiSelectV2 from "@/components/shared/AccordionMultiSelectV2";
 import { useTags } from "@/apis/queries/tags.queries";
-import { useCategory } from "@/apis/queries/category.queries";
-import { BUSINESS_TYPE_CATEGORY_ID } from "@/utils/constants";
+import CategoryTreeModal from "@/components/shared/CategoryTreeModal";
+import { FolderTree } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { Label } from "@/components/ui/label";
@@ -263,7 +263,8 @@ export default function CompanyProfilePage() {
   const currentAccount = useCurrentAccount();
   const countriesQuery = useCountries();
   const tagsQuery = useTags();
-  const businessTypeCategoryQuery = useCategory(String(BUSINESS_TYPE_CATEGORY_ID));
+  const [businessTypeModalOpen, setBusinessTypeModalOpen] = useState(false);
+  const [businessTypeModalField, setBusinessTypeModalField] = useState<string>("businessTypeList");
   const upload = useUploadFile();
   const createCompanyProfile = useCreateCompanyProfile();
 
@@ -293,16 +294,6 @@ export default function CompanyProfilePage() {
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tagsQuery?.data?.data?.length]);
-
-  // Business type categories from category tree (replaces generic tags for business type dropdown)
-  const memoizedBusinessTypes = useMemo(() => {
-    const children = businessTypeCategoryQuery?.data?.data?.children;
-    if (!children || !Array.isArray(children)) return [];
-    return children.map((cat: any) => ({
-      label: cat.name || cat.categoryName_en || cat.categoryName || `Category ${cat.id}`,
-      value: cat.id,
-    }));
-  }, [businessTypeCategoryQuery?.data?.data?.children]);
 
   const memoizedLastTwoHundredYears = useMemo(() => {
     return getLastTwoHundredYears() || [];
@@ -575,7 +566,40 @@ export default function CompanyProfilePage() {
 
                     <div>
                       <Label className="mb-2 block text-sm font-medium" dir={langDir} translate="no">{t("business_type")}</Label>
-                      <MultiSelectCategory name="businessTypeList" />
+                      <button
+                        type="button"
+                        onClick={() => setBusinessTypeModalOpen(true)}
+                        className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg border border-border text-sm text-start hover:border-primary/50 transition-colors"
+                      >
+                        {(form.watch("businessTypeList") || []).length > 0 ? (
+                          <div className="flex flex-wrap gap-1">
+                            {(form.watch("businessTypeList") as any[]).map((item: any) => (
+                              <span key={item.categoryId} className="px-2 py-0.5 rounded bg-primary/10 text-xs font-medium text-primary">
+                                {item.name || `ID: ${item.categoryId}`}
+                              </span>
+                            ))}
+                          </div>
+                        ) : (
+                          <span className="text-muted-foreground">{t("select_business_type") || "Select Business Type"}</span>
+                        )}
+                        <FolderTree className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                      </button>
+                      <CategoryTreeModal
+                        open={businessTypeModalOpen && businessTypeModalField === "businessTypeList"}
+                        onClose={() => setBusinessTypeModalOpen(false)}
+                        onSelect={(selected) => {
+                          form.setValue("businessTypeList", selected.map((s) => ({
+                            categoryId: s.categoryId,
+                            categoryLocation: s.categoryLocation,
+                            name: s.name,
+                          })));
+                        }}
+                        initialSelected={(form.watch("businessTypeList") || []).map((item: any) => ({
+                          categoryId: item.categoryId,
+                          categoryLocation: item.categoryLocation || "",
+                          name: item.name || "",
+                        }))}
+                      />
                     </div>
 
                     <ControlledTextInput
@@ -717,9 +741,39 @@ export default function CompanyProfilePage() {
                 <div className="mb-3.5 w-full">
                   <div>
                     <Label className="mb-2 block text-sm font-medium" dir={langDir} translate="no">{t("business_type")}</Label>
-                    <MultiSelectCategory
-                      name={`branchList.${index}.businessTypeList`}
-                      branchId={field.id}
+                    <button
+                      type="button"
+                      onClick={() => { setBusinessTypeModalField(`branchList.${index}.businessTypeList`); setBusinessTypeModalOpen(true); }}
+                      className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg border border-border text-sm text-start hover:border-primary/50 transition-colors"
+                    >
+                      {(form.watch(`branchList.${index}.businessTypeList`) || []).length > 0 ? (
+                        <div className="flex flex-wrap gap-1">
+                          {(form.watch(`branchList.${index}.businessTypeList`) as any[]).map((item: any) => (
+                            <span key={item.categoryId} className="px-2 py-0.5 rounded bg-primary/10 text-xs font-medium text-primary">
+                              {item.name || `ID: ${item.categoryId}`}
+                            </span>
+                          ))}
+                        </div>
+                      ) : (
+                        <span className="text-muted-foreground">{t("select_business_type") || "Select Business Type"}</span>
+                      )}
+                      <FolderTree className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                    </button>
+                    <CategoryTreeModal
+                      open={businessTypeModalOpen && businessTypeModalField === `branchList.${index}.businessTypeList`}
+                      onClose={() => setBusinessTypeModalOpen(false)}
+                      onSelect={(selected) => {
+                        form.setValue(`branchList.${index}.businessTypeList`, selected.map((s) => ({
+                          categoryId: s.categoryId,
+                          categoryLocation: s.categoryLocation,
+                          name: s.name,
+                        })));
+                      }}
+                      initialSelected={(form.watch(`branchList.${index}.businessTypeList`) || []).map((item: any) => ({
+                        categoryId: item.categoryId,
+                        categoryLocation: item.categoryLocation || "",
+                        name: item.name || "",
+                      }))}
                     />
                     {form.formState.errors?.branchList?.[index]?.businessTypeList?.message && (
                       <p className="mt-1 text-xs text-destructive">{String(form.formState.errors.branchList[index]?.businessTypeList?.message)}</p>
