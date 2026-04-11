@@ -324,26 +324,45 @@ export default function ProductViewPage() {
             {/* ── RIGHT: Product Info ── */}
             <div className="lg:col-span-6">
 
-              {/* Brand + Category */}
-              <div className="flex items-center gap-3 mb-4">
-                {product.brand?.brandName && (
-                  <span className="text-xs font-semibold tracking-[0.15em] uppercase text-[#c2703e]">{product.brand.brandName}</span>
-                )}
-                {product.category?.categoryName_en && (
-                  <span className="text-xs text-[#8a7560]">in {product.category.categoryName_en}</span>
-                )}
-              </div>
+              {/* Product Info + Seller Card (side by side, same height) */}
+              <div className="flex items-stretch gap-5">
+                {/* Left: Product info */}
+                <div className="flex-1 min-w-0">
+                  {/* Brand + Category */}
+                  <div className="flex items-center gap-3 mb-2">
+                    {product.brand?.brandName && (
+                      <span className="text-xs font-semibold tracking-[0.15em] uppercase text-[#c2703e]">{product.brand.brandName}</span>
+                    )}
+                    {product.category?.categoryName_en && (
+                      <span className="text-xs text-[#8a7560]">in {product.category.categoryName_en}</span>
+                    )}
+                  </div>
+                  {/* Title */}
+                  <h1 className="text-xl sm:text-2xl font-bold leading-tight text-[#2d2017]">
+                    {product.productName}
+                  </h1>
+                  {/* Rating + Sold */}
+                  <div className="flex items-center gap-3 mt-2 flex-wrap">
+                    {reviews.length > 0 && (
+                      <div className="flex items-center gap-1.5">
+                        {[1, 2, 3, 4, 5].map((i) => (
+                          <Star key={i} className={cn("h-4 w-4", i <= Math.round(avgRating) ? "fill-amber-400 text-amber-400" : "text-[#d4cdc2]")} />
+                        ))}
+                        <span className="text-sm font-medium text-[#2d2017] ms-1">{avgRating.toFixed(1)}</span>
+                        <span className="text-sm text-[#8a7560]">({reviews.length})</span>
+                      </div>
+                    )}
+                    {product.sold > 0 && (
+                      <span className="text-sm text-[#8a7560]">{product.sold}+ sold</span>
+                    )}
+                  </div>
+                </div>
 
-              {/* Title + Seller Card (side by side) */}
-              <div className="flex items-start gap-4">
-                <h1 className="text-xl sm:text-2xl font-bold leading-tight text-[#2d2017] flex-1 min-w-0">
-                  {product.productName}
-                </h1>
-
-                {/* Seller Card */}
-                <div className="flex-shrink-0 px-3 py-2 rounded-xl bg-white border border-[#e8dfd4] shadow-sm">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#c2703e] to-[#a85d32] flex items-center justify-center text-white font-bold text-sm shadow shadow-[#c2703e]/15 flex-shrink-0">
+                {/* Right: Seller Card (stretches to match left height) */}
+                <div className="flex-shrink-0 w-[240px] p-4 rounded-2xl bg-white border border-[#e8dfd4] shadow-sm flex flex-col justify-between">
+                  {/* Seller identity */}
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#c2703e] to-[#a85d32] flex items-center justify-center text-white font-bold text-base shadow-md shadow-[#c2703e]/20 flex-shrink-0">
                       {sellerName.charAt(0).toUpperCase()}
                     </div>
                     <div>
@@ -352,45 +371,34 @@ export default function ProductViewPage() {
                           {sellerName.length <= 3 ? sellerName : sellerName.slice(0, 3) + "***"}
                         </span>
                         {seller?.tradeRole === "COMPANY" ? (
-                          <ShieldCheck className="h-3.5 w-3.5 text-blue-600" />
+                          <span className="inline-flex items-center gap-0.5 text-[9px] font-semibold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded-full"><ShieldCheck className="h-3 w-3" /> Company</span>
                         ) : seller?.tradeRole === "FREELANCER" ? (
-                          <Award className="h-3.5 w-3.5 text-purple-600" />
+                          <span className="inline-flex items-center gap-0.5 text-[9px] font-semibold text-purple-600 bg-purple-50 px-1.5 py-0.5 rounded-full"><Award className="h-3 w-3" /> Pro</span>
                         ) : (
-                          <Check className="h-3.5 w-3.5 text-emerald-600" />
+                          <span className="inline-flex items-center gap-0.5 text-[9px] font-semibold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full"><Check className="h-3 w-3" /> Verified</span>
                         )}
-                        <span className="flex items-center gap-0.5 ms-0.5">
-                          {[1, 2, 3, 4, 5].map((i) => <Star key={i} className="h-3 w-3 fill-amber-400 text-amber-400" />)}
-                        </span>
                       </div>
-                      <div className="flex items-center gap-2 mt-0.5 text-[10px] text-[#8a7560]">
-                        <span className="flex items-center gap-0.5"><Eye className="h-2.5 w-2.5" /> 2h ago</span>
-                        <span>·</span>
-                        <span className="flex items-center gap-0.5"><Clock className="h-2.5 w-2.5" /> ~1h reply</span>
-                        <span>·</span>
-                        <button onClick={() => setActiveTab("vendor")} className="text-[#c2703e] font-semibold hover:underline">Store</button>
-                        {otherSellers.length > 0 && (
-                          <><span>·</span><span className="text-[#c2703e] font-medium">+{otherSellers.length}</span></>
-                        )}
+                      <div className="flex items-center gap-0.5 mt-1">
+                        {[1, 2, 3, 4, 5].map((i) => <Star key={i} className="h-3 w-3 fill-amber-400 text-amber-400" />)}
+                        <span className="text-[10px] text-[#8a7560] ms-1">98%</span>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
 
-              {/* Rating + Sold */}
-              <div className="flex items-center gap-3 mt-2 flex-wrap">
-                {reviews.length > 0 && (
-                  <div className="flex items-center gap-1.5">
-                    {[1, 2, 3, 4, 5].map((i) => (
-                      <Star key={i} className={cn("h-4 w-4", i <= Math.round(avgRating) ? "fill-amber-400 text-amber-400" : "text-[#d4cdc2]")} />
-                    ))}
-                    <span className="text-sm font-medium text-[#2d2017] ms-1">{avgRating.toFixed(1)}</span>
-                    <span className="text-sm text-[#8a7560]">({reviews.length})</span>
+                  {/* Stats + Store */}
+                  <div className="flex items-center justify-between mt-3 pt-3 border-t border-[#f0ebe4]">
+                    <div className="flex items-center gap-3 text-[11px] text-[#8a7560]">
+                      <span className="flex items-center gap-1"><Eye className="h-3 w-3" /> 2h ago</span>
+                      <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> ~1h</span>
+                    </div>
+                    <button onClick={() => setActiveTab("vendor")} className="text-[11px] text-[#c2703e] font-bold flex items-center gap-1 hover:underline">
+                      <Store className="h-3 w-3" /> Store
+                    </button>
                   </div>
-                )}
-                {product.sold > 0 && (
-                  <span className="text-sm text-[#8a7560]">{product.sold}+ sold</span>
-                )}
+                  {otherSellers.length > 0 && (
+                    <div className="mt-2 text-[10px] text-[#c2703e] font-medium">+{otherSellers.length} other sellers</div>
+                  )}
+                </div>
               </div>
 
               {/* ── Sticky Price + Actions Box ── */}
