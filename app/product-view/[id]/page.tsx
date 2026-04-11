@@ -253,7 +253,7 @@ export default function ProductViewPage() {
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 pb-20">
 
           {/* ══════ FULL WIDTH: Title + Seller side by side ══════ */}
-          <div className="flex items-start gap-6 mb-6">
+          <div className="flex items-center gap-6 mb-6">
             {/* Left: Brand + Title + Rating */}
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-3 mb-1">
