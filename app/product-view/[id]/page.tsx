@@ -757,7 +757,7 @@ export default function ProductViewPage() {
                   <span className="text-xs text-[#8a7560]">Scroll for more →</span>
                 )}
               </div>
-              <div className="flex overflow-x-auto scrollbar-hide">
+              <div className="flex overflow-x-auto pb-2" style={{ scrollbarWidth: "thin" }}>
                 {relatedProducts.map((rp: any) => {
                   const rpPrice = rp.product_productPrice?.[0];
                   const rpOffer = Number(rpPrice?.offerPrice || rp.offerPrice || rp.productPrice || 0);
