@@ -334,76 +334,48 @@ export default function ProductViewPage() {
                 )}
               </div>
 
-              {/* Title */}
-              <h1 className="text-xl sm:text-2xl font-bold leading-tight text-[#2d2017]">
-                {product.productName}
-              </h1>
+              {/* Title + Seller Card (side by side) */}
+              <div className="flex items-start gap-4">
+                <h1 className="text-xl sm:text-2xl font-bold leading-tight text-[#2d2017] flex-1 min-w-0">
+                  {product.productName}
+                </h1>
 
-              {/* Seller Card */}
-              <div className="mt-3 p-3 rounded-xl bg-white border border-[#e8dfd4] shadow-sm">
-                <div className="flex items-center gap-3">
-                  {/* Avatar */}
-                  <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#c2703e] to-[#a85d32] flex items-center justify-center text-white font-bold text-sm shadow-md shadow-[#c2703e]/20 flex-shrink-0">
-                    {sellerName.charAt(0).toUpperCase()}
-                  </div>
-
-                  {/* Seller info */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-sm font-bold text-[#2d2017] truncate">
-                        {sellerName.length <= 3 ? sellerName : sellerName.slice(0, 3) + "***"}
-                      </span>
-                      {seller?.tradeRole === "COMPANY" ? (
-                        <span className="inline-flex items-center gap-0.5 text-[10px] font-semibold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded-full">
-                          <ShieldCheck className="h-2.5 w-2.5" /> Company
-                        </span>
-                      ) : seller?.tradeRole === "FREELANCER" ? (
-                        <span className="inline-flex items-center gap-0.5 text-[10px] font-semibold text-purple-600 bg-purple-50 px-1.5 py-0.5 rounded-full">
-                          <Award className="h-2.5 w-2.5" /> Pro Seller
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-0.5 text-[10px] font-semibold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full">
-                          <Check className="h-2.5 w-2.5" /> Verified
-                        </span>
-                      )}
+                {/* Seller Card */}
+                <div className="flex-shrink-0 w-[220px] p-3 rounded-xl bg-white border border-[#e8dfd4] shadow-sm">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#c2703e] to-[#a85d32] flex items-center justify-center text-white font-bold text-sm shadow-md shadow-[#c2703e]/20 flex-shrink-0">
+                      {sellerName.charAt(0).toUpperCase()}
                     </div>
-                    <div className="flex items-center gap-2 mt-0.5">
-                      <div className="flex items-center gap-0.5">
-                        {[1, 2, 3, 4, 5].map((i) => <Star key={i} className="h-3 w-3 fill-amber-400 text-amber-400" />)}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-sm font-bold text-[#2d2017] truncate">
+                          {sellerName.length <= 3 ? sellerName : sellerName.slice(0, 3) + "***"}
+                        </span>
+                        {seller?.tradeRole === "COMPANY" ? (
+                          <span className="inline-flex items-center gap-0.5 text-[9px] font-semibold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded-full"><ShieldCheck className="h-2.5 w-2.5" /> Company</span>
+                        ) : seller?.tradeRole === "FREELANCER" ? (
+                          <span className="inline-flex items-center gap-0.5 text-[9px] font-semibold text-purple-600 bg-purple-50 px-1.5 py-0.5 rounded-full"><Award className="h-2.5 w-2.5" /> Pro</span>
+                        ) : (
+                          <span className="inline-flex items-center gap-0.5 text-[9px] font-semibold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full"><Check className="h-2.5 w-2.5" /></span>
+                        )}
                       </div>
-                      <span className="text-[11px] text-[#8a7560]">98% positive</span>
+                      <div className="flex items-center gap-1 mt-0.5">
+                        {[1, 2, 3, 4, 5].map((i) => <Star key={i} className="h-2.5 w-2.5 fill-amber-400 text-amber-400" />)}
+                        <span className="text-[10px] text-[#8a7560] ms-0.5">98%</span>
+                      </div>
                     </div>
                   </div>
-
-                  {/* Actions */}
-                  <div className="flex items-center gap-1.5 flex-shrink-0">
-                    <button onClick={() => setIsChatOpen(true)}
-                      className="h-8 px-3 rounded-lg bg-[#c2703e] text-white text-[11px] font-semibold flex items-center gap-1.5 hover:bg-[#a85d32] transition-colors">
-                      <MessageCircle className="h-3 w-3" /> Chat
+                  {/* Stats */}
+                  <div className="flex items-center gap-2 mt-2 pt-2 border-t border-[#f0ebe4] text-[10px] text-[#8a7560]">
+                    <span className="flex items-center gap-0.5"><Eye className="h-2.5 w-2.5" /> 2h ago</span>
+                    <span>·</span>
+                    <span className="flex items-center gap-0.5"><Clock className="h-2.5 w-2.5" /> ~1h reply</span>
+                    <button onClick={() => setActiveTab("vendor")} className="ms-auto text-[#c2703e] font-semibold hover:underline">
+                      Store
                     </button>
-                    <button onClick={() => setActiveTab("vendor")}
-                      className="h-8 px-3 rounded-lg border border-[#e8dfd4] text-[11px] font-medium text-[#8a7560] flex items-center gap-1.5 hover:bg-[#faf7f2] transition-colors">
-                      <Store className="h-3 w-3" /> Store
-                    </button>
-                  </div>
-                </div>
-
-                {/* Stats row */}
-                <div className="flex items-center gap-3 mt-2.5 pt-2.5 border-t border-[#f0ebe4] flex-wrap">
-                  <div className="flex items-center gap-1 text-[11px] text-[#8a7560]">
-                    <Eye className="h-3 w-3" />
-                    <span>Last seen 2h ago</span>
-                  </div>
-                  <div className="flex items-center gap-1 text-[11px] text-[#8a7560]">
-                    <Clock className="h-3 w-3" />
-                    <span>Responds in ~1h</span>
-                  </div>
-                  <div className="flex items-center gap-1 text-[11px] text-[#8a7560]">
-                    <Truck className="h-3 w-3" />
-                    <span>{deliveryDays > 0 ? `Ships in ${deliveryDays}d` : "Fast shipping"}</span>
                   </div>
                   {otherSellers.length > 0 && (
-                    <span className="text-[11px] text-[#c2703e] font-semibold ms-auto">+{otherSellers.length} other sellers</span>
+                    <div className="mt-1.5 text-[10px] text-[#c2703e] font-medium">+{otherSellers.length} other sellers available</div>
                   )}
                 </div>
               </div>
