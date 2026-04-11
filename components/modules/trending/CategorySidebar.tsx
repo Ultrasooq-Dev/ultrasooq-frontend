@@ -272,8 +272,9 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
     const fetchAllSubcategories = async () => {
       if (mainCategories.length === 0) return;
 
-      // Batch requests: max 5 concurrent to avoid hitting rate limit (100 req/60s)
-      const BATCH_SIZE = 5;
+      // Batch requests: max 3 concurrent with delay to avoid 429 rate limit
+      const BATCH_SIZE = 3;
+      const BATCH_DELAY = 500; // ms between batches
       const categoriesData: any[] = [];
 
       for (let i = 0; i < mainCategories.length; i += BATCH_SIZE) {
@@ -288,6 +289,10 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
           }),
         );
         categoriesData.push(...batchResults);
+        // Wait between batches to stay under rate limit
+        if (i + BATCH_SIZE < mainCategories.length) {
+          await new Promise((r) => setTimeout(r, BATCH_DELAY));
+        }
       }
 
       setCategoriesWithSubcategories(categoriesData);
