@@ -341,47 +341,39 @@ export default function ProductViewPage() {
                 </h1>
 
                 {/* Seller Card */}
-                <div className="flex-shrink-0 w-[280px] p-4 rounded-2xl bg-white border border-[#e8dfd4] shadow-sm">
-                  <div className="flex items-center gap-3">
-                    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#c2703e] to-[#a85d32] flex items-center justify-center text-white font-bold text-lg shadow-md shadow-[#c2703e]/20 flex-shrink-0">
+                <div className="flex-shrink-0 px-3 py-2 rounded-xl bg-white border border-[#e8dfd4] shadow-sm">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#c2703e] to-[#a85d32] flex items-center justify-center text-white font-bold text-sm shadow shadow-[#c2703e]/15 flex-shrink-0">
                       {sellerName.charAt(0).toUpperCase()}
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <span className="text-base font-bold text-[#2d2017] truncate">
+                    <div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-sm font-bold text-[#2d2017]">
                           {sellerName.length <= 3 ? sellerName : sellerName.slice(0, 3) + "***"}
                         </span>
                         {seller?.tradeRole === "COMPANY" ? (
-                          <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full"><ShieldCheck className="h-3 w-3" /> Company</span>
+                          <ShieldCheck className="h-3.5 w-3.5 text-blue-600" />
                         ) : seller?.tradeRole === "FREELANCER" ? (
-                          <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full"><Award className="h-3 w-3" /> Pro Seller</span>
+                          <Award className="h-3.5 w-3.5 text-purple-600" />
                         ) : (
-                          <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full"><Check className="h-3 w-3" /> Verified</span>
+                          <Check className="h-3.5 w-3.5 text-emerald-600" />
+                        )}
+                        <span className="flex items-center gap-0.5 ms-0.5">
+                          {[1, 2, 3, 4, 5].map((i) => <Star key={i} className="h-3 w-3 fill-amber-400 text-amber-400" />)}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 mt-0.5 text-[10px] text-[#8a7560]">
+                        <span className="flex items-center gap-0.5"><Eye className="h-2.5 w-2.5" /> 2h ago</span>
+                        <span>·</span>
+                        <span className="flex items-center gap-0.5"><Clock className="h-2.5 w-2.5" /> ~1h reply</span>
+                        <span>·</span>
+                        <button onClick={() => setActiveTab("vendor")} className="text-[#c2703e] font-semibold hover:underline">Store</button>
+                        {otherSellers.length > 0 && (
+                          <><span>·</span><span className="text-[#c2703e] font-medium">+{otherSellers.length}</span></>
                         )}
                       </div>
-                      <div className="flex items-center gap-1.5 mt-1">
-                        {[1, 2, 3, 4, 5].map((i) => <Star key={i} className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />)}
-                        <span className="text-xs text-[#8a7560] ms-0.5">98% positive</span>
-                      </div>
                     </div>
                   </div>
-                  {/* Stats */}
-                  <div className="flex items-center gap-3 mt-3 pt-3 border-t border-[#f0ebe4]">
-                    <div className="flex items-center gap-1 text-xs text-[#8a7560]">
-                      <Eye className="h-3.5 w-3.5" />
-                      <span>2h ago</span>
-                    </div>
-                    <div className="flex items-center gap-1 text-xs text-[#8a7560]">
-                      <Clock className="h-3.5 w-3.5" />
-                      <span>~1h reply</span>
-                    </div>
-                    <button onClick={() => setActiveTab("vendor")} className="ms-auto text-xs text-[#c2703e] font-bold flex items-center gap-1 hover:underline">
-                      <Store className="h-3.5 w-3.5" /> Visit Store
-                    </button>
-                  </div>
-                  {otherSellers.length > 0 && (
-                    <div className="mt-2 text-xs text-[#c2703e] font-medium">+{otherSellers.length} other sellers available</div>
-                  )}
                 </div>
               </div>
 
