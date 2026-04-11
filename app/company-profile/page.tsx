@@ -25,6 +25,7 @@ import AccordionMultiSelectV2 from "@/components/shared/AccordionMultiSelectV2";
 import { useTags } from "@/apis/queries/tags.queries";
 import CategoryTreeModal from "@/components/shared/CategoryTreeModal";
 import { FolderTree } from "lucide-react";
+import { PRODUCT_CATEGORY_ID } from "@/utils/constants";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { Label } from "@/components/ui/label";
@@ -265,6 +266,8 @@ export default function CompanyProfilePage() {
   const tagsQuery = useTags();
   const [businessTypeModalOpen, setBusinessTypeModalOpen] = useState(false);
   const [businessTypeModalField, setBusinessTypeModalField] = useState<string>("businessTypeList");
+  const [categoryModalOpen, setCategoryModalOpen] = useState(false);
+  const [categoryModalField, setCategoryModalField] = useState<string>("");
   const upload = useUploadFile();
   const createCompanyProfile = useCreateCompanyProfile();
 
@@ -1187,9 +1190,45 @@ export default function CompanyProfilePage() {
                   /> */}
                 </div>
 
-                <MultiSelectCategory
-                  name={`branchList.${index}.categoryList`}
-                />
+                <div className="mb-3.5">
+                  <Label className="mb-2 block text-sm font-medium" dir={langDir} translate="no">{t("categories") || "Product / Service Categories"}</Label>
+                  <button
+                    type="button"
+                    onClick={() => { setCategoryModalField(`branchList.${index}.categoryList`); setCategoryModalOpen(true); }}
+                    className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg border border-border text-sm text-start hover:border-primary/50 transition-colors"
+                  >
+                    {(form.watch(`branchList.${index}.categoryList`) || []).length > 0 ? (
+                      <div className="flex flex-wrap gap-1">
+                        {(form.watch(`branchList.${index}.categoryList`) as any[]).map((item: any, ci: number) => (
+                          <span key={ci} className="px-2 py-0.5 rounded bg-blue-50 text-xs font-medium text-blue-700">
+                            {item.name || `ID: ${item.categoryId}`}
+                          </span>
+                        ))}
+                      </div>
+                    ) : (
+                      <span className="text-muted-foreground">{t("select_categories") || "Select Product / Service Categories"}</span>
+                    )}
+                    <FolderTree className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                  </button>
+                  <CategoryTreeModal
+                    open={categoryModalOpen && categoryModalField === `branchList.${index}.categoryList`}
+                    onClose={() => setCategoryModalOpen(false)}
+                    rootCategoryId={PRODUCT_CATEGORY_ID}
+                    title={t("categories") || "Product / Service Categories"}
+                    onSelect={(selected) => {
+                      form.setValue(`branchList.${index}.categoryList`, selected.map((s) => ({
+                        categoryId: s.categoryId,
+                        categoryLocation: s.categoryLocation,
+                        name: s.name,
+                      })));
+                    }}
+                    initialSelected={(form.watch(`branchList.${index}.categoryList`) || []).map((item: any) => ({
+                      categoryId: item.categoryId,
+                      categoryLocation: item.categoryLocation || "",
+                      name: item.name || "",
+                    }))}
+                  />
+                </div>
 
                 <div className="mb-3.5 flex w-full justify-end border-b-2 border-dashed border-border pb-4">
                   <div className="mb-3.5 flex w-full border-b-2 border-dashed border-border pb-4">
