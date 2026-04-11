@@ -655,6 +655,7 @@ export default function ProductViewPage() {
                     {minQty > 1 && <p className="text-xs text-[#8a7560] text-center">Min order: {minQty} units</p>}
                   </div>
                 )}
+              </div>{/* end price section */}
 
               {/* ── Product Details (inside same card) ── */}
               <div className="px-5 py-4 border-t border-[#f0ebe4] space-y-2.5">
