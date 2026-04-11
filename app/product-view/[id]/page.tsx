@@ -386,10 +386,13 @@ export default function ProductViewPage() {
                       {[1, 2, 3, 4, 5].map((i) => <Star key={i} className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />)}
                       <span className="text-xs font-semibold text-[#2d2017] ms-1.5">98%</span>
                     </div>
-                    <div className="flex items-center justify-center gap-3 mt-2 text-[11px] text-[#8a7560]">
+                    <div className="flex items-center justify-center gap-2.5 mt-2 text-[10px] text-[#8a7560]">
                       <span className="flex items-center gap-1"><Eye className="h-3 w-3 text-emerald-500" /> 2h ago</span>
                       <span className="flex items-center gap-1"><Clock className="h-3 w-3 text-blue-500" /> ~1h</span>
-                      <span className="flex items-center gap-1 text-[#c2703e] font-bold"><Store className="h-3 w-3" /> Store</span>
+                      <span className="flex items-center gap-1 text-[#8a7560]">
+                        <Users className="h-3 w-3 text-purple-500" />
+                        {seller?.createdAt ? new Date(seller.createdAt).toLocaleDateString("en-US", { month: "short", year: "numeric" }) : "2024"}
+                      </span>
                     </div>
                     {otherSellers.length > 0 && (
                       <div className="mt-2 text-center text-[10px] text-[#c2703e] font-medium">+{otherSellers.length} other sellers</div>
