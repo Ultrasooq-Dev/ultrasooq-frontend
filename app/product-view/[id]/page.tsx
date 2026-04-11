@@ -389,18 +389,18 @@ export default function ProductViewPage() {
                 </div>
 
                 {/* Stats row */}
-                <div className="flex items-center gap-4 mt-2.5 pt-2.5 border-t border-[#f0ebe4]">
-                  <div className="flex items-center gap-1.5 text-[11px] text-[#8a7560]">
-                    <Package className="h-3 w-3" />
-                    <span>{prices.length || 1} products</span>
+                <div className="flex items-center gap-3 mt-2.5 pt-2.5 border-t border-[#f0ebe4] flex-wrap">
+                  <div className="flex items-center gap-1 text-[11px] text-[#8a7560]">
+                    <Eye className="h-3 w-3" />
+                    <span>Last seen 2h ago</span>
                   </div>
-                  <div className="flex items-center gap-1.5 text-[11px] text-[#8a7560]">
+                  <div className="flex items-center gap-1 text-[11px] text-[#8a7560]">
+                    <Clock className="h-3 w-3" />
+                    <span>Responds in ~1h</span>
+                  </div>
+                  <div className="flex items-center gap-1 text-[11px] text-[#8a7560]">
                     <Truck className="h-3 w-3" />
                     <span>{deliveryDays > 0 ? `Ships in ${deliveryDays}d` : "Fast shipping"}</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 text-[11px] text-[#8a7560]">
-                    <Clock className="h-3 w-3" />
-                    <span>Quick response</span>
                   </div>
                   {otherSellers.length > 0 && (
                     <span className="text-[11px] text-[#c2703e] font-semibold ms-auto">+{otherSellers.length} other sellers</span>
