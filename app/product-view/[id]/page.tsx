@@ -65,6 +65,7 @@ export default function ProductViewPage() {
   const [activeTab, setActiveTab] = useState("description");
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
+  const [showBuygroupWarning, setShowBuygroupWarning] = useState(false);
   const [bgTimeLeft, setBgTimeLeft] = useState("");
 
   const me = useMe();
@@ -571,7 +572,7 @@ export default function ProductViewPage() {
                         <button onClick={() => setQuantity(Math.min(maxQty, quantity + 1))}
                           className="w-11 h-11 flex items-center justify-center hover:bg-[#f8f5f0] transition-colors"><Plus className="h-4 w-4 text-[#8a7560]" /></button>
                       </div>
-                      <button onClick={handleAddToCart} disabled={stock === 0}
+                      <button onClick={isBuygroup ? () => setShowBuygroupWarning(true) : handleAddToCart} disabled={stock === 0}
                         className={cn("flex-1 h-12 rounded-xl text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.98] disabled:opacity-40",
                           isBuygroup ? "bg-[#c2703e] hover:bg-[#a85d32] shadow-lg shadow-[#c2703e]/20" : "bg-[#2d2017] hover:bg-[#1a130d]")}>
                         {isBuygroup ? <Users className="h-4.5 w-4.5" /> : <ShoppingCart className="h-4.5 w-4.5" />}
@@ -719,6 +720,79 @@ export default function ProductViewPage() {
           <div className="mt-8"><ProductRecommendations productId={Number(productId)} /></div>
         </div>
       </div>
+
+      {/* BuyGroup Warning Popup */}
+      {showBuygroupWarning && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40" onClick={() => setShowBuygroupWarning(false)}>
+          <div className="bg-white rounded-2xl w-full max-w-sm mx-4 shadow-2xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
+            {/* Header */}
+            <div className="bg-gradient-to-r from-[#c2703e] to-[#a85d32] px-6 py-4 flex items-center justify-between">
+              <div className="flex items-center gap-2 text-white">
+                <Users className="h-5 w-5" />
+                <span className="text-base font-bold">How Buygroups Work</span>
+              </div>
+              <button onClick={() => setShowBuygroupWarning(false)} className="text-white/70 hover:text-white"><X className="h-5 w-5" /></button>
+            </div>
+
+            <div className="px-6 py-5 max-h-[60vh] overflow-y-auto">
+              {/* What is a Buygroup */}
+              <h3 className="text-sm font-bold text-[#2d2017] mb-2">What is a Buygroup?</h3>
+              <p className="text-xs text-[#5a4d3e] leading-relaxed mb-5">
+                A buygroup is a collective purchasing system where multiple customers come together to purchase products at better prices. When you book a product in a buygroup, you are reserving your spot for that item.
+              </p>
+
+              {/* How It Works */}
+              <h3 className="text-sm font-bold text-[#2d2017] mb-3">How It Works:</h3>
+              <div className="space-y-3 mb-5">
+                {[
+                  "Select the quantity you want to book",
+                  'Click "Book" to reserve your items',
+                  "Wait for the buygroup to reach the required number of participants",
+                  "Once the buygroup is complete, you'll be notified and can proceed with payment",
+                  "Your booking is confirmed only after the buygroup reaches its target",
+                ].map((step, i) => (
+                  <div key={i} className="flex items-start gap-2.5">
+                    <div className="w-5 h-5 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Check className="h-3 w-3 text-amber-600" />
+                    </div>
+                    <p className="text-xs text-[#5a4d3e] leading-relaxed">{step}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Important Notes */}
+              <h3 className="text-sm font-bold text-[#2d2017] mb-3">Important Notes:</h3>
+              <div className="space-y-3">
+                {[
+                  "Your booking is a reservation, not an immediate purchase",
+                  "You can cancel your booking before the buygroup closes",
+                  "If the buygroup doesn't reach its target, your booking will be automatically cancelled",
+                  "You'll receive notifications about the buygroup status",
+                ].map((note, i) => (
+                  <div key={i} className="flex items-start gap-2.5">
+                    <div className="w-5 h-5 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <AlertTriangle className="h-3 w-3 text-amber-600" />
+                    </div>
+                    <p className="text-xs text-[#5a4d3e] leading-relaxed">{note}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="px-6 py-4 border-t border-[#e8dfd4] flex items-center gap-3">
+              <button onClick={() => setShowBuygroupWarning(false)}
+                className="flex-1 h-11 rounded-xl border border-[#e8dfd4] text-sm font-medium text-[#8a7560] hover:bg-[#faf7f2] transition-colors">
+                Cancel
+              </button>
+              <button onClick={() => { setShowBuygroupWarning(false); handleAddToCart(); }}
+                className="flex-1 h-11 rounded-xl bg-[#c2703e] text-white text-sm font-semibold flex items-center justify-center gap-2 hover:bg-[#a85d32] transition-colors shadow-lg shadow-[#c2703e]/20">
+                I Understand, Proceed
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Chat Drawer */}
       {product && seller?.id && me.data?.data?.id !== seller?.id && (
