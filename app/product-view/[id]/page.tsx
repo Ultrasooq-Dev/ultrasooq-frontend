@@ -1,142 +1,242 @@
 "use client";
-import React, { useState, useMemo } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { useProductById } from "@/apis/queries/product.queries";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import {
+  useProductById,
+  useOneWithProductPrice,
+  useProductVariant,
+  useTrackProductView,
+} from "@/apis/queries/product.queries";
+import {
+  useCartListByDevice,
+  useCartListByUserId,
+  useUpdateCartByDevice,
+  useUpdateCartWithLogin,
+  useDeleteCartItem,
+  useDeleteServiceFromCart,
+} from "@/apis/queries/cart.queries";
+import {
+  useAddToWishList,
+  useDeleteFromWishList,
+} from "@/apis/queries/wishlist.queries";
 import { useMe } from "@/apis/queries/user.queries";
 import { useAuth } from "@/context/AuthContext";
 import { useTranslations } from "next-intl";
+import { useToast } from "@/components/ui/use-toast";
+import { useQueryClient } from "@tanstack/react-query";
+import { getCookie } from "cookies-next";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
+import { getOrCreateDeviceId } from "@/utils/helper";
+import { sanitizeHtml } from "@/utils/sanitize";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
-import {
-  Star, Heart, ShoppingCart, Share2, ChevronLeft, ChevronRight,
-  Package, Truck, ShieldCheck, Clock, MapPin, Store, MessageCircle,
-  Check, Minus, Plus, ArrowLeft, Eye, Tag, Layers, Award,
-  Zap, BarChart3, Users, Box, AlertCircle, Copy, ExternalLink,
-} from "lucide-react";
+import ProductImagesCard from "@/components/modules/productDetails/ProductImagesCard";
+import ProductDescriptionCard from "@/components/modules/productDetails/ProductDescriptionCard";
+import RelatedProductsSection from "@/components/modules/productDetails/RelatedProductsSection";
+import ReviewSection from "@/components/shared/ReviewSection";
+import QuestionsAnswersSection from "@/components/modules/productDetails/QuestionsAnswersSection";
+import VendorSection from "@/components/modules/productDetails/VendorSection";
+import { ProductRecommendations } from "@/components/modules/recommendations/ProductRecommendations";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ArrowLeft, Package } from "lucide-react";
+import dynamic from "next/dynamic";
+import PlateEditor from "@/components/shared/Plate/PlateEditor";
+import RelatedServices from "@/components/modules/trending/RelatedServices";
+import ProductCard from "@/components/modules/cartList/ProductCard";
+import ServiceCard from "@/components/modules/cartList/ServiceCard";
+import { CartItem } from "@/utils/types/cart.types";
+
+const ProductChat = dynamic(
+  () => import("@/components/modules/chat/productChat/ProductChat"),
+  { loading: () => <div className="animate-pulse h-64 bg-muted rounded-lg" />, ssr: false },
+);
+
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 
 /* ═══════════════════════════════════════════════════════════════
-   PRODUCT VIEW — Clean, modern product detail page
-   Route: /product-view/[id]
-
-   Uses useProductById hook to fetch real data.
-   Falls back to mock structure if data loading.
+   PRODUCT VIEW PAGE — /product-view/[id]
+   Full-featured product detail page reusing existing components.
+   Handles: Normal, BuyGroup, Wholesale, Dropship, all sell types.
    ═══════════════════════════════════════════════════════════════ */
 
-const T = {
-  bg: "bg-[#faf6f1]",
-  card: "bg-white",
-  accent: "#c2703e",
-  accentBg: "bg-[#c2703e]",
-  accentText: "text-[#c2703e]",
-  accentLight: "bg-[#c2703e]/10",
-  text: "text-[#2d2017]",
-  muted: "text-[#8a7560]",
-  border: "border-[#e8dfd4]",
-  success: "text-emerald-600",
-  successBg: "bg-emerald-50",
-};
-
-function RatingStars({ rating, size = "h-4 w-4" }: { rating: number; size?: string }) {
-  return (
-    <span className="inline-flex items-center gap-0.5">
-      {[1, 2, 3, 4, 5].map((i) => (
-        <Star key={i} className={cn(size, i <= Math.round(rating) ? "fill-amber-400 text-amber-400" : "text-gray-200")} />
-      ))}
-    </span>
-  );
-}
-
 export default function ProductViewPage() {
-  const params = useParams();
-  const router = useRouter();
-  const { langDir } = useAuth();
   const t = useTranslations();
-  const me = useMe();
-  const productId = params?.id as string;
+  const { langDir } = useAuth();
+  const queryClient = useQueryClient();
+  const params = useParams();
+  const searchQuery = useSearchParams();
+  const router = useRouter();
+  const { toast } = useToast();
+  const deviceId = getOrCreateDeviceId() || "";
+  const accessToken = getCookie(ULTRASOOQ_TOKEN_KEY);
+  const [haveAccessToken, setHaveAccessToken] = useState(false);
+  const [activeTab, setActiveTab] = useState("description");
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
+  const [globalQuantity, setGlobalQuantity] = useState(0);
+  const [productVariantTypes, setProductVariantTypes] = useState<string[]>();
+  const [productVariants, setProductVariants] = useState<any[]>();
+  const [selectedProductVariant, setSelectedProductVariant] = useState<any>(null);
 
-  const { data: productData, isLoading } = useProductById(
-    { productId, userId: me.data?.data?.id },
-    !!productId,
+  const productId = params?.id as string;
+  const otherSellerId = searchQuery?.get("sellerId");
+  const otherProductId = searchQuery?.get("productId");
+  const sharedLinkId = searchQuery?.get("sharedLinkId") || "";
+
+  const me = useMe();
+
+  // ── Product query ──
+  const productQueryById = useProductById(
+    { productId, userId: me.data?.data?.id, sharedLinkId },
+    !!productId && !otherSellerId && !otherProductId,
   );
 
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const [quantity, setQuantity] = useState(1);
-  const [activeTab, setActiveTab] = useState<"description" | "specs" | "reviews" | "seller">("description");
-  const [isWishlisted, setIsWishlisted] = useState(false);
+  const productQueryByOtherSeller = useOneWithProductPrice(
+    { productId: Number(otherProductId), adminId: Number(otherSellerId) },
+    !!otherSellerId && !!otherProductId,
+  );
 
-  // Extract product data — useProductById returns res.data, so product is at .data
-  const product = productData?.data;
-  const prices = product?.product_productPrice || [];
-  const mainPrice = prices[0];
-  const images: string[] = useMemo(() => {
-    // Try seller-specific images first, then product images
-    const sellerImages = product?.product_productPrice?.[0]?.productPrice_productSellerImage;
-    const sourceImages = sellerImages?.length ? sellerImages : product?.productImages;
-    if (!sourceImages || !Array.isArray(sourceImages)) return [];
-    return sourceImages
-      .map((item: any) => {
-        if (typeof item === "string") return item;
-        if (item?.image) return item.image;
-        if (item?.video) return item.video;
-        if (item?.url) return item.url;
-        return null;
-      })
-      .filter((url: any) => url && typeof url === "string");
-  }, [product?.productImages, product?.product_productPrice]);
+  const getProductVariant = useProductVariant();
+  const trackView = useTrackProductView();
 
-  const price = mainPrice ? Number(mainPrice.productPrice) : 0;
-  const offerPrice = mainPrice ? Number(mainPrice.offerPrice) : 0;
-  const discount = price > 0 ? Math.round(((price - offerPrice) / price) * 100) : 0;
-  const stock = mainPrice?.stock || 0;
-  const minQty = mainPrice?.minQuantity || 1;
-  const maxQty = mainPrice?.maxQuantity || stock || 99;
-  const sellType = mainPrice?.sellType;
-  const deliveryDays = mainPrice?.deliveryAfter || 3;
-  const sellerName = mainPrice?.adminDetail?.firstName
-    ? `${mainPrice.adminDetail.firstName} ${mainPrice.adminDetail.lastName || ""}`
-    : "Ultrasooq Seller";
-  const rating = 4.5; // TODO: from product reviews
-  const reviewCount = 128; // TODO: from product reviews
+  const productDetails = !otherSellerId
+    ? productQueryById.data?.data
+    : productQueryByOtherSeller.data?.data;
+  const productInWishlist = !otherSellerId
+    ? productQueryById.data?.inWishlist
+    : productQueryByOtherSeller.data?.inWishlist;
+  const otherSellerDetails = !otherSellerId
+    ? productQueryById.data?.otherSeller
+    : productQueryByOtherSeller.data?.otherSeller;
 
-  // Parse description
-  const description = useMemo(() => {
-    if (!product?.description) return "";
+  // ── BuyGroup timing ──
+  const getLocalTimestamp = (dateStr?: string, timeStr?: string) => {
+    if (!dateStr) return 0;
     try {
-      const parsed = JSON.parse(product.description);
-      if (Array.isArray(parsed)) {
-        return parsed.map((block: any) => {
-          if (block.children) return block.children.map((c: any) => c.text || "").join("");
-          return block.text || "";
-        }).join("\n\n");
+      const date = new Date(dateStr);
+      if (timeStr) {
+        const [hours, minutes] = timeStr.split(":").map(Number);
+        if (!Number.isNaN(hours)) date.setHours(hours || 0, Number.isNaN(minutes) ? 0 : minutes, 0, 0);
       }
-      return String(product.description);
-    } catch {
-      return String(product?.description || "");
+      return date.getTime();
+    } catch { return 0; }
+  };
+
+  const isBuygroup = productDetails?.product_productPrice?.[0]?.sellType === "BUYGROUP";
+  const buygroupStartTime = getLocalTimestamp(productDetails?.product_productPrice?.[0]?.dateOpen, productDetails?.product_productPrice?.[0]?.startTime);
+  const buygroupEndTime = getLocalTimestamp(productDetails?.product_productPrice?.[0]?.dateClose, productDetails?.product_productPrice?.[0]?.endTime);
+  const now = Date.now();
+  const saleNotStarted = isBuygroup && buygroupStartTime > 0 && now < buygroupStartTime;
+  const saleExpired = isBuygroup && buygroupEndTime > 0 && now > buygroupEndTime;
+
+  // ── Cart queries ──
+  const cartListByDeviceQuery = useCartListByDevice({ page: 1, limit: 100, deviceId }, !haveAccessToken);
+  const cartListByUser = useCartListByUserId({ page: 1, limit: 100 }, haveAccessToken);
+  const updateCartByDevice = useUpdateCartByDevice();
+  const updateCartWithLogin = useUpdateCartWithLogin();
+  const addToWishList = useAddToWishList();
+  const deleteFromWishList = useDeleteFromWishList();
+
+  const memoizedCartList: CartItem[] = useMemo(() => {
+    return haveAccessToken
+      ? cartListByUser.data?.data?.data?.cartItems || []
+      : cartListByDeviceQuery.data?.data?.data?.cartItems || [];
+  }, [haveAccessToken, cartListByUser.data, cartListByDeviceQuery.data]);
+
+  const hasItemByUser = useMemo(() => memoizedCartList.some((item) => item.productId === Number(productId)), [memoizedCartList, productId]);
+
+  const getProductQuantityByUser = useMemo(() => {
+    const item = memoizedCartList.find((item) => item.productId === Number(productId));
+    return item?.quantity || 0;
+  }, [memoizedCartList, productId]);
+
+  // ── Handlers ──
+  const handleProductUpdateSuccess = () => { queryClient.invalidateQueries({ queryKey: ["product-by-id"] }); };
+
+  const handleAddToCart = async (quantity: number, action: string) => {
+    const priceId = productDetails?.product_productPrice?.[0]?.id;
+    if (!priceId) return;
+    try {
+      if (haveAccessToken) {
+        await updateCartWithLogin.mutateAsync({ productPriceId: priceId, quantity: quantity || 1 });
+      } else {
+        await updateCartByDevice.mutateAsync({ productPriceId: priceId, quantity: quantity || 1, deviceId });
+      }
+      toast({ title: t("added_to_cart") || "Added to cart", variant: "success" });
+      queryClient.invalidateQueries({ queryKey: haveAccessToken ? ["cart-by-user-id"] : ["cart-list-by-device-id"] });
+      return true;
+    } catch (error: any) {
+      toast({ title: t("error") || "Error", description: error?.response?.data?.message || "Failed to add to cart", variant: "destructive" });
+      return false;
     }
-  }, [product?.description]);
+  };
 
-  const shortDesc = product?.shortDescription || "";
+  const handleCheckoutPage = async () => {
+    const minQ = productDetails?.product_productPrice?.[0]?.minQuantityPerCustomer;
+    const resp = await handleAddToCart(globalQuantity || minQ || 1, "add");
+    if (resp === true) router.push("/checkout");
+  };
 
-  // Specs
-  const specs = useMemo(() => {
-    if (!product?.productSpecValues) return [];
-    return product.productSpecValues.map((sv: any) => ({
-      label: sv.specTemplate?.name_en || sv.specTemplate?.name || "—",
-      value: sv.value || "—",
-    }));
-  }, [product?.productSpecValues]);
+  const handleQuantity = (quantity: number) => { setGlobalQuantity(quantity); };
+
+  const handleAddToWishlist = async () => {
+    if (!haveAccessToken) { toast({ title: t("please_login_first") || "Please login first", variant: "destructive" }); return; }
+    try {
+      if (productInWishlist) {
+        await deleteFromWishList.mutateAsync({ productId: Number(productId) });
+        toast({ title: t("removed_from_wishlist") || "Removed from wishlist", variant: "success" });
+      } else {
+        await addToWishList.mutateAsync({ productId: Number(productId) });
+        toast({ title: t("added_to_wishlist") || "Added to wishlist", variant: "success" });
+      }
+      queryClient.invalidateQueries({ queryKey: ["product-by-id"] });
+    } catch { toast({ title: t("error") || "Error", variant: "destructive" }); }
+  };
+
+  const selectProductVariant = (variant: any) => { setSelectedProductVariant(variant); };
+
+  // ── Effects ──
+  useEffect(() => { setHaveAccessToken(!!accessToken); }, [accessToken]);
+
+  useEffect(() => {
+    const fetchVariants = async () => {
+      const priceId = productDetails?.product_productPrice?.[0]?.id;
+      if (!priceId) return;
+      const response = await getProductVariant.mutateAsync([priceId]);
+      const variants = response?.data?.[0]?.object || [];
+      if (variants.length > 0) {
+        let types = variants.map((item: any) => item.type);
+        types = Array.from(new Set(types));
+        setProductVariantTypes(types);
+        setProductVariants(variants);
+      }
+    };
+    if (!productQueryById?.isLoading && productDetails) fetchVariants();
+  }, [productDetails?.id]);
+
+  useEffect(() => {
+    if (productDetails?.id && !productQueryById.isLoading) {
+      trackView.mutate({ productId: productDetails.id, ...(!haveAccessToken && deviceId ? { deviceId } : {}) });
+    }
+  }, [productDetails?.id, productQueryById.isLoading]);
+
+  useEffect(() => { setGlobalQuantity(getProductQuantityByUser || 0); }, [getProductQuantityByUser]);
+
+  // ── Loading state ──
+  const isLoading = !otherSellerId ? !productQueryById.isFetched : !productQueryByOtherSeller.isFetched;
 
   if (isLoading) {
     return (
-      <div className={cn("min-h-screen", T.bg)}>
-        <div className="max-w-7xl mx-auto px-6 py-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-            <div className="aspect-square rounded-2xl bg-gray-200 animate-pulse" />
-            <div className="space-y-4">
-              <div className="h-8 w-3/4 rounded-lg bg-gray-200 animate-pulse" />
-              <div className="h-6 w-1/2 rounded-lg bg-gray-200 animate-pulse" />
-              <div className="h-12 w-1/3 rounded-lg bg-gray-200 animate-pulse" />
-              <div className="h-32 rounded-lg bg-gray-200 animate-pulse" />
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+        <div className="container mx-auto max-w-7xl px-4 py-8 lg:px-8">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12">
+            <div className="lg:col-span-6"><Skeleton className="aspect-square rounded-2xl" /></div>
+            <div className="lg:col-span-6 space-y-4">
+              <Skeleton className="h-8 w-3/4" />
+              <Skeleton className="h-6 w-1/2" />
+              <Skeleton className="h-12 w-1/3" />
+              <Skeleton className="h-40" />
             </div>
           </div>
         </div>
@@ -144,13 +244,13 @@ export default function ProductViewPage() {
     );
   }
 
-  if (!product) {
+  if (!productDetails) {
     return (
-      <div className={cn("min-h-screen flex items-center justify-center", T.bg)}>
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex items-center justify-center">
         <div className="text-center">
           <Package className="h-16 w-16 mx-auto mb-4 text-gray-300" />
-          <h2 className={cn("text-xl font-semibold", T.text)}>Product not found</h2>
-          <button onClick={() => router.back()} className={cn("mt-4 text-sm", T.accentText, "hover:underline")}>
+          <h2 className="text-xl font-semibold text-foreground">Product not found</h2>
+          <button onClick={() => router.back()} className="mt-4 text-sm text-primary hover:underline">
             <ArrowLeft className="h-4 w-4 inline me-1" /> Go back
           </button>
         </div>
@@ -158,365 +258,266 @@ export default function ProductViewPage() {
     );
   }
 
+  const sellType = productDetails?.product_productPrice?.[0]?.sellType;
+  const soldByName =
+    productDetails?.product_productPrice?.[0]?.adminDetail?.accountName ||
+    productDetails?.product_productPrice?.[0]?.adminDetail?.userProfile?.companyName ||
+    `${productDetails?.product_productPrice?.[0]?.adminDetail?.firstName || ""} ${productDetails?.product_productPrice?.[0]?.adminDetail?.lastName || ""}`.trim() ||
+    "Seller";
+
   return (
     <>
-      <title dir={langDir} translate="no">{`${product.productName || product.productName_en || "Product"} | Ultrasooq`}</title>
-      <div className={cn("min-h-screen", T.bg)}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <title dir={langDir} translate="no">{`${productDetails?.productName || "Product"} | Ultrasooq`}</title>
 
-          {/* ── Breadcrumb ── */}
-          <nav className={cn("flex items-center gap-2 text-sm mb-6", T.muted)}>
-            <button onClick={() => router.back()} className="hover:text-[#c2703e] transition-colors">
-              <ArrowLeft className="h-4 w-4" />
-            </button>
-            <span>/</span>
-            <a href="/trending" className="hover:text-[#c2703e]">Products</a>
-            <span>/</span>
-            {product.category?.categoryName_en && (
-              <>
-                <span className="hover:text-[#c2703e]">{product.category.categoryName_en}</span>
-                <span>/</span>
-              </>
-            )}
-            <span className={T.text}>{product.productName || product.productName_en}</span>
-          </nav>
-
-          {/* ══════════ MAIN GRID ══════════ */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-
-            {/* ── LEFT: Images ── */}
-            <div className="lg:col-span-5">
-              <div className={cn(T.card, T.border, "border rounded-2xl overflow-hidden sticky top-6")}>
-                {/* Main Image */}
-                <div className="relative aspect-square bg-gray-50">
-                  {images.length > 0 ? (
-                    <img
-                      src={images[selectedImageIndex]}
-                      alt={product.productName_en || "Product"}
-                      className="w-full h-full object-contain p-4"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <Package className="h-24 w-24 text-gray-200" />
-                    </div>
-                  )}
-
-                  {/* Discount badge */}
-                  {discount > 0 && (
-                    <span className="absolute top-4 start-4 px-3 py-1 rounded-full text-xs font-bold text-white bg-red-500">
-                      -{discount}%
-                    </span>
-                  )}
-
-                  {/* Sell type badge */}
-                  {sellType && sellType !== "NORMALSELL" && (
-                    <span className={cn("absolute top-4 end-4 px-3 py-1 rounded-full text-xs font-bold text-white", T.accentBg)}>
-                      {sellType === "BUYGROUP" ? "Group Buy" : sellType === "WHOLESALE_PRODUCT" ? "Wholesale" : sellType}
-                    </span>
-                  )}
-
-                  {/* Nav arrows */}
-                  {images.length > 1 && (
-                    <>
-                      <button
-                        onClick={() => setSelectedImageIndex((i) => (i - 1 + images.length) % images.length)}
-                        className="absolute start-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 shadow flex items-center justify-center hover:bg-white"
-                      >
-                        <ChevronLeft className="h-5 w-5" />
-                      </button>
-                      <button
-                        onClick={() => setSelectedImageIndex((i) => (i + 1) % images.length)}
-                        className="absolute end-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 shadow flex items-center justify-center hover:bg-white"
-                      >
-                        <ChevronRight className="h-5 w-5" />
-                      </button>
-                    </>
-                  )}
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+        {/* Main Product Section */}
+        <div className="bg-card">
+          <div className="container mx-auto max-w-7xl px-4 py-8 lg:px-8">
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12">
+              {/* Product Images */}
+              <div className="lg:col-span-6">
+                <div className="sticky top-4">
+                  <ProductImagesCard
+                    productDetails={productDetails}
+                    onProductUpdateSuccess={handleProductUpdateSuccess}
+                    onAdd={() => handleAddToCart(globalQuantity, "add")}
+                    onToCart={async () => {
+                      const minQ = productDetails.product_productPrice?.[0]?.minQuantityPerCustomer;
+                      const resp = await handleAddToCart(globalQuantity || minQ || 1, "add");
+                      if (resp === true) router.push("/checkout");
+                    }}
+                    onToCheckout={handleCheckoutPage}
+                    openCartCard={() => setIsCartDrawerOpen(true)}
+                    hasItem={hasItemByUser}
+                    isLoading={isLoading}
+                    onWishlist={handleAddToWishlist}
+                    haveAccessToken={haveAccessToken}
+                    inWishlist={!!productInWishlist}
+                    askForPrice={productDetails?.product_productPrice?.[0]?.askForPrice}
+                    isAddedToCart={hasItemByUser}
+                    cartQuantity={globalQuantity}
+                    additionalMarketingImages={productDetails?.additionalMarketingImages}
+                    saleNotStarted={saleNotStarted}
+                    saleExpired={saleExpired}
+                  />
                 </div>
+              </div>
 
-                {/* Thumbnail strip */}
-                {images.length > 1 && (
-                  <div className="flex gap-2 p-3 overflow-x-auto">
-                    {images.map((img, i) => (
-                      <button
-                        key={i}
-                        onClick={() => setSelectedImageIndex(i)}
-                        className={cn(
-                          "w-16 h-16 rounded-xl overflow-hidden border-2 flex-shrink-0 transition-colors",
-                          selectedImageIndex === i ? "border-[#c2703e]" : "border-transparent hover:border-gray-300",
-                        )}
-                      >
-                        <img src={img} alt="" className="w-full h-full object-cover" />
-                      </button>
+              {/* Product Info */}
+              <div className="lg:col-span-6">
+                <ProductDescriptionCard
+                  productId={productId}
+                  productName={productDetails?.productName}
+                  productType={productDetails?.productType}
+                  brand={productDetails?.brand?.brandName}
+                  productPrice={productDetails?.productPrice}
+                  offerPrice={productDetails?.product_productPrice?.[0]?.offerPrice}
+                  skuNo={productDetails?.skuNo}
+                  category={productDetails?.category?.name}
+                  categoryId={productDetails?.categoryId}
+                  categoryLocation={productDetails?.categoryLocation}
+                  consumerType={productDetails?.product_productPrice?.[0]?.consumerType}
+                  productTags={productDetails?.productTags}
+                  productShortDescription={productDetails?.product_productShortDescription}
+                  productQuantity={globalQuantity || getProductQuantityByUser}
+                  onQuantityChange={handleQuantity}
+                  productReview={productDetails?.productReview}
+                  onAdd={handleAddToCart}
+                  onBuyNow={handleCheckoutPage}
+                  isLoading={isLoading}
+                  soldBy={soldByName}
+                  soldByTradeRole={productDetails?.product_productPrice?.[0]?.adminDetail?.tradeRole}
+                  userId={me.data?.data?.id}
+                  sellerId={productDetails?.product_productPrice?.[0]?.adminDetail?.id}
+                  adminId={productDetails?.product_productPrice?.[0]?.adminDetail?.id}
+                  onOpenChat={() => setIsChatOpen(true)}
+                  haveOtherSellers={!!otherSellerDetails?.length}
+                  productProductPrice={productDetails?.product_productPrice?.[0]?.productPrice}
+                  consumerDiscount={productDetails?.product_productPrice?.[0]?.consumerDiscount}
+                  consumerDiscountType={productDetails?.product_productPrice?.[0]?.consumerDiscountType}
+                  vendorDiscount={productDetails?.product_productPrice?.[0]?.vendorDiscount}
+                  vendorDiscountType={productDetails?.product_productPrice?.[0]?.vendorDiscountType}
+                  askForPrice={productDetails?.product_productPrice?.[0]?.askForPrice}
+                  minQuantity={productDetails?.product_productPrice?.[0]?.minQuantityPerCustomer}
+                  maxQuantity={productDetails?.product_productPrice?.[0]?.maxQuantityPerCustomer}
+                  otherSellerDetails={otherSellerDetails}
+                  productPriceArr={productDetails?.product_productPrice}
+                  productVariantTypes={productVariantTypes}
+                  productVariants={productVariants}
+                  selectedProductVariant={selectedProductVariant}
+                  selectProductVariant={selectProductVariant}
+                  isDropshipped={productDetails?.isDropshipped}
+                  customMarketingContent={productDetails?.customMarketingContent}
+                  additionalMarketingImages={productDetails?.additionalMarketingImages}
+                  isBuygroup={isBuygroup}
+                  saleNotStarted={saleNotStarted}
+                  saleExpired={saleExpired}
+                  buygroupStartTime={buygroupStartTime}
+                  buygroupEndTime={buygroupEndTime}
+                  sellType={sellType}
+                  dateOpen={productDetails?.product_productPrice?.[0]?.dateOpen}
+                  startTime={productDetails?.product_productPrice?.[0]?.startTime}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Tabs Section */}
+        <div className="container mx-auto max-w-7xl px-4 py-8 lg:px-8">
+          <Tabs onValueChange={(e) => setActiveTab(e)} value={activeTab}>
+            <div className="bg-card rounded-t-xl">
+              <TabsList className="flex w-full items-center justify-start gap-1 bg-transparent p-0">
+                {[
+                  { value: "description", label: t("description") },
+                  { value: "specification", label: t("specification") },
+                  { value: "reviews", label: t("reviews") },
+                  { value: "qanda", label: t("questions") || "Q&A" },
+                  { value: "vendor", label: t("vendor") },
+                  { value: "services", label: t("services") },
+                ].map((tab) => (
+                  <TabsTrigger
+                    key={tab.value}
+                    value={tab.value}
+                    className="relative rounded-none border-0 border-b-4 border-b-transparent bg-transparent px-6 py-3 text-sm font-bold whitespace-nowrap text-muted-foreground transition-all hover:border-b-gray-300 hover:bg-muted hover:text-foreground data-[state=active]:border-b-orange-500 data-[state=active]:bg-warning/5/30 data-[state=active]:text-warning sm:px-8 sm:py-4 sm:text-base"
+                    dir={langDir}
+                    translate="no"
+                  >
+                    {tab.label}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </div>
+
+            <TabsContent value="description" className="mt-0">
+              <div className="min-h-[300px] p-8 bg-card">
+                {(() => {
+                  const desc = productDetails?.isDropshipped && productDetails?.customMarketingContent?.marketingText
+                    ? productDetails.customMarketingContent.marketingText
+                    : productDetails?.description;
+                  if (!desc) return <p className="text-muted-foreground">{t("no_description") || "No description available."}</p>;
+                  if (typeof desc === "object" && desc !== null) return <PlateEditor description={desc} readOnly fixedToolbar={false} />;
+                  if (typeof desc === "string") {
+                    try {
+                      const parsed = JSON.parse(desc);
+                      return <PlateEditor description={parsed} readOnly fixedToolbar={false} />;
+                    } catch {
+                      return <div className="prose prose-gray max-w-none leading-relaxed text-muted-foreground" dir={langDir}>{desc}</div>;
+                    }
+                  }
+                  return null;
+                })()}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="specification" className="mt-0">
+              <div className="min-h-[300px] p-8 bg-card">
+                {productDetails?.productSpecValues?.length > 0 ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-0">
+                    {productDetails.productSpecValues.map((sv: any, i: number) => (
+                      <div key={i} className={cn("flex items-center py-3 px-4", i % 2 === 0 ? "bg-gray-50" : "bg-white")}>
+                        <span className="w-1/2 text-sm font-medium text-muted-foreground">{sv.specTemplate?.name_en || sv.specTemplate?.name || "—"}</span>
+                        <span className="w-1/2 text-sm text-foreground">{sv.value || "—"}</span>
+                      </div>
                     ))}
                   </div>
-                )}
-
-                {/* Quick actions bar */}
-                <div className={cn("flex items-center gap-2 p-3 border-t", T.border)}>
-                  <button
-                    onClick={() => setIsWishlisted(!isWishlisted)}
-                    className={cn("flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium border transition-colors",
-                      isWishlisted ? "bg-red-50 border-red-200 text-red-600" : cn(T.border, T.muted, "hover:bg-gray-50"))}
-                  >
-                    <Heart className={cn("h-4 w-4", isWishlisted && "fill-red-500")} />
-                    {isWishlisted ? "Saved" : "Save"}
-                  </button>
-                  <button className={cn("flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium border transition-colors", T.border, T.muted, "hover:bg-gray-50")}>
-                    <Share2 className="h-4 w-4" /> Share
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* ── RIGHT: Product Info ── */}
-            <div className="lg:col-span-7 space-y-6">
-
-              {/* Product Title & Rating */}
-              <div>
-                <h1 className={cn("text-2xl sm:text-3xl font-bold leading-tight", T.text)}>
-                  {product.productName || product.productName_en}
-                </h1>
-                {product.productName_ar && (
-                  <p className={cn("text-lg mt-1", T.muted)} dir="rtl">{product.productName_ar}</p>
-                )}
-                <div className="flex items-center gap-4 mt-3 flex-wrap">
-                  <div className="flex items-center gap-1.5">
-                    <RatingStars rating={rating} />
-                    <span className={cn("text-sm font-medium", T.text)}>{rating}</span>
-                    <span className={cn("text-sm", T.muted)}>({reviewCount} reviews)</span>
-                  </div>
-                  {product.sold && (
-                    <span className={cn("text-sm flex items-center gap-1", T.muted)}>
-                      <BarChart3 className="h-3.5 w-3.5" /> {product.sold} sold
-                    </span>
-                  )}
-                  {product.brandName && (
-                    <span className={cn("text-sm flex items-center gap-1 px-2 py-0.5 rounded-full", T.accentLight, T.accentText)}>
-                      <Award className="h-3.5 w-3.5" /> {product.brandName}
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              {/* Price Card */}
-              <div className={cn(T.card, T.border, "border rounded-2xl p-5")}>
-                <div className="flex items-baseline gap-3">
-                  <span className={cn("text-3xl font-bold", T.accentText)}>
-                    ${offerPrice.toFixed(2)}
-                  </span>
-                  {discount > 0 && (
-                    <>
-                      <span className="text-lg text-gray-400 line-through">${price.toFixed(2)}</span>
-                      <span className="text-sm font-semibold text-red-500 bg-red-50 px-2 py-0.5 rounded-full">
-                        Save {discount}%
-                      </span>
-                    </>
-                  )}
-                </div>
-
-                {/* Stock & SKU */}
-                <div className="flex items-center gap-4 mt-3 flex-wrap">
-                  <span className={cn("text-sm flex items-center gap-1.5",
-                    stock > 10 ? T.success : stock > 0 ? "text-amber-600" : "text-red-600")}>
-                    <Box className="h-4 w-4" />
-                    {stock > 10 ? "In Stock" : stock > 0 ? `Only ${stock} left` : "Out of Stock"}
-                    {stock > 0 && <span className="text-muted-foreground">({stock} available)</span>}
-                  </span>
-                  {product.skuNo && (
-                    <span className={cn("text-xs", T.muted)}>SKU: {product.skuNo}</span>
-                  )}
-                </div>
-
-                {/* Quantity + Add to Cart */}
-                <div className="flex items-center gap-4 mt-5">
-                  <div className="flex items-center">
-                    <button
-                      onClick={() => setQuantity(Math.max(minQty, quantity - 1))}
-                      className={cn("w-10 h-10 flex items-center justify-center border rounded-s-xl", T.border, "hover:bg-gray-50")}
-                    >
-                      <Minus className="h-4 w-4" />
-                    </button>
-                    <input
-                      type="number"
-                      value={quantity}
-                      onChange={(e) => setQuantity(Math.max(minQty, Math.min(maxQty, Number(e.target.value))))}
-                      className={cn("w-16 h-10 text-center border-y font-semibold", T.border, "focus:outline-none")}
-                    />
-                    <button
-                      onClick={() => setQuantity(Math.min(maxQty, quantity + 1))}
-                      className={cn("w-10 h-10 flex items-center justify-center border rounded-e-xl", T.border, "hover:bg-gray-50")}
-                    >
-                      <Plus className="h-4 w-4" />
-                    </button>
-                  </div>
-
-                  <button
-                    disabled={stock === 0}
-                    className={cn("flex-1 flex items-center justify-center gap-2 h-12 rounded-xl text-sm font-semibold text-white transition-colors disabled:opacity-40",
-                      T.accentBg, "hover:opacity-90")}
-                  >
-                    <ShoppingCart className="h-5 w-5" />
-                    Add to Cart — ${(offerPrice * quantity).toFixed(2)}
-                  </button>
-                </div>
-
-                {minQty > 1 && (
-                  <p className={cn("text-xs mt-2", T.muted)}>
-                    Min order: {minQty} units {maxQty < stock && ` · Max: ${maxQty} units`}
-                  </p>
+                ) : (
+                  <p className="text-muted-foreground">{t("no_specifications") || "No specifications available."}</p>
                 )}
               </div>
+            </TabsContent>
 
-              {/* Delivery & Trust Signals */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                {[
-                  { icon: <Truck className="h-5 w-5 text-blue-600" />, label: "Delivery", value: `${deliveryDays} days`, bg: "bg-blue-50" },
-                  { icon: <ShieldCheck className="h-5 w-5 text-emerald-600" />, label: "Guarantee", value: "Buyer protection", bg: "bg-emerald-50" },
-                  { icon: <Zap className="h-5 w-5 text-amber-600" />, label: "Condition", value: mainPrice?.productCondition || "New", bg: "bg-amber-50" },
-                  { icon: <Store className="h-5 w-5 text-purple-600" />, label: "Seller", value: sellerName.split(" ")[0], bg: "bg-purple-50" },
-                ].map((item) => (
-                  <div key={item.label} className={cn(T.card, T.border, "border rounded-xl p-3 text-center")}>
-                    <div className={cn("w-10 h-10 rounded-lg mx-auto mb-2 flex items-center justify-center", item.bg)}>
-                      {item.icon}
-                    </div>
-                    <div className={cn("text-xs font-semibold", T.text)}>{item.value}</div>
-                    <div className="text-[10px] text-muted-foreground">{item.label}</div>
-                  </div>
-                ))}
+            <TabsContent value="reviews" className="mt-0">
+              <div className="min-h-[300px] p-8 bg-card">
+                <ReviewSection
+                  productId={Number(productId)}
+                  productReview={productDetails?.productReview}
+                />
               </div>
+            </TabsContent>
 
-              {/* Short Description */}
-              {shortDesc && (
-                <div className={cn(T.card, T.border, "border rounded-2xl p-5")}>
-                  <p className={cn("text-sm leading-relaxed", T.text)}>{shortDesc}</p>
-                </div>
-              )}
-
-              {/* Seller Card */}
-              <div className={cn(T.card, T.border, "border rounded-2xl p-5")}>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className={cn("w-12 h-12 rounded-full flex items-center justify-center text-white font-bold", T.accentBg)}>
-                      {sellerName.charAt(0).toUpperCase()}
-                    </div>
-                    <div>
-                      <div className={cn("font-semibold", T.text)}>{sellerName}</div>
-                      <div className="flex items-center gap-2 mt-0.5">
-                        <RatingStars rating={4.5} size="h-3 w-3" />
-                        <span className={cn("text-xs", T.muted)}>Verified Seller</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <a href={`/trending/${productId}`}
-                      className={cn("flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium border transition-colors", T.border, T.muted, "hover:bg-gray-50")}>
-                      <ExternalLink className="h-3.5 w-3.5" /> Classic View
-                    </a>
-                    <button className={cn("flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium text-white transition-colors", T.accentBg, "hover:opacity-90")}>
-                      <MessageCircle className="h-3.5 w-3.5" /> Chat
-                    </button>
-                  </div>
-                </div>
+            <TabsContent value="qanda" className="mt-0">
+              <div className="min-h-[300px] p-8 bg-card">
+                <QuestionsAnswersSection
+                  productId={Number(productId)}
+                  sellerId={productDetails?.product_productPrice?.[0]?.adminDetail?.id}
+                  userId={me.data?.data?.id}
+                />
               </div>
-            </div>
+            </TabsContent>
+
+            <TabsContent value="vendor" className="mt-0">
+              <div className="min-h-[300px] p-8 bg-card">
+                <VendorSection
+                  sellerId={productDetails?.product_productPrice?.[0]?.adminDetail?.id}
+                  sellerName={soldByName}
+                />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="services" className="mt-0">
+              <div className="min-h-[300px] p-8 bg-card">
+                <RelatedServices
+                  categoryId={productDetails?.categoryId}
+                  sellerId={productDetails?.product_productPrice?.[0]?.adminDetail?.id}
+                />
+              </div>
+            </TabsContent>
+          </Tabs>
+
+          {/* Related Products */}
+          <div className="mt-8">
+            <RelatedProductsSection
+              productId={Number(productId)}
+              categoryId={productDetails?.categoryId}
+            />
           </div>
 
-          {/* ══════════ TABS SECTION ══════════ */}
-          <div className={cn(T.card, T.border, "border rounded-2xl mt-8 overflow-hidden")}>
-            {/* Tab headers */}
-            <div className={cn("border-b flex", T.border)}>
-              {(["description", "specs", "reviews", "seller"] as const).map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={cn(
-                    "flex-1 py-4 text-sm font-medium text-center transition-colors border-b-2",
-                    activeTab === tab
-                      ? "border-[#c2703e] text-[#c2703e]"
-                      : "border-transparent text-muted-foreground hover:text-[#2d2017]",
-                  )}
-                >
-                  {tab === "description" ? "Description" : tab === "specs" ? "Specifications" : tab === "reviews" ? `Reviews (${reviewCount})` : "Seller Info"}
-                </button>
-              ))}
-            </div>
-
-            {/* Tab content */}
-            <div className="p-6">
-              {activeTab === "description" && (
-                <div className={cn("prose prose-sm max-w-none", T.text)}>
-                  {description ? (
-                    <div className="whitespace-pre-line leading-relaxed">{description}</div>
-                  ) : (
-                    <p className={T.muted}>No description available.</p>
-                  )}
-                </div>
-              )}
-
-              {activeTab === "specs" && (
-                <div>
-                  {specs.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-0">
-                      {specs.map((spec: any, i: number) => (
-                        <div key={i} className={cn("flex items-center py-3 px-4", i % 2 === 0 ? "bg-[#faf6f1]" : "bg-white")}>
-                          <span className={cn("w-1/2 text-sm font-medium", T.muted)}>{spec.label}</span>
-                          <span className={cn("w-1/2 text-sm", T.text)}>{spec.value}</span>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className={T.muted}>No specifications available.</p>
-                  )}
-                </div>
-              )}
-
-              {activeTab === "reviews" && (
-                <div className="text-center py-8">
-                  <Star className="h-12 w-12 mx-auto mb-3 text-amber-400 fill-amber-400" />
-                  <div className={cn("text-3xl font-bold", T.text)}>{rating}</div>
-                  <RatingStars rating={rating} size="h-5 w-5" />
-                  <p className={cn("text-sm mt-2", T.muted)}>{reviewCount} reviews</p>
-                  <a href={`/trending/${productId}`}
-                    className={cn("inline-flex items-center gap-1.5 mt-4 text-sm font-medium", T.accentText, "hover:underline")}>
-                    View all reviews on classic page <ExternalLink className="h-3.5 w-3.5" />
-                  </a>
-                </div>
-              )}
-
-              {activeTab === "seller" && (
-                <div className="flex items-start gap-6">
-                  <div className={cn("w-20 h-20 rounded-2xl flex items-center justify-center text-2xl font-bold text-white", T.accentBg)}>
-                    {sellerName.charAt(0).toUpperCase()}
-                  </div>
-                  <div className="flex-1">
-                    <h3 className={cn("text-lg font-semibold", T.text)}>{sellerName}</h3>
-                    <div className="flex items-center gap-2 mt-1">
-                      <RatingStars rating={4.5} size="h-4 w-4" />
-                      <span className={cn("text-sm", T.muted)}>Verified Seller</span>
-                    </div>
-                    <div className="grid grid-cols-3 gap-4 mt-4">
-                      <div className={cn("p-3 rounded-xl text-center", T.accentLight)}>
-                        <div className={cn("text-lg font-bold", T.text)}>98%</div>
-                        <div className="text-xs text-muted-foreground">Positive</div>
-                      </div>
-                      <div className="p-3 rounded-xl text-center bg-blue-50">
-                        <div className={cn("text-lg font-bold", T.text)}>{prices.length}</div>
-                        <div className="text-xs text-muted-foreground">Products</div>
-                      </div>
-                      <div className="p-3 rounded-xl text-center bg-emerald-50">
-                        <div className={cn("text-lg font-bold", T.text)}>Fast</div>
-                        <div className="text-xs text-muted-foreground">Response</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
+          {/* AI Recommendations */}
+          <div className="mt-8">
+            <ProductRecommendations productId={Number(productId)} />
           </div>
-
         </div>
       </div>
+
+      {/* Chat Drawer */}
+      <Drawer open={isChatOpen} onOpenChange={setIsChatOpen}>
+        <DrawerContent className="h-[85vh]">
+          <DrawerHeader><DrawerTitle>{t("chat_with_seller") || "Chat with seller"}</DrawerTitle></DrawerHeader>
+          <div className="flex-1 overflow-auto px-4 pb-4">
+            <ProductChat
+              productId={Number(productId)}
+              sellerId={productDetails?.product_productPrice?.[0]?.adminDetail?.id}
+              productName={productDetails?.productName}
+              productImage={productDetails?.productImages?.[0]?.image}
+            />
+          </div>
+        </DrawerContent>
+      </Drawer>
+
+      {/* Cart Drawer */}
+      <Drawer open={isCartDrawerOpen} onOpenChange={setIsCartDrawerOpen}>
+        <DrawerContent className="h-[70vh]">
+          <DrawerHeader><DrawerTitle>{t("your_cart") || "Your Cart"}</DrawerTitle></DrawerHeader>
+          <div className="flex-1 overflow-auto px-4 pb-4 space-y-3">
+            {memoizedCartList.map((item: CartItem) => (
+              item.cartType === "SERVICE" ? (
+                <ServiceCard key={item.id} item={item} onDelete={() => {}} />
+              ) : (
+                <ProductCard key={item.id} item={item} onDelete={() => {}} onQuantityChange={() => {}} />
+              )
+            ))}
+            {memoizedCartList.length === 0 && (
+              <p className="text-center text-muted-foreground py-8">{t("cart_empty") || "Your cart is empty"}</p>
+            )}
+            {memoizedCartList.length > 0 && (
+              <Button onClick={() => router.push("/checkout")} className="w-full mt-4">
+                {t("proceed_to_checkout") || "Proceed to Checkout"}
+              </Button>
+            )}
+          </div>
+        </DrawerContent>
+      </Drawer>
     </>
   );
 }
