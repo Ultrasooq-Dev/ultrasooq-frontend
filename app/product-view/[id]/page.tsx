@@ -324,6 +324,15 @@ export default function ProductViewPage() {
             {/* ── RIGHT: Product Info ── */}
             <div className="lg:col-span-6">
 
+              {/* Short Description */}
+              {product.product_productShortDescription?.length > 0 && (
+                <div className="mb-4 p-4 rounded-xl bg-white border border-[#e8dfd4]">
+                  {product.product_productShortDescription.map((sd: any, i: number) => (
+                    <p key={i} className="text-sm leading-relaxed text-[#5a4d3e]" dir={langDir}>{sd.shortDescription}</p>
+                  ))}
+                </div>
+              )}
+
               {/* Product Info + Seller Card (side by side, same height) */}
               <div className="flex items-stretch gap-5">
                 {/* Left: Product info */}
@@ -401,15 +410,6 @@ export default function ProductViewPage() {
                 </div>
               </div>
 
-              {/* Short Description */}
-              {product.product_productShortDescription?.length > 0 && (
-                <div className="mt-4 p-4 rounded-xl bg-white border border-[#e8dfd4]">
-                  <h3 className="text-xs font-bold text-[#2d2017] uppercase tracking-wider mb-2">Product Description</h3>
-                  {product.product_productShortDescription.map((sd: any, i: number) => (
-                    <p key={i} className="text-sm leading-relaxed text-[#5a4d3e]" dir={langDir}>{sd.shortDescription}</p>
-                  ))}
-                </div>
-              )}
 
               {/* ── Sticky Price + Actions Box ── */}
               <div className="mt-4 lg:sticky lg:top-6">
