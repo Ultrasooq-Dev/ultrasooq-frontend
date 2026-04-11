@@ -684,69 +684,6 @@ export default function ProductViewPage() {
                 </div>
               </div>
 
-              {/* ── Recommended Products ── */}
-              {relatedProducts.length > 0 && (
-                <div className="px-5 py-4 border-t border-[#f0ebe4]">
-                  <h3 className="text-xs font-bold text-[#8a7560] uppercase tracking-wider mb-3">Customers Also Bought</h3>
-                  <div className="space-y-3">
-                    {relatedProducts.slice(0, 4).map((rp: any) => {
-                      const rpPrice = rp.product_productPrice?.[0];
-                      const rpOffer = Number(rpPrice?.offerPrice || rp.offerPrice || rp.productPrice || 0);
-                      const rpOriginal = Number(rpPrice?.productPrice || rp.productPrice || 0);
-                      const rpImage = rp.productImages?.[0]?.image || rp.productImage || null;
-                      const rpId = rp.id;
-                      const qty = relatedQtys[rpId] || 0;
-
-                      return (
-                        <div key={rpId} className="flex items-center gap-3">
-                          {/* Image */}
-                          <a href={`/product-view/${rpId}`} className="w-14 h-14 rounded-lg bg-[#f8f5f0] overflow-hidden flex-shrink-0 hover:opacity-80 transition-opacity">
-                            {rpImage ? (
-                              <img src={rpImage} alt="" className="w-full h-full object-cover" />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center"><Package className="h-5 w-5 text-[#c9bfb0]" /></div>
-                            )}
-                          </a>
-                          {/* Info */}
-                          <div className="flex-1 min-w-0">
-                            <a href={`/product-view/${rpId}`} className="text-xs font-medium text-[#2d2017] line-clamp-2 hover:text-[#c2703e] transition-colors">
-                              {rp.productName}
-                            </a>
-                            <div className="flex items-center gap-1.5 mt-0.5">
-                              <span className="text-sm font-bold text-[#2d2017]">${rpOffer.toFixed(2)}</span>
-                              {rpOriginal > rpOffer && (
-                                <span className="text-[10px] text-[#b5a898] line-through">${rpOriginal.toFixed(2)}</span>
-                              )}
-                            </div>
-                          </div>
-                          {/* Quantity + Add */}
-                          <div className="flex items-center flex-shrink-0">
-                            {qty > 0 ? (
-                              <div className="flex items-center border border-[#e8dfd4] rounded-lg overflow-hidden">
-                                <button onClick={(e) => { e.stopPropagation(); setRelatedQtys((q) => ({ ...q, [rpId]: Math.max(0, qty - 1) })); }}
-                                  className="w-7 h-8 flex items-center justify-center hover:bg-[#faf7f2] text-[#8a7560]">
-                                  <Minus className="h-3 w-3" />
-                                </button>
-                                <span className="w-7 h-8 flex items-center justify-center text-xs font-semibold text-[#2d2017] border-x border-[#e8dfd4]">{qty}</span>
-                                <button onClick={(e) => { e.stopPropagation(); setRelatedQtys((q) => ({ ...q, [rpId]: qty + 1 })); }}
-                                  className="w-7 h-8 flex items-center justify-center hover:bg-[#faf7f2] text-[#8a7560]">
-                                  <Plus className="h-3 w-3" />
-                                </button>
-                              </div>
-                            ) : (
-                              <button onClick={(e) => { e.stopPropagation(); setRelatedQtys((q) => ({ ...q, [rpId]: 1 })); }}
-                                className="h-8 px-3 rounded-lg bg-[#2d2017] text-white text-[11px] font-semibold flex items-center gap-1 hover:bg-[#1a130d] transition-colors">
-                                <Plus className="h-3 w-3" /> Add
-                              </button>
-                            )}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-
               </div>{/* end all-in-one card */}
             </div>
 
@@ -804,6 +741,66 @@ export default function ProductViewPage() {
           {/* Related */}
           <div className="mt-12"><RelatedProductsSection productId={Number(productId)} categoryId={product?.categoryId} /></div>
           <div className="mt-8"><ProductRecommendations productId={Number(productId)} /></div>
+
+          {/* ── Customers Also Bought (bottom of page) ── */}
+          {relatedProducts.length > 0 && (
+            <div className="mt-10 rounded-2xl bg-white border border-[#e8dfd4] shadow-sm overflow-hidden">
+              <div className="px-6 py-4 border-b border-[#f0ebe4]">
+                <h2 className="text-base font-bold text-[#2d2017]">Customers Also Bought</h2>
+                <p className="text-xs text-[#8a7560] mt-0.5">Frequently purchased together with this product</p>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-[#f0ebe4]">
+                {relatedProducts.slice(0, 4).map((rp: any) => {
+                  const rpPrice = rp.product_productPrice?.[0];
+                  const rpOffer = Number(rpPrice?.offerPrice || rp.offerPrice || rp.productPrice || 0);
+                  const rpOriginal = Number(rpPrice?.productPrice || rp.productPrice || 0);
+                  const rpImage = rp.productImages?.[0]?.image || rp.productImage || null;
+                  const rpId = rp.id;
+                  const qty = relatedQtys[rpId] || 0;
+
+                  return (
+                    <div key={rpId} className="p-5 flex flex-col items-center text-center">
+                      <a href={`/product-view/${rpId}`} className="w-24 h-24 rounded-xl bg-[#f8f5f0] overflow-hidden mb-3 hover:opacity-80 transition-opacity">
+                        {rpImage ? (
+                          <img src={rpImage} alt="" className="w-full h-full object-contain p-2" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center"><Package className="h-8 w-8 text-[#c9bfb0]" /></div>
+                        )}
+                      </a>
+                      <a href={`/product-view/${rpId}`} className="text-sm font-medium text-[#2d2017] line-clamp-2 hover:text-[#c2703e] transition-colors mb-2 min-h-[40px]">
+                        {rp.productName}
+                      </a>
+                      <div className="flex items-center gap-1.5 mb-3">
+                        <span className="text-lg font-bold text-[#2d2017]">${rpOffer.toFixed(2)}</span>
+                        {rpOriginal > rpOffer && (
+                          <span className="text-xs text-[#b5a898] line-through">${rpOriginal.toFixed(2)}</span>
+                        )}
+                      </div>
+                      {qty > 0 ? (
+                        <div className="flex items-center border-2 border-[#c2703e] rounded-xl overflow-hidden">
+                          <button onClick={() => setRelatedQtys((q) => ({ ...q, [rpId]: Math.max(0, qty - 1) }))}
+                            className="w-9 h-9 flex items-center justify-center hover:bg-[#c2703e]/5 text-[#c2703e]">
+                            <Minus className="h-3.5 w-3.5" />
+                          </button>
+                          <span className="w-9 h-9 flex items-center justify-center text-sm font-bold text-[#2d2017] border-x-2 border-[#c2703e]">{qty}</span>
+                          <button onClick={() => setRelatedQtys((q) => ({ ...q, [rpId]: qty + 1 }))}
+                            className="w-9 h-9 flex items-center justify-center hover:bg-[#c2703e]/5 text-[#c2703e]">
+                            <Plus className="h-3.5 w-3.5" />
+                          </button>
+                        </div>
+                      ) : (
+                        <button onClick={() => setRelatedQtys((q) => ({ ...q, [rpId]: 1 }))}
+                          className="h-9 px-5 rounded-xl bg-[#2d2017] text-white text-sm font-semibold flex items-center gap-1.5 hover:bg-[#1a130d] transition-colors">
+                          <Plus className="h-3.5 w-3.5" /> Add
+                        </button>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
         </div>
       </div>
 
