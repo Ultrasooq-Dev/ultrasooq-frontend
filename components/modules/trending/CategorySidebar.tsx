@@ -267,20 +267,29 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
     }
   };
 
-  // Fetch all subcategories for all main categories
+  // Fetch all subcategories for all main categories (batched to avoid 429)
   useEffect(() => {
     const fetchAllSubcategories = async () => {
       if (mainCategories.length === 0) return;
 
-      const categoriesData = await Promise.all(
-        mainCategories.map(async (category: any) => {
-          const categoryWithChildren = await fetchCategoryWithChildren(category, 0);
-          return { 
-            category: categoryWithChildren, 
-            subcategories: categoryWithChildren.children || [] 
-          };
-        }),
-      );
+      // Batch requests: max 5 concurrent to avoid hitting rate limit (100 req/60s)
+      const BATCH_SIZE = 5;
+      const categoriesData: any[] = [];
+
+      for (let i = 0; i < mainCategories.length; i += BATCH_SIZE) {
+        const batch = mainCategories.slice(i, i + BATCH_SIZE);
+        const batchResults = await Promise.all(
+          batch.map(async (category: any) => {
+            const categoryWithChildren = await fetchCategoryWithChildren(category, 0);
+            return {
+              category: categoryWithChildren,
+              subcategories: categoryWithChildren.children || [],
+            };
+          }),
+        );
+        categoriesData.push(...batchResults);
+      }
+
       setCategoriesWithSubcategories(categoriesData);
 
       if (!selectedMainCategory && categoriesData.length > 0) {
