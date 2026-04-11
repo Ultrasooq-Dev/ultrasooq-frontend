@@ -23,6 +23,8 @@ import {
 } from "@/utils/constants";
 import AccordionMultiSelectV2 from "@/components/shared/AccordionMultiSelectV2";
 import { useTags } from "@/apis/queries/tags.queries";
+import { useCategory } from "@/apis/queries/category.queries";
+import { BUSINESS_TYPE_CATEGORY_ID } from "@/utils/constants";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { Label } from "@/components/ui/label";
@@ -263,6 +265,7 @@ export default function CompanyProfilePage() {
   const currentAccount = useCurrentAccount();
   const countriesQuery = useCountries();
   const tagsQuery = useTags();
+  const businessTypeCategoryQuery = useCategory(String(BUSINESS_TYPE_CATEGORY_ID));
   const upload = useUploadFile();
   const createCompanyProfile = useCreateCompanyProfile();
 
@@ -292,6 +295,16 @@ export default function CompanyProfilePage() {
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tagsQuery?.data?.data?.length]);
+
+  // Business type categories from category tree (replaces generic tags for business type dropdown)
+  const memoizedBusinessTypes = useMemo(() => {
+    const children = businessTypeCategoryQuery?.data?.data?.children;
+    if (!children || !Array.isArray(children)) return [];
+    return children.map((cat: any) => ({
+      label: cat.name || cat.categoryName_en || cat.categoryName || `Category ${cat.id}`,
+      value: cat.id,
+    }));
+  }, [businessTypeCategoryQuery?.data?.data?.children]);
 
   const memoizedLastTwoHundredYears = useMemo(() => {
     return getLastTwoHundredYears() || [];
@@ -562,11 +575,10 @@ export default function CompanyProfilePage() {
                       translate="no"
                     />
 
-                    {/* TODO:fix this */}
                     <ControlledSelectInput
                       label={t("business_type")}
                       name="businessTypeList"
-                      options={memoizedTags.map((item: OptionProps) => ({
+                      options={(memoizedBusinessTypes.length > 0 ? memoizedBusinessTypes : memoizedTags).map((item: any) => ({
                         value: item.value?.toString(),
                         label: item.label,
                       }))}
