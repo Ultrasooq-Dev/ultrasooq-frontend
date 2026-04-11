@@ -722,7 +722,7 @@ export default function ProductViewPage() {
       {Array.isArray(cartList) && cartList.length > 0 && (
         <div className="hidden lg:block">
           <div className={cn(
-            "fixed top-[120px] z-[50] h-[calc(100vh-120px)] w-36 bg-card shadow-lg",
+            "fixed top-[160px] z-[40] h-[calc(100vh-160px)] w-36 bg-card shadow-lg",
             langDir === "rtl" ? "left-0 border-r border-border" : "right-0 border-l border-border",
           )}>
             <div className="flex h-full flex-col">
