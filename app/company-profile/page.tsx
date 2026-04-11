@@ -656,11 +656,8 @@ export default function CompanyProfilePage() {
                       </FormItem>
                     )}
                   />
-                </div>
 
-                <div className="mb-3.5 w-full">
-                  <div className="flex flex-wrap">
-                  <div className="mb-3.5 w-full md:w-6/12 md:pr-3.5">
+                  <div className="mb-3.5 w-full md:w-6/12 md:pl-3.5">
                     <ControlledTextInput
                       label={t("company_name")}
                       name="companyName"
