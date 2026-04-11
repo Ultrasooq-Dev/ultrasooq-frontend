@@ -252,40 +252,36 @@ export default function ProductViewPage() {
 
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 pb-20">
 
-          {/* ══════ FULL WIDTH: Title + Seller ══════ */}
-          <div className="flex items-stretch gap-5 mb-6">
+          {/* ══════ FULL WIDTH: Title + Seller side by side ══════ */}
+          <div className="flex items-start gap-6 mb-6">
+            {/* Left: Brand + Title + Rating */}
             <div className="flex-1 min-w-0">
-                {/* Left: Product info */}
-                <div className="flex-1 min-w-0">
-                  {/* Brand + Category */}
-                  <div className="flex items-center gap-3 mb-2">
-                    {product.brand?.brandName && (
-                      <span className="text-xs font-semibold tracking-[0.15em] uppercase text-[#c2703e]">{product.brand.brandName}</span>
-                    )}
-                    {product.category?.categoryName_en && (
-                      <span className="text-xs text-[#8a7560]">in {product.category.categoryName_en}</span>
-                    )}
+              <div className="flex items-center gap-3 mb-1">
+                {product.brand?.brandName && (
+                  <span className="text-xs font-semibold tracking-[0.15em] uppercase text-[#c2703e]">{product.brand.brandName}</span>
+                )}
+                {product.category?.categoryName_en && (
+                  <span className="text-xs text-[#8a7560]">in {product.category.categoryName_en}</span>
+                )}
+              </div>
+              <h1 className="text-xl sm:text-2xl font-bold leading-tight text-[#2d2017]">
+                {product.productName}
+              </h1>
+              <div className="flex items-center gap-3 mt-2 flex-wrap">
+                {reviews.length > 0 && (
+                  <div className="flex items-center gap-1.5">
+                    {[1, 2, 3, 4, 5].map((i) => (
+                      <Star key={i} className={cn("h-4 w-4", i <= Math.round(avgRating) ? "fill-amber-400 text-amber-400" : "text-[#d4cdc2]")} />
+                    ))}
+                    <span className="text-sm font-medium text-[#2d2017] ms-1">{avgRating.toFixed(1)}</span>
+                    <span className="text-sm text-[#8a7560]">({reviews.length})</span>
                   </div>
-                  {/* Title */}
-                  <h1 className="text-xl sm:text-2xl font-bold leading-tight text-[#2d2017]">
-                    {product.productName}
-                  </h1>
-                  {/* Rating + Sold */}
-                  <div className="flex items-center gap-3 mt-2 flex-wrap">
-                    {reviews.length > 0 && (
-                      <div className="flex items-center gap-1.5">
-                        {[1, 2, 3, 4, 5].map((i) => (
-                          <Star key={i} className={cn("h-4 w-4", i <= Math.round(avgRating) ? "fill-amber-400 text-amber-400" : "text-[#d4cdc2]")} />
-                        ))}
-                        <span className="text-sm font-medium text-[#2d2017] ms-1">{avgRating.toFixed(1)}</span>
-                        <span className="text-sm text-[#8a7560]">({reviews.length})</span>
-                      </div>
-                    )}
-                    {product.sold > 0 && (
-                      <span className="text-sm text-[#8a7560]">{product.sold}+ sold</span>
-                    )}
-                  </div>
-                </div>
+                )}
+                {product.sold > 0 && (
+                  <span className="text-sm text-[#8a7560]">{product.sold}+ sold</span>
+                )}
+              </div>
+            </div>
 
                 {/* Right: Seller Card */}
                 <div className="flex-shrink-0 w-[220px] rounded-2xl overflow-hidden border border-[#e8dfd4] shadow-sm hover:shadow-md hover:border-[#c2703e]/30 transition-all cursor-pointer flex flex-col"
@@ -328,7 +324,6 @@ export default function ProductViewPage() {
                     )}
                   </div>
                 </div>
-              </div>
           </div>{/* end full-width title row */}
 
           {/* ══════ TWO COLUMNS: Image + Price side by side ══════ */}
