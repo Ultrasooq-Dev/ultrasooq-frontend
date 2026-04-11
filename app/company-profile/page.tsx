@@ -53,8 +53,10 @@ const formSchema = (t: any) => {
       .min(2, { message: t("company_name_required") })
       .max(50, { message: t("company_name_must_be_less_than_50_chars") }),
     businessTypeList: z
-      .string({ error: t("business_type_required") })
-      .transform((value) => [{ businessTypeId: Number(value) }]),
+      .array(z.object({ categoryId: z.number(), categoryLocation: z.string().optional() }))
+      .min(1, { message: t("business_type_required") })
+      .optional()
+      .default([]),
     annualPurchasingVolume: z
       .string()
       .trim()
@@ -100,8 +102,8 @@ const formSchema = (t: any) => {
           businessTypeList: z
             .array(
               z.object({
-                label: z.string().trim(),
-                value: z.number(),
+                categoryId: z.number(),
+                categoryLocation: z.string().optional(),
               }),
               {
                 error: t("business_type_required"),
@@ -111,11 +113,7 @@ const formSchema = (t: any) => {
               message: t("business_type_required"),
             })
             .transform((value) => {
-              const temp: any = [];
-              value.forEach((item) => {
-                temp.push({ businessTypeId: item.value });
-              });
-              return temp;
+              return value;
             }),
           address: z
             .string()
@@ -575,14 +573,10 @@ export default function CompanyProfilePage() {
                       translate="no"
                     />
 
-                    <ControlledSelectInput
-                      label={t("business_type")}
-                      name="businessTypeList"
-                      options={(memoizedBusinessTypes.length > 0 ? memoizedBusinessTypes : memoizedTags).map((item: any) => ({
-                        value: item.value?.toString(),
-                        label: item.label,
-                      }))}
-                    />
+                    <div>
+                      <Label className="mb-2 block text-sm font-medium" dir={langDir} translate="no">{t("business_type")}</Label>
+                      <MultiSelectCategory name="businessTypeList" />
+                    </div>
 
                     <ControlledTextInput
                       label={t("annual_purchasing_volume")}
@@ -721,16 +715,16 @@ export default function CompanyProfilePage() {
             {fieldArray.fields.map((field, index) => (
               <div key={field.id}>
                 <div className="mb-3.5 w-full">
-                  <AccordionMultiSelectV2
-                    label={t("business_type")}
-                    name={`branchList.${index}.businessTypeList`}
-                    options={memoizedTags || []}
-                    placeholder={t("business_type")}
-                    error={String(
-                      form.formState.errors?.branchList?.[index]
-                        ?.businessTypeList?.message || "",
+                  <div>
+                    <Label className="mb-2 block text-sm font-medium" dir={langDir} translate="no">{t("business_type")}</Label>
+                    <MultiSelectCategory
+                      name={`branchList.${index}.businessTypeList`}
+                      branchId={field.id}
+                    />
+                    {form.formState.errors?.branchList?.[index]?.businessTypeList?.message && (
+                      <p className="mt-1 text-xs text-destructive">{String(form.formState.errors.branchList[index]?.businessTypeList?.message)}</p>
                     )}
-                  />
+                  </div>
 
                   <FormField
                     control={form.control}

@@ -103,7 +103,24 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ userDetails }) => {
         </div>
         <div className="text-normal mt-2 w-full text-sm font-normal leading-4 text-muted-foreground md:mt-4">
           <p dir={langDir} translate="no">{t("business_type")}</p>
-          {userDetails?.userProfile?.[0]?.userProfileBusinessType?.map(
+          {/* Show category-based business types */}
+          {userDetails?.userBusinesCategoryDetail?.map(
+            (item: any) => (
+              <span
+                key={item?.id}
+                className="mr-2 mt-3 inline-flex items-center gap-1.5 rounded-lg bg-primary/10 px-3 py-1.5 text-sm font-semibold leading-5 text-primary"
+              >
+                {item?.category?.name || item?.categoryDetail?.name || `Category ${item?.categoryId}`}
+                {item?.categoryLocation && (
+                  <span className="text-xs font-normal text-muted-foreground">
+                    {item.categoryLocation.split(",").length > 1 && `(${item.categoryLocation.split(",").length} levels)`}
+                  </span>
+                )}
+              </span>
+            ),
+          )}
+          {/* Fallback: tag-based business types */}
+          {(!userDetails?.userBusinesCategoryDetail?.length) && userDetails?.userProfile?.[0]?.userProfileBusinessType?.map(
             (item: any) => (
               <span
                 key={item?.id}
