@@ -22,12 +22,13 @@ import RelatedProductsSection from "@/components/modules/productDetails/RelatedP
 import { ProductRecommendations } from "@/components/modules/recommendations/ProductRecommendations";
 import RelatedServices from "@/components/modules/trending/RelatedServices";
 import PlateEditor from "@/components/shared/Plate/PlateEditor";
+import AddToCustomizeForm from "@/components/modules/factories/AddToCustomizeForm";
 import dynamic from "next/dynamic";
 import {
   Star, Heart, ShoppingCart, Share2, ChevronLeft, ChevronRight,
   Package, Truck, ShieldCheck, Clock, Store, MessageCircle,
   Minus, Plus, ArrowLeft, Tag, Award, Users, Timer,
-  Zap, Check, X, Copy, Eye, ChevronDown,
+  Zap, Check, X, Copy, Eye, ChevronDown, Pencil, Upload, FlaskConical, Send, Wrench, AlertTriangle,
 } from "lucide-react";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import PlaceholderImage from "@/public/images/product-placeholder.png";
@@ -66,7 +67,10 @@ export default function ProductViewPage() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
   const [showBuygroupWarning, setShowBuygroupWarning] = useState(false);
+  const [showCustomizeModal, setShowCustomizeModal] = useState(false);
+  const [customizeForm, setCustomizeForm] = useState({ description: "", budget: "", quantity: "1", attachments: [] as File[] });
   const [bgTimeLeft, setBgTimeLeft] = useState("");
+  const [showCustomizeForm, setShowCustomizeForm] = useState(false);
 
   const me = useMe();
   const productQuery = useProductById(
@@ -153,6 +157,9 @@ export default function ProductViewPage() {
   const sellType = pp?.sellType;
   const consumerDiscount = pp?.consumerDiscount || 0;
   const consumerDiscountType = pp?.consumerDiscountType;
+
+  const isTrial = sellType === "TRIAL_PRODUCT";
+  const isCustomizable = askForPrice; // Products with ask-for-price are customizable
 
   // ── BuyGroup timing ──
   const isBuygroup = sellType === "BUYGROUP";
@@ -592,70 +599,89 @@ export default function ProductViewPage() {
                   </div>
                 )}
 
-                {/* Quantity + Cart */}
-                {!askForPrice && stock > 0 && !saleNotStarted && !saleExpired && (
+                {/* Quantity + Cart + Actions */}
+                {stock > 0 && !saleNotStarted && !saleExpired && (
                   <div className="mt-6 space-y-3">
-                    <div className="flex items-center gap-3">
-                      <div className="flex items-center border border-[#e8dfd4] rounded-xl overflow-hidden">
-                        <button onClick={() => setQuantity(Math.max(minQty, quantity - 1))}
-                          className="w-11 h-11 flex items-center justify-center hover:bg-[#f8f5f0] transition-colors"><Minus className="h-4 w-4 text-[#8a7560]" /></button>
-                        <input type="number" value={quantity} onChange={(e) => setQuantity(Math.max(minQty, Math.min(maxQty, Number(e.target.value))))}
-                          className="w-14 h-11 text-center font-semibold text-[#2d2017] border-x border-[#e8dfd4] focus:outline-none" />
-                        <button onClick={() => setQuantity(Math.min(maxQty, quantity + 1))}
-                          className="w-11 h-11 flex items-center justify-center hover:bg-[#f8f5f0] transition-colors"><Plus className="h-4 w-4 text-[#8a7560]" /></button>
+                    {/* Trial Product badge */}
+                    {isTrial && (
+                      <div className="flex items-center gap-2 p-3 rounded-xl bg-purple-50 border border-purple-100">
+                        <FlaskConical className="h-4 w-4 text-purple-600 flex-shrink-0" />
+                        <div>
+                          <span className="text-xs font-semibold text-purple-700">Trial / Sample Product</span>
+                          <p className="text-[10px] text-purple-600 mt-0.5">Order a sample to evaluate before bulk purchase</p>
+                        </div>
                       </div>
-                      <button onClick={isBuygroup ? () => setShowBuygroupWarning(true) : handleAddToCart} disabled={stock === 0}
-                        className={cn("flex-1 h-12 rounded-xl text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.98] disabled:opacity-40",
-                          isBuygroup ? "bg-[#c2703e] hover:bg-[#a85d32] shadow-lg shadow-[#c2703e]/20" : "bg-[#2d2017] hover:bg-[#1a130d]")}>
-                        {isBuygroup ? <Users className="h-4.5 w-4.5" /> : <ShoppingCart className="h-4.5 w-4.5" />}
-                        {isBuygroup ? "Book Your Spot" : isInCart ? t("update_cart") || "Update Cart" : t("add_to_cart") || "Add to Cart"}
-                        {isBuygroup && ` — $${(offerPrice * quantity).toFixed(2)}`}
-                      </button>
-                    </div>
-                    {!isBuygroup && (
+                    )}
+
+                    {/* Quantity selector + main CTA */}
+                    {!askForPrice && (
+                      <div className="flex items-center gap-3">
+                        <div className="flex items-center border border-[#e8dfd4] rounded-xl overflow-hidden">
+                          <button onClick={() => setQuantity(Math.max(minQty, quantity - 1))}
+                            className="w-11 h-11 flex items-center justify-center hover:bg-[#f8f5f0] transition-colors"><Minus className="h-4 w-4 text-[#8a7560]" /></button>
+                          <input type="number" value={quantity} onChange={(e) => setQuantity(Math.max(minQty, Math.min(maxQty, Number(e.target.value))))}
+                            className="w-14 h-11 text-center font-semibold text-[#2d2017] border-x border-[#e8dfd4] focus:outline-none" />
+                          <button onClick={() => setQuantity(Math.min(maxQty, quantity + 1))}
+                            className="w-11 h-11 flex items-center justify-center hover:bg-[#f8f5f0] transition-colors"><Plus className="h-4 w-4 text-[#8a7560]" /></button>
+                        </div>
+                        <button onClick={isBuygroup ? () => setShowBuygroupWarning(true) : handleAddToCart} disabled={stock === 0}
+                          className={cn("flex-1 h-12 rounded-xl text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.98] disabled:opacity-40",
+                            isTrial ? "bg-purple-600 hover:bg-purple-700 shadow-lg shadow-purple-500/20" :
+                            isBuygroup ? "bg-[#c2703e] hover:bg-[#a85d32] shadow-lg shadow-[#c2703e]/20" :
+                            "bg-[#2d2017] hover:bg-[#1a130d]")}>
+                          {isTrial ? <FlaskConical className="h-4.5 w-4.5" /> : isBuygroup ? <Users className="h-4.5 w-4.5" /> : <ShoppingCart className="h-4.5 w-4.5" />}
+                          {isTrial ? "Order Sample" : isBuygroup ? "Book Your Spot" : isInCart ? t("update_cart") || "Update Cart" : t("add_to_cart") || "Add to Cart"}
+                          {(isBuygroup || isTrial) && ` — $${(offerPrice * quantity).toFixed(2)}`}
+                        </button>
+                      </div>
+                    )}
+
+                    {/* Buy Now (normal + wholesale only, not buygroup/trial) */}
+                    {!isBuygroup && !isTrial && !askForPrice && (
                       <button onClick={handleBuyNow}
                         className="w-full h-12 rounded-xl bg-[#c2703e] text-white font-semibold text-sm flex items-center justify-center gap-2 hover:bg-[#a85d32] transition-all active:scale-[0.98] shadow-lg shadow-[#c2703e]/20">
                         <Zap className="h-4.5 w-4.5" />
                         {t("buy_now") || "Buy Now"} — ${(offerPrice * quantity).toFixed(2)}
                       </button>
                     )}
+
+                    {/* Customize Product button (always shown for customizable products) */}
+                    <button onClick={() => setShowCustomizeModal(true)}
+                      className="w-full h-11 rounded-xl border-2 border-dashed border-[#c2703e]/40 text-sm font-semibold text-[#c2703e] flex items-center justify-center gap-2 hover:bg-[#c2703e]/5 hover:border-[#c2703e] transition-all">
+                      <Pencil className="h-4 w-4" />
+                      Customize This Product
+                    </button>
+
                     {minQty > 1 && <p className="text-xs text-[#8a7560] text-center">Min order: {minQty} units</p>}
-                  </div>
-                )}
-              </div>
-
-
-              {/* ── Product Details (inside same card) ── */}
-              <div className="px-5 py-4 border-t border-[#f0ebe4] space-y-2.5">
-                {/* Delivery */}
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
-                    <Truck className="h-4.5 w-4.5 text-blue-600" />
-                  </div>
-                  <div className="flex-1">
-                    <div className="text-sm font-semibold text-[#2d2017]">
+                    {!isBuygroup && (
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                          <Truck className="h-4.5 w-4.5 text-blue-600" />
+                        </div>
+                        <div className="flex-1">
+                          <div className="text-sm font-semibold text-[#2d2017]">
                       {deliveryDays > 0 ? `Estimated delivery in ${deliveryDays} days` : "Delivery available"}
-                    </div>
-                    <div className="text-xs text-[#8a7560]">Shipping cost calculated at checkout</div>
-                  </div>
-                </div>
-                {/* Buyer Protection */}
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-lg bg-emerald-50 flex items-center justify-center flex-shrink-0">
-                    <ShieldCheck className="h-4.5 w-4.5 text-emerald-600" />
-                  </div>
-                  <div className="flex-1">
-                    <div className="text-sm font-semibold text-[#2d2017]">Buyer Protection</div>
-                    <div className="text-xs text-[#8a7560]">Money-back guarantee if not as described</div>
-                  </div>
-                </div>
-                {/* Product Condition — eBay-style */}
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-lg bg-amber-50 flex items-center justify-center flex-shrink-0">
-                    <Tag className="h-4.5 w-4.5 text-amber-600" />
-                  </div>
-                  <div className="flex-1">
-                    <div className="text-sm font-semibold text-[#2d2017]">
+                          </div>
+                          <div className="text-xs text-[#8a7560]">Shipping cost calculated at checkout</div>
+                        </div>
+                      </div>
+                      {/* Buyer Protection */}
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-lg bg-emerald-50 flex items-center justify-center flex-shrink-0">
+                          <ShieldCheck className="h-4.5 w-4.5 text-emerald-600" />
+                        </div>
+                        <div className="flex-1">
+                          <div className="text-sm font-semibold text-[#2d2017]">Buyer Protection</div>
+                          <div className="text-xs text-[#8a7560]">Money-back guarantee if not as described</div>
+                        </div>
+                      </div>
+                      {/* Product Condition — eBay-style */}
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-lg bg-amber-50 flex items-center justify-center flex-shrink-0">
+                          <Tag className="h-4.5 w-4.5 text-amber-600" />
+                        </div>
+                        <div className="flex-1">
+                          <div className="text-sm font-semibold text-[#2d2017]">
                       {(() => {
                         const cond = (pp?.productCondition || "new").toLowerCase();
                         const condMap: Record<string, { label: string; desc: string }> = {
@@ -671,8 +697,8 @@ export default function ProductViewPage() {
                         const match = condMap[cond] || condMap["new"];
                         return match.label;
                       })()}
-                    </div>
-                    <div className="text-xs text-[#8a7560]">
+                          </div>
+                          <div className="text-xs text-[#8a7560]">
                       {(() => {
                         const cond = (pp?.productCondition || "new").toLowerCase();
                         const condMap: Record<string, string> = {
@@ -687,10 +713,11 @@ export default function ProductViewPage() {
                         };
                         return condMap[cond] || condMap["new"];
                       })()}
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </div>
+                    )}
 
               </div>{/* end all-in-one card */}
             </div>
@@ -890,6 +917,124 @@ export default function ProductViewPage() {
         </div>
       )}
 
+      {/* Customize Product Modal */}
+      {showCustomizeModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40" onClick={() => setShowCustomizeModal(false)}>
+          <div className="bg-white rounded-2xl w-full max-w-lg mx-4 shadow-2xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
+            {/* Header */}
+            <div className="bg-gradient-to-r from-[#2d2017] to-[#4a3728] px-6 py-4 flex items-center justify-between">
+              <div className="flex items-center gap-2 text-white">
+                <Pencil className="h-5 w-5" />
+                <span className="text-base font-bold">Customize Product</span>
+              </div>
+              <button onClick={() => setShowCustomizeModal(false)} className="text-white/70 hover:text-white"><X className="h-5 w-5" /></button>
+            </div>
+
+            {/* Product reference */}
+            <div className="px-6 py-3 bg-[#faf7f2] border-b border-[#e8dfd4] flex items-center gap-3">
+              <Package className="h-8 w-8 text-[#c9bfb0]" />
+              <div className="min-w-0">
+                <p className="text-sm font-semibold text-[#2d2017] truncate">{product?.productName}</p>
+                <p className="text-xs text-[#8a7560]">Base price: ${offerPrice.toFixed(2)} · Seller: {sellerName.length <= 3 ? sellerName : sellerName.slice(0, 3) + "***"}</p>
+              </div>
+            </div>
+
+            <div className="px-6 py-5 space-y-4 max-h-[55vh] overflow-y-auto">
+              {/* Description */}
+              <div>
+                <label className="text-sm font-semibold text-[#2d2017] mb-1.5 block">What would you like to customize?</label>
+                <textarea
+                  value={customizeForm.description}
+                  onChange={(e) => setCustomizeForm((f) => ({ ...f, description: e.target.value }))}
+                  placeholder="Describe your customization requirements — colors, sizes, materials, branding, packaging, etc."
+                  className="w-full p-3 rounded-xl border border-[#e8dfd4] text-sm resize-none h-28 focus:outline-none focus:ring-2 focus:ring-[#c2703e]/20 focus:border-[#c2703e]"
+                />
+              </div>
+
+              {/* Quantity + Budget row */}
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-sm font-semibold text-[#2d2017] mb-1.5 block">Quantity Needed</label>
+                  <input
+                    type="number"
+                    value={customizeForm.quantity}
+                    onChange={(e) => setCustomizeForm((f) => ({ ...f, quantity: e.target.value }))}
+                    min={1}
+                    placeholder="100"
+                    className="w-full p-3 rounded-xl border border-[#e8dfd4] text-sm focus:outline-none focus:ring-2 focus:ring-[#c2703e]/20 focus:border-[#c2703e]"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-semibold text-[#2d2017] mb-1.5 block">Target Budget</label>
+                  <input
+                    type="text"
+                    value={customizeForm.budget}
+                    onChange={(e) => setCustomizeForm((f) => ({ ...f, budget: e.target.value }))}
+                    placeholder="$5,000"
+                    className="w-full p-3 rounded-xl border border-[#e8dfd4] text-sm focus:outline-none focus:ring-2 focus:ring-[#c2703e]/20 focus:border-[#c2703e]"
+                  />
+                </div>
+              </div>
+
+              {/* File upload */}
+              <div>
+                <label className="text-sm font-semibold text-[#2d2017] mb-1.5 block">Attachments (optional)</label>
+                <label className="flex items-center justify-center gap-2 p-4 rounded-xl border-2 border-dashed border-[#e8dfd4] cursor-pointer hover:border-[#c2703e] hover:bg-[#faf7f2] transition-colors">
+                  <Upload className="h-5 w-5 text-[#8a7560]" />
+                  <span className="text-sm text-[#8a7560]">Upload reference images, specs, or designs</span>
+                  <input
+                    type="file"
+                    multiple
+                    accept="image/*,.pdf,.doc,.docx"
+                    className="hidden"
+                    onChange={(e) => {
+                      if (e.target.files) setCustomizeForm((f) => ({ ...f, attachments: [...f.attachments, ...Array.from(e.target.files!)] }));
+                    }}
+                  />
+                </label>
+                {customizeForm.attachments.length > 0 && (
+                  <div className="mt-2 space-y-1">
+                    {customizeForm.attachments.map((file, i) => (
+                      <div key={i} className="flex items-center justify-between text-xs text-[#8a7560] bg-[#faf7f2] px-3 py-1.5 rounded-lg">
+                        <span className="truncate">{file.name}</span>
+                        <button onClick={() => setCustomizeForm((f) => ({ ...f, attachments: f.attachments.filter((_, j) => j !== i) }))}
+                          className="text-red-500 hover:text-red-700 ms-2"><X className="h-3 w-3" /></button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Info box */}
+              <div className="p-3 rounded-xl bg-blue-50 border border-blue-100">
+                <p className="text-xs text-blue-700 leading-relaxed">
+                  Your customization request will be sent to the seller. They will review your requirements and respond with a quote, typically within 24-48 hours. You can also add the standard product to your cart while waiting.
+                </p>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="px-6 py-4 border-t border-[#e8dfd4] flex items-center gap-3">
+              <button onClick={() => setShowCustomizeModal(false)}
+                className="flex-1 h-11 rounded-xl border border-[#e8dfd4] text-sm font-medium text-[#8a7560] hover:bg-[#faf7f2] transition-colors">
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  setShowCustomizeModal(false);
+                  toast({ title: "Customization request sent!", description: "The seller will respond within 24-48 hours.", variant: "success" });
+                  setCustomizeForm({ description: "", budget: "", quantity: "1", attachments: [] });
+                }}
+                disabled={!customizeForm.description.trim()}
+                className="flex-1 h-11 rounded-xl bg-[#c2703e] text-white text-sm font-semibold flex items-center justify-center gap-2 hover:bg-[#a85d32] transition-colors disabled:opacity-40">
+                <Send className="h-4 w-4" />
+                Send Request
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Chat Drawer */}
       {product && seller?.id && me.data?.data?.id !== seller?.id && (
         <Drawer open={isChatOpen} onOpenChange={setIsChatOpen}>
@@ -898,6 +1043,27 @@ export default function ProductViewPage() {
             <div className="flex-1 overflow-auto"><ProductChat productId={Number(productId)} /></div>
           </DrawerContent>
         </Drawer>
+      )}
+
+      {/* Customize Product Form Modal */}
+      {showCustomizeForm && product && (
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-white rounded-xl max-w-2xl w-full my-auto">
+            <AddToCustomizeForm
+              selectedProductId={Number(productId)}
+              onClose={() => setShowCustomizeForm(false)}
+              onAddToFactory={() => {
+                setShowCustomizeForm(false);
+                toast({ title: t("customization_submitted") || "Customization submitted!", variant: "success" });
+              }}
+              onAddToCart={() => {
+                setShowCustomizeForm(false);
+                toast({ title: t("added_to_cart") || "Added to cart!", variant: "success" });
+                queryClient.invalidateQueries({ queryKey: haveAccessToken ? ["cart-by-user-id"] : ["cart-list-by-device-id"] });
+              }}
+            />
+          </div>
+        </div>
       )}
     </>
   );
