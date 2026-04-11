@@ -95,23 +95,6 @@ export default function ProductViewPage() {
     }
   }, [product?.id]);
 
-  // BuyGroup live countdown
-  useEffect(() => {
-    if (!bgEnd || saleExpired || saleNotStarted) return;
-    const tick = () => {
-      const diff = bgEnd - Date.now();
-      if (diff <= 0) { setBgTimeLeft("Ended"); return; }
-      const d = Math.floor(diff / 86400000);
-      const h = Math.floor((diff % 86400000) / 3600000);
-      const m = Math.floor((diff % 3600000) / 60000);
-      const s = Math.floor((diff % 60000) / 1000);
-      setBgTimeLeft(d > 0 ? `${d}d ${h}h ${m}m` : `${h}h ${m}m ${s}s`);
-    };
-    tick();
-    const interval = setInterval(tick, 1000);
-    return () => clearInterval(interval);
-  }, [bgEnd, saleExpired, saleNotStarted]);
-
   // ── Images ──
   const images = useMemo(() => {
     const sellerImgs = pp?.productPrice_productSellerImage;
@@ -152,6 +135,23 @@ export default function ProductViewPage() {
   const now = Date.now();
   const saleNotStarted = isBuygroup && bgStart > 0 && now < bgStart;
   const saleExpired = isBuygroup && bgEnd > 0 && now > bgEnd;
+
+  // BuyGroup live countdown
+  useEffect(() => {
+    if (!bgEnd || saleExpired || saleNotStarted) return;
+    const tick = () => {
+      const diff = bgEnd - Date.now();
+      if (diff <= 0) { setBgTimeLeft("Ended"); return; }
+      const d = Math.floor(diff / 86400000);
+      const h = Math.floor((diff % 86400000) / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+      setBgTimeLeft(d > 0 ? `${d}d ${h}h ${m}m` : `${h}h ${m}m ${s}s`);
+    };
+    tick();
+    const interval = setInterval(tick, 1000);
+    return () => clearInterval(interval);
+  }, [bgEnd, saleExpired, saleNotStarted]);
 
   // ── Seller ──
   const seller = pp?.adminDetail;
