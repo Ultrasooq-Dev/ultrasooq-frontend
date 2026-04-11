@@ -554,19 +554,21 @@ export default function ProductViewPage() {
                 </button>
               </div>
 
-              {/* ── Trust signals ── */}
+              {/* ── Product Details ── */}
               <div className="mt-6 p-4 rounded-2xl bg-white border border-[#e8dfd4] space-y-3">
+                {/* Delivery */}
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
                     <Truck className="h-4.5 w-4.5 text-blue-600" />
                   </div>
                   <div className="flex-1">
                     <div className="text-sm font-semibold text-[#2d2017]">
-                      {deliveryDays > 0 ? `Delivery in ${deliveryDays} days` : "Fast Delivery"}
+                      {deliveryDays > 0 ? `Estimated delivery in ${deliveryDays} days` : "Delivery available"}
                     </div>
-                    <div className="text-xs text-[#8a7560]">Free shipping on eligible orders</div>
+                    <div className="text-xs text-[#8a7560]">Shipping cost calculated at checkout</div>
                   </div>
                 </div>
+                {/* Buyer Protection */}
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-lg bg-emerald-50 flex items-center justify-center flex-shrink-0">
                     <ShieldCheck className="h-4.5 w-4.5 text-emerald-600" />
@@ -576,41 +578,67 @@ export default function ProductViewPage() {
                     <div className="text-xs text-[#8a7560]">Money-back guarantee if not as described</div>
                   </div>
                 </div>
+                {/* Product Condition — eBay-style */}
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-lg bg-amber-50 flex items-center justify-center flex-shrink-0">
-                    <Award className="h-4.5 w-4.5 text-amber-600" />
+                    <Tag className="h-4.5 w-4.5 text-amber-600" />
                   </div>
                   <div className="flex-1">
-                    <div className="text-sm font-semibold text-[#2d2017]">{pp?.productCondition || "New"} Condition</div>
-                    <div className="text-xs text-[#8a7560]">Quality verified by seller</div>
+                    <div className="text-sm font-semibold text-[#2d2017]">
+                      {(() => {
+                        const cond = (pp?.productCondition || "new").toLowerCase();
+                        const condMap: Record<string, { label: string; desc: string }> = {
+                          "new": { label: "New", desc: "Brand new, unused, unopened, undamaged item in its original packaging" },
+                          "open box": { label: "Open Box", desc: "Item is in original packaging, opened but never used" },
+                          "refurbished": { label: "Certified Refurbished", desc: "Professionally restored to working order by manufacturer or seller" },
+                          "like new": { label: "Like New", desc: "Item that has been used but is in excellent, near-new condition" },
+                          "used": { label: "Pre-Owned", desc: "Previously used item, may show signs of cosmetic wear" },
+                          "good": { label: "Good", desc: "Item shows wear from consistent use, fully operational and functions as intended" },
+                          "fair": { label: "Acceptable", desc: "Item is fairly worn but continues to work properly, some cosmetic damage" },
+                          "for parts": { label: "For Parts or Not Working", desc: "Item does not function as intended or requires repair" },
+                        };
+                        const match = condMap[cond] || condMap["new"];
+                        return match.label;
+                      })()}
+                    </div>
+                    <div className="text-xs text-[#8a7560]">
+                      {(() => {
+                        const cond = (pp?.productCondition || "new").toLowerCase();
+                        const condMap: Record<string, string> = {
+                          "new": "Brand new, unused, unopened, undamaged item in original packaging",
+                          "open box": "Original packaging, opened but never used",
+                          "refurbished": "Professionally restored to working order",
+                          "like new": "Used but in excellent, near-new condition",
+                          "used": "Previously used, may show signs of cosmetic wear",
+                          "good": "Shows wear from consistent use, fully operational",
+                          "fair": "Fairly worn but continues to work properly",
+                          "for parts": "Does not function as intended, requires repair",
+                        };
+                        return condMap[cond] || condMap["new"];
+                      })()}
+                    </div>
                   </div>
                 </div>
               </div>
 
-              {/* ── Seller ── */}
-              <div className="mt-4 p-4 rounded-2xl bg-white border border-[#e8dfd4]">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#c2703e] to-[#a85d32] flex items-center justify-center text-white font-bold text-base shadow-lg shadow-[#c2703e]/20">
-                    {sellerName.charAt(0).toUpperCase()}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-sm font-bold text-[#2d2017]">{sellerName}</div>
-                    <div className="flex items-center gap-2 mt-0.5">
-                      <div className="flex items-center gap-0.5">
-                        {[1, 2, 3, 4, 5].map((i) => <Star key={i} className="h-3 w-3 fill-amber-400 text-amber-400" />)}
-                      </div>
-                      <span className="text-xs text-[#8a7560]">
-                        {seller?.tradeRole === "COMPANY" ? "Verified Company" : "Verified Seller"}
-                      </span>
-                    </div>
-                  </div>
-                  {otherSellers.length > 0 && (
-                    <div className="text-end flex-shrink-0">
-                      <div className="text-xs font-bold text-[#c2703e]">+{otherSellers.length}</div>
-                      <div className="text-[10px] text-[#8a7560]">other sellers</div>
-                    </div>
+              {/* ── Sold by (inline, compact) ── */}
+              <div className="mt-4 flex items-center gap-2.5 px-1">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#c2703e] to-[#a85d32] flex items-center justify-center text-white font-bold text-xs shadow shadow-[#c2703e]/15">
+                  {sellerName.charAt(0).toUpperCase()}
+                </div>
+                <div className="flex items-center gap-1.5 text-sm">
+                  <span className="text-[#8a7560]">Sold by</span>
+                  <span className="font-semibold text-[#2d2017]">{sellerName}</span>
+                  <span className="flex items-center gap-0.5 ms-1">
+                    {[1, 2, 3, 4, 5].map((i) => <Star key={i} className="h-2.5 w-2.5 fill-amber-400 text-amber-400" />)}
+                  </span>
+                  {seller?.tradeRole === "COMPANY" && (
+                    <span className="text-[10px] font-medium text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full ms-1">Verified</span>
                   )}
                 </div>
+                {otherSellers.length > 0 && (
+                  <span className="text-xs text-[#c2703e] font-medium ms-auto">+{otherSellers.length} sellers</span>
+                )}
               </div>
 
               {/* Short desc */}
