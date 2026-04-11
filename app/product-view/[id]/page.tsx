@@ -409,7 +409,7 @@ export default function ProductViewPage() {
                   </>
                 )}
 
-                {/* ── BuyGroup Deal Panel ── */}
+                {/* ── BuyGroup Deal Info ── */}
                 {isBuygroup && (() => {
                   const minCust = pp?.minCustomer || 0;
                   const maxCust = pp?.maxCustomer || 0;
@@ -420,96 +420,44 @@ export default function ProductViewPage() {
                   const endDate = pp?.dateClose ? new Date(pp.dateClose) : null;
 
                   return (
-                    <div className="mt-5 rounded-2xl border-2 border-[#c2703e]/20 overflow-hidden">
-                      {/* Header */}
-                      <div className="bg-gradient-to-r from-[#c2703e] to-[#a85d32] px-5 py-3 flex items-center justify-between">
-                        <div className="flex items-center gap-2 text-white">
-                          <Users className="h-4.5 w-4.5" />
-                          <span className="text-sm font-bold tracking-wide">GROUP BUY</span>
-                        </div>
+                    <div className="mt-4 rounded-xl bg-[#c2703e]/[0.04] border border-[#c2703e]/15 p-3.5">
+                      {/* Single row: badge + timer + details */}
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#c2703e] text-white text-[10px] font-bold tracking-wider">
+                          <Users className="h-3 w-3" /> GROUP BUY
+                        </span>
                         {!saleExpired && !saleNotStarted && bgTimeLeft && (
-                          <div className="flex items-center gap-1.5 text-white/90">
-                            <Timer className="h-3.5 w-3.5" />
-                            <span className="text-xs font-mono font-bold">{bgTimeLeft}</span>
-                          </div>
+                          <span className="text-[11px] font-mono font-bold text-[#c2703e]">{bgTimeLeft}</span>
                         )}
                         {saleNotStarted && startDate && (
-                          <span className="text-xs text-white/80 font-medium">
-                            Starts {startDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })}
-                          </span>
+                          <span className="text-[11px] text-blue-600 font-medium">Starts {startDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span>
                         )}
                         {saleExpired && (
-                          <span className="text-xs text-white/80 font-medium">Sale ended</span>
+                          <span className="text-[11px] text-red-600 font-medium">Sale ended</span>
+                        )}
+                        <span className="text-[11px] text-[#8a7560]">·</span>
+                        <span className="text-[11px] text-[#8a7560]">{minCust} min buyers</span>
+                        {maxCust > 0 && <span className="text-[11px] text-[#8a7560]">· max {maxCust}</span>}
+                      </div>
+                      {/* Compact details row */}
+                      <div className="flex items-center gap-3 mt-2 text-[11px] text-[#8a7560]">
+                        <span className="font-medium text-[#2d2017]">{minQtyPer}–{maxQtyPer || "∞"} units/buyer</span>
+                        <span>·</span>
+                        <span>{totalStock} available</span>
+                        {startDate && endDate && (
+                          <>
+                            <span>·</span>
+                            <span>{startDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })} – {endDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span>
+                          </>
                         )}
                       </div>
-
-                      {/* Body */}
-                      <div className="bg-[#c2703e]/[0.03] px-5 py-4 space-y-4">
-                        {/* How it works */}
-                        <p className="text-xs text-[#8a7560] leading-relaxed">
-                          Join this group buy! When enough buyers join, the deal activates and everyone gets the discounted price.
-                        </p>
-
-                        {/* Min customers progress */}
-                        {minCust > 0 && (
-                          <div>
-                            <div className="flex items-center justify-between text-xs mb-1.5">
-                              <span className="text-[#8a7560] font-medium">Buyers needed</span>
-                              <span className="font-bold text-[#c2703e]">{minCust} minimum</span>
-                            </div>
-                            <div className="h-2 bg-[#e8dfd4] rounded-full overflow-hidden">
-                              <div className="h-full bg-gradient-to-r from-[#c2703e] to-[#e8943e] rounded-full transition-all duration-500" style={{ width: "0%" }} />
-                            </div>
-                            <div className="flex items-center justify-between text-[10px] text-[#b5a898] mt-1">
-                              <span>Join now to be first!</span>
-                              {maxCust > 0 && <span>Max: {maxCust}</span>}
-                            </div>
-                          </div>
-                        )}
-
-                        {/* Deal details grid */}
-                        <div className="grid grid-cols-2 gap-2">
-                          {/* Per customer limits */}
-                          <div className="p-2.5 rounded-xl bg-white border border-[#e8dfd4]">
-                            <div className="text-[10px] text-[#b5a898] uppercase tracking-wider">Per Buyer</div>
-                            <div className="text-sm font-bold text-[#2d2017] mt-0.5">
-                              {minQtyPer}{maxQtyPer > 0 ? ` — ${maxQtyPer}` : "+"} units
-                            </div>
-                          </div>
-                          {/* Total stock */}
-                          <div className="p-2.5 rounded-xl bg-white border border-[#e8dfd4]">
-                            <div className="text-[10px] text-[#b5a898] uppercase tracking-wider">Available</div>
-                            <div className="text-sm font-bold text-[#2d2017] mt-0.5">{totalStock} units</div>
-                          </div>
-                          {/* Time window */}
-                          {startDate && (
-                            <div className="p-2.5 rounded-xl bg-white border border-[#e8dfd4]">
-                              <div className="text-[10px] text-[#b5a898] uppercase tracking-wider">Starts</div>
-                              <div className="text-xs font-semibold text-[#2d2017] mt-0.5">
-                                {startDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })}
-                              </div>
-                            </div>
-                          )}
-                          {endDate && (
-                            <div className="p-2.5 rounded-xl bg-white border border-[#e8dfd4]">
-                              <div className="text-[10px] text-[#b5a898] uppercase tracking-wider">Ends</div>
-                              <div className="text-xs font-semibold text-[#2d2017] mt-0.5">
-                                {endDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })}
-                              </div>
-                            </div>
-                          )}
+                      {/* Save badge */}
+                      {discount > 0 && (
+                        <div className="flex items-center gap-1 mt-2">
+                          <Zap className="h-3 w-3 text-emerald-600" />
+                          <span className="text-[11px] font-semibold text-emerald-700">Save {discount}% vs ${price.toFixed(2)}</span>
                         </div>
-
-                        {/* Savings callout */}
-                        {discount > 0 && (
-                          <div className="flex items-center gap-2 p-3 rounded-xl bg-emerald-50 border border-emerald-100">
-                            <Zap className="h-4 w-4 text-emerald-600 flex-shrink-0" />
-                            <span className="text-xs font-semibold text-emerald-700">
-                              You save {discount}% compared to ${price.toFixed(2)} regular price
-                            </span>
-                          </div>
-                        )}
-                      </div>
+                      )}
                     </div>
                   );
                 })()}
