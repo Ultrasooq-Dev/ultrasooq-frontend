@@ -91,10 +91,10 @@ export default function ProductViewPage() {
   // Related products for inline recommendations
   const tagIds = useMemo(() => product?.productTags?.map((t: any) => t.tagId).join(",") || "", [product?.productTags]);
   const relatedQuery = useRelatedProducts(
-    { page: 1, limit: 4, tagIds, userId: me.data?.data?.id, productId },
-    !!tagIds && !!product,
+    { page: 1, limit: 4, tagIds: tagIds || "0", userId: me.data?.data?.id, productId },
+    !!product,
   );
-  const relatedProducts = relatedQuery.data?.data || [];
+  const relatedProducts = relatedQuery.data?.data?.products || relatedQuery.data?.data || [];
   const [relatedQtys, setRelatedQtys] = useState<Record<number, number>>({});
 
   // ── Effects ──
