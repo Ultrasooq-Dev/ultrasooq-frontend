@@ -341,41 +341,46 @@ export default function ProductViewPage() {
                 </h1>
 
                 {/* Seller Card */}
-                <div className="flex-shrink-0 w-[220px] p-3 rounded-xl bg-white border border-[#e8dfd4] shadow-sm">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#c2703e] to-[#a85d32] flex items-center justify-center text-white font-bold text-sm shadow-md shadow-[#c2703e]/20 flex-shrink-0">
+                <div className="flex-shrink-0 w-[280px] p-4 rounded-2xl bg-white border border-[#e8dfd4] shadow-sm">
+                  <div className="flex items-center gap-3">
+                    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#c2703e] to-[#a85d32] flex items-center justify-center text-white font-bold text-lg shadow-md shadow-[#c2703e]/20 flex-shrink-0">
                       {sellerName.charAt(0).toUpperCase()}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-sm font-bold text-[#2d2017] truncate">
+                      <div className="flex items-center gap-2">
+                        <span className="text-base font-bold text-[#2d2017] truncate">
                           {sellerName.length <= 3 ? sellerName : sellerName.slice(0, 3) + "***"}
                         </span>
                         {seller?.tradeRole === "COMPANY" ? (
-                          <span className="inline-flex items-center gap-0.5 text-[9px] font-semibold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded-full"><ShieldCheck className="h-2.5 w-2.5" /> Company</span>
+                          <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full"><ShieldCheck className="h-3 w-3" /> Company</span>
                         ) : seller?.tradeRole === "FREELANCER" ? (
-                          <span className="inline-flex items-center gap-0.5 text-[9px] font-semibold text-purple-600 bg-purple-50 px-1.5 py-0.5 rounded-full"><Award className="h-2.5 w-2.5" /> Pro</span>
+                          <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full"><Award className="h-3 w-3" /> Pro Seller</span>
                         ) : (
-                          <span className="inline-flex items-center gap-0.5 text-[9px] font-semibold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full"><Check className="h-2.5 w-2.5" /></span>
+                          <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full"><Check className="h-3 w-3" /> Verified</span>
                         )}
                       </div>
-                      <div className="flex items-center gap-1 mt-0.5">
-                        {[1, 2, 3, 4, 5].map((i) => <Star key={i} className="h-2.5 w-2.5 fill-amber-400 text-amber-400" />)}
-                        <span className="text-[10px] text-[#8a7560] ms-0.5">98%</span>
+                      <div className="flex items-center gap-1.5 mt-1">
+                        {[1, 2, 3, 4, 5].map((i) => <Star key={i} className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />)}
+                        <span className="text-xs text-[#8a7560] ms-0.5">98% positive</span>
                       </div>
                     </div>
                   </div>
                   {/* Stats */}
-                  <div className="flex items-center gap-2 mt-2 pt-2 border-t border-[#f0ebe4] text-[10px] text-[#8a7560]">
-                    <span className="flex items-center gap-0.5"><Eye className="h-2.5 w-2.5" /> 2h ago</span>
-                    <span>·</span>
-                    <span className="flex items-center gap-0.5"><Clock className="h-2.5 w-2.5" /> ~1h reply</span>
-                    <button onClick={() => setActiveTab("vendor")} className="ms-auto text-[#c2703e] font-semibold hover:underline">
-                      Store
+                  <div className="flex items-center gap-3 mt-3 pt-3 border-t border-[#f0ebe4]">
+                    <div className="flex items-center gap-1 text-xs text-[#8a7560]">
+                      <Eye className="h-3.5 w-3.5" />
+                      <span>2h ago</span>
+                    </div>
+                    <div className="flex items-center gap-1 text-xs text-[#8a7560]">
+                      <Clock className="h-3.5 w-3.5" />
+                      <span>~1h reply</span>
+                    </div>
+                    <button onClick={() => setActiveTab("vendor")} className="ms-auto text-xs text-[#c2703e] font-bold flex items-center gap-1 hover:underline">
+                      <Store className="h-3.5 w-3.5" /> Visit Store
                     </button>
                   </div>
                   {otherSellers.length > 0 && (
-                    <div className="mt-1.5 text-[10px] text-[#c2703e] font-medium">+{otherSellers.length} other sellers available</div>
+                    <div className="mt-2 text-xs text-[#c2703e] font-medium">+{otherSellers.length} other sellers available</div>
                   )}
                 </div>
               </div>
