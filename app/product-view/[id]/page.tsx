@@ -251,92 +251,10 @@ export default function ProductViewPage() {
         </div>
 
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 pb-20">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
 
-            {/* ── LEFT: Gallery ── */}
-            <div className="lg:col-span-6">
-              <div className="sticky top-6">
-                {/* Main Image */}
-                <div className="relative rounded-2xl overflow-hidden bg-white shadow-[0_4px_24px_rgba(0,0,0,0.06)] group">
-                  <div className="relative min-h-[300px]">
-                    {typeof images[selectedImg] === "string" ? (
-                      <img src={images[selectedImg] as string} alt={product.productName} className="w-full h-auto max-h-[500px] object-contain p-4 mx-auto transition-transform duration-700 group-hover:scale-105" />
-                    ) : (
-                      <div className="aspect-square relative">
-                        <Image src={images[selectedImg]} alt={product.productName || ""} fill className="object-contain p-4" />
-                      </div>
-                    )}
-
-                    {/* Badges */}
-                    <div className="absolute top-5 start-5 flex flex-col gap-2">
-                      {discount > 0 && (
-                        <span className="px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wide text-white bg-gradient-to-r from-red-500 to-rose-600 shadow-lg shadow-red-500/20">
-                          -{discount}% OFF
-                        </span>
-                      )}
-                      {sellTypeLabel && (
-                        <span className="px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wide text-white bg-gradient-to-r from-[#c2703e] to-[#a85d32] shadow-lg shadow-[#c2703e]/20">
-                          {sellTypeLabel}
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Nav */}
-                    {images.length > 1 && (
-                      <>
-                        <button onClick={() => setSelectedImg((i) => (i - 1 + images.length) % images.length)}
-                          className="absolute start-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/90 shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white">
-                          <ChevronLeft className="h-5 w-5 text-[#2d2017]" />
-                        </button>
-                        <button onClick={() => setSelectedImg((i) => (i + 1) % images.length)}
-                          className="absolute end-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/90 shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white">
-                          <ChevronRight className="h-5 w-5 text-[#2d2017]" />
-                        </button>
-                      </>
-                    )}
-
-                    {/* Image counter */}
-                    {images.length > 1 && (
-                      <span className="absolute bottom-4 end-4 px-3 py-1 rounded-full bg-black/50 text-white text-xs font-medium backdrop-blur-sm">
-                        {selectedImg + 1} / {images.length}
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                {/* Thumbnails */}
-                {images.length > 1 && (
-                  <div className="flex gap-2 mt-3 overflow-x-auto pb-1">
-                    {images.map((img, i) => (
-                      <button key={i} onClick={() => setSelectedImg(i)}
-                        className={cn("w-16 h-16 rounded-xl overflow-hidden border-2 flex-shrink-0 transition-all duration-300 bg-white",
-                          selectedImg === i ? "border-[#c2703e] shadow-lg shadow-[#c2703e]/15 scale-105" : "border-transparent opacity-60 hover:opacity-100")}>
-                        {typeof img === "string" ? (
-                          <img src={img} alt="" className="w-full h-full object-cover" />
-                        ) : (
-                          <Image src={img} alt="" width={80} height={80} className="w-full h-full object-cover" />
-                        )}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* ── RIGHT: Product Info ── */}
-            <div className="lg:col-span-6">
-
-              {/* Short Description */}
-              {product.product_productShortDescription?.length > 0 && (
-                <div className="mb-4 p-4 rounded-xl bg-white border border-[#e8dfd4]">
-                  {product.product_productShortDescription.map((sd: any, i: number) => (
-                    <p key={i} className="text-sm leading-relaxed text-[#5a4d3e]" dir={langDir}>{sd.shortDescription}</p>
-                  ))}
-                </div>
-              )}
-
-              {/* Product Info + Seller Card (side by side, same height) */}
-              <div className="flex items-stretch gap-5">
+          {/* ══════ FULL WIDTH: Title + Seller ══════ */}
+          <div className="flex items-stretch gap-5 mb-6">
+            <div className="flex-1 min-w-0">
                 {/* Left: Product info */}
                 <div className="flex-1 min-w-0">
                   {/* Brand + Category */}
@@ -411,10 +329,90 @@ export default function ProductViewPage() {
                   </div>
                 </div>
               </div>
+          </div>{/* end full-width title row */}
 
+          {/* ══════ TWO COLUMNS: Image + Price side by side ══════ */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
 
-              {/* ── Sticky Price + Actions Box ── */}
-              <div className="mt-4 lg:sticky lg:top-6">
+            {/* ── LEFT: Gallery ── */}
+            <div className="lg:col-span-6">
+              <div className="sticky top-6">
+                <div className="relative rounded-2xl overflow-hidden bg-white shadow-[0_4px_24px_rgba(0,0,0,0.06)] group">
+                  <div className="relative min-h-[300px]">
+                    {typeof images[selectedImg] === "string" ? (
+                      <img src={images[selectedImg] as string} alt={product.productName} className="w-full h-auto max-h-[500px] object-contain p-4 mx-auto transition-transform duration-700 group-hover:scale-105" />
+                    ) : (
+                      <div className="aspect-square relative">
+                        <Image src={images[selectedImg]} alt={product.productName || ""} fill className="object-contain p-4" />
+                      </div>
+                    )}
+                    {/* Badges */}
+                    <div className="absolute top-4 start-4 flex flex-col gap-2">
+                      {discount > 0 && (
+                        <span className="px-3 py-1 rounded-full text-xs font-bold text-white bg-gradient-to-r from-red-500 to-rose-600 shadow-lg shadow-red-500/20">-{discount}% OFF</span>
+                      )}
+                      {sellTypeLabel && (
+                        <span className="px-3 py-1 rounded-full text-xs font-bold text-white bg-gradient-to-r from-[#c2703e] to-[#a85d32] shadow-lg shadow-[#c2703e]/20">{sellTypeLabel}</span>
+                      )}
+                    </div>
+                    {/* Nav arrows */}
+                    {images.length > 1 && (
+                      <>
+                        <button onClick={() => setSelectedImg((i) => (i - 1 + images.length) % images.length)}
+                          className="absolute start-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"><ChevronLeft className="h-5 w-5 text-[#2d2017]" /></button>
+                        <button onClick={() => setSelectedImg((i) => (i + 1) % images.length)}
+                          className="absolute end-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"><ChevronRight className="h-5 w-5 text-[#2d2017]" /></button>
+                      </>
+                    )}
+                    {images.length > 1 && (
+                      <span className="absolute bottom-3 end-3 px-2.5 py-0.5 rounded-full bg-black/50 text-white text-xs font-medium backdrop-blur-sm">{selectedImg + 1}/{images.length}</span>
+                    )}
+                  </div>
+                </div>
+                {/* Thumbnails */}
+                {images.length > 1 && (
+                  <div className="flex gap-2 mt-3 overflow-x-auto pb-1">
+                    {images.map((img, i) => (
+                      <button key={i} onClick={() => setSelectedImg(i)}
+                        className={cn("w-16 h-16 rounded-xl overflow-hidden border-2 flex-shrink-0 transition-all duration-300 bg-white",
+                          selectedImg === i ? "border-[#c2703e] shadow-lg shadow-[#c2703e]/15 scale-105" : "border-transparent opacity-60 hover:opacity-100")}>
+                        {typeof img === "string" ? <img src={img} alt="" className="w-full h-full object-cover" /> : <Image src={img} alt="" width={64} height={64} className="w-full h-full object-cover" />}
+                      </button>
+                    ))}
+                  </div>
+                )}
+                {/* Save / Share / Chat below image */}
+                <div className="flex items-center gap-2 mt-3">
+                  <button onClick={handleWishlist}
+                    className={cn("flex-1 h-10 rounded-xl border text-sm font-medium flex items-center justify-center gap-2 transition-all",
+                      inWishlist ? "bg-red-50 border-red-200 text-red-600" : "border-[#e8dfd4] text-[#8a7560] hover:border-[#c2703e] hover:text-[#c2703e]")}>
+                    <Heart className={cn("h-4 w-4", inWishlist && "fill-red-500")} />
+                    {inWishlist ? t("saved") || "Saved" : t("save") || "Save"}
+                  </button>
+                  <button onClick={handleShare}
+                    className="flex-1 h-10 rounded-xl border border-[#e8dfd4] text-sm font-medium text-[#8a7560] flex items-center justify-center gap-2 hover:border-[#c2703e] hover:text-[#c2703e] transition-all">
+                    {copiedLink ? <><Check className="h-4 w-4 text-emerald-600" /> Copied!</> : <><Share2 className="h-4 w-4" /> {t("share") || "Share"}</>}
+                  </button>
+                  <button onClick={() => setIsChatOpen(true)}
+                    className="flex-1 h-10 rounded-xl border border-[#e8dfd4] text-sm font-medium text-[#8a7560] flex items-center justify-center gap-2 hover:border-[#c2703e] hover:text-[#c2703e] transition-all">
+                    <MessageCircle className="h-4 w-4" /> {t("chat") || "Chat"}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* ── RIGHT: Price + Details (parallel to image) ── */}
+            <div className="lg:col-span-6">
+
+              {/* Short Description */}
+              {product.product_productShortDescription?.length > 0 && (
+                <div className="mb-4 p-4 rounded-xl bg-white border border-[#e8dfd4]">
+                  <h3 className="text-xs font-bold text-[#2d2017] uppercase tracking-wider mb-2">Product Description</h3>
+                  {product.product_productShortDescription.map((sd: any, i: number) => (
+                    <p key={i} className="text-sm leading-relaxed text-[#5a4d3e]" dir={langDir}>{sd.shortDescription}</p>
+                  ))}
+                </div>
+              )}
 
               {/* ── Price Block ── */}
               <div className="p-5 rounded-2xl bg-white border border-[#e8dfd4] shadow-sm">
@@ -598,23 +596,6 @@ export default function ProductViewPage() {
                 )}
               </div>
 
-              {/* ── Action row ── */}
-              <div className="flex items-center gap-2 mt-4">
-                <button onClick={handleWishlist}
-                  className={cn("flex-1 h-11 rounded-xl border text-sm font-medium flex items-center justify-center gap-2 transition-all",
-                    inWishlist ? "bg-red-50 border-red-200 text-red-600" : "border-[#e8dfd4] text-[#8a7560] hover:border-[#c2703e] hover:text-[#c2703e]")}>
-                  <Heart className={cn("h-4 w-4", inWishlist && "fill-red-500")} />
-                  {inWishlist ? t("saved") || "Saved" : t("save") || "Save"}
-                </button>
-                <button onClick={handleShare}
-                  className="flex-1 h-11 rounded-xl border border-[#e8dfd4] text-sm font-medium text-[#8a7560] flex items-center justify-center gap-2 hover:border-[#c2703e] hover:text-[#c2703e] transition-all">
-                  {copiedLink ? <><Check className="h-4 w-4 text-emerald-600" /> Copied!</> : <><Share2 className="h-4 w-4" /> {t("share") || "Share"}</>}
-                </button>
-                <button onClick={() => setIsChatOpen(true)}
-                  className="flex-1 h-11 rounded-xl border border-[#e8dfd4] text-sm font-medium text-[#8a7560] flex items-center justify-center gap-2 hover:border-[#c2703e] hover:text-[#c2703e] transition-all">
-                  <MessageCircle className="h-4 w-4" /> {t("chat") || "Chat"}
-                </button>
-              </div>
 
               {/* ── Product Details ── */}
               <div className="mt-4 p-3.5 rounded-2xl bg-white border border-[#e8dfd4] space-y-2.5">
@@ -685,10 +666,9 @@ export default function ProductViewPage() {
 
 
 
-              </div>{/* end sticky */}
             </div>
 
-          </div>
+          </div>{/* end two-column grid */}
 
           {/* ══════ TABS ══════ */}
           <div className="mt-10">
