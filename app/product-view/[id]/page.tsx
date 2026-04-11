@@ -653,71 +653,53 @@ export default function ProductViewPage() {
                     </button>
 
                     {minQty > 1 && <p className="text-xs text-[#8a7560] text-center">Min order: {minQty} units</p>}
-                    {!isBuygroup && (
-                      <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
-                          <Truck className="h-4.5 w-4.5 text-blue-600" />
-                        </div>
-                        <div className="flex-1">
-                          <div className="text-sm font-semibold text-[#2d2017]">
+                  </div>
+                )}
+
+              {/* ── Product Details (inside same card) ── */}
+              <div className="px-5 py-4 border-t border-[#f0ebe4] space-y-2.5">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                    <Truck className="h-4.5 w-4.5 text-blue-600" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-sm font-semibold text-[#2d2017]">
                       {deliveryDays > 0 ? `Estimated delivery in ${deliveryDays} days` : "Delivery available"}
-                          </div>
-                          <div className="text-xs text-[#8a7560]">Shipping cost calculated at checkout</div>
-                        </div>
-                      </div>
-                      {/* Buyer Protection */}
-                      <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-lg bg-emerald-50 flex items-center justify-center flex-shrink-0">
-                          <ShieldCheck className="h-4.5 w-4.5 text-emerald-600" />
-                        </div>
-                        <div className="flex-1">
-                          <div className="text-sm font-semibold text-[#2d2017]">Buyer Protection</div>
-                          <div className="text-xs text-[#8a7560]">Money-back guarantee if not as described</div>
-                        </div>
-                      </div>
-                      {/* Product Condition — eBay-style */}
-                      <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-lg bg-amber-50 flex items-center justify-center flex-shrink-0">
-                          <Tag className="h-4.5 w-4.5 text-amber-600" />
-                        </div>
-                        <div className="flex-1">
-                          <div className="text-sm font-semibold text-[#2d2017]">
-                      {(() => {
-                        const cond = (pp?.productCondition || "new").toLowerCase();
-                        const condMap: Record<string, { label: string; desc: string }> = {
-                          "new": { label: "New", desc: "Brand new, unused, unopened, undamaged item in its original packaging" },
-                          "open box": { label: "Open Box", desc: "Item is in original packaging, opened but never used" },
-                          "refurbished": { label: "Certified Refurbished", desc: "Professionally restored to working order by manufacturer or seller" },
-                          "like new": { label: "Like New", desc: "Item that has been used but is in excellent, near-new condition" },
-                          "used": { label: "Pre-Owned", desc: "Previously used item, may show signs of cosmetic wear" },
-                          "good": { label: "Good", desc: "Item shows wear from consistent use, fully operational and functions as intended" },
-                          "fair": { label: "Acceptable", desc: "Item is fairly worn but continues to work properly, some cosmetic damage" },
-                          "for parts": { label: "For Parts or Not Working", desc: "Item does not function as intended or requires repair" },
-                        };
-                        const match = condMap[cond] || condMap["new"];
-                        return match.label;
-                      })()}
-                          </div>
-                          <div className="text-xs text-[#8a7560]">
-                      {(() => {
-                        const cond = (pp?.productCondition || "new").toLowerCase();
-                        const condMap: Record<string, string> = {
-                          "new": "Brand new, unused, unopened, undamaged item in original packaging",
-                          "open box": "Original packaging, opened but never used",
-                          "refurbished": "Professionally restored to working order",
-                          "like new": "Used but in excellent, near-new condition",
-                          "used": "Previously used, may show signs of cosmetic wear",
-                          "good": "Shows wear from consistent use, fully operational",
-                          "fair": "Fairly worn but continues to work properly",
-                          "for parts": "Does not function as intended, requires repair",
-                        };
-                        return condMap[cond] || condMap["new"];
-                      })()}
-                          </div>
-                        </div>
-                      </div>
                     </div>
-                    )}
+                    <div className="text-xs text-[#8a7560]">Shipping cost calculated at checkout</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-lg bg-emerald-50 flex items-center justify-center flex-shrink-0">
+                    <ShieldCheck className="h-4.5 w-4.5 text-emerald-600" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-sm font-semibold text-[#2d2017]">Buyer Protection</div>
+                    <div className="text-xs text-[#8a7560]">Money-back guarantee if not as described</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-lg bg-amber-50 flex items-center justify-center flex-shrink-0">
+                    <Tag className="h-4.5 w-4.5 text-amber-600" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-sm font-semibold text-[#2d2017]">
+                      {(() => {
+                        const cond = (pp?.productCondition || "new").toLowerCase();
+                        const m: Record<string, string> = { "new": "New", "open box": "Open Box", "refurbished": "Certified Refurbished", "like new": "Like New", "used": "Pre-Owned", "good": "Good", "fair": "Acceptable", "for parts": "For Parts or Not Working" };
+                        return m[cond] || "New";
+                      })()}
+                    </div>
+                    <div className="text-xs text-[#8a7560]">
+                      {(() => {
+                        const cond = (pp?.productCondition || "new").toLowerCase();
+                        const m: Record<string, string> = { "new": "Brand new, unused, unopened, undamaged item in original packaging", "open box": "Original packaging, opened but never used", "refurbished": "Professionally restored to working order", "like new": "Used but in excellent, near-new condition", "used": "Previously used, may show signs of cosmetic wear", "good": "Shows wear from consistent use, fully operational", "fair": "Fairly worn but continues to work properly", "for parts": "Does not function as intended, requires repair" };
+                        return m[cond] || m["new"];
+                      })()}
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               </div>{/* end all-in-one card */}
             </div>
