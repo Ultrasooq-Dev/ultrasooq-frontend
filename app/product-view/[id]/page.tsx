@@ -122,6 +122,11 @@ export default function ProductViewPage() {
     }
   }, [product?.id]);
 
+  // Set quantity to minQty when product loads
+  useEffect(() => {
+    if (minQty > 1 && quantity < minQty) setQuantity(minQty);
+  }, [minQty]);
+
   // ── Images ──
   const images = useMemo(() => {
     const sellerImgs = pp?.productPrice_productSellerImage;
