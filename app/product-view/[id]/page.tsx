@@ -359,7 +359,8 @@ export default function ProductViewPage() {
                 </div>
 
                 {/* Right: Seller Card (stretches to match left height) */}
-                <div className="flex-shrink-0 w-[240px] p-4 rounded-2xl bg-white border border-[#e8dfd4] shadow-sm flex flex-col justify-between">
+                <div className="flex-shrink-0 w-[240px] p-4 rounded-2xl bg-white border border-[#e8dfd4] shadow-sm flex flex-col justify-between hover:shadow-md hover:border-[#c2703e]/30 transition-all cursor-pointer"
+                  onClick={() => { if (seller?.id) router.push(`/company-profile-details?sellerId=${seller.id}`); }}>
                   {/* Seller identity */}
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#c2703e] to-[#a85d32] flex items-center justify-center text-white font-bold text-base shadow-md shadow-[#c2703e]/20 flex-shrink-0">
@@ -391,9 +392,9 @@ export default function ProductViewPage() {
                       <span className="flex items-center gap-1"><Eye className="h-3 w-3" /> 2h ago</span>
                       <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> ~1h</span>
                     </div>
-                    <button onClick={() => setActiveTab("vendor")} className="text-[11px] text-[#c2703e] font-bold flex items-center gap-1 hover:underline">
+                    <span className="text-[11px] text-[#c2703e] font-bold flex items-center gap-1">
                       <Store className="h-3 w-3" /> Store
-                    </button>
+                    </span>
                   </div>
                   {otherSellers.length > 0 && (
                     <div className="mt-2 text-[10px] text-[#c2703e] font-medium">+{otherSellers.length} other sellers</div>
