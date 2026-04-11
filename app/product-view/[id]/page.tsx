@@ -251,10 +251,10 @@ export default function ProductViewPage() {
         </div>
 
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 pb-20">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
 
             {/* ── LEFT: Gallery ── */}
-            <div className="lg:col-span-5">
+            <div className="lg:col-span-6">
               <div className="sticky top-6">
                 {/* Main Image */}
                 <div className="relative rounded-2xl overflow-hidden bg-white shadow-[0_4px_24px_rgba(0,0,0,0.06)] group">
@@ -321,8 +321,8 @@ export default function ProductViewPage() {
               </div>
             </div>
 
-            {/* ── MIDDLE: Product Info ── */}
-            <div className="lg:col-span-4">
+            {/* ── RIGHT: Product Info ── */}
+            <div className="lg:col-span-6">
 
               {/* Brand + Category */}
               <div className="flex items-center gap-3 mb-4">
@@ -660,74 +660,6 @@ export default function ProductViewPage() {
               </div>{/* end sticky */}
             </div>
 
-            {/* ── RIGHT: Mini Cart (always visible) ── */}
-            <div className="lg:col-span-3 hidden lg:block">
-              <div className="sticky top-6">
-                <div className="rounded-2xl bg-white border border-[#e8dfd4] shadow-sm overflow-hidden">
-                  {/* Cart header */}
-                  <div className="px-4 py-3 bg-[#2d2017] flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-white">
-                      <ShoppingCart className="h-4 w-4" />
-                      <span className="text-sm font-semibold">Your Cart</span>
-                    </div>
-                    <span className="text-xs text-white/70">
-                      {Array.isArray(cartList) ? cartList.length : 0} items
-                    </span>
-                  </div>
-
-                  {/* Cart items */}
-                  <div className="max-h-[55vh] overflow-y-auto divide-y divide-[#f0ebe4]">
-                    {Array.isArray(cartList) && cartList.length > 0 ? (
-                      cartList.map((item: any) => (
-                        <div key={item.id} className="p-3 flex items-start gap-3 hover:bg-[#faf7f2] transition-colors">
-                          <div className="w-14 h-14 rounded-lg bg-[#f8f5f0] flex-shrink-0 overflow-hidden flex items-center justify-center">
-                            {item.productAllImage?.[0]?.image ? (
-                              <img src={item.productAllImage[0].image} alt="" className="w-full h-full object-cover" />
-                            ) : (
-                              <Package className="h-5 w-5 text-[#c9bfb0]" />
-                            )}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-xs font-medium text-[#2d2017] truncate">{item.productName || "Product"}</p>
-                            <div className="flex items-center justify-between mt-1">
-                              <span className="text-xs text-[#8a7560]">x{item.quantity}</span>
-                              <span className="text-xs font-bold text-[#2d2017]">
-                                ${Number(item.offerPrice || item.productPrice || 0).toFixed(2)}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      ))
-                    ) : (
-                      <div className="p-6 text-center">
-                        <ShoppingCart className="h-8 w-8 mx-auto mb-2 text-[#d4cdc2]" />
-                        <p className="text-xs text-[#8a7560]">Your cart is empty</p>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Cart footer */}
-                  {Array.isArray(cartList) && cartList.length > 0 && (
-                    <div className="border-t border-[#e8dfd4] p-3 space-y-2">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-[#8a7560]">Subtotal</span>
-                        <span className="font-bold text-[#2d2017]">
-                          ${cartList.reduce((s: number, i: any) => s + Number(i.offerPrice || i.productPrice || 0) * (i.quantity || 1), 0).toFixed(2)}
-                        </span>
-                      </div>
-                      <button onClick={() => router.push("/checkout")}
-                        className="w-full h-10 rounded-xl bg-[#c2703e] text-white text-sm font-semibold flex items-center justify-center gap-2 hover:bg-[#a85d32] transition-all active:scale-[0.98]">
-                        Checkout
-                      </button>
-                      <button onClick={() => router.push("/cart")}
-                        className="w-full h-9 rounded-xl border border-[#e8dfd4] text-xs font-medium text-[#8a7560] flex items-center justify-center gap-1.5 hover:bg-[#faf7f2] transition-colors">
-                        <Eye className="h-3.5 w-3.5" /> View Full Cart
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
           </div>
 
           {/* ══════ TABS ══════ */}
