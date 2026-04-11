@@ -105,6 +105,9 @@ export default function ProductViewPage() {
       { id: 9002, productName: "Thermal Paste High Performance 4g", productImages: [], product_productPrice: [{ offerPrice: (basePrice * 0.15).toFixed(2), productPrice: (basePrice * 0.2).toFixed(2) }] },
       { id: 9003, productName: "Cable Management Kit 120pcs", productImages: [], product_productPrice: [{ offerPrice: (basePrice * 0.25).toFixed(2), productPrice: (basePrice * 0.35).toFixed(2) }] },
       { id: 9004, productName: "Anti-Static Wrist Strap for PC Building", productImages: [], product_productPrice: [{ offerPrice: (basePrice * 0.1).toFixed(2), productPrice: (basePrice * 0.15).toFixed(2) }] },
+      { id: 9005, productName: "Compressed Air Duster Can 400ml", productImages: [], product_productPrice: [{ offerPrice: (basePrice * 0.12).toFixed(2), productPrice: (basePrice * 0.18).toFixed(2) }] },
+      { id: 9006, productName: "Screwdriver Set 25-in-1 Precision", productImages: [], product_productPrice: [{ offerPrice: (basePrice * 0.2).toFixed(2), productPrice: (basePrice * 0.28).toFixed(2) }] },
+      { id: 9007, productName: "Monitor Stand Riser with Storage", productImages: [], product_productPrice: [{ offerPrice: (basePrice * 0.45).toFixed(2), productPrice: (basePrice * 0.6).toFixed(2) }] },
     ];
   }, [product, pp?.offerPrice]);
 
@@ -742,15 +745,20 @@ export default function ProductViewPage() {
           <div className="mt-12"><RelatedProductsSection productId={Number(productId)} categoryId={product?.categoryId} /></div>
           <div className="mt-8"><ProductRecommendations productId={Number(productId)} /></div>
 
-          {/* ── Customers Also Bought (bottom of page) ── */}
+          {/* ── Customers Also Bought (bottom of page, scrollable) ── */}
           {relatedProducts.length > 0 && (
             <div className="mt-10 rounded-2xl bg-white border border-[#e8dfd4] shadow-sm overflow-hidden">
-              <div className="px-6 py-4 border-b border-[#f0ebe4]">
-                <h2 className="text-base font-bold text-[#2d2017]">Customers Also Bought</h2>
-                <p className="text-xs text-[#8a7560] mt-0.5">Frequently purchased together with this product</p>
+              <div className="px-6 py-4 border-b border-[#f0ebe4] flex items-center justify-between">
+                <div>
+                  <h2 className="text-base font-bold text-[#2d2017]">Customers Also Bought</h2>
+                  <p className="text-xs text-[#8a7560] mt-0.5">Frequently purchased together with this product</p>
+                </div>
+                {relatedProducts.length > 4 && (
+                  <span className="text-xs text-[#8a7560]">Scroll for more →</span>
+                )}
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-[#f0ebe4]">
-                {relatedProducts.slice(0, 4).map((rp: any) => {
+              <div className="flex overflow-x-auto scrollbar-hide">
+                {relatedProducts.map((rp: any) => {
                   const rpPrice = rp.product_productPrice?.[0];
                   const rpOffer = Number(rpPrice?.offerPrice || rp.offerPrice || rp.productPrice || 0);
                   const rpOriginal = Number(rpPrice?.productPrice || rp.productPrice || 0);
@@ -759,7 +767,7 @@ export default function ProductViewPage() {
                   const qty = relatedQtys[rpId] || 0;
 
                   return (
-                    <div key={rpId} className="p-5 flex flex-col items-center text-center">
+                    <div key={rpId} className="p-5 flex flex-col items-center text-center min-w-[200px] w-[200px] flex-shrink-0 border-e border-[#f0ebe4] last:border-e-0">
                       <a href={`/product-view/${rpId}`} className="w-24 h-24 rounded-xl bg-[#f8f5f0] overflow-hidden mb-3 hover:opacity-80 transition-opacity">
                         {rpImage ? (
                           <img src={rpImage} alt="" className="w-full h-full object-contain p-2" />
