@@ -339,6 +339,24 @@ export default function ProductViewPage() {
                 {product.productName}
               </h1>
 
+              {/* Sold by */}
+              <div className="flex items-center gap-2 mt-2">
+                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#c2703e] to-[#a85d32] flex items-center justify-center text-white font-bold text-[10px]">
+                  {sellerName.charAt(0).toUpperCase()}
+                </div>
+                <span className="text-xs text-[#8a7560]">Sold by</span>
+                <span className="text-xs font-semibold text-[#2d2017]">{sellerName}</span>
+                <span className="flex items-center gap-0.5">
+                  {[1, 2, 3, 4, 5].map((i) => <Star key={i} className="h-2.5 w-2.5 fill-amber-400 text-amber-400" />)}
+                </span>
+                {seller?.tradeRole === "COMPANY" && (
+                  <span className="text-[10px] font-medium text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full">Verified</span>
+                )}
+                {otherSellers.length > 0 && (
+                  <span className="text-[10px] text-[#c2703e] font-medium">+{otherSellers.length} sellers</span>
+                )}
+              </div>
+
               {/* Rating + Sold */}
               <div className="flex items-center gap-3 mt-2 flex-wrap">
                 {reviews.length > 0 && (
@@ -628,25 +646,6 @@ export default function ProductViewPage() {
                 </div>
               </div>
 
-              {/* ── Sold by (inline, compact) ── */}
-              <div className="mt-4 flex items-center gap-2.5 px-1">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#c2703e] to-[#a85d32] flex items-center justify-center text-white font-bold text-xs shadow shadow-[#c2703e]/15">
-                  {sellerName.charAt(0).toUpperCase()}
-                </div>
-                <div className="flex items-center gap-1.5 text-sm">
-                  <span className="text-[#8a7560]">Sold by</span>
-                  <span className="font-semibold text-[#2d2017]">{sellerName}</span>
-                  <span className="flex items-center gap-0.5 ms-1">
-                    {[1, 2, 3, 4, 5].map((i) => <Star key={i} className="h-2.5 w-2.5 fill-amber-400 text-amber-400" />)}
-                  </span>
-                  {seller?.tradeRole === "COMPANY" && (
-                    <span className="text-[10px] font-medium text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full ms-1">Verified</span>
-                  )}
-                </div>
-                {otherSellers.length > 0 && (
-                  <span className="text-xs text-[#c2703e] font-medium ms-auto">+{otherSellers.length} sellers</span>
-                )}
-              </div>
 
               {/* Short desc */}
               {product.product_productShortDescription?.length > 0 && (
