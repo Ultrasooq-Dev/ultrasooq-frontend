@@ -258,11 +258,13 @@ export default function ProductViewPage() {
               <div className="sticky top-6">
                 {/* Main Image */}
                 <div className="relative rounded-2xl overflow-hidden bg-white shadow-[0_4px_24px_rgba(0,0,0,0.06)] group">
-                  <div className="aspect-square relative">
+                  <div className="relative min-h-[300px]">
                     {typeof images[selectedImg] === "string" ? (
-                      <img src={images[selectedImg] as string} alt={product.productName} className="w-full h-full object-contain p-4 transition-transform duration-700 group-hover:scale-105" />
+                      <img src={images[selectedImg] as string} alt={product.productName} className="w-full h-auto max-h-[500px] object-contain p-4 mx-auto transition-transform duration-700 group-hover:scale-105" />
                     ) : (
-                      <Image src={images[selectedImg]} alt={product.productName || ""} fill className="object-contain p-4" />
+                      <div className="aspect-square relative">
+                        <Image src={images[selectedImg]} alt={product.productName || ""} fill className="object-contain p-4" />
+                      </div>
                     )}
 
                     {/* Badges */}
