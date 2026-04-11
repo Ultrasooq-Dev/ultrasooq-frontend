@@ -555,38 +555,62 @@ export default function ProductViewPage() {
               </div>
 
               {/* ── Trust signals ── */}
-              <div className="grid grid-cols-3 gap-3 mt-6">
-                <div className="p-3 rounded-xl bg-white border border-[#e8dfd4] text-center">
-                  <Truck className="h-5 w-5 mx-auto mb-1.5 text-[#c2703e]" />
-                  <div className="text-xs font-semibold text-[#2d2017]">{deliveryDays > 0 ? `${deliveryDays} days` : "Fast"}</div>
-                  <div className="text-[10px] text-[#b5a898]">{t("delivery") || "Delivery"}</div>
+              <div className="mt-6 p-4 rounded-2xl bg-white border border-[#e8dfd4] space-y-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                    <Truck className="h-4.5 w-4.5 text-blue-600" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-sm font-semibold text-[#2d2017]">
+                      {deliveryDays > 0 ? `Delivery in ${deliveryDays} days` : "Fast Delivery"}
+                    </div>
+                    <div className="text-xs text-[#8a7560]">Free shipping on eligible orders</div>
+                  </div>
                 </div>
-                <div className="p-3 rounded-xl bg-white border border-[#e8dfd4] text-center">
-                  <ShieldCheck className="h-5 w-5 mx-auto mb-1.5 text-emerald-600" />
-                  <div className="text-xs font-semibold text-[#2d2017]">{t("guaranteed") || "Guaranteed"}</div>
-                  <div className="text-[10px] text-[#b5a898]">{t("buyer_protection") || "Protection"}</div>
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-lg bg-emerald-50 flex items-center justify-center flex-shrink-0">
+                    <ShieldCheck className="h-4.5 w-4.5 text-emerald-600" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-sm font-semibold text-[#2d2017]">Buyer Protection</div>
+                    <div className="text-xs text-[#8a7560]">Money-back guarantee if not as described</div>
+                  </div>
                 </div>
-                <div className="p-3 rounded-xl bg-white border border-[#e8dfd4] text-center">
-                  <Award className="h-5 w-5 mx-auto mb-1.5 text-amber-500" />
-                  <div className="text-xs font-semibold text-[#2d2017]">{pp?.productCondition || "New"}</div>
-                  <div className="text-[10px] text-[#b5a898]">{t("condition") || "Condition"}</div>
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-lg bg-amber-50 flex items-center justify-center flex-shrink-0">
+                    <Award className="h-4.5 w-4.5 text-amber-600" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-sm font-semibold text-[#2d2017]">{pp?.productCondition || "New"} Condition</div>
+                    <div className="text-xs text-[#8a7560]">Quality verified by seller</div>
+                  </div>
                 </div>
               </div>
 
               {/* ── Seller ── */}
-              <div className="mt-6 p-4 rounded-2xl bg-white border border-[#e8dfd4] flex items-center justify-between">
+              <div className="mt-4 p-4 rounded-2xl bg-white border border-[#e8dfd4]">
                 <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#c2703e] to-[#a85d32] flex items-center justify-center text-white font-bold text-sm">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#c2703e] to-[#a85d32] flex items-center justify-center text-white font-bold text-base shadow-lg shadow-[#c2703e]/20">
                     {sellerName.charAt(0).toUpperCase()}
                   </div>
-                  <div>
-                    <div className="text-sm font-semibold text-[#2d2017]">{sellerName}</div>
-                    <div className="text-xs text-[#8a7560]">{seller?.tradeRole === "COMPANY" ? t("verified_company") || "Verified Company" : t("verified_seller") || "Verified Seller"}</div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-bold text-[#2d2017]">{sellerName}</div>
+                    <div className="flex items-center gap-2 mt-0.5">
+                      <div className="flex items-center gap-0.5">
+                        {[1, 2, 3, 4, 5].map((i) => <Star key={i} className="h-3 w-3 fill-amber-400 text-amber-400" />)}
+                      </div>
+                      <span className="text-xs text-[#8a7560]">
+                        {seller?.tradeRole === "COMPANY" ? "Verified Company" : "Verified Seller"}
+                      </span>
+                    </div>
                   </div>
+                  {otherSellers.length > 0 && (
+                    <div className="text-end flex-shrink-0">
+                      <div className="text-xs font-bold text-[#c2703e]">+{otherSellers.length}</div>
+                      <div className="text-[10px] text-[#8a7560]">other sellers</div>
+                    </div>
+                  )}
                 </div>
-                {otherSellers.length > 0 && (
-                  <span className="text-xs text-[#c2703e] font-medium">+{otherSellers.length} {t("other_sellers") || "other sellers"}</span>
-                )}
               </div>
 
               {/* Short desc */}
