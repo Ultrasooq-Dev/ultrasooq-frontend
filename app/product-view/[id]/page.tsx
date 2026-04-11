@@ -65,6 +65,7 @@ export default function ProductViewPage() {
   const [activeTab, setActiveTab] = useState("description");
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
+  const [bgTimeLeft, setBgTimeLeft] = useState("");
 
   const me = useMe();
   const productQuery = useProductById(
@@ -93,6 +94,23 @@ export default function ProductViewPage() {
       trackView.mutate({ productId: product.id, ...(!haveAccessToken && deviceId ? { deviceId } : {}) });
     }
   }, [product?.id]);
+
+  // BuyGroup live countdown
+  useEffect(() => {
+    if (!bgEnd || saleExpired || saleNotStarted) return;
+    const tick = () => {
+      const diff = bgEnd - Date.now();
+      if (diff <= 0) { setBgTimeLeft("Ended"); return; }
+      const d = Math.floor(diff / 86400000);
+      const h = Math.floor((diff % 86400000) / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+      setBgTimeLeft(d > 0 ? `${d}d ${h}h ${m}m` : `${h}h ${m}m ${s}s`);
+    };
+    tick();
+    const interval = setInterval(tick, 1000);
+    return () => clearInterval(interval);
+  }, [bgEnd, saleExpired, saleNotStarted]);
 
   // ── Images ──
   const images = useMemo(() => {
@@ -378,24 +396,6 @@ export default function ProductViewPage() {
                   const startDate = pp?.dateOpen ? new Date(pp.dateOpen) : null;
                   const endDate = pp?.dateClose ? new Date(pp.dateClose) : null;
 
-                  // Live countdown
-                  const [timeLeft, setTimeLeft] = React.useState("");
-                  React.useEffect(() => {
-                    if (!bgEnd || saleExpired || saleNotStarted) return;
-                    const tick = () => {
-                      const diff = bgEnd - Date.now();
-                      if (diff <= 0) { setTimeLeft("Ended"); return; }
-                      const d = Math.floor(diff / 86400000);
-                      const h = Math.floor((diff % 86400000) / 3600000);
-                      const m = Math.floor((diff % 3600000) / 60000);
-                      const s = Math.floor((diff % 60000) / 1000);
-                      setTimeLeft(d > 0 ? `${d}d ${h}h ${m}m` : `${h}h ${m}m ${s}s`);
-                    };
-                    tick();
-                    const interval = setInterval(tick, 1000);
-                    return () => clearInterval(interval);
-                  }, [bgEnd, saleExpired, saleNotStarted]);
-
                   return (
                     <div className="mt-5 rounded-2xl border-2 border-[#c2703e]/20 overflow-hidden">
                       {/* Header */}
@@ -404,10 +404,10 @@ export default function ProductViewPage() {
                           <Users className="h-4.5 w-4.5" />
                           <span className="text-sm font-bold tracking-wide">{t("group_buy") || "GROUP BUY"}</span>
                         </div>
-                        {!saleExpired && !saleNotStarted && timeLeft && (
+                        {!saleExpired && !saleNotStarted && bgTimeLeft && (
                           <div className="flex items-center gap-1.5 text-white/90">
                             <Timer className="h-3.5 w-3.5" />
-                            <span className="text-xs font-mono font-bold">{timeLeft}</span>
+                            <span className="text-xs font-mono font-bold">{bgTimeLeft}</span>
                           </div>
                         )}
                         {saleNotStarted && startDate && (
