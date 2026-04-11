@@ -397,21 +397,22 @@ export default function ProductViewPage() {
               </div>
             </div>
 
-            {/* ── RIGHT: Price + Details (parallel to image) ── */}
+            {/* ── RIGHT: All-in-one product card ── */}
             <div className="lg:col-span-6">
+              <div className="rounded-2xl bg-white border border-[#e8dfd4] shadow-sm overflow-hidden">
 
               {/* Short Description */}
               {product.product_productShortDescription?.length > 0 && (
-                <div className="mb-4 p-4 rounded-xl bg-white border border-[#e8dfd4]">
-                  <h3 className="text-xs font-bold text-[#2d2017] uppercase tracking-wider mb-2">Product Description</h3>
+                <div className="px-5 pt-5 pb-4 border-b border-[#f0ebe4]">
+                  <h3 className="text-xs font-bold text-[#8a7560] uppercase tracking-wider mb-2">Product Description</h3>
                   {product.product_productShortDescription.map((sd: any, i: number) => (
                     <p key={i} className="text-sm leading-relaxed text-[#5a4d3e]" dir={langDir}>{sd.shortDescription}</p>
                   ))}
                 </div>
               )}
 
-              {/* ── Price Block ── */}
-              <div className="p-5 rounded-2xl bg-white border border-[#e8dfd4] shadow-sm">
+              {/* ── Price Section ── */}
+              <div className="px-5 py-5">
                 {askForPrice ? (
                   <div className="text-center py-4">
                     <span className="text-lg font-semibold text-[#c2703e]">{t("ask_for_price") || "Ask for Price"}</span>
@@ -593,8 +594,8 @@ export default function ProductViewPage() {
               </div>
 
 
-              {/* ── Product Details ── */}
-              <div className="mt-4 p-3.5 rounded-2xl bg-white border border-[#e8dfd4] space-y-2.5">
+              {/* ── Product Details (inside same card) ── */}
+              <div className="px-5 py-4 border-t border-[#f0ebe4] space-y-2.5">
                 {/* Delivery */}
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
@@ -660,8 +661,7 @@ export default function ProductViewPage() {
                 </div>
               </div>
 
-
-
+              </div>{/* end all-in-one card */}
             </div>
 
           </div>{/* end two-column grid */}
