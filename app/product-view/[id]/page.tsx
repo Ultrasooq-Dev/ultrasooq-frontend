@@ -355,8 +355,11 @@ export default function ProductViewPage() {
                 )}
               </div>
 
+              {/* ── Sticky Price + Actions Box ── */}
+              <div className="mt-5 lg:sticky lg:top-6">
+
               {/* ── Price Block ── */}
-              <div className="mt-5 p-5 rounded-2xl bg-white border border-[#e8dfd4] shadow-sm">
+              <div className="p-5 rounded-2xl bg-white border border-[#e8dfd4] shadow-sm">
                 {askForPrice ? (
                   <div className="text-center py-4">
                     <span className="text-lg font-semibold text-[#c2703e]">{t("ask_for_price") || "Ask for Price"}</span>
@@ -402,7 +405,7 @@ export default function ProductViewPage() {
                       <div className="bg-gradient-to-r from-[#c2703e] to-[#a85d32] px-5 py-3 flex items-center justify-between">
                         <div className="flex items-center gap-2 text-white">
                           <Users className="h-4.5 w-4.5" />
-                          <span className="text-sm font-bold tracking-wide">{t("group_buy") || "GROUP BUY"}</span>
+                          <span className="text-sm font-bold tracking-wide">GROUP BUY</span>
                         </div>
                         {!saleExpired && !saleNotStarted && bgTimeLeft && (
                           <div className="flex items-center gap-1.5 text-white/90">
@@ -424,22 +427,22 @@ export default function ProductViewPage() {
                       <div className="bg-[#c2703e]/[0.03] px-5 py-4 space-y-4">
                         {/* How it works */}
                         <p className="text-xs text-[#8a7560] leading-relaxed">
-                          {t("buygroup_how_it_works") || "Join this group buy! When enough buyers join, the deal activates and everyone gets the discounted price."}
+                          Join this group buy! When enough buyers join, the deal activates and everyone gets the discounted price.
                         </p>
 
                         {/* Min customers progress */}
                         {minCust > 0 && (
                           <div>
                             <div className="flex items-center justify-between text-xs mb-1.5">
-                              <span className="text-[#8a7560] font-medium">{t("buyers_needed") || "Buyers needed"}</span>
-                              <span className="font-bold text-[#c2703e]">{minCust} {t("minimum") || "minimum"}</span>
+                              <span className="text-[#8a7560] font-medium">Buyers needed</span>
+                              <span className="font-bold text-[#c2703e]">{minCust} minimum</span>
                             </div>
                             <div className="h-2 bg-[#e8dfd4] rounded-full overflow-hidden">
                               <div className="h-full bg-gradient-to-r from-[#c2703e] to-[#e8943e] rounded-full transition-all duration-500" style={{ width: "0%" }} />
                             </div>
                             <div className="flex items-center justify-between text-[10px] text-[#b5a898] mt-1">
-                              <span>{t("join_now") || "Join now to be first!"}</span>
-                              {maxCust > 0 && <span>{t("max") || "Max"}: {maxCust}</span>}
+                              <span>Join now to be first!</span>
+                              {maxCust > 0 && <span>Max: {maxCust}</span>}
                             </div>
                           </div>
                         )}
@@ -448,20 +451,20 @@ export default function ProductViewPage() {
                         <div className="grid grid-cols-2 gap-2">
                           {/* Per customer limits */}
                           <div className="p-2.5 rounded-xl bg-white border border-[#e8dfd4]">
-                            <div className="text-[10px] text-[#b5a898] uppercase tracking-wider">{t("per_buyer") || "Per Buyer"}</div>
+                            <div className="text-[10px] text-[#b5a898] uppercase tracking-wider">Per Buyer</div>
                             <div className="text-sm font-bold text-[#2d2017] mt-0.5">
-                              {minQtyPer}{maxQtyPer > 0 ? ` — ${maxQtyPer}` : "+"} {t("units") || "units"}
+                              {minQtyPer}{maxQtyPer > 0 ? ` — ${maxQtyPer}` : "+"} units
                             </div>
                           </div>
                           {/* Total stock */}
                           <div className="p-2.5 rounded-xl bg-white border border-[#e8dfd4]">
-                            <div className="text-[10px] text-[#b5a898] uppercase tracking-wider">{t("total_available") || "Available"}</div>
-                            <div className="text-sm font-bold text-[#2d2017] mt-0.5">{totalStock} {t("units") || "units"}</div>
+                            <div className="text-[10px] text-[#b5a898] uppercase tracking-wider">Available</div>
+                            <div className="text-sm font-bold text-[#2d2017] mt-0.5">{totalStock} units</div>
                           </div>
                           {/* Time window */}
                           {startDate && (
                             <div className="p-2.5 rounded-xl bg-white border border-[#e8dfd4]">
-                              <div className="text-[10px] text-[#b5a898] uppercase tracking-wider">{t("starts") || "Starts"}</div>
+                              <div className="text-[10px] text-[#b5a898] uppercase tracking-wider">Starts</div>
                               <div className="text-xs font-semibold text-[#2d2017] mt-0.5">
                                 {startDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })}
                               </div>
@@ -469,7 +472,7 @@ export default function ProductViewPage() {
                           )}
                           {endDate && (
                             <div className="p-2.5 rounded-xl bg-white border border-[#e8dfd4]">
-                              <div className="text-[10px] text-[#b5a898] uppercase tracking-wider">{t("ends") || "Ends"}</div>
+                              <div className="text-[10px] text-[#b5a898] uppercase tracking-wider">Ends</div>
                               <div className="text-xs font-semibold text-[#2d2017] mt-0.5">
                                 {endDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })}
                               </div>
@@ -482,7 +485,7 @@ export default function ProductViewPage() {
                           <div className="flex items-center gap-2 p-3 rounded-xl bg-emerald-50 border border-emerald-100">
                             <Zap className="h-4 w-4 text-emerald-600 flex-shrink-0" />
                             <span className="text-xs font-semibold text-emerald-700">
-                              {t("you_save") || "You save"} {discount}% {t("compared_to") || "compared to"} ${price.toFixed(2)} {t("regular_price") || "regular price"}
+                              You save {discount}% compared to ${price.toFixed(2)} regular price
                             </span>
                           </div>
                         )}
@@ -649,6 +652,8 @@ export default function ProductViewPage() {
                   ))}
                 </div>
               )}
+
+              </div>{/* end sticky */}
             </div>
           </div>
 
