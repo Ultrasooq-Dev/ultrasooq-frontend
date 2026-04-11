@@ -368,16 +368,131 @@ export default function ProductViewPage() {
                   </>
                 )}
 
-                {/* BuyGroup Timer */}
-                {isBuygroup && !saleExpired && !saleNotStarted && bgEnd > 0 && (
-                  <div className="mt-4 p-3 rounded-xl bg-[#c2703e]/5 border border-[#c2703e]/15">
-                    <div className="flex items-center gap-2 text-sm text-[#c2703e] font-medium">
-                      <Timer className="h-4 w-4" />
-                      <span>Group buy ends {new Date(bgEnd).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span>
+                {/* ── BuyGroup Deal Panel ── */}
+                {isBuygroup && (() => {
+                  const minCust = pp?.minCustomer || 0;
+                  const maxCust = pp?.maxCustomer || 0;
+                  const minQtyPer = pp?.minQuantityPerCustomer || 1;
+                  const maxQtyPer = pp?.maxQuantityPerCustomer || 0;
+                  const totalStock = pp?.stock || 0;
+                  const startDate = pp?.dateOpen ? new Date(pp.dateOpen) : null;
+                  const endDate = pp?.dateClose ? new Date(pp.dateClose) : null;
+
+                  // Live countdown
+                  const [timeLeft, setTimeLeft] = React.useState("");
+                  React.useEffect(() => {
+                    if (!bgEnd || saleExpired || saleNotStarted) return;
+                    const tick = () => {
+                      const diff = bgEnd - Date.now();
+                      if (diff <= 0) { setTimeLeft("Ended"); return; }
+                      const d = Math.floor(diff / 86400000);
+                      const h = Math.floor((diff % 86400000) / 3600000);
+                      const m = Math.floor((diff % 3600000) / 60000);
+                      const s = Math.floor((diff % 60000) / 1000);
+                      setTimeLeft(d > 0 ? `${d}d ${h}h ${m}m` : `${h}h ${m}m ${s}s`);
+                    };
+                    tick();
+                    const interval = setInterval(tick, 1000);
+                    return () => clearInterval(interval);
+                  }, [bgEnd, saleExpired, saleNotStarted]);
+
+                  return (
+                    <div className="mt-5 rounded-2xl border-2 border-[#c2703e]/20 overflow-hidden">
+                      {/* Header */}
+                      <div className="bg-gradient-to-r from-[#c2703e] to-[#a85d32] px-5 py-3 flex items-center justify-between">
+                        <div className="flex items-center gap-2 text-white">
+                          <Users className="h-4.5 w-4.5" />
+                          <span className="text-sm font-bold tracking-wide">{t("group_buy") || "GROUP BUY"}</span>
+                        </div>
+                        {!saleExpired && !saleNotStarted && timeLeft && (
+                          <div className="flex items-center gap-1.5 text-white/90">
+                            <Timer className="h-3.5 w-3.5" />
+                            <span className="text-xs font-mono font-bold">{timeLeft}</span>
+                          </div>
+                        )}
+                        {saleNotStarted && startDate && (
+                          <span className="text-xs text-white/80 font-medium">
+                            Starts {startDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                          </span>
+                        )}
+                        {saleExpired && (
+                          <span className="text-xs text-white/80 font-medium">Sale ended</span>
+                        )}
+                      </div>
+
+                      {/* Body */}
+                      <div className="bg-[#c2703e]/[0.03] px-5 py-4 space-y-4">
+                        {/* How it works */}
+                        <p className="text-xs text-[#8a7560] leading-relaxed">
+                          {t("buygroup_how_it_works") || "Join this group buy! When enough buyers join, the deal activates and everyone gets the discounted price."}
+                        </p>
+
+                        {/* Min customers progress */}
+                        {minCust > 0 && (
+                          <div>
+                            <div className="flex items-center justify-between text-xs mb-1.5">
+                              <span className="text-[#8a7560] font-medium">{t("buyers_needed") || "Buyers needed"}</span>
+                              <span className="font-bold text-[#c2703e]">{minCust} {t("minimum") || "minimum"}</span>
+                            </div>
+                            <div className="h-2 bg-[#e8dfd4] rounded-full overflow-hidden">
+                              <div className="h-full bg-gradient-to-r from-[#c2703e] to-[#e8943e] rounded-full transition-all duration-500" style={{ width: "0%" }} />
+                            </div>
+                            <div className="flex items-center justify-between text-[10px] text-[#b5a898] mt-1">
+                              <span>{t("join_now") || "Join now to be first!"}</span>
+                              {maxCust > 0 && <span>{t("max") || "Max"}: {maxCust}</span>}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Deal details grid */}
+                        <div className="grid grid-cols-2 gap-2">
+                          {/* Per customer limits */}
+                          <div className="p-2.5 rounded-xl bg-white border border-[#e8dfd4]">
+                            <div className="text-[10px] text-[#b5a898] uppercase tracking-wider">{t("per_buyer") || "Per Buyer"}</div>
+                            <div className="text-sm font-bold text-[#2d2017] mt-0.5">
+                              {minQtyPer}{maxQtyPer > 0 ? ` — ${maxQtyPer}` : "+"} {t("units") || "units"}
+                            </div>
+                          </div>
+                          {/* Total stock */}
+                          <div className="p-2.5 rounded-xl bg-white border border-[#e8dfd4]">
+                            <div className="text-[10px] text-[#b5a898] uppercase tracking-wider">{t("total_available") || "Available"}</div>
+                            <div className="text-sm font-bold text-[#2d2017] mt-0.5">{totalStock} {t("units") || "units"}</div>
+                          </div>
+                          {/* Time window */}
+                          {startDate && (
+                            <div className="p-2.5 rounded-xl bg-white border border-[#e8dfd4]">
+                              <div className="text-[10px] text-[#b5a898] uppercase tracking-wider">{t("starts") || "Starts"}</div>
+                              <div className="text-xs font-semibold text-[#2d2017] mt-0.5">
+                                {startDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                              </div>
+                            </div>
+                          )}
+                          {endDate && (
+                            <div className="p-2.5 rounded-xl bg-white border border-[#e8dfd4]">
+                              <div className="text-[10px] text-[#b5a898] uppercase tracking-wider">{t("ends") || "Ends"}</div>
+                              <div className="text-xs font-semibold text-[#2d2017] mt-0.5">
+                                {endDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Savings callout */}
+                        {discount > 0 && (
+                          <div className="flex items-center gap-2 p-3 rounded-xl bg-emerald-50 border border-emerald-100">
+                            <Zap className="h-4 w-4 text-emerald-600 flex-shrink-0" />
+                            <span className="text-xs font-semibold text-emerald-700">
+                              {t("you_save") || "You save"} {discount}% {t("compared_to") || "compared to"} ${price.toFixed(2)} {t("regular_price") || "regular price"}
+                            </span>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                )}
-                {saleNotStarted && (
+                  );
+                })()}
+
+                {/* Non-buygroup timing badges */}
+                {!isBuygroup && saleNotStarted && (
                   <div className="mt-4 p-3 rounded-xl bg-blue-50 border border-blue-100">
                     <div className="flex items-center gap-2 text-sm text-blue-600 font-medium">
                       <Clock className="h-4 w-4" />
@@ -385,7 +500,7 @@ export default function ProductViewPage() {
                     </div>
                   </div>
                 )}
-                {saleExpired && (
+                {!isBuygroup && saleExpired && (
                   <div className="mt-4 p-3 rounded-xl bg-red-50 border border-red-100">
                     <div className="flex items-center gap-2 text-sm text-red-600 font-medium">
                       <X className="h-4 w-4" /> Sale ended
