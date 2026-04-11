@@ -334,32 +334,77 @@ export default function ProductViewPage() {
                 )}
               </div>
 
-              {/* Title + Seller box */}
-              <div className="flex items-start justify-between gap-4">
-                <h1 className="text-xl sm:text-2xl font-bold leading-tight text-[#2d2017] flex-1">
-                  {product.productName}
-                </h1>
-                {/* Seller box */}
-                <div className="flex-shrink-0 flex items-center gap-2.5 px-3 py-2 rounded-xl bg-white border border-[#e8dfd4] shadow-sm">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#c2703e] to-[#a85d32] flex items-center justify-center text-white font-bold text-xs shadow shadow-[#c2703e]/15">
+              {/* Title */}
+              <h1 className="text-xl sm:text-2xl font-bold leading-tight text-[#2d2017]">
+                {product.productName}
+              </h1>
+
+              {/* Seller Card */}
+              <div className="mt-3 p-3 rounded-xl bg-white border border-[#e8dfd4] shadow-sm">
+                <div className="flex items-center gap-3">
+                  {/* Avatar */}
+                  <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#c2703e] to-[#a85d32] flex items-center justify-center text-white font-bold text-sm shadow-md shadow-[#c2703e]/20 flex-shrink-0">
                     {sellerName.charAt(0).toUpperCase()}
                   </div>
-                  <div>
+
+                  {/* Seller info */}
+                  <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5">
-                      <span className="text-xs font-bold text-[#2d2017]">
+                      <span className="text-sm font-bold text-[#2d2017] truncate">
                         {sellerName.length <= 3 ? sellerName : sellerName.slice(0, 3) + "***"}
                       </span>
-                      {seller?.tradeRole === "COMPANY" && (
-                        <span className="text-[9px] font-semibold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full">Verified</span>
+                      {seller?.tradeRole === "COMPANY" ? (
+                        <span className="inline-flex items-center gap-0.5 text-[10px] font-semibold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded-full">
+                          <ShieldCheck className="h-2.5 w-2.5" /> Company
+                        </span>
+                      ) : seller?.tradeRole === "FREELANCER" ? (
+                        <span className="inline-flex items-center gap-0.5 text-[10px] font-semibold text-purple-600 bg-purple-50 px-1.5 py-0.5 rounded-full">
+                          <Award className="h-2.5 w-2.5" /> Pro Seller
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-0.5 text-[10px] font-semibold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full">
+                          <Check className="h-2.5 w-2.5" /> Verified
+                        </span>
                       )}
                     </div>
-                    <div className="flex items-center gap-0.5 mt-0.5">
-                      {[1, 2, 3, 4, 5].map((i) => <Star key={i} className="h-2.5 w-2.5 fill-amber-400 text-amber-400" />)}
-                      {otherSellers.length > 0 && (
-                        <span className="text-[9px] text-[#c2703e] font-medium ms-1">+{otherSellers.length}</span>
-                      )}
+                    <div className="flex items-center gap-2 mt-0.5">
+                      <div className="flex items-center gap-0.5">
+                        {[1, 2, 3, 4, 5].map((i) => <Star key={i} className="h-3 w-3 fill-amber-400 text-amber-400" />)}
+                      </div>
+                      <span className="text-[11px] text-[#8a7560]">98% positive</span>
                     </div>
                   </div>
+
+                  {/* Actions */}
+                  <div className="flex items-center gap-1.5 flex-shrink-0">
+                    <button onClick={() => setIsChatOpen(true)}
+                      className="h-8 px-3 rounded-lg bg-[#c2703e] text-white text-[11px] font-semibold flex items-center gap-1.5 hover:bg-[#a85d32] transition-colors">
+                      <MessageCircle className="h-3 w-3" /> Chat
+                    </button>
+                    <button onClick={() => setActiveTab("vendor")}
+                      className="h-8 px-3 rounded-lg border border-[#e8dfd4] text-[11px] font-medium text-[#8a7560] flex items-center gap-1.5 hover:bg-[#faf7f2] transition-colors">
+                      <Store className="h-3 w-3" /> Store
+                    </button>
+                  </div>
+                </div>
+
+                {/* Stats row */}
+                <div className="flex items-center gap-4 mt-2.5 pt-2.5 border-t border-[#f0ebe4]">
+                  <div className="flex items-center gap-1.5 text-[11px] text-[#8a7560]">
+                    <Package className="h-3 w-3" />
+                    <span>{prices.length || 1} products</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-[11px] text-[#8a7560]">
+                    <Truck className="h-3 w-3" />
+                    <span>{deliveryDays > 0 ? `Ships in ${deliveryDays}d` : "Fast shipping"}</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-[11px] text-[#8a7560]">
+                    <Clock className="h-3 w-3" />
+                    <span>Quick response</span>
+                  </div>
+                  {otherSellers.length > 0 && (
+                    <span className="text-[11px] text-[#c2703e] font-semibold ms-auto">+{otherSellers.length} other sellers</span>
+                  )}
                 </div>
               </div>
 
