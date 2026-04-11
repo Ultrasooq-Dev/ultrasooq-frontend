@@ -66,8 +66,13 @@ const createAccountSchemaFn = (t: any) => {
     companyWebsite: z.string().optional(),
     companyTaxId: z.string().optional(),
 
-    // Identity card uploads (optional for COMPANY and FREELANCER)
-    uploadIdentityFrontImage: z.any().optional(),
+    // Identity card front (required)
+    uploadIdentityFrontImage: z
+      .any()
+      .refine((files: any) => files && files.length > 0, {
+        message: t("identity_card_front_required"),
+      }),
+    // Identity card back (optional for COMPANY/FREELANCER, shown only for BUYER)
     uploadIdentityBackImage: z.any().optional(),
 
     // CR document upload (optional, for COMPANY)
@@ -419,13 +424,13 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
                 </div>
               </div>
 
-              {/* Identity Card Upload - Optional for COMPANY and FREELANCER */}
+              {/* Identity Card Upload - Required */}
               <div className="space-y-3 border-t border-border pt-4">
                 <h4 className="text-dark-cyan text-sm font-medium">
-                  {t("identity_card")} <span className="text-xs font-normal text-muted-foreground ms-1">({t("optional") || "Optional"})</span>
+                  {t("identity_card")} <span className="text-destructive">*</span>
                 </h4>
                 <p className="text-xs text-muted-foreground">
-                  {t("identity_card_description_optional") || "Upload your identity card for faster account verification."}
+                  {t("identity_card_description") || "Please upload your identity card. This is required for account verification."}
                 </p>
 
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -436,7 +441,7 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-dark-cyan text-xs font-medium">
-                          {t("front_side")}
+                          {t("front_side")} <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
                           <div className="relative w-full overflow-hidden rounded-lg border-2 border-dashed border-border">
