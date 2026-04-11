@@ -94,7 +94,21 @@ export default function ProductViewPage() {
     { page: 1, limit: 4, tagIds: tagIds || "0", userId: me.data?.data?.id, productId },
     !!product,
   );
-  const relatedProducts = relatedQuery.data?.data?.products || relatedQuery.data?.data || [];
+  const apiRelated = relatedQuery.data?.data?.products || relatedQuery.data?.data || [];
+
+  // Seed data — shown when API returns empty (remove when real data is wired)
+  const seedRelated = useMemo(() => {
+    if (!product) return [];
+    const basePrice = Number(pp?.offerPrice || 50);
+    return [
+      { id: 9001, productName: "USB-C Hub Adapter 7-in-1 Multiport", productImages: [], product_productPrice: [{ offerPrice: (basePrice * 0.6).toFixed(2), productPrice: (basePrice * 0.8).toFixed(2) }] },
+      { id: 9002, productName: "Thermal Paste High Performance 4g", productImages: [], product_productPrice: [{ offerPrice: (basePrice * 0.15).toFixed(2), productPrice: (basePrice * 0.2).toFixed(2) }] },
+      { id: 9003, productName: "Cable Management Kit 120pcs", productImages: [], product_productPrice: [{ offerPrice: (basePrice * 0.25).toFixed(2), productPrice: (basePrice * 0.35).toFixed(2) }] },
+      { id: 9004, productName: "Anti-Static Wrist Strap for PC Building", productImages: [], product_productPrice: [{ offerPrice: (basePrice * 0.1).toFixed(2), productPrice: (basePrice * 0.15).toFixed(2) }] },
+    ];
+  }, [product, pp?.offerPrice]);
+
+  const relatedProducts = apiRelated.length > 0 ? apiRelated : seedRelated;
   const [relatedQtys, setRelatedQtys] = useState<Record<number, number>>({});
 
   // ── Effects ──
