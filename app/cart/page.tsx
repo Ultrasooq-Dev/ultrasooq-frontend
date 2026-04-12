@@ -801,6 +801,7 @@ const CartListPage = () => {
         {activeCartTab === "rfq" ? (
           <RfqCartTab />
         ) : (
+        <>
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
           {/* Left Column - Cart Items */}
           <div className="lg:col-span-8">
@@ -1099,7 +1100,6 @@ const CartListPage = () => {
             </div>
           </div>
         </div>
-      </div>
 
       {/* Promotional Products Sections - Full Screen Width */}
       <div className="w-full bg-muted">
@@ -1342,6 +1342,8 @@ const CartListPage = () => {
             )}
           </div>
         </div>
+        </div>
+        </>
         )}
       </div>
     </div>

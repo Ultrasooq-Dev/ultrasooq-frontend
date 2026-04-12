@@ -716,11 +716,7 @@ const RfqQuoteCard: React.FC<RfqQuoteCardProps> = ({
           )}
         </div>
       )}
-      </>
-      )}
-        </div>
-      </div>
-    </>
+    </div>
   );
 };
 
