@@ -1,4 +1,18 @@
 "use client";
+// This page now redirects to /cart?tab=rfq
+// Keeping the old code for backward compatibility during transition
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+
+function RfqCartRedirect() {
+  const router = useRouter();
+  useEffect(() => { router.replace("/cart?tab=rfq"); }, [router]);
+  return <div className="min-h-screen flex items-center justify-center text-muted-foreground">Redirecting to cart...</div>;
+}
+
+// Uncomment the line below and remove the old page code once confirmed working
+// export default RfqCartRedirect;
+
 import { useAllUserAddress } from "@/apis/queries/address.queries";
 import {
   useAddRfqQuotes,

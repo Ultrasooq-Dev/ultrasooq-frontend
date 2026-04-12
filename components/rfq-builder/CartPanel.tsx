@@ -161,9 +161,8 @@ export default function CartPanel({ locale, collapsed, onToggleCollapse, onViewP
 
   const handleSubmitRfq = () => {
     if (rfq.length === 0) return;
-    // Navigate to the proper RFQ cart page where user fills address + deadline
-    // instead of submitting directly with empty address fields
-    window.location.href = "/rfq-cart";
+    // Navigate to the cart page RFQ tab where user fills address + deadline
+    window.location.href = "/cart?tab=rfq";
   };
 
   // ═══ COLLAPSED: icons only ═══
