@@ -115,7 +115,7 @@ export const useProductById = (
   useQuery({
     queryKey: ["product-by-id", { ...payload, productId: Number(payload.productId) }],
     queryFn: async () => {
-      const res = await fetchProductById(payload);
+      const res = await fetchProductById({ ...payload, productId: String(payload.productId) });
       return res.data;
     },
     enabled,
@@ -128,7 +128,7 @@ export const useRfqProductById = (
   useQuery({
     queryKey: ["product-rfq-by-id", { ...payload, productId: Number(payload.productId) }],
     queryFn: async () => {
-      const res = await fetchRfqProductById(payload);
+      const res = await fetchRfqProductById({ ...payload, productId: String(payload.productId) });
       return res.data;
     },
     enabled,
