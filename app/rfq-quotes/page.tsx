@@ -24,12 +24,7 @@ import { IoMdArrowDown, IoMdArrowUp } from "react-icons/io";
 import moment from "moment";
 import { useCurrentAccount } from "@/apis/queries/auth.queries";
 import { FileSearch, Store } from "lucide-react";
-import dynamic from "next/dynamic";
-
-const SellerRfqRequestContent = dynamic(
-  () => import("@/app/seller-rfq-request/page").then((mod) => ({ default: mod.default })),
-  { loading: () => <div className="py-12 text-center text-muted-foreground">Loading seller requests...</div> },
-);
+import { useAllRfqQuotesUsersBySellerId } from "@/apis/queries/rfq.queries";
 
 const RfqQuotesPage = () => {
   const t = useTranslations();
@@ -162,7 +157,13 @@ const RfqQuotesPage = () => {
           </div>
 
           {rfqViewTab === "seller" && isSeller ? (
-            <SellerRfqRequestContent />
+            <div className="py-4">
+              <p className="text-sm text-muted-foreground mb-4">{t("manage_incoming_rfq_requests") || "Manage incoming RFQ requests from buyers"}</p>
+              <a href="/seller-rfq-list" className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors">
+                <Store className="h-4 w-4" />
+                {t("open_seller_rfq_dashboard") || "Open Seller RFQ Dashboard"}
+              </a>
+            </div>
           ) : (
           <>
           {/* Buyer RFQ Content */}
