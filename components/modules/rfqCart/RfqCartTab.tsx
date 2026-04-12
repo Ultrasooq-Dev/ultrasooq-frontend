@@ -179,9 +179,16 @@ export default function RfqCartTab() {
                   {memoizedRfqCartList.map((item: any) => (
                     <RfqProductCard
                       key={item.id}
-                      item={item}
-                      onQuantityChange={(qty: number) => handleUpdateQuantity(item.id, qty)}
-                      onDelete={() => handleDeleteItem(item.id)}
+                      id={item.id}
+                      rfqProductId={item.productId}
+                      productName={item.rfqCart_productDetails?.productName}
+                      productQuantity={item.quantity}
+                      productImages={item.rfqCart_productDetails?.productImages}
+                      offerPriceFrom={item.offerPriceFrom}
+                      offerPriceTo={item.offerPriceTo}
+                      onAdd={(qty: number, productId: number, action: string) => handleUpdateQuantity(item.id, qty)}
+                      onRemove={() => handleDeleteItem(item.id)}
+                      note={item.note}
                     />
                   ))}
                 </div>
