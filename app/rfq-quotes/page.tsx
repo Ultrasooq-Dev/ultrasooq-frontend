@@ -24,7 +24,7 @@ import { IoMdArrowDown, IoMdArrowUp } from "react-icons/io";
 import moment from "moment";
 import { useCurrentAccount } from "@/apis/queries/auth.queries";
 import { FileSearch, Store } from "lucide-react";
-import { useAllRfqQuotesUsersBySellerId } from "@/apis/queries/rfq.queries";
+import { SellerRfqListContent } from "@/app/seller-rfq-list/page";
 
 const RfqQuotesPage = () => {
   const t = useTranslations();
@@ -143,27 +143,21 @@ const RfqQuotesPage = () => {
                 className={`flex items-center gap-2 px-5 py-3 text-sm font-medium border-b-2 transition-colors ${
                   rfqViewTab === "buyer" ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
                 <FileSearch className="h-4 w-4" />
-                {t("my_rfq_requests") || "My RFQ Requests"}
+                My RFQ Requests
               </button>
               {isSeller && (
                 <button onClick={() => setRfqViewTab("seller")}
                   className={`flex items-center gap-2 px-5 py-3 text-sm font-medium border-b-2 transition-colors ${
                     rfqViewTab === "seller" ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
                   <Store className="h-4 w-4" />
-                  {t("seller_requests") || "Seller Requests"}
+                  Seller Requests
                 </button>
               )}
             </div>
           </div>
 
           {rfqViewTab === "seller" && isSeller ? (
-            <div className="py-4">
-              <p className="text-sm text-muted-foreground mb-4">{t("manage_incoming_rfq_requests") || "Manage incoming RFQ requests from buyers"}</p>
-              <a href="/seller-rfq-list" className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors">
-                <Store className="h-4 w-4" />
-                {t("open_seller_rfq_dashboard") || "Open Seller RFQ Dashboard"}
-              </a>
-            </div>
+            <SellerRfqListContent />
           ) : (
           <>
           {/* Buyer RFQ Content */}
