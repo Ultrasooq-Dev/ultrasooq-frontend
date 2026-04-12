@@ -255,8 +255,10 @@ const RfqQuotesPage = () => {
             isLoading={deleteRfqQuote.isPending}
           />
         </Dialog>
+      </>
+      )}
+        </div>
       </div>
-      <Footer />
     </>
   );
 };
@@ -714,8 +716,8 @@ const RfqQuoteCard: React.FC<RfqQuoteCardProps> = ({
           )}
         </div>
       )}
-          </>
-          )}
+      </>
+      )}
         </div>
       </div>
     </>
