@@ -226,28 +226,30 @@ export default function RfqCartTab() {
 
             {/* Country */}
             <div>
-              <label className="text-xs font-medium mb-1.5 block">{t("country") || "Country"} *</label>
+              <label className="text-xs font-medium mb-1.5 block">{t("country") || "Country"} <span className="text-destructive">*</span></label>
               <ReactSelect
                 options={memoizedCountryList}
                 value={selectedCountry}
-                onChange={(opt: any) => { setSelectedCountry(opt); form.setValue("countryId", opt ? String(opt.value) : ""); }}
-                placeholder={t("select_country") || "Select country"}
+                onChange={(opt: any) => { setSelectedCountry(opt); form.setValue("countryId", opt ? String(opt.value) : ""); setSelectedState(null); setSelectedCity(null); }}
+                placeholder={t("select_country") || "Select Country"}
                 isClearable
                 className="text-sm"
+                styles={{ control: (base: any) => ({ ...base, minHeight: 42 }), menu: (base: any) => ({ ...base, zIndex: 20 }) }}
               />
             </div>
 
             {/* State */}
             {memoizedStateList.length > 0 && (
               <div>
-                <label className="text-xs font-medium mb-1.5 block">{t("state") || "State"}</label>
+                <label className="text-xs font-medium mb-1.5 block">{t("state") || "State / Province"}</label>
                 <ReactSelect
                   options={memoizedStateList}
                   value={selectedState}
-                  onChange={(opt: any) => { setSelectedState(opt); form.setValue("stateId", opt ? String(opt.value) : ""); }}
-                  placeholder={t("select_state") || "Select state"}
+                  onChange={(opt: any) => { setSelectedState(opt); form.setValue("stateId", opt ? String(opt.value) : ""); setSelectedCity(null); }}
+                  placeholder={t("select_state") || "Select State"}
                   isClearable
                   className="text-sm"
+                  styles={{ control: (base: any) => ({ ...base, minHeight: 42 }), menu: (base: any) => ({ ...base, zIndex: 20 }) }}
                 />
               </div>
             )}
@@ -260,15 +262,16 @@ export default function RfqCartTab() {
                   options={memoizedCityList}
                   value={selectedCity}
                   onChange={(opt: any) => { setSelectedCity(opt); form.setValue("cityId", opt ? String(opt.value) : ""); }}
-                  placeholder={t("select_city") || "Select city"}
+                  placeholder={t("select_city") || "Select City"}
                   isClearable
                   className="text-sm"
+                  styles={{ control: (base: any) => ({ ...base, minHeight: 42 }), menu: (base: any) => ({ ...base, zIndex: 20 }) }}
                 />
               </div>
             )}
 
             {/* Deadline */}
-            <ControlledDatePicker label={t("deadline") || "Deadline"} name="rfqDate" />
+            <ControlledDatePicker label={t("deadline") || "Deadline (optional)"} name="rfqDate" />
 
             {/* Submit */}
             <Button

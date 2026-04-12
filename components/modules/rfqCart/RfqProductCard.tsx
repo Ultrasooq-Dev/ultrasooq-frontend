@@ -167,33 +167,41 @@ const RfqProductCard: React.FC<RfqProductCardProps> = ({
             </div>
           </div>
 
-          {/* Price Range */}
+          {/* Price Range — Editable */}
           <div className="mb-2 grid grid-cols-2 gap-3">
-            <div className="rounded-lg border border-border bg-muted p-2">
-              <p
-                className="mb-1 text-xs font-medium text-muted-foreground"
-                dir={langDir}
-                translate="no"
-              >
-                {t("offer_price_from")}
-              </p>
-              <p className="text-sm font-bold text-foreground">
-                {currency.symbol}
-                {offerPriceFrom || "0"}
-              </p>
+            <div>
+              <label className="mb-1 block text-xs font-medium text-muted-foreground" dir={langDir} translate="no">
+                {t("offer_price_from") || "Price From"}
+              </label>
+              <div className="flex items-center gap-1 rounded-lg border border-border bg-card px-2">
+                <span className="text-xs text-muted-foreground">{currency.symbol}</span>
+                <input
+                  type="number"
+                  defaultValue={offerPriceFrom || ""}
+                  placeholder="0"
+                  className="h-8 w-full bg-transparent text-sm font-semibold text-foreground focus:outline-none"
+                  onBlur={(e) => {
+                    onAdd(quantity, rfqProductId, "add", Number(e.target.value || 0), Number(offerPriceTo || 0), note);
+                  }}
+                />
+              </div>
             </div>
-            <div className="rounded-lg border border-border bg-muted p-2">
-              <p
-                className="mb-1 text-xs font-medium text-muted-foreground"
-                dir={langDir}
-                translate="no"
-              >
-                {t("offer_price_to")}
-              </p>
-              <p className="text-sm font-bold text-foreground">
-                {currency.symbol}
-                {offerPriceTo || "0"}
-              </p>
+            <div>
+              <label className="mb-1 block text-xs font-medium text-muted-foreground" dir={langDir} translate="no">
+                {t("offer_price_to") || "Price To"}
+              </label>
+              <div className="flex items-center gap-1 rounded-lg border border-border bg-card px-2">
+                <span className="text-xs text-muted-foreground">{currency.symbol}</span>
+                <input
+                  type="number"
+                  defaultValue={offerPriceTo || ""}
+                  placeholder="0"
+                  className="h-8 w-full bg-transparent text-sm font-semibold text-foreground focus:outline-none"
+                  onBlur={(e) => {
+                    onAdd(quantity, rfqProductId, "add", Number(offerPriceFrom || 0), Number(e.target.value || 0), note);
+                  }}
+                />
+              </div>
             </div>
           </div>
 
