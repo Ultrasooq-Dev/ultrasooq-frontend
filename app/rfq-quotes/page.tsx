@@ -246,7 +246,6 @@ const RfqQuotesPage = () => {
               />
             </div>
           )}
-        </div>
 
         <Dialog open={isDeleteModalOpen} onOpenChange={handleToggleDeleteModal}>
           <DeleteContent
