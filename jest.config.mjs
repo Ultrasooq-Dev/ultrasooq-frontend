@@ -13,6 +13,7 @@ const config = {
     '^@/(.*)$': '<rootDir>/$1',
   },
   testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/', '<rootDir>/__tests__/e2e/', '<rootDir>/__tests__/api/', '<rootDir>/e2e/'],
+  modulePathIgnorePatterns: ['<rootDir>/.next/'],
   coverageDirectory: 'coverage',
   collectCoverageFrom: [
     'apis/**/*.{ts,tsx}',
