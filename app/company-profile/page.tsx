@@ -608,7 +608,7 @@ export default function CompanyProfilePage() {
                   {/* CR Document Upload */}
                   <FormField
                     control={form.control}
-                    name="uploadCR"
+                    name={"uploadCR" as any}
                     render={({ field }) => (
                       <FormItem className="mb-3.5 w-full md:w-6/12 md:pl-3.5">
                         <FormLabel dir={langDir} translate="no">
@@ -660,8 +660,10 @@ export default function CompanyProfilePage() {
                                 accept=".pdf,application/pdf"
                                 multiple={false}
                                 className="bottom-0! h-64 w-full! opacity-0"
-                                {...field}
-                                onChange={(event) => {
+                                name={field.name}
+                                ref={field.ref}
+                                onBlur={field.onBlur}
+                                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                                   if (event.target.files?.[0]) {
                                     if (event.target.files[0].size > 10485760) {
                                       toast({
@@ -678,6 +680,7 @@ export default function CompanyProfilePage() {
                                       return;
                                     }
                                     setCrFile(event.target.files);
+                                    field.onChange(event.target.files);
                                   }
                                 }}
                                 id="uploadCR"
@@ -706,9 +709,9 @@ export default function CompanyProfilePage() {
                         onClick={() => setBusinessTypeModalOpen(true)}
                         className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg border border-border text-sm text-start hover:border-primary/50 transition-colors"
                       >
-                        {(form.watch("businessTypeList") || []).length > 0 ? (
+                        {((form.watch("businessTypeList") as unknown as any[]) || []).length > 0 ? (
                           <div className="flex flex-wrap gap-1">
-                            {(form.watch("businessTypeList") as any[]).map((item: any) => (
+                            {((form.watch("businessTypeList") as unknown as any[]) || []).map((item: any) => (
                               <span key={item.categoryId} className="px-2 py-0.5 rounded bg-primary/10 text-xs font-medium text-primary">
                                 {item.name || `ID: ${item.categoryId}`}
                               </span>
@@ -723,7 +726,7 @@ export default function CompanyProfilePage() {
                         open={businessTypeModalOpen && businessTypeModalField === "businessTypeList"}
                         onClose={() => setBusinessTypeModalOpen(false)}
                         onSelect={(selected) => {
-                          form.setValue("businessTypeList", selected.map((s) => ({
+                          form.setValue("businessTypeList" as any, selected.map((s) => ({
                             categoryId: s.categoryId,
                             categoryLocation: s.categoryLocation,
                             name: s.name,
@@ -881,9 +884,9 @@ export default function CompanyProfilePage() {
                       onClick={() => { setBusinessTypeModalField(`branchList.${index}.businessTypeList`); setBusinessTypeModalOpen(true); }}
                       className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg border border-border text-sm text-start hover:border-primary/50 transition-colors"
                     >
-                      {(form.watch(`branchList.${index}.businessTypeList`) || []).length > 0 ? (
+                      {((form.watch(`branchList.${index}.businessTypeList`) as unknown as any[]) || []).length > 0 ? (
                         <div className="flex flex-wrap gap-1">
-                          {(form.watch(`branchList.${index}.businessTypeList`) as any[]).map((item: any) => (
+                          {((form.watch(`branchList.${index}.businessTypeList`) as unknown as any[]) || []).map((item: any) => (
                             <span key={item.categoryId} className="px-2 py-0.5 rounded bg-primary/10 text-xs font-medium text-primary">
                               {item.name || `ID: ${item.categoryId}`}
                             </span>
@@ -898,7 +901,7 @@ export default function CompanyProfilePage() {
                       open={businessTypeModalOpen && businessTypeModalField === `branchList.${index}.businessTypeList`}
                       onClose={() => setBusinessTypeModalOpen(false)}
                       onSelect={(selected) => {
-                        form.setValue(`branchList.${index}.businessTypeList`, selected.map((s) => ({
+                        form.setValue(`branchList.${index}.businessTypeList` as any, selected.map((s) => ({
                           categoryId: s.categoryId,
                           categoryLocation: s.categoryLocation,
                           name: s.name,
@@ -1329,9 +1332,9 @@ export default function CompanyProfilePage() {
                     onClick={() => { setCategoryModalField(`branchList.${index}.categoryList`); setCategoryModalOpen(true); }}
                     className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg border border-border text-sm text-start hover:border-primary/50 transition-colors"
                   >
-                    {(form.watch(`branchList.${index}.categoryList`) || []).length > 0 ? (
+                    {((form.watch(`branchList.${index}.categoryList`) as unknown as any[]) || []).length > 0 ? (
                       <div className="flex flex-wrap gap-1">
-                        {(form.watch(`branchList.${index}.categoryList`) as any[]).map((item: any, ci: number) => (
+                        {((form.watch(`branchList.${index}.categoryList`) as unknown as any[]) || []).map((item: any, ci: number) => (
                           <span key={ci} className="px-2 py-0.5 rounded bg-blue-50 text-xs font-medium text-blue-700">
                             {item.name || `ID: ${item.categoryId}`}
                           </span>
@@ -1348,7 +1351,7 @@ export default function CompanyProfilePage() {
                     rootCategoryId={PRODUCT_CATEGORY_ID}
                     title={t("categories") || "Product / Service Categories"}
                     onSelect={(selected) => {
-                      form.setValue(`branchList.${index}.categoryList`, selected.map((s) => ({
+                      form.setValue(`branchList.${index}.categoryList` as any, selected.map((s) => ({
                         categoryId: s.categoryId,
                         categoryLocation: s.categoryLocation,
                         name: s.name,

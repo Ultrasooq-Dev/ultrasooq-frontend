@@ -1135,7 +1135,7 @@ function DealAnalyticsPanel({ deals, langDir }: { deals: BuyGroupDeal[]; langDir
         )}
 
         <ResponsiveContainer width="100%" height={280}>
-          <ComposedChart data={timeline} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
+          <ComposedChart data={timeline as object[]} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
             <defs>
               <linearGradient id={cc.gradientId} x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor={cc.color} stopOpacity={0.25} />
