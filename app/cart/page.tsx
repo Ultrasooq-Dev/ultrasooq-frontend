@@ -14,6 +14,8 @@ import {
 } from "@/apis/queries/wishlist.queries";
 import CartProductCardWrapper from "@/components/modules/cartList/CartProductCardWrapper";
 import ServiceCard from "@/components/modules/cartList/ServiceCard";
+import { CartRecommendations } from "@/components/modules/recommendations/CartRecommendations";
+import { EmptyStateRecommendations } from "@/components/modules/recommendations/EmptyStateRecommendations";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/components/ui/use-toast";
@@ -824,6 +826,9 @@ const CartListPage = () => {
                     >
                       {t("continue_shopping")}
                     </Button>
+                    <div className="mt-8">
+                      <EmptyStateRecommendations type="cart" />
+                    </div>
                   </div>
                 ) : null}
 
@@ -849,6 +854,9 @@ const CartListPage = () => {
                     >
                       {t("continue_shopping")}
                     </Button>
+                    <div className="mt-8">
+                      <EmptyStateRecommendations type="cart" />
+                    </div>
                   </div>
                 ) : null}
 
@@ -1311,6 +1319,13 @@ const CartListPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Cross-sell recommendations — shown when cart has items */}
+      {memoizedCartList.length > 0 && (
+        <div className="w-full px-2 pb-8 sm:px-4 lg:px-6">
+          <CartRecommendations enabled={memoizedCartList.length > 0} />
+        </div>
+      )}
     </div>
   );
 };
