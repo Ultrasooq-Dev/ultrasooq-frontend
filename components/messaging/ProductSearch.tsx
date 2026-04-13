@@ -6,6 +6,7 @@ import {
   Camera, Sparkles, Check, ImageIcon, Loader2, ChevronDown, Filter,
 } from "lucide-react";
 import http from "@/apis/http";
+import { getApiUrl } from "@/config/api";
 
 interface ProductResult {
   id: number;
@@ -69,7 +70,7 @@ export default function ProductSearch({ onClose, onAddProduct, locale }: Product
     if (!q) return;
     setLoading(true); setSearched(true); setShowSuggestions(false);
     try {
-      const res = await http.get("/product/getAllProduct", { params: { page: pageNum, limit: 10, term: q } });
+      const res = await http.get(`${getApiUrl()}/product/search/unified`, { params: { q, page: pageNum, limit: 10 } });
       const products = res.data?.data?.data ?? res.data?.data ?? res.data ?? [];
       const mapped: ProductResult[] = products.map((p: any) => ({
         id: p.id,

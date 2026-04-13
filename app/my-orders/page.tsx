@@ -1,6 +1,6 @@
 "use client";
 import React, { useRef, useState } from "react";
-import { useOrders } from "@/apis/queries/orders.queries";
+import { useOrders, useOrdersBySellerId } from "@/apis/queries/orders.queries";
 import {
   Search,
   Filter,
@@ -8,13 +8,16 @@ import {
   Clock,
   CheckCircle,
   Truck,
+  PackageCheck,
   XCircle,
   X,
   Calendar,
   ShoppingBag,
   TrendingUp,
+  Store,
 } from "lucide-react";
-import OrderCard from "@/components/modules/myOrders/OrderCard";
+import BuyerOrderCard from "@/components/modules/myOrders/BuyerOrderCard";
+import SellerOrderCard from "@/components/modules/myOrders/SellerOrderCard";
 import { debounce } from "lodash";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -28,10 +31,24 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/context/AuthContext";
 import Pagination from "@/components/shared/Pagination";
+import { cn } from "@/lib/utils";
+import { useUpdateOrderStatus, useOrderStatusSync } from "@/apis/queries/orders.queries";
+import { useQueryClient } from "@tanstack/react-query";
+import { useToast } from "@/components/ui/use-toast";
+
+const STATUS_MAP: Record<string, string> = {
+  CONFIRMED: "processing", SHIPPED: "shipped", OFD: "ofd", DELIVERED: "delivered",
+};
 
 const MyOrdersPage = () => {
   const t = useTranslations();
   const { langDir, currency } = useAuth();
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  const bulkUpdateStatus = useUpdateOrderStatus();
+  useOrderStatusSync(); // auto-refresh when seller updates order status in real-time
+  const [activeTab, setActiveTab] = useState<"buying" | "selling">("buying");
+  const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
   const [page, setPage] = useState<number>(1);
   const [limit] = useState<number>(40);
   const searchRef = useRef<HTMLInputElement>(null);
@@ -79,7 +96,8 @@ const MyOrdersPage = () => {
     };
   };
 
-  const ordersQuery = useOrders({
+  // Buying orders (customer)
+  const buyingQuery = useOrders({
     page: page,
     limit: limit,
     term: searchTerm !== "" ? searchTerm : undefined,
@@ -87,6 +105,21 @@ const MyOrdersPage = () => {
     startDate: getYearDates(orderTime).startDate,
     endDate: getYearDates(orderTime).endDate,
   });
+
+  // Selling orders (vendor)
+  const sellingQuery = useOrdersBySellerId({
+    page: page,
+    limit: limit,
+    term: searchTerm !== "" ? searchTerm : undefined,
+    orderProductStatus: orderStatus,
+    startDate: getYearDates(orderTime).startDate,
+    endDate: getYearDates(orderTime).endDate,
+  });
+
+  // Use the active tab's query
+  const ordersQuery = activeTab === "buying" ? buyingQuery : sellingQuery;
+
+  const displayItems = (ordersQuery?.data?.data as any) || [];
 
   const handleDebounce = debounce((event: any) => {
     setSearchTerm(event.target.value);
@@ -185,211 +218,234 @@ const MyOrdersPage = () => {
               </Badge>
             </div>
           </div>
+
+          {/* Buying / Selling Tabs */}
+          <div className="mt-6 flex gap-1 rounded-xl bg-muted p-1">
+            <button
+              type="button"
+              onClick={() => { setActiveTab("buying"); setPage(1); setOrderStatus(""); setOrderTime(""); }}
+              className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-semibold transition-all ${
+                activeTab === "buying"
+                  ? "bg-card text-primary shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <ShoppingBag className="h-4 w-4" />
+              My Purchases
+              {(buyingQuery?.data as any)?.totalCount > 0 && (
+                <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${
+                  activeTab === "buying" ? "bg-primary/10 text-primary" : "bg-muted-foreground/10"
+                }`}>
+                  {(buyingQuery?.data as any)?.totalCount || 0}
+                </span>
+              )}
+            </button>
+            <button
+              type="button"
+              onClick={() => { setActiveTab("selling"); setPage(1); setOrderStatus(""); setOrderTime(""); }}
+              className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-semibold transition-all ${
+                activeTab === "selling"
+                  ? "bg-card text-emerald-600 shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <Store className="h-4 w-4" />
+              My Sales
+              {(sellingQuery?.data as any)?.totalCount > 0 && (
+                <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${
+                  activeTab === "selling" ? "bg-emerald-500/10 text-emerald-600" : "bg-muted-foreground/10"
+                }`}>
+                  {(sellingQuery?.data as any)?.totalCount || 0}
+                </span>
+              )}
+            </button>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
-          {/* Filters Sidebar */}
-          <div className="lg:col-span-1">
-            <Card className="sticky top-8">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Filter className="h-5 w-5" />
-                  {t("filter")}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {/* Order Status Filter */}
-                <div>
-                  <h3 className="mb-3 flex items-center gap-2 font-semibold text-foreground">
-                    <Package className="h-4 w-4" />
-                    {t("order_status")}
-                  </h3>
-                  <RadioGroup
-                    className="space-y-3"
-                    value={orderStatus}
-                    onValueChange={setOrderStatus}
-                  >
-                    <div className="flex items-center space-x-3">
-                      <RadioGroupItem value="" id="ALL" />
-                      <Label
-                        htmlFor="ALL"
-                        className="cursor-pointer text-sm font-medium"
-                      >
-                        {t("all")}
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <RadioGroupItem value="CONFIRMED" id="CONFIRMED" />
-                      <Label
-                        htmlFor="CONFIRMED"
-                        className="cursor-pointer text-sm font-medium"
-                      >
-                        {t("confirmed")}
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <RadioGroupItem value="SHIPPED" id="SHIPPED" />
-                      <Label
-                        htmlFor="SHIPPED"
-                        className="cursor-pointer text-sm font-medium"
-                      >
-                        {t("shipped")}
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <RadioGroupItem value="OFD" id="OFD" />
-                      <Label
-                        htmlFor="OFD"
-                        className="cursor-pointer text-sm font-medium"
-                      >
-                        {t("on_the_way")}
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <RadioGroupItem value="DELIVERED" id="DELIVERED" />
-                      <Label
-                        htmlFor="DELIVERED"
-                        className="cursor-pointer text-sm font-medium"
-                      >
-                        {t("delivered")}
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <RadioGroupItem value="CANCELLED" id="CANCELLED" />
-                      <Label
-                        htmlFor="CANCELLED"
-                        className="cursor-pointer text-sm font-medium"
-                      >
-                        {t("cancelled")}
-                      </Label>
-                    </div>
-                  </RadioGroup>
-                </div>
+        <div>
+          {/* Filter Bar — sticky */}
+          <div className="sticky top-0 z-20 mb-6 rounded-xl border border-border bg-card/95 backdrop-blur-sm shadow-sm">
+            {/* Row 1: Search + Status chips */}
+            <div className="flex flex-wrap items-center gap-3 px-5 py-3">
+              {/* Search */}
+              <div className="relative min-w-[200px] max-w-xs flex-1">
+                <Search className="absolute top-1/2 start-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <input
+                  type="text"
+                  placeholder={t("search_orders")}
+                  onChange={handleDebounce}
+                  ref={searchRef}
+                  className="w-full rounded-lg border border-border bg-muted/30 py-2 pe-3 ps-10 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                  dir={langDir}
+                />
+                {searchTerm !== "" && (
+                  <button type="button" onClick={handleClearSearch}
+                    className="absolute top-1/2 end-3 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+                )}
+              </div>
 
-                <div className="border-t pt-6">
-                  {/* Order Time Filter */}
-                  <h3 className="mb-3 flex items-center gap-2 font-semibold text-foreground">
-                    <Calendar className="h-4 w-4" />
-                    {t("order_time")}
-                  </h3>
-                  <RadioGroup
-                    className="space-y-3"
-                    value={orderTime}
-                    onValueChange={setOrderTime}
-                  >
-                    <div className="flex items-center space-x-3">
-                      <RadioGroupItem value="last30" id="last30" />
-                      <Label
-                        htmlFor="last30"
-                        className="cursor-pointer text-sm font-medium"
-                      >
-                        {t("last_30_days")}
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <RadioGroupItem value="2024" id="2024" />
-                      <Label
-                        htmlFor="2024"
-                        className="cursor-pointer text-sm font-medium"
-                      >
-                        2024
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <RadioGroupItem value="2023" id="2023" />
-                      <Label
-                        htmlFor="2023"
-                        className="cursor-pointer text-sm font-medium"
-                      >
-                        2023
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <RadioGroupItem value="2022" id="2022" />
-                      <Label
-                        htmlFor="2022"
-                        className="cursor-pointer text-sm font-medium"
-                      >
-                        2022
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <RadioGroupItem value="2021" id="2021" />
-                      <Label
-                        htmlFor="2021"
-                        className="cursor-pointer text-sm font-medium"
-                      >
-                        2021
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <RadioGroupItem value="2020" id="2020" />
-                      <Label
-                        htmlFor="2020"
-                        className="cursor-pointer text-sm font-medium"
-                      >
-                        2020
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <RadioGroupItem value="older" id="older" />
-                      <Label
-                        htmlFor="older"
-                        className="cursor-pointer text-sm font-medium"
-                      >
-                        {t("older")}
-                      </Label>
-                    </div>
-                  </RadioGroup>
-                </div>
+              <div className="h-6 w-px bg-border" />
 
-                <div className="border-t pt-6">
-                  <Button
-                    variant="outline"
-                    onClick={handleClearFilter}
-                    className="w-full"
-                  >
-                    <X className="mr-2 h-4 w-4" />
-                    {t("clean_filter")}
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+              {/* Status chips */}
+              <div className="flex flex-wrap items-center gap-1.5">
+                {[
+                  { value: "", label: t("all"), color: "bg-primary" },
+                  { value: "CONFIRMED", label: t("confirmed"), color: "bg-blue-500" },
+                  { value: "SHIPPED", label: t("shipped"), color: "bg-indigo-500" },
+                  { value: "OFD", label: t("on_the_way"), color: "bg-amber-500" },
+                  { value: "DELIVERED", label: t("delivered"), color: "bg-emerald-500" },
+                  { value: "CANCELLED", label: t("cancelled"), color: "bg-red-500" },
+                ].map((s) => (
+                  <button key={s.value} type="button"
+                    onClick={() => { setOrderStatus(s.value); setPage(1); }}
+                    className={cn(
+                      "rounded-full px-3 py-1 text-xs font-medium transition-all",
+                      orderStatus === s.value
+                        ? `${s.color} text-white shadow-sm`
+                        : "bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground",
+                    )}>
+                    {s.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Result count */}
+              <span className="ms-auto text-xs text-muted-foreground">
+                {(ordersQuery?.data as any)?.totalCount || 0} results
+              </span>
+            </div>
+
+            {/* Row 2: Time + Sort + Clear */}
+            <div className="flex flex-wrap items-center gap-3 border-t border-border/50 px-5 py-2">
+              {/* Time dropdown */}
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                <Calendar className="h-3.5 w-3.5" />
+                <select
+                  value={orderTime}
+                  onChange={(e) => { setOrderTime(e.target.value); setPage(1); }}
+                  className="rounded-lg border border-border bg-muted/30 px-2 py-1 text-xs font-medium outline-none focus:border-primary cursor-pointer"
+                >
+                  <option value="">{t("all_time") || "All Time"}</option>
+                  <option value="last30">{t("last_30_days")}</option>
+                  <option value="2026">2026</option>
+                  <option value="2025">2025</option>
+                  <option value="2024">2024</option>
+                  <option value="older">{t("older")}</option>
+                </select>
+              </div>
+
+              <div className="h-4 w-px bg-border" />
+
+              {/* Sort */}
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                <TrendingUp className="h-3.5 w-3.5" />
+                <select
+                  className="rounded-lg border border-border bg-muted/30 px-2 py-1 text-xs font-medium outline-none focus:border-primary cursor-pointer"
+                >
+                  <option value="newest">Newest first</option>
+                  <option value="oldest">Oldest first</option>
+                  <option value="price_high">Price: High to Low</option>
+                  <option value="price_low">Price: Low to High</option>
+                </select>
+              </div>
+
+              <div className="flex-1" />
+
+              {/* Active filter tags */}
+              {orderStatus && (
+                <span className="flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
+                  Status: {orderStatus}
+                  <button type="button" onClick={() => setOrderStatus("")}>
+                    <X className="h-2.5 w-2.5" />
+                  </button>
+                </span>
+              )}
+              {orderTime && (
+                <span className="flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
+                  Time: {orderTime}
+                  <button type="button" onClick={() => setOrderTime("")}>
+                    <X className="h-2.5 w-2.5" />
+                  </button>
+                </span>
+              )}
+
+              {/* Clear all */}
+              {(orderStatus || orderTime || searchTerm) && (
+                <button type="button" onClick={() => { handleClearFilter(); handleClearSearch(); }}
+                  className="flex items-center gap-1 text-[11px] font-medium text-destructive hover:underline">
+                  <X className="h-3 w-3" /> Clear all
+                </button>
+              )}
+            </div>
           </div>
 
-          {/* Main Content */}
-          <div className="lg:col-span-3">
-            {/* Search Bar */}
-            <Card className="mb-6">
-              <CardContent className="p-6">
-                <div className="flex gap-4">
-                  <div className="relative flex-1">
-                    <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-muted-foreground" />
-                    <Input
-                      type="text"
-                      placeholder={t("search_orders")}
-                      onChange={handleDebounce}
-                      ref={searchRef}
-                      className="pl-10"
-                      dir={langDir}
-                    />
-                    {searchTerm !== "" && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="absolute top-1/2 right-2 h-6 w-6 -translate-y-1/2 transform p-0"
-                        onClick={handleClearSearch}
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+          {/* Full width content */}
+          <div>
+
+            {/* Bulk Action Bar — seller only */}
+            {activeTab === "selling" && selectedIds.size > 0 && (
+              <div className="mb-4 flex flex-wrap items-center gap-3 rounded-xl border border-primary/20 bg-primary/5 px-5 py-3">
+                <span className="text-sm font-semibold text-primary">
+                  {selectedIds.size} selected
+                </span>
+                <div className="h-4 w-px bg-border" />
+                {[
+                  { status: "CONFIRMED", label: "Confirm All", color: "bg-blue-500 hover:bg-blue-600", icon: CheckCircle },
+                  { status: "SHIPPED", label: "Ship All", color: "bg-indigo-500 hover:bg-indigo-600", icon: Truck },
+                  { status: "OFD", label: "Mark OFD", color: "bg-amber-500 hover:bg-amber-600", icon: Truck },
+                  { status: "DELIVERED", label: "Deliver All", color: "bg-emerald-500 hover:bg-emerald-600", icon: PackageCheck },
+                ].map((action) => (
+                  <button key={action.status} type="button"
+                    disabled={bulkUpdateStatus.isPending}
+                    onClick={async () => {
+                      const ids = Array.from(selectedIds);
+                      const apiStatus = STATUS_MAP[action.status] || action.status.toLowerCase();
+                      try {
+                        await Promise.all(ids.map((oid) =>
+                          bulkUpdateStatus.mutateAsync({ orderProductId: oid, status: apiStatus })
+                        ));
+                        queryClient.invalidateQueries({ queryKey: ["orders-by-seller-id"] });
+                        toast({ title: `${ids.length} orders updated to ${action.status}`, variant: "success" });
+                        setSelectedIds(new Set());
+                      } catch {
+                        toast({ title: "Some orders failed to update", variant: "danger" });
+                      }
+                    }}
+                    className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold text-white disabled:opacity-50 ${action.color}`}>
+                    <action.icon className="h-3.5 w-3.5" /> {action.label}
+                  </button>
+                ))}
+                <div className="flex-1" />
+                <button type="button" onClick={() => setSelectedIds(new Set())}
+                  className="text-xs font-medium text-muted-foreground hover:text-foreground">
+                  Clear selection
+                </button>
+              </div>
+            )}
+
+            {/* Select all checkbox — seller only */}
+            {activeTab === "selling" && displayItems.length > 0 && (
+              <div className="mb-3 flex items-center gap-2 px-1">
+                <input
+                  type="checkbox"
+                  checked={selectedIds.size > 0 && selectedIds.size === displayItems.length}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setSelectedIds(new Set((ordersQuery?.data?.data as any)?.map((i: any) => i.id)));
+                    } else {
+                      setSelectedIds(new Set());
+                    }
+                  }}
+                  className="h-4 w-4 rounded border-border text-primary focus:ring-primary/30 cursor-pointer"
+                />
+                <span className="text-xs text-muted-foreground">Select all</span>
+              </div>
+            )}
 
             {/* Orders List */}
-            <div className="space-y-6">
+            <div className="space-y-4">
               {ordersQuery.isLoading ? (
                 Array.from({ length: 3 }, (_, i) => (
                   <Card key={i} className="mb-2 p-6">
@@ -403,7 +459,7 @@ const MyOrdersPage = () => {
                     </div>
                   </Card>
                 ))
-              ) : !(ordersQuery?.data?.data as any)?.length ? (
+              ) : !displayItems.length ? (
                 <Card className="p-12 text-center">
                   <Package className="mx-auto mb-4 h-16 w-16 text-muted-foreground" />
                   <h3 className="mb-2 text-lg font-semibold text-foreground">
@@ -414,99 +470,78 @@ const MyOrdersPage = () => {
                   </p>
                 </Card>
               ) : (
-                (ordersQuery?.data?.data as any)?.map((item: any) => (
-                  <Link key={item.id} href={`/my-orders/${item.id}`}>
-                    <Card className="mb-2 cursor-pointer transition-shadow duration-200 hover:shadow-lg">
-                      <CardContent className="p-6">
-                        <div className="flex items-start gap-4">
-                          {/* Product Image */}
-                          <div className="flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-lg bg-muted">
-                            {/* Check for product image from productPrice (regular orders) or product (RFQ orders) */}
-                            {item.orderProduct_productPrice
-                              ?.productPrice_product?.productImages?.[0]
-                              ?.image ? (
-                              <img
-                                src={
-                                  item.orderProduct_productPrice
-                                    .productPrice_product.productImages[0].image
-                                }
-                                alt={
-                                  item.orderProduct_productPrice
-                                    ?.productPrice_product?.productName
-                                }
-                                className="h-full w-full rounded-lg object-cover"
-                              />
-                            ) : item.orderProduct_product?.productImages?.[0]
-                                ?.image ? (
-                              <img
-                                src={
-                                  item.orderProduct_product.productImages[0]
-                                    .image
-                                }
-                                alt={item.orderProduct_product?.productName}
-                                className="h-full w-full rounded-lg object-cover"
-                              />
-                            ) : (
-                              <Package className="h-8 w-8 text-muted-foreground" />
-                            )}
-                          </div>
-
-                          {/* Order Details */}
-                          <div className="min-w-0 flex-1">
-                            <div className="flex items-start justify-between">
-                              <div className="flex-1">
-                                <h3 className="mb-2 line-clamp-2 text-lg font-semibold text-foreground">
-                                  {item.orderProduct_productPrice
-                                    ?.productPrice_product?.productName ||
-                                    item.orderProduct_product?.productName ||
-                                    "Unknown Product"}
-                                </h3>
-                                <div className="mb-3 flex items-center gap-4 text-sm text-muted-foreground">
-                                  <span>
-                                    Order #{item.orderProduct_order?.orderNo || "N/A"}
-                                  </span>
-                                  <span>Qty: {item.orderQuantity || 0}</span>
-                                  <span className="font-semibold">
-                                    {currency?.symbol || "$"}
-                                    {item.orderProduct_order?.totalCustomerPay || 
-                                     item.purchasePrice || 
-                                     0}
-                                  </span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                  <Badge
-                                    className={`${getStatusColor(item.orderProductStatus)} flex items-center gap-1`}
-                                  >
-                                    {getStatusIcon(item.orderProductStatus)}
-                                    {item.orderProductStatus || "PENDING"}
-                                  </Badge>
-                                  <span className="text-sm text-muted-foreground">
-                                    {item.orderProductDate
-                                      ? new Date(
-                                          item.orderProductDate,
-                                        ).toLocaleDateString()
-                                      : item.orderProduct_order?.orderDate
-                                        ? new Date(
-                                            item.orderProduct_order.orderDate,
-                                          ).toLocaleDateString()
-                                        : item.orderProduct_order?.createdAt
-                                          ? new Date(
-                                              item.orderProduct_order.createdAt,
-                                            ).toLocaleDateString()
-                                          : item.createdAt
-                                            ? new Date(
-                                                item.createdAt,
-                                              ).toLocaleDateString()
-                                            : "N/A"}
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </Link>
+                displayItems.map((item: any) => (
+                  activeTab === "selling" ? (
+                    <SellerOrderCard
+                      key={item.id}
+                      id={item.id}
+                      orderProductType={item.orderProductType}
+                      productId={item.productId || item.orderProduct_product?.id}
+                      purchasePrice={String(item.purchasePrice || item.salePrice || 0)}
+                      productName={
+                        item.orderProduct_productPrice?.productPrice_product?.productName ||
+                        item.orderProduct_product?.productName || "Product"
+                      }
+                      produtctImage={
+                        item.orderProduct_productPrice?.productPrice_product?.productImages ||
+                        item.orderProduct_product?.productImages
+                      }
+                      orderQuantity={item.orderQuantity}
+                      orderId={item.orderProduct_order?.orderNo || item.orderNo || String(item.id)}
+                      orderStatus={item.orderProductStatus}
+                      orderProductDate={item.orderProductDate || item.createdAt}
+                      updatedAt={item.updatedAt}
+                      serviceFeature={item.serviceFeatures?.[0]?.serviceFeature}
+                      buyerName={
+                        item.orderProduct_order?.order_user
+                          ? `${item.orderProduct_order.order_user.firstName || ""} ${item.orderProduct_order.order_user.lastName || ""}`.trim()
+                          : item.buyerName || undefined
+                      }
+                      buyerEmail={item.orderProduct_order?.order_user?.email}
+                      buyerPhone={item.orderProduct_order?.order_user?.phoneNumber}
+                      buyerRating={4.2}
+                      buyerOrderCount={item.orderProduct_order?.order_user?.orderCount}
+                      selected={selectedIds.has(item.id)}
+                      onSelect={(oid, checked) => {
+                        setSelectedIds((prev) => {
+                          const next = new Set(prev);
+                          checked ? next.add(oid) : next.delete(oid);
+                          return next;
+                        });
+                      }}
+                      onStatusChange={() => {
+                        queryClient.invalidateQueries({ queryKey: ["orders-by-seller-id"] });
+                      }}
+                    />
+                  ) : (
+                    <BuyerOrderCard
+                      key={item.id}
+                      id={item.id}
+                      orderProductType={item.orderProductType}
+                      productId={item.productId || item.orderProduct_product?.id}
+                      purchasePrice={String(item.purchasePrice || item.salePrice || 0)}
+                      productName={
+                        item.orderProduct_productPrice?.productPrice_product?.productName ||
+                        item.orderProduct_product?.productName || "Product"
+                      }
+                      produtctImage={
+                        item.orderProduct_productPrice?.productPrice_product?.productImages ||
+                        item.orderProduct_product?.productImages
+                      }
+                      orderQuantity={item.orderQuantity}
+                      orderId={String(item.id)}
+                      orderNo={item.orderProduct_order?.orderNo || item.orderNo}
+                      orderStatus={item.orderProductStatus}
+                      orderProductDate={item.orderProductDate || item.createdAt}
+                      updatedAt={item.updatedAt}
+                      serviceFeature={item.serviceFeatures?.[0]?.serviceFeature}
+                      sellerName={
+                        item.orderProduct_productPrice?.adminDetail
+                          ? `${item.orderProduct_productPrice.adminDetail.firstName || ""} ${item.orderProduct_productPrice.adminDetail.lastName || ""}`.trim()
+                          : undefined
+                      }
+                    />
+                  )
                 ))
               )}
             </div>

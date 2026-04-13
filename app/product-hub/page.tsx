@@ -6,8 +6,13 @@ import SessionPanel from "@/components/rfq-builder/SessionPanel";
 import RequestListPanel from "@/components/rfq-builder/RequestListPanel";
 import ItemDetailPanel from "@/components/rfq-builder/ItemDetailPanel";
 import CartPanel from "@/components/rfq-builder/CartPanel";
-import { useAllRfqQuotesByBuyerId } from "@/apis/queries/rfq.queries";
+import { useAllRfqQuotesByBuyerId, useUpdateRfqCartWithLogin } from "@/apis/queries/rfq.queries";
+import { useUpdateCartWithLogin, useUpdateCartByDevice } from "@/apis/queries/cart.queries";
 import { usePageView, useTrackEvent } from "@/lib/analytics";
+import { useToast } from "@/components/ui/use-toast";
+import { getCookie } from "cookies-next";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
+import { getOrCreateDeviceId } from "@/utils/helper";
 
 export default function ProductHubPage() {
   const { user, langDir } = useAuth();
@@ -28,6 +33,55 @@ export default function ProductHubPage() {
   const [selectedItemName, setSelectedItemName] = useState<string | null>(null);
   const [sessionsCollapsed, setSessionsCollapsed] = useState(false);
   const [cartCollapsed, setCartCollapsed] = useState(false);
+  const [autoCreatedSessions, setAutoCreatedSessions] = useState<Array<{ id: string; title: string }>>([]);
+  // Shared filter categories between Panel 2 and Panel 3
+  const [activeCategories, setActiveCategories] = useState<Set<string>>(new Set());
+
+  // Load persisted state from localStorage on mount (client-only)
+  const persistLoaded = useRef(false);
+  useEffect(() => {
+    if (persistLoaded.current) return;
+    persistLoaded.current = true;
+    try {
+      const sess = localStorage.getItem("rfq_selected_session");
+      if (sess) setSelectedSessionId(sess);
+      const auto = localStorage.getItem("rfq_auto_sessions");
+      if (auto) setAutoCreatedSessions(JSON.parse(auto));
+      const itemId = localStorage.getItem("rfq_selected_item_id");
+      if (itemId) setSelectedItemId(itemId);
+      const itemName = localStorage.getItem("rfq_selected_item_name");
+      if (itemName) setSelectedItemName(itemName);
+    } catch {}
+  }, []);
+
+  // Persist to localStorage on change
+  useEffect(() => {
+    if (!persistLoaded.current) return;
+    try {
+      if (selectedSessionId) localStorage.setItem("rfq_selected_session", selectedSessionId);
+      else localStorage.removeItem("rfq_selected_session");
+    } catch {}
+  }, [selectedSessionId]);
+  useEffect(() => {
+    if (!persistLoaded.current) return;
+    try {
+      if (selectedItemId) localStorage.setItem("rfq_selected_item_id", selectedItemId);
+      else localStorage.removeItem("rfq_selected_item_id");
+      if (selectedItemName) localStorage.setItem("rfq_selected_item_name", selectedItemName);
+      else localStorage.removeItem("rfq_selected_item_name");
+    } catch {}
+  }, [selectedItemId, selectedItemName]);
+  useEffect(() => {
+    if (!persistLoaded.current) return;
+    try { localStorage.setItem("rfq_auto_sessions", JSON.stringify(autoCreatedSessions)); } catch {}
+  }, [autoCreatedSessions]);
+
+  // ── Add to RFQ cart mutation ──
+  const addToRfqCart = useUpdateRfqCartWithLogin();
+  const addToCartAuth = useUpdateCartWithLogin();
+  const addToCartDevice = useUpdateCartByDevice();
+  const { toast } = useToast();
+  const haveAccessToken = !!getCookie(ULTRASOOQ_TOKEN_KEY);
 
   // ── Step 1: Fetch real RFQ sessions ──
   const rfqSessionsQuery = useAllRfqQuotesByBuyerId(
@@ -96,6 +150,7 @@ export default function ProductHubPage() {
         newSearchQuery={searchQuery || undefined}
         rfqSessions={rfqSessions}
         rfqLoading={rfqSessionsQuery.isLoading}
+        externalSessions={autoCreatedSessions}
         onToggleCollapse={() => setSessionsCollapsed(!sessionsCollapsed)}
         onSelect={(id) => {
           setSelectedSessionId(id);
@@ -104,11 +159,12 @@ export default function ProductHubPage() {
           trackEvent("rfq_session_selected", { sessionId: id });
         }}
         onNewSession={() => {
-          setSelectedSessionId(null);
+          const newId = `new-rfq-${Date.now()}`;
+          setSelectedSessionId(newId);
           setSelectedItemId(null);
           setSelectedItemName(null);
           setNewSearchQuery(null);
-          trackEvent("rfq_new_session");
+          trackEvent("rfq_new_session", { sessionId: newId });
         }}
         onSessionRemoved={(id) => {
           if (id === selectedSessionId) {
@@ -123,7 +179,7 @@ export default function ProductHubPage() {
       />
 
       <RequestListPanel
-        selectedItemId={selectedSessionId ? selectedItemId : null}
+        selectedItemId={selectedItemId}
         onSelectItem={(id, name) => {
           setSelectedItemId(id);
           setSelectedItemName(name ?? null);
@@ -136,24 +192,60 @@ export default function ProductHubPage() {
           }
           trackEvent("rfq_item_removed", { itemId: id });
         }}
+        onRequestSession={() => {
+          const newId = `rfq-${Date.now()}`;
+          setSelectedSessionId(newId);
+          setAutoCreatedSessions((prev) => [...prev, { id: newId, title: "New RFQ" }]);
+          trackEvent("rfq_auto_session", { sessionId: newId });
+          return newId;
+        }}
         searchQuery={newSearchQuery ?? undefined}
         sessionId={selectedSessionId}
         locale={locale}
+        activeCategories={activeCategories}
+        onCategoryChange={setActiveCategories}
       />
 
       <ItemDetailPanel
-        selectedItemId={selectedSessionId ? selectedItemId : null}
+        selectedItemId={selectedItemId}
         searchTerm={selectedItemName ?? undefined}
-        onAddToCart={(productId) => {
+        onAddToCart={async (productPriceId, quantity) => {
+          const qty = quantity || 1;
+          try {
+            if (haveAccessToken) {
+              const res = await addToCartAuth.mutateAsync({ productPriceId, quantity: qty });
+              if (res?.status) toast({ title: "Added to cart", variant: "success" });
+            } else {
+              const deviceId = getOrCreateDeviceId() || "unknown";
+              const res = await addToCartDevice.mutateAsync({ productPriceId, quantity: qty, deviceId });
+              if (res?.status) toast({ title: "Added to cart", variant: "success" });
+            }
+          } catch (err: any) {
+            toast({ title: "Failed to add to cart", description: err?.message || "Please try again", variant: "destructive" });
+          }
+          trackEvent("product_add_to_cart", { productPriceId, quantity: qty });
+        }}
+        onAddToRfqCart={async (productId) => {
+          try {
+            const res = await addToRfqCart.mutateAsync({ productId, quantity: 1 });
+            if (res?.status) toast({ title: "Added to RFQ cart", variant: "success" });
+          } catch (err: any) {
+            toast({ title: "Failed to add to RFQ cart", description: err?.message || "Please try again", variant: "destructive" });
+          }
           trackEvent("rfq_add_to_cart", { productId });
         }}
         locale={locale}
+        activeCategories={activeCategories}
+        onCategoryChange={setActiveCategories}
       />
 
       <CartPanel
         locale={locale}
         collapsed={cartCollapsed}
         onToggleCollapse={() => setCartCollapsed(!cartCollapsed)}
+        onViewProduct={(productId) => {
+          window.open(`/trending/${productId}`, "_blank");
+        }}
       />
     </div>
   );

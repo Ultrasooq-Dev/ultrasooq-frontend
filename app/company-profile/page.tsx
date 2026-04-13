@@ -23,6 +23,9 @@ import {
 } from "@/utils/constants";
 import AccordionMultiSelectV2 from "@/components/shared/AccordionMultiSelectV2";
 import { useTags } from "@/apis/queries/tags.queries";
+import CategoryTreeModal from "@/components/shared/CategoryTreeModal";
+import { FolderTree } from "lucide-react";
+import { PRODUCT_CATEGORY_ID } from "@/utils/constants";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { Label } from "@/components/ui/label";
@@ -44,6 +47,8 @@ import { useCurrentAccount } from "@/apis/queries/auth.queries";
 const formSchema = (t: any) => {
   return z.object({
     uploadImage: z.any().optional(),
+    uploadCR: z.any().optional(),
+    crDocument: z.string().trim().optional(),
     logo: z.string().trim().optional(),
     companyName: z
       .string()
@@ -51,8 +56,10 @@ const formSchema = (t: any) => {
       .min(2, { message: t("company_name_required") })
       .max(50, { message: t("company_name_must_be_less_than_50_chars") }),
     businessTypeList: z
-      .string({ error: t("business_type_required") })
-      .transform((value) => [{ businessTypeId: Number(value) }]),
+      .array(z.object({ categoryId: z.number(), categoryLocation: z.string().optional() }))
+      .min(1, { message: t("business_type_required") })
+      .optional()
+      .default([]),
     annualPurchasingVolume: z
       .string()
       .trim()
@@ -98,8 +105,8 @@ const formSchema = (t: any) => {
           businessTypeList: z
             .array(
               z.object({
-                label: z.string().trim(),
-                value: z.number(),
+                categoryId: z.number(),
+                categoryLocation: z.string().optional(),
               }),
               {
                 error: t("business_type_required"),
@@ -109,11 +116,7 @@ const formSchema = (t: any) => {
               message: t("business_type_required"),
             })
             .transform((value) => {
-              const temp: any = [];
-              value.forEach((item) => {
-                temp.push({ businessTypeId: item.value });
-              });
-              return temp;
+              return value;
             }),
           address: z
             .string()
@@ -260,9 +263,14 @@ export default function CompanyProfilePage() {
     },
   });
   const [imageFile, setImageFile] = useState<FileList | null>();
+  const [crFile, setCrFile] = useState<FileList | null>();
   const currentAccount = useCurrentAccount();
   const countriesQuery = useCountries();
   const tagsQuery = useTags();
+  const [businessTypeModalOpen, setBusinessTypeModalOpen] = useState(false);
+  const [businessTypeModalField, setBusinessTypeModalField] = useState<string>("businessTypeList");
+  const [categoryModalOpen, setCategoryModalOpen] = useState(false);
+  const [categoryModalField, setCategoryModalField] = useState<string>("");
   const upload = useUploadFile();
   const createCompanyProfile = useCreateCompanyProfile();
 
@@ -409,6 +417,17 @@ export default function CompanyProfilePage() {
       data.logo = getImageUrl;
     }
 
+    // Handle CR document upload
+    formData.uploadCR = crFile;
+    let getCrUrl;
+    if (formData.uploadCR) {
+      getCrUrl = await handleUploadedFile(formData.uploadCR);
+    }
+    delete data.uploadCR;
+    if (getCrUrl) {
+      data.crDocument = getCrUrl;
+    }
+
     delete data.aboutUsJson;
 
     const response = await createCompanyProfile.mutateAsync(data);
@@ -553,6 +572,91 @@ export default function CompanyProfilePage() {
                     )}
                   />
 
+                  {/* CR Document Upload */}
+                  <FormField
+                    control={form.control}
+                    name="uploadCR"
+                    render={({ field }) => (
+                      <FormItem className="mb-3.5 w-full md:w-6/12 md:pl-3.5">
+                        <FormLabel dir={langDir} translate="no">
+                          {t("commercial_registration") || "Commercial Registration (CR)"}
+                        </FormLabel>
+                        <FormControl>
+                          <div className="relative m-auto h-64 w-full border-2 border-dashed border-border rounded-lg">
+                            <div className="relative h-full w-full">
+                              {crFile ? (
+                                <div className="flex h-full flex-col items-center justify-center">
+                                  <svg className="h-12 w-12 text-red-500 mb-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                    <polyline points="14 2 14 8 20 8" />
+                                    <line x1="16" y1="13" x2="8" y2="13" />
+                                    <line x1="16" y1="17" x2="8" y2="17" />
+                                    <polyline points="10 9 9 9 8 9" />
+                                  </svg>
+                                  <span className="text-sm font-semibold text-foreground">{crFile[0]?.name}</span>
+                                  <span className="text-xs text-muted-foreground mt-1">{(crFile[0]?.size / 1024 / 1024).toFixed(2)} MB</span>
+                                  <button
+                                    type="button"
+                                    onClick={() => setCrFile(null)}
+                                    className="mt-2 text-xs text-destructive hover:underline"
+                                  >
+                                    {t("remove") || "Remove"}
+                                  </button>
+                                </div>
+                              ) : (
+                                <div className="absolute my-auto h-full w-full text-center text-sm font-medium leading-4 text-color-dark">
+                                  <div className="flex h-full flex-col items-center justify-center">
+                                    <svg className="h-10 w-10 text-muted-foreground mb-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                      <polyline points="14 2 14 8 20 8" />
+                                      <line x1="12" y1="18" x2="12" y2="12" />
+                                      <polyline points="9 15 12 12 15 15" />
+                                    </svg>
+                                    <span dir={langDir} translate="no">
+                                      {t("upload_cr_document") || "Upload CR Document"}
+                                    </span>
+                                    <span className="text-primary">browse</span>
+                                    <p className="text-normal mt-2 text-xs leading-4 text-muted-foreground" dir={langDir} translate="no">
+                                      (PDF, max 10MB)
+                                    </p>
+                                  </div>
+                                </div>
+                              )}
+                              <Input
+                                type="file"
+                                accept=".pdf,application/pdf"
+                                multiple={false}
+                                className="bottom-0! h-64 w-full! opacity-0"
+                                {...field}
+                                onChange={(event) => {
+                                  if (event.target.files?.[0]) {
+                                    if (event.target.files[0].size > 10485760) {
+                                      toast({
+                                        title: t("file_size_should_be_less_than_size", { size: "10MB" }) || "File must be less than 10MB",
+                                        variant: "danger",
+                                      });
+                                      return;
+                                    }
+                                    if (!event.target.files[0].name.toLowerCase().endsWith(".pdf")) {
+                                      toast({
+                                        title: t("only_pdf_files_allowed") || "Only PDF files are allowed",
+                                        variant: "danger",
+                                      });
+                                      return;
+                                    }
+                                    setCrFile(event.target.files);
+                                  }
+                                }}
+                                id="uploadCR"
+                              />
+                            </div>
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
                   <div className="mb-3.5 w-full md:w-6/12 md:pl-3.5">
                     <ControlledTextInput
                       label={t("company_name")}
@@ -562,15 +666,43 @@ export default function CompanyProfilePage() {
                       translate="no"
                     />
 
-                    {/* TODO:fix this */}
-                    <ControlledSelectInput
-                      label={t("business_type")}
-                      name="businessTypeList"
-                      options={memoizedTags.map((item: OptionProps) => ({
-                        value: item.value?.toString(),
-                        label: item.label,
-                      }))}
-                    />
+                    <div>
+                      <Label className="mb-2 block text-sm font-medium" dir={langDir} translate="no">{t("business_type")}</Label>
+                      <button
+                        type="button"
+                        onClick={() => setBusinessTypeModalOpen(true)}
+                        className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg border border-border text-sm text-start hover:border-primary/50 transition-colors"
+                      >
+                        {(form.watch("businessTypeList") || []).length > 0 ? (
+                          <div className="flex flex-wrap gap-1">
+                            {(form.watch("businessTypeList") as any[]).map((item: any) => (
+                              <span key={item.categoryId} className="px-2 py-0.5 rounded bg-primary/10 text-xs font-medium text-primary">
+                                {item.name || `ID: ${item.categoryId}`}
+                              </span>
+                            ))}
+                          </div>
+                        ) : (
+                          <span className="text-muted-foreground">{t("select_business_type") || "Select Business Type"}</span>
+                        )}
+                        <FolderTree className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                      </button>
+                      <CategoryTreeModal
+                        open={businessTypeModalOpen && businessTypeModalField === "businessTypeList"}
+                        onClose={() => setBusinessTypeModalOpen(false)}
+                        onSelect={(selected) => {
+                          form.setValue("businessTypeList", selected.map((s) => ({
+                            categoryId: s.categoryId,
+                            categoryLocation: s.categoryLocation,
+                            name: s.name,
+                          })));
+                        }}
+                        initialSelected={(form.watch("businessTypeList") || []).map((item: any) => ({
+                          categoryId: item.categoryId,
+                          categoryLocation: item.categoryLocation || "",
+                          name: item.name || "",
+                        }))}
+                      />
+                    </div>
 
                     <ControlledTextInput
                       label={t("annual_purchasing_volume")}
@@ -709,16 +841,46 @@ export default function CompanyProfilePage() {
             {fieldArray.fields.map((field, index) => (
               <div key={field.id}>
                 <div className="mb-3.5 w-full">
-                  <AccordionMultiSelectV2
-                    label={t("business_type")}
-                    name={`branchList.${index}.businessTypeList`}
-                    options={memoizedTags || []}
-                    placeholder={t("business_type")}
-                    error={String(
-                      form.formState.errors?.branchList?.[index]
-                        ?.businessTypeList?.message || "",
+                  <div>
+                    <Label className="mb-2 block text-sm font-medium" dir={langDir} translate="no">{t("business_type")}</Label>
+                    <button
+                      type="button"
+                      onClick={() => { setBusinessTypeModalField(`branchList.${index}.businessTypeList`); setBusinessTypeModalOpen(true); }}
+                      className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg border border-border text-sm text-start hover:border-primary/50 transition-colors"
+                    >
+                      {(form.watch(`branchList.${index}.businessTypeList`) || []).length > 0 ? (
+                        <div className="flex flex-wrap gap-1">
+                          {(form.watch(`branchList.${index}.businessTypeList`) as any[]).map((item: any) => (
+                            <span key={item.categoryId} className="px-2 py-0.5 rounded bg-primary/10 text-xs font-medium text-primary">
+                              {item.name || `ID: ${item.categoryId}`}
+                            </span>
+                          ))}
+                        </div>
+                      ) : (
+                        <span className="text-muted-foreground">{t("select_business_type") || "Select Business Type"}</span>
+                      )}
+                      <FolderTree className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                    </button>
+                    <CategoryTreeModal
+                      open={businessTypeModalOpen && businessTypeModalField === `branchList.${index}.businessTypeList`}
+                      onClose={() => setBusinessTypeModalOpen(false)}
+                      onSelect={(selected) => {
+                        form.setValue(`branchList.${index}.businessTypeList`, selected.map((s) => ({
+                          categoryId: s.categoryId,
+                          categoryLocation: s.categoryLocation,
+                          name: s.name,
+                        })));
+                      }}
+                      initialSelected={(form.watch(`branchList.${index}.businessTypeList`) || []).map((item: any) => ({
+                        categoryId: item.categoryId,
+                        categoryLocation: item.categoryLocation || "",
+                        name: item.name || "",
+                      }))}
+                    />
+                    {form.formState.errors?.branchList?.[index]?.businessTypeList?.message && (
+                      <p className="mt-1 text-xs text-destructive">{String(form.formState.errors.branchList[index]?.businessTypeList?.message)}</p>
                     )}
-                  />
+                  </div>
 
                   <FormField
                     control={form.control}
@@ -1127,9 +1289,45 @@ export default function CompanyProfilePage() {
                   /> */}
                 </div>
 
-                <MultiSelectCategory
-                  name={`branchList.${index}.categoryList`}
-                />
+                <div className="mb-3.5">
+                  <Label className="mb-2 block text-sm font-medium" dir={langDir} translate="no">{t("categories") || "Product / Service Categories"}</Label>
+                  <button
+                    type="button"
+                    onClick={() => { setCategoryModalField(`branchList.${index}.categoryList`); setCategoryModalOpen(true); }}
+                    className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg border border-border text-sm text-start hover:border-primary/50 transition-colors"
+                  >
+                    {(form.watch(`branchList.${index}.categoryList`) || []).length > 0 ? (
+                      <div className="flex flex-wrap gap-1">
+                        {(form.watch(`branchList.${index}.categoryList`) as any[]).map((item: any, ci: number) => (
+                          <span key={ci} className="px-2 py-0.5 rounded bg-blue-50 text-xs font-medium text-blue-700">
+                            {item.name || `ID: ${item.categoryId}`}
+                          </span>
+                        ))}
+                      </div>
+                    ) : (
+                      <span className="text-muted-foreground">{t("select_categories") || "Select Product / Service Categories"}</span>
+                    )}
+                    <FolderTree className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                  </button>
+                  <CategoryTreeModal
+                    open={categoryModalOpen && categoryModalField === `branchList.${index}.categoryList`}
+                    onClose={() => setCategoryModalOpen(false)}
+                    rootCategoryId={PRODUCT_CATEGORY_ID}
+                    title={t("categories") || "Product / Service Categories"}
+                    onSelect={(selected) => {
+                      form.setValue(`branchList.${index}.categoryList`, selected.map((s) => ({
+                        categoryId: s.categoryId,
+                        categoryLocation: s.categoryLocation,
+                        name: s.name,
+                      })));
+                    }}
+                    initialSelected={(form.watch(`branchList.${index}.categoryList`) || []).map((item: any) => ({
+                      categoryId: item.categoryId,
+                      categoryLocation: item.categoryLocation || "",
+                      name: item.name || "",
+                    }))}
+                  />
+                </div>
 
                 <div className="mb-3.5 flex w-full justify-end border-b-2 border-dashed border-border pb-4">
                   <div className="mb-3.5 flex w-full border-b-2 border-dashed border-border pb-4">

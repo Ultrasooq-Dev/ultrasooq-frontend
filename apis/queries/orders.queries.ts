@@ -4,6 +4,25 @@ import {
   useInfiniteQuery,
   useQueryClient,
 } from "@tanstack/react-query";
+import { useEffect } from "react";
+
+/**
+ * Hook: auto-invalidate order queries when real-time order:status socket event fires.
+ * Use in any page that shows order data.
+ */
+export const useOrderStatusSync = () => {
+  const queryClient = useQueryClient();
+  useEffect(() => {
+    const handler = () => {
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
+      queryClient.invalidateQueries({ queryKey: ["orders-by-seller-id"] });
+      queryClient.invalidateQueries({ queryKey: ["order-by-id"] });
+      queryClient.invalidateQueries({ queryKey: ["delivery-timeline"] });
+    };
+    window.addEventListener("order:status:update", handler);
+    return () => window.removeEventListener("order:status:update", handler);
+  }, [queryClient]);
+};
 import {
   createEMIPayment,
   createOrder,
@@ -534,6 +553,68 @@ export const useSetPickupWindow = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["pickup-code"] });
       queryClient.invalidateQueries({ queryKey: ["pending-pickups"] });
+    },
+  });
+};
+
+// ─── Complaint + Refund + Bulk + Stage hooks ────────────────────
+
+export const useSubmitComplaint = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (payload: { orderProductId: number; reason: string; description: string }) => {
+      const { submitComplaint } = await import("@/apis/requests/orders.requests");
+      const res = await submitComplaint(payload);
+      return res?.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
+      queryClient.invalidateQueries({ queryKey: ["order-by-id"] });
+    },
+  });
+};
+
+export const useRequestRefund = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (payload: { orderProductId: number; reason: string; notes?: string; amount?: number }) => {
+      const { requestRefund } = await import("@/apis/requests/orders.requests");
+      const res = await requestRefund(payload);
+      return res?.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
+      queryClient.invalidateQueries({ queryKey: ["order-by-id"] });
+    },
+  });
+};
+
+export const useBulkUpdateOrderStatus = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (payload: { orderProductIds: number[]; status: string; notes?: string }) => {
+      const { bulkUpdateOrderStatus } = await import("@/apis/requests/orders.requests");
+      const res = await bulkUpdateOrderStatus(payload);
+      return res?.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["orders-by-seller-id"] });
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
+    },
+  });
+};
+
+export const useAddDeliveryStageUpdate = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (payload: { orderProductId: number; stage: string; note?: string; location?: string }) => {
+      const { addDeliveryStageUpdate } = await import("@/apis/requests/orders.requests");
+      const res = await addDeliveryStageUpdate(payload);
+      return res?.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["delivery-timeline"] });
+      queryClient.invalidateQueries({ queryKey: ["order-by-id"] });
     },
   });
 };

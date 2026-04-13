@@ -436,3 +436,71 @@ export const setPickupWindow = (payload: {
     },
   });
 };
+
+// ─── Complaint + Refund + Bulk + Stage ──────────────────────────
+
+export const submitComplaint = (payload: {
+  orderProductId: number;
+  reason: string;
+  description: string;
+}) => {
+  return axios({
+    method: "POST",
+    url: `${getApiUrl()}/order/buyer/submit-complaint`,
+    data: payload,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
+    },
+  });
+};
+
+export const requestRefund = (payload: {
+  orderProductId: number;
+  reason: string;
+  notes?: string;
+  amount?: number;
+}) => {
+  return axios({
+    method: "POST",
+    url: `${getApiUrl()}/order/buyer/request-refund`,
+    data: payload,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
+    },
+  });
+};
+
+export const bulkUpdateOrderStatus = (payload: {
+  orderProductIds: number[];
+  status: string;
+  notes?: string;
+}) => {
+  return axios({
+    method: "POST",
+    url: `${getApiUrl()}/order/vendor/bulk-update-status`,
+    data: payload,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
+    },
+  });
+};
+
+export const addDeliveryStageUpdate = (payload: {
+  orderProductId: number;
+  stage: string;
+  note?: string;
+  location?: string;
+}) => {
+  return axios({
+    method: "POST",
+    url: `${getApiUrl()}/order/vendor/add-stage-update`,
+    data: payload,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
+    },
+  });
+};

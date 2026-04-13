@@ -45,9 +45,14 @@ Unified 4-panel page for product search, RFQ creation, and direct purchasing. Re
 
 ## Panel 3 — Product Detail (3 tabs)
 ### Tab 1: Products
-- Real search from `GET /product/getAllProduct?term=X`
+- Real search from `GET /product/search/unified?q=X` (intelligent search with query parsing)
+- Fallback: `GET /product/getAllProduct?term=X`
 - "Can't find?" → Create RFQ | AI Suggest (50/day with counter)
-- Filter bar: Sort + Retail/Wholesale/BuyGroup chips + Customizable toggle + expandable dynamic filters from category SpecTemplate
+- **Filter chip bar (8 chips)**: Retail | Wholesale | Buy Group | Customizable | Discount | RFQ | Vendor Store | Service
+- Chips map to backend params: `productType`, `sellType`, `hasDiscount`, `isCustomProduct`
+- Sort dropdown: Price Low→High, Price High→Low, Rating, Delivery, Discount
+- Advanced Filters panel: Rating stars, In Stock, Discount + dynamic category SpecTemplate filters
+- Full docs: `docs/filter-chip-system.md`
 - Per product: RFQ button + Buy/Customize button
 - Discussion chat at bottom (50/day limit)
 

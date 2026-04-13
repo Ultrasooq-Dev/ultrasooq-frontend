@@ -116,7 +116,7 @@ export default function MessagesPage() {
             channelId={selectedChannelId}
             selectedId={chatPersonId}
             collapsed={p2.collapsed}
-            onSelect={(id) => selectPerson(id)}
+            onSelect={(id) => selectPerson(id, id)}
             locale={locale}
           />
         </div>

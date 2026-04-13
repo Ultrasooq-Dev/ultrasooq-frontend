@@ -1,171 +1,450 @@
+/**
+ * ItemDetailPanel — Panel 3 of Product Hub (/product-hub)
+ *
+ * Features: Product search, 8-chip filter system, product detail view,
+ *           buy/customize tab, specs & requirements tab
+ *
+ * Filter system docs: docs/filter-chip-system.md
+ * Product Hub docs:   frontend/docs/PRODUCT-HUB.md
+ * Search engine docs: docs/product-intelligence-engine.md
+ *
+ * Backend endpoints:
+ *   GET /product/search/unified  — Intelligent search with filter chips
+ *   GET /product/getAllProduct    — Fallback traditional search
+ *   GET /product/findOne          — Full product detail
+ */
 "use client";
 import React, { useState, useEffect, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import http from "@/apis/http";
+import { getApiUrl } from "@/config/api";
 import { track } from "@/lib/analytics";
+import { useAuth } from "@/context/AuthContext";
+import { checkCategoryConnection } from "@/utils/categoryConnection";
+import { useVendorBusinessCategories } from "@/hooks/useVendorBusinessCategories";
+import { useCurrentAccount } from "@/apis/queries/auth.queries";
+import { useTrackProductClick, useTrackProductSearch } from "@/apis/queries/product.queries";
+import { getOrCreateDeviceId } from "@/utils/helper";
 import {
-  Star, ShoppingCart, Send, Paperclip, MapPin, Truck, Shield,
-  MessageSquare, FileText, X, Image, Edit3, ChevronDown, ChevronUp,
-  Check, Eye, CreditCard, Zap, Minus, Plus, SlidersHorizontal, ArrowUpDown, RotateCcw, Wrench, ChevronRight,
+  Star, ShoppingCart, Send, Paperclip,
+  MessageSquare, FileText, X, Image, ChevronDown, ChevronUp,
+  Eye, Zap, Plus, Wrench, Loader2, Tag,
 } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
-// ─── Mock Data ──────────────────────────────────────────────────
-const MOCK_PRODUCTS = [
-  {
-    id: 1, name: "Sony WH-1000XM5", price: 95, rating: 4.7, reviews: 234,
-    seller: "Tech Store Oman", delivery: "3-5 days", inStock: true, stock: 120,
-    specs: [
-      ["Driver", "30mm"], ["ANC", "Adaptive, Auto Optimizer"], ["BT", "5.2 LDAC"],
-      ["Battery", "30hrs"], ["Charge", "USB-C, 3min=3hrs"], ["Weight", "250g"],
-      ["Fold", "Yes"], ["Mics", "8, AI noise reduction"], ["Multipoint", "2 devices"],
-    ],
-  },
-  {
-    id: 2, name: "JBL Tune 770NC", price: 45, rating: 4.3, reviews: 156,
-    seller: "Audio World LLC", delivery: "2-4 days", inStock: true, stock: 85,
-    specs: [
-      ["Driver", "40mm"], ["ANC", "Adaptive"], ["BT", "5.3 AAC"],
-      ["Battery", "44hrs"], ["Charge", "USB-C, 5min=3hrs"], ["Weight", "226g"],
-      ["Fold", "Yes"], ["Mics", "Built-in VoiceAware"], ["Multipoint", "2 devices"],
-    ],
-  },
-  {
-    id: 3, name: "Bose QC Ultra", price: 120, rating: 4.8, reviews: 89,
-    seller: "Premium Electronics", delivery: "5-7 days", inStock: false, stock: 0,
-    specs: [
-      ["Driver", "35mm"], ["ANC", "CustomTune Quiet/Aware"], ["BT", "5.3 aptX"],
-      ["Battery", "24hrs"], ["Charge", "USB-C, 15min=2.5hrs"], ["Weight", "250g"],
-      ["Fold", "Yes + case"], ["Mics", "6, wind rejection"], ["Multipoint", "Yes + Snapdragon"],
-    ],
-  },
-  {
-    id: 4, name: "Samsung AKG N700", price: 65, rating: 4.1, reviews: 67,
-    seller: "Gulf Gadgets", delivery: "3-5 days", inStock: true, stock: 30,
-    specs: [
-      ["Driver", "40mm"], ["ANC", "Adaptive + Ambient"], ["BT", "5.0 Scalable"],
-      ["Battery", "20hrs"], ["Charge", "USB-C"], ["Weight", "264g"],
-      ["Fold", "Yes"], ["Mics", "3 total"], ["Multipoint", "No"],
-    ],
-  },
-];
-
-const MOCK_MESSAGES = [
-  { id: 1, isOwn: false, text: "Found 4 matching products. Sony WH-1000XM5 is the best for ANC.", time: "2m" },
-  { id: 2, isOwn: true, text: "Do they come with warranty? Need at least 1 year.", time: "1m" },
-  { id: 3, isOwn: false, text: "Yes, all include 1yr. Tech Store offers 2yrs.", time: "now" },
-];
-
-// Vendor listings PER product model — keyed by product ID
-// When customer selects a model from Products tab, this shows all vendors selling it
-const VENDOR_LISTINGS: Record<number, Array<{
-  id: number; seller: string; price: number; originalPrice: number; discount: number;
-  stock: number; rating: number; warranty: string; origin: string; shipping: string; minOrder: number;
-  description: string; specs: string[][];
-}>> = {
-  1: [ // Sony WH-1000XM5
-    { id: 101, seller: "Tech Store Oman", price: 92, originalPrice: 110, discount: 16, stock: 120, rating: 4.8, warranty: "2 years", origin: "Japan", shipping: "Free over 50 OMR", minOrder: 1,
-      description: "Authorized dealer. Factory sealed with full warranty.", specs: [["Driver", "30mm"], ["ANC", "Adaptive"], ["BT", "5.2 LDAC"], ["Battery", "30hrs"], ["Weight", "250g"]] },
-    { id: 102, seller: "Gulf Electronics", price: 88, originalPrice: 110, discount: 20, stock: 45, rating: 4.5, warranty: "1 year", origin: "UAE Import", shipping: "3-5 days", minOrder: 5,
-      description: "Bulk pricing available. Min order 5 units.", specs: [["Driver", "30mm"], ["ANC", "Adaptive"], ["BT", "5.2 LDAC"], ["Battery", "30hrs"], ["Weight", "250g"]] },
-    { id: 103, seller: "Premium Audio Co.", price: 95, originalPrice: 110, discount: 14, stock: 200, rating: 4.9, warranty: "3 years", origin: "Japan", shipping: "Next day delivery", minOrder: 1,
-      description: "Official Sony partner. Extended 3-year warranty included.", specs: [["Driver", "30mm"], ["ANC", "Adaptive"], ["BT", "5.2 LDAC"], ["Battery", "30hrs"], ["Weight", "250g"]] },
-    { id: 104, seller: "Sound Wave LLC", price: 85, originalPrice: 110, discount: 23, stock: 15, rating: 4.2, warranty: "1 year", origin: "China Import", shipping: "5-7 days", minOrder: 10,
-      description: "Best bulk price. Minimum 10 units. Custom packaging available.", specs: [["Driver", "30mm"], ["ANC", "Adaptive"], ["BT", "5.2 LDAC"], ["Battery", "30hrs"], ["Weight", "250g"]] },
-  ],
-  2: [ // JBL Tune 770NC
-    { id: 201, seller: "Audio World LLC", price: 42, originalPrice: 55, discount: 24, stock: 85, rating: 4.3, warranty: "1 year", origin: "China", shipping: "3-5 days", minOrder: 1,
-      description: "JBL authorized. Full warranty.", specs: [["Driver", "40mm"], ["ANC", "Adaptive"], ["BT", "5.3"], ["Battery", "44hrs"], ["Weight", "226g"]] },
-    { id: 202, seller: "Tech Store Oman", price: 45, originalPrice: 55, discount: 18, stock: 60, rating: 4.8, warranty: "2 years", origin: "China", shipping: "Free over 50 OMR", minOrder: 1,
-      description: "Extended 2-year warranty. Free carrying case.", specs: [["Driver", "40mm"], ["ANC", "Adaptive"], ["BT", "5.3"], ["Battery", "44hrs"], ["Weight", "226g"]] },
-  ],
-  3: [ // Bose QC Ultra
-    { id: 301, seller: "Premium Electronics", price: 120, originalPrice: 140, discount: 14, stock: 30, rating: 4.7, warranty: "2 years", origin: "USA", shipping: "5-7 days", minOrder: 1,
-      description: "Bose authorized dealer. CustomTune technology.", specs: [["Driver", "35mm"], ["ANC", "CustomTune"], ["BT", "5.3 aptX"], ["Battery", "24hrs"], ["Weight", "250g"]] },
-  ],
-  4: [ // Samsung AKG N700
-    { id: 401, seller: "Gulf Gadgets", price: 62, originalPrice: 75, discount: 17, stock: 30, rating: 4.1, warranty: "1 year", origin: "South Korea", shipping: "3-5 days", minOrder: 1,
-      description: "Samsung authorized. AKG-tuned sound.", specs: [["Driver", "40mm"], ["ANC", "Adaptive"], ["BT", "5.0"], ["Battery", "20hrs"], ["Weight", "264g"]] },
-    { id: 402, seller: "Mobile Hub Oman", price: 58, originalPrice: 75, discount: 23, stock: 12, rating: 4.0, warranty: "6 months", origin: "Import", shipping: "3-5 days", minOrder: 3,
-      description: "Competitive bulk price. Min 3 units.", specs: [["Driver", "40mm"], ["ANC", "Adaptive"], ["BT", "5.0"], ["Battery", "20hrs"], ["Weight", "264g"]] },
-  ],
-};
-
-// For the product detail view, flatten all vendor listings
-const ALL_VENDOR_LISTINGS = Object.values(VENDOR_LISTINGS).flat();
+// ─── Extracted components ───────────────────────────────────────
+import {
+  FilterChipBar, SortViewBar, AdvancedFilterPanel,
+  FILTER_CHIPS, CHIP_STYLES, CATEGORY_FILTERS,
+  type FilterChipKey, type FilterChipDef,
+} from "./cards/FilterChipBar";
+import { ProductGridCard } from "./cards/ProductGridCard";
+import { ProductListCard } from "./cards/ProductListCard";
+import { ProductDetailView } from "./panels/ProductDetailView";
+import { BuyTab } from "./panels/BuyTab";
 
 // ─── Component ──────────────────────────────────────────────────
 interface ItemDetailPanelProps {
   selectedItemId: string | null;
   searchTerm?: string;
-  onAddToCart: (productId: number) => void;
+  onAddToCart: (productPriceId: number, quantity?: number) => void;
+  onAddToRfqCart?: (productId: number) => void;
   onSelectProduct?: (product: any) => void;
   locale: string;
+  activeCategories?: Set<string>;
+  onCategoryChange?: (categories: Set<string>) => void;
 }
 
-export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCart, onSelectProduct, locale }: ItemDetailPanelProps) {
+export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCart, onAddToRfqCart, onSelectProduct, locale, activeCategories, onCategoryChange }: ItemDetailPanelProps) {
   const isAr = locale === "ar";
+  // Auth & pricing context — same hooks as ProductDescriptionCard
+  const { user, currency } = useAuth();
+  const currentAccount = useCurrentAccount();
+  const vendorBusinessCategoryIds = useVendorBusinessCategories();
+  const currentTradeRole = currentAccount?.data?.data?.account?.tradeRole || user?.tradeRole;
   const [chatInput, setChatInput] = useState("");
   const [searchPage, setSearchPage] = useState(1);
 
+  // Tracking hooks
+  const trackClick = useTrackProductClick();
+  const trackSearch = useTrackProductSearch();
+
   // AI usage: 50/day free — TODO: track via API, for now localStorage
-  const [aiUsedToday] = useState(() => {
-    if (typeof window === "undefined") return 0;
+  const [aiUsedToday, setAiUsedToday] = useState(0);
+  const [aiResetHours, setAiResetHours] = useState(24);
+  useEffect(() => {
     try {
       const stored = JSON.parse(localStorage.getItem("us_ai_suggest") ?? "{}");
       const today = new Date().toDateString();
-      return stored.date === today ? (stored.count ?? 0) : 0;
-    } catch { return 0; }
-  });
-  const aiResetHours = Math.max(1, 24 - new Date().getHours());
+      setAiUsedToday(stored.date === today ? (stored.count ?? 0) : 0);
+      setAiResetHours(Math.max(1, 24 - new Date().getHours()));
+    } catch {}
+  }, []);
   const PRODUCTS_PER_PAGE = 5;
 
-  // Reset page when search term changes
+  // ── Filter chips state — synced with parent (Panel 2 shares same state) ──
+  const [localChips, setLocalChips] = useState<Set<FilterChipKey>>(new Set());
+  const activeChipsEarly = (activeCategories ?? localChips) as Set<FilterChipKey>;
+  const setActiveChipsEarly = (val: Set<FilterChipKey> | ((prev: Set<FilterChipKey>) => Set<FilterChipKey>)) => {
+    if (typeof val === "function") {
+      const next = val(activeChipsEarly);
+      if (onCategoryChange) onCategoryChange(next);
+      else setLocalChips(next);
+    } else {
+      if (onCategoryChange) onCategoryChange(val);
+      else setLocalChips(val);
+    }
+  };
+  // Collect active chip definitions (not merged — kept separate for OR logic)
+  const activeChipDefs = useMemo(() =>
+    FILTER_CHIPS.filter((c) => activeChipsEarly.has(c.key)),
+    [activeChipsEarly],
+  );
+  // For single-chip search mode, merge params (backward compat)
+  const chipFilterParamsEarly = useMemo(() => {
+    if (activeChipDefs.length === 1) return { ...activeChipDefs[0].params };
+    // Multi-chip: don't merge (would overwrite), handle in queryFn with OR logic
+    if (activeChipDefs.length > 1) return { _multiChip: "true" };
+    return {};
+  }, [activeChipDefs]);
+
+  // Reset page when search term or filters change
   useEffect(() => { setSearchPage(1); }, [searchTerm]);
 
-  // ── Real product search — uses main store search (same as header search) ──
+  // Detect browse mode: chips active but no search term
+  const hasActiveChips = activeChipsEarly.size > 0;
+  const isBrowseMode = hasActiveChips && !searchTerm?.trim();
+
+  // Shared chip matcher — used by both browse and search modes
+  const matchesChip = (p: any, chip: typeof FILTER_CHIPS[0]) => {
+    const cp = chip.params;
+    const prices: any[] = p.product_productPrice ?? [];
+    if (cp.productType && p.productType !== cp.productType) return false;
+    if (cp.sellType) {
+      const hasSellType = prices.some((pp: any) => pp.sellType === cp.sellType && !pp.deletedAt && pp.status === "ACTIVE");
+      if (!hasSellType) return false;
+    }
+    if (cp.hasDiscount === "true") {
+      const hasDiscount = prices.some((pp: any) => Number(pp.offerPrice) > 0 && Number(pp.offerPrice) < Number(pp.productPrice))
+        || (Number(p.offerPrice) > 0 && Number(p.offerPrice) < Number(p.productPrice));
+      if (!hasDiscount) return false;
+    }
+    if (cp.isCustomProduct === "true") {
+      const isCustom = prices.some((pp: any) => pp.isCustomProduct === "true" || pp.isCustomProduct === true) || p.isCustomProduct === true;
+      if (!isCustom) return false;
+    }
+    if (Object.keys(cp).length === 0) return false;
+    return true;
+  };
+
+  // ── Real product search — uses unified intelligent search ──
+  // Fires on search term OR chip-only browse
   const productSearchQuery = useQuery({
-    queryKey: ["product-hub-search", searchTerm, searchPage],
+    queryKey: ["product-hub-search", searchTerm, searchPage, JSON.stringify(chipFilterParamsEarly)],
     queryFn: async () => {
-      if (!searchTerm) return { data: [], totalCount: 0 };
+      const cleanTerm = searchTerm?.trim() || "";
+      const hasFilters = Object.keys(chipFilterParamsEarly).length > 0;
+      if (!cleanTerm && !hasFilters) return { data: [], totalCount: 0 };
+
+      // ── Browse mode: no search term, chips only → use getAllProduct + OR filter ──
+      if (!cleanTerm && hasFilters) {
+        try {
+          // Pass allSellTypes=true so BUYGROUP/WHOLESALE/TRIAL products also appear
+          const needsAllTypes = activeChipDefs.some((c) =>
+            c.key === "buygroup" || c.key === "wholesale" || c.key === "discount" || c.key === "service" || c.key === "vendor_store"
+          );
+          const res = await http.get(`${getApiUrl()}/product/getAllProduct`, {
+            params: { page: 1, limit: 200, ...(needsAllTypes ? { allSellTypes: "true" } : {}) },
+          });
+          const allProducts = res.data?.data ?? [];
+
+          // OR logic using shared matchesChip
+          const filtered = activeChipDefs.length > 0
+            ? allProducts.filter((p: any) => activeChipDefs.some((chip) => matchesChip(p, chip)))
+            : allProducts;
+
+          // Sort by views (trending)
+          filtered.sort((a: any, b: any) => (b.productViewCount ?? 0) - (a.productViewCount ?? 0));
+          const page = filtered.slice((searchPage - 1) * PRODUCTS_PER_PAGE, searchPage * PRODUCTS_PER_PAGE);
+          return { data: page, totalCount: filtered.length };
+        } catch (err: any) {
+          console.error("[Browse] getAllProduct failed:", err?.message);
+          return { data: [], totalCount: 0 };
+        }
+      }
+
+      // ── Search mode: term + optional chip filters ──
+      // For single chip, pass params to backend. For multi/no chips, filter client-side after search.
+      const singleChipParams = activeChipDefs.length === 1 ? activeChipDefs[0].params : {};
+      let searchData: any[] = [];
+      let searchTotal = 0;
+
       try {
-        const res = await http({ method: "GET", url: "/product/getAllProduct", params: { page: searchPage, limit: PRODUCTS_PER_PAGE, term: searchTerm } });
-        const data = res.data?.data ?? [];
-        const totalCount = res.data?.totalCount ?? 0;
-        if (Array.isArray(data) && data.length > 0) return { data, totalCount };
-      } catch {}
-      try {
-        const res = await http({ method: "GET", url: "/product/searchExistingProducts", params: { page: searchPage, limit: PRODUCTS_PER_PAGE, term: searchTerm } });
-        return { data: res.data?.data ?? [], totalCount: res.data?.totalCount ?? 0 };
-      } catch {}
+        const res = await http.get(`${getApiUrl()}/product/search/unified`, {
+          params: { q: cleanTerm, page: searchPage, limit: hasActiveChips ? 50 : PRODUCTS_PER_PAGE, ...singleChipParams },
+        });
+        searchData = res.data?.data ?? [];
+        searchTotal = res.data?.totalCount ?? 0;
+      } catch (err: any) {
+        console.error("[Search] Unified failed:", err?.response?.status, err?.message);
+        // Fallback to traditional search
+        try {
+          const res = await http.get(`${getApiUrl()}/product/getAllProduct`, { params: { page: searchPage, limit: hasActiveChips ? 50 : PRODUCTS_PER_PAGE, term: cleanTerm } });
+          searchData = res.data?.data ?? [];
+          searchTotal = res.data?.totalCount ?? 0;
+        } catch {}
+      }
+
+      // If multi-chip active, apply client-side OR filtering on search results
+      if (activeChipDefs.length > 1 && searchData.length > 0) {
+        searchData = searchData.filter((p: any) => activeChipDefs.some((chip) => matchesChip(p, chip)));
+        searchTotal = searchData.length;
+      }
+
+      if (searchData.length > 0) {
+        const page = searchData.slice(0, PRODUCTS_PER_PAGE);
+        return { data: page, totalCount: searchTotal };
+      }
       return { data: [], totalCount: 0 };
     },
-    enabled: !!searchTerm && searchTerm.length >= 1,
+    enabled: (!!searchTerm && searchTerm.length >= 1) || hasActiveChips,
     staleTime: 30_000,
   });
+
+  // Track search when results arrive for a search term
+  useEffect(() => {
+    if (searchTerm && searchTerm.trim().length >= 1 && productSearchQuery.isSuccess) {
+      trackSearch.mutate({
+        searchTerm: searchTerm.trim(),
+        deviceId: getOrCreateDeviceId() || undefined,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchTerm, productSearchQuery.isSuccess]);
 
   // Map real products
   const totalProductCount = productSearchQuery?.data?.totalCount ?? 0;
   const totalPages = Math.ceil(totalProductCount / PRODUCTS_PER_PAGE);
 
+  // Group by model (deduplicate by product name) — show unique models, not duplicate listings
   const realProducts = useMemo(() => {
     const data = productSearchQuery?.data?.data ?? [];
     if (!Array.isArray(data) || data.length === 0) return null;
-    return data.map((p: any) => ({
-      id: p.id,
-      name: p.productName ?? p.name ?? `Product #${p.id}`,
-      price: Number(p.offerPrice ?? p.productPrice ?? 0),
-      rating: p.rating ?? 4.0,
-      reviews: p.reviewCount ?? 0,
-      seller: p.adminName ?? p.sellerName ?? "Vendor",
-      delivery: "3-5 days",
-      inStock: true,
-      stock: p.stock ?? 50,
-      specs: [] as string[][],
-    }));
+
+    // Group by normalized product name → unique models
+    const modelMap = new Map<string, {
+      id: number;
+      name: string;
+      minPrice: number;
+      maxPrice: number;
+      sellers: number;
+      bestRating: number;
+      totalReviews: number;
+      allIds: number[];
+    }>();
+
+    for (const p of data) {
+      const name = (p.productName ?? p.name ?? `Product #${p.id}`).trim();
+      // Normalize: trim to first 80 chars for grouping (handles slight title variations)
+      const key = name.substring(0, 80).toLowerCase();
+      const price = Number(p.offerPrice ?? p.productPrice ?? 0);
+
+      if (modelMap.has(key)) {
+        const model = modelMap.get(key)!;
+        model.minPrice = Math.min(model.minPrice, price);
+        model.maxPrice = Math.max(model.maxPrice, price);
+        model.sellers++;
+        model.bestRating = Math.max(model.bestRating, p.rating ?? 4.0);
+        model.totalReviews += p.reviewCount ?? 0;
+        model.allIds.push(p.id);
+      } else {
+        modelMap.set(key, {
+          id: p.id,
+          name,
+          minPrice: price,
+          maxPrice: price,
+          sellers: 1,
+          bestRating: p.rating ?? 4.0,
+          totalReviews: p.reviewCount ?? 0,
+          allIds: [p.id],
+        });
+      }
+    }
+
+    return Array.from(modelMap.values()).map((m) => {
+      // Find original raw product for enrichment
+      const rawProduct = data.find((p: any) => p.id === m.id);
+      const pp = rawProduct?.product_productPrice?.[0];
+      return {
+        id: m.id,
+        name: m.name,
+        price: m.minPrice,
+        originalPrice: Number(pp?.productPrice ?? rawProduct?.productPrice ?? m.minPrice),
+        priceRange: m.minPrice !== m.maxPrice ? `${m.minPrice} - ${m.maxPrice}` : null,
+        rating: m.bestRating,
+        reviews: m.totalReviews,
+        seller: m.sellers > 1 ? `${m.sellers} sellers` : "1 seller",
+        delivery: pp?.deliveryAfter ? `${pp.deliveryAfter} days` : "3-5 days",
+        inStock: (pp?.stock ?? 0) > 0,
+        stock: pp?.stock ?? 0,
+        specs: [] as string[][],
+        sellersCount: m.sellers,
+        allIds: m.allIds,
+        // Buygroup + pricing fields from ProductPrice
+        sellType: pp?.sellType ?? "NORMALSELL",
+        isBuygroup: pp?.sellType === "BUYGROUP",
+        dateOpen: pp?.dateOpen ?? null,
+        dateClose: pp?.dateClose ?? null,
+        startTime: pp?.startTime ?? null,
+        endTime: pp?.endTime ?? null,
+        minCustomer: pp?.minCustomer ?? null,
+        maxCustomer: pp?.maxCustomer ?? null,
+        sold: 0, // TODO: track sold count
+        enableChat: pp?.enableChat === true,
+        isCustomProduct: pp?.isCustomProduct === "true" || pp?.isCustomProduct === true,
+        consumerType: pp?.consumerType ?? "CONSUMER",
+        image: rawProduct?.productImages?.[0]?.image ?? null,
+      };
+    });
   }, [productSearchQuery?.data]);
+
   const [activeTab, setActiveTab] = useState<"products" | "customize" | "buynow">("products");
   const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
+
+  // ── Recommended products: search-based similar products when few matches ──
+  const topProduct = (realProducts ?? [])[0];
+  const needsRecommendations = (realProducts ?? []).length < 5 && !!topProduct;
+  // Extract 2-3 key words from product name for broader search
+  const similarSearchTerm = useMemo(() => {
+    if (!topProduct?.name) return "";
+    const words = topProduct.name.split(/\s+/).filter((w: string) => w.length > 3);
+    // Take first 2-3 significant words (skip brand-like short words)
+    return words.slice(0, 3).join(" ");
+  }, [topProduct?.name]);
+
+  const recommendedQuery = useQuery({
+    queryKey: ["product-hub-similar", similarSearchTerm],
+    queryFn: async () => {
+      if (!similarSearchTerm) return { data: [], totalCount: 0 };
+      try {
+        const res = await http.get(`${getApiUrl()}/product/search/unified`, {
+          params: { q: similarSearchTerm, page: 1, limit: 10 },
+        });
+        return { data: res.data?.data ?? [], totalCount: res.data?.totalCount ?? 0 };
+      } catch { return { data: [], totalCount: 0 }; }
+    },
+    enabled: needsRecommendations && activeTab === "products" && similarSearchTerm.length > 3,
+    staleTime: 60_000,
+  });
+
+  // Map and deduplicate recommended products
+  const recommendedProducts = useMemo(() => {
+    const items = recommendedQuery?.data?.data ?? [];
+    if (!Array.isArray(items) || items.length === 0) return [];
+    // Deduplicate: exclude products already shown in main results (by name prefix)
+    const existingNames = new Set((realProducts ?? []).map((p: any) => (p.name || "").substring(0, 80).toLowerCase()));
+    const existingIds = new Set((realProducts ?? []).map((p: any) => p.id));
+
+    // Group similar results into models (same dedup as main results)
+    const modelMap = new Map<string, any>();
+    for (const p of items) {
+      const name = (p.productName ?? p.name ?? "").trim();
+      const key = name.substring(0, 80).toLowerCase();
+      if (existingNames.has(key) || existingIds.has(p.id)) continue;
+      if (modelMap.has(key)) {
+        modelMap.get(key).sellers++;
+      } else {
+        modelMap.set(key, {
+          id: p.id,
+          name,
+          price: Number(p.offerPrice ?? p.productPrice ?? 0),
+          rating: p.rating ?? 4.0,
+          reviews: p.reviewCount ?? 0,
+          seller: "1 seller",
+          sellers: 1,
+          delivery: "3-5 days",
+          inStock: true,
+          stock: 50,
+          specs: [] as string[][],
+          isRecommended: true,
+        });
+      }
+    }
+
+    return Array.from(modelMap.values())
+      .map(m => ({ ...m, seller: m.sellers > 1 ? `${m.sellers} sellers` : "1 seller", sellersCount: m.sellers }))
+      .slice(0, 6);
+  }, [recommendedQuery?.data, realProducts]);
+
+  // ── Buy/Customize: fetch SAME product detail with ALL sellers ──
+  const selectedProductForBuy = (realProducts ?? []).find((p: any) => p.id === selectedProductId);
+  const buyDetailQuery = useQuery({
+    queryKey: ["product-buy-detail", selectedProductId],
+    queryFn: async () => {
+      if (!selectedProductId) return null;
+      try {
+        const res = await http.get(`${getApiUrl()}/product/findOne`, {
+          params: { productId: selectedProductId },
+        });
+        return res.data?.data ?? res.data ?? null;
+      } catch { return null; }
+    },
+    enabled: !!selectedProductId && activeTab === "buynow",
+    staleTime: 60_000,
+  });
+  // Keep old name for compatibility in JSX
+  const buySearchQuery = { isLoading: buyDetailQuery.isLoading, data: buyDetailQuery.data };
+
+  // Map ALL sellers from product_productPrice into individual listing cards
+  const buyListings = useMemo(() => {
+    const detail = buyDetailQuery.data;
+    if (!detail) return [];
+    const priceEntries = detail.product_productPrice ?? [];
+    if (priceEntries.length === 0) return [];
+
+    return priceEntries
+      .filter((pp: any) => !pp.deletedAt && pp.status !== "DELETE")
+      .map((pp: any) => {
+        const admin = pp.adminDetail;
+        const sellerName = admin?.companyName || admin?.accountName
+          || (admin?.firstName ? `${admin.firstName} ${admin.lastName || ""}`.trim() : null)
+          || "Seller";
+        return {
+          id: `${detail.id}-${pp.id}`,
+          productId: detail.id,
+          priceId: pp.id,
+          name: detail.productName ?? "Product",
+          seller: sellerName,
+          sellerAvatar: admin?.profilePicture || null,
+          price: Number(pp.offerPrice ?? pp.productPrice ?? detail.offerPrice ?? 0),
+          originalPrice: Number(pp.productPrice ?? detail.productPrice ?? 0),
+          rating: detail.averageRating ?? 4.0,
+          reviews: detail.productReview?.length ?? 0,
+          stock: pp.stock ?? 0,
+          delivery: pp.deliveryAfter ? `${pp.deliveryAfter} days` : "3-5 days",
+          inStock: (pp.stock ?? 0) > 0,
+          sellType: pp.sellType ?? "NORMALSELL",
+          condition: pp.productCondition ?? "New",
+          brand: detail.brand?.brandName ?? "",
+          category: detail.category?.name ?? "",
+          description: detail.description ?? detail.shortDescription ?? "",
+          minOrder: pp.minOrder ?? 1,
+          warranty: pp.warranty ?? "",
+          enableChat: pp.enableChat === true,
+          isCustomProduct: pp.isCustomProduct === "true" || pp.isCustomProduct === true,
+          // Buygroup date fields for grid card
+          dateOpen: pp.dateOpen ?? null,
+          dateClose: pp.dateClose ?? null,
+          startTime: pp.startTime ?? null,
+          endTime: pp.endTime ?? null,
+          minCustomer: pp.minCustomer ?? null,
+          maxCustomer: pp.maxCustomer ?? null,
+        };
+      });
+  }, [buyDetailQuery.data]);
+
+  // (moved up — declared before recommended/buy queries that reference them)
   const [specsOpen, setSpecsOpen] = useState(true);
 
   // Reset product selection and tab when switching items
@@ -185,6 +464,10 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
   const [vendorAttachments, setVendorAttachments] = useState<string[]>([]);
   const vendorFileRef = React.useRef<HTMLInputElement>(null);
   const [sortBy, setSortBy] = useState("price-asc");
+  const [viewMode, setViewMode] = useState<"list" | "grid">("list");
+  // activeChips/chipFilterParams are aliased from early declarations (before search query)
+  const activeChips = activeChipsEarly;
+  const setActiveChips = setActiveChipsEarly;
   const [filtersOpen, setFiltersOpen] = useState(false);
   // Dynamic filter values: key → value (string for SELECT, [min,max] for NUMBER, Set for MULTI_SELECT, boolean for BOOLEAN)
   const [filterValues, setFilterValues] = useState<Record<string, any>>({});
@@ -192,30 +475,6 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
   const [minRating, setMinRating] = useState(0);
   const [stockOnly, setStockOnly] = useState(true);
   const [discountOnly, setDiscountOnly] = useState(false);
-
-  // Mock category filters — in production, fetched from GET /specification/filters/{categoryId}
-  const CATEGORY_FILTERS: Array<{
-    key: string; name: string; nameAr?: string; dataType: "TEXT" | "NUMBER" | "SELECT" | "MULTI_SELECT" | "BOOLEAN";
-    unit?: string; options?: string; groupName?: string;
-  }> = [
-    { key: "anc_type", name: "Noise Cancelling", nameAr: "إلغاء الضوضاء", dataType: "SELECT", options: "Active ANC,Passive,Adaptive ANC,None", groupName: "Audio" },
-    { key: "bluetooth", name: "Bluetooth", nameAr: "بلوتوث", dataType: "SELECT", options: "5.0,5.1,5.2,5.3", groupName: "Connectivity" },
-    { key: "battery_hours", name: "Battery Life", nameAr: "عمر البطارية", dataType: "NUMBER", unit: "hrs", groupName: "Power" },
-    { key: "driver_size", name: "Driver Size", nameAr: "حجم المحرك", dataType: "NUMBER", unit: "mm", groupName: "Audio" },
-    { key: "weight", name: "Weight", nameAr: "الوزن", dataType: "NUMBER", unit: "g", groupName: "Physical" },
-    { key: "foldable", name: "Foldable", nameAr: "قابل للطي", dataType: "BOOLEAN", groupName: "Physical" },
-    { key: "multipoint", name: "Multipoint", nameAr: "تعدد الاتصال", dataType: "BOOLEAN", groupName: "Connectivity" },
-    { key: "warranty", name: "Warranty", nameAr: "الكفالة", dataType: "SELECT", options: "6 months,1 year,2 years,3 years", groupName: "Support" },
-    { key: "delivery", name: "Delivery", nameAr: "التوصيل", dataType: "SELECT", options: "1-2 days,3-5 days,5-7 days,7+ days", groupName: "Shipping" },
-  ];
-
-  // Group filters by groupName
-  const filterGroups = CATEGORY_FILTERS.reduce<Record<string, typeof CATEGORY_FILTERS>>((acc, f) => {
-    const group = f.groupName ?? "Other";
-    if (!acc[group]) acc[group] = [];
-    acc[group].push(f);
-    return acc;
-  }, {});
 
   const setFilterValue = (key: string, value: any) => {
     setFilterValues((prev) => {
@@ -239,272 +498,391 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
     });
   };
 
-  const activeFilterCount = Object.keys(filterValues).length + (minRating > 0 ? 1 : 0) + (stockOnly ? 1 : 0) + (discountOnly ? 1 : 0);
+  // Toggle a filter chip on/off
+  const toggleChip = (key: FilterChipKey) => {
+    setActiveChips((prev: Set<FilterChipKey>) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key); else next.add(key);
+      return next;
+    });
+    setSearchPage(1); // Reset pagination on filter change
+  };
+
+  const activeFilterCount = Object.keys(filterValues).length + (minRating > 0 ? 1 : 0) + (stockOnly ? 1 : 0) + (discountOnly ? 1 : 0) + activeChips.size;
 
   const clearAllFilters = () => {
     setFilterValues({});
     setMinRating(0);
     setStockOnly(false);
     setDiscountOnly(false);
+    setActiveChips(new Set());
   };
 
-  const selectedProduct = MOCK_PRODUCTS.find((p) => p.id === selectedProductId);
-  const viewingProduct = ALL_VENDOR_LISTINGS.find((p) => p.id === viewingProductId);
-  // Vendor listings for the selected product model
-  const vendorListings = selectedProductId ? (VENDOR_LISTINGS[selectedProductId] ?? []) : [];
+  // Real products only — no mock fallback
+  const selectedProduct = (realProducts ?? []).find((p: any) => p.id === selectedProductId);
+  // Real buy listings only
+  // buyListings use composite string id (productId-priceId), so match by productId
+  const viewingProduct = (buyListings ?? []).find((p: any) => p.productId === viewingProductId);
+  // Vendor listings from real search data
+  const vendorListings = selectedProductId && selectedProduct
+    ? [{
+        id: selectedProduct.id,
+        seller: selectedProduct.seller || "Vendor",
+        rating: selectedProduct.rating || 4.0,
+        reviews: selectedProduct.reviews || 0,
+        price: selectedProduct.price || 0,
+        originalPrice: selectedProduct.price ? selectedProduct.price * 1.2 : 0,
+        discount: 15,
+        stock: selectedProduct.stock || 50,
+        delivery: selectedProduct.delivery || "3-5 days",
+        minOrder: 1,
+        condition: "New",
+        sellType: "retail",
+      }]
+    : [];
 
+  // Per-product quantity map for card steppers
+  const [cardQtys, setCardQtys] = useState<Record<number, number>>({});
+  const getCardQty = (id: number) => cardQtys[id] ?? 0;
+  const setCardQty = (id: number, qty: number) => setCardQtys((prev) => ({ ...prev, [id]: Math.max(0, qty) }));
+
+  // Buygroup disclaimer popup
+  const [buygroupDisclaimerOpen, setBuygroupDisclaimerOpen] = useState(false);
+  const [hasSeenBuygroupDisclaimer, setHasSeenBuygroupDisclaimer] = useState(false);
+  const [buygroupPendingProductId, setBuygroupPendingProductId] = useState<number | null>(null);
+  const [buygroupPendingQty, setBuygroupPendingQty] = useState(1);
+  const [buygroupTimeLeft, setBuygroupTimeLeft] = useState<string | null>(null);
+
+  // ── Fetch full product detail when viewing ──
+  const productDetailQuery = useQuery({
+    queryKey: ["product-detail", viewingProductId],
+    queryFn: async () => {
+      if (!viewingProductId) return null;
+      try {
+        const res = await http.get(`${getApiUrl()}/product/findOne`, { params: { productId: viewingProductId } });
+        return res.data?.data ?? res.data ?? null;
+      } catch { return null; }
+    },
+    enabled: !!viewingProductId,
+    staleTime: 60_000,
+  });
+
+  // Buygroup countdown timer — watches product detail data
+  useEffect(() => {
+    const detail = productDetailQuery?.data;
+    const pp = detail?.product_productPrice?.[0];
+    if (!pp || pp.sellType !== "BUYGROUP" || !pp.dateClose) { setBuygroupTimeLeft(null); return; }
+    const getTs = (ds: string, ts?: string) => { const d = new Date(ds); if (ts) { const [h, m] = ts.split(":").map(Number); d.setHours(h || 0, m || 0, 0, 0); } return d.getTime(); };
+    const startTs = pp.dateOpen ? getTs(pp.dateOpen, pp.startTime) : 0;
+    const endTs = getTs(pp.dateClose, pp.endTime);
+    const fmt = (ms: number) => { const s = Math.floor(ms / 1000); const d = Math.floor(s / 86400); return `${d} ${isAr ? "يوم" : "Days"}; ${String(Math.floor((s % 86400) / 3600)).padStart(2, "0")}:${String(Math.floor((s % 3600) / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`; };
+    const tick = () => {
+      const now = Date.now();
+      if (startTs && now < startTs) { setBuygroupTimeLeft(isAr ? "لم يبدأ بعد" : "Not Started"); return; }
+      const ms = endTs - now;
+      if (ms <= 0) { setBuygroupTimeLeft(isAr ? "انتهى" : "Expired"); return; }
+      setBuygroupTimeLeft(fmt(ms));
+    };
+    tick(); const iv = setInterval(tick, 1000); return () => clearInterval(iv);
+  }, [productDetailQuery?.data, isAr]);
+
+  // ── Pricing calculation for ProductDetailView ──
+  const computeDetailPricing = () => {
+    const detail = productDetailQuery.data;
+    const priceEntry = detail?.product_productPrice?.[0];
+    const ppEntry = priceEntry || {};
+
+    const pricingInfo = {
+      consumerDiscount: ppEntry.consumerDiscount ?? 0,
+      consumerDiscountType: ppEntry.consumerDiscountType ?? null,
+      vendorDiscount: ppEntry.vendorDiscount ?? 0,
+      vendorDiscountType: ppEntry.vendorDiscountType ?? null,
+      consumerType: ppEntry.consumerType ?? "CONSUMER",
+      minQuantity: ppEntry.minQuantityPerCustomer ?? ppEntry.minQuantity ?? 1,
+      maxQuantity: ppEntry.maxQuantityPerCustomer ?? ppEntry.maxQuantity ?? null,
+      minOrder: ppEntry.minQuantity ?? 1,
+      maxOrder: ppEntry.maxQuantity ?? null,
+      askForPrice: ppEntry.askForPrice === "true",
+      sellType: ppEntry.sellType ?? "NORMALSELL",
+      enableChat: ppEntry.enableChat ?? false,
+      dateOpen: ppEntry.dateOpen ?? null,
+      dateClose: ppEntry.dateClose ?? null,
+      startTime: ppEntry.startTime ?? null,
+      endTime: ppEntry.endTime ?? null,
+      minCustomer: ppEntry.minCustomer ?? null,
+      maxCustomer: ppEntry.maxCustomer ?? null,
+    };
+
+    // Category connection for vendor discount eligibility
+    const categoryId = detail?.categoryId;
+    const categoryLocation = detail?.category?.categoryLocation;
+
+    // calculateDiscountedPrice — copied EXACTLY from ProductDescriptionCard
+    const calculateDiscountedPrice = () => {
+      const price = Number(ppEntry.productPrice ?? detail?.productPrice ?? 0);
+      const offerPriceValue = Number(ppEntry.offerPrice ?? detail?.offerPrice ?? 0);
+
+      if (offerPriceValue > 0 && offerPriceValue !== price) return offerPriceValue;
+
+      const rawConsumerType = pricingInfo.consumerType || "CONSUMER";
+      const productConsumerType = typeof rawConsumerType === "string" ? rawConsumerType.toUpperCase().trim() : "CONSUMER";
+      const isVendorType = productConsumerType === "VENDOR" || productConsumerType === "VENDORS";
+      const isConsumerType = productConsumerType === "CONSUMER";
+      const isEveryoneType = productConsumerType === "EVERYONE";
+
+      const isCategoryMatch = checkCategoryConnection(
+        vendorBusinessCategoryIds,
+        categoryId || 0,
+        categoryLocation,
+        []
+      );
+
+      let discount = pricingInfo.consumerDiscount || 0;
+      let discountType = pricingInfo.consumerDiscountType;
+
+      if (currentTradeRole && currentTradeRole !== "BUYER") {
+        if (isCategoryMatch) {
+          if (pricingInfo.vendorDiscount > 0) {
+            discount = pricingInfo.vendorDiscount;
+            discountType = pricingInfo.vendorDiscountType;
+          } else {
+            discount = 0;
+          }
+        } else {
+          if (isEveryoneType) {
+            discount = pricingInfo.consumerDiscount || 0;
+            discountType = pricingInfo.consumerDiscountType;
+          } else {
+            discount = 0;
+          }
+        }
+      } else {
+        if (isConsumerType || isEveryoneType) {
+          discount = pricingInfo.consumerDiscount || 0;
+          discountType = pricingInfo.consumerDiscountType;
+        } else {
+          discount = 0;
+        }
+      }
+
+      if (discount > 0 && discountType) {
+        if (discountType === "PERCENTAGE") return Number((price - (price * discount) / 100).toFixed(2));
+        if (discountType === "FLAT") return Number((price - discount).toFixed(2));
+      }
+      return price;
+    };
+
+    const calculatedPrice = calculateDiscountedPrice();
+    const originalPrice = Number(ppEntry.productPrice ?? detail?.productPrice ?? 0);
+    const hasCalcDiscount = originalPrice > calculatedPrice && calculatedPrice > 0;
+    const calcDiscountPct = hasCalcDiscount ? Math.round((1 - calculatedPrice / originalPrice) * 100) : 0;
+
+    return { pricingInfo, calculatedPrice, originalPrice, hasCalcDiscount, calcDiscountPct };
+  };
+
+  const openBuygroupDisclaimer = (priceId: number, qty: number) => {
+    setBuygroupPendingProductId(priceId);
+    setBuygroupPendingQty(qty);
+    setBuygroupDisclaimerOpen(true);
+  };
+
+  const currencySymbol = currency?.symbol || "OMR ";
+
+  // ── Shared card props for ProductGridCard / ProductListCard ──
+  const cardCallbacks = {
+    onSelectProduct: onSelectProduct ?? (() => {}),
+    onSetSelectedProductId: (id: number) => {
+      setSelectedProductId(id);
+      trackClick.mutate({ productId: id, clickSource: 'rfq_panel', deviceId: getOrCreateDeviceId() || undefined });
+    },
+    onSetActiveTab: setActiveTab,
+    onSetReqMode: setReqMode,
+  };
 
   // ═══ FULL PRODUCT DETAIL VIEW (takes over panel) ═══
-  if (viewingProductId && viewingProduct) {
-    const mockImages = [1, 2, 3, 4];
-    const mockColors = [
-      { name: "Black", hex: "#1a1a1a", selected: true },
-      { name: "Silver", hex: "#c0c0c0", selected: false },
-      { name: "Blue", hex: "#2563eb", selected: false },
-    ];
-    const bulkPricing = [
-      { min: 1, max: 9, price: viewingProduct.price },
-      { min: 10, max: 49, price: Math.round(viewingProduct.price * 0.95) },
-      { min: 50, max: 99, price: Math.round(viewingProduct.price * 0.9) },
-      { min: 100, max: null, price: Math.round(viewingProduct.price * 0.85) },
-    ];
-    const mockReviews = [
-      { user: "Ahmed K.", rating: 5, text: "Excellent noise cancelling. Best for office use.", date: "Mar 15" },
-      { user: "Sara M.", rating: 4, text: "Great sound quality but a bit tight for large heads.", date: "Mar 10" },
-      { user: "Omar A.", rating: 5, text: "Battery lasts forever. Very comfortable for long flights.", date: "Feb 28" },
-    ];
-
+  if (viewingProductId && (viewingProduct || productDetailQuery.data)) {
+    const pricing = computeDetailPricing();
     return (
-      <div className="flex flex-col h-full min-h-0 bg-background">
-        {/* Back header */}
-        <div className="flex items-center gap-2 px-4 py-2 border-b border-border shrink-0">
-          <button type="button" onClick={() => setViewingProductId(null)}
-            className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground">
-            <ChevronDown className="h-3.5 w-3.5 rotate-90" /> {isAr ? "رجوع" : "Back"}
-          </button>
-          <span className="ms-auto text-xs text-muted-foreground">{viewingProduct.seller}</span>
-        </div>
-
-        {/* Scrollable detail */}
-        <div className="flex-1 overflow-y-auto">
-          {/* Image gallery */}
-          <div className="bg-muted/20 p-4">
-            <div className="flex gap-2">
-              {/* Main image */}
-              <div className="flex-1 h-48 rounded-lg bg-muted flex items-center justify-center">
-                <ShoppingCart className="h-16 w-16 text-muted-foreground/15" />
-              </div>
-              {/* Thumbnail strip */}
-              <div className="flex flex-col gap-1.5 w-14">
-                {mockImages.map((_, i) => (
-                  <div key={i} className={cn(
-                    "h-11 rounded border-2 bg-muted flex items-center justify-center cursor-pointer",
-                    i === 0 ? "border-primary" : "border-transparent hover:border-muted-foreground/30"
-                  )}>
-                    <ShoppingCart className="h-3 w-3 text-muted-foreground/20" />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="px-4 py-3 space-y-4">
-            {/* Title + Seller side by side */}
-            <div className="flex gap-4">
-              {/* Product info */}
-              <div className="flex-1 min-w-0">
-                <h2 className="text-base font-bold">{selectedProduct?.name ?? viewingProduct.seller}</h2>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className="text-xl font-bold text-green-600">{viewingProduct.price} OMR</span>
-                  <span className="text-sm text-muted-foreground line-through">{viewingProduct.originalPrice} OMR</span>
-                  <span className="text-xs bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-1.5 py-0.5 rounded font-semibold">-{viewingProduct.discount}%</span>
-                </div>
-                <div className="flex items-center gap-1 mt-1.5">
-                  {[1, 2, 3, 4, 5].map((s) => (
-                    <Star key={s} className={cn("h-3.5 w-3.5", s <= Math.round(viewingProduct.rating) ? "fill-amber-400 text-amber-400" : "text-muted-foreground/20")} />
-                  ))}
-                  <span className="text-xs text-muted-foreground ms-1">{viewingProduct.rating} ({Math.floor(viewingProduct.rating * 50)})</span>
-                </div>
-              </div>
-
-              {/* Seller card — beside product name */}
-              <div className="shrink-0 w-36 rounded-lg border border-border p-2.5 bg-muted/10">
-                <div className="flex items-center gap-2 mb-1.5">
-                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs font-bold shrink-0">
-                    {viewingProduct.seller.charAt(0)}
-                  </div>
-                  <div className="min-w-0">
-                    <span className="text-[10px] font-semibold block truncate">{viewingProduct.seller}</span>
-                    <span className="text-[8px] text-green-600 flex items-center gap-0.5"><Check className="h-2 w-2" />{isAr ? "موثق" : "Verified"}</span>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between text-[9px] text-muted-foreground">
-                  <span className="flex items-center gap-0.5"><MapPin className="h-2.5 w-2.5" /> {viewingProduct.origin}</span>
-                  <span className="flex items-center gap-0.5"><Star className="h-2.5 w-2.5 fill-amber-400 text-amber-400" /> {viewingProduct.rating}</span>
-                </div>
-                <div className="text-[8px] text-muted-foreground mt-1">98% {isAr ? "إيجابي" : "positive"} · 500+ {isAr ? "طلب" : "orders"}</div>
-                <button type="button" className="w-full mt-1.5 text-[9px] font-medium text-primary border border-primary/30 rounded py-1 hover:bg-primary/5">
-                  {isAr ? "زيارة المتجر" : "Visit Store"}
-                </button>
-              </div>
-            </div>
-
-            {/* Color selection + badges row */}
-            <div className="flex items-end gap-4">
-              <div>
-                <h3 className="text-[11px] font-semibold mb-1.5">{isAr ? "اللون" : "Color"}: <span className="font-normal text-muted-foreground">Black</span></h3>
-                <div className="flex gap-2">
-                  {mockColors.map((c) => (
-                    <button key={c.name} type="button" className={cn(
-                      "h-8 w-8 rounded-full border-2 transition-all",
-                      c.selected ? "border-primary ring-2 ring-primary/20" : "border-border hover:border-muted-foreground"
-                    )} style={{ backgroundColor: c.hex }} title={c.name} />
-                  ))}
-                </div>
-              </div>
-              <div className="flex flex-wrap gap-1.5">
-                <span className="flex items-center gap-1 text-[9px] bg-green-50 dark:bg-green-950/20 text-green-700 px-1.5 py-0.5 rounded">
-                  <Zap className="h-2.5 w-2.5" /> {viewingProduct.stock}
-                </span>
-                <span className="flex items-center gap-1 text-[9px] bg-muted px-1.5 py-0.5 rounded">
-                  <Shield className="h-2.5 w-2.5" /> {viewingProduct.warranty}
-                </span>
-                <span className="flex items-center gap-1 text-[9px] bg-muted px-1.5 py-0.5 rounded">
-                  <Truck className="h-2.5 w-2.5" /> {viewingProduct.shipping}
-                </span>
-              </div>
-            </div>
-
-            {/* Bulk pricing tiers */}
-            <div>
-              <h3 className="text-[11px] font-semibold mb-1.5">{isAr ? "أسعار الجملة" : "Bulk Pricing"}</h3>
-              <div className="grid grid-cols-4 gap-1">
-                {bulkPricing.map((tier, i) => (
-                  <div key={i} className={cn(
-                    "rounded border text-center py-1.5 px-1",
-                    i === 2 ? "border-green-300 bg-green-50 dark:bg-green-950/20" : "border-border"
-                  )}>
-                    <span className="text-[9px] text-muted-foreground block">
-                      {tier.min}{tier.max ? `-${tier.max}` : "+"} {isAr ? "قطعة" : "units"}
-                    </span>
-                    <span className={cn("text-xs font-bold", i === 2 ? "text-green-600" : "")}>{tier.price} OMR</span>
-                    {i > 0 && (
-                      <span className="text-[8px] text-green-600 block">
-                        {isAr ? "وفر" : "Save"} {Math.round((1 - tier.price / viewingProduct.price) * 100)}%
-                      </span>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Description */}
-            <div>
-              <h3 className="text-[11px] font-semibold mb-1">{isAr ? "الوصف" : "Description"}</h3>
-              <p className="text-xs text-muted-foreground leading-relaxed">{viewingProduct.description}</p>
-            </div>
-
-            {/* Specifications */}
-            <div>
-              <h3 className="text-[11px] font-semibold mb-1">{isAr ? "المواصفات" : "Specifications"}</h3>
-              <div className="rounded-lg border border-border overflow-hidden">
-                {viewingProduct.specs.map(([key, val], i) => (
-                  <div key={i} className={cn("flex items-center px-3 py-1.5 text-xs", i % 2 === 0 ? "bg-muted/30" : "bg-background")}>
-                    <span className="text-muted-foreground w-24 shrink-0">{key}</span>
-                    <span className="font-medium">{val}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Reviews */}
-            <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <h3 className="text-[11px] font-semibold">{isAr ? "التقييمات" : "Reviews"} ({mockReviews.length})</h3>
-                <button type="button" className="text-[10px] text-primary">{isAr ? "عرض الكل" : "View all"}</button>
-              </div>
-              <div className="space-y-2">
-                {mockReviews.map((r, i) => (
-                  <div key={i} className="rounded-lg border border-border p-2.5">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1.5">
-                        <div className="h-6 w-6 rounded-full bg-muted flex items-center justify-center text-[9px] font-bold">{r.user.charAt(0)}</div>
-                        <span className="text-[11px] font-semibold">{r.user}</span>
-                      </div>
-                      <div className="flex items-center gap-0.5">
-                        {[1, 2, 3, 4, 5].map((s) => (
-                          <Star key={s} className={cn("h-2.5 w-2.5", s <= r.rating ? "fill-amber-400 text-amber-400" : "text-muted-foreground/20")} />
-                        ))}
-                      </div>
-                    </div>
-                    <p className="text-[10px] text-muted-foreground mt-1">{r.text}</p>
-                    <span className="text-[8px] text-muted-foreground/60 mt-0.5 block">{r.date}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Q&A section */}
-            <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <h3 className="text-[11px] font-semibold">{isAr ? "أسئلة وأجوبة" : "Q&A"} (2)</h3>
-                <button type="button" className="text-[10px] text-primary">{isAr ? "اسأل سؤال" : "Ask a question"}</button>
-              </div>
-              <div className="space-y-2">
-                <div className="rounded-lg border border-border p-2.5">
-                  <p className="text-[11px] font-medium">Q: Does it work with PS5?</p>
-                  <p className="text-[10px] text-muted-foreground mt-0.5">A: Yes, via Bluetooth or 3.5mm cable. — <span className="text-primary">Seller</span></p>
-                </div>
-                <div className="rounded-lg border border-border p-2.5">
-                  <p className="text-[11px] font-medium">Q: Can I use it for calls on laptop?</p>
-                  <p className="text-[10px] text-muted-foreground mt-0.5">A: Yes, multipoint supports 2 devices simultaneously. — <span className="text-primary">Seller</span></p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Sticky bottom: qty + add to cart + RFQ option */}
-        <div className="border-t border-border px-4 py-2.5 shrink-0">
-          <div className="flex items-center gap-2">
-            <div className="flex items-center">
-              <button type="button" className="flex h-8 w-8 items-center justify-center rounded-s-md border border-border bg-muted text-muted-foreground"><Minus className="h-3 w-3" /></button>
-              <div className="flex h-8 w-12 items-center justify-center border-y border-border bg-background text-sm font-semibold">1</div>
-              <button type="button" className="flex h-8 w-8 items-center justify-center rounded-e-md border border-border bg-muted text-muted-foreground"><Plus className="h-3 w-3" /></button>
-            </div>
-            <button type="button" className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-green-600 text-white hover:bg-green-700 py-2 text-xs font-bold">
-              <CreditCard className="h-3.5 w-3.5" /> {isAr ? "شراء" : "Buy"} — {viewingProduct.price} OMR
-            </button>
-            <button type="button" onClick={() => { onAddToCart(viewingProduct.id); setViewingProductId(null); }}
-              className="flex items-center justify-center gap-1 rounded-lg border border-primary text-primary hover:bg-primary/5 px-3 py-2 text-xs font-semibold">
-              <FileText className="h-3.5 w-3.5" /> RFQ
-            </button>
-          </div>
-        </div>
-      </div>
+      <ProductDetailView
+        locale={locale}
+        currencySymbol={currencySymbol}
+        viewingProductId={viewingProductId}
+        viewingProduct={viewingProduct}
+        productDetailQuery={productDetailQuery}
+        selectedProduct={selectedProduct}
+        calculatedPrice={pricing.calculatedPrice}
+        originalPrice={pricing.originalPrice}
+        hasCalcDiscount={pricing.hasCalcDiscount}
+        calcDiscountPct={pricing.calcDiscountPct}
+        pricingInfo={pricing.pricingInfo}
+        buygroupTimeLeft={buygroupTimeLeft}
+        onBack={() => setViewingProductId(null)}
+        onAddToCart={onAddToCart}
+        onAddToRfqCart={onAddToRfqCart}
+        onSetSelectedProductId={setSelectedProductId}
+        onSetReqMode={setReqMode}
+        onSetViewingProductId={setViewingProductId}
+        onSetActiveTab={setActiveTab}
+        hasSeenBuygroupDisclaimer={hasSeenBuygroupDisclaimer}
+        onOpenBuygroupDisclaimer={openBuygroupDisclaimer}
+      />
     );
   }
 
-  if (!selectedItemId) {
+  // ═══ Shared top bar — always renders ═══
+  const chipBar = (
+    <FilterChipBar
+      locale={locale}
+      activeChips={activeChips}
+      toggleChip={toggleChip}
+      filtersOpen={filtersOpen}
+      setFiltersOpen={setFiltersOpen}
+      activeFilterCount={activeFilterCount}
+      clearAllFilters={clearAllFilters}
+    />
+  );
+
+  // ═══ No item selected AND no product action pending — show chips + browse/empty ═══
+  if (!selectedItemId && !selectedProductId) {
     return (
-      <div className="flex flex-col h-full min-h-0 bg-background">
-        <div className="flex-1 flex flex-col items-center justify-center text-muted-foreground p-8">
-          <MessageSquare className="h-12 w-12 mb-3 opacity-15" />
-          <h3 className="text-sm font-semibold mb-1">{isAr ? "تفاصيل العنصر" : "Item Details"}</h3>
-          <p className="text-xs text-center max-w-[200px] opacity-60">
-            {isAr ? "اختر عنصر من القائمة" : "Select an item from the list"}
-          </p>
-        </div>
+      <div className="flex flex-col h-full min-h-0 min-w-0 bg-background overflow-hidden">
+        {chipBar}
+
+        {/* Browse results when chips active */}
+        {hasActiveChips ? (
+          <>
+          {/* Sort + view toggle for browse mode */}
+          <div className="border-b border-border shrink-0">
+            <SortViewBar
+              locale={locale}
+              sortBy={sortBy}
+              setSortBy={setSortBy}
+              viewMode={viewMode}
+              setViewMode={setViewMode}
+              activeChips={activeChips}
+            />
+          </div>
+          {/* Advanced filters panel */}
+          {filtersOpen && (
+            <div className="border-b border-border shrink-0">
+              <AdvancedFilterPanel
+                locale={locale}
+                filtersOpen={filtersOpen}
+                minRating={minRating}
+                setMinRating={setMinRating}
+                stockOnly={stockOnly}
+                setStockOnly={setStockOnly}
+                discountOnly={discountOnly}
+                setDiscountOnly={setDiscountOnly}
+                filterValues={filterValues}
+                setFilterValue={setFilterValue}
+                toggleMultiSelect={toggleMultiSelect}
+                showCategoryFilters={false}
+              />
+            </div>
+          )}
+          <div className="flex-1 overflow-y-auto">
+            <div className="p-3 space-y-2">
+              {/* Loading */}
+              {productSearchQuery.isLoading && (
+                <div className="flex items-center justify-center py-8">
+                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-border border-t-primary" />
+                  <span className="text-[10px] text-muted-foreground ms-2">{isAr ? "جاري التحميل..." : "Loading..."}</span>
+                </div>
+              )}
+
+              {/* Browse header */}
+              {!productSearchQuery.isLoading && (realProducts ?? []).length > 0 && (
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="flex-1 h-px bg-border" />
+                  <span className="text-[10px] text-muted-foreground font-medium px-2 flex items-center gap-1">
+                    <Tag className="h-3 w-3" />
+                    {isAr ? "الأكثر شعبية في" : "Trending in"}{" "}
+                    <span className="font-bold text-foreground">
+                      {Array.from(activeChipsEarly).map((k) => {
+                        const chip = FILTER_CHIPS.find((c) => c.key === k);
+                        return chip ? (isAr ? chip.labelAr : chip.label) : k;
+                      }).join(" + ")}
+                    </span>
+                  </span>
+                  <div className="flex-1 h-px bg-border" />
+                </div>
+              )}
+
+              {/* No results */}
+              {!productSearchQuery.isLoading && (realProducts ?? []).length === 0 && (
+                <div className="rounded-lg border border-amber-200 bg-amber-50/50 dark:bg-amber-950/10 p-4 text-center">
+                  <span className="text-xs text-amber-700 dark:text-amber-400 font-semibold block">
+                    {isAr ? "لا توجد منتجات لهذا الفلتر" : "No products found for this filter"}
+                  </span>
+                  <span className="text-[10px] text-amber-600/70 mt-1 block">
+                    {isAr ? "جرب فلاتر أخرى أو ابحث عن منتج" : "Try other filters or search for a product"}
+                  </span>
+                </div>
+              )}
+
+              {/* Browse product cards — list or grid */}
+              {viewMode === "grid" ? (
+                <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
+                  {(realProducts ?? []).map((p) => (
+                    <ProductGridCard
+                      key={`grid-${p.id}`}
+                      product={p}
+                      locale={locale}
+                      currencySymbol={currencySymbol}
+                      selectedProductId={selectedProductId}
+                      cardQty={getCardQty(p.id)}
+                      onSetCardQty={setCardQty}
+                      {...cardCallbacks}
+                    />
+                  ))}
+                </div>
+              ) : (
+                (realProducts ?? []).map((p) => (
+                  <ProductListCard
+                    key={p.id}
+                    product={p}
+                    locale={locale}
+                    selectedProductId={selectedProductId}
+                    {...cardCallbacks}
+                  />
+                ))
+              )}
+            </div>
+          </div>
+          </>
+        ) : (
+          /* No chips active — show prompt */
+          <div className="flex-1 flex flex-col items-center justify-center text-muted-foreground p-8">
+            <MessageSquare className="h-12 w-12 mb-3 opacity-15" />
+            <h3 className="text-sm font-semibold mb-1">{isAr ? "تفاصيل العنصر" : "Item Details"}</h3>
+            <p className="text-xs text-center max-w-[200px] opacity-60">
+              {isAr ? "اختر فلتر أعلاه أو ابحث عن منتج" : "Select a filter above or search for a product"}
+            </p>
+          </div>
+        )}
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col h-full min-h-0 bg-background">
+    <div className="flex flex-col h-full min-h-0 min-w-0 bg-background overflow-hidden">
       {/* Item header */}
-      <div className="px-4 py-2.5 border-b border-border shrink-0">
-        <h3 className="text-sm font-bold">{searchTerm ?? selectedItemId ?? ""}</h3>
+      <div className="px-4 py-2 border-b border-border shrink-0">
+        <h3 className="text-sm font-bold truncate">
+          {selectedProductId ? (
+            <button type="button" onClick={() => setViewingProductId(selectedProductId)}
+              className="hover:text-primary hover:underline transition-colors text-start">
+              {searchTerm ?? selectedProduct?.name ?? selectedItemId ?? ""}
+            </button>
+          ) : (
+            searchTerm ?? selectedItemId ?? ""
+          )}
+        </h3>
       </div>
+
+      {/* ═══ CATEGORY CHIPS — always fixed at top, never hidden ═══ */}
+      {chipBar}
 
       {/* 3 Tabs: Products → Buy/Customize → Specs & Req. */}
       <div className="flex border-b border-border shrink-0">
@@ -535,177 +913,35 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
         </button>
       </div>
 
-      {/* ═══ FILTER & SORT — fixed below tabs ═══ */}
+      {/* ═══ SORT + ADVANCED FILTERS — below tabs ═══ */}
       {(activeTab === "products" || activeTab === "buynow") && (
         <div className="border-b border-border shrink-0">
-            {/* Toggle bar */}
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-muted/20">
-              {/* Sort */}
-              <div className="flex items-center gap-1">
-                <ArrowUpDown className="h-3 w-3 text-muted-foreground" />
-                <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}
-                  className="text-[10px] bg-background border border-border rounded px-1.5 py-0.5 outline-none">
-                  <option value="price-asc">{isAr ? "السعر: الأقل" : "Price: Low→High"}</option>
-                  <option value="price-desc">{isAr ? "السعر: الأعلى" : "Price: High→Low"}</option>
-                  <option value="rating-desc">{isAr ? "التقييم: الأعلى" : "Rating: Best"}</option>
-                  <option value="delivery-asc">{isAr ? "التوصيل: الأسرع" : "Delivery: Fastest"}</option>
-                  <option value="discount-desc">{isAr ? "الخصم: الأكبر" : "Discount: Biggest"}</option>
-                </select>
-              </div>
-
-              <div className="h-3 w-px bg-border" />
-
-              {/* Fixed filters: sell type chips */}
-              {[
-                { key: "retail", l: isAr ? "تجزئة" : "Retail" },
-                { key: "wholesale", l: isAr ? "جملة" : "Wholesale" },
-                { key: "buygroup", l: isAr ? "مجموعة شراء" : "Buy Group" },
-              ].map((t) => (
-                <button key={t.key} type="button"
-                  className="text-[9px] px-1.5 py-0.5 rounded-full border border-border bg-background text-muted-foreground hover:border-primary/30 hover:text-foreground transition-colors">
-                  {t.l}
-                </button>
-              ))}
-              <label className="flex items-center gap-1 text-[9px] cursor-pointer shrink-0">
-                <input type="checkbox" className="rounded border-border text-amber-600 h-3 w-3" />
-                <Wrench className="h-2.5 w-2.5 text-amber-600" />
-                <span>{isAr ? "قابل للتخصيص" : "Customizable"}</span>
-              </label>
-
-              <div className="h-3 w-px bg-border" />
-
-              {/* Filter toggle */}
-              <button type="button" onClick={() => setFiltersOpen(!filtersOpen)}
-                className={cn("flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-md transition-colors",
-                  filtersOpen ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground")}>
-                <SlidersHorizontal className="h-3 w-3" />
-                {isAr ? "فلاتر" : "Filters"}
-                {activeFilterCount > 0 && (
-                  <span className="flex h-3.5 min-w-3.5 items-center justify-center rounded-full bg-primary text-primary-foreground text-[8px] font-bold px-0.5">
-                    {activeFilterCount}
-                  </span>
-                )}
-              </button>
-
-              {/* Clear all */}
-              {activeFilterCount > 0 && (
-                <button type="button" onClick={clearAllFilters}
-                  className="flex items-center gap-0.5 text-[9px] text-muted-foreground hover:text-destructive ms-auto">
-                  <RotateCcw className="h-2.5 w-2.5" /> {isAr ? "مسح" : "Clear"}
-                </button>
-              )}
-            </div>
+            <SortViewBar
+              locale={locale}
+              sortBy={sortBy}
+              setSortBy={setSortBy}
+              viewMode={viewMode}
+              setViewMode={setViewMode}
+              activeChips={activeChips}
+              includeDeliverySort
+            />
 
             {/* Expanded dynamic filter panel — driven by category SpecTemplate */}
             {filtersOpen && (
-              <div className="px-3 py-2.5 bg-muted/10 border-t border-border/50">
-                {/* Base filters: Rating + Stock + Discount */}
-                <div className="flex items-center gap-4 pb-2 mb-2 border-b border-border/30">
-                  <div className="flex items-center gap-0.5">
-                    <span className="text-[9px] text-muted-foreground me-1">{isAr ? "تقييم" : "Rating"}</span>
-                    {[1, 2, 3, 4, 5].map((r) => (
-                      <button key={r} type="button" onClick={() => setMinRating(minRating === r ? 0 : r)} className="p-0.5">
-                        <Star className={cn("h-3.5 w-3.5", r <= minRating ? "fill-amber-400 text-amber-400" : "text-muted-foreground/20")} />
-                      </button>
-                    ))}
-                  </div>
-                  <label className="flex items-center gap-1 cursor-pointer">
-                    <input type="checkbox" checked={stockOnly} onChange={(e) => setStockOnly(e.target.checked)} className="rounded border-border text-primary h-3 w-3" />
-                    <span className="text-[9px]">{isAr ? "متوفر" : "In Stock"}</span>
-                  </label>
-                  <label className="flex items-center gap-1 cursor-pointer">
-                    <input type="checkbox" checked={discountOnly} onChange={(e) => setDiscountOnly(e.target.checked)} className="rounded border-border text-primary h-3 w-3" />
-                    <span className="text-[9px]">{isAr ? "خصم" : "Discount"}</span>
-                  </label>
-                </div>
-
-                {/* Dynamic category filters — grouped */}
-                {Object.entries(filterGroups).map(([groupName, groupFilters]) => (
-                  <div key={groupName} className="mb-2.5">
-                    <span className="text-[8px] font-bold text-muted-foreground/60 uppercase tracking-widest">{groupName}</span>
-                    <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 mt-1">
-                      {groupFilters.map((f) => {
-                        const label = isAr && f.nameAr ? f.nameAr : f.name;
-                        const val = filterValues[f.key];
-
-                        // SELECT — dropdown
-                        if (f.dataType === "SELECT") {
-                          const opts = (f.options ?? "").split(",").map((o) => o.trim()).filter(Boolean);
-                          return (
-                            <div key={f.key}>
-                              <label className="text-[9px] text-muted-foreground block mb-0.5">{label}</label>
-                              <select value={val ?? ""} onChange={(e) => setFilterValue(f.key, e.target.value)}
-                                className="w-full text-[10px] bg-background border border-border rounded px-1.5 py-0.5 outline-none focus:ring-1 focus:ring-primary">
-                                <option value="">{isAr ? "الكل" : "Any"}</option>
-                                {opts.map((o) => <option key={o} value={o}>{o}</option>)}
-                              </select>
-                            </div>
-                          );
-                        }
-
-                        // MULTI_SELECT — pill chips
-                        if (f.dataType === "MULTI_SELECT") {
-                          const opts = (f.options ?? "").split(",").map((o) => o.trim()).filter(Boolean);
-                          const selected: Set<string> = val instanceof Set ? val : new Set();
-                          return (
-                            <div key={f.key} className="col-span-2">
-                              <label className="text-[9px] text-muted-foreground block mb-0.5">{label}</label>
-                              <div className="flex flex-wrap gap-1">
-                                {opts.map((o) => (
-                                  <button key={o} type="button" onClick={() => toggleMultiSelect(f.key, o)}
-                                    className={cn("text-[9px] px-1.5 py-0.5 rounded-full border transition-colors",
-                                      selected.has(o) ? "bg-primary/10 border-primary/30 text-primary" : "bg-background border-border text-muted-foreground")}>
-                                    {o}
-                                  </button>
-                                ))}
-                              </div>
-                            </div>
-                          );
-                        }
-
-                        // NUMBER — min-max range
-                        if (f.dataType === "NUMBER") {
-                          const range = val ?? [null, null];
-                          return (
-                            <div key={f.key}>
-                              <label className="text-[9px] text-muted-foreground block mb-0.5">{label}{f.unit ? ` (${f.unit})` : ""}</label>
-                              <div className="flex items-center gap-1">
-                                <input type="number" placeholder="min" value={range[0] ?? ""}
-                                  onChange={(e) => setFilterValue(f.key, [e.target.value ? Number(e.target.value) : null, range[1]])}
-                                  className="w-14 text-[10px] border border-border rounded px-1.5 py-0.5 bg-background outline-none focus:ring-1 focus:ring-primary" />
-                                <span className="text-[8px] text-muted-foreground">–</span>
-                                <input type="number" placeholder="max" value={range[1] ?? ""}
-                                  onChange={(e) => setFilterValue(f.key, [range[0], e.target.value ? Number(e.target.value) : null])}
-                                  className="w-14 text-[10px] border border-border rounded px-1.5 py-0.5 bg-background outline-none focus:ring-1 focus:ring-primary" />
-                              </div>
-                            </div>
-                          );
-                        }
-
-                        // BOOLEAN — checkbox
-                        if (f.dataType === "BOOLEAN") {
-                          return (
-                            <label key={f.key} className="flex items-center gap-1.5 cursor-pointer">
-                              <input type="checkbox" checked={!!val} onChange={(e) => setFilterValue(f.key, e.target.checked || undefined)}
-                                className="rounded border-border text-primary h-3 w-3" />
-                              <span className="text-[10px]">{label}</span>
-                            </label>
-                          );
-                        }
-
-                        // TEXT — input
-                        return (
-                          <div key={f.key}>
-                            <label className="text-[9px] text-muted-foreground block mb-0.5">{label}</label>
-                            <input type="text" value={val ?? ""} onChange={(e) => setFilterValue(f.key, e.target.value)}
-                              placeholder={label} className="w-full text-[10px] border border-border rounded px-1.5 py-0.5 bg-background outline-none focus:ring-1 focus:ring-primary" />
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <AdvancedFilterPanel
+                locale={locale}
+                filtersOpen={filtersOpen}
+                minRating={minRating}
+                setMinRating={setMinRating}
+                stockOnly={stockOnly}
+                setStockOnly={setStockOnly}
+                discountOnly={discountOnly}
+                setDiscountOnly={setDiscountOnly}
+                filterValues={filterValues}
+                setFilterValue={setFilterValue}
+                toggleMultiSelect={toggleMultiSelect}
+                showCategoryFilters
+              />
             )}
           </div>
         )}
@@ -719,70 +955,9 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
         {/* ═══ PRODUCTS TAB — Vendor view: manage offerings per request ═══ */}
         {activeTab === "products" && (
           <div className="p-3 space-y-2">
-            {/* Vendor product offerings per requested item */}
-            {[
-              { name: searchTerm ?? "Product", offered: [
-                { id: "off-1", name: "Sony WH-1000XM5 (256GB)", price: 420, stock: 45, note: "" },
-              ]},
-            ].map((req, ri) => (
-              <div key={ri} className="rounded-lg border border-border overflow-hidden">
-                {/* Requested item header */}
-                <div className="flex items-center gap-2 px-3 py-2 bg-muted/30">
-                  <ShoppingCart className="h-3.5 w-3.5 text-primary shrink-0" />
-                  <span className="text-[10px] font-bold flex-1">{req.name}</span>
-                  <button type="button" className="text-[8px] text-primary font-semibold">+ {isAr ? "أضف منتج" : "Add from Store"}</button>
-                </div>
 
-                {/* Offered products */}
-                {req.offered.map((p) => (
-                  <div key={p.id} className="border-t border-border/50 px-3 py-2 space-y-1.5">
-                    <div className="flex items-center gap-2">
-                      <div className="h-7 w-7 rounded bg-muted flex items-center justify-center shrink-0">
-                        <ShoppingCart className="h-3 w-3 text-muted-foreground/30" />
-                      </div>
-                      <span className="text-[10px] font-semibold flex-1 truncate">{p.name}</span>
-                      <button type="button" className="text-[7px] text-destructive">
-                        {isAr ? "إزالة" : "Remove"}
-                      </button>
-                    </div>
-                    {/* Price + Stock + Note inline */}
-                    <div className="flex items-center gap-2">
-                      <div className="flex items-center gap-1">
-                        <span className="text-[8px] text-muted-foreground">{isAr ? "السعر" : "Price"}</span>
-                        <input type="number" defaultValue={p.price}
-                          className="w-14 h-5 text-[9px] font-bold text-green-600 text-end border border-border rounded px-1 bg-background outline-none focus:ring-1 focus:ring-green-500" />
-                        <span className="text-[7px] text-muted-foreground">OMR</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <span className="text-[8px] text-muted-foreground">{isAr ? "المخزون" : "Stock"}</span>
-                        <input type="number" defaultValue={p.stock}
-                          className="w-10 h-5 text-[9px] text-end border border-border rounded px-1 bg-background outline-none focus:ring-1 focus:ring-primary" />
-                      </div>
-                      <div className="flex-1">
-                        <input type="text" placeholder={isAr ? "ملاحظة..." : "Note..."}
-                          defaultValue={p.note}
-                          className="w-full h-5 text-[8px] border border-border rounded px-1.5 bg-background outline-none focus:ring-1 focus:ring-primary placeholder:text-muted-foreground" />
-                      </div>
-                    </div>
-                  </div>
-                ))}
-
-                {/* Add more from store */}
-                <button type="button" className="flex w-full items-center justify-center gap-1 py-1.5 border-t border-dashed border-border/50 text-[9px] text-muted-foreground hover:text-primary hover:bg-muted/30">
-                  + {isAr ? "أضف منتج آخر من متجرك" : "Add another product from your store"}
-                </button>
-              </div>
-            ))}
-
-            {/* Divider */}
-            <div className="flex items-center gap-2 py-1">
-              <div className="flex-1 h-px bg-border" />
-              <span className="text-[8px] text-muted-foreground">{isAr ? "أو ابحث عن منتجات" : "or search for products"}</span>
-              <div className="flex-1 h-px bg-border" />
-            </div>
-
-            {/* Create RFQ + AI Suggest */}
-            <div className="flex gap-2">
+            {/* Create RFQ + AI Suggest — only on search or RFQ filter */}
+            {(!!searchTerm || activeChips.has("rfq")) && <div className="flex gap-2">
               <button type="button" onClick={() => { setActiveTab("customize"); setReqMode("rfq"); }}
                 className="flex-1 flex items-center gap-2 p-2 rounded-lg border border-primary/20 bg-primary/5 hover:bg-primary/10 text-start">
                 <FileText className="h-4 w-4 text-primary shrink-0" />
@@ -800,7 +975,7 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
                   <span className="text-[7px] text-muted-foreground">{50 - aiUsedToday}/50</span>
                 </div>
               </button>
-            </div>
+            </div>}
 
             {/* Loading */}
             {productSearchQuery.isLoading && (
@@ -811,71 +986,91 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
             )}
 
             {/* No results message */}
-            {!productSearchQuery.isLoading && searchTerm && (realProducts ?? []).length === 0 && (
+            {!productSearchQuery.isLoading && (searchTerm || hasActiveChips) && (realProducts ?? []).length === 0 && (
               <div className="rounded-lg border border-amber-200 bg-amber-50/50 dark:bg-amber-950/10 p-4 text-center">
                 <span className="text-xs text-amber-700 dark:text-amber-400 font-semibold block">
-                  {isAr ? `لا توجد نتائج لـ "${searchTerm}"` : `No results for "${searchTerm}"`}
+                  {searchTerm
+                    ? (isAr ? `لا توجد نتائج لـ "${searchTerm}"` : `No results for "${searchTerm}"`)
+                    : (isAr ? "لا توجد منتجات لهذا الفلتر" : "No products found for this filter")}
                 </span>
                 <span className="text-[10px] text-amber-600/70 mt-1 block">
-                  {isAr ? "جرب كلمات مختلفة أو أنشئ طلب أسعار مخصص" : "Try different keywords or create a custom RFQ above"}
+                  {searchTerm
+                    ? (isAr ? "جرب كلمات مختلفة أو أنشئ طلب أسعار مخصص" : "Try different keywords or create a custom RFQ above")
+                    : (isAr ? "جرب فلاتر أخرى أو ابحث عن منتج" : "Try other filters or search for a product")}
                 </span>
               </div>
             )}
 
-            {/* Product list — real results only, no mock fallback */}
-            {(realProducts ?? []).map((p) => {
-              const isSel = p.id === selectedProductId;
-              return (
-                <div
+            {/* Browse mode header — when chip active but no search */}
+            {isBrowseMode && (realProducts ?? []).length > 0 && (
+              <div className="flex items-center gap-2 mb-2">
+                <div className="flex-1 h-px bg-border" />
+                <span className="text-[10px] text-muted-foreground font-medium px-2 flex items-center gap-1">
+                  <Tag className="h-3 w-3" />
+                  {isAr ? "الأكثر شعبية في" : "Trending in"}{" "}
+                  <span className="font-bold text-foreground">
+                    {Array.from(activeChips).map((k) => {
+                      const chip = FILTER_CHIPS.find((c) => c.key === k);
+                      return chip ? (isAr ? chip.labelAr : chip.label) : k;
+                    }).join(" + ")}
+                  </span>
+                </span>
+                <div className="flex-1 h-px bg-border" />
+              </div>
+            )}
+
+            {/* Product list — list or grid view */}
+            {viewMode === "grid" ? (
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
+                {(realProducts ?? []).map((p) => (
+                  <ProductGridCard
+                    key={`grid-${p.id}`}
+                    product={p}
+                    locale={locale}
+                    currencySymbol={currencySymbol}
+                    selectedProductId={selectedProductId}
+                    cardQty={getCardQty(p.id)}
+                    onSetCardQty={setCardQty}
+                    {...cardCallbacks}
+                  />
+                ))}
+              </div>
+            ) : (
+              (realProducts ?? []).map((p) => (
+                <ProductListCard
                   key={p.id}
-                  onClick={() => { setSelectedProductId(p.id); onSelectProduct?.(p); }}
-                  role="button"
-                  tabIndex={0}
-                  className={cn(
-                    "flex items-start gap-3 p-3 rounded-lg border transition-colors cursor-pointer",
-                    isSel ? "border-primary bg-primary/5 ring-1 ring-primary/20" : "border-border hover:border-primary/30"
-                  )}
-                >
-                  <div className="h-12 w-12 rounded-lg bg-muted flex items-center justify-center shrink-0">
-                    <ShoppingCart className="h-4 w-4 text-muted-foreground/40" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between gap-2">
-                      <span className={cn("text-xs font-semibold", isSel && "text-primary")}>{p.name}</span>
-                      <span className="text-sm font-bold text-primary shrink-0">{p.price} OMR</span>
-                    </div>
-                    <div className="flex items-center gap-2 mt-0.5">
-                      <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
-                      <span className="text-[10px]">{p.rating} ({p.reviews})</span>
-                      <span className="text-[9px] text-muted-foreground">• {p.seller}</span>
-                      {p.inStock ? (
-                        <span className="text-[9px] text-green-600 flex items-center gap-0.5 ms-auto">
-                          <Zap className="h-2.5 w-2.5" /> {p.stock} {isAr ? "متوفر" : "in stock"}
-                        </span>
-                      ) : (
-                        <span className="text-[9px] text-amber-600 ms-auto">{isAr ? "طلب فقط" : "RFQ only"}</span>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
-                      <button
-                        type="button"
-                        onClick={(e) => { e.stopPropagation(); setSelectedProductId(p.id); setReqMode("rfq"); setActiveTab("customize"); }}
-                        className="flex items-center gap-1 rounded bg-primary text-primary-foreground hover:bg-primary/90 px-2 py-1 text-[10px] font-semibold"
-                      >
-                        <FileText className="h-3 w-3" /> RFQ
-                      </button>
-                      <button
-                        type="button"
-                        onClick={(e) => { e.stopPropagation(); setSelectedProductId(p.id); setActiveTab("buynow"); }}
-                        className="flex items-center gap-1 rounded bg-green-600 text-white hover:bg-green-700 px-2 py-1 text-[10px] font-semibold"
-                      >
-                        <ShoppingCart className="h-3 w-3" /> {isAr ? "شراء / تخصيص" : "Buy / Customize"}
-                      </button>
-                    </div>
-                  </div>
+                  product={p}
+                  locale={locale}
+                  selectedProductId={selectedProductId}
+                  showSelection
+                  {...cardCallbacks}
+                />
+              ))
+            )}
+
+            {/* ── Recommended models (when few results) ── */}
+            {recommendedProducts.length > 0 && (
+              <div className="mt-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="flex-1 h-px bg-border" />
+                  <span className="text-[9px] text-muted-foreground font-medium px-2">
+                    {isAr ? "منتجات مشابهة قد تهمك" : "Similar products you might like"}
+                  </span>
+                  <div className="flex-1 h-px bg-border" />
                 </div>
-              );
-            })}
+                {recommendedProducts.map((p: any) => (
+                  <ProductListCard
+                    key={p.id}
+                    product={p}
+                    locale={locale}
+                    selectedProductId={selectedProductId}
+                    isRecommended
+                    showSelection
+                    {...cardCallbacks}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         )}
 
@@ -885,7 +1080,7 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
             {/* ── Action buttons at TOP ── */}
             {selectedProduct && (
               <div className="flex gap-2">
-                <button type="button" onClick={() => onAddToCart(selectedProduct.id)}
+                <button type="button" onClick={() => onAddToRfqCart?.(selectedProduct.id)}
                   className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 py-2 text-[11px] font-bold">
                   <ShoppingCart className="h-3.5 w-3.5" /> {isAr ? "أضف لسلة الأسعار" : "Add to RFQ Cart"}
                 </button>
@@ -906,12 +1101,20 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
               </button>
               {specsOpen && selectedProduct && (
                 <div className="grid grid-cols-3 gap-px bg-border">
-                  {selectedProduct.specs.map(([key, val], i) => (
-                    <div key={i} className="bg-background px-2.5 py-1.5">
-                      <span className="text-[9px] text-muted-foreground block">{key}</span>
-                      <span className="text-[10px] font-medium">{val}</span>
-                    </div>
-                  ))}
+                  {(selectedProduct.specs && selectedProduct.specs.length > 0)
+                    ? selectedProduct.specs.map(([key, val]: string[], i: number) => (
+                        <div key={i} className="bg-background px-2.5 py-1.5">
+                          <span className="text-[9px] text-muted-foreground block">{key}</span>
+                          <span className="text-[10px] font-medium">{val}</span>
+                        </div>
+                      ))
+                    : (
+                      <div className="col-span-3 bg-background px-3 py-4 text-center">
+                        <p className="text-[10px] text-muted-foreground">{isAr ? "لا توجد مواصفات متاحة" : "No specs available yet"}</p>
+                        <p className="text-[9px] text-muted-foreground/60 mt-1">{isAr ? "المواصفات ستُستخرج تلقائياً" : "Specs will be auto-extracted from product description"}</p>
+                      </div>
+                    )
+                  }
                 </div>
               )}
             </div>
@@ -1058,78 +1261,22 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
 
         {/* ═══ BUY / CUSTOMIZE TAB — vendors for selected product ═══ */}
         {activeTab === "buynow" && (
-          <div className="p-3">
-            {/* Selected product header */}
-            {selectedProduct && (
-              <div className="flex items-center gap-2 mb-3 p-2 rounded-lg bg-muted/30 border border-border">
-                <div className="h-8 w-8 rounded bg-muted flex items-center justify-center shrink-0">
-                  <ShoppingCart className="h-3.5 w-3.5 text-muted-foreground/30" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <span className="text-[11px] font-bold block truncate">{selectedProduct.name}</span>
-                  <span className="text-[9px] text-muted-foreground">{vendorListings.length} {isAr ? "مورد يبيع هذا المنتج" : "vendors selling this product"}</span>
-                </div>
-                <span className="text-xs font-bold text-primary">{selectedProduct.price} OMR</span>
-              </div>
-            )}
-
-            {vendorListings.length === 0 && (
-              <div className="text-center py-8 text-muted-foreground">
-                <ShoppingCart className="h-8 w-8 mx-auto mb-2 opacity-20" />
-                <p className="text-xs">{isAr ? "اختر منتج من قائمة المنتجات أولاً" : "Select a product from the Products tab first"}</p>
-              </div>
-            )}
-
-            <div className="space-y-1.5">
-              {vendorListings.map((p) => (
-                <div key={p.id} className="flex items-center gap-2 rounded-lg border border-border hover:border-primary/30 p-2 transition-colors bg-background">
-                  {/* Vendor avatar */}
-                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-[10px] font-bold shrink-0">
-                    {p.seller.charAt(0)}
-                  </div>
-
-                  {/* Vendor info */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1">
-                      <button type="button" onClick={() => setViewingProductId(p.id)} className="text-[11px] font-bold truncate text-start hover:text-primary hover:underline transition-colors">
-                        {p.seller}
-                      </button>
-                      <Star className="h-2.5 w-2.5 fill-amber-400 text-amber-400 shrink-0" />
-                      <span className="text-[9px]">{p.rating}</span>
-                    </div>
-                    <div className="flex items-center gap-1 text-[8px] text-muted-foreground">
-                      <span>{p.origin}</span>
-                      <span>·</span>
-                      <span>{p.warranty}</span>
-                      <span>·</span>
-                      <span>{p.shipping}</span>
-                      {p.minOrder > 1 && <><span>·</span><span className="text-amber-600">Min:{p.minOrder}</span></>}
-                    </div>
-                  </div>
-
-                  {/* Price */}
-                  <div className="text-end shrink-0 me-1">
-                    <span className="text-sm font-bold text-green-600">{p.price}</span>
-                    <span className="text-[8px] text-green-600 ms-0.5">OMR</span>
-                    <div className="text-[8px] text-muted-foreground"><span className="line-through">{p.originalPrice}</span> <span className="text-green-600 font-medium">-{p.discount}%</span></div>
-                  </div>
-
-                  {/* Actions — compact */}
-                  <div className="flex items-center gap-1 shrink-0">
-                    <button type="button"
-                      className="flex items-center gap-1 rounded bg-green-600 text-white hover:bg-green-700 px-2 py-1.5 text-[9px] font-semibold">
-                      <CreditCard className="h-3 w-3" /> {isAr ? "شراء" : "Buy"}
-                    </button>
-                    <button type="button"
-                      onClick={() => { setReqMode("vendor"); setActiveTab("customize"); }}
-                      className="flex items-center gap-1 rounded border border-amber-400 text-amber-700 hover:bg-amber-50 px-2 py-1.5 text-[9px] font-semibold">
-                      <Wrench className="h-3 w-3" />
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          <BuyTab
+            locale={locale}
+            selectedProduct={selectedProduct}
+            buyListings={buyListings}
+            buyDetailQuery={buyDetailQuery}
+            buygroupTimeLeft={buygroupTimeLeft}
+            getCardQty={getCardQty}
+            setCardQty={setCardQty}
+            onAddToCart={onAddToCart}
+            onSetSelectedProductId={setSelectedProductId}
+            onSetViewingProductId={setViewingProductId}
+            onSetReqMode={setReqMode}
+            onSetActiveTab={setActiveTab}
+            hasSeenBuygroupDisclaimer={hasSeenBuygroupDisclaimer}
+            onOpenBuygroupDisclaimer={openBuygroupDisclaimer}
+          />
         )}
 
       </div>
@@ -1144,9 +1291,6 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
           >
             <MessageSquare className="h-3 w-3 text-primary" />
             <span className="text-[10px] font-semibold">{isAr ? "محادثة" : "Discussion"}</span>
-            {MOCK_MESSAGES.length > 0 && (
-              <span className="text-[8px] bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">{MOCK_MESSAGES.length}</span>
-            )}
             {/* Usage counter */}
             <span className={cn(
               "text-[7px] font-bold px-1 py-0.5 rounded ms-auto me-1",
@@ -1159,15 +1303,10 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
 
           {chatExpanded && (
             <div className="max-h-36 overflow-y-auto px-3 py-2 space-y-1.5 border-t border-border/30">
-              {MOCK_MESSAGES.map((msg) => (
-                <div key={msg.id} className={cn("flex gap-1.5", msg.isOwn && "flex-row-reverse")}>
-                  <div className={cn(
-                    "max-w-[80%] rounded-lg px-2 py-1 text-[10px]",
-                    msg.isOwn ? "bg-primary text-primary-foreground" : "bg-muted"
-                  )}>{msg.text}</div>
-                  <span className="text-[7px] text-muted-foreground self-end">{msg.time}</span>
-                </div>
-              ))}
+              <div className="text-center py-4 text-muted-foreground">
+                <MessageSquare className="h-5 w-5 mx-auto mb-1 opacity-20" />
+                <p className="text-[9px]">{isAr ? "ابدأ المحادثة" : "Start a discussion"}</p>
+              </div>
             </div>
           )}
 
@@ -1197,6 +1336,63 @@ export default function ItemDetailPanel({ selectedItemId, searchTerm, onAddToCar
         </div>
       )}
 
+      {/* ═══ Buygroup Disclaimer Popup — exact copy from ProductCard ═══ */}
+      <Dialog open={buygroupDisclaimerOpen} onOpenChange={setBuygroupDisclaimerOpen}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold text-foreground mb-4">
+              {isAr ? "كيف تعمل مجموعات الشراء" : "How Buygroups Work"}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 text-muted-foreground">
+            <div>
+              <h3 className="font-semibold text-foreground mb-2">{isAr ? "ما هي مجموعة الشراء؟" : "What is a Buygroup?"}</h3>
+              <p className="text-sm leading-relaxed">
+                {isAr
+                  ? "مجموعة الشراء هي نظام شراء جماعي حيث يجتمع عدة عملاء لشراء المنتجات بأسعار أفضل. عندما تحجز منتجًا في مجموعة شراء، فأنت تحجز مكانك لهذا المنتج."
+                  : "A buygroup is a collective purchasing system where multiple customers come together to purchase products at better prices. When you book a product in a buygroup, you're reserving your spot for that item."}
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-foreground mb-2">{isAr ? "كيف يعمل:" : "How It Works:"}</h3>
+              <ul className="list-disc list-inside space-y-2 text-sm leading-relaxed">
+                <li>{isAr ? "اختر الكمية التي تريد حجزها" : "Select the quantity you want to book"}</li>
+                <li>{isAr ? "اضغط \"حجز\" لتأكيد مكانك" : 'Click "Book" to reserve your items'}</li>
+                <li>{isAr ? "انتظر حتى تصل المجموعة للعدد المطلوب" : "Wait for the buygroup to reach the required number of participants"}</li>
+                <li>{isAr ? "بمجرد اكتمال المجموعة، سيتم إخطارك للدفع" : "Once the buygroup is complete, you'll be notified and can proceed with payment"}</li>
+                <li>{isAr ? "يتم تأكيد حجزك فقط بعد وصول المجموعة لهدفها" : "Your booking is confirmed only after the buygroup reaches its target"}</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold text-foreground mb-2">{isAr ? "ملاحظات مهمة:" : "Important Notes:"}</h3>
+              <ul className="list-disc list-inside space-y-2 text-sm leading-relaxed">
+                <li>{isAr ? "حجزك هو حجز وليس شراء فوري" : "Your booking is a reservation, not an immediate purchase"}</li>
+                <li>{isAr ? "يمكنك إلغاء حجزك قبل إغلاق المجموعة" : "You can cancel your booking before the buygroup closes"}</li>
+                <li>{isAr ? "إذا لم تصل المجموعة لهدفها، سيتم إلغاء حجزك تلقائيًا" : "If the buygroup doesn't reach its target, your booking will be automatically cancelled"}</li>
+                <li>{isAr ? "ستتلقى إشعارات حول حالة المجموعة" : "You'll receive notifications about the buygroup status"}</li>
+              </ul>
+            </div>
+          </div>
+          <div className="flex items-center justify-end gap-3 mt-6 pt-4 border-t border-border">
+            <button onClick={() => setBuygroupDisclaimerOpen(false)}
+              className="px-4 py-2 text-sm font-medium text-muted-foreground bg-card border border-border rounded hover:bg-muted transition-colors">
+              {isAr ? "إلغاء" : "Cancel"}
+            </button>
+            <button onClick={() => {
+              setBuygroupDisclaimerOpen(false);
+              setHasSeenBuygroupDisclaimer(true);
+              if (buygroupPendingProductId) {
+                onAddToCart(buygroupPendingProductId, buygroupPendingQty);
+                setBuygroupPendingProductId(null);
+                setBuygroupPendingQty(1);
+              }
+            }}
+              className="px-4 py-2 text-sm font-medium text-white bg-primary rounded hover:bg-primary/90 transition-colors">
+              {isAr ? "أفهم، متابعة" : "I Understand, Proceed"}
+            </button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

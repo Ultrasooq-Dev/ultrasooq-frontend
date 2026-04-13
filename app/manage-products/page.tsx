@@ -20,7 +20,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { IoMdAdd } from "react-icons/io";
 import { Store } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -156,8 +156,12 @@ const ManageProductsPage = () => {
   const { toast } = useToast();
   const [page, setPage] = useState(1);
   
-  // Tab state management
-  const [activeTab, setActiveTab] = useState<'my-products' | 'existing-products' | 'dropship-products'>('my-products');
+  // Tab state management — support ?tab= query param for deep linking
+  const searchParams = useSearchParams();
+  const tabParam = searchParams?.get("tab");
+  const validTabs = ['my-products', 'dropship-products', 'my-services'] as const;
+  const initialTab = validTabs.includes(tabParam as any) ? (tabParam as typeof validTabs[number]) : 'my-products';
+  const [activeTab, setActiveTab] = useState<typeof validTabs[number]>(initialTab);
   
   // Search and filter states
   const [searchTerm, setSearchTerm] = useState("");
@@ -1056,14 +1060,14 @@ const ManageProductsPage = () => {
                   {t("my_dropship_products")}
                 </button>
                 <button
-                  onClick={() => setActiveTab('existing-products')}
+                  onClick={() => setActiveTab('my-services')}
                   className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                    activeTab === 'existing-products'
+                    activeTab === 'my-services'
                       ? 'border-primary text-primary'
                       : 'border-transparent text-muted-foreground hover:text-muted-foreground hover:border-border'
                   }`}
                 >
-                  {t("existing_products")}
+                  {t("my_services")}
                 </button>
               </nav>
             </div>
@@ -1922,6 +1926,25 @@ const ManageProductsPage = () => {
                   )}
                 </div>
               </div>
+            </div>
+          ) : activeTab === 'my-services' ? (
+            /* My Services Tab */
+            <div className="w-full">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-xl font-semibold">{t("my_services")}</h2>
+                  <p className="text-sm text-muted-foreground mt-1">{t("manage_your_services") || "Manage your services from here"}</p>
+                </div>
+                <a href="/manage-services" className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium bg-primary text-white hover:bg-primary/90 transition-colors">
+                  {t("open_full_page") || "Open Full Page"}
+                </a>
+              </div>
+              <iframe
+                src="/manage-services"
+                className="w-full border rounded-xl min-h-[600px]"
+                style={{ height: "calc(100vh - 300px)" }}
+                title="My Services"
+              />
             </div>
           ) : null}
         </div>

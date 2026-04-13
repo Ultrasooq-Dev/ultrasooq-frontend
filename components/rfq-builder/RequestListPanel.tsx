@@ -1,10 +1,16 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
-import { Plus, Paperclip, X, Package, ChevronRight, FileText, Trash2, ShoppingCart, Search, Loader2, Zap, ScanLine, Camera, Table2, FileSpreadsheet } from "lucide-react";
+import {
+  Plus, Paperclip, X, Package, ChevronRight, FileText, Trash2, ShoppingCart,
+  Search, Loader2, Zap, ScanLine, Camera, Table2, FileSpreadsheet,
+  Store, Users, Wrench, Percent, Briefcase, SlidersHorizontal,
+} from "lucide-react";
 import http from "@/apis/http";
 import { track } from "@/lib/analytics";
 import { extractTextFromImage, parseSpreadsheet, scanBarcodeFromImage } from "./tools";
+import { useTrackProductSearch } from "@/apis/queries/product.queries";
+import { getOrCreateDeviceId } from "@/utils/helper";
 
 export interface RequestItem {
   id: string;
@@ -17,31 +23,56 @@ export interface RequestItem {
   notes?: string;
 }
 
-// Mock items for UI preview
-const MOCK_ITEMS: RequestItem[] = [
-  { id: "1", name: "Wireless Headphones (Noise Cancelling)", quantity: 50, budgetFrom: 80, budgetTo: 100, type: "SAME", attachments: ["spec.pdf"] },
-  { id: "2", name: "Business Laptops 14-inch", quantity: 10, budgetFrom: 450, budgetTo: 600, type: "SIMILAR", attachments: [] },
-  { id: "3", name: "USB-C Cables 1.5m", quantity: 200, budgetFrom: 1, budgetTo: 3, type: "SAME", attachments: [] },
-  { id: "4", name: "Ergonomic Office Chairs", quantity: 25, budgetFrom: 80, budgetTo: 150, type: "SIMILAR", attachments: ["photo.jpg", "dims.pdf"] },
-  { id: "5", name: "27-inch Monitors 4K", quantity: 10, budgetFrom: 200, budgetTo: 350, type: "SAME", attachments: [] },
-  { id: "6", name: "Mechanical Keyboards RGB", quantity: 30, budgetFrom: 25, budgetTo: 50, type: "SIMILAR", attachments: [] },
-  { id: "7", name: "Webcam HD 1080p", quantity: 20, budgetFrom: 15, budgetTo: 30, type: "SAME", attachments: [] },
-  { id: "8", name: "Wireless Mouse Ergonomic", quantity: 50, budgetFrom: 10, budgetTo: 20, type: "SAME", attachments: [] },
-  { id: "9", name: "Standing Desk Electric", quantity: 5, budgetFrom: 300, budgetTo: 500, type: "SIMILAR", attachments: ["specs.pdf"] },
-  { id: "10", name: "LED Desk Lamps", quantity: 30, budgetFrom: 15, budgetTo: 30, type: "SAME", attachments: [] },
+// ─── Category filter chips (always visible in Panel 2) ──────────
+type CategoryChipKey = "retail" | "wholesale" | "buygroup" | "customizable" | "discount" | "rfq" | "vendor_store" | "service";
+
+interface CategoryChipDef {
+  key: CategoryChipKey;
+  label: string;
+  labelAr: string;
+  icon: React.ElementType;
+  activeClass: string;
+}
+
+const CATEGORY_CHIPS: CategoryChipDef[] = [
+  { key: "retail",        label: "Retail",       labelAr: "تجزئة",         icon: ShoppingCart,      activeClass: "bg-blue-100 dark:bg-blue-950/30 border-blue-300 dark:border-blue-700 text-blue-700 dark:text-blue-300" },
+  { key: "wholesale",     label: "Wholesale",    labelAr: "جملة",          icon: Package,           activeClass: "bg-indigo-100 dark:bg-indigo-950/30 border-indigo-300 dark:border-indigo-700 text-indigo-700 dark:text-indigo-300" },
+  { key: "buygroup",      label: "Buy Group",    labelAr: "مجموعة شراء",   icon: Users,             activeClass: "bg-violet-100 dark:bg-violet-950/30 border-violet-300 dark:border-violet-700 text-violet-700 dark:text-violet-300" },
+  { key: "customizable",  label: "Customizable", labelAr: "قابل للتخصيص",  icon: Wrench,            activeClass: "bg-amber-100 dark:bg-amber-950/30 border-amber-300 dark:border-amber-700 text-amber-700 dark:text-amber-300" },
+  { key: "discount",      label: "Discount",     labelAr: "خصم",           icon: Percent,           activeClass: "bg-rose-100 dark:bg-rose-950/30 border-rose-300 dark:border-rose-700 text-rose-700 dark:text-rose-300" },
+  { key: "rfq",           label: "RFQ",          labelAr: "طلب أسعار",     icon: FileText,          activeClass: "bg-primary/10 border-primary/30 text-primary" },
+  { key: "vendor_store",  label: "Vendor Store", labelAr: "متاجر البائعين", icon: Store,             activeClass: "bg-emerald-100 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-700 text-emerald-700 dark:text-emerald-300" },
+  { key: "service",       label: "Service",      labelAr: "خدمات",          icon: Briefcase,         activeClass: "bg-cyan-100 dark:bg-cyan-950/30 border-cyan-300 dark:border-cyan-700 text-cyan-700 dark:text-cyan-300" },
 ];
 
 interface RequestListPanelProps {
   selectedItemId: string | null;
   onSelectItem: (id: string, name?: string) => void;
   onItemRemoved?: (id: string) => void;
+  onRequestSession?: () => string; // returns new sessionId
   searchQuery?: string;
   sessionId?: string | null;
   locale: string;
+  activeCategories?: Set<string>;
+  onCategoryChange?: (categories: Set<string>) => void;
 }
 
-export default function RequestListPanel({ selectedItemId, onSelectItem, onItemRemoved, searchQuery, sessionId, locale }: RequestListPanelProps) {
+export default function RequestListPanel({ selectedItemId, onSelectItem, onItemRemoved, onRequestSession, searchQuery, sessionId, locale, activeCategories, onCategoryChange }: RequestListPanelProps) {
   const isAr = locale === "ar";
+
+  // Tracking hook
+  const trackSearch = useTrackProductSearch();
+
+  // Category chips — use parent-controlled state if provided, otherwise local
+  const [localCategories, setLocalCategories] = useState<Set<string>>(new Set());
+  const chips = activeCategories ?? localCategories;
+  const toggleCategory = (key: string) => {
+    const next = new Set(chips);
+    if (next.has(key)) next.delete(key); else next.add(key);
+    if (onCategoryChange) onCategoryChange(next);
+    else setLocalCategories(next);
+  };
+
   const [inputText, setInputText] = useState("");
   const [attachments, setAttachments] = useState<string[]>([]);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
@@ -50,6 +81,27 @@ export default function RequestListPanel({ selectedItemId, onSelectItem, onItemR
   const lensInputRef = React.useRef<HTMLInputElement>(null);
   const excelInputRef = React.useRef<HTMLInputElement>(null);
   const [items, setItems] = useState<RequestItem[]>([]);
+  const itemsLoaded = useRef(false);
+
+  // Load items from localStorage on mount
+  useEffect(() => {
+    if (itemsLoaded.current || !sessionId) return;
+    itemsLoaded.current = true;
+    try {
+      const stored = localStorage.getItem(`rfq_items_${sessionId}`);
+      if (stored) setItems(JSON.parse(stored));
+    } catch {}
+  }, [sessionId]);
+
+  // Persist items to localStorage when they change
+  useEffect(() => {
+    if (!sessionId || !itemsLoaded.current) return;
+    try {
+      if (items.length > 0) localStorage.setItem(`rfq_items_${sessionId}`, JSON.stringify(items));
+      else localStorage.removeItem(`rfq_items_${sessionId}`);
+    } catch {}
+  }, [items, sessionId]);
+
   const [searchMode, setSearchMode] = useState<"search" | "ai">("search");
   const [toolLoading, setToolLoading] = useState<string | null>(null);
 
@@ -126,13 +178,13 @@ export default function RequestListPanel({ selectedItemId, onSelectItem, onItemR
   };
 
   // AI usage: 50/day — same counter as Panel 3
-  const [aiSearchUsed] = useState(() => {
-    if (typeof window === "undefined") return 0;
+  const [aiSearchUsed, setAiSearchUsed] = useState(0);
+  useEffect(() => {
     try {
       const stored = JSON.parse(localStorage.getItem("us_ai_search") ?? "{}");
-      return stored.date === new Date().toDateString() ? (stored.count ?? 0) : 0;
-    } catch { return 0; }
-  });
+      setAiSearchUsed(stored.date === new Date().toDateString() ? (stored.count ?? 0) : 0);
+    } catch {}
+  }, []);
   const aiSearchLeft = 50 - aiSearchUsed;
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -188,6 +240,8 @@ export default function RequestListPanel({ selectedItemId, onSelectItem, onItemR
     const text = name.trim();
     // AI mode: can search with just attachments (no text needed)
     if (!text && attachments.length === 0) return;
+    // Auto-create session if none exists
+    ensureSession();
     if (!text && attachments.length > 0 && searchMode === "ai") {
       // AI reads attachments only
       const newItem: RequestItem = {
@@ -218,6 +272,10 @@ export default function RequestListPanel({ selectedItemId, onSelectItem, onItemR
 
     if (newItems.length === 0) return;
     setItems((prev) => [...prev, ...newItems]);
+    // Track the search term
+    if (searchMode === "search" && text) {
+      trackSearch.mutate({ searchTerm: text, deviceId: getOrCreateDeviceId() || undefined });
+    }
     setInputText("");
     setAttachments([]);
     setSuggestions([]);
@@ -227,14 +285,23 @@ export default function RequestListPanel({ selectedItemId, onSelectItem, onItemR
   };
 
   // Initialize items when session/query changes
+  const prevSessionRef = useRef<string | null | undefined>(undefined);
   useEffect(() => {
     if (searchQuery) {
       setItems([{ id: "new-search-1", name: searchQuery, quantity: 1, type: "SIMILAR", attachments: [] }]);
-    } else if (sessionId) {
-      setItems([]); // New session starts empty — user adds items
-    } else {
-      setItems([]);
+    } else if (sessionId && prevSessionRef.current !== undefined && prevSessionRef.current !== sessionId) {
+      // Skip clearing if this session was just auto-created by ensureSession()
+      if (autoCreatedRef.current) {
+        autoCreatedRef.current = false;
+      } else {
+        // Load items for the new session from localStorage
+        try {
+          const stored = sessionId ? localStorage.getItem(`rfq_items_${sessionId}`) : null;
+          setItems(stored ? JSON.parse(stored) : []);
+        } catch { setItems([]); }
+      }
     }
+    prevSessionRef.current = sessionId;
   }, [sessionId, searchQuery]);
 
   const deleteItem = (id: string) => {
@@ -243,18 +310,15 @@ export default function RequestListPanel({ selectedItemId, onSelectItem, onItemR
     track("rfq_item_deleted", { itemId: id });
   };
 
-  // No session selected — show empty state
-  if (!sessionId) {
-    return (
-      <div className="flex flex-col h-full min-h-0 border-e border-border bg-background">
-        <div className="flex-1 flex flex-col items-center justify-center text-muted-foreground p-4">
-          <FileText className="h-10 w-10 mb-2 opacity-15" />
-          <p className="text-xs font-medium">{isAr ? "اختر جلسة" : "Select a session"}</p>
-          <p className="text-[10px] opacity-60 mt-1 text-center">{isAr ? "اختر جلسة من القائمة أو أنشئ جلسة جديدة" : "Pick a session from the sidebar or create a new one"}</p>
-        </div>
-      </div>
-    );
-  }
+  // Auto-create session when user adds first item without a session
+  const autoCreatedRef = useRef(false);
+  const ensureSession = () => {
+    if (!sessionId && onRequestSession) {
+      autoCreatedRef.current = true;
+      return onRequestSession();
+    }
+    return sessionId;
+  };
 
   return (
     <div className="flex flex-col h-full min-h-0 border-e border-border bg-background">
@@ -405,11 +469,24 @@ export default function RequestListPanel({ selectedItemId, onSelectItem, onItemR
         </div>
       </div>
 
-      {/* Items count */}
-      <div className="px-3 py-1.5 bg-muted/30 border-b border-border shrink-0">
+      {/* Items count + Clear All */}
+      <div className="px-3 py-1.5 bg-muted/30 border-b border-border shrink-0 flex items-center justify-between">
         <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
           {items.length} {isAr ? "عنصر" : "items"}
         </span>
+        <button
+          type="button"
+          disabled={items.length === 0}
+          onClick={() => {
+            setItems([]);
+            onItemRemoved?.("");
+            track("rfq_items_cleared", { count: items.length });
+          }}
+          className="flex items-center gap-1 text-[9px] font-medium text-destructive/70 hover:text-destructive disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+        >
+          <Trash2 className="h-3 w-3" />
+          {isAr ? "مسح الكل" : "Clear All"}
+        </button>
       </div>
 
       {/* Items list */}

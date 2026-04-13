@@ -33,6 +33,8 @@ import {
   BarChart3Icon,
   UserCheckIcon,
   WalletIcon,
+  LayoutDashboardIcon,
+  HandshakeIcon,
 } from "lucide-react";
 import { getCookie } from "cookies-next";
 import { ULTRASOOQ_TOKEN_KEY, ULTRASOOQ_REFRESH_TOKEN_KEY } from "@/utils/constants";
@@ -103,6 +105,9 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
     // Map translation keys to their short versions (if they exist in translations)
     // Otherwise, we'll truncate the full label
     const shortLabelKeyMap: Record<string, string> = {
+      dashboard: "dashboard",
+      product_ops: "product_ops",
+      deal_ops: "deal_ops",
       rfq_requests: "rfq",
       rfq_quotes: "rfq",
       cart: "cart",
@@ -141,6 +146,16 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
   // Role-based menu items
   const getMenuItems = (): MenuItem[] => {
     const baseItems: MenuItem[] = [
+      {
+        icon: <LayoutDashboardIcon className="h-5 w-5 text-primary" />,
+        label: t("dashboard"),
+        translationKey: "dashboard",
+        shortLabel: getShortLabel("dashboard"),
+        path: "/dashboard",
+        onClick: () => {
+          router.push("/dashboard");
+        },
+      },
       {
         icon: <UserIcon className="h-5 w-5 text-primary" />,
         label: t("my_accounts"),
@@ -204,22 +219,42 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
       baseItems.push(
         {
           icon: <PackageIcon className="h-5 w-5 text-primary" />,
-          label: t("my_products"),
-          translationKey: "my_products",
-          shortLabel: getShortLabel("my_products"),
+          label: t("product_ops") || "Product Operations",
+          translationKey: "product_ops",
+          shortLabel: getShortLabel("product_ops"),
           path: "/manage-products",
           onClick: () => {
             router.push("/manage-products");
           },
         },
         {
-          icon: <WrenchIcon className="h-5 w-5 text-success" />,
-          label: t("my_services"),
-          translationKey: "my_services",
-          shortLabel: getShortLabel("my_services"),
-          path: "/manage-services",
+          icon: <HandshakeIcon className="h-5 w-5 text-[#c2703e]" />,
+          label: t("deal_ops") || "Deal Ops",
+          translationKey: "deal_ops",
+          shortLabel: getShortLabel("deal_ops"),
+          path: "/deal-ops",
           onClick: () => {
-            router.push("/manage-services");
+            router.push("/deal-ops");
+          },
+        },
+        {
+          icon: <ShoppingCartIcon className="h-5 w-5 text-warning" />,
+          label: t("orders"),
+          translationKey: "orders",
+          shortLabel: getShortLabel("orders"),
+          path: "/orders",
+          onClick: () => {
+            router.push("/orders");
+          },
+        },
+        {
+          icon: <BarChart3Icon className="h-5 w-5 text-success" />,
+          label: t("analytics"),
+          translationKey: "analytics",
+          shortLabel: getShortLabel("analytics"),
+          path: "/analytics",
+          onClick: () => {
+            router.push("/analytics");
           },
         },
         {
@@ -230,16 +265,6 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
           path: "/rfq-request",
           onClick: () => {
             router.push("/rfq-request");
-          },
-        },
-        {
-          icon: <ShoppingCartIcon className="h-5 w-5 text-warning" />,
-          label: t("orders"),
-          translationKey: "orders",
-          shortLabel: getShortLabel("orders"),
-          path: "/seller-orders",
-          onClick: () => {
-            router.push("/seller-orders");
           },
         },
         {
@@ -262,16 +287,6 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
             router.push("/messages");
           },
         },
-        {
-          icon: <BarChart3Icon className="h-5 w-5 text-success" />,
-          label: t("analytics"),
-          translationKey: "analytics",
-          shortLabel: getShortLabel("analytics"),
-          path: "/analytics",
-          onClick: () => {
-            router.push("/analytics");
-          },
-        },
       );
     }
 
@@ -280,12 +295,42 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
       baseItems.push(
         {
           icon: <PackageIcon className="h-5 w-5 text-primary" />,
-          label: t("my_products"),
-          translationKey: "my_products",
-          shortLabel: getShortLabel("my_products"),
+          label: t("product_ops") || "Product Operations",
+          translationKey: "product_ops",
+          shortLabel: getShortLabel("product_ops"),
           path: "/manage-products",
           onClick: () => {
             router.push("/manage-products");
+          },
+        },
+        {
+          icon: <HandshakeIcon className="h-5 w-5 text-[#c2703e]" />,
+          label: t("deal_ops") || "Deal Ops",
+          translationKey: "deal_ops",
+          shortLabel: getShortLabel("deal_ops"),
+          path: "/deal-ops",
+          onClick: () => {
+            router.push("/deal-ops");
+          },
+        },
+        {
+          icon: <ShoppingCartIcon className="h-5 w-5 text-warning" />,
+          label: t("orders"),
+          translationKey: "orders",
+          shortLabel: getShortLabel("orders"),
+          path: "/orders",
+          onClick: () => {
+            router.push("/orders");
+          },
+        },
+        {
+          icon: <BarChart3Icon className="h-5 w-5 text-success" />,
+          label: t("analytics"),
+          translationKey: "analytics",
+          shortLabel: getShortLabel("analytics"),
+          path: "/analytics",
+          onClick: () => {
+            router.push("/analytics");
           },
         },
         {
@@ -299,16 +344,6 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
           },
         },
         {
-          icon: <WrenchIcon className="h-5 w-5 text-success" />,
-          label: t("my_services"),
-          translationKey: "my_services",
-          shortLabel: getShortLabel("my_services"),
-          path: "/manage-services",
-          onClick: () => {
-            router.push("/manage-services");
-          },
-        },
-        {
           icon: <FileSearchIcon className="h-5 w-5 text-info" />,
           label: t("rfq_quotes"),
           translationKey: "rfq_quotes",
@@ -316,16 +351,6 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
           path: "/rfq-request",
           onClick: () => {
             router.push("/rfq-request");
-          },
-        },
-        {
-          icon: <ShoppingCartIcon className="h-5 w-5 text-warning" />,
-          label: t("orders"),
-          translationKey: "orders",
-          shortLabel: getShortLabel("orders"),
-          path: "/orders",
-          onClick: () => {
-            router.push("/orders");
           },
         },
         {
@@ -346,16 +371,6 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
           path: "/team-members",
           onClick: () => {
             router.push("/team-members");
-          },
-        },
-        {
-          icon: <BarChart3Icon className="h-5 w-5 text-success" />,
-          label: t("analytics"),
-          translationKey: "analytics",
-          shortLabel: getShortLabel("analytics"),
-          path: "/analytics",
-          onClick: () => {
-            router.push("/analytics");
           },
         },
       );

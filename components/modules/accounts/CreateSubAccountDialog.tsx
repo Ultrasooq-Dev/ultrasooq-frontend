@@ -66,17 +66,13 @@ const createAccountSchemaFn = (t: any) => {
     companyWebsite: z.string().optional(),
     companyTaxId: z.string().optional(),
 
-    // Identity card uploads (mandatory for COMPANY and FREELANCER)
-    uploadIdentityFrontImage: z
-      .any()
-      .refine((files) => files && files.length > 0, {
-        message: t("identity_card_front_required"),
-      }),
-    uploadIdentityBackImage: z
-      .any()
-      .refine((files) => files && files.length > 0, {
-        message: t("identity_card_back_required"),
-      }),
+    // Identity card front (required for FREELANCER and COMPANY only)
+    uploadIdentityFrontImage: z.any().optional(),
+    // Identity card back — removed
+    uploadIdentityBackImage: z.any().optional(),
+
+    // CR document upload (optional, for COMPANY)
+    uploadCRDocument: z.any().optional(),
   });
 };
 
@@ -424,25 +420,25 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
                 </div>
               </div>
 
-              {/* Identity Card Upload - Mandatory for COMPANY and FREELANCER */}
+              {/* Identity Card Upload — FREELANCER and COMPANY only */}
+              {(form.watch("tradeRole") === "FREELANCER" || form.watch("tradeRole") === "COMPANY") && (
               <div className="space-y-3 border-t border-border pt-4">
                 <h4 className="text-dark-cyan text-sm font-medium">
                   {t("identity_card")} <span className="text-destructive">*</span>
                 </h4>
                 <p className="text-xs text-muted-foreground">
-                  {t("identity_card_description")}
+                  {t("identity_card_description") || "Please upload the front side of your identity card for account verification."}
                 </p>
 
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  {/* Front Side */}
+                <div className="grid grid-cols-1 gap-4">
+                  {/* Front Side Only */}
                   <FormField
                     control={form.control}
                     name="uploadIdentityFrontImage"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-dark-cyan text-xs font-medium">
-                          {t("front_side")}{" "}
-                          <span className="text-destructive">*</span>
+                          {t("front_side")} <span className="text-destructive">*</span>
                         </FormLabel>
                         <FormControl>
                           <div className="relative w-full overflow-hidden rounded-lg border-2 border-dashed border-border">
@@ -528,91 +524,67 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
                     )}
                   />
 
-                  {/* Back Side */}
+                </div>
+              </div>
+              )}
+
+              {/* CR Document Upload — for COMPANY only */}
+              {form.watch("tradeRole") === "COMPANY" && (
+                <div className="space-y-3 border-t border-border pt-4">
+                  <h4 className="text-dark-cyan text-sm font-medium">
+                    {t("commercial_registration") || "Commercial Registration (CR)"}
+                    <span className="text-xs font-normal text-muted-foreground ms-1">({t("optional") || "Optional"})</span>
+                  </h4>
+                  <p className="text-xs text-muted-foreground">
+                    Upload your Commercial Registration document for business verification.
+                  </p>
                   <FormField
                     control={form.control}
-                    name="uploadIdentityBackImage"
+                    name="uploadCRDocument"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-dark-cyan text-xs font-medium">
-                          {t("back_side")}{" "}
-                          <span className="text-destructive">*</span>
-                        </FormLabel>
                         <FormControl>
                           <div className="relative w-full overflow-hidden rounded-lg border-2 border-dashed border-border">
-                            <div className="relative h-48 w-full">
-                              {identityBackImageFile ? (
-                                <>
-                                  <button
-                                    type="button"
-                                    className="absolute top-2 right-2 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-destructive transition-colors hover:bg-destructive"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      setIdentityBackImageFile(null);
-                                      form.setValue(
-                                        "uploadIdentityBackImage",
-                                        undefined,
-                                      );
-                                      if (backIdentityRef.current)
-                                        backIdentityRef.current.value = "";
-                                    }}
-                                  >
-                                    <Image
-                                      src={ClostIcon}
-                                      alt="close-icon"
-                                      width={16}
-                                      height={16}
-                                    />
-                                  </button>
-                                  <Image
-                                    src={
-                                      identityBackImageFile &&
-                                      typeof identityBackImageFile === "object"
-                                        ? URL.createObjectURL(
-                                            identityBackImageFile[0],
-                                          )
-                                        : "/images/company-logo.png"
-                                    }
-                                    alt="Identity back"
-                                    fill
-                                    className="z-0 object-contain"
-                                  />
-                                </>
+                            <div className="relative h-36 w-full">
+                              {form.watch("uploadCRDocument")?.[0] ? (
+                                <div className="flex h-full flex-col items-center justify-center">
+                                  <svg className="h-10 w-10 text-red-500 mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                    <polyline points="14 2 14 8 20 8" />
+                                    <line x1="16" y1="13" x2="8" y2="13" />
+                                    <line x1="16" y1="17" x2="8" y2="17" />
+                                  </svg>
+                                  <span className="text-sm font-medium text-foreground">{form.watch("uploadCRDocument")[0]?.name}</span>
+                                  <span className="text-xs text-muted-foreground">{(form.watch("uploadCRDocument")[0]?.size / 1024 / 1024).toFixed(2)} MB</span>
+                                  <button type="button" onClick={() => form.setValue("uploadCRDocument", undefined)}
+                                    className="mt-1 text-xs text-destructive hover:underline">{t("remove") || "Remove"}</button>
+                                </div>
                               ) : (
-                                <div className="absolute inset-0 z-0">
-                                  <AddImageContent
-                                    description={t("drop_identity_card_back")}
-                                  />
+                                <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+                                  <svg className="h-8 w-8 text-muted-foreground mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                    <polyline points="14 2 14 8 20 8" />
+                                    <line x1="12" y1="18" x2="12" y2="12" />
+                                    <polyline points="9 15 12 12 15 15" />
+                                  </svg>
+                                  <span className="text-sm text-muted-foreground">Drop CR document or <span className="text-primary">browse</span></span>
+                                  <span className="text-xs text-muted-foreground mt-1">(PDF only, max 10MB)</span>
                                 </div>
                               )}
                               <input
                                 type="file"
-                                accept="image/*"
+                                accept=".pdf,application/pdf"
                                 multiple={false}
-                                className="absolute bottom-0 z-10 h-48 w-full cursor-pointer opacity-0"
+                                className="absolute bottom-0 z-10 h-36 w-full cursor-pointer opacity-0"
                                 onChange={(event) => {
                                   if (event.target.files?.[0]) {
-                                    if (
-                                      event.target.files[0].size > 5242880
-                                    ) {
-                                      toast({
-                                        title: t("file_too_large"),
-                                        description: t("image_size_less_than_5mb"),
-                                        variant: "danger",
-                                      });
+                                    if (event.target.files[0].size > 10485760) {
+                                      toast({ title: "File must be less than 10MB", variant: "danger" });
                                       return;
                                     }
-                                    setIdentityBackImageFile(
-                                      event.target.files,
-                                    );
-                                    form.setValue(
-                                      "uploadIdentityBackImage",
-                                      event.target.files,
-                                    );
+                                    form.setValue("uploadCRDocument", event.target.files);
                                   }
                                 }}
-                                id="uploadIdentityBackImage"
-                                ref={backIdentityRef}
                               />
                             </div>
                           </div>
@@ -622,7 +594,7 @@ export const CreateSubAccountDialog: React.FC<CreateSubAccountDialogProps> = ({
                     )}
                   />
                 </div>
-              </div>
+              )}
 
               {/* Company-specific fields - show only when COMPANY is selected */}
               {form.watch("tradeRole") === "COMPANY" && (

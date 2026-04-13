@@ -197,7 +197,7 @@ export const useUpdateRfqCartWithLogin = () => {
   return useMutation<
     APIResponse,
     APIResponseError,
-    { productId: number; quantity: number; productType?: "SAME" | "SIMILAR"; offerPriceFrom?: number; offerPriceTo?: number; note?: string }
+    { productId?: number; rfqProductId?: number; quantity: number; productType?: "SAME" | "SIMILAR"; offerPriceFrom?: number; offerPriceTo?: number; note?: string }
   >({
     mutationFn: async (payload) => {
       const res = await updateRfqCartWithLogin(payload);

@@ -146,28 +146,39 @@ async function standaloneFlush(): Promise<void> {
 
 /**
  * Flush on tab close or visibility hidden (keepalive so request survives).
+ * Sends both queued events AND any pending web vitals.
  */
 export function setupVisibilityFlush() {
   if (typeof document === 'undefined') return;
 
   document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'hidden' && queue.length > 0) {
-      const batch = queue.splice(0, 50);
-      const body = JSON.stringify({ events: batch });
+    if (document.visibilityState !== 'hidden') return;
 
-      // navigator.sendBeacon has size limit (~64KB), use fetch+keepalive for reliability
-      const sent = navigator.sendBeacon
-        ? navigator.sendBeacon(`${apiBase}/analytics/events`, new Blob([body], { type: 'application/json' }))
-        : false;
+    const batch = queue.splice(0, 50);
+    const hasVitals = Object.keys(vitalsSnapshot).length > 0;
 
-      if (!sent) {
-        fetch(`${apiBase}/analytics/events`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body,
-          keepalive: true,
-        }).catch(() => {});
-      }
+    if (batch.length === 0 && !hasVitals) return;
+
+    const body = JSON.stringify({
+      events: batch,
+      ...(hasVitals ? { vitals: vitalsSnapshot } : {}),
+    });
+
+    // Clear vitals after sending
+    if (hasVitals) vitalsSnapshot = {};
+
+    // navigator.sendBeacon has size limit (~64KB), use fetch+keepalive for reliability
+    const sent = navigator.sendBeacon
+      ? navigator.sendBeacon(`${apiBase}/analytics/events`, new Blob([body], { type: 'application/json' }))
+      : false;
+
+    if (!sent) {
+      fetch(`${apiBase}/analytics/events`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body,
+        keepalive: true,
+      }).catch(() => {});
     }
   });
 }

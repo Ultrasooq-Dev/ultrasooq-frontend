@@ -186,6 +186,15 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
         },
       );
 
+      // Order status real-time updates — invalidate TanStack Query cache
+      socketIo.on("order:status", (data: { orderProductId: number; status: string }) => {
+        // Dynamically import queryClient to avoid circular deps
+        try {
+          const event = new CustomEvent("order:status:update", { detail: data });
+          window.dispatchEvent(event);
+        } catch {}
+      });
+
       setSocket(socketIo);
 
       return () => {

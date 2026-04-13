@@ -18,6 +18,7 @@ export function useWebVitals() {
       if (!mounted) return;
 
       wv.onCLS?.((m: any) => setVitals({ CLS: m.value }));
+      wv.onFID?.((m: any) => setVitals({ FID: m.value }));
       wv.onLCP?.((m: any) => setVitals({ LCP: m.value }));
       wv.onTTFB?.((m: any) => setVitals({ TTFB: m.value }));
       wv.onINP?.((m: any) => setVitals({ INP: m.value }));

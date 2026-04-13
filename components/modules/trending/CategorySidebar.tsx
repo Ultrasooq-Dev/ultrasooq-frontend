@@ -108,6 +108,13 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
   // Alibaba-style: Store 2-level-deep subcategory data for the grid panel
   const [subcategoriesForGrid, setSubcategoriesForGrid] = useState<any[]>([]);
   const [gridLoading, setGridLoading] = useState(false);
+  const [isMobileState, setIsMobileState] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobileState(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   // Level 3: hovered Level 2 subcategory and its children
   const [hoveredLevel2Id, setHoveredLevel2Id] = useState<number | null>(null);
@@ -260,20 +267,34 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
     }
   };
 
-  // Fetch all subcategories for all main categories
+  // Fetch all subcategories for all main categories (batched to avoid 429)
   useEffect(() => {
     const fetchAllSubcategories = async () => {
       if (mainCategories.length === 0) return;
 
-      const categoriesData = await Promise.all(
-        mainCategories.map(async (category: any) => {
-          const categoryWithChildren = await fetchCategoryWithChildren(category, 0);
-          return { 
-            category: categoryWithChildren, 
-            subcategories: categoryWithChildren.children || [] 
-          };
-        }),
-      );
+      // Batch requests: max 3 concurrent with delay to avoid 429 rate limit
+      const BATCH_SIZE = 3;
+      const BATCH_DELAY = 500; // ms between batches
+      const categoriesData: any[] = [];
+
+      for (let i = 0; i < mainCategories.length; i += BATCH_SIZE) {
+        const batch = mainCategories.slice(i, i + BATCH_SIZE);
+        const batchResults = await Promise.all(
+          batch.map(async (category: any) => {
+            const categoryWithChildren = await fetchCategoryWithChildren(category, 0);
+            return {
+              category: categoryWithChildren,
+              subcategories: categoryWithChildren.children || [],
+            };
+          }),
+        );
+        categoriesData.push(...batchResults);
+        // Wait between batches to stay under rate limit
+        if (i + BATCH_SIZE < mainCategories.length) {
+          await new Promise((r) => setTimeout(r, BATCH_DELAY));
+        }
+      }
+
       setCategoriesWithSubcategories(categoriesData);
 
       if (!selectedMainCategory && categoriesData.length > 0) {
@@ -606,7 +627,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
 
   // Mobile: Get current categories to display based on nav stack
   const getMobileCurrentCategories = (): { categories: any[]; level: number; title: string } => {
-    const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+    const isMobile = isMobileState;
     
     if (!isMobile) {
       return { categories: [], level: -1, title: "" };
@@ -639,7 +660,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
 
   // Mobile: Handle category selection (push to stack or navigate)
   const handleMobileCategoryClick = async (category: any, level: number) => {
-    const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+    const isMobile = isMobileState;
     if (!isMobile) return;
 
     // For main categories (level 0), we need to check if they have subcategories
