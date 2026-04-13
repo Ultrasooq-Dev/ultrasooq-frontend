@@ -35,5 +35,8 @@ jobs:
         env:
           NEXT_PUBLIC_API_URL: http://localhost:3000
 
+      - name: Clean build artifacts before test
+        run: rm -rf .next
+
       - name: Test
         run: npm run test --if-present
