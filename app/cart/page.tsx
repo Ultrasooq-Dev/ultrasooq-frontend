@@ -30,7 +30,13 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useDynamicTranslation } from "@/hooks/useDynamicTranslation";
 import React, { useEffect, useMemo, useState } from "react";
-import { ShoppingBag, ChevronLeft, ChevronRight } from "lucide-react";
+import { ShoppingBag, ChevronLeft, ChevronRight, FileSearch } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import dynamic from "next/dynamic";
+
+const RfqCartTab = dynamic(() => import("@/components/modules/rfqCart/RfqCartTab"), {
+  loading: () => <div className="py-12 text-center text-muted-foreground">Loading RFQ Cart...</div>,
+});
 import { useCurrentAccount } from "@/apis/queries/auth.queries";
 import { useAllProducts } from "@/apis/queries/product.queries";
 import { useCategory } from "@/apis/queries/category.queries";
@@ -51,6 +57,9 @@ import { FaStar } from "react-icons/fa";
 const CartListPage = () => {
   const t = useTranslations();
   const { user, langDir, currency } = useAuth();
+  const searchParamsCart = useSearchParams();
+  const initialTab = searchParamsCart?.get("tab") === "rfq" ? "rfq" : "order";
+  const [activeCartTab, setActiveCartTab] = useState<"order" | "rfq">(initialTab);
   const { translate } = useDynamicTranslation();
   const currentAccount = useCurrentAccount();
   const currentTradeRole =
@@ -751,26 +760,50 @@ const CartListPage = () => {
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         {/* Cart and Order Summary Section */}
         {/* Header Section - Amazon Style */}
-        <div className="mb-6 border-b border-border pb-4">
+        <div className="mb-6 border-b border-border pb-0">
           <h1
-            className="text-3xl font-semibold text-foreground"
+            className="text-3xl font-semibold text-foreground mb-4"
             dir={langDir}
             translate="no"
           >
             {t("my_cart")}
           </h1>
-          {memoizedCartList.length > 0 && (
-            <p
-              className="mt-1 text-sm text-muted-foreground"
-              dir={langDir}
-              translate="no"
+          {/* Cart Type Tabs */}
+          <div className="flex gap-0">
+            <button
+              onClick={() => setActiveCartTab("order")}
+              className={`flex items-center gap-2 px-5 py-3 text-sm font-medium border-b-2 transition-colors ${
+                activeCartTab === "order"
+                  ? "border-primary text-primary"
+                  : "border-transparent text-muted-foreground hover:text-foreground"
+              }`}
             >
-              {memoizedCartList.length}{" "}
-              {memoizedCartList.length === 1 ? t("item") : t("items")}
-            </p>
-          )}
+              <ShoppingBag className="h-4 w-4" />
+              {t("order_cart") || "Order Cart"}
+              {memoizedCartList.length > 0 && (
+                <span className="ml-1 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">
+                  {memoizedCartList.length}
+                </span>
+              )}
+            </button>
+            <button
+              onClick={() => setActiveCartTab("rfq")}
+              className={`flex items-center gap-2 px-5 py-3 text-sm font-medium border-b-2 transition-colors ${
+                activeCartTab === "rfq"
+                  ? "border-primary text-primary"
+                  : "border-transparent text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <FileSearch className="h-4 w-4" />
+              {t("rfq_cart") || "RFQ Cart"}
+            </button>
+          </div>
         </div>
 
+        {activeCartTab === "rfq" ? (
+          <RfqCartTab />
+        ) : (
+        <>
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
           {/* Left Column - Cart Items */}
           <div className="lg:col-span-8">
@@ -1075,7 +1108,6 @@ const CartListPage = () => {
             </div>
           </div>
         </div>
-      </div>
 
       {/* Promotional Products Sections - Full Screen Width */}
       <div className="w-full bg-muted">
@@ -1318,6 +1350,9 @@ const CartListPage = () => {
             )}
           </div>
         </div>
+        </div>
+        </>
+        )}
       </div>
 
       {/* Cross-sell recommendations — shown when cart has items */}

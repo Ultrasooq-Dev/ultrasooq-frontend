@@ -45,8 +45,6 @@ function processQueue(error: unknown, token: string | null = null) {
 // ─── Request interceptor ──────────────────────────────────────
 http.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    // Set baseURL dynamically per request so that getApiUrl() can resolve
-    // based on the current window hostname (network IP vs localhost)
     if (!config.baseURL) {
       config.baseURL = getApiUrl();
     }
@@ -56,6 +54,12 @@ http.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
 
+    // Request tracking — unique ID for end-to-end tracing
+    const requestId = `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    config.headers["X-Request-Id"] = requestId;
+    (config as any)._requestId = requestId;
+    (config as any)._startTime = Date.now();
+
     return config;
   },
   (error) => Promise.reject(error),
@@ -63,7 +67,15 @@ http.interceptors.request.use(
 
 // ─── Response interceptor: auto-refresh on 401 ───────────────
 http.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // Log successful response with tracking
+    if (process.env.NODE_ENV === "development") {
+      const rid = (response.config as any)?._requestId;
+      const dur = Date.now() - ((response.config as any)?._startTime || 0);
+      if (rid) console.debug(`[${rid}] ← ${response.status} (${dur}ms)`);
+    }
+    return response;
+  },
   async (error: AxiosError) => {
     const originalRequest = error.config as InternalAxiosRequestConfig & {
       _retry?: boolean;

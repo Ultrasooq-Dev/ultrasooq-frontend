@@ -17,16 +17,25 @@ import { Dialog } from "@/components/ui/dialog";
 import DeleteContent from "@/components/shared/DeleteContent";
 import { useToast } from "@/components/ui/use-toast";
 import { PERMISSION_RFQ_QUOTES, checkPermission } from "@/helpers/permission";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/context/AuthContext";
 import { IoMdArrowDown, IoMdArrowUp } from "react-icons/io";
 import moment from "moment";
+import { useCurrentAccount } from "@/apis/queries/auth.queries";
+import { FileSearch, Store } from "lucide-react";
+import { SellerRfqListContent } from "@/app/seller-rfq-list/page";
 
 const RfqQuotesPage = () => {
   const t = useTranslations();
   const { langDir } = useAuth();
   const router = useRouter();
+  const searchParamsRfq = useSearchParams();
+  const currentAccountRfq = useCurrentAccount();
+  const currentRole = currentAccountRfq?.data?.data?.account?.tradeRole;
+  const isSeller = currentRole === "COMPANY" || currentRole === "FREELANCER";
+  const initialRfqTab = searchParamsRfq?.get("view") === "seller" ? "seller" : searchParamsRfq?.get("view") === "buyer" ? "buyer" : (isSeller ? "seller" : "buyer");
+  const [rfqViewTab, setRfqViewTab] = useState<"buyer" | "seller">(initialRfqTab);
   const hasPermission = checkPermission(PERMISSION_RFQ_QUOTES);
   const { toast } = useToast();
   const [page, setPage] = useState(1);
@@ -124,15 +133,35 @@ const RfqQuotesPage = () => {
     <>
       <div className="min-h-screen bg-muted">
         <div className="container m-auto max-w-7xl px-4 py-8">
-          {/* Header */}
+          {/* Header + Tabs */}
           <div className="mb-6">
-            <h1
-              className="text-3xl font-bold text-foreground"
-              dir={langDir}
-              translate="no"
-            >
-              {t("rfq_product")}
+            <h1 className="text-3xl font-bold text-foreground mb-4" dir={langDir} translate="no">
+              {t("rfq_quotes") || "RFQ Quotes"}
             </h1>
+            <div className="flex gap-0 border-b border-border">
+              <button onClick={() => setRfqViewTab("buyer")}
+                className={`flex items-center gap-2 px-5 py-3 text-sm font-medium border-b-2 transition-colors ${
+                  rfqViewTab === "buyer" ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
+                <FileSearch className="h-4 w-4" />
+                My RFQ Requests
+              </button>
+              {isSeller && (
+                <button onClick={() => setRfqViewTab("seller")}
+                  className={`flex items-center gap-2 px-5 py-3 text-sm font-medium border-b-2 transition-colors ${
+                    rfqViewTab === "seller" ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
+                  <Store className="h-4 w-4" />
+                  Seller Requests
+                </button>
+              )}
+            </div>
+          </div>
+
+          {rfqViewTab === "seller" && isSeller ? (
+            <SellerRfqListContent />
+          ) : (
+          <>
+          {/* Buyer RFQ Content */}
+          <div className="mb-6">
             <p
               className="mt-2 text-sm text-muted-foreground"
               dir={langDir}
@@ -212,7 +241,6 @@ const RfqQuotesPage = () => {
               />
             </div>
           )}
-        </div>
 
         <Dialog open={isDeleteModalOpen} onOpenChange={handleToggleDeleteModal}>
           <DeleteContent
@@ -221,8 +249,10 @@ const RfqQuotesPage = () => {
             isLoading={deleteRfqQuote.isPending}
           />
         </Dialog>
+      </>
+      )}
+        </div>
       </div>
-      <Footer />
     </>
   );
 };

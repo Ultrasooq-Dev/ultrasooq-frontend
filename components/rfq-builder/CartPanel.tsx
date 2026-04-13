@@ -161,21 +161,8 @@ export default function CartPanel({ locale, collapsed, onToggleCollapse, onViewP
 
   const handleSubmitRfq = () => {
     if (rfq.length === 0) return;
-    const rfqCartIds = rfq.map(r => r.rfqCartId).filter(Boolean) as number[];
-    if (rfqCartIds.length === 0) return;
-    submitRfq.mutate({
-      rfqCartIds,
-      firstName: user?.firstName ?? "",
-      lastName: user?.lastName ?? "",
-      phoneNumber: user?.phoneNumber ?? "",
-      cc: user?.cc ?? "",
-      address: "",
-      city: "",
-      province: "",
-      country: "",
-      postCode: "",
-      rfqDate: new Date().toISOString(),
-    });
+    // Navigate to the cart page RFQ tab where user fills address + deadline
+    window.location.href = "/cart?tab=rfq";
   };
 
   // ═══ COLLAPSED: icons only ═══

@@ -200,7 +200,7 @@ export const useUpdateRfqCartWithLogin = () => {
     { productId?: number; rfqProductId?: number; quantity: number; productType?: "SAME" | "SIMILAR"; offerPriceFrom?: number; offerPriceTo?: number; note?: string }
   >({
     mutationFn: async (payload) => {
-      const res = await updateRfqCartWithLogin(payload);
+      const res = await updateRfqCartWithLogin(payload as any);
       return res.data;
     },
     onSuccess: () => {

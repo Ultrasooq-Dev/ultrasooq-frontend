@@ -1,4 +1,5 @@
 "use client";
+// TODO: Replace this page with redirect to /cart?tab=rfq once confirmed working
 import { useAllUserAddress } from "@/apis/queries/address.queries";
 import {
   useAddRfqQuotes,

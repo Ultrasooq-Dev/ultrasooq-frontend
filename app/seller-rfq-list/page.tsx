@@ -23,6 +23,11 @@ function maskFull(f?: string, l?: string) { return `${mask(f)}${l ? " " + mask(l
    Tab 2: "Details" — full detail view of selected RFQ
    ═══════════════════════════════════════════════════════════════ */
 
+// Named export for embedding in other pages (e.g., /rfq-quotes seller tab)
+export function SellerRfqListContent() {
+  return <SellerRfqListPage />;
+}
+
 export default function SellerRfqListPage() {
   const { currency } = useAuth();
   const router = useRouter();
