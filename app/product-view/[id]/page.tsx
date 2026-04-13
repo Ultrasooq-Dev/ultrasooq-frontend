@@ -126,11 +126,6 @@ export default function ProductViewPage() {
     }
   }, [product?.id]);
 
-  // Set quantity to minQty when product loads
-  useEffect(() => {
-    if (minQty > 1 && quantity < minQty) setQuantity(minQty);
-  }, [minQty]);
-
   // ── Images ──
   const images = useMemo(() => {
     const sellerImgs = pp?.productPrice_productSellerImage;
@@ -153,6 +148,11 @@ export default function ProductViewPage() {
   const askForPrice = pp?.askForPrice === "true" || pp?.askForPrice === true;
   const minQty = pp?.minQuantityPerCustomer || pp?.minQuantity || 1;
   const maxQty = pp?.maxQuantityPerCustomer || pp?.maxQuantity || stock || 999;
+
+  // Set quantity to minQty when product loads
+  useEffect(() => {
+    if (minQty > 1 && quantity < minQty) setQuantity(minQty);
+  }, [minQty]);
   const deliveryDays = pp?.deliveryAfter || 0;
   const sellType = pp?.sellType;
   const consumerDiscount = pp?.consumerDiscount || 0;
@@ -749,15 +749,15 @@ export default function ProductViewPage() {
                 ) : <p className="text-[#8a7560]">No specifications available.</p>
               )}
 
-              {activeTab === "reviews" && <ReviewSection productId={Number(productId)} productReview={reviews} />}
-              {activeTab === "qanda" && <QuestionsAnswersSection productId={Number(productId)} sellerId={seller?.id} userId={me.data?.data?.id} />}
-              {activeTab === "vendor" && <VendorSection sellerId={seller?.id} sellerName={sellerName} />}
-              {activeTab === "services" && <RelatedServices categoryId={product?.categoryId} sellerId={seller?.id} />}
+              {activeTab === "reviews" && <ReviewSection {...{ productId: Number(productId), productReview: reviews } as any} />}
+              {activeTab === "qanda" && <QuestionsAnswersSection {...{ productId: Number(productId), sellerId: seller?.id, userId: me.data?.data?.id } as any} />}
+              {activeTab === "vendor" && <VendorSection {...{ sellerId: seller?.id, sellerName } as any} />}
+              {activeTab === "services" && <RelatedServices {...{ categoryId: product?.categoryId, sellerId: seller?.id } as any} />}
             </div>
           </div>
 
           {/* Related */}
-          <div className="mt-12"><RelatedProductsSection productId={Number(productId)} categoryId={product?.categoryId} /></div>
+          <div className="mt-12"><RelatedProductsSection {...{ productId: Number(productId), categoryId: product?.categoryId } as any} /></div>
           <div className="mt-8"><ProductRecommendations productId={Number(productId)} /></div>
 
           {/* ── Customers Also Bought (bottom of page, scrollable) ── */}

@@ -238,10 +238,10 @@ function TimelineChart({ data, currency }: { data: any[]; currency: { symbol: st
           <YAxis tick={{ fontSize: 10, fill: "#8c7b6b" }} axisLine={false} tickLine={false} />
           <Tooltip
             contentStyle={{ backgroundColor: "#fff", border: "1px solid #e8ddd0", borderRadius: 16, padding: "10px 14px", boxShadow: "0 4px 12px rgba(0,0,0,0.06)", fontSize: 12 }}
-            formatter={(v: any, key: string) => {
+            formatter={((v: any, key: string) => {
               const labels: Record<string, string> = { revenue: "Revenue", orders: "Orders", views: "Views", carts: "Add to Cart" };
               return [key === "revenue" ? `${currency.symbol}${Number(v).toFixed(2)}` : v, labels[key] || key];
-            }}
+            }) as any}
             labelStyle={{ fontWeight: 700, color: "#2d2017", marginBottom: 4 }}
           />
           <Area type="monotone" dataKey="views" stroke="#8c7b6b" strokeWidth={1} fill="none" dot={false} strokeDasharray="4 3" />
@@ -273,8 +273,8 @@ function DashboardPage() {
   const orderStats = useVendorOrderStats();
   const sellerOrders = useOrdersBySellerId({ page: 1, limit: 5 });
 
-  const s = orderStats.data?.data || {};
-  const orders: any[] = sellerOrders.data?.data || [];
+  const s: any = orderStats.data?.data || {};
+  const orders: any[] = (sellerOrders.data?.data as any) || [];
   const totalCount = (sellerOrders.data as any)?.totalCount || 0;
   const name = me.data?.data?.firstName || user?.firstName || "there";
 
@@ -283,7 +283,7 @@ function DashboardPage() {
   const cancelled = s.cancelledOrders || 0;
   const total = s.totalOrders || 0;
   const processing = Math.max(0, total - pending - completed - cancelled);
-  const chartData = useChartData(sellerOrders.data?.data || []);
+  const chartData = useChartData(sellerOrders.data?.data as any[] || []);
 
   const hour = new Date().getHours();
   const emoji = hour < 12 ? "☀️" : hour < 17 ? "🌤" : "🌙";

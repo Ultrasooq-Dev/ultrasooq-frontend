@@ -732,11 +732,11 @@ export default function MyOrderDetailsPage() {
     shippingType === "PICKUP" && ["CONFIRMED", "SHIPPED", "OFD", "DELIVERED"].includes(order?.orderProductStatus || ""),
   );
 
-  const product =
+  const product: any =
     order?.orderProduct_productPrice?.productPrice_product ||
     order?.orderProduct_product ||
     {};
-  const ppd = order?.orderProduct_productPrice || {};
+  const ppd: any = order?.orderProduct_productPrice || {};
   const [liveStatus, setLiveStatus] = useState("");
   const submitComplaintMutation = useSubmitComplaint();
   const requestRefundMutation = useRequestRefund();
@@ -780,7 +780,7 @@ export default function MyOrderDetailsPage() {
     ...(order?.ofdAt ? { ofd: order.ofdAt } : {}),
     ...(order?.deliveredAt ? { delivered: order.deliveredAt } : {}),
     ...liveDates, // live updates override DB values
-  };
+  } as Record<string, string>;
 
   const formatDateShort = (d: string) =>
     new Date(d).toLocaleDateString(selectedLocale || "en", {
@@ -996,15 +996,15 @@ export default function MyOrderDetailsPage() {
           {/* Pickup code / Confirm receipt */}
           {shippingType === "PICKUP" && pickupQuery.data?.data && (
             <div className="border-t border-border px-5 py-4">
-              <PickupCodeDisplay code={pickupQuery.data.data.code} />
+              <PickupCodeDisplay code={pickupQuery.data.data.code} status={pickupQuery.data.data.status || "PENDING"} />
             </div>
           )}
           {["OFD", "DELIVERED"].includes(status) && status !== "RECEIVED" && (
             <div className="border-t border-border px-5 py-4">
               <ConfirmReceiptButton
                 orderProductId={Number(params?.id)}
-                mutation={confirmMutation}
-                currentStatus={status}
+                onConfirm={async () => { await confirmMutation.mutateAsync({ orderProductId: Number(params?.id) }); }}
+                isLoading={confirmMutation.isPending}
               />
             </div>
           )}

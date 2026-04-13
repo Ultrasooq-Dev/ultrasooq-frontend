@@ -62,6 +62,7 @@ interface DealOrder {
 
 interface Deal {
   id: number;
+  productId?: number;
   dealType: Exclude<DealType, "ALL">;
   productName: string;
   productImage: string | null;
@@ -358,7 +359,7 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
               {deal.productImage ? (
                 <img src={deal.productImage} alt="" className="w-full h-full rounded-xl object-cover" />
               ) : (
-                <span className={typeConfig.color}>{React.cloneElement(typeConfig.icon as React.ReactElement, { className: "h-7 w-7" })}</span>
+                <span className={typeConfig.color}>{React.cloneElement(typeConfig.icon as React.ReactElement<any>, { className: "h-7 w-7" })}</span>
               )}
             </div>
             <div className="min-w-0 flex-1">

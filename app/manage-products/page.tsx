@@ -977,7 +977,7 @@ const ManageProductsPage = () => {
                   </div>
                 )}
 
-                {activeTab === 'existing-products' && (
+                {(activeTab as string) === 'existing-products' && (
                   <div className="flex gap-2">
                     <Input
                       type="text"
@@ -1545,7 +1545,7 @@ const ManageProductsPage = () => {
               </div>
             </form>
           </FormProvider>
-          ) : activeTab === 'existing-products' ? (
+          ) : (activeTab as string) === 'existing-products' ? (
             /* Existing Products Tab */
             <div className="flex flex-col lg:flex-row gap-6">
               {/* Filters - Left Side */}
@@ -1951,7 +1951,7 @@ const ManageProductsPage = () => {
       </div>
 
       {/* Fixed bottom bar for existing products */}
-      {activeTab === 'existing-products' && existingProductsSelectedIds.length > 0 && (
+      {(activeTab as string) === 'existing-products' && existingProductsSelectedIds.length > 0 && (
         <div className="fixed bottom-0 left-0 z-10 flex w-full items-center justify-between border-t border-solid border-border bg-primary px-10 py-3">
           <div className="flex items-center gap-4">
             {/* <p className="text-base font-medium text-white" translate="no">

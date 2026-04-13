@@ -9,6 +9,7 @@ export interface AddressItem {
   cityDetail?: { id: number; name: string; };
   stateDetail?: { id: number; name: string; };
   countryDetail?: { id: number; name: string; };
+  countryId?: string | number;
   postCode: string;
 }
 
