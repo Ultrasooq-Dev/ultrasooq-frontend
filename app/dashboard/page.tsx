@@ -22,16 +22,16 @@ import {
    ═══════════════════════════════════════════════════════════════ */
 
 const T = {
-  bg: "bg-[#faf6f1]",
-  card: "bg-white",
-  accent: "#c2703e",
-  accentBg: "bg-[#c2703e]",
-  accentText: "text-[#c2703e]",
-  accentLight: "bg-[#c2703e]/10",
-  text: "text-[#2d2017]",
-  muted: "text-[#8c7b6b]",
-  border: "border-[#e8ddd0]",
-  hoverBg: "hover:bg-[#f3ece3]",
+  bg: "bg-background",
+  card: "bg-card",
+  accent: "hsl(var(--primary))",
+  accentBg: "bg-primary",
+  accentText: "text-primary",
+  accentLight: "bg-primary/10",
+  text: "text-foreground",
+  muted: "text-muted-foreground",
+  border: "border-border",
+  hoverBg: "hover:bg-muted",
 };
 
 // ── Stat Card ───────────────────────────────────────────────────

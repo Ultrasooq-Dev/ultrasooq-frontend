@@ -11,6 +11,10 @@ export const useUnifiedSearch = (
     categoryIds?: string;
     priceMin?: number;
     priceMax?: number;
+    productType?: string;
+    sellType?: string;
+    hasDiscount?: string;
+    isCustomProduct?: string;
   },
   enabled = true,
 ) =>

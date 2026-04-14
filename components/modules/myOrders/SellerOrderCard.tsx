@@ -1,75 +1,36 @@
 "use client";
+
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import PlaceholderImage from "@/public/images/product-placeholder.png";
 import { useAuth } from "@/context/AuthContext";
+import { useTranslations } from "next-intl";
 import { formattedDate } from "@/utils/constants";
 import { cn } from "@/lib/utils";
-import { useUpdateOrderStatus, useAddOrderTracking } from "@/apis/queries/orders.queries";
+import {
+  useUpdateOrderStatus,
+  useAddOrderTracking,
+} from "@/apis/queries/orders.queries";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/components/ui/use-toast";
 import {
-  CheckCircle2, Truck, PackageCheck, Clock, XCircle, Package,
-  ChevronDown, Download, MessageCircle, Eye, MapPin, Zap,
-  Star, Phone, Mail, User, Loader2,
+  CheckCircle2, Truck, PackageCheck, Clock, XCircle,
+  ChevronDown, Download, MessageCircle, Eye, MapPin,
+  Star, Loader2,
 } from "lucide-react";
-
-type Props = {
-  id: number;
-  orderProductType?: string;
-  productId: number;
-  purchasePrice: string;
-  productName: string;
-  produtctImage?: { id: number; image: string }[];
-  orderQuantity?: number;
-  orderId: string;
-  orderStatus: string;
-  orderProductDate: string;
-  updatedAt: string;
-  serviceFeature?: any;
-  buyerName?: string;
-  buyerEmail?: string;
-  buyerPhone?: string;
-  buyerRating?: number;
-  buyerOrderCount?: number;
-  selected?: boolean;
-  onSelect?: (id: number, checked: boolean) => void;
-  onStatusChange?: (orderProductId: number, newStatus: string) => void;
-};
-
-const FLOW = [
-  { key: "PLACED",    label: "Placed",           icon: Clock,        color: "text-slate-600",   bgBar: "bg-slate-400" },
-  { key: "CONFIRMED", label: "Confirmed",        icon: CheckCircle2, color: "text-blue-600",    bgBar: "bg-blue-500" },
-  { key: "SHIPPED",   label: "Shipped",          icon: Truck,        color: "text-indigo-600",  bgBar: "bg-indigo-500" },
-  { key: "OFD",       label: "Out for Delivery", icon: Truck,        color: "text-amber-600",   bgBar: "bg-amber-500" },
-  { key: "DELIVERED", label: "Delivered",        icon: PackageCheck, color: "text-emerald-600", bgBar: "bg-emerald-500" },
-];
-
-function getFlowItem(key: string) {
-  return FLOW.find((f) => f.key === key) || FLOW[0];
-}
-function getNext(key: string) {
-  const idx = FLOW.findIndex((f) => f.key === key);
-  return idx >= 0 && idx < FLOW.length - 1 ? FLOW[idx + 1] : null;
-}
-
-// Quick stage messages for the stage update
-const QUICK_STAGES = [
-  { key: "picked_up", label: "Picked Up", emoji: "📦" },
-  { key: "in_transit", label: "In Transit", emoji: "🚚" },
-  { key: "at_hub", label: "At Local Hub", emoji: "📍" },
-  { key: "out_delivery", label: "Out for Delivery", emoji: "🛵" },
-  { key: "delivered", label: "Delivered", emoji: "✅" },
-  { key: "delayed", label: "Delayed", emoji: "⚠️" },
-];
+import {
+  FLOW, getFlowItem, getNextFlowItem, STATUS_MAP, QUICK_STAGES,
+} from "@/components/modules/orders/constants";
+import type { SellerOrderCardProps } from "@/components/modules/orders/types";
 
 export default function SellerOrderCard({
   id, orderProductType, productId, purchasePrice, productName, produtctImage,
   orderQuantity, orderId, orderStatus, orderProductDate, updatedAt,
   serviceFeature, buyerName, buyerEmail, buyerPhone, buyerRating, buyerOrderCount,
   selected, onSelect, onStatusChange,
-}: Props) {
+}: SellerOrderCardProps) {
+  const t = useTranslations();
   const { currency, selectedLocale } = useAuth();
   const [localStatus, setLocalStatus] = useState(orderStatus);
   const [showMenu, setShowMenu] = useState(false);
@@ -77,7 +38,7 @@ export default function SellerOrderCard({
   const [stageLocation, setStageLocation] = useState("");
 
   const current = getFlowItem(localStatus);
-  const next = getNext(localStatus);
+  const next = getNextFlowItem(localStatus);
   const currentIdx = FLOW.findIndex((f) => f.key === localStatus);
   const imageUrl = produtctImage?.[0]?.image || null;
   const total = Number(purchasePrice || 0) * (orderQuantity ?? 1);
@@ -86,256 +47,303 @@ export default function SellerOrderCard({
   const progress = currentIdx >= 0 ? (currentIdx / (FLOW.length - 1)) * 100 : 0;
   const Icon = current.icon;
 
-  // Status mapping: frontend enum → backend API string
-  const STATUS_MAP: Record<string, string> = {
-    PLACED: "pending", CONFIRMED: "processing", SHIPPED: "shipped",
-    OFD: "ofd", DELIVERED: "delivered", CANCELLED: "cancelled",
-  };
-
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const updateStatusMutation = useUpdateOrderStatus();
   const addTrackingMutation = useAddOrderTracking();
 
   const handleSetStatus = (key: string) => {
-    const apiStatus = STATUS_MAP[key] || key.toLowerCase();
-    setLocalStatus(key); // optimistic UI
+    const prev = localStatus;
+    setLocalStatus(key);
     setShowMenu(false);
+
+    const apiStatus = STATUS_MAP[key] || key.toLowerCase();
     updateStatusMutation.mutate(
       { orderProductId: id, status: apiStatus },
       {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ["orders-by-seller-id"] });
-          queryClient.invalidateQueries({ queryKey: ["orders"] });
-          toast({ title: `Order updated to ${key}`, variant: "success" });
+          toast({
+            title: t("order_status_has_been_updated"),
+            variant: "success",
+          });
+          onStatusChange?.(id, key);
         },
         onError: () => {
-          setLocalStatus(orderStatus); // revert on failure
-          toast({ title: "Failed to update status", variant: "danger" });
+          setLocalStatus(prev);
+          toast({
+            title: t("error") || "Failed to update status",
+            variant: "danger",
+          });
         },
       },
     );
   };
 
-  const handleAdvance = () => {
-    if (next) handleSetStatus(next.key);
+  const handleStageUpdate = (stage: (typeof QUICK_STAGES)[number]) => {
+    const loc = stageLocation.trim();
+    addTrackingMutation.mutate(
+      {
+        orderProductId: id,
+        trackingNumber: stage.key,
+        carrier: loc || "Manual Update",
+        notes: `${stage.emoji} ${stage.label}${loc ? ` — ${loc}` : ""}`,
+      },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ["orders-by-seller-id"] });
+          toast({
+            title: `Stage updated: ${stage.label}`,
+            variant: "success",
+          });
+        },
+      },
+    );
+    setStageLocation("");
+    setShowStages(false);
   };
 
-  const isUpdating = updateStatusMutation.isPending;
-
   return (
-    <div className="group rounded-2xl border border-border bg-card overflow-hidden transition-all hover:shadow-lg hover:border-border/80">
-      {/* Progress bar */}
-      <div className="h-1 bg-muted relative overflow-hidden">
-        <div className={cn("h-full transition-all duration-700", current.bgBar)} style={{ width: `${progress}%` }} />
+    <div className="group overflow-hidden rounded-2xl border border-border bg-card transition-all hover:border-border/80 hover:shadow-lg">
+      {/* Top color accent bar */}
+      <div className="relative h-1 overflow-hidden bg-muted">
+        <div
+          className={cn("h-full transition-all duration-700", current.bgBar)}
+          style={{ width: `${progress}%` }}
+        />
       </div>
 
       <div className="p-5">
-        <div className="flex gap-4">
-          {/* Checkbox for bulk select */}
+        <div className="flex gap-5">
+          {/* Checkbox */}
           {onSelect && (
-            <div className="flex items-start pt-1">
-              <input
-                type="checkbox"
-                checked={selected || false}
-                onChange={(e) => onSelect(id, e.target.checked)}
-                className="h-4 w-4 rounded border-border text-primary focus:ring-primary/30 cursor-pointer"
-              />
-            </div>
+            <input
+              type="checkbox"
+              checked={selected}
+              onChange={(e) => onSelect(id, e.target.checked)}
+              className="mt-1 h-4 w-4 cursor-pointer rounded border-border text-primary focus:ring-primary/30"
+            />
           )}
 
-          {/* Image */}
-          <Link href={`/orders/${id}`} className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-muted/50 ring-1 ring-border transition-all group-hover:ring-primary/20">
+          {/* Product Image */}
+          <Link
+            href={`/orders/${id}`}
+            className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-muted/50 ring-1 ring-border transition-all group-hover:ring-primary/20"
+          >
             <Image
               src={imageUrl || PlaceholderImage}
               alt={productName}
               fill
               className="object-cover"
             />
-            {(orderQuantity ?? 1) > 1 && (
-              <span className="absolute bottom-1 end-1 rounded bg-foreground/80 px-1 py-0.5 text-[9px] font-bold text-background">
-                x{orderQuantity}
-              </span>
-            )}
           </Link>
 
-          {/* Info */}
-          <div className="flex-1 min-w-0">
+          {/* Content */}
+          <div className="min-w-0 flex-1">
+            {/* Row 1: Name + Price */}
             <div className="flex items-start justify-between gap-3">
-              <Link href={`/orders/${id}`} className="text-[15px] font-semibold leading-snug line-clamp-2 hover:text-primary transition-colors">
-                {orderProductType === "SERVICE" ? serviceFeature?.name : productName}
+              <Link
+                href={`/orders/${id}`}
+                className="line-clamp-2 text-[15px] font-semibold leading-snug transition-colors hover:text-primary"
+              >
+                {orderProductType === "SERVICE"
+                  ? serviceFeature?.name
+                  : productName}
               </Link>
               <div className="shrink-0 text-end">
-                <span className="text-lg font-bold tracking-tight">{currency.symbol}{total.toFixed(2)}</span>
+                <span className="text-lg font-bold tracking-tight">
+                  {currency.symbol}{total.toFixed(2)}
+                </span>
+                {(orderQuantity ?? 1) > 1 && (
+                  <p className="text-[10px] text-muted-foreground">
+                    {currency.symbol}{Number(purchasePrice).toFixed(2)} x{" "}
+                    {orderQuantity}
+                  </p>
+                )}
               </div>
             </div>
 
+            {/* Row 2: Meta */}
             <div className="mt-1.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
-              <span className="font-mono">#{orderId}</span>
-              <span>Qty: {orderQuantity || 1}</span>
-              <span>{orderProductDate ? formattedDate(orderProductDate, selectedLocale) : ""}</span>
+              <span className="font-mono" translate="no">
+                #{orderId}
+              </span>
+              <span>
+                {orderProductDate
+                  ? formattedDate(orderProductDate, selectedLocale)
+                  : ""}
+              </span>
             </div>
 
-            {/* Customer info row */}
+            {/* Row 3: Buyer info */}
             {buyerName && (
-              <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-lg bg-muted/40 px-3 py-1.5">
-                <span className="flex items-center gap-1 text-[11px] font-medium">
-                  <User className="h-3 w-3 text-muted-foreground" />
-                  {buyerName}
-                </span>
-                {buyerPhone && (
-                  <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
-                    <Phone className="h-3 w-3" /> {buyerPhone}
+              <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
+                <span className="font-medium text-foreground">{buyerName}</span>
+                {buyerRating && (
+                  <span className="flex items-center gap-0.5 text-amber-500">
+                    <Star className="h-3 w-3" /> {buyerRating}
                   </span>
                 )}
-                {buyerEmail && (
-                  <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
-                    <Mail className="h-3 w-3" /> {buyerEmail}
+                {buyerOrderCount != null && (
+                  <span>
+                    {buyerOrderCount} {t("orders_placed") || "orders"}
                   </span>
                 )}
-                {/* Customer rating */}
-                <span className="flex items-center gap-0.5 ms-auto">
-                  {buyerRating != null && buyerRating > 0 ? (
-                    <>
-                      <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
-                      <span className="text-[11px] font-semibold text-amber-700 dark:text-amber-400">{buyerRating.toFixed(1)}</span>
-                    </>
-                  ) : (
-                    <span className="text-[10px] text-muted-foreground">New customer</span>
-                  )}
-                  {buyerOrderCount != null && buyerOrderCount > 0 && (
-                    <span className="ms-1.5 rounded bg-muted px-1.5 py-0.5 text-[9px] font-medium text-muted-foreground">
-                      {buyerOrderCount} orders
-                    </span>
-                  )}
-                </span>
               </div>
             )}
 
-            {/* Status */}
-            <div className="mt-3 flex items-center gap-2">
-              <span className={cn("inline-flex items-center gap-1 text-xs font-semibold", current.color)}>
+            {/* Row 4: Status + Actions */}
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              <span
+                className={cn(
+                  "inline-flex items-center gap-1 text-xs font-semibold",
+                  current.color,
+                )}
+              >
                 <Icon className="h-3.5 w-3.5" />
-                {current.label}
+                {t(current.label)}
               </span>
-              {!isCancelled && (
-                <div className="flex-1 flex items-center gap-0.5 ms-2">
+
+              {!isCancelled && !isDelivered && (
+                <div className="ms-2 flex flex-1 items-center gap-0.5">
                   {FLOW.map((f, i) => (
-                    <div key={f.key} className={cn("h-[3px] flex-1 rounded-full transition-colors", currentIdx >= i ? current.bgBar : "bg-border")} />
+                    <div
+                      key={f.key}
+                      className={cn(
+                        "h-[3px] flex-1 rounded-full transition-colors",
+                        currentIdx >= i ? current.bgBar : "bg-border",
+                      )}
+                    />
                   ))}
                 </div>
               )}
-              {isCancelled && <span className="text-xs text-red-500 font-medium">Order was cancelled</span>}
             </div>
           </div>
         </div>
 
         {/* Actions row */}
         <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-border pt-4">
-          {/* Quick advance button */}
-          {!isCancelled && !isDelivered && next && (
-            <button type="button" onClick={handleAdvance} disabled={isUpdating}
-              className="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-primary/90 disabled:opacity-50">
-              {isUpdating ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <next.icon className="h-3.5 w-3.5" />}
-              {isUpdating ? "Updating..." : `Mark as ${next.label}`}
+          {/* Quick advance */}
+          {next && !isCancelled && (
+            <button
+              type="button"
+              disabled={updateStatusMutation.isPending}
+              onClick={() => handleSetStatus(next.key)}
+              className={cn(
+                "flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold text-white transition-colors disabled:opacity-50",
+                next.bgBar,
+              )}
+            >
+              {updateStatusMutation.isPending ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              ) : (
+                <next.icon className="h-3.5 w-3.5" />
+              )}
+              {t("mark_as") || "Mark as"} {t(next.label)}
             </button>
           )}
 
-          {/* Stage update (detailed) */}
-          {!isCancelled && !isDelivered && (
-            <div className="relative">
-              <button type="button" onClick={() => { setShowStages(!showStages); setShowMenu(false); }}
-                className={cn("flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium transition-colors",
-                  showStages ? "bg-emerald-500 text-white" : "border border-border text-muted-foreground hover:bg-muted hover:text-foreground")}>
-                <MapPin className="h-3.5 w-3.5" /> Update Stage
-              </button>
-              {showStages && (
-                <div className="absolute start-0 top-full mt-1 w-64 rounded-xl border border-border bg-card shadow-2xl z-20">
-                  <div className="border-b border-border px-3 py-2">
-                    <input type="text" value={stageLocation} onChange={(e) => setStageLocation(e.target.value)}
-                      placeholder="📍 Location (optional)"
-                      className="w-full rounded border border-border bg-muted/30 px-2 py-1.5 text-[11px] outline-none focus:border-primary" />
-                  </div>
-                  <div className="p-1 max-h-48 overflow-y-auto">
-                    {QUICK_STAGES.map((s) => (
-                      <button key={s.key} type="button"
-                        onClick={() => {
-                          // Map stage to order status + persist tracking
-                          const map: Record<string, string> = { picked_up: "CONFIRMED", in_transit: "SHIPPED", at_hub: "OFD", out_delivery: "OFD", delivered: "DELIVERED", delayed: localStatus };
-                          const newStatus = map[s.key] || localStatus;
-                          if (newStatus !== localStatus) handleSetStatus(newStatus);
-                          // Also persist as tracking event
-                          addTrackingMutation.mutate({
-                            orderProductId: id,
-                            trackingNumber: s.key,
-                            carrier: stageLocation || "Manual Update",
-                            notes: `${s.emoji} ${s.label}${stageLocation ? ` — ${stageLocation}` : ""}`,
-                          });
-                          setShowStages(false);
-                          setStageLocation("");
-                        }}
-                        className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-[11px] font-medium hover:bg-muted transition-colors">
-                        <span>{s.emoji}</span>
-                        <span>{s.label}</span>
-                        {stageLocation && <span className="ms-auto text-[9px] text-muted-foreground">{stageLocation}</span>}
-                      </button>
-                    ))}
-                  </div>
+          {/* Stage update dropdown */}
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => { setShowStages(!showStages); setShowMenu(false); }}
+              className="flex items-center gap-1 rounded-lg border border-border px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            >
+              <MapPin className="h-3.5 w-3.5" /> {t("update_delivery_status")}
+              <ChevronDown className="h-3 w-3" />
+            </button>
+            {showStages && (
+              <div className="absolute start-0 top-full z-20 mt-1 w-60 rounded-lg border border-border bg-card shadow-xl">
+                <div className="border-b border-border px-3 py-2">
+                  <input
+                    type="text"
+                    value={stageLocation}
+                    onChange={(e) => setStageLocation(e.target.value)}
+                    placeholder={t("location") || "Location"}
+                    className="w-full rounded border border-border bg-muted/30 px-2 py-1 text-[11px] outline-none focus:border-primary"
+                  />
                 </div>
-              )}
-            </div>
-          )}
+                <div className="p-1">
+                  {QUICK_STAGES.map((s) => (
+                    <button
+                      key={s.key}
+                      type="button"
+                      onClick={() => handleStageUpdate(s)}
+                      className="flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-start text-[11px] transition-colors hover:bg-muted"
+                    >
+                      <span>{s.emoji}</span> {t(s.label) || s.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
 
-          {/* Set any status */}
-          {!isCancelled && !isDelivered && (
-            <div className="relative">
-              <button type="button" onClick={() => { setShowMenu(!showMenu); setShowStages(false); }}
-                className="flex items-center gap-1 rounded-lg border border-border px-3 py-2 text-xs font-medium text-muted-foreground hover:bg-muted">
-                Set Status <ChevronDown className="h-3 w-3" />
-              </button>
-              {showMenu && (
-                <div className="absolute start-0 top-full mt-1 w-44 rounded-xl border border-border bg-card shadow-xl z-20">
-                  <div className="p-1">
-                    {FLOW.map((f) => (
-                      <button key={f.key} type="button" onClick={() => handleSetStatus(f.key)}
-                        className={cn("flex w-full items-center gap-2 rounded-lg px-3 py-2 text-[11px] font-medium hover:bg-muted",
-                          localStatus === f.key && "bg-muted")}>
-                        <f.icon className={cn("h-3 w-3", f.color)} /> {f.label}
-                        {localStatus === f.key && <span className="ms-auto text-[8px] text-emerald-600 font-bold">●</span>}
+          {/* Set status dropdown */}
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => { setShowMenu(!showMenu); setShowStages(false); }}
+              className="flex items-center gap-1 rounded-lg border border-border px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            >
+              {t("order_status")} <ChevronDown className="h-3 w-3" />
+            </button>
+            {showMenu && (
+              <div className="absolute start-0 top-full z-20 mt-1 w-48 rounded-lg border border-border bg-card shadow-xl">
+                <div className="p-1">
+                  {[...FLOW, { key: "CANCELLED", label: "cancelled", icon: XCircle, color: "text-red-500", bgBar: "bg-red-500" }].map(
+                    (f) => (
+                      <button
+                        key={f.key}
+                        type="button"
+                        onClick={() => handleSetStatus(f.key)}
+                        className={cn(
+                          "flex w-full items-center gap-2 rounded-md px-3 py-2 text-[11px] font-medium transition-colors hover:bg-muted",
+                          localStatus === f.key && "bg-muted",
+                        )}
+                      >
+                        <f.icon className={cn("h-3.5 w-3.5", f.color)} />
+                        {t(f.label)}
                       </button>
-                    ))}
-                    <div className="border-t border-border mt-0.5 pt-0.5">
-                      <button type="button" onClick={() => handleSetStatus("CANCELLED")}
-                        className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-[11px] font-medium text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20">
-                        <XCircle className="h-3 w-3" /> Cancel Order
-                      </button>
-                    </div>
-                  </div>
+                    ),
+                  )}
                 </div>
-              )}
-            </div>
-          )}
+              </div>
+            )}
+          </div>
 
           <div className="flex-1" />
 
-          {/* Right side actions */}
-          <Link href={`/orders/${id}`}
-            className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground">
-            <Eye className="h-3.5 w-3.5" /> Details
+          <Link
+            href={`/orders/${id}`}
+            className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          >
+            <Eye className="h-3.5 w-3.5" /> {t("view_order_details")}
           </Link>
 
-          <button type="button"
+          <button
+            type="button"
             onClick={() => {
-              const api = typeof window !== "undefined" ? `http://${window.location.hostname}:3000/api/v1` : "";
-              window.open(`${api}/order/invoice?orderProductId=${id}`, "_blank");
+              const api =
+                typeof window !== "undefined"
+                  ? `http://${window.location.hostname}:3000/api/v1`
+                  : "";
+              window.open(
+                `${api}/order/invoice?orderProductId=${id}`,
+                "_blank",
+              );
             }}
-            className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground">
-            <Download className="h-3.5 w-3.5" /> Invoice
+            className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          >
+            <Download className="h-3.5 w-3.5" /> {t("download_invoice")}
           </button>
 
-          <Link href={`/messages?channel=orders&orderId=${id}`}
-            className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-xs font-medium text-muted-foreground hover:bg-muted hover:text-primary">
-            <MessageCircle className="h-3.5 w-3.5" /> Chat
+          <Link
+            href={`/messages?channel=orders&orderId=${id}`}
+            className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          >
+            <MessageCircle className="h-3.5 w-3.5" />
           </Link>
         </div>
       </div>

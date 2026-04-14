@@ -238,7 +238,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
   const updateURL = debounce((newTerm) => {
     if (typeof window === "undefined") return;
     if (newTerm) {
-      router.replace(`/product-hub?mode=search&q=${encodeURIComponent(newTerm)}`);
+      router.replace(`/search?term=${encodeURIComponent(newTerm)}`);
     } else {
       router.replace(`/trending`);
     }

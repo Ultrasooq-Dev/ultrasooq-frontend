@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useAllProducts } from "@/apis/queries/product.queries";
+import { useUnifiedSearch } from "@/apis/queries/search.queries";
 import { useTranslations } from "next-intl";
 import ProductCard from "../trending/ProductCard";
 import { TrendingProduct } from "@/utils/types/common.types";
@@ -46,20 +46,30 @@ const SearchedStoreProducts: React.FC<SearchedStoreProductsType> = ({
     const addToWishlist = useAddToWishList();
     const deleteFromWishlist = useDeleteFromWishList();
 
-    const allProductsQuery = useAllProducts({
-        page: 1,
-        limit: 20,
-        sort,
-        term: searchTerm,
-        userId: me?.data?.data?.tradeRole == "BUYER"
-            ? undefined
-            : me?.data?.data?.tradeRole == "MEMBER"
-            ? me?.data?.data?.addedBy
-            : me?.data?.data?.id,
-        userType: me?.data?.data?.tradeRole == "BUYER" ? "BUYER" : "",
-        ratingMin,
-        hasDiscount,
-    }, !!searchTerm && !overrideProducts);
+    // Use unified search (FTS + NL rewriting + auto-correct + intent classification)
+    const unifiedSearchQuery = useUnifiedSearch(
+        searchTerm || '',
+        {
+            page: 1,
+            limit: 20,
+            sort,
+        },
+        !!searchTerm && !overrideProducts,
+    );
+
+    // Derive loading/fetched state from unified search
+    const allProductsQuery = {
+        data: unifiedSearchQuery.data
+            ? {
+                  data: unifiedSearchQuery.data.data,
+                  totalCount: unifiedSearchQuery.data.totalCount,
+                  didYouMean: unifiedSearchQuery.data.didYouMean,
+                  autoCorrection: unifiedSearchQuery.data.autoCorrected,
+              }
+            : undefined,
+        isLoading: unifiedSearchQuery.isLoading,
+        isFetched: unifiedSearchQuery.isFetched,
+    };
 
     const sourceData = overrideProducts || allProductsQuery?.data?.data;
 
