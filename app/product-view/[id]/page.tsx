@@ -240,15 +240,15 @@ export default function ProductViewPage() {
 
   // ── Loading ──
   if (isLoading) return (
-    <div className="min-h-screen bg-[#f8f5f0]">
+    <div className="min-h-screen bg-background">
       <div className="max-w-[1400px] mx-auto px-6 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          <div className="aspect-[4/5] rounded-3xl bg-[#ebe6de] animate-pulse" />
+          <div className="aspect-[4/5] rounded-3xl bg-muted animate-pulse" />
           <div className="space-y-6 py-8">
-            <div className="h-4 w-32 rounded-full bg-[#ebe6de] animate-pulse" />
-            <div className="h-10 w-4/5 rounded-xl bg-[#ebe6de] animate-pulse" />
-            <div className="h-6 w-1/3 rounded-lg bg-[#ebe6de] animate-pulse" />
-            <div className="h-48 rounded-2xl bg-[#ebe6de] animate-pulse" />
+            <div className="h-4 w-32 rounded-full bg-muted animate-pulse" />
+            <div className="h-10 w-4/5 rounded-xl bg-muted animate-pulse" />
+            <div className="h-6 w-1/3 rounded-lg bg-muted animate-pulse" />
+            <div className="h-48 rounded-2xl bg-muted animate-pulse" />
           </div>
         </div>
       </div>
@@ -256,11 +256,11 @@ export default function ProductViewPage() {
   );
 
   if (!product) return (
-    <div className="min-h-screen bg-[#f8f5f0] flex items-center justify-center">
+    <div className="min-h-screen bg-background flex items-center justify-center">
       <div className="text-center">
-        <Package className="h-20 w-20 mx-auto mb-6 text-[#c9bfb0]" />
-        <h2 className="text-2xl font-light text-[#2d2017] tracking-wide">Product not found</h2>
-        <button onClick={() => router.back()} className="mt-6 text-sm text-[#c2703e] hover:underline underline-offset-4">
+        <Package className="h-20 w-20 mx-auto mb-6 text-muted-foreground/50" />
+        <h2 className="text-2xl font-light text-foreground tracking-wide">Product not found</h2>
+        <button onClick={() => router.back()} className="mt-6 text-sm text-primary hover:underline underline-offset-4">
           <ArrowLeft className="h-4 w-4 inline me-2" />Go back
         </button>
       </div>
@@ -276,16 +276,16 @@ export default function ProductViewPage() {
     <>
       <title dir={langDir} translate="no">{`${product.productName || "Product"} | Ultrasooq`}</title>
 
-      <div className="min-h-screen bg-[#f8f5f0]">
+      <div className="min-h-screen bg-background">
 
         {/* ══════ HERO SECTION ══════ */}
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 pt-6 pb-4">
           {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-[13px] text-[#8a7560] mb-4">
-            <button onClick={() => router.back()} className="hover:text-[#c2703e] transition-colors"><ArrowLeft className="h-4 w-4" /></button>
+          <nav className="flex items-center gap-2 text-[13px] text-muted-foreground mb-4">
+            <button onClick={() => router.back()} className="hover:text-primary transition-colors"><ArrowLeft className="h-4 w-4" /></button>
             <span className="opacity-40">/</span>
-            <a href="/trending" className="hover:text-[#c2703e] transition-colors">{t("store") || "Store"}</a>
-            {product.category?.categoryName_en && (<><span className="opacity-40">/</span><span className="hover:text-[#c2703e] transition-colors cursor-pointer">{product.category.categoryName_en}</span></>)}
+            <a href="/trending" className="hover:text-primary transition-colors">{t("store") || "Store"}</a>
+            {product.category?.categoryName_en && (<><span className="opacity-40">/</span><span className="hover:text-primary transition-colors cursor-pointer">{product.category.categoryName_en}</span></>)}
           </nav>
         </div>
 
@@ -297,37 +297,37 @@ export default function ProductViewPage() {
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-3 mb-1">
                 {product.brand?.brandName && (
-                  <span className="text-xs font-semibold tracking-[0.15em] uppercase text-[#c2703e]">{product.brand.brandName}</span>
+                  <span className="text-xs font-semibold tracking-[0.15em] uppercase text-primary">{product.brand.brandName}</span>
                 )}
                 {product.category?.categoryName_en && (
-                  <span className="text-xs text-[#8a7560]">in {product.category.categoryName_en}</span>
+                  <span className="text-xs text-muted-foreground">in {product.category.categoryName_en}</span>
                 )}
               </div>
-              <h1 className="text-xl sm:text-2xl font-bold leading-tight text-[#2d2017]">
+              <h1 className="text-xl sm:text-2xl font-bold leading-tight text-foreground">
                 {product.productName}
               </h1>
               <div className="flex items-center gap-3 mt-2 flex-wrap">
                 {reviews.length > 0 && (
                   <div className="flex items-center gap-1.5">
                     {[1, 2, 3, 4, 5].map((i) => (
-                      <Star key={i} className={cn("h-4 w-4", i <= Math.round(avgRating) ? "fill-amber-400 text-amber-400" : "text-[#d4cdc2]")} />
+                      <Star key={i} className={cn("h-4 w-4", i <= Math.round(avgRating) ? "fill-amber-400 text-amber-400" : "text-muted-foreground/30")} />
                     ))}
-                    <span className="text-sm font-medium text-[#2d2017] ms-1">{avgRating.toFixed(1)}</span>
-                    <span className="text-sm text-[#8a7560]">({reviews.length})</span>
+                    <span className="text-sm font-medium text-foreground ms-1">{avgRating.toFixed(1)}</span>
+                    <span className="text-sm text-muted-foreground">({reviews.length})</span>
                   </div>
                 )}
                 {product.sold > 0 && (
-                  <span className="text-sm text-[#8a7560]">{product.sold}+ sold</span>
+                  <span className="text-sm text-muted-foreground">{product.sold}+ sold</span>
                 )}
               </div>
             </div>
 
                 {/* Right: Seller Card */}
-                <div className="flex-shrink-0 w-[220px] rounded-2xl overflow-hidden border border-[#e8dfd4] shadow-sm hover:shadow-md hover:border-[#c2703e]/30 transition-all cursor-pointer flex flex-col"
+                <div className="flex-shrink-0 w-[220px] rounded-2xl overflow-hidden border border-border shadow-sm hover:shadow-md hover:border-primary/30 transition-all cursor-pointer flex flex-col"
                   onClick={() => { if (seller?.id) router.push(`/company-profile-details?sellerId=${seller.id}`); }}>
                   {/* Top: gradient header with avatar */}
-                  <div className="bg-gradient-to-br from-[#c2703e] to-[#a85d32] px-4 pt-4 pb-5 flex flex-col items-center relative">
-                    <div className="w-14 h-14 rounded-full bg-white/20 border-2 border-white/40 flex items-center justify-center text-white font-bold text-xl backdrop-blur-sm">
+                  <div className="bg-gradient-to-br from-primary to-primary/80 px-4 pt-4 pb-5 flex flex-col items-center relative">
+                    <div className="w-14 h-14 rounded-full bg-card/20 border-2 border-white/40 flex items-center justify-center text-white font-bold text-xl backdrop-blur-sm">
                       {sellerName.charAt(0).toUpperCase()}
                     </div>
                     <span className="text-sm font-bold text-white mt-2">
@@ -335,9 +335,9 @@ export default function ProductViewPage() {
                     </span>
                     {/* Badge on header */}
                     <span className={cn("absolute top-2 end-2 inline-flex items-center gap-0.5 text-[9px] font-bold px-1.5 py-0.5 rounded-full",
-                      seller?.tradeRole === "COMPANY" ? "bg-white/20 text-white" :
-                      seller?.tradeRole === "FREELANCER" ? "bg-white/20 text-white" :
-                      "bg-white/20 text-white"
+                      seller?.tradeRole === "COMPANY" ? "bg-card/20 text-white" :
+                      seller?.tradeRole === "FREELANCER" ? "bg-card/20 text-white" :
+                      "bg-card/20 text-white"
                     )}>
                       {seller?.tradeRole === "COMPANY" ? <><ShieldCheck className="h-2.5 w-2.5" /> Company</> :
                        seller?.tradeRole === "FREELANCER" ? <><Award className="h-2.5 w-2.5" /> Pro</> :
@@ -345,21 +345,21 @@ export default function ProductViewPage() {
                     </span>
                   </div>
                   {/* Bottom: stats */}
-                  <div className="bg-white px-4 py-3 flex-1 flex flex-col justify-between">
+                  <div className="bg-card px-4 py-3 flex-1 flex flex-col justify-between">
                     <div className="flex items-center justify-center gap-0.5">
                       {[1, 2, 3, 4, 5].map((i) => <Star key={i} className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />)}
-                      <span className="text-xs font-semibold text-[#2d2017] ms-1.5">98%</span>
+                      <span className="text-xs font-semibold text-foreground ms-1.5">98%</span>
                     </div>
-                    <div className="flex items-center justify-center gap-2.5 mt-2 text-[10px] text-[#8a7560]">
+                    <div className="flex items-center justify-center gap-2.5 mt-2 text-[10px] text-muted-foreground">
                       <span className="flex items-center gap-1"><Eye className="h-3 w-3 text-emerald-500" /> 2h ago</span>
                       <span className="flex items-center gap-1"><Clock className="h-3 w-3 text-blue-500" /> ~1h</span>
-                      <span className="flex items-center gap-1 text-[#8a7560]">
+                      <span className="flex items-center gap-1 text-muted-foreground">
                         <Users className="h-3 w-3 text-purple-500" />
                         {seller?.createdAt ? new Date(seller.createdAt).toLocaleDateString("en-US", { month: "short", year: "numeric" }) : "2024"}
                       </span>
                     </div>
                     {otherSellers.length > 0 && (
-                      <div className="mt-2 text-center text-[10px] text-[#c2703e] font-medium">+{otherSellers.length} other sellers</div>
+                      <div className="mt-2 text-center text-[10px] text-primary font-medium">+{otherSellers.length} other sellers</div>
                     )}
                   </div>
                 </div>
@@ -371,7 +371,7 @@ export default function ProductViewPage() {
             {/* ── LEFT: Gallery ── */}
             <div className="lg:col-span-6">
               <div className="sticky top-6">
-                <div className="relative rounded-2xl overflow-hidden bg-white shadow-[0_4px_24px_rgba(0,0,0,0.06)] group">
+                <div className="relative rounded-2xl overflow-hidden bg-card shadow-[0_4px_24px_rgba(0,0,0,0.06)] group">
                   <div className="relative min-h-[300px]">
                     {typeof images[selectedImg] === "string" ? (
                       <img src={images[selectedImg] as string} alt={product.productName} className="w-full h-auto max-h-[500px] object-contain p-4 mx-auto transition-transform duration-700 group-hover:scale-105" />
@@ -386,16 +386,16 @@ export default function ProductViewPage() {
                         <span className="px-3 py-1 rounded-full text-xs font-bold text-white bg-gradient-to-r from-red-500 to-rose-600 shadow-lg shadow-red-500/20">-{discount}% OFF</span>
                       )}
                       {sellTypeLabel && (
-                        <span className="px-3 py-1 rounded-full text-xs font-bold text-white bg-gradient-to-r from-[#c2703e] to-[#a85d32] shadow-lg shadow-[#c2703e]/20">{sellTypeLabel}</span>
+                        <span className="px-3 py-1 rounded-full text-xs font-bold text-white bg-gradient-to-r from-primary to-primary/80 shadow-lg shadow-primary/20">{sellTypeLabel}</span>
                       )}
                     </div>
                     {/* Nav arrows */}
                     {images.length > 1 && (
                       <>
                         <button onClick={() => setSelectedImg((i) => (i - 1 + images.length) % images.length)}
-                          className="absolute start-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"><ChevronLeft className="h-5 w-5 text-[#2d2017]" /></button>
+                          className="absolute start-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-card/90 shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"><ChevronLeft className="h-5 w-5 text-foreground" /></button>
                         <button onClick={() => setSelectedImg((i) => (i + 1) % images.length)}
-                          className="absolute end-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"><ChevronRight className="h-5 w-5 text-[#2d2017]" /></button>
+                          className="absolute end-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-card/90 shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"><ChevronRight className="h-5 w-5 text-foreground" /></button>
                       </>
                     )}
                     {images.length > 1 && (
@@ -408,8 +408,8 @@ export default function ProductViewPage() {
                   <div className="flex gap-2 mt-3 overflow-x-auto pb-1">
                     {images.map((img, i) => (
                       <button key={i} onClick={() => setSelectedImg(i)}
-                        className={cn("w-16 h-16 rounded-xl overflow-hidden border-2 flex-shrink-0 transition-all duration-300 bg-white",
-                          selectedImg === i ? "border-[#c2703e] shadow-lg shadow-[#c2703e]/15 scale-105" : "border-transparent opacity-60 hover:opacity-100")}>
+                        className={cn("w-16 h-16 rounded-xl overflow-hidden border-2 flex-shrink-0 transition-all duration-300 bg-card",
+                          selectedImg === i ? "border-primary shadow-lg shadow-primary/15 scale-105" : "border-transparent opacity-60 hover:opacity-100")}>
                         {typeof img === "string" ? <img src={img} alt="" className="w-full h-full object-cover" /> : <Image src={img} alt="" width={64} height={64} className="w-full h-full object-cover" />}
                       </button>
                     ))}
@@ -419,16 +419,16 @@ export default function ProductViewPage() {
                 <div className="flex items-center gap-2 mt-3">
                   <button onClick={handleWishlist}
                     className={cn("flex-1 h-10 rounded-xl border text-sm font-medium flex items-center justify-center gap-2 transition-all",
-                      inWishlist ? "bg-red-50 border-red-200 text-red-600" : "border-[#e8dfd4] text-[#8a7560] hover:border-[#c2703e] hover:text-[#c2703e]")}>
+                      inWishlist ? "bg-red-50 border-red-200 text-red-600" : "border-border text-muted-foreground hover:border-primary hover:text-primary")}>
                     <Heart className={cn("h-4 w-4", inWishlist && "fill-red-500")} />
                     {inWishlist ? t("saved") || "Saved" : t("save") || "Save"}
                   </button>
                   <button onClick={handleShare}
-                    className="flex-1 h-10 rounded-xl border border-[#e8dfd4] text-sm font-medium text-[#8a7560] flex items-center justify-center gap-2 hover:border-[#c2703e] hover:text-[#c2703e] transition-all">
+                    className="flex-1 h-10 rounded-xl border border-border text-sm font-medium text-muted-foreground flex items-center justify-center gap-2 hover:border-primary hover:text-primary transition-all">
                     {copiedLink ? <><Check className="h-4 w-4 text-emerald-600" /> Copied!</> : <><Share2 className="h-4 w-4" /> {t("share") || "Share"}</>}
                   </button>
                   <button onClick={() => setIsChatOpen(true)}
-                    className="flex-1 h-10 rounded-xl border border-[#e8dfd4] text-sm font-medium text-[#8a7560] flex items-center justify-center gap-2 hover:border-[#c2703e] hover:text-[#c2703e] transition-all">
+                    className="flex-1 h-10 rounded-xl border border-border text-sm font-medium text-muted-foreground flex items-center justify-center gap-2 hover:border-primary hover:text-primary transition-all">
                     <MessageCircle className="h-4 w-4" /> {t("chat") || "Chat"}
                   </button>
                 </div>
@@ -437,14 +437,14 @@ export default function ProductViewPage() {
 
             {/* ── RIGHT: All-in-one product card ── */}
             <div className="lg:col-span-6">
-              <div className="rounded-2xl bg-white border border-[#e8dfd4] shadow-sm overflow-hidden">
+              <div className="rounded-2xl bg-card border border-border shadow-sm overflow-hidden">
 
               {/* Short Description */}
               {product.product_productShortDescription?.length > 0 && (
-                <div className="px-5 pt-5 pb-4 border-b border-[#f0ebe4]">
-                  <h3 className="text-xs font-bold text-[#8a7560] uppercase tracking-wider mb-2">Product Description</h3>
+                <div className="px-5 pt-5 pb-4 border-b border-border">
+                  <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Product Description</h3>
                   {product.product_productShortDescription.map((sd: any, i: number) => (
-                    <p key={i} className="text-sm leading-relaxed text-[#5a4d3e]" dir={langDir}>{sd.shortDescription}</p>
+                    <p key={i} className="text-sm leading-relaxed text-muted-foreground" dir={langDir}>{sd.shortDescription}</p>
                   ))}
                 </div>
               )}
@@ -453,14 +453,14 @@ export default function ProductViewPage() {
               <div className="px-5 py-5">
                 {askForPrice ? (
                   <div className="text-center py-4">
-                    <span className="text-lg font-semibold text-[#c2703e]">{t("ask_for_price") || "Ask for Price"}</span>
+                    <span className="text-lg font-semibold text-primary">{t("ask_for_price") || "Ask for Price"}</span>
                   </div>
                 ) : (
                   <>
                     <div className="flex items-end gap-3 flex-wrap">
-                      <span className="text-3xl font-extrabold text-[#2d2017] leading-none">${offerPrice.toFixed(2)}</span>
+                      <span className="text-3xl font-extrabold text-foreground leading-none">${offerPrice.toFixed(2)}</span>
                       {discount > 0 && (
-                        <span className="text-lg text-[#b5a898] line-through mb-1">${price.toFixed(2)}</span>
+                        <span className="text-lg text-muted-foreground/70 line-through mb-1">${price.toFixed(2)}</span>
                       )}
                       {consumerDiscount > 0 && (
                         <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full mb-1">
@@ -475,7 +475,7 @@ export default function ProductViewPage() {
                       <span className={cn("text-sm font-medium", stock > 10 ? "text-emerald-600" : stock > 0 ? "text-amber-600" : "text-red-600")}>
                         {stock > 10 ? t("in_stock") || "In Stock" : stock > 0 ? `${t("only") || "Only"} ${stock} ${t("left") || "left"}` : t("out_of_stock") || "Out of Stock"}
                       </span>
-                      {product.skuNo && <span className="text-xs text-[#b5a898] ms-auto">SKU: {product.skuNo}</span>}
+                      {product.skuNo && <span className="text-xs text-muted-foreground/70 ms-auto">SKU: {product.skuNo}</span>}
                     </div>
                   </>
                 )}
@@ -491,9 +491,9 @@ export default function ProductViewPage() {
                   const endDate = pp?.dateClose ? new Date(pp.dateClose) : null;
 
                   return (
-                    <div className="mt-5 rounded-2xl border-2 border-[#c2703e]/20 overflow-hidden">
+                    <div className="mt-5 rounded-2xl border-2 border-primary/20 overflow-hidden">
                       {/* Header */}
-                      <div className="bg-gradient-to-r from-[#c2703e] to-[#a85d32] px-5 py-3 flex items-center justify-between">
+                      <div className="bg-gradient-to-r from-primary to-primary/80 px-5 py-3 flex items-center justify-between">
                         <div className="flex items-center gap-2 text-white">
                           <Users className="h-4.5 w-4.5" />
                           <span className="text-sm font-bold tracking-wide">Group Buy</span>
@@ -515,9 +515,9 @@ export default function ProductViewPage() {
                       </div>
 
                       {/* Body */}
-                      <div className="bg-[#c2703e]/[0.03] px-5 py-4 space-y-4">
+                      <div className="bg-primary/[0.03] px-5 py-4 space-y-4">
                         {/* How it works */}
-                        <p className="text-xs text-[#8a7560] leading-relaxed">
+                        <p className="text-xs text-muted-foreground leading-relaxed">
                           Join this group buy! When enough buyers join, the deal activates and everyone gets the discounted price.
                         </p>
 
@@ -525,13 +525,13 @@ export default function ProductViewPage() {
                         {minCust > 0 && (
                           <div>
                             <div className="flex items-center justify-between text-xs mb-1.5">
-                              <span className="text-[#8a7560] font-medium">Buyers needed</span>
-                              <span className="font-bold text-[#c2703e]">{minCust} minimum</span>
+                              <span className="text-muted-foreground font-medium">Buyers needed</span>
+                              <span className="font-bold text-primary">{minCust} minimum</span>
                             </div>
-                            <div className="h-2 bg-[#e8dfd4] rounded-full overflow-hidden">
-                              <div className="h-full bg-gradient-to-r from-[#c2703e] to-[#e8943e] rounded-full transition-all duration-500" style={{ width: "0%" }} />
+                            <div className="h-2 bg-border rounded-full overflow-hidden">
+                              <div className="h-full bg-gradient-to-r from-primary to-primary/70 rounded-full transition-all duration-500" style={{ width: "0%" }} />
                             </div>
-                            <div className="flex items-center justify-between text-[10px] text-[#b5a898] mt-1">
+                            <div className="flex items-center justify-between text-[10px] text-muted-foreground/70 mt-1">
                               <span>Join now to be first!</span>
                               {maxCust > 0 && <span>Max: {maxCust}</span>}
                             </div>
@@ -540,28 +540,28 @@ export default function ProductViewPage() {
 
                         {/* Deal details grid */}
                         <div className="grid grid-cols-2 gap-2">
-                          <div className="p-2.5 rounded-xl bg-white border border-[#e8dfd4]">
-                            <div className="text-[10px] text-[#b5a898] uppercase tracking-wider">Per Buyer</div>
-                            <div className="text-sm font-bold text-[#2d2017] mt-0.5">
+                          <div className="p-2.5 rounded-xl bg-card border border-border">
+                            <div className="text-[10px] text-muted-foreground/70 uppercase tracking-wider">Per Buyer</div>
+                            <div className="text-sm font-bold text-foreground mt-0.5">
                               {minQtyPer}{maxQtyPer > 0 ? ` — ${maxQtyPer}` : "+"} units
                             </div>
                           </div>
-                          <div className="p-2.5 rounded-xl bg-white border border-[#e8dfd4]">
-                            <div className="text-[10px] text-[#b5a898] uppercase tracking-wider">Available</div>
-                            <div className="text-sm font-bold text-[#2d2017] mt-0.5">{totalStock} units</div>
+                          <div className="p-2.5 rounded-xl bg-card border border-border">
+                            <div className="text-[10px] text-muted-foreground/70 uppercase tracking-wider">Available</div>
+                            <div className="text-sm font-bold text-foreground mt-0.5">{totalStock} units</div>
                           </div>
                           {startDate && (
-                            <div className="p-2.5 rounded-xl bg-white border border-[#e8dfd4]">
-                              <div className="text-[10px] text-[#b5a898] uppercase tracking-wider">Starts</div>
-                              <div className="text-xs font-semibold text-[#2d2017] mt-0.5">
+                            <div className="p-2.5 rounded-xl bg-card border border-border">
+                              <div className="text-[10px] text-muted-foreground/70 uppercase tracking-wider">Starts</div>
+                              <div className="text-xs font-semibold text-foreground mt-0.5">
                                 {startDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })}
                               </div>
                             </div>
                           )}
                           {endDate && (
-                            <div className="p-2.5 rounded-xl bg-white border border-[#e8dfd4]">
-                              <div className="text-[10px] text-[#b5a898] uppercase tracking-wider">Ends</div>
-                              <div className="text-xs font-semibold text-[#2d2017] mt-0.5">
+                            <div className="p-2.5 rounded-xl bg-card border border-border">
+                              <div className="text-[10px] text-muted-foreground/70 uppercase tracking-wider">Ends</div>
+                              <div className="text-xs font-semibold text-foreground mt-0.5">
                                 {endDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })}
                               </div>
                             </div>
@@ -616,19 +616,19 @@ export default function ProductViewPage() {
                     {/* Quantity selector + main CTA */}
                     {!askForPrice && (
                       <div className="flex items-center gap-3">
-                        <div className="flex items-center border border-[#e8dfd4] rounded-xl overflow-hidden">
+                        <div className="flex items-center border border-border rounded-xl overflow-hidden">
                           <button onClick={() => setQuantity(Math.max(minQty, quantity - 1))}
-                            className="w-11 h-11 flex items-center justify-center hover:bg-[#f8f5f0] transition-colors"><Minus className="h-4 w-4 text-[#8a7560]" /></button>
+                            className="w-11 h-11 flex items-center justify-center hover:bg-background transition-colors"><Minus className="h-4 w-4 text-muted-foreground" /></button>
                           <input type="number" value={quantity} onChange={(e) => setQuantity(Math.max(minQty, Math.min(maxQty, Number(e.target.value))))}
-                            className="w-14 h-11 text-center font-semibold text-[#2d2017] border-x border-[#e8dfd4] focus:outline-none" />
+                            className="w-14 h-11 text-center font-semibold text-foreground border-x border-border focus:outline-none" />
                           <button onClick={() => setQuantity(Math.min(maxQty, quantity + 1))}
-                            className="w-11 h-11 flex items-center justify-center hover:bg-[#f8f5f0] transition-colors"><Plus className="h-4 w-4 text-[#8a7560]" /></button>
+                            className="w-11 h-11 flex items-center justify-center hover:bg-background transition-colors"><Plus className="h-4 w-4 text-muted-foreground" /></button>
                         </div>
                         <button onClick={isBuygroup ? () => setShowBuygroupWarning(true) : handleAddToCart} disabled={stock === 0}
                           className={cn("flex-1 h-12 rounded-xl text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.98] disabled:opacity-40",
                             isTrial ? "bg-purple-600 hover:bg-purple-700 shadow-lg shadow-purple-500/20" :
-                            isBuygroup ? "bg-[#c2703e] hover:bg-[#a85d32] shadow-lg shadow-[#c2703e]/20" :
-                            "bg-[#2d2017] hover:bg-[#1a130d]")}>
+                            isBuygroup ? "bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20" :
+                            "bg-foreground hover:bg-foreground/90")}>
                           {isTrial ? <FlaskConical className="h-4.5 w-4.5" /> : isBuygroup ? <Users className="h-4.5 w-4.5" /> : <ShoppingCart className="h-4.5 w-4.5" />}
                           {isTrial ? "Order Sample" : isBuygroup ? "Book Your Spot" : isInCart ? t("update_cart") || "Update Cart" : t("add_to_cart") || "Add to Cart"}
                           {(isBuygroup || isTrial) && ` — $${(offerPrice * quantity).toFixed(2)}`}
@@ -639,7 +639,7 @@ export default function ProductViewPage() {
                     {/* Buy Now (normal + wholesale only, not buygroup/trial) */}
                     {!isBuygroup && !isTrial && !askForPrice && (
                       <button onClick={handleBuyNow}
-                        className="w-full h-12 rounded-xl bg-[#c2703e] text-white font-semibold text-sm flex items-center justify-center gap-2 hover:bg-[#a85d32] transition-all active:scale-[0.98] shadow-lg shadow-[#c2703e]/20">
+                        className="w-full h-12 rounded-xl bg-primary text-white font-semibold text-sm flex items-center justify-center gap-2 hover:bg-primary/90 transition-all active:scale-[0.98] shadow-lg shadow-primary/20">
                         <Zap className="h-4.5 w-4.5" />
                         {t("buy_now") || "Buy Now"} — ${(offerPrice * quantity).toFixed(2)}
                       </button>
@@ -647,27 +647,27 @@ export default function ProductViewPage() {
 
                     {/* Customize Product button (always shown for customizable products) */}
                     <button onClick={() => setShowCustomizeModal(true)}
-                      className="w-full h-11 rounded-xl border-2 border-dashed border-[#c2703e]/40 text-sm font-semibold text-[#c2703e] flex items-center justify-center gap-2 hover:bg-[#c2703e]/5 hover:border-[#c2703e] transition-all">
+                      className="w-full h-11 rounded-xl border-2 border-dashed border-primary/40 text-sm font-semibold text-primary flex items-center justify-center gap-2 hover:bg-primary/5 hover:border-primary transition-all">
                       <Pencil className="h-4 w-4" />
                       Customize This Product
                     </button>
 
-                    {minQty > 1 && <p className="text-xs text-[#8a7560] text-center">Min order: {minQty} units</p>}
+                    {minQty > 1 && <p className="text-xs text-muted-foreground text-center">Min order: {minQty} units</p>}
                   </div>
                 )}
               </div>{/* end price section */}
 
               {/* ── Product Details (inside same card) ── */}
-              <div className="px-5 py-4 border-t border-[#f0ebe4] space-y-2.5">
+              <div className="px-5 py-4 border-t border-border space-y-2.5">
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
                     <Truck className="h-4.5 w-4.5 text-blue-600" />
                   </div>
                   <div className="flex-1">
-                    <div className="text-sm font-semibold text-[#2d2017]">
+                    <div className="text-sm font-semibold text-foreground">
                       {deliveryDays > 0 ? `Estimated delivery in ${deliveryDays} days` : "Delivery available"}
                     </div>
-                    <div className="text-xs text-[#8a7560]">Shipping cost calculated at checkout</div>
+                    <div className="text-xs text-muted-foreground">Shipping cost calculated at checkout</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
@@ -675,8 +675,8 @@ export default function ProductViewPage() {
                     <ShieldCheck className="h-4.5 w-4.5 text-emerald-600" />
                   </div>
                   <div className="flex-1">
-                    <div className="text-sm font-semibold text-[#2d2017]">Buyer Protection</div>
-                    <div className="text-xs text-[#8a7560]">Money-back guarantee if not as described</div>
+                    <div className="text-sm font-semibold text-foreground">Buyer Protection</div>
+                    <div className="text-xs text-muted-foreground">Money-back guarantee if not as described</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
@@ -684,14 +684,14 @@ export default function ProductViewPage() {
                     <Tag className="h-4.5 w-4.5 text-amber-600" />
                   </div>
                   <div className="flex-1">
-                    <div className="text-sm font-semibold text-[#2d2017]">
+                    <div className="text-sm font-semibold text-foreground">
                       {(() => {
                         const cond = (pp?.productCondition || "new").toLowerCase();
                         const m: Record<string, string> = { "new": "New", "open box": "Open Box", "refurbished": "Certified Refurbished", "like new": "Like New", "used": "Pre-Owned", "good": "Good", "fair": "Acceptable", "for parts": "For Parts or Not Working" };
                         return m[cond] || "New";
                       })()}
                     </div>
-                    <div className="text-xs text-[#8a7560]">
+                    <div className="text-xs text-muted-foreground">
                       {(() => {
                         const cond = (pp?.productCondition || "new").toLowerCase();
                         const m: Record<string, string> = { "new": "Brand new, unused, unopened, undamaged item in original packaging", "open box": "Original packaging, opened but never used", "refurbished": "Professionally restored to working order", "like new": "Used but in excellent, near-new condition", "used": "Previously used, may show signs of cosmetic wear", "good": "Shows wear from consistent use, fully operational", "fair": "Fairly worn but continues to work properly", "for parts": "Does not function as intended, requires repair" };
@@ -709,7 +709,7 @@ export default function ProductViewPage() {
 
           {/* ══════ TABS ══════ */}
           <div className="mt-10">
-            <div className="flex items-center gap-1 border-b border-[#e8dfd4] overflow-x-auto">
+            <div className="flex items-center gap-1 border-b border-border overflow-x-auto">
               {[
                 { id: "description", label: t("description") || "Description" },
                 { id: "specs", label: t("specification") || "Specs" },
@@ -720,33 +720,33 @@ export default function ProductViewPage() {
               ].map((tab) => (
                 <button key={tab.id} onClick={() => setActiveTab(tab.id)}
                   className={cn("px-6 py-4 text-sm font-semibold whitespace-nowrap transition-all border-b-[3px] -mb-px",
-                    activeTab === tab.id ? "border-[#c2703e] text-[#c2703e]" : "border-transparent text-[#8a7560] hover:text-[#2d2017]")}>
+                    activeTab === tab.id ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground")}>
                   {tab.label}
                 </button>
               ))}
             </div>
 
-            <div className="bg-white rounded-b-2xl border border-t-0 border-[#e8dfd4] p-6 sm:p-10 min-h-[300px]">
+            <div className="bg-card rounded-b-2xl border border-t-0 border-border p-6 sm:p-10 min-h-[300px]">
               {activeTab === "description" && (() => {
                 const desc = product?.isDropshipped && product?.customMarketingContent?.marketingText
                   ? product.customMarketingContent.marketingText : product?.description;
-                if (!desc) return <p className="text-[#8a7560]">No description available.</p>;
+                if (!desc) return <p className="text-muted-foreground">No description available.</p>;
                 if (typeof desc === "object") return <PlateEditor description={desc} readOnly fixedToolbar={false} />;
                 try { return <PlateEditor description={JSON.parse(desc)} readOnly fixedToolbar={false} />; }
-                catch { return <div className="prose prose-gray max-w-none text-[#5a4d3e] leading-relaxed" dir={langDir}>{desc}</div>; }
+                catch { return <div className="prose prose-gray max-w-none text-muted-foreground leading-relaxed" dir={langDir}>{desc}</div>; }
               })()}
 
               {activeTab === "specs" && (
                 specs.length > 0 ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2">
                     {specs.map((sv: any, i: number) => (
-                      <div key={i} className={cn("flex py-3.5 px-5", i % 2 === 0 ? "bg-[#faf7f2]" : "bg-white")}>
-                        <span className="w-1/2 text-sm font-medium text-[#8a7560]">{sv.specTemplate?.name_en || "—"}</span>
-                        <span className="w-1/2 text-sm text-[#2d2017]">{sv.value || "—"}</span>
+                      <div key={i} className={cn("flex py-3.5 px-5", i % 2 === 0 ? "bg-muted/50" : "bg-card")}>
+                        <span className="w-1/2 text-sm font-medium text-muted-foreground">{sv.specTemplate?.name_en || "—"}</span>
+                        <span className="w-1/2 text-sm text-foreground">{sv.value || "—"}</span>
                       </div>
                     ))}
                   </div>
-                ) : <p className="text-[#8a7560]">No specifications available.</p>
+                ) : <p className="text-muted-foreground">No specifications available.</p>
               )}
 
               {activeTab === "reviews" && <ReviewSection {...{ productId: Number(productId), productReview: reviews } as any} />}
@@ -762,14 +762,14 @@ export default function ProductViewPage() {
 
           {/* ── Customers Also Bought (bottom of page, scrollable) ── */}
           {relatedProducts.length > 0 && (
-            <div className="mt-10 rounded-2xl bg-white border border-[#e8dfd4] shadow-sm overflow-hidden">
-              <div className="px-6 py-4 border-b border-[#f0ebe4] flex items-center justify-between">
+            <div className="mt-10 rounded-2xl bg-card border border-border shadow-sm overflow-hidden">
+              <div className="px-6 py-4 border-b border-border flex items-center justify-between">
                 <div>
-                  <h2 className="text-base font-bold text-[#2d2017]">Customers Also Bought</h2>
-                  <p className="text-xs text-[#8a7560] mt-0.5">Frequently purchased together with this product</p>
+                  <h2 className="text-base font-bold text-foreground">Customers Also Bought</h2>
+                  <p className="text-xs text-muted-foreground mt-0.5">Frequently purchased together with this product</p>
                 </div>
                 {relatedProducts.length > 4 && (
-                  <span className="text-xs text-[#8a7560]">Scroll for more →</span>
+                  <span className="text-xs text-muted-foreground">Scroll for more →</span>
                 )}
               </div>
               <div className="flex overflow-x-auto pb-2" style={{ scrollbarWidth: "thin" }}>
@@ -782,38 +782,38 @@ export default function ProductViewPage() {
                   const qty = relatedQtys[rpId] || 0;
 
                   return (
-                    <div key={rpId} className="p-5 flex flex-col items-center text-center min-w-[200px] w-[200px] flex-shrink-0 border-e border-[#f0ebe4] last:border-e-0">
-                      <a href={`/product-view/${rpId}`} className="w-24 h-24 rounded-xl bg-[#f8f5f0] overflow-hidden mb-3 hover:opacity-80 transition-opacity">
+                    <div key={rpId} className="p-5 flex flex-col items-center text-center min-w-[200px] w-[200px] flex-shrink-0 border-e border-border last:border-e-0">
+                      <a href={`/product-view/${rpId}`} className="w-24 h-24 rounded-xl bg-background overflow-hidden mb-3 hover:opacity-80 transition-opacity">
                         {rpImage ? (
                           <img src={rpImage} alt="" className="w-full h-full object-contain p-2" />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center"><Package className="h-8 w-8 text-[#c9bfb0]" /></div>
+                          <div className="w-full h-full flex items-center justify-center"><Package className="h-8 w-8 text-muted-foreground/50" /></div>
                         )}
                       </a>
-                      <a href={`/product-view/${rpId}`} className="text-sm font-medium text-[#2d2017] line-clamp-2 hover:text-[#c2703e] transition-colors mb-2 min-h-[40px]">
+                      <a href={`/product-view/${rpId}`} className="text-sm font-medium text-foreground line-clamp-2 hover:text-primary transition-colors mb-2 min-h-[40px]">
                         {rp.productName}
                       </a>
                       <div className="flex items-center gap-1.5 mb-3">
-                        <span className="text-lg font-bold text-[#2d2017]">${rpOffer.toFixed(2)}</span>
+                        <span className="text-lg font-bold text-foreground">${rpOffer.toFixed(2)}</span>
                         {rpOriginal > rpOffer && (
-                          <span className="text-xs text-[#b5a898] line-through">${rpOriginal.toFixed(2)}</span>
+                          <span className="text-xs text-muted-foreground/70 line-through">${rpOriginal.toFixed(2)}</span>
                         )}
                       </div>
                       {qty > 0 ? (
-                        <div className="flex items-center border-2 border-[#c2703e] rounded-xl overflow-hidden">
+                        <div className="flex items-center border-2 border-primary rounded-xl overflow-hidden">
                           <button onClick={() => setRelatedQtys((q) => ({ ...q, [rpId]: Math.max(0, qty - 1) }))}
-                            className="w-9 h-9 flex items-center justify-center hover:bg-[#c2703e]/5 text-[#c2703e]">
+                            className="w-9 h-9 flex items-center justify-center hover:bg-primary/5 text-primary">
                             <Minus className="h-3.5 w-3.5" />
                           </button>
-                          <span className="w-9 h-9 flex items-center justify-center text-sm font-bold text-[#2d2017] border-x-2 border-[#c2703e]">{qty}</span>
+                          <span className="w-9 h-9 flex items-center justify-center text-sm font-bold text-foreground border-x-2 border-primary">{qty}</span>
                           <button onClick={() => setRelatedQtys((q) => ({ ...q, [rpId]: qty + 1 }))}
-                            className="w-9 h-9 flex items-center justify-center hover:bg-[#c2703e]/5 text-[#c2703e]">
+                            className="w-9 h-9 flex items-center justify-center hover:bg-primary/5 text-primary">
                             <Plus className="h-3.5 w-3.5" />
                           </button>
                         </div>
                       ) : (
                         <button onClick={() => setRelatedQtys((q) => ({ ...q, [rpId]: 1 }))}
-                          className="h-9 px-5 rounded-xl bg-[#2d2017] text-white text-sm font-semibold flex items-center gap-1.5 hover:bg-[#1a130d] transition-colors">
+                          className="h-9 px-5 rounded-xl bg-foreground text-white text-sm font-semibold flex items-center gap-1.5 hover:bg-foreground/90 transition-colors">
                           <Plus className="h-3.5 w-3.5" /> Add
                         </button>
                       )}
@@ -830,9 +830,9 @@ export default function ProductViewPage() {
       {/* BuyGroup Warning Popup */}
       {showBuygroupWarning && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40" onClick={() => setShowBuygroupWarning(false)}>
-          <div className="bg-white rounded-2xl w-full max-w-sm mx-4 shadow-2xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-card rounded-2xl w-full max-w-sm mx-4 shadow-2xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
             {/* Header */}
-            <div className="bg-gradient-to-r from-[#c2703e] to-[#a85d32] px-6 py-4 flex items-center justify-between">
+            <div className="bg-gradient-to-r from-primary to-primary/80 px-6 py-4 flex items-center justify-between">
               <div className="flex items-center gap-2 text-white">
                 <Users className="h-5 w-5" />
                 <span className="text-base font-bold">How Buygroups Work</span>
@@ -842,13 +842,13 @@ export default function ProductViewPage() {
 
             <div className="px-6 py-5 max-h-[60vh] overflow-y-auto">
               {/* What is a Buygroup */}
-              <h3 className="text-sm font-bold text-[#2d2017] mb-2">What is a Buygroup?</h3>
-              <p className="text-xs text-[#5a4d3e] leading-relaxed mb-5">
+              <h3 className="text-sm font-bold text-foreground mb-2">What is a Buygroup?</h3>
+              <p className="text-xs text-muted-foreground leading-relaxed mb-5">
                 A buygroup is a collective purchasing system where multiple customers come together to purchase products at better prices. When you book a product in a buygroup, you are reserving your spot for that item.
               </p>
 
               {/* How It Works */}
-              <h3 className="text-sm font-bold text-[#2d2017] mb-3">How It Works:</h3>
+              <h3 className="text-sm font-bold text-foreground mb-3">How It Works:</h3>
               <div className="space-y-3 mb-5">
                 {[
                   "Select the quantity you want to book",
@@ -861,13 +861,13 @@ export default function ProductViewPage() {
                     <div className="w-5 h-5 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0 mt-0.5">
                       <Check className="h-3 w-3 text-amber-600" />
                     </div>
-                    <p className="text-xs text-[#5a4d3e] leading-relaxed">{step}</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{step}</p>
                   </div>
                 ))}
               </div>
 
               {/* Important Notes */}
-              <h3 className="text-sm font-bold text-[#2d2017] mb-3">Important Notes:</h3>
+              <h3 className="text-sm font-bold text-foreground mb-3">Important Notes:</h3>
               <div className="space-y-3">
                 {[
                   "Your booking is a reservation, not an immediate purchase",
@@ -879,20 +879,20 @@ export default function ProductViewPage() {
                     <div className="w-5 h-5 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0 mt-0.5">
                       <AlertTriangle className="h-3 w-3 text-amber-600" />
                     </div>
-                    <p className="text-xs text-[#5a4d3e] leading-relaxed">{note}</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{note}</p>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Footer */}
-            <div className="px-6 py-4 border-t border-[#e8dfd4] flex items-center gap-3">
+            <div className="px-6 py-4 border-t border-border flex items-center gap-3">
               <button onClick={() => setShowBuygroupWarning(false)}
-                className="flex-1 h-11 rounded-xl border border-[#e8dfd4] text-sm font-medium text-[#8a7560] hover:bg-[#faf7f2] transition-colors">
+                className="flex-1 h-11 rounded-xl border border-border text-sm font-medium text-muted-foreground hover:bg-muted/50 transition-colors">
                 Cancel
               </button>
               <button onClick={() => { setShowBuygroupWarning(false); handleAddToCart(); }}
-                className="flex-1 h-11 rounded-xl bg-[#c2703e] text-white text-sm font-semibold flex items-center justify-center gap-2 hover:bg-[#a85d32] transition-colors shadow-lg shadow-[#c2703e]/20">
+                className="flex-1 h-11 rounded-xl bg-primary text-white text-sm font-semibold flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20">
                 I Understand, Proceed
               </button>
             </div>
@@ -903,9 +903,9 @@ export default function ProductViewPage() {
       {/* Customize Product Modal */}
       {showCustomizeModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40" onClick={() => setShowCustomizeModal(false)}>
-          <div className="bg-white rounded-2xl w-full max-w-lg mx-4 shadow-2xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-card rounded-2xl w-full max-w-lg mx-4 shadow-2xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
             {/* Header */}
-            <div className="bg-gradient-to-r from-[#2d2017] to-[#4a3728] px-6 py-4 flex items-center justify-between">
+            <div className="bg-gradient-to-r from-foreground to-foreground/80 px-6 py-4 flex items-center justify-between">
               <div className="flex items-center gap-2 text-white">
                 <Pencil className="h-5 w-5" />
                 <span className="text-base font-bold">Customize Product</span>
@@ -914,57 +914,57 @@ export default function ProductViewPage() {
             </div>
 
             {/* Product reference */}
-            <div className="px-6 py-3 bg-[#faf7f2] border-b border-[#e8dfd4] flex items-center gap-3">
-              <Package className="h-8 w-8 text-[#c9bfb0]" />
+            <div className="px-6 py-3 bg-muted/50 border-b border-border flex items-center gap-3">
+              <Package className="h-8 w-8 text-muted-foreground/50" />
               <div className="min-w-0">
-                <p className="text-sm font-semibold text-[#2d2017] truncate">{product?.productName}</p>
-                <p className="text-xs text-[#8a7560]">Base price: ${offerPrice.toFixed(2)} · Seller: {sellerName.length <= 3 ? sellerName : sellerName.slice(0, 3) + "***"}</p>
+                <p className="text-sm font-semibold text-foreground truncate">{product?.productName}</p>
+                <p className="text-xs text-muted-foreground">Base price: ${offerPrice.toFixed(2)} · Seller: {sellerName.length <= 3 ? sellerName : sellerName.slice(0, 3) + "***"}</p>
               </div>
             </div>
 
             <div className="px-6 py-5 space-y-4 max-h-[55vh] overflow-y-auto">
               {/* Description */}
               <div>
-                <label className="text-sm font-semibold text-[#2d2017] mb-1.5 block">What would you like to customize?</label>
+                <label className="text-sm font-semibold text-foreground mb-1.5 block">What would you like to customize?</label>
                 <textarea
                   value={customizeForm.description}
                   onChange={(e) => setCustomizeForm((f) => ({ ...f, description: e.target.value }))}
                   placeholder="Describe your customization requirements — colors, sizes, materials, branding, packaging, etc."
-                  className="w-full p-3 rounded-xl border border-[#e8dfd4] text-sm resize-none h-28 focus:outline-none focus:ring-2 focus:ring-[#c2703e]/20 focus:border-[#c2703e]"
+                  className="w-full p-3 rounded-xl border border-border text-sm resize-none h-28 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                 />
               </div>
 
               {/* Quantity + Budget row */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-sm font-semibold text-[#2d2017] mb-1.5 block">Quantity Needed</label>
+                  <label className="text-sm font-semibold text-foreground mb-1.5 block">Quantity Needed</label>
                   <input
                     type="number"
                     value={customizeForm.quantity}
                     onChange={(e) => setCustomizeForm((f) => ({ ...f, quantity: e.target.value }))}
                     min={1}
                     placeholder="100"
-                    className="w-full p-3 rounded-xl border border-[#e8dfd4] text-sm focus:outline-none focus:ring-2 focus:ring-[#c2703e]/20 focus:border-[#c2703e]"
+                    className="w-full p-3 rounded-xl border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-semibold text-[#2d2017] mb-1.5 block">Target Budget</label>
+                  <label className="text-sm font-semibold text-foreground mb-1.5 block">Target Budget</label>
                   <input
                     type="text"
                     value={customizeForm.budget}
                     onChange={(e) => setCustomizeForm((f) => ({ ...f, budget: e.target.value }))}
                     placeholder="$5,000"
-                    className="w-full p-3 rounded-xl border border-[#e8dfd4] text-sm focus:outline-none focus:ring-2 focus:ring-[#c2703e]/20 focus:border-[#c2703e]"
+                    className="w-full p-3 rounded-xl border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                   />
                 </div>
               </div>
 
               {/* File upload */}
               <div>
-                <label className="text-sm font-semibold text-[#2d2017] mb-1.5 block">Attachments (optional)</label>
-                <label className="flex items-center justify-center gap-2 p-4 rounded-xl border-2 border-dashed border-[#e8dfd4] cursor-pointer hover:border-[#c2703e] hover:bg-[#faf7f2] transition-colors">
-                  <Upload className="h-5 w-5 text-[#8a7560]" />
-                  <span className="text-sm text-[#8a7560]">Upload reference images, specs, or designs</span>
+                <label className="text-sm font-semibold text-foreground mb-1.5 block">Attachments (optional)</label>
+                <label className="flex items-center justify-center gap-2 p-4 rounded-xl border-2 border-dashed border-border cursor-pointer hover:border-primary hover:bg-muted/50 transition-colors">
+                  <Upload className="h-5 w-5 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">Upload reference images, specs, or designs</span>
                   <input
                     type="file"
                     multiple
@@ -978,7 +978,7 @@ export default function ProductViewPage() {
                 {customizeForm.attachments.length > 0 && (
                   <div className="mt-2 space-y-1">
                     {customizeForm.attachments.map((file, i) => (
-                      <div key={i} className="flex items-center justify-between text-xs text-[#8a7560] bg-[#faf7f2] px-3 py-1.5 rounded-lg">
+                      <div key={i} className="flex items-center justify-between text-xs text-muted-foreground bg-muted/50 px-3 py-1.5 rounded-lg">
                         <span className="truncate">{file.name}</span>
                         <button onClick={() => setCustomizeForm((f) => ({ ...f, attachments: f.attachments.filter((_, j) => j !== i) }))}
                           className="text-red-500 hover:text-red-700 ms-2"><X className="h-3 w-3" /></button>
@@ -997,9 +997,9 @@ export default function ProductViewPage() {
             </div>
 
             {/* Footer */}
-            <div className="px-6 py-4 border-t border-[#e8dfd4] flex items-center gap-3">
+            <div className="px-6 py-4 border-t border-border flex items-center gap-3">
               <button onClick={() => setShowCustomizeModal(false)}
-                className="flex-1 h-11 rounded-xl border border-[#e8dfd4] text-sm font-medium text-[#8a7560] hover:bg-[#faf7f2] transition-colors">
+                className="flex-1 h-11 rounded-xl border border-border text-sm font-medium text-muted-foreground hover:bg-muted/50 transition-colors">
                 Cancel
               </button>
               <button
@@ -1009,7 +1009,7 @@ export default function ProductViewPage() {
                   setCustomizeForm({ description: "", budget: "", quantity: "1", attachments: [] });
                 }}
                 disabled={!customizeForm.description.trim()}
-                className="flex-1 h-11 rounded-xl bg-[#c2703e] text-white text-sm font-semibold flex items-center justify-center gap-2 hover:bg-[#a85d32] transition-colors disabled:opacity-40">
+                className="flex-1 h-11 rounded-xl bg-primary text-white text-sm font-semibold flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors disabled:opacity-40">
                 <Send className="h-4 w-4" />
                 Send Request
               </button>
@@ -1031,7 +1031,7 @@ export default function ProductViewPage() {
       {/* Customize Product Form Modal */}
       {showCustomizeForm && product && (
         <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-xl max-w-2xl w-full my-auto">
+          <div className="bg-card rounded-xl max-w-2xl w-full my-auto">
             <AddToCustomizeForm
               selectedProductId={Number(productId)}
               onClose={() => setShowCustomizeForm(false)}

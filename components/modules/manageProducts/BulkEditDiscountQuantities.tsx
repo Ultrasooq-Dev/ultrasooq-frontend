@@ -16,7 +16,7 @@ const StepperField: React.FC<{ field: any; placeholder: string }> = ({ field, pl
   <div className="relative">
     <button
       type="button"
-      className="absolute left-2 top-[6px] z-10 flex h-[34px] w-[32px] items-center justify-center bg-[#F6F6F6]!"
+      className="absolute left-2 top-[6px] z-10 flex h-[34px] w-[32px] items-center justify-center bg-muted!"
       onClick={() => {
         const newValue = Number(field.value) - 1;
         field.onChange(newValue >= 0 ? newValue : 0);
@@ -34,7 +34,7 @@ const StepperField: React.FC<{ field: any; placeholder: string }> = ({ field, pl
     />
     <button
       type="button"
-      className="absolute right-2 top-[6px] z-10 flex h-[34px] w-[32px] items-center justify-center bg-[#F6F6F6]!"
+      className="absolute right-2 top-[6px] z-10 flex h-[34px] w-[32px] items-center justify-center bg-muted!"
       onClick={() => { field.onChange(Number(field.value) + 1); }}
     >
       +

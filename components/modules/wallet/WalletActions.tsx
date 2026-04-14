@@ -360,7 +360,7 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
       
       <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
         {/* Deposit */}
-        <div className="border border-border rounded-lg p-4 hover:border-[#FF9900] transition-colors">
+        <div className="border border-border rounded-lg p-4 hover:border-amber-500 transition-colors">
           <div className="flex items-start justify-between mb-3">
             <div>
               <h4 className="text-sm font-medium text-foreground mb-1">{t("deposit")}</h4>
@@ -391,7 +391,7 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
                 <button
                   onClick={handleDeposit}
                   disabled={isProcessing || isProcessingPayment}
-                  className="flex-1 bg-[#FF9900] hover:bg-[#FF8800] text-white text-sm font-medium py-2 px-4 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 bg-amber-500 hover:bg-amber-600 text-white text-sm font-medium py-2 px-4 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isProcessing || isProcessingPayment ? t("processing") : t("deposit")}
                 </button>
@@ -409,7 +409,7 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
           ) : (
             <button
               onClick={() => setActiveAction("deposit")}
-              className="w-full mt-3 bg-[#FF9900] hover:bg-[#FF8800] text-white text-sm font-medium py-2.5 px-4 rounded-md transition-colors"
+              className="w-full mt-3 bg-amber-500 hover:bg-amber-600 text-white text-sm font-medium py-2.5 px-4 rounded-md transition-colors"
             >
               {t("deposit")}
             </button>
@@ -417,7 +417,7 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
         </div>
 
         {/* Withdraw - Commented out for now */}
-        {/* <div className="border border-border rounded-lg p-4 hover:border-[#FF9900] transition-colors">
+        {/* <div className="border border-border rounded-lg p-4 hover:border-amber-500 transition-colors">
           <div className="flex items-start justify-between mb-3">
             <div>
               <h4 className="text-sm font-medium text-foreground mb-1">{t("withdraw")}</h4>
@@ -448,7 +448,7 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
                 <button
                   onClick={handleWithdraw}
                   disabled={isProcessing}
-                  className="flex-1 bg-[#FF9900] hover:bg-[#FF8800] text-white text-sm font-medium py-2 px-4 rounded-md transition-colors disabled:opacity-50"
+                  className="flex-1 bg-amber-500 hover:bg-amber-600 text-white text-sm font-medium py-2 px-4 rounded-md transition-colors disabled:opacity-50"
                 >
                   {isProcessing ? t("processing") : t("withdraw")}
                 </button>
@@ -467,7 +467,7 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
             <button
               onClick={() => setActiveAction("withdraw")}
               disabled={!wallet || wallet.balance <= 0}
-              className="w-full mt-3 bg-card hover:bg-muted text-[#FF9900] border border-[#FF9900] text-sm font-medium py-2.5 px-4 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full mt-3 bg-card hover:bg-muted text-amber-500 border border-amber-500 text-sm font-medium py-2.5 px-4 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {t("withdraw")}
             </button>
@@ -475,7 +475,7 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
         </div> */}
 
         {/* Transfer - Commented out for now */}
-        {/* <div className="border border-border rounded-lg p-4 hover:border-[#FF9900] transition-colors">
+        {/* <div className="border border-border rounded-lg p-4 hover:border-amber-500 transition-colors">
           <div className="flex items-start justify-between mb-3">
             <div>
               <h4 className="text-sm font-medium text-foreground mb-1">{t("transfer")}</h4>
@@ -528,7 +528,7 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
                 <button
                   onClick={handleTransfer}
                   disabled={isProcessing}
-                  className="flex-1 bg-[#FF9900] hover:bg-[#FF8800] text-white text-sm font-medium py-2 px-4 rounded-md transition-colors disabled:opacity-50"
+                  className="flex-1 bg-amber-500 hover:bg-amber-600 text-white text-sm font-medium py-2 px-4 rounded-md transition-colors disabled:opacity-50"
                 >
                   {isProcessing ? t("processing") : t("transfer")}
                 </button>
@@ -549,7 +549,7 @@ const WalletActions: React.FC<WalletActionsProps> = ({ wallet }) => {
             <button
               onClick={() => setActiveAction("transfer")}
               disabled={!wallet || wallet.balance <= 0}
-              className="w-full mt-3 bg-card hover:bg-muted text-[#FF9900] border border-[#FF9900] text-sm font-medium py-2.5 px-4 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full mt-3 bg-card hover:bg-muted text-amber-500 border border-amber-500 text-sm font-medium py-2.5 px-4 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {t("transfer")}
             </button>

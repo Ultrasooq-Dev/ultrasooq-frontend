@@ -23,7 +23,7 @@ function BuygroupManagementPage() {
   return (
     <div className={cn("min-h-screen", T.bg)} dir={langDir}>
       {/* Page header */}
-      <div className={cn("border-b", T.border, "bg-white px-6 py-5")}>
+      <div className={cn("border-b", T.border, "bg-card px-6 py-5")}>
         <h1 className={cn("text-2xl font-bold", T.text)} translate="no">
           {t("buygroup_management") || "BuyGroup Operations Center"}
         </h1>
@@ -33,7 +33,7 @@ function BuygroupManagementPage() {
       </div>
 
       {/* Tab bar */}
-      <div className={cn("border-b", T.border, "bg-white px-6")}>
+      <div className={cn("border-b", T.border, "bg-card px-6")}>
         <div className="flex gap-0">
           {TABS.map((tab) => (
             <button
@@ -42,8 +42,8 @@ function BuygroupManagementPage() {
               className={cn(
                 "px-5 py-3 text-sm font-medium border-b-2 transition-colors",
                 activeTab === tab.id
-                  ? cn("border-[#c2703e]", T.accentText)
-                  : cn("border-transparent", T.muted, "hover:text-[#2d2017]"),
+                  ? cn("border-primary", T.accentText)
+                  : cn("border-transparent", T.muted, "hover:text-foreground"),
               )}
               translate="no"
             >

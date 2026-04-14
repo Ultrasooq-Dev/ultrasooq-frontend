@@ -79,11 +79,11 @@ export function DealCard({ deal, langDir, t }: { deal: BuyGroupDeal; langDir: st
           {!isDealDone && (
             <div className="flex items-center gap-2 flex-shrink-0">
               {isThresholdMet && (
-                <button className={cn("px-4 py-2 rounded-xl text-sm font-medium text-white transition-colors", T.accentBg, "hover:opacity-90")}>
+                <button className={cn("px-4 py-2 rounded-xl text-sm font-medium text-primary-foreground transition-colors", T.accentBg, "hover:opacity-90")}>
                   <CheckCircle2 className="h-4 w-4 inline-block me-1.5" />Accept Deal
                 </button>
               )}
-              <button onClick={() => setShowActions(!showActions)} className={cn("p-2 rounded-xl transition-colors hover:bg-gray-100", T.muted)}>
+              <button onClick={() => setShowActions(!showActions)} className={cn("p-2 rounded-xl transition-colors hover:bg-muted", T.muted)}>
                 <MoreHorizontal className="h-5 w-5" />
               </button>
             </div>
@@ -97,7 +97,7 @@ export function DealCard({ deal, langDir, t }: { deal: BuyGroupDeal; langDir: st
               <span className={T.muted}>Customers ({deal.currentCustomers}/{deal.minCustomer} min)</span>
               <span className={cn("font-semibold", customerPct >= 100 ? T.success : T.accentText)}>{Math.round(customerPct)}%</span>
             </div>
-            <ProgressBar value={deal.currentCustomers} max={deal.minCustomer} color={customerPct >= 100 ? "bg-emerald-500" : "bg-[#c2703e]"} height="h-2.5" />
+            <ProgressBar value={deal.currentCustomers} max={deal.minCustomer} color={customerPct >= 100 ? "bg-emerald-500" : "bg-primary"} height="h-2.5" />
           </div>
           <div>
             <div className="flex items-center justify-between text-xs mb-1.5">
@@ -110,7 +110,7 @@ export function DealCard({ deal, langDir, t }: { deal: BuyGroupDeal; langDir: st
 
         {/* ── Action Dropdown ── */}
         {showActions && !isDealDone && (
-          <div className={cn("mt-4 p-4 rounded-xl border flex flex-wrap gap-2", T.border, "bg-[#faf6f1]")}>
+          <div className={cn("mt-4 p-4 rounded-xl border flex flex-wrap gap-2", T.border, "bg-muted/50")}>
             {isActive && (
               <button className={cn("inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium border transition-colors", T.successBg, T.successBorder, T.success, "hover:bg-emerald-100")}>
                 <Zap className="h-4 w-4" />Bypass Minimum
@@ -141,7 +141,7 @@ export function DealCard({ deal, langDir, t }: { deal: BuyGroupDeal; langDir: st
                   Choose to extend the deal, bypass the minimum to proceed, or cancel and refund all orders.
                 </p>
                 <div className="flex flex-wrap gap-2 mt-3">
-                  <button className={cn("px-3 py-1.5 rounded-lg text-xs font-medium text-white", T.accentBg)}>
+                  <button className={cn("px-3 py-1.5 rounded-lg text-xs font-medium text-primary-foreground", T.accentBg)}>
                     <Zap className="h-3.5 w-3.5 inline me-1" />Bypass & Accept
                   </button>
                   <button
@@ -152,11 +152,11 @@ export function DealCard({ deal, langDir, t }: { deal: BuyGroupDeal; langDir: st
                       setExtendInput(String(Math.min(maxExt, 7)));
                       setShowExtendModal(true);
                     }}
-                    className="px-3 py-1.5 rounded-lg text-xs font-medium bg-blue-500 text-white"
+                    className="px-3 py-1.5 rounded-lg text-xs font-medium bg-blue-500 text-primary-foreground"
                   >
                     <CalendarPlus className="h-3.5 w-3.5 inline me-1" />Extend Time
                   </button>
-                  <button className="px-3 py-1.5 rounded-lg text-xs font-medium bg-red-500 text-white">
+                  <button className="px-3 py-1.5 rounded-lg text-xs font-medium bg-red-500 text-primary-foreground">
                     <Ban className="h-3.5 w-3.5 inline me-1" />Cancel & Refund All
                   </button>
                 </div>
@@ -202,13 +202,13 @@ export function DealCard({ deal, langDir, t }: { deal: BuyGroupDeal; langDir: st
         <div className={cn("flex items-center gap-2 mt-3 pt-3 border-t", T.border)}>
           <button
             onClick={() => setShowPanel(true)}
-            className={cn("flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-medium text-sm border transition-colors", T.border, T.accentText, "hover:bg-[#c2703e]/5")}
+            className={cn("flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-medium text-sm border transition-colors", T.border, T.accentText, "hover:bg-primary/5")}
           >
             <Users className="h-4 w-4" />View Buyers ({deal.orders.length})
           </button>
           <a
             href={`/manage-products/deal-analysis?id=${deal.id}`}
-            className={cn("flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-medium text-sm text-white transition-colors", T.accentBg, "hover:opacity-90")}
+            className={cn("flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-medium text-sm text-primary-foreground transition-colors", T.accentBg, "hover:opacity-90")}
           >
             <BarChart3 className="h-4 w-4" />Full Analysis
           </a>

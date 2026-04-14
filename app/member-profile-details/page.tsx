@@ -79,7 +79,7 @@ export default function MemberProfileDetailsPage() {
                                 <TabsList className="mb-1 grid min-h-[80px] w-[560px] grid-cols-3 gap-x-6 rounded-none bg-transparent px-0 pt-7">
                                     <TabsTrigger
                                         value="profile-info"
-                                        className="rounded-b-none bg-[#d1d5db]! py-4 text-base font-bold text-[#71717A]! data-[state=active]:bg-dark-orange! data-[state=active]:text-white!"
+                                        className="rounded-b-none bg-muted! py-4 text-base font-bold text-muted-foreground! data-[state=active]:bg-dark-orange! data-[state=active]:text-white!"
                                         dir={langDir}
                                         translate="no"
                                     >
@@ -88,7 +88,7 @@ export default function MemberProfileDetailsPage() {
 
                                     <TabsTrigger
                                         value="ratings"
-                                        className="rounded-b-none bg-[#d1d5db]! py-4 text-base font-bold text-[#71717A]! data-[state=active]:bg-dark-orange! data-[state=active]:text-white!"
+                                        className="rounded-b-none bg-muted! py-4 text-base font-bold text-muted-foreground! data-[state=active]:bg-dark-orange! data-[state=active]:text-white!"
                                         dir={langDir}
                                         translate="no"
                                     >
@@ -97,7 +97,7 @@ export default function MemberProfileDetailsPage() {
 
                                     <TabsTrigger
                                         value="products"
-                                        className="rounded-b-none bg-[#d1d5db]! py-4 text-base font-bold text-[#71717A]! data-[state=active]:bg-dark-orange! data-[state=active]:text-white!"
+                                        className="rounded-b-none bg-muted! py-4 text-base font-bold text-muted-foreground! data-[state=active]:bg-dark-orange! data-[state=active]:text-white!"
                                         dir={langDir}
                                         translate="no"
                                     >

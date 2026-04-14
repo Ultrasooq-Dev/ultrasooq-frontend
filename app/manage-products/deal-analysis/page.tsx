@@ -26,23 +26,23 @@ import {
 
 // ─── Theme ───────────────────────────────────────────────────
 const T = {
-  bg: "bg-[#faf6f1]",
-  card: "bg-white",
-  accent: "#c2703e",
-  accentBg: "bg-[#c2703e]",
-  accentText: "text-[#c2703e]",
-  accentLight: "bg-[#c2703e]/10",
-  text: "text-[#2d2017]",
-  muted: "text-[#8a7560]",
-  border: "border-[#e8dfd4]",
-  success: "text-emerald-600",
-  successBg: "bg-emerald-50",
-  warning: "text-amber-600",
-  warningBg: "bg-amber-50",
-  danger: "text-red-600",
-  dangerBg: "bg-red-50",
-  infoBg: "bg-blue-50",
-  infoText: "text-blue-600",
+  bg: "bg-background",
+  card: "bg-card",
+  accent: "hsl(var(--primary))",
+  accentBg: "bg-primary",
+  accentText: "text-primary",
+  accentLight: "bg-primary/10",
+  text: "text-foreground",
+  muted: "text-muted-foreground",
+  border: "border-border",
+  success: "text-emerald-600 dark:text-emerald-400",
+  successBg: "bg-emerald-50 dark:bg-emerald-950/30",
+  warning: "text-amber-600 dark:text-amber-400",
+  warningBg: "bg-amber-50 dark:bg-amber-950/30",
+  danger: "text-red-600 dark:text-red-400",
+  dangerBg: "bg-red-50 dark:bg-red-950/30",
+  infoBg: "bg-blue-50 dark:bg-blue-950/30",
+  infoText: "text-blue-600 dark:text-blue-400",
 };
 
 const PIE_COLORS = ["#c2703e", "#3b82f6", "#10b981", "#f59e0b", "#8b5cf6", "#ef4444"];
@@ -129,7 +129,7 @@ function StatusDot({ status }: { status: string }) {
     CANCELLED: "bg-red-400",
     REFUNDED: "bg-red-400",
   };
-  return <span className={cn("w-2.5 h-2.5 rounded-full inline-block", colors[status] || "bg-gray-300")} />;
+  return <span className={cn("w-2.5 h-2.5 rounded-full inline-block", colors[status] || "bg-muted-foreground/40")} />;
 }
 
 function ChartTooltip({ active, payload, label }: any) {
@@ -266,10 +266,10 @@ function DealAnalysisPage() {
                   <span className="flex items-center gap-1"><CalendarDays className="h-3.5 w-3.5" /> {openDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })} — {closeDate.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
                   <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" /> Day {elapsedDays} of {totalDealDays}</span>
                   <span className={cn("px-2 py-0.5 rounded-full text-xs font-medium",
-                    deal.status === "ACTIVE" ? "bg-blue-50 text-blue-600" :
-                    deal.status === "THRESHOLD_MET" ? "bg-emerald-50 text-emerald-600" :
-                    deal.status === "EXPIRED" ? "bg-amber-50 text-amber-600" :
-                    "bg-gray-100 text-gray-600"
+                    deal.status === "ACTIVE" ? "bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400" :
+                    deal.status === "THRESHOLD_MET" ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400" :
+                    deal.status === "EXPIRED" ? "bg-amber-50 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400" :
+                    "bg-muted text-muted-foreground"
                   )}>{deal.status}</span>
                 </div>
               </div>
@@ -283,11 +283,11 @@ function DealAnalysisPage() {
           {/* ── KPI Cards ── */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
             {[
-              { label: "Customers", value: `${deal.currentCustomers}/${deal.minCustomer}`, icon: <Users className="h-4 w-4 text-blue-600" />, bg: T.infoBg, extra: `${customerPct}% of min` },
-              { label: "Units Ordered", value: deal.orderedQuantity, icon: <ShoppingBag className="h-4 w-4 text-purple-600" />, bg: "bg-purple-50", extra: `${deal.stock} stock` },
-              { label: "Avg Order Value", value: `${deal.currency}${avgOrderValue.toFixed(2)}`, icon: <DollarSign className="h-4 w-4 text-emerald-600" />, bg: T.successBg },
-              { label: "Avg Rating", value: avgRating.toFixed(1), icon: <Star className="h-4 w-4 text-amber-500" />, bg: "bg-amber-50", extra: `${activeOrders.length} buyers` },
-              { label: "Cancel Rate", value: `${deal.orders.length > 0 ? Math.round((cancelledOrders.length / deal.orders.length) * 100) : 0}%`, icon: <XCircle className="h-4 w-4 text-red-500" />, bg: T.dangerBg, extra: `${cancelledOrders.length} cancelled` },
+              { label: "Customers", value: `${deal.currentCustomers}/${deal.minCustomer}`, icon: <Users className="h-4 w-4 text-blue-600 dark:text-blue-400" />, bg: T.infoBg, extra: `${customerPct}% of min` },
+              { label: "Units Ordered", value: deal.orderedQuantity, icon: <ShoppingBag className="h-4 w-4 text-purple-600 dark:text-purple-400" />, bg: "bg-purple-50 dark:bg-purple-950/30", extra: `${deal.stock} stock` },
+              { label: "Avg Order Value", value: `${deal.currency}${avgOrderValue.toFixed(2)}`, icon: <DollarSign className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />, bg: T.successBg },
+              { label: "Avg Rating", value: avgRating.toFixed(1), icon: <Star className="h-4 w-4 text-amber-500" />, bg: "bg-amber-50 dark:bg-amber-950/30", extra: `${activeOrders.length} buyers` },
+              { label: "Cancel Rate", value: `${deal.orders.length > 0 ? Math.round((cancelledOrders.length / deal.orders.length) * 100) : 0}%`, icon: <XCircle className="h-4 w-4 text-red-500 dark:text-red-400" />, bg: T.dangerBg, extra: `${cancelledOrders.length} cancelled` },
               { label: "Fill Rate", value: `${deal.stock > 0 ? Math.round((deal.orderedQuantity / deal.stock) * 100) : 0}%`, icon: <TrendingUp className={cn("h-4 w-4", T.accentText)} />, bg: T.accentLight },
             ].map((kpi) => (
               <div key={kpi.label} className={cn(T.card, T.border, "border rounded-2xl p-4")}>
@@ -313,15 +313,15 @@ function DealAnalysisPage() {
                 <ComposedChart data={orderTimeline} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
                   <defs>
                     <linearGradient id="participationGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#c2703e" stopOpacity={0.25} />
-                      <stop offset="95%" stopColor="#c2703e" stopOpacity={0.02} />
+                      <stop offset="5%" stopColor={T.accent} stopOpacity={0.25} />
+                      <stop offset="95%" stopColor={T.accent} stopOpacity={0.02} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e8dfd4" vertical={false} />
-                  <XAxis dataKey="label" tick={{ fontSize: 10, fill: "#8a7560" }} tickLine={false} axisLine={{ stroke: "#e8dfd4" }} />
-                  <YAxis tick={{ fontSize: 10, fill: "#8a7560" }} tickLine={false} axisLine={false} width={35} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
+                  <XAxis dataKey="label" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} tickLine={false} axisLine={{ stroke: "#e8dfd4" }} />
+                  <YAxis tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} tickLine={false} axisLine={false} width={35} />
                   <Tooltip content={<ChartTooltip />} />
-                  <Area type="monotone" dataKey="customers" name="Customers" stroke="#c2703e" strokeWidth={2.5} fill="url(#participationGrad)" dot={{ r: 4, fill: "#c2703e", strokeWidth: 2, stroke: "#fff" }} activeDot={{ r: 6 }} />
+                  <Area type="monotone" dataKey="customers" name="Customers" stroke={T.accent} strokeWidth={2.5} fill="url(#participationGrad)" dot={{ r: 4, fill: T.accent, strokeWidth: 2, stroke: "hsl(var(--card))" }} activeDot={{ r: 6 }} />
                   <Line type="monotone" dataKey="target" name="Min Target" stroke="#f87171" strokeWidth={1.5} strokeDasharray="6 4" dot={false} />
                   <Bar dataKey="orderQty" name="Units" fill="#3b82f6" opacity={0.15} radius={[3, 3, 0, 0]} barSize={16} />
                 </ComposedChart>
@@ -358,11 +358,11 @@ function DealAnalysisPage() {
               <h3 className={cn("text-sm font-semibold mb-4", T.text)}>Daily Join Rate</h3>
               <ResponsiveContainer width="100%" height={200}>
                 <ComposedChart data={dailyJoinRate} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e8dfd4" vertical={false} />
-                  <XAxis dataKey="date" tick={{ fontSize: 10, fill: "#8a7560" }} tickLine={false} axisLine={{ stroke: "#e8dfd4" }} />
-                  <YAxis tick={{ fontSize: 10, fill: "#8a7560" }} tickLine={false} axisLine={false} width={30} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
+                  <XAxis dataKey="date" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} tickLine={false} axisLine={{ stroke: "#e8dfd4" }} />
+                  <YAxis tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} tickLine={false} axisLine={false} width={30} />
                   <Tooltip content={<ChartTooltip />} />
-                  <Bar dataKey="joins" name="New Buyers" fill="#c2703e" radius={[4, 4, 0, 0]} barSize={24} />
+                  <Bar dataKey="joins" name="New Buyers" fill={T.accent} radius={[4, 4, 0, 0]} barSize={24} />
                   <Line type="monotone" dataKey="quantity" name="Units" stroke="#3b82f6" strokeWidth={2} dot={{ r: 3, fill: "#3b82f6" }} />
                 </ComposedChart>
               </ResponsiveContainer>
@@ -375,17 +375,17 @@ function DealAnalysisPage() {
                 {ratingDist.map((b) => (
                   <div key={b.range} className="flex items-center gap-3">
                     <span className={cn("text-xs w-16 text-end font-medium", T.muted)}>{b.range}</span>
-                    <div className="flex-1 h-6 bg-gray-100 rounded-full overflow-hidden">
+                    <div className="flex-1 h-6 bg-muted rounded-full overflow-hidden">
                       <div
                         className="h-full bg-amber-400 rounded-full transition-all duration-500 flex items-center justify-end pe-2"
                         style={{ width: `${activeOrders.length > 0 ? (b.count / activeOrders.length) * 100 : 0}%`, minWidth: b.count > 0 ? "24px" : "0" }}
                       >
-                        {b.count > 0 && <span className="text-[10px] font-bold text-white">{b.count}</span>}
+                        {b.count > 0 && <span className="text-[10px] font-bold text-primary-foreground">{b.count}</span>}
                       </div>
                     </div>
                     <div className="flex items-center gap-0.5 w-12">
                       {[1, 2, 3, 4, 5].map((s) => (
-                        <Star key={s} className={cn("h-2.5 w-2.5", s <= Math.ceil(b.min) ? "fill-amber-400 text-amber-400" : "text-gray-200")} />
+                        <Star key={s} className={cn("h-2.5 w-2.5", s <= Math.ceil(b.min) ? "fill-amber-400 text-amber-400" : "text-muted-foreground/30")} />
                       ))}
                     </div>
                   </div>
@@ -409,7 +409,7 @@ function DealAnalysisPage() {
               )}
             </div>
 
-            <div className="divide-y divide-gray-50">
+            <div className="divide-y divide-border">
               {[...deal.orders].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).map((order, idx) => {
                 const d = new Date(order.createdAt);
                 const isCancelled = ["CANCELLED", "REFUNDED"].includes(order.status);
@@ -420,7 +420,7 @@ function DealAnalysisPage() {
                     {/* Timeline dot */}
                     <div className="flex flex-col items-center gap-1 w-6 flex-shrink-0">
                       <StatusDot status={order.status} />
-                      {idx < deal.orders.length - 1 && <div className="w-px h-6 bg-gray-200" />}
+                      {idx < deal.orders.length - 1 && <div className="w-px h-6 bg-border" />}
                     </div>
 
                     {/* Order info */}
@@ -428,11 +428,11 @@ function DealAnalysisPage() {
                       <div className="flex items-center gap-2">
                         <span className={cn("text-sm font-semibold", T.text)}>#{order.orderId}</span>
                         <span className={cn("text-xs px-2 py-0.5 rounded-full font-medium",
-                          order.status === "PLACED" ? "bg-blue-50 text-blue-600" :
-                          order.status === "CONFIRMED" ? "bg-indigo-50 text-indigo-600" :
-                          order.status === "SHIPPED" ? "bg-purple-50 text-purple-600" :
-                          order.status === "DELIVERED" ? "bg-emerald-50 text-emerald-600" :
-                          "bg-red-50 text-red-600"
+                          order.status === "PLACED" ? "bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400" :
+                          order.status === "CONFIRMED" ? "bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400" :
+                          order.status === "SHIPPED" ? "bg-purple-50 dark:bg-purple-950/30 text-purple-600 dark:text-purple-400" :
+                          order.status === "DELIVERED" ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400" :
+                          "bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400"
                         )}>{order.status}</span>
                         <span className={cn("text-xs", T.muted)}>{d.toLocaleDateString("en-US", { month: "short", day: "numeric" })} at {d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}</span>
                       </div>
@@ -440,7 +440,7 @@ function DealAnalysisPage() {
                         {maskName(order.customerName, dealFinished)}
                         <span className="mx-2">·</span>
                         <span className="inline-flex items-center gap-0.5">
-                          {[1, 2, 3, 4, 5].map((s) => <Star key={s} className={cn("h-2.5 w-2.5", s <= order.customerRating ? "fill-amber-400 text-amber-400" : "text-gray-200")} />)}
+                          {[1, 2, 3, 4, 5].map((s) => <Star key={s} className={cn("h-2.5 w-2.5", s <= order.customerRating ? "fill-amber-400 text-amber-400" : "text-muted-foreground/30")} />)}
                           <span className="text-xs ms-0.5">({order.customerRating})</span>
                         </span>
                       </div>

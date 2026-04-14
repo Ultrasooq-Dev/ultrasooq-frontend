@@ -225,7 +225,7 @@ const ManageProductAside: React.FC<ManageProductAsideProps> = ({
               )}
             />
             <div
-              className="flex w-[calc(100%-40px)] flex-wrap items-center justify-start border-[1px] border-[#ccc] border-[solid] p-2"
+              className="flex w-[calc(100%-40px)] flex-wrap items-center justify-start border-[1px] border-border border-[solid] p-2"
               dir={langDir}
             >
               <Label translate="no">{t("product_condition")}</Label>
@@ -274,10 +274,10 @@ const ManageProductAside: React.FC<ManageProductAsideProps> = ({
               )}
             />
             <div
-              className="flex w-[calc(100%-40px)] items-center justify-start border-[1px] border-[#ccc] border-[solid] p-2"
+              className="flex w-[calc(100%-40px)] items-center justify-start border-[1px] border-border border-[solid] p-2"
               dir={langDir}
             >
-              <IoIosEyeOff className="text-[20px] text-[#ccc]" />
+              <IoIosEyeOff className="text-[20px] text-muted-foreground" />
               <Label translate="no">{t("hide_All_selected")}</Label>
             </div>
           </div>
@@ -296,7 +296,7 @@ const ManageProductAside: React.FC<ManageProductAsideProps> = ({
               )}
             />
             <div
-              className="flex w-[calc(100%-40px)] flex-wrap items-center justify-start border-[1px] border-[#ccc] border-[solid] p-2"
+              className="flex w-[calc(100%-40px)] flex-wrap items-center justify-start border-[1px] border-border border-[solid] p-2"
               dir={langDir}
             >
               <Label translate="no">{t("ask_for_the_stock")}</Label>
@@ -344,7 +344,7 @@ const ManageProductAside: React.FC<ManageProductAsideProps> = ({
               )}
             />
             <div
-              className="flex w-[calc(100%-40px)] flex-wrap items-center justify-start border-[1px] border-[#ccc] border-[solid] p-2"
+              className="flex w-[calc(100%-40px)] flex-wrap items-center justify-start border-[1px] border-border border-[solid] p-2"
               dir={langDir}
             >
               <Label translate="no">{t("ask_for_the_price")}</Label>
@@ -390,12 +390,12 @@ const ManageProductAside: React.FC<ManageProductAsideProps> = ({
               )}
             />
             <div
-              className="flex w-[calc(100%-40px)] flex-wrap items-center justify-between border-[1px] border-[#ccc] border-[solid] p-2"
+              className="flex w-[calc(100%-40px)] flex-wrap items-center justify-between border-[1px] border-border border-[solid] p-2"
               dir={langDir}
             >
               <Label translate="no">{t("deliver_after")}</Label>
               <div className="flex w-full gap-2 space-y-2">
-                {/* <div className="flex w-[90px] items-center justify-center rounded border-[1px] border-[#EBEBEB] border-[solid]"> */}
+                {/* <div className="flex w-[90px] items-center justify-center rounded border-[1px] border-border border-[solid]"> */}
                 <CounterTextInputField
                   name="deliveryAfter"
                   placeholder={t("after")}
@@ -420,7 +420,7 @@ const ManageProductAside: React.FC<ManageProductAsideProps> = ({
                 )}
               />
               <div
-                className="flex w-[calc(100%-40px)] items-center justify-between border-[1px] border-[#ccc] border-[solid] p-2"
+                className="flex w-[calc(100%-40px)] items-center justify-between border-[1px] border-border border-[solid] p-2"
                 dir={langDir}
               >
                 <Label translate="no">{t("time_open")}</Label>
@@ -448,7 +448,7 @@ const ManageProductAside: React.FC<ManageProductAsideProps> = ({
                 )}
               />
               <div
-                className="flex w-[calc(100%-40px)] items-center justify-between border-[1px] border-[#ccc] border-[solid] p-2"
+                className="flex w-[calc(100%-40px)] items-center justify-between border-[1px] border-border border-[solid] p-2"
                 dir={langDir}
               >
                 <Label translate="no">{t("time_close")}</Label>
@@ -475,7 +475,7 @@ const ManageProductAside: React.FC<ManageProductAsideProps> = ({
               )}
             />
             <div
-              className="flex w-[calc(100%-40px)] flex-wrap items-center justify-start border-[1px] border-[#ccc] border-[solid] p-2"
+              className="flex w-[calc(100%-40px)] flex-wrap items-center justify-start border-[1px] border-border border-[solid] p-2"
               dir={langDir}
             >
               <Label translate="no">{t("consumer_type")}</Label>
@@ -527,7 +527,7 @@ const ManageProductAside: React.FC<ManageProductAsideProps> = ({
               )}
             />
             <div
-              className="flex w-[calc(100%-40px)] flex-wrap items-center justify-start border-[1px] border-[#ccc] border-[solid] p-2"
+              className="flex w-[calc(100%-40px)] flex-wrap items-center justify-start border-[1px] border-border border-[solid] p-2"
               dir={langDir}
             >
               <Label translate="no">{t("sell_type")}</Label>
@@ -582,7 +582,7 @@ const ManageProductAside: React.FC<ManageProductAsideProps> = ({
               />
               {/* </div> */}
               <div
-                className="flex w-[calc(100%-40px)] flex-wrap items-center justify-between border-[1px] border-[#ccc] border-[solid] p-2"
+                className="flex w-[calc(100%-40px)] flex-wrap items-center justify-between border-[1px] border-border border-[solid] p-2"
                 dir={langDir}
               >
                 <Label translate="no">{t("vendor_discount")}</Label>
@@ -638,7 +638,7 @@ const ManageProductAside: React.FC<ManageProductAsideProps> = ({
               />
               {/* </div> */}
               <div
-                className="flex w-[calc(100%-40px)] flex-wrap items-center justify-between border-[1px] border-[#ccc] border-[solid] p-2"
+                className="flex w-[calc(100%-40px)] flex-wrap items-center justify-between border-[1px] border-border border-[solid] p-2"
                 dir={langDir}
               >
                 <Label translate="no">{t("consumer_discount")}</Label>
@@ -691,7 +691,7 @@ const ManageProductAside: React.FC<ManageProductAsideProps> = ({
               />
               {/* </div> */}
               <div
-                className="flex w-[calc(100%-40px)] flex-wrap items-center justify-between border-[1px] border-[#ccc] border-[solid] p-2"
+                className="flex w-[calc(100%-40px)] flex-wrap items-center justify-between border-[1px] border-border border-[solid] p-2"
                 dir={langDir}
               >
                 <Label translate="no">{t("min_quantity")}</Label>
@@ -718,7 +718,7 @@ const ManageProductAside: React.FC<ManageProductAsideProps> = ({
                 )}
               />
               <div
-                className="flex w-[calc(100%-40px)] flex-wrap items-center justify-between border-[1px] border-[#ccc] border-[solid] p-2"
+                className="flex w-[calc(100%-40px)] flex-wrap items-center justify-between border-[1px] border-border border-[solid] p-2"
                 dir={langDir}
               >
                 <Label translate="no">{t("max_quantity")}</Label>
@@ -745,7 +745,7 @@ const ManageProductAside: React.FC<ManageProductAsideProps> = ({
                 )}
               />
               <div
-                className="flex w-[calc(100%-40px)] flex-wrap flex-wrap items-center justify-between border-[1px] border-[#ccc] border-[solid] p-2"
+                className="flex w-[calc(100%-40px)] flex-wrap flex-wrap items-center justify-between border-[1px] border-border border-[solid] p-2"
                 dir={langDir}
               >
                 <Label translate="no">{t("min_customer")}</Label>
@@ -774,7 +774,7 @@ const ManageProductAside: React.FC<ManageProductAsideProps> = ({
                 )}
               />
               <div
-                className="flex w-[calc(100%-40px)] flex-wrap items-center justify-between border-[1px] border-[#ccc] border-[solid] p-2"
+                className="flex w-[calc(100%-40px)] flex-wrap items-center justify-between border-[1px] border-border border-[solid] p-2"
                 dir={langDir}
               >
                 <Label translate="no">{t("max_customer")}</Label>
@@ -805,7 +805,7 @@ const ManageProductAside: React.FC<ManageProductAsideProps> = ({
                 )}
               />
               <div
-                className="flex w-[calc(100%-40px)] flex-wrap items-center justify-between border-[1px] border-[#ccc] border-[solid] p-2"
+                className="flex w-[calc(100%-40px)] flex-wrap items-center justify-between border-[1px] border-border border-[solid] p-2"
                 dir={langDir}
               >
                 <Label translate="no">{t("min_quantity_per_customer")}</Label>
@@ -836,7 +836,7 @@ const ManageProductAside: React.FC<ManageProductAsideProps> = ({
                 )}
               />
               <div
-                className="flex w-[calc(100%-40px)] flex-wrap items-center justify-between border-[1px] border-[#ccc] border-[solid] p-2"
+                className="flex w-[calc(100%-40px)] flex-wrap items-center justify-between border-[1px] border-border border-[solid] p-2"
                 dir={langDir}
               >
                 <Label translate="no">{t("max_quantity_per_customer")}</Label>

@@ -228,7 +228,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
           },
         },
         {
-          icon: <HandshakeIcon className="h-5 w-5 text-[#c2703e]" />,
+          icon: <HandshakeIcon className="h-5 w-5 text-primary" />,
           label: t("deal_ops") || "Deal Ops",
           translationKey: "deal_ops",
           shortLabel: getShortLabel("deal_ops"),
@@ -304,7 +304,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
           },
         },
         {
-          icon: <HandshakeIcon className="h-5 w-5 text-[#c2703e]" />,
+          icon: <HandshakeIcon className="h-5 w-5 text-primary" />,
           label: t("deal_ops") || "Deal Ops",
           translationKey: "deal_ops",
           shortLabel: getShortLabel("deal_ops"),

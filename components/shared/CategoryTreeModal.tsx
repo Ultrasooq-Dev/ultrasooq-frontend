@@ -63,7 +63,7 @@ function TreeNode({
       <div
         className={cn(
           "flex items-center gap-2 py-2 px-3 cursor-pointer transition-colors border-b border-gray-50",
-          isChecked ? "bg-[#c2703e]/5" : "hover:bg-gray-50",
+          isChecked ? "bg-primary/5" : "hover:bg-muted/50",
         )}
         style={{ paddingInlineStart: `${level * 20 + 12}px` }}
       >
@@ -74,7 +74,7 @@ function TreeNode({
             (hasKids || !node._loaded) ? "hover:bg-gray-200 text-gray-500" : "invisible")}
         >
           {isLoading ? (
-            <Loader2 className="h-3.5 w-3.5 animate-spin text-[#c2703e]" />
+            <Loader2 className="h-3.5 w-3.5 animate-spin text-primary" />
           ) : isOpen ? (
             <ChevronDown className="h-3.5 w-3.5" />
           ) : (
@@ -86,7 +86,7 @@ function TreeNode({
         <button
           onClick={(e) => { e.stopPropagation(); onCheck(node, ""); }}
           className={cn("w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors",
-            isChecked ? "bg-[#c2703e] border-[#c2703e]" : "border-gray-300 hover:border-[#c2703e]")}
+            isChecked ? "bg-primary border-primary" : "border-border hover:border-primary")}
         >
           {isChecked && <Check className="h-3 w-3 text-white" />}
         </button>
@@ -94,7 +94,7 @@ function TreeNode({
         {/* Label */}
         <span
           onClick={() => { handleExpand(); }}
-          className={cn("text-sm flex-1 min-w-0 truncate", isChecked ? "font-semibold text-[#2d2017]" : "text-gray-700")}
+          className={cn("text-sm flex-1 min-w-0 truncate", isChecked ? "font-semibold text-foreground" : "text-foreground")}
         >
           {node.name}
         </span>
@@ -275,7 +275,7 @@ export default function CategoryTreeModal({
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search categories..."
-              className="w-full ps-9 pe-4 py-2 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#c2703e]/20 focus:border-[#c2703e]"
+              className="w-full ps-9 pe-4 py-2 rounded-xl border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
             />
           </div>
         </div>
@@ -284,7 +284,7 @@ export default function CategoryTreeModal({
         {checked.size > 0 && (
           <div className="px-4 py-2 border-b border-gray-100 flex flex-wrap gap-1.5 flex-shrink-0">
             {Array.from(selectedNames.entries()).map(([id, name]) => (
-              <span key={id} className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-[#c2703e]/10 text-xs font-medium text-[#c2703e]">
+              <span key={id} className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-primary/10 text-xs font-medium text-primary">
                 {name}
                 <button onClick={() => handleCheck({ id, name, _loaded: true }, "")} className="hover:text-red-600">
                   <X className="h-3 w-3" />
@@ -298,7 +298,7 @@ export default function CategoryTreeModal({
         <div className="flex-1 overflow-y-auto min-h-0">
           {rootQuery.isLoading ? (
             <div className="flex items-center justify-center py-12">
-              <Loader2 className="h-6 w-6 animate-spin text-[#c2703e]" />
+              <Loader2 className="h-6 w-6 animate-spin text-primary" />
             </div>
           ) : filteredTree.length === 0 ? (
             <div className="text-center py-12 text-sm text-gray-400">No categories found</div>
@@ -323,11 +323,11 @@ export default function CategoryTreeModal({
         <div className="px-5 py-3 border-t border-gray-100 flex items-center justify-between flex-shrink-0">
           <span className="text-xs text-gray-500">{checked.size} selected</span>
           <div className="flex items-center gap-2">
-            <button onClick={onClose} className="px-4 py-2 rounded-xl text-sm font-medium text-gray-500 hover:bg-gray-50">
+            <button onClick={onClose} className="px-4 py-2 rounded-xl text-sm font-medium text-gray-500 hover:bg-muted/50">
               Cancel
             </button>
             <button onClick={handleConfirm}
-              className="px-5 py-2 rounded-xl bg-[#c2703e] text-white text-sm font-semibold hover:bg-[#a85d32] transition-colors">
+              className="px-5 py-2 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors">
               Confirm ({checked.size})
             </button>
           </div>

@@ -442,7 +442,7 @@ const ProductEditForm: React.FC<EditFormProps> = ({
                       <DescriptionAndSpecificationSection />
                     </div>
                     <div className="mb-4 mt-4 inline-flex w-full items-center justify-end">
-                      {/* <button className="rounded-sm bg-transparent px-4 py-4 text-lg font-bold leading-6 text-[#7F818D]">
+                      {/* <button className="rounded-sm bg-transparent px-4 py-4 text-lg font-bold leading-6 text-muted-foreground">
                         Save as Draft
                       </button> */}
 

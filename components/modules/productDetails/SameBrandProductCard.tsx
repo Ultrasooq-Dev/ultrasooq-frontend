@@ -285,7 +285,7 @@ const SameBrandProductCard: React.FC<SameBrandProductCardProps> = ({
               </button>
             </Link>
           ) : (
-            <h5 className="py-1 text-[#1D77D1]">
+            <h5 className="py-1 text-blue-600 dark:text-blue-400">
               {currency.symbol}{calculateDiscountedPrice()}{" "}
               {(() => {
                 const { discount } = getApplicableDiscount();

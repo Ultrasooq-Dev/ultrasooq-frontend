@@ -55,7 +55,7 @@ export function BuyersPanel({ deal, onClose }: BuyersPanelProps) {
               )}
             </div>
           </div>
-          <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-gray-100">
+          <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-muted">
             <X className="h-5 w-5 text-muted-foreground" />
           </button>
         </div>
@@ -69,7 +69,7 @@ export function BuyersPanel({ deal, onClose }: BuyersPanelProps) {
               placeholder="Search by name or order #..."
               value={panelSearch}
               onChange={(e) => { setPanelSearch(e.target.value); setPanelPage(1); }}
-              className={cn("w-full ps-9 pe-4 py-2 rounded-xl border text-sm", T.border, "focus:outline-none focus:ring-2 focus:ring-[#c2703e]/20")}
+              className={cn("w-full ps-9 pe-4 py-2 rounded-xl border text-sm", T.border, "focus:outline-none focus:ring-2 focus:ring-primary/20")}
             />
           </div>
         </div>
@@ -78,16 +78,16 @@ export function BuyersPanel({ deal, onClose }: BuyersPanelProps) {
         <div className="flex-1 overflow-y-auto">
           {paged.length === 0 ? (
             <div className="p-8 text-center">
-              <Users className="h-10 w-10 mx-auto mb-2 text-gray-200" />
+              <Users className="h-10 w-10 mx-auto mb-2 text-muted-foreground/30" />
               <p className={T.muted}>No buyers found</p>
             </div>
           ) : (
-            <div className="divide-y divide-gray-50">
+            <div className="divide-y divide-border">
               {paged.map((order) => (
-                <div key={order.id} className={cn("px-5 py-4 hover:bg-[#faf6f1]/50 transition-colors", order.status === "CANCELLED" && "opacity-50")}>
+                <div key={order.id} className={cn("px-5 py-4 hover:bg-muted/50/50 transition-colors", order.status === "CANCELLED" && "opacity-50")}>
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-start gap-3 min-w-0 flex-1">
-                      <div className={cn("w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-semibold text-white", T.accentBg)}>
+                      <div className={cn("w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-semibold text-primary-foreground", T.accentBg)}>
                         {maskName(order.customerName, dealFinished).charAt(0).toUpperCase()}
                       </div>
                       <div className="min-w-0 flex-1">
@@ -113,7 +113,7 @@ export function BuyersPanel({ deal, onClose }: BuyersPanelProps) {
                   </div>
                   {!["CANCELLED", "REFUNDED", "DELIVERED"].includes(order.status) && (
                     <div className="flex items-center gap-1.5 mt-3 ms-13">
-                      <button className={cn("inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium border transition-colors hover:bg-gray-50", T.border, T.muted)}>
+                      <button className={cn("inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium border transition-colors hover:bg-muted/50", T.border, T.muted)}>
                         <MessageCircle className="h-3.5 w-3.5" /> Message
                       </button>
                       <button className={cn("inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium border transition-colors", T.dangerBorder, T.danger, "hover:bg-red-50")}>
@@ -134,19 +134,19 @@ export function BuyersPanel({ deal, onClose }: BuyersPanelProps) {
               {(panelPage - 1) * PANEL_PAGE_SIZE + 1}–{Math.min(panelPage * PANEL_PAGE_SIZE, filtered.length)} of {filtered.length}
             </span>
             <div className="flex items-center gap-1">
-              <button disabled={panelPage <= 1} onClick={() => setPanelPage((p) => p - 1)} className="p-1.5 rounded-lg hover:bg-gray-100 disabled:opacity-30">
+              <button disabled={panelPage <= 1} onClick={() => setPanelPage((p) => p - 1)} className="p-1.5 rounded-lg hover:bg-muted disabled:opacity-30">
                 <ChevronLeft className="h-4 w-4" />
               </button>
               {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
                 <button
                   key={p}
                   onClick={() => setPanelPage(p)}
-                  className={cn("w-7 h-7 rounded-lg text-xs font-medium transition-colors", panelPage === p ? cn(T.accentBg, "text-white") : "hover:bg-gray-100 text-muted-foreground")}
+                  className={cn("w-7 h-7 rounded-lg text-xs font-medium transition-colors", panelPage === p ? cn(T.accentBg, "text-primary-foreground") : "hover:bg-muted text-muted-foreground")}
                 >
                   {p}
                 </button>
               ))}
-              <button disabled={panelPage >= totalPages} onClick={() => setPanelPage((p) => p + 1)} className="p-1.5 rounded-lg hover:bg-gray-100 disabled:opacity-30">
+              <button disabled={panelPage >= totalPages} onClick={() => setPanelPage((p) => p + 1)} className="p-1.5 rounded-lg hover:bg-muted disabled:opacity-30">
                 <ChevronRight className="h-4 w-4" />
               </button>
             </div>

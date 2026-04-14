@@ -133,7 +133,7 @@ const ServiceQuestionAndAnswers: React.FC<QuestionAndAnswersProps> = ({
             memoizedQuestions.map((question: any) => (
               <div className="w-full border-b p-3" key={question.id}>
                 <article className="space-y-2">
-                  <h3 className="solid w-full rounded-md border-[5px] border-[#b5b5b5] bg-muted px-3 py-2 font-bold">
+                  <h3 className="solid w-full rounded-md border-[5px] border-muted-foreground bg-muted px-3 py-2 font-bold">
                     <span className="mr-2">Q:</span>
                     {question.question}
                   </h3>
@@ -146,7 +146,7 @@ const ServiceQuestionAndAnswers: React.FC<QuestionAndAnswersProps> = ({
                     {question.answers.length ?
                       question.answers.map((answer: any) => (
                         <React.Fragment key={answer.id}>
-                          <div className="solid text-md mb-1 w-full rounded-md border-[5px] border-[#b5b5b5] bg-muted px-3 py-2">
+                          <div className="solid text-md mb-1 w-full rounded-md border-[5px] border-muted-foreground bg-muted px-3 py-2">
                             <p>
                               <span className="mr-2 font-bold">A:</span>
                               {answer.answer}

@@ -522,7 +522,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           </Link>
         ) : (
           <Link href={`/trending/${item.id}`}>
-            <h5 className="py-1 text-[#1D77D1]">
+            <h5 className="py-1 text-blue-600 dark:text-blue-400">
               {currency.symbol}
               {calculateDiscountedPrice()}{" "}
               {(() => {
@@ -642,7 +642,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         {isAddedToCart ? (
           <button
             type="button"
-            className="flex items-center justify-evenly gap-x-2 rounded-sm border border-[#E8E8E8] p-[10px] text-[15px] font-bold leading-5 text-[#7F818D]"
+            className="flex items-center justify-evenly gap-x-2 rounded-sm border border-border p-[10px] text-[15px] font-bold leading-5 text-muted-foreground"
             disabled={false}
             dir={langDir}
             translate="no"

@@ -212,7 +212,7 @@ const ProductDetailsSection: React.FC<ProductDetailsSectionProps> = () => {
                     className={cn(
                       "relative my-2 flex w-full items-start px-2",
                       item.size === "small" ? "w-1/2" : "",
-                      customFieldType?.key === item.key ? "bg-[#F9F9F9]" : "",
+                      customFieldType?.key === item.key ? "bg-muted/50" : "",
                     )}
                   >
                     <div className="w-full flex-1 py-2 text-left">

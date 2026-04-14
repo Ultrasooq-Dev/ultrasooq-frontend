@@ -8,7 +8,7 @@ export function RatingStars({ rating }: { rating: number }) {
       {[1, 2, 3, 4, 5].map((i) => (
         <Star
           key={i}
-          className={cn("h-3 w-3", i <= rating ? "fill-amber-400 text-amber-400" : "text-gray-200")}
+          className={cn("h-3 w-3", i <= rating ? "fill-amber-400 text-amber-400" : "text-muted-foreground/30")}
         />
       ))}
       <span className="text-xs text-muted-foreground ms-1">({rating.toFixed(1)})</span>

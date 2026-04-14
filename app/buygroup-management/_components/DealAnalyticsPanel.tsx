@@ -83,7 +83,7 @@ export function DealAnalyticsPanel({ deals }: { deals: BuyGroupDeal[]; langDir: 
           <select
             value={selectedDealId}
             onChange={(e) => setSelectedDealId(e.target.value === "all" ? "all" : Number(e.target.value))}
-            className={cn("px-3 py-1.5 rounded-xl border text-sm", T.border, "focus:outline-none focus:ring-2 focus:ring-[#c2703e]/20")}
+            className={cn("px-3 py-1.5 rounded-xl border text-sm", T.border, "focus:outline-none focus:ring-2 focus:ring-primary/20")}
           >
             <option value="all">All Open Deals ({openDeals.length})</option>
             {openDeals.map((d) => (
@@ -92,12 +92,12 @@ export function DealAnalyticsPanel({ deals }: { deals: BuyGroupDeal[]; langDir: 
               </option>
             ))}
           </select>
-          <div className="flex items-center gap-1 bg-[#faf6f1] rounded-xl p-1">
+          <div className="flex items-center gap-1 bg-muted/50 rounded-xl p-1">
             {(["customers", "quantity", "revenue"] as const).map((v) => (
               <button
                 key={v}
                 onClick={() => setChartView(v)}
-                className={cn("px-3 py-1 rounded-lg text-xs font-medium transition-colors", chartView === v ? cn(T.accentBg, "text-white") : cn(T.muted, "hover:bg-white"))}
+                className={cn("px-3 py-1 rounded-lg text-xs font-medium transition-colors", chartView === v ? cn(T.accentBg, "text-primary-foreground") : cn(T.muted, "hover:bg-card"))}
               >
                 {v === "customers" ? "Customers" : v === "quantity" ? "Quantity" : "Revenue"}
               </button>

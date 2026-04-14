@@ -823,7 +823,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                     <FormLabel dir={langDir} translate="no">{t("service_price")}</FormLabel>
                     <FormControl>
                       <div className="relative">
-                        <div className="absolute left-2 top-[6px] flex h-[34px] w-[32px] items-center justify-center bg-[#F6F6F6]!">
+                        <div className="absolute left-2 top-[6px] flex h-[34px] w-[32px] items-center justify-center bg-muted!">
                           {currency.symbol}
                         </div>
                         <Input
@@ -852,7 +852,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({ activeProductType }) => {
                     <FormLabel dir={langDir} translate="no">{t("offer_price")}</FormLabel>
                     <FormControl>
                       <div className="relative">
-                        <div className="absolute left-2 top-[6px] flex h-[34px] w-[32px] items-center justify-center bg-[#F6F6F6]!">
+                        <div className="absolute left-2 top-[6px] flex h-[34px] w-[32px] items-center justify-center bg-muted!">
                           {currency.symbol}
                         </div>
                         <Input

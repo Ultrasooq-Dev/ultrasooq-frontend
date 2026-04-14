@@ -426,7 +426,7 @@ const EditProductPage = () => {
                       <DescriptionAndSpecificationSection />
                     </div>
                     <div className="mb-4 mt-4 inline-flex w-full items-center justify-end gap-2">
-                      <button className="rounded-sm bg-transparent px-2 py-2 text-sm font-bold leading-6 text-[#7F818D] md:px-4 md:py-4 md:text-lg">
+                      <button className="rounded-sm bg-transparent px-2 py-2 text-sm font-bold leading-6 text-muted-foreground md:px-4 md:py-4 md:text-lg">
                         Save as Draft
                       </button>
 

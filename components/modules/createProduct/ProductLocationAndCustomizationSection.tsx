@@ -422,7 +422,7 @@ const ProductLocationAndCustomizationSection: React.FC<
                 </FormLabel>
                 <FormControl>
                   <div className="relative">
-                    <div className="absolute bottom-0 left-2 top-0 m-auto flex h-[34px] w-[32px] items-center justify-center bg-[#F6F6F6]!">
+                    <div className="absolute bottom-0 left-2 top-0 m-auto flex h-[34px] w-[32px] items-center justify-center bg-muted!">
                       {currency.symbol}
                     </div>
                     <Input
@@ -453,7 +453,7 @@ const ProductLocationAndCustomizationSection: React.FC<
                 </FormLabel>
                 <FormControl>
                   <div className="relative">
-                    <div className="absolute left-2 top-[6px] flex h-[34px] w-[32px] items-center justify-center bg-[#F6F6F6]!">
+                    <div className="absolute left-2 top-[6px] flex h-[34px] w-[32px] items-center justify-center bg-muted!">
                       {currency.symbol}
                     </div>
                     <Input

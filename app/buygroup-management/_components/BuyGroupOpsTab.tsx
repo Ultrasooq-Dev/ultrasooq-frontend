@@ -44,7 +44,7 @@ export function BuyGroupOpsTab({ langDir, t }: { langDir: string; t: any }) {
         <StatCard icon={<Clock className="h-5 w-5 text-blue-600" />} label="Active Deals" value={activeDeals} sub="Waiting for threshold" color={T.infoBg} />
         <StatCard icon={<CheckCircle2 className="h-5 w-5 text-emerald-600" />} label="Ready to Accept" value={thresholdMetDeals} sub="Minimum met — action needed" color={T.successBg} />
         <StatCard icon={<AlertTriangle className="h-5 w-5 text-amber-600" />} label="Expired" value={expiredDeals} sub="Needs decision" color={T.warningBg} />
-        <StatCard icon={<DollarSign className="h-5 w-5 text-[#c2703e]" />} label="Total Revenue" value={`$${totalRevenue.toFixed(0)}`} sub="Across all active deals" color={T.accentLight} />
+        <StatCard icon={<DollarSign className="h-5 w-5 text-primary" />} label="Total Revenue" value={`$${totalRevenue.toFixed(0)}`} sub="Across all active deals" color={T.accentLight} />
       </div>
 
       {/* ── Analytics Panel ── */}
@@ -59,17 +59,17 @@ export function BuyGroupOpsTab({ langDir, t }: { langDir: string; t: any }) {
             placeholder="Search deals..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className={cn("w-full ps-9 pe-4 py-2 rounded-xl border text-sm", T.border, "focus:outline-none focus:ring-2 focus:ring-[#c2703e]/20 focus:border-[#c2703e]")}
+            className={cn("w-full ps-9 pe-4 py-2 rounded-xl border text-sm", T.border, "focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary")}
           />
         </div>
-        <div className="flex items-center gap-1.5 bg-[#faf6f1] rounded-xl p-1">
+        <div className="flex items-center gap-1.5 bg-muted/50 rounded-xl p-1">
           {(["all", "ACTIVE", "THRESHOLD_MET", "EXPIRED", "COMPLETED", "CANCELLED"] as const).map((s) => (
             <button
               key={s}
               onClick={() => setStatusFilter(s)}
               className={cn(
                 "px-3 py-1.5 rounded-lg text-xs font-medium transition-colors",
-                statusFilter === s ? cn(T.accentBg, "text-white") : cn(T.muted, "hover:bg-white"),
+                statusFilter === s ? cn(T.accentBg, "text-primary-foreground") : cn(T.muted, "hover:bg-card"),
               )}
             >
               {s === "all" ? "All" : s === "THRESHOLD_MET" ? "Ready" : s.charAt(0) + s.slice(1).toLowerCase()}
@@ -82,7 +82,7 @@ export function BuyGroupOpsTab({ langDir, t }: { langDir: string; t: any }) {
       <div className="space-y-5">
         {filteredDeals.length === 0 ? (
           <div className={cn(T.card, T.border, "border rounded-2xl p-12 text-center")}>
-            <Package className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+            <Package className="h-12 w-12 mx-auto mb-3 text-muted-foreground/40" />
             <p className={cn("text-lg font-medium", T.muted)}>No deals found</p>
             <p className="text-sm text-muted-foreground mt-1">Try adjusting your filters</p>
           </div>

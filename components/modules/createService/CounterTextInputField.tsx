@@ -43,7 +43,7 @@ const CounterTextInputField: React.FC<CounterTextInputFieldProps> = ({
             <div className="relative">
               <button
                 type="button"
-                className="absolute left-2 top-[6px] z-10 flex h-[34px] w-[32px] items-center justify-center bg-[#F6F6F6]!"
+                className="absolute left-2 top-[6px] z-10 flex h-[34px] w-[32px] items-center justify-center bg-muted!"
                 onClick={() => {
                   setCounter(Number(counter) - 1);
                   field.onChange(Number(counter) - 1);
@@ -66,7 +66,7 @@ const CounterTextInputField: React.FC<CounterTextInputFieldProps> = ({
               />
               <button
                 type="button"
-                className="absolute right-2 top-[6px] z-10 flex h-[34px] w-[32px] items-center justify-center bg-[#F6F6F6]!"
+                className="absolute right-2 top-[6px] z-10 flex h-[34px] w-[32px] items-center justify-center bg-muted!"
                 onClick={() => {
                   setCounter(Number(counter) + 1);
                   field.onChange(Number(counter) + 1);

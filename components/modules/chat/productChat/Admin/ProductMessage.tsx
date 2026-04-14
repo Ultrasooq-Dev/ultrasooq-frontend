@@ -73,7 +73,7 @@ const ProductMessage: React.FC<ProductMessageProps> = ({
               </div>
             </div>
             {message?.createdAt ? (
-              <div className="w-full text-right text-xs font-normal text-[#AEAFB8]">
+              <div className="w-full text-right text-xs font-normal text-muted-foreground">
                 <span>
                   {moment(message?.createdAt)
                     .startOf("seconds")

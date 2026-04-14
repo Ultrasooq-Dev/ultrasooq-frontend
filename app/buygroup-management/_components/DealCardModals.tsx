@@ -46,7 +46,7 @@ export function ExtendTimeModal({
         </div>
 
         {/* Timeline visualization */}
-        <div className={cn("p-4 rounded-xl border mb-5", T.border, "bg-[#faf6f1]")}>
+        <div className={cn("p-4 rounded-xl border mb-5", T.border, "bg-muted/50")}>
           <div className="flex items-center justify-between text-xs mb-3">
             <div>
               <div className={T.muted}>Started</div>
@@ -61,7 +61,7 @@ export function ExtendTimeModal({
               <div className={cn("font-semibold", T.infoText)}>{newDeadline.toLocaleDateString("en-US", { month: "short", day: "numeric" })}</div>
             </div>
           </div>
-          <div className="relative h-2.5 bg-gray-200 rounded-full overflow-hidden">
+          <div className="relative h-2.5 bg-muted rounded-full overflow-hidden">
             <div className="absolute inset-y-0 start-0 bg-gray-400 rounded-full" style={{ width: "66.6%" }} />
             <div className="absolute inset-y-0 bg-blue-500 rounded-full transition-all duration-300" style={{ left: "66.6%", width: `${(pct / 100) * 33.4}%` }} />
           </div>
@@ -81,7 +81,7 @@ export function ExtendTimeModal({
                   onClick={() => { setExtendDays(d); setExtendInput(String(d)); }}
                   className={cn(
                     "px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors",
-                    safeDays === d ? cn(T.accentBg, "text-white border-transparent") : cn(T.border, T.muted, "hover:bg-gray-50"),
+                    safeDays === d ? cn(T.accentBg, "text-primary-foreground border-transparent") : cn(T.border, T.muted, "hover:bg-muted/50"),
                   )}
                 >
                   {d} {d === 1 ? "day" : "days"}
@@ -111,7 +111,7 @@ export function ExtendTimeModal({
                 "w-20 px-3 py-2 rounded-xl border text-sm text-center font-semibold",
                 T.border,
                 isNearMax ? "border-amber-300 bg-amber-50" : "",
-                "focus:outline-none focus:ring-2 focus:ring-[#c2703e]/20",
+                "focus:outline-none focus:ring-2 focus:ring-primary/20",
               )}
             />
             <div className="flex-1">
@@ -159,7 +159,7 @@ export function ExtendTimeModal({
           <button onClick={onClose} className={cn("px-4 py-2 rounded-xl text-sm", T.muted)}>Cancel</button>
           <button
             disabled={safeDays < 1}
-            className={cn("px-4 py-2 rounded-xl text-sm font-medium text-white transition-colors disabled:opacity-40", T.accentBg, "hover:opacity-90")}
+            className={cn("px-4 py-2 rounded-xl text-sm font-medium text-primary-foreground transition-colors disabled:opacity-40", T.accentBg, "hover:opacity-90")}
           >
             <CalendarPlus className="h-4 w-4 inline me-1.5" />
             Extend by {safeDays} {safeDays === 1 ? "day" : "days"}
@@ -196,7 +196,7 @@ export function CancelRefundModal({ activeOrders, revenue, currency, onClose }: 
         </div>
         <div className="flex justify-end gap-2">
           <button onClick={onClose} className={cn("px-4 py-2 rounded-xl text-sm", T.muted)}>Keep Deal</button>
-          <button className="px-4 py-2 rounded-xl text-sm font-medium text-white bg-red-600 hover:bg-red-700">
+          <button className="px-4 py-2 rounded-xl text-sm font-medium text-primary-foreground bg-red-600 hover:bg-red-700">
             <Ban className="h-4 w-4 inline me-1" />
             Cancel & Refund All
           </button>
@@ -230,7 +230,7 @@ export function NotifyBuyersModal({ activeOrderCount, onClose }: NotifyModalProp
         </p>
         <div className="flex justify-end gap-2">
           <button onClick={onClose} className={cn("px-4 py-2 rounded-xl text-sm", T.muted)}>Cancel</button>
-          <button className="px-4 py-2 rounded-xl text-sm font-medium text-white bg-purple-600 hover:bg-purple-700">
+          <button className="px-4 py-2 rounded-xl text-sm font-medium text-primary-foreground bg-purple-600 hover:bg-purple-700">
             <Send className="h-4 w-4 inline me-1" />
             Send to All
           </button>
