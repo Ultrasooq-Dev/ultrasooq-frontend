@@ -43,12 +43,12 @@ function Stat({ label, value, change, icon: Icon, color, href }: {
     <div className={cn("rounded-3xl p-6 shadow-sm transition-all", T.card, T.border, "border",
       href && "hover:shadow-md cursor-pointer group")}>
       <div className={cn("inline-flex items-center justify-center h-10 w-10 rounded-2xl mb-4", color)}>
-        <Icon className="h-5 w-5 text-white" />
+        <Icon className="h-5 w-5 text-primary-foreground" />
       </div>
       <p className={cn("text-[11px] font-semibold uppercase tracking-widest", T.muted)}>{label}</p>
       <p className={cn("mt-1 text-[34px] font-extrabold leading-none tracking-tight", T.text)}>{value}</p>
       {change && (
-        <p className="mt-2 flex items-center gap-1 text-[11px] font-medium text-emerald-600">
+        <p className="mt-2 flex items-center gap-1 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
           <TrendingUp className="h-3 w-3" /> {change}
         </p>
       )}
@@ -70,7 +70,7 @@ function Donut({ data, size = 130 }: { data: { label: string; value: number; col
   return (
     <div className="flex items-center gap-8">
       <div className="relative shrink-0" style={{ width: size, height: size }}>
-        <div className="absolute inset-0 rounded-full" style={{ background: `conic-gradient(${grad || "#e8ddd0 0deg 360deg"})` }} />
+        <div className="absolute inset-0 rounded-full" style={{ background: `conic-gradient(${grad || "hsl(var(--border)) 0deg 360deg"})` }} />
         <div className={cn("absolute inset-[22%] rounded-full flex items-center justify-center", T.card, "shadow-inner")}>
           <div className="text-center">
             <p className={cn("text-2xl font-extrabold", T.text)}>{total}</p>
@@ -98,15 +98,15 @@ function OrderRow({ item, currency }: { item: any; currency: { symbol: string } 
   const img = product.productImages?.[0]?.image;
   const status = item.orderProductStatus || "PLACED";
   const dots: Record<string, string> = {
-    PLACED: "bg-gray-400", CONFIRMED: "bg-blue-500", SHIPPED: "bg-indigo-500",
+    PLACED: "bg-muted-foreground", CONFIRMED: "bg-blue-500", SHIPPED: "bg-indigo-500",
     OFD: "bg-amber-500", DELIVERED: "bg-emerald-500", CANCELLED: "bg-red-400",
   };
 
   return (
     <Link href={`/orders/${item.id}`}
       className={cn("flex items-center gap-4 px-5 py-4 transition-colors", T.hoverBg, "border-b", T.border, "last:border-0")}>
-      <div className="h-12 w-12 shrink-0 overflow-hidden rounded-2xl bg-[#f3ece3]">
-        {img ? <img src={img} alt="" className="h-full w-full object-cover" /> : <Package className="m-3 h-6 w-6 text-[#c9b9a8]" />}
+      <div className="h-12 w-12 shrink-0 overflow-hidden rounded-2xl bg-muted">
+        {img ? <img src={img} alt="" className="h-full w-full object-cover" /> : <Package className="m-3 h-6 w-6 text-muted-foreground/60" />}
       </div>
       <div className="flex-1 min-w-0">
         <p className={cn("text-[13px] font-semibold truncate", T.text)}>{product.productName || `#${item.id}`}</p>
@@ -118,7 +118,7 @@ function OrderRow({ item, currency }: { item: any; currency: { symbol: string } 
       <span className={cn("text-[14px] font-bold tabular-nums", T.text)}>
         {currency.symbol}{Number(item.customerPay || item.purchasePrice || 0).toFixed(2)}
       </span>
-      <ChevronRight className="h-4 w-4 text-[#c9b9a8]" />
+      <ChevronRight className="h-4 w-4 text-muted-foreground/60" />
     </Link>
   );
 }
@@ -134,8 +134,8 @@ function QuickLink({ label, icon: Icon, href, badge }: {
         <Icon className={cn("h-4 w-4", T.accentText)} />
       </div>
       <span className={cn("flex-1 text-[13px] font-semibold", T.text)}>{label}</span>
-      {badge ? <span className={cn("rounded-full px-2 py-0.5 text-[9px] font-bold text-white", T.accentBg)}>{badge}</span> : null}
-      <ArrowRight className="h-3.5 w-3.5 text-[#c9b9a8] group-hover:text-[#c2703e] transition-colors group-hover:translate-x-0.5 transition-transform" />
+      {badge ? <span className={cn("rounded-full px-2 py-0.5 text-[9px] font-bold text-primary-foreground", T.accentBg)}>{badge}</span> : null}
+      <ArrowRight className="h-3.5 w-3.5 text-muted-foreground/60 group-hover:text-primary transition-colors group-hover:translate-x-0.5 transition-transform" />
     </Link>
   );
 }
@@ -176,7 +176,7 @@ function MetricCard({ label, value, data, color, gradId }: {
       <div className="flex items-end justify-between mt-1 mb-3">
         <p className={cn("text-[28px] font-extrabold leading-none tracking-tight", T.text)}>{value}</p>
         {change !== 0 && (
-          <span className={cn("text-[10px] font-bold", change > 0 ? "text-emerald-600" : "text-red-500")}>
+          <span className={cn("text-[10px] font-bold", change > 0 ? "text-emerald-600 dark:text-emerald-400" : "text-red-500 dark:text-red-400")}>
             {change > 0 ? "+" : ""}{change}%
           </span>
         )}
@@ -229,35 +229,35 @@ function TimelineChart({ data, currency }: { data: any[]; currency: { symbol: st
         <AreaChart data={data} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
           <defs>
             <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#c2703e" stopOpacity={0.2} />
-              <stop offset="100%" stopColor="#c2703e" stopOpacity={0} />
+              <stop offset="0%" stopColor={T.accent} stopOpacity={0.2} />
+              <stop offset="100%" stopColor={T.accent} stopOpacity={0} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e8ddd0" strokeOpacity={0.5} />
-          <XAxis dataKey="label" tick={{ fontSize: 10, fill: "#8c7b6b" }} axisLine={false} tickLine={false} />
-          <YAxis tick={{ fontSize: 10, fill: "#8c7b6b" }} axisLine={false} tickLine={false} />
+          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" strokeOpacity={0.5} />
+          <XAxis dataKey="label" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} />
+          <YAxis tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} />
           <Tooltip
-            contentStyle={{ backgroundColor: "#fff", border: "1px solid #e8ddd0", borderRadius: 16, padding: "10px 14px", boxShadow: "0 4px 12px rgba(0,0,0,0.06)", fontSize: 12 }}
+            contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 16, padding: "10px 14px", boxShadow: "0 4px 12px rgba(0,0,0,0.06)", fontSize: 12 }}
             formatter={((v: any, key: string) => {
               const labels: Record<string, string> = { revenue: "Revenue", orders: "Orders", views: "Views", carts: "Add to Cart" };
               return [key === "revenue" ? `${currency.symbol}${Number(v).toFixed(2)}` : v, labels[key] || key];
             }) as any}
-            labelStyle={{ fontWeight: 700, color: "#2d2017", marginBottom: 4 }}
+            labelStyle={{ fontWeight: 700, color: "hsl(var(--foreground))", marginBottom: 4 }}
           />
-          <Area type="monotone" dataKey="views" stroke="#8c7b6b" strokeWidth={1} fill="none" dot={false} strokeDasharray="4 3" />
+          <Area type="monotone" dataKey="views" stroke="hsl(var(--muted-foreground))" strokeWidth={1} fill="none" dot={false} strokeDasharray="4 3" />
           <Area type="monotone" dataKey="carts" stroke="#d4a54a" strokeWidth={1.5} fill="none" dot={false} />
           <Area type="monotone" dataKey="orders" stroke="#5b8a72" strokeWidth={2} fill="none" dot={false} />
-          <Area type="monotone" dataKey="revenue" stroke="#c2703e" strokeWidth={2.5} fill="url(#revGrad)" dot={false} />
+          <Area type="monotone" dataKey="revenue" stroke={T.accent} strokeWidth={2.5} fill="url(#revGrad)" dot={false} />
         </AreaChart>
       </ResponsiveContainer>
       <div className="flex items-center justify-center gap-5 mt-2">
         {[
-          { label: "Views", color: "#8c7b6b", dash: true },
+          { label: "Views", color: "hsl(var(--muted-foreground))", dash: true },
           { label: "Add to Cart", color: "#d4a54a" },
           { label: "Orders", color: "#5b8a72" },
-          { label: "Revenue", color: "#c2703e" },
+          { label: "Revenue", color: T.accent },
         ].map((l) => (
-          <span key={l.label} className="flex items-center gap-1.5 text-[10px] text-[#8c7b6b]">
+          <span key={l.label} className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
             <span className="h-2 w-2 rounded-full" style={{ backgroundColor: l.color }} /> {l.label}
           </span>
         ))}
@@ -306,9 +306,9 @@ function DashboardPage() {
           <div className="flex items-center gap-3">
             <Link href="/orders" className={cn("flex items-center gap-2 rounded-2xl border px-4 py-2.5 text-[12px] font-semibold transition-all", T.border, T.text, T.hoverBg)}>
               <ShoppingBag className="h-4 w-4" /> Orders
-              {pending > 0 && <span className={cn("rounded-full px-1.5 py-0.5 text-[9px] font-bold text-white", T.accentBg)}>{pending}</span>}
+              {pending > 0 && <span className={cn("rounded-full px-1.5 py-0.5 text-[9px] font-bold text-primary-foreground", T.accentBg)}>{pending}</span>}
             </Link>
-            <Link href="/product?productType=P" className={cn("flex items-center gap-2 rounded-2xl px-4 py-2.5 text-[12px] font-bold text-white transition-all hover:opacity-90", T.accentBg)}>
+            <Link href="/product?productType=P" className={cn("flex items-center gap-2 rounded-2xl px-4 py-2.5 text-[12px] font-bold text-primary-foreground transition-all hover:opacity-90", T.accentBg)}>
               <Zap className="h-4 w-4" /> New Product
             </Link>
           </div>
@@ -317,13 +317,13 @@ function DashboardPage() {
         {/* ── Stats ──────────────────────────────────── */}
         <div className="grid grid-cols-4 gap-5 mb-8">
           <Stat label="Revenue" value={`${currency.symbol}${Number(s.totalRevenue || 0).toLocaleString()}`}
-            icon={DollarSign} color="bg-[#c2703e]" change={`${currency.symbol}${s.averageOrderValue || 0} avg`} href="/analytics" />
+            icon={DollarSign} color="bg-primary" change={`${currency.symbol}${s.averageOrderValue || 0} avg`} href="/analytics" />
           <Stat label="Orders" value={total}
-            icon={Package} color="bg-[#5b8a72]" change={`${s.thisMonthOrders || 0} this month`} href="/orders" />
+            icon={Package} color="bg-emerald-600 dark:bg-emerald-700" change={`${s.thisMonthOrders || 0} this month`} href="/orders" />
           <Stat label="Pending" value={pending}
-            icon={Clock} color="bg-[#d4a54a]" href="/orders" />
+            icon={Clock} color="bg-amber-500 dark:bg-amber-600" href="/orders" />
           <Stat label="Delivered" value={completed}
-            icon={PackageCheck} color="bg-[#4a8fb8]" change={`${cancelled} returned`} href="/orders" />
+            icon={PackageCheck} color="bg-blue-500 dark:bg-blue-600" change={`${cancelled} returned`} href="/orders" />
         </div>
 
         {/* ── 4 Metric Cards with Sparklines ─────────── */}
@@ -335,10 +335,10 @@ function DashboardPage() {
           const totalRevenue = cd.reduce((s, d) => s + d.revenue, 0);
           return (
             <div className="grid grid-cols-4 gap-4 mb-6">
-              <MetricCard label="Product Views" value={totalViews.toLocaleString()} data={cd.map(d => d.views)} color="#8c7b6b" gradId="viewsG" />
+              <MetricCard label="Product Views" value={totalViews.toLocaleString()} data={cd.map(d => d.views)} color="hsl(var(--muted-foreground))" gradId="viewsG" />
               <MetricCard label="Add to Cart" value={totalCarts.toLocaleString()} data={cd.map(d => d.carts)} color="#d4a54a" gradId="cartsG" />
               <MetricCard label="Orders" value={totalOrders.toLocaleString()} data={cd.map(d => d.orders)} color="#5b8a72" gradId="ordersG" />
-              <MetricCard label="Revenue" value={`${currency.symbol}${totalRevenue.toFixed(0)}`} data={cd.map(d => d.revenue)} color="#c2703e" gradId="revG" />
+              <MetricCard label="Revenue" value={`${currency.symbol}${totalRevenue.toFixed(0)}`} data={cd.map(d => d.revenue)} color={T.accent} gradId="revG" />
             </div>
           );
         })()}
@@ -396,17 +396,17 @@ function DashboardPage() {
           {sellerOrders.isLoading ? (
             [...Array(3)].map((_, i) => (
               <div key={i} className={cn("flex items-center gap-4 px-5 py-4 border-b", T.border)}>
-                <div className="h-12 w-12 animate-pulse rounded-2xl bg-[#f3ece3]" />
+                <div className="h-12 w-12 animate-pulse rounded-2xl bg-muted" />
                 <div className="flex-1 space-y-2">
-                  <div className="h-3 w-36 animate-pulse rounded-lg bg-[#f3ece3]" />
-                  <div className="h-2.5 w-20 animate-pulse rounded-lg bg-[#f3ece3]" />
+                  <div className="h-3 w-36 animate-pulse rounded-lg bg-muted" />
+                  <div className="h-2.5 w-20 animate-pulse rounded-lg bg-muted" />
                 </div>
               </div>
             ))
           ) : orders.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20">
-              <div className="h-16 w-16 rounded-3xl bg-[#f3ece3] flex items-center justify-center mb-4">
-                <Package className="h-7 w-7 text-[#c9b9a8]" />
+              <div className="h-16 w-16 rounded-3xl bg-muted flex items-center justify-center mb-4">
+                <Package className="h-7 w-7 text-muted-foreground/60" />
               </div>
               <p className={cn("text-[14px] font-semibold", T.text)}>No orders yet</p>
               <p className={cn("text-[12px] mt-1", T.muted)}>When buyers purchase your products, they'll appear here</p>

@@ -171,16 +171,16 @@ const ExternalStoresPage = () => {
 
   return (
     <div
-      className={`min-h-screen bg-gray-50 px-4 py-6 sm:px-8 ${
+      className={`min-h-screen bg-background px-4 py-6 sm:px-8 ${
         langDir === "rtl" ? "rtl" : ""
       }`}
     >
       <div className="mx-auto max-w-5xl space-y-6">
         <div className="flex flex-col gap-2">
-          <h1 className="text-2xl font-semibold text-gray-900">
+          <h1 className="text-2xl font-semibold text-foreground">
             {t("external_stores")}
           </h1>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-muted-foreground">
             {t("external_stores_description")}
           </p>
         </div>
@@ -189,14 +189,14 @@ const ExternalStoresPage = () => {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <PlusIcon className="h-5 w-5 text-indigo-600" />
+              <PlusIcon className="h-5 w-5 text-primary" />
               <span>{t("create_external_store")}</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-1">
-                <label className="text-sm font-medium text-gray-700">
+                <label className="text-sm font-medium text-foreground">
                   {t("store_name")}
                 </label>
                 <Input
@@ -206,7 +206,7 @@ const ExternalStoresPage = () => {
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-sm font-medium text-gray-700">
+                <label className="text-sm font-medium text-foreground">
                   {t("platform_optional")}
                 </label>
                 <Input
@@ -237,10 +237,10 @@ const ExternalStoresPage = () => {
           <CardContent>
             {externalStoresQuery.isLoading ? (
               <div className="flex items-center justify-center py-10">
-                <Loader2 className="h-6 w-6 animate-spin text-indigo-600" />
+                <Loader2 className="h-6 w-6 animate-spin text-primary" />
               </div>
             ) : stores.length === 0 ? (
-              <p className="py-4 text-sm text-gray-600">
+              <p className="py-4 text-sm text-muted-foreground">
                 {t("no_external_stores_yet")}
               </p>
             ) : (
@@ -255,7 +255,7 @@ const ExternalStoresPage = () => {
                   return (
                     <div
                       key={store.id}
-                      className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm"
+                      className="rounded-lg border border-border bg-card p-4 shadow-sm"
                     >
                       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                         {editingStoreId === store.id ? (
@@ -276,7 +276,7 @@ const ExternalStoresPage = () => {
                               variant="ghost"
                               onClick={handleSaveEdit}
                               disabled={updateStoreMutation.isPending}
-                              className="h-8 w-8 p-0 text-green-600 hover:text-green-700"
+                              className="h-8 w-8 p-0 text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300"
                             >
                               {updateStoreMutation.isPending ? (
                                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -288,23 +288,23 @@ const ExternalStoresPage = () => {
                               size="sm"
                               variant="ghost"
                               onClick={handleCancelEdit}
-                              className="h-8 w-8 p-0 text-gray-500 hover:text-gray-700"
+                              className="h-8 w-8 p-0 text-muted-foreground hover:text-foreground"
                             >
                               <XIcon className="h-4 w-4" />
                             </Button>
                           </div>
                         ) : (
                           <div>
-                            <h3 className="text-base font-semibold text-gray-900">
+                            <h3 className="text-base font-semibold text-foreground">
                               {store.name}
                             </h3>
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs text-muted-foreground">
                               {store.platform || t("platform_generic")}
                             </p>
                           </div>
                         )}
                         <div className="flex items-center gap-2">
-                          <span className="rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-700">
+                          <span className="rounded-full bg-emerald-50 dark:bg-emerald-950/30 px-3 py-1 text-xs font-medium text-emerald-700 dark:text-emerald-400">
                             {t("active")}
                           </span>
                           {editingStoreId !== store.id && (
@@ -313,7 +313,7 @@ const ExternalStoresPage = () => {
                                 size="sm"
                                 variant="ghost"
                                 onClick={() => handleEditStore(store)}
-                                className="h-8 w-8 p-0 text-gray-500 hover:text-indigo-600"
+                                className="h-8 w-8 p-0 text-muted-foreground hover:text-primary cursor-pointer"
                               >
                                 <PencilIcon className="h-4 w-4" />
                               </Button>
@@ -322,7 +322,7 @@ const ExternalStoresPage = () => {
                                 variant="ghost"
                                 onClick={() => handleDeleteStore(store.id)}
                                 disabled={deleteStoreMutation.isPending}
-                                className="h-8 w-8 p-0 text-gray-500 hover:text-red-600"
+                                className="h-8 w-8 p-0 text-muted-foreground hover:text-red-600 dark:hover:text-red-400"
                               >
                                 <Trash2Icon className="h-4 w-4" />
                               </Button>
@@ -333,63 +333,63 @@ const ExternalStoresPage = () => {
 
                       <div className="mt-4 grid gap-3 text-xs sm:grid-cols-2">
                         <div className="space-y-1">
-                          <p className="font-medium text-gray-700">
+                          <p className="font-medium text-foreground">
                             {t("json_feed_url")}
                           </p>
                           <button
                             type="button"
                             onClick={() => handleCopy(jsonFeed)}
-                            className="flex items-center gap-2 truncate rounded-md border border-gray-200 bg-gray-50 px-2 py-1 text-left font-mono text-[11px] text-gray-700 hover:bg-gray-100"
+                            className="flex items-center gap-2 truncate rounded-md border border-border bg-muted px-2 py-1 text-left font-mono text-[11px] text-foreground hover:bg-muted/80"
                           >
                             <span className="flex-1 truncate">{jsonFeed}</span>
-                            <CopyIcon className="h-3 w-3 flex-none text-gray-500" />
+                            <CopyIcon className="h-3 w-3 flex-none text-muted-foreground" />
                           </button>
                         </div>
                         <div className="space-y-1">
-                          <p className="font-medium text-gray-700">
+                          <p className="font-medium text-foreground">
                             {t("xml_feed_url")}
                           </p>
                           <button
                             type="button"
                             onClick={() => handleCopy(xmlFeed)}
-                            className="flex items-center gap-2 truncate rounded-md border border-gray-200 bg-gray-50 px-2 py-1 text-left font-mono text-[11px] text-gray-700 hover:bg-gray-100"
+                            className="flex items-center gap-2 truncate rounded-md border border-border bg-muted px-2 py-1 text-left font-mono text-[11px] text-foreground hover:bg-muted/80"
                           >
                             <span className="flex-1 truncate">{xmlFeed}</span>
-                            <CopyIcon className="h-3 w-3 flex-none text-gray-500" />
+                            <CopyIcon className="h-3 w-3 flex-none text-muted-foreground" />
                           </button>
                         </div>
                         <div className="space-y-1">
-                          <p className="font-medium text-gray-700">
+                          <p className="font-medium text-foreground">
                             {t("csv_feed_url")}
                           </p>
                           <button
                             type="button"
                             onClick={() => handleCopy(csvFeed)}
-                            className="flex items-center gap-2 truncate rounded-md border border-gray-200 bg-gray-50 px-2 py-1 text-left font-mono text-[11px] text-gray-700 hover:bg-gray-100"
+                            className="flex items-center gap-2 truncate rounded-md border border-border bg-muted px-2 py-1 text-left font-mono text-[11px] text-foreground hover:bg-muted/80"
                           >
                             <span className="flex-1 truncate">{csvFeed}</span>
-                            <CopyIcon className="h-3 w-3 flex-none text-gray-500" />
+                            <CopyIcon className="h-3 w-3 flex-none text-muted-foreground" />
                           </button>
                         </div>
                         <div className="space-y-1">
-                          <p className="font-medium text-gray-700">
+                          <p className="font-medium text-foreground">
                             {t("order_webhook_url")}
                           </p>
                           <button
                             type="button"
                             onClick={() => handleCopy(webhookUrl)}
-                            className="flex items-center gap-2 truncate rounded-md border border-gray-200 bg-gray-50 px-2 py-1 text-left font-mono text-[11px] text-gray-700 hover:bg-gray-100"
+                            className="flex items-center gap-2 truncate rounded-md border border-border bg-muted px-2 py-1 text-left font-mono text-[11px] text-foreground hover:bg-muted/80"
                           >
                             <span className="flex-1 truncate">
                               {webhookUrl}
                             </span>
-                            <CopyIcon className="h-3 w-3 flex-none text-gray-500" />
+                            <CopyIcon className="h-3 w-3 flex-none text-muted-foreground" />
                           </button>
                         </div>
                       </div>
 
                       {/* View Subscribed Products Button */}
-                      <div className="mt-4 border-t border-gray-200 pt-4">
+                      <div className="mt-4 border-t border-border pt-4">
                         <Button
                           variant="outline"
                           onClick={() => toggleStoreProducts(store.id)}
@@ -453,14 +453,14 @@ const SubscribedProductsList = ({ storeId }: { storeId: number }) => {
   if (subscribedProductsQuery.isLoading) {
     return (
       <div className="mt-4 flex items-center justify-center py-8">
-        <Loader2 className="h-5 w-5 animate-spin text-indigo-600" />
+        <Loader2 className="h-5 w-5 animate-spin text-primary" />
       </div>
     );
   }
 
   if (subscribedProductsQuery.isError) {
     return (
-      <div className="mt-4 rounded-lg bg-red-50 p-4 text-sm text-red-700">
+      <div className="mt-4 rounded-lg bg-red-50 dark:bg-red-950/30 p-4 text-sm text-red-700 dark:text-red-400">
         {t("error_loading_products")}
       </div>
     );
@@ -470,7 +470,7 @@ const SubscribedProductsList = ({ storeId }: { storeId: number }) => {
 
   if (products.length === 0) {
     return (
-      <div className="mt-4 rounded-lg bg-gray-50 p-4 text-sm text-gray-600">
+      <div className="mt-4 rounded-lg bg-muted p-4 text-sm text-muted-foreground">
         {t("no_products_subscribed_yet")}
       </div>
     );
@@ -478,7 +478,7 @@ const SubscribedProductsList = ({ storeId }: { storeId: number }) => {
 
   return (
     <div className="mt-4 space-y-3">
-      <p className="text-sm font-medium text-gray-700">
+      <p className="text-sm font-medium text-foreground">
         {t("subscribed_products")} ({products.length})
       </p>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -496,11 +496,11 @@ const SubscribedProductsList = ({ storeId }: { storeId: number }) => {
           return (
             <div
               key={subscription.id || product.id}
-              className="rounded-lg border border-gray-200 bg-white p-3 shadow-sm"
+              className="rounded-lg border border-border bg-card p-3 shadow-sm"
             >
               <div className="flex gap-3">
                 {/* Product Image */}
-                <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg border border-gray-200">
+                <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg border border-border">
                   {productImage && validator.isURL(productImage) ? (
                     productImage.includes("ultrasooq.s3.amazonaws.com") ? (
                       <Image
@@ -535,22 +535,22 @@ const SubscribedProductsList = ({ storeId }: { storeId: number }) => {
 
                 {/* Product Details */}
                 <div className="flex-1 min-w-0">
-                  <h4 className="text-sm font-semibold text-gray-900 truncate">
+                  <h4 className="text-sm font-semibold text-foreground truncate">
                     {product.productName || "-"}
                   </h4>
-                  <p className="text-xs text-gray-600 mt-1">
+                  <p className="text-xs text-muted-foreground mt-1">
                     {t("price")}:{" "}
-                    <span className="font-medium text-blue-600">
+                    <span className="font-medium text-blue-600 dark:text-blue-400">
                       ${price || "0"}
                     </span>
                   </p>
                   {subscription.externalProductId && (
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-muted-foreground mt-1">
                       {t("external_id")}: {subscription.externalProductId}
                     </p>
                   )}
                   {subscription.externalSku && (
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-muted-foreground mt-1">
                       {t("external_sku")}: {subscription.externalSku}
                     </p>
                   )}
@@ -558,8 +558,8 @@ const SubscribedProductsList = ({ storeId }: { storeId: number }) => {
                     <span
                       className={`inline-block px-2 py-0.5 text-xs rounded-full ${
                         subscription.status === "ACTIVE"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-gray-100 text-gray-700"
+                          ? "bg-emerald-100 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400"
+                          : "bg-muted text-muted-foreground"
                       }`}
                     >
                       {subscription.status === "ACTIVE"
@@ -570,7 +570,7 @@ const SubscribedProductsList = ({ storeId }: { storeId: number }) => {
                       type="button"
                       onClick={() => handleUnsubscribe(product.id)}
                       disabled={unsubscribeMutation.isPending}
-                      className="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-0.5 text-xs text-red-600 hover:bg-red-100"
+                      className="inline-flex items-center gap-1 rounded-full bg-red-50 dark:bg-red-950/30 px-2 py-0.5 text-xs text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-950/50"
                     >
                       <XIcon className="h-3 w-3" />
                       {t("unsubscribe")}
