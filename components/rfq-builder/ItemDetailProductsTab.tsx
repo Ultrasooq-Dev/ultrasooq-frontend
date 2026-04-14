@@ -162,11 +162,11 @@ export function ItemDetailProductsTab({
               key={`grid-${p.id}`}
               product={p}
               locale={locale}
-              currencySymbol={currencySymbol}
               selectedProductId={selectedProductId}
               cardQty={getCardQty(p.id)}
               onSetCardQty={setCardQty}
               {...cardCallbacks}
+              currencySymbol={currencySymbol}
             />
           ))}
         </div>
