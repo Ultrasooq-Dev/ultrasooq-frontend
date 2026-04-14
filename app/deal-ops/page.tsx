@@ -26,8 +26,8 @@ function DealOpsPage() {
                 <h1 className="text-3xl font-bold text-foreground" dir={langDir}>
                   {t("deal_ops") || "Deal Ops"}
                 </h1>
-                <p className="text-muted-foreground">
-                  Manage all your deals — BuyGroup, Dropship, Service & Retail
+                <p className="text-muted-foreground" dir={langDir}>
+                  {t("deal_ops_subtitle") || "Manage all your deals — BuyGroup, Dropship, Service & Retail"}
                 </p>
               </div>
             </div>
