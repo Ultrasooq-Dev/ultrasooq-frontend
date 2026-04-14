@@ -72,7 +72,7 @@ const SellerChatCardItem: React.FC<SellerChatCardItemProps> = ({
             </div>
           ))}
           {allProductImages.length > 3 && (
-            <div className="relative flex h-14 w-14 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg border-2 border-border bg-gradient-to-br from-gray-100 to-gray-200 shadow-sm">
+            <div className="relative flex h-14 w-14 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg border-2 border-border bg-gradient-to-br from-muted to-muted shadow-sm">
               <span className="text-xs font-bold text-muted-foreground">+{allProductImages.length - 3}</span>
             </div>
           )}

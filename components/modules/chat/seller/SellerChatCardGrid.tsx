@@ -106,7 +106,7 @@ const SellerChatCardGrid: React.FC<SellerChatCardGridProps> = ({
       {!isLoading && groupedRfqQuotes.length > 0 && (
         <div className={displayMode === "list" ? "space-y-0 border border-border rounded-lg bg-card overflow-hidden shadow-sm" : "grid gap-4 md:grid-cols-2 lg:grid-cols-3"}>
           {displayMode === "list" && (
-            <div className={cn("hidden lg:grid gap-6 px-6 py-3 bg-gradient-to-r from-gray-50 to-gray-100 border-b border-border sticky top-0 z-10", isSelectMode ? "grid-cols-[auto_120px_auto_300px_160px_220px_auto]" : "grid-cols-[120px_auto_300px_160px_220px_auto]")}>
+            <div className={cn("hidden lg:grid gap-6 px-6 py-3 bg-gradient-to-r from-background to-muted border-b border-border sticky top-0 z-10", isSelectMode ? "grid-cols-[auto_120px_auto_300px_160px_220px_auto]" : "grid-cols-[120px_auto_300px_160px_220px_auto]")}>
               {isSelectMode && <div></div>}
               {["RFQ ID", "Products", "Product Details", "Buyer", "Latest Message", "Actions"].map((h) => (
                 <div key={h} className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{h}</div>

@@ -89,8 +89,8 @@ const WalletSettings: React.FC = () => {
         <div className="space-y-5">
           {[...Array(6)].map((_, index) => (
             <div key={index} className="flex items-center justify-between rounded-xl bg-muted border border-border p-6 animate-pulse">
-              <div className="h-4 w-[60%] rounded bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200"></div>
-              <div className="h-10 w-full max-w-[220px] rounded bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200"></div>
+              <div className="h-4 w-[60%] rounded bg-gradient-to-r from-muted via-muted-foreground/30 to-muted"></div>
+              <div className="h-10 w-full max-w-[220px] rounded bg-gradient-to-r from-muted via-muted-foreground/30 to-muted"></div>
             </div>
           ))}
         </div>
@@ -107,11 +107,11 @@ const WalletSettings: React.FC = () => {
 
       <div>
         <div className="mb-8">
-          <h4 className="mb-6 pb-3 border-b-2 border-gray-200 text-[1.2rem] font-semibold text-foreground">
+          <h4 className="mb-6 pb-3 border-b-2 border-border text-[1.2rem] font-semibold text-foreground">
             {t("withdrawal_settings")}
           </h4>
 
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between rounded-xl bg-muted border border-border p-6 mb-5 transition-all hover:bg-gray-100 hover:-translate-y-px hover:shadow-[0_4px_15px_rgba(2,35,53,0.08)]">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between rounded-xl bg-muted border border-border p-6 mb-5 transition-all hover:bg-muted hover:-translate-y-px hover:shadow-[0_4px_15px_rgba(2,35,53,0.08)]">
             <div className="flex-1 mb-3 md:mb-0">
               <Label htmlFor="autoWithdraw" className="font-semibold text-foreground text-base mb-2">
                 {t("auto_withdraw")}
@@ -127,7 +127,7 @@ const WalletSettings: React.FC = () => {
             />
           </div>
 
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between rounded-xl bg-muted border border-border p-6 mb-5 transition-all hover:bg-gray-100 hover:-translate-y-px hover:shadow-[0_4px_15px_rgba(2,35,53,0.08)]">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between rounded-xl bg-muted border border-border p-6 mb-5 transition-all hover:bg-muted hover:-translate-y-px hover:shadow-[0_4px_15px_rgba(2,35,53,0.08)]">
             <Label htmlFor="withdrawLimit" className="font-semibold text-foreground text-base mb-3 md:mb-0">
               {t("withdrawal_limit")} ({currency.symbol})
             </Label>
@@ -143,7 +143,7 @@ const WalletSettings: React.FC = () => {
             />
           </div>
 
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between rounded-xl bg-muted border border-border p-6 mb-5 transition-all hover:bg-gray-100 hover:-translate-y-px hover:shadow-[0_4px_15px_rgba(2,35,53,0.08)]">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between rounded-xl bg-muted border border-border p-6 mb-5 transition-all hover:bg-muted hover:-translate-y-px hover:shadow-[0_4px_15px_rgba(2,35,53,0.08)]">
             <Label htmlFor="dailyLimit" className="font-semibold text-foreground text-base mb-3 md:mb-0">
               {t("daily_limit")} ({currency.symbol})
             </Label>
@@ -159,7 +159,7 @@ const WalletSettings: React.FC = () => {
             />
           </div>
 
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between rounded-xl bg-muted border border-border p-6 mb-5 transition-all hover:bg-gray-100 hover:-translate-y-px hover:shadow-[0_4px_15px_rgba(2,35,53,0.08)]">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between rounded-xl bg-muted border border-border p-6 mb-5 transition-all hover:bg-muted hover:-translate-y-px hover:shadow-[0_4px_15px_rgba(2,35,53,0.08)]">
             <Label htmlFor="monthlyLimit" className="font-semibold text-foreground text-base mb-3 md:mb-0">
               {t("monthly_limit")} ({currency.symbol})
             </Label>
@@ -177,11 +177,11 @@ const WalletSettings: React.FC = () => {
         </div>
 
         <div className="mb-8">
-          <h4 className="mb-6 pb-3 border-b-2 border-gray-200 text-[1.2rem] font-semibold text-foreground">
+          <h4 className="mb-6 pb-3 border-b-2 border-border text-[1.2rem] font-semibold text-foreground">
             {t("notifications")}
           </h4>
 
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between rounded-xl bg-muted border border-border p-6 mb-5 transition-all hover:bg-gray-100 hover:-translate-y-px hover:shadow-[0_4px_15px_rgba(2,35,53,0.08)]">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between rounded-xl bg-muted border border-border p-6 mb-5 transition-all hover:bg-muted hover:-translate-y-px hover:shadow-[0_4px_15px_rgba(2,35,53,0.08)]">
             <div className="flex-1 mb-3 md:mb-0">
               <Label htmlFor="transactionNotifications" className="font-semibold text-foreground text-base mb-2">
                 {t("transaction_notifications")}
@@ -197,7 +197,7 @@ const WalletSettings: React.FC = () => {
             />
           </div>
 
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between rounded-xl bg-muted border border-border p-6 mb-5 transition-all hover:bg-gray-100 hover:-translate-y-px hover:shadow-[0_4px_15px_rgba(2,35,53,0.08)]">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between rounded-xl bg-muted border border-border p-6 mb-5 transition-all hover:bg-muted hover:-translate-y-px hover:shadow-[0_4px_15px_rgba(2,35,53,0.08)]">
             <div className="flex-1 mb-3 md:mb-0">
               <Label htmlFor="lowBalanceNotifications" className="font-semibold text-foreground text-base mb-2">
                 {t("low_balance_notifications")}
@@ -213,7 +213,7 @@ const WalletSettings: React.FC = () => {
             />
           </div>
 
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between rounded-xl bg-muted border border-border p-6 mb-5 transition-all hover:bg-gray-100 hover:-translate-y-px hover:shadow-[0_4px_15px_rgba(2,35,53,0.08)]">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between rounded-xl bg-muted border border-border p-6 mb-5 transition-all hover:bg-muted hover:-translate-y-px hover:shadow-[0_4px_15px_rgba(2,35,53,0.08)]">
             <div className="flex-1 mb-3 md:mb-0">
               <Label htmlFor="withdrawalNotifications" className="font-semibold text-foreground text-base mb-2">
                 {t("withdrawal_notifications")}
@@ -231,7 +231,7 @@ const WalletSettings: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex gap-5 justify-end pt-6 border-t-2 border-gray-200">
+      <div className="flex gap-5 justify-end pt-6 border-t-2 border-border">
         <Button
           onClick={handleReset}
           variant="outline"

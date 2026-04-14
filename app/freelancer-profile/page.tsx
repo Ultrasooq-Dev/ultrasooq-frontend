@@ -284,7 +284,7 @@ export default function FreelancerProfilePage() {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900 mx-auto"></div>
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-foreground mx-auto"></div>
           <p className="mt-4 text-lg">{t("loading_account_information")}</p>
         </div>
       </div>

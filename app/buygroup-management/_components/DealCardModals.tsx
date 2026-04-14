@@ -62,7 +62,7 @@ export function ExtendTimeModal({
             </div>
           </div>
           <div className="relative h-2.5 bg-muted rounded-full overflow-hidden">
-            <div className="absolute inset-y-0 start-0 bg-gray-400 rounded-full" style={{ width: "66.6%" }} />
+            <div className="absolute inset-y-0 start-0 bg-muted-foreground/50 rounded-full" style={{ width: "66.6%" }} />
             <div className="absolute inset-y-0 bg-blue-500 rounded-full transition-all duration-300" style={{ left: "66.6%", width: `${(pct / 100) * 33.4}%` }} />
           </div>
           <div className="flex items-center justify-between text-[10px] mt-1 text-muted-foreground">

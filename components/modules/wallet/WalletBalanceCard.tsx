@@ -18,19 +18,19 @@ const WalletBalanceCard: React.FC<WalletBalanceCardProps> = ({ wallet, loading =
       <div className="rounded-xl bg-[var(--brand-dark)] p-6 text-[var(--card)] shadow-[0_4px_20px_rgba(2,35,53,0.1)] border border-border mb-5">
         <div className="flex items-center justify-between mb-5">
           <h3 className="text-[1.4rem] font-semibold m-0">{t("wallet_balance")}</h3>
-          <div className="h-4 w-[60%] rounded bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 bg-[length:200%_100%] animate-[loading_1.5s_infinite] mb-2"></div>
+          <div className="h-4 w-[60%] rounded bg-gradient-to-r from-muted via-muted-foreground/30 to-muted bg-[length:200%_100%] animate-[loading_1.5s_infinite] mb-2"></div>
         </div>
         <div className="text-center mb-5">
-          <div className="h-6 w-[40%] mx-auto rounded bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 bg-[length:200%_100%] animate-[loading_1.5s_infinite]"></div>
+          <div className="h-6 w-[40%] mx-auto rounded bg-gradient-to-r from-muted via-muted-foreground/30 to-muted bg-[length:200%_100%] animate-[loading_1.5s_infinite]"></div>
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div className="rounded-lg bg-white/10 border border-white/10 p-4 text-center">
-            <div className="h-4 w-[60%] mx-auto rounded bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 bg-[length:200%_100%] animate-[loading_1.5s_infinite] mb-2"></div>
-            <div className="h-4 w-[60%] mx-auto rounded bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 bg-[length:200%_100%] animate-[loading_1.5s_infinite] mb-2"></div>
+            <div className="h-4 w-[60%] mx-auto rounded bg-gradient-to-r from-muted via-muted-foreground/30 to-muted bg-[length:200%_100%] animate-[loading_1.5s_infinite] mb-2"></div>
+            <div className="h-4 w-[60%] mx-auto rounded bg-gradient-to-r from-muted via-muted-foreground/30 to-muted bg-[length:200%_100%] animate-[loading_1.5s_infinite] mb-2"></div>
           </div>
           <div className="rounded-lg bg-white/10 border border-white/10 p-4 text-center">
-            <div className="h-4 w-[60%] mx-auto rounded bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 bg-[length:200%_100%] animate-[loading_1.5s_infinite] mb-2"></div>
-            <div className="h-4 w-[60%] mx-auto rounded bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 bg-[length:200%_100%] animate-[loading_1.5s_infinite] mb-2"></div>
+            <div className="h-4 w-[60%] mx-auto rounded bg-gradient-to-r from-muted via-muted-foreground/30 to-muted bg-[length:200%_100%] animate-[loading_1.5s_infinite] mb-2"></div>
+            <div className="h-4 w-[60%] mx-auto rounded bg-gradient-to-r from-muted via-muted-foreground/30 to-muted bg-[length:200%_100%] animate-[loading_1.5s_infinite] mb-2"></div>
           </div>
         </div>
       </div>

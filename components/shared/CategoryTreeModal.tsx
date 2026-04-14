@@ -62,7 +62,7 @@ function TreeNode({
     <>
       <div
         className={cn(
-          "flex items-center gap-2 py-2 px-3 cursor-pointer transition-colors border-b border-gray-50",
+          "flex items-center gap-2 py-2 px-3 cursor-pointer transition-colors border-b border-border",
           isChecked ? "bg-primary/5" : "hover:bg-muted/50",
         )}
         style={{ paddingInlineStart: `${level * 20 + 12}px` }}
@@ -71,7 +71,7 @@ function TreeNode({
         <button
           onClick={(e) => { e.stopPropagation(); handleExpand(); }}
           className={cn("w-5 h-5 flex items-center justify-center flex-shrink-0 rounded transition-colors",
-            (hasKids || !node._loaded) ? "hover:bg-gray-200 text-gray-500" : "invisible")}
+            (hasKids || !node._loaded) ? "hover:bg-muted text-muted-foreground" : "invisible")}
         >
           {isLoading ? (
             <Loader2 className="h-3.5 w-3.5 animate-spin text-primary" />
@@ -101,7 +101,7 @@ function TreeNode({
 
         {/* Child count */}
         {hasKids && (
-          <span className="text-[10px] text-gray-400 flex-shrink-0">{node.children!.length}</span>
+          <span className="text-[10px] text-muted-foreground/60 flex-shrink-0">{node.children!.length}</span>
         )}
       </div>
 
@@ -256,7 +256,7 @@ export default function CategoryTreeModal({
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40" onClick={onClose}>
-      <div className="bg-white rounded-2xl w-full max-w-xl mx-4 shadow-2xl overflow-hidden flex flex-col max-h-[80vh]" onClick={(e) => e.stopPropagation()}>
+      <div className="bg-card rounded-2xl w-full max-w-xl mx-4 shadow-2xl overflow-hidden flex flex-col max-h-[80vh]" onClick={(e) => e.stopPropagation()}>
         {/* Header */}
         <div className="bg-gradient-to-r from-[#2d2017] to-[#4a3728] px-5 py-4 flex items-center justify-between flex-shrink-0">
           <div className="flex items-center gap-2 text-white">
@@ -267,9 +267,9 @@ export default function CategoryTreeModal({
         </div>
 
         {/* Search */}
-        <div className="px-4 py-3 border-b border-gray-100 flex-shrink-0">
+        <div className="px-4 py-3 border-b border-border flex-shrink-0">
           <div className="relative">
-            <Search className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <Search className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/60" />
             <input
               type="text"
               value={search}
@@ -282,7 +282,7 @@ export default function CategoryTreeModal({
 
         {/* Selected chips */}
         {checked.size > 0 && (
-          <div className="px-4 py-2 border-b border-gray-100 flex flex-wrap gap-1.5 flex-shrink-0">
+          <div className="px-4 py-2 border-b border-border flex flex-wrap gap-1.5 flex-shrink-0">
             {Array.from(selectedNames.entries()).map(([id, name]) => (
               <span key={id} className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-primary/10 text-xs font-medium text-primary">
                 {name}
@@ -301,7 +301,7 @@ export default function CategoryTreeModal({
               <Loader2 className="h-6 w-6 animate-spin text-primary" />
             </div>
           ) : filteredTree.length === 0 ? (
-            <div className="text-center py-12 text-sm text-gray-400">No categories found</div>
+            <div className="text-center py-12 text-sm text-muted-foreground/60">No categories found</div>
           ) : (
             filteredTree.map((node) => (
               <TreeNode
@@ -320,10 +320,10 @@ export default function CategoryTreeModal({
         </div>
 
         {/* Footer */}
-        <div className="px-5 py-3 border-t border-gray-100 flex items-center justify-between flex-shrink-0">
-          <span className="text-xs text-gray-500">{checked.size} selected</span>
+        <div className="px-5 py-3 border-t border-border flex items-center justify-between flex-shrink-0">
+          <span className="text-xs text-muted-foreground">{checked.size} selected</span>
           <div className="flex items-center gap-2">
-            <button onClick={onClose} className="px-4 py-2 rounded-xl text-sm font-medium text-gray-500 hover:bg-muted/50">
+            <button onClick={onClose} className="px-4 py-2 rounded-xl text-sm font-medium text-muted-foreground hover:bg-muted/50">
               Cancel
             </button>
             <button onClick={handleConfirm}

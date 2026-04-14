@@ -154,7 +154,7 @@ function RegistrationStepper({
           <React.Fragment key={step.key}>
             {idx > 0 && (
               <div className="relative mx-2 flex-1 sm:mx-3">
-                <div className="h-[2px] w-full rounded-full bg-gray-200" />
+                <div className="h-[2px] w-full rounded-full bg-muted" />
                 <div
                   className="absolute left-0 top-0 h-[2px] rounded-full bg-gradient-to-r from-orange-500 to-amber-400 transition-all duration-700 ease-out"
                   style={{ width: isCompleted ? "100%" : isActive ? "50%" : "0%" }}
@@ -168,7 +168,7 @@ function RegistrationStepper({
                     ? "bg-gradient-to-br from-orange-500 to-amber-400 text-white shadow-lg shadow-orange-500/30"
                     : isCompleted
                       ? "bg-gradient-to-br from-emerald-500 to-emerald-400 text-white shadow-lg shadow-emerald-500/20"
-                      : "border-2 border-gray-200 bg-white text-gray-400"
+                      : "border-2 border-border bg-card text-muted-foreground/60"
                 }`}
               >
                 {isActive && (
@@ -178,7 +178,7 @@ function RegistrationStepper({
               </div>
               <span
                 className={`text-[11px] font-semibold transition-colors duration-300 sm:text-xs ${
-                  isActive ? "text-orange-600" : isCompleted ? "text-emerald-600" : "text-gray-400"
+                  isActive ? "text-orange-600" : isCompleted ? "text-emerald-600" : "text-muted-foreground/60"
                 }`}
                 dir={langDir}
                 translate="no"
@@ -658,23 +658,23 @@ export default function RegisterPage() {
         {/* ════════════════════════════════════════════════════════════
             RIGHT SIDE — Form Panel
             ════════════════════════════════════════════════════════════ */}
-        <div className="relative flex min-h-screen flex-1 items-start justify-center overflow-y-auto bg-gradient-to-b from-gray-50 to-white px-4 py-6 sm:items-center sm:px-6 lg:px-10">
+        <div className="relative flex min-h-screen flex-1 items-start justify-center overflow-y-auto bg-gradient-to-b from-background to-white px-4 py-6 sm:items-center sm:px-6 lg:px-10">
           {/* Mobile-only top gradient bar */}
           <div className="absolute left-0 top-0 h-1.5 w-full bg-gradient-to-r from-orange-500 via-amber-500 to-orange-500 lg:hidden" />
 
           <div className="w-full max-w-[480px]">
 
             {/* Card */}
-            <div className="animate-slide-up overflow-hidden rounded-2xl border border-gray-200/80 bg-white shadow-xl shadow-gray-200/50">
+            <div className="animate-slide-up overflow-hidden rounded-2xl border border-border/80 bg-card shadow-xl shadow-gray-200/50">
               {/* Card Header */}
-              <div className="border-b border-gray-100 bg-gradient-to-r from-gray-50 to-orange-50/50 px-6 py-5 sm:px-8">
+              <div className="border-b border-border bg-gradient-to-r from-background to-orange-50/50 px-6 py-5 sm:px-8">
                 <div className="mb-4 text-center">
-                  <h2 className="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl" dir={langDir} translate="no">
+                  <h2 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl" dir={langDir} translate="no">
                     {currentStep === 1 && (t("create_your_account") || "Create your account")}
                     {currentStep === 2 && (t("verify_otp") || "Verify your email")}
                     {currentStep === 3 && t("account_type")}
                   </h2>
-                  <p className="mt-1 text-xs text-gray-500 sm:text-sm" dir={langDir} translate="no">
+                  <p className="mt-1 text-xs text-muted-foreground sm:text-sm" dir={langDir} translate="no">
                     {currentStep === 1 && (t("fill_in_your_details") || "Fill in your details to get started")}
                     {currentStep === 2 && (t("enter_otp") || "Enter the code sent to your email")}
                     {currentStep === 3 && t("choose_account_type")}
@@ -694,7 +694,7 @@ export default function RegisterPage() {
                     <div className="mb-5">
                       <Button
                         variant="outline"
-                        className="group h-11 w-full rounded-xl border-2 border-gray-200 text-sm font-semibold text-gray-600 transition-all duration-300 hover:border-gray-300 hover:bg-gray-50 hover:shadow-md sm:h-12"
+                        className="group h-11 w-full rounded-xl border-2 border-border text-sm font-semibold text-muted-foreground transition-all duration-300 hover:border-border hover:bg-muted/50 hover:shadow-md sm:h-12"
                         onClick={() => { setIsGoogleLoading(true); localStorage.setItem("loginType", "GOOGLE"); signIn("google"); }}
                         disabled={socialLogin.isPending || isGoogleLoading}
                         dir={langDir}
@@ -717,10 +717,10 @@ export default function RegisterPage() {
                     {/* Divider */}
                     <div className="relative my-5">
                       <div className="absolute inset-0 flex items-center">
-                        <div className="w-full border-t border-gray-200" />
+                        <div className="w-full border-t border-border" />
                       </div>
                       <div className="relative flex justify-center">
-                        <span className="bg-white px-4 text-xs font-medium text-gray-400" dir={langDir} translate="no">
+                        <span className="bg-card px-4 text-xs font-medium text-muted-foreground/60" dir={langDir} translate="no">
                           {t("or")}
                         </span>
                       </div>
@@ -758,11 +758,11 @@ export default function RegisterPage() {
                                   <Checkbox
                                     checked={field.value}
                                     onCheckedChange={field.onChange}
-                                    className="data-[state=checked]:bg-orange-500 data-[state=checked]:border-orange-500 mt-0.5 h-4 w-4 rounded border-gray-300 transition-all"
+                                    className="data-[state=checked]:bg-orange-500 data-[state=checked]:border-orange-500 mt-0.5 h-4 w-4 rounded border-border transition-all"
                                   />
                                 </FormControl>
                                 <div className="flex flex-col leading-none">
-                                  <div className="text-xs text-gray-500 sm:text-sm">
+                                  <div className="text-xs text-muted-foreground sm:text-sm">
                                     <span dir={langDir} translate="no">{t("i_agree")} </span>
                                     <Button onClick={handleToggleTermsModal} type="button" className="h-auto bg-transparent p-0 text-xs font-semibold text-orange-600 underline-offset-2 shadow-none hover:bg-transparent hover:text-orange-700 hover:underline sm:text-sm" dir={langDir} translate="no">
                                       {t("terms_of_use")}
@@ -803,7 +803,7 @@ export default function RegisterPage() {
 
                     {/* Sign In Link */}
                     <div className="mt-5 text-center">
-                      <span className="text-xs font-medium text-gray-500 sm:text-sm" dir={langDir} translate="no">
+                      <span className="text-xs font-medium text-muted-foreground sm:text-sm" dir={langDir} translate="no">
                         {t("already_have_an_account")}{" "}
                         <Link href="/login" className="font-bold text-orange-600 underline-offset-2 transition-colors duration-200 hover:text-orange-700 hover:underline" dir={langDir}>
                           {t("sign_in")}
@@ -823,7 +823,7 @@ export default function RegisterPage() {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                         </svg>
                       </div>
-                      <p className="text-sm text-gray-500" dir={langDir} translate="no">{t("enter_otp")}</p>
+                      <p className="text-sm text-muted-foreground" dir={langDir} translate="no">{t("enter_otp")}</p>
                       <div className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-orange-50 px-4 py-1.5">
                         <svg className="h-3.5 w-3.5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
@@ -843,7 +843,7 @@ export default function RegisterPage() {
                           onChange={(e) => handleOtpChange(e, index)}
                           onClick={() => handleOtpClick(index)}
                           onKeyDown={(e) => handleOtpKeyDown(e, index)}
-                          className="h-14 w-14 rounded-xl border-2 border-gray-200 bg-gray-50 text-center text-2xl font-bold text-gray-900 transition-all duration-200 focus:border-orange-400 focus:bg-white focus:shadow-lg focus:shadow-orange-500/10 focus-visible:ring-0! sm:h-16 sm:w-16"
+                          className="h-14 w-14 rounded-xl border-2 border-border bg-muted/50 text-center text-2xl font-bold text-foreground transition-all duration-200 focus:border-orange-400 focus:bg-card focus:shadow-lg focus:shadow-orange-500/10 focus-visible:ring-0! sm:h-16 sm:w-16"
                           autoFocus={index === 0}
                         />
                       ))}
@@ -885,7 +885,7 @@ export default function RegisterPage() {
 
                     {/* Resend */}
                     <div className="text-center">
-                      <span className="text-sm text-gray-500" dir={langDir} translate="no">
+                      <span className="text-sm text-muted-foreground" dir={langDir} translate="no">
                         {t("didnt_receive_otp")}{" "}
                       </span>
                       <Button
@@ -915,20 +915,20 @@ export default function RegisterPage() {
                         className={`group w-full rounded-xl border-2 p-4 text-left transition-all duration-300 ${
                           selectedRole === "BUYER"
                             ? "border-orange-400 bg-gradient-to-r from-orange-50 to-amber-50 shadow-lg shadow-orange-500/10"
-                            : "border-gray-200 bg-white hover:border-gray-300 hover:shadow-md"
+                            : "border-border bg-card hover:border-border hover:shadow-md"
                         }`}
                       >
                         <div className="flex items-center gap-3">
-                          <div className={`flex h-11 w-11 items-center justify-center rounded-xl transition-all duration-300 ${selectedRole === "BUYER" ? "bg-gradient-to-br from-orange-500 to-amber-400 text-white shadow-lg shadow-orange-500/30" : "bg-gray-100 text-gray-400 group-hover:bg-gray-200"}`}>
+                          <div className={`flex h-11 w-11 items-center justify-center rounded-xl transition-all duration-300 ${selectedRole === "BUYER" ? "bg-gradient-to-br from-orange-500 to-amber-400 text-white shadow-lg shadow-orange-500/30" : "bg-muted text-muted-foreground/60 group-hover:bg-muted"}`}>
                             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
                           </div>
                           <div className="flex-1">
-                            <p className="font-bold text-gray-900">{t("personal") || "Personal"}</p>
-                            <p className="text-xs text-gray-500">{t("personal_account_desc") || "Buy products and request quotations"}</p>
+                            <p className="font-bold text-foreground">{t("personal") || "Personal"}</p>
+                            <p className="text-xs text-muted-foreground">{t("personal_account_desc") || "Buy products and request quotations"}</p>
                           </div>
-                          <div className={`flex h-6 w-6 items-center justify-center rounded-full transition-all duration-300 ${selectedRole === "BUYER" ? "bg-orange-500 text-white" : "border-2 border-gray-300"}`}>
+                          <div className={`flex h-6 w-6 items-center justify-center rounded-full transition-all duration-300 ${selectedRole === "BUYER" ? "bg-orange-500 text-white" : "border-2 border-border"}`}>
                             {selectedRole === "BUYER" && (
                               <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
@@ -945,20 +945,20 @@ export default function RegisterPage() {
                         className={`group w-full rounded-xl border-2 p-4 text-left transition-all duration-300 ${
                           selectedRole === "COMPANY"
                             ? "border-orange-400 bg-gradient-to-r from-orange-50 to-amber-50 shadow-lg shadow-orange-500/10"
-                            : "border-gray-200 bg-white hover:border-gray-300 hover:shadow-md"
+                            : "border-border bg-card hover:border-border hover:shadow-md"
                         }`}
                       >
                         <div className="flex items-center gap-3">
-                          <div className={`flex h-11 w-11 items-center justify-center rounded-xl transition-all duration-300 ${selectedRole === "COMPANY" ? "bg-gradient-to-br from-orange-500 to-amber-400 text-white shadow-lg shadow-orange-500/30" : "bg-gray-100 text-gray-400 group-hover:bg-gray-200"}`}>
+                          <div className={`flex h-11 w-11 items-center justify-center rounded-xl transition-all duration-300 ${selectedRole === "COMPANY" ? "bg-gradient-to-br from-orange-500 to-amber-400 text-white shadow-lg shadow-orange-500/30" : "bg-muted text-muted-foreground/60 group-hover:bg-muted"}`}>
                             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                             </svg>
                           </div>
                           <div className="flex-1">
-                            <p className="font-bold text-gray-900">{t("company") || "Company"}</p>
-                            <p className="text-xs text-gray-500">{t("company_account_desc") || "Sell products and manage your business"}</p>
+                            <p className="font-bold text-foreground">{t("company") || "Company"}</p>
+                            <p className="text-xs text-muted-foreground">{t("company_account_desc") || "Sell products and manage your business"}</p>
                           </div>
-                          <div className={`flex h-6 w-6 items-center justify-center rounded-full transition-all duration-300 ${selectedRole === "COMPANY" ? "bg-orange-500 text-white" : "border-2 border-gray-300"}`}>
+                          <div className={`flex h-6 w-6 items-center justify-center rounded-full transition-all duration-300 ${selectedRole === "COMPANY" ? "bg-orange-500 text-white" : "border-2 border-border"}`}>
                             {selectedRole === "COMPANY" && (
                               <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
@@ -975,20 +975,20 @@ export default function RegisterPage() {
                         className={`group w-full rounded-xl border-2 p-4 text-left transition-all duration-300 ${
                           selectedRole === "FREELANCER"
                             ? "border-orange-400 bg-gradient-to-r from-orange-50 to-amber-50 shadow-lg shadow-orange-500/10"
-                            : "border-gray-200 bg-white hover:border-gray-300 hover:shadow-md"
+                            : "border-border bg-card hover:border-border hover:shadow-md"
                         }`}
                       >
                         <div className="flex items-center gap-3">
-                          <div className={`flex h-11 w-11 items-center justify-center rounded-xl transition-all duration-300 ${selectedRole === "FREELANCER" ? "bg-gradient-to-br from-orange-500 to-amber-400 text-white shadow-lg shadow-orange-500/30" : "bg-gray-100 text-gray-400 group-hover:bg-gray-200"}`}>
+                          <div className={`flex h-11 w-11 items-center justify-center rounded-xl transition-all duration-300 ${selectedRole === "FREELANCER" ? "bg-gradient-to-br from-orange-500 to-amber-400 text-white shadow-lg shadow-orange-500/30" : "bg-muted text-muted-foreground/60 group-hover:bg-muted"}`}>
                             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                             </svg>
                           </div>
                           <div className="flex-1">
-                            <p className="font-bold text-gray-900">{t("freelancer") || "Freelancer"}</p>
-                            <p className="text-xs text-gray-500">{t("freelancer_account_desc") || "Offer services and find work opportunities"}</p>
+                            <p className="font-bold text-foreground">{t("freelancer") || "Freelancer"}</p>
+                            <p className="text-xs text-muted-foreground">{t("freelancer_account_desc") || "Offer services and find work opportunities"}</p>
                           </div>
-                          <div className={`flex h-6 w-6 items-center justify-center rounded-full transition-all duration-300 ${selectedRole === "FREELANCER" ? "bg-orange-500 text-white" : "border-2 border-gray-300"}`}>
+                          <div className={`flex h-6 w-6 items-center justify-center rounded-full transition-all duration-300 ${selectedRole === "FREELANCER" ? "bg-orange-500 text-white" : "border-2 border-border"}`}>
                             {selectedRole === "FREELANCER" && (
                               <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
@@ -1008,63 +1008,63 @@ export default function RegisterPage() {
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16" />
                             </svg>
                           </div>
-                          <p className="text-sm font-bold text-gray-900">{t("company_details") || "Company Details"}</p>
+                          <p className="text-sm font-bold text-foreground">{t("company_details") || "Company Details"}</p>
                         </div>
                         <div>
-                          <label className="mb-1 block text-xs font-semibold text-gray-600">
+                          <label className="mb-1 block text-xs font-semibold text-muted-foreground">
                             {t("company_name") || "Company Name"} <span className="text-red-500">*</span>
                           </label>
                           <Input
                             value={companyName}
                             onChange={(e) => setCompanyName(e.target.value)}
                             placeholder={t("enter_company_name") || "Enter company name"}
-                            className="h-10 rounded-lg border-gray-200 bg-white transition-all focus:border-orange-400 focus:shadow-md"
+                            className="h-10 rounded-lg border-border bg-card transition-all focus:border-orange-400 focus:shadow-md"
                           />
                         </div>
                         <div>
-                          <label className="mb-1 block text-xs font-semibold text-gray-600">
+                          <label className="mb-1 block text-xs font-semibold text-muted-foreground">
                             {t("company_address") || "Company Address"}
                           </label>
                           <Input
                             value={companyAddress}
                             onChange={(e) => setCompanyAddress(e.target.value)}
                             placeholder={t("enter_company_address") || "Enter company address"}
-                            className="h-10 rounded-lg border-gray-200 bg-white transition-all focus:border-orange-400 focus:shadow-md"
+                            className="h-10 rounded-lg border-border bg-card transition-all focus:border-orange-400 focus:shadow-md"
                           />
                         </div>
                         <div className="grid grid-cols-2 gap-3">
                           <div>
-                            <label className="mb-1 block text-xs font-semibold text-gray-600">
+                            <label className="mb-1 block text-xs font-semibold text-muted-foreground">
                               {t("company_phone") || "Phone"}
                             </label>
                             <Input
                               value={companyPhone}
                               onChange={(e) => setCompanyPhone(e.target.value)}
                               placeholder={t("enter_phone") || "Phone"}
-                              className="h-10 rounded-lg border-gray-200 bg-white transition-all focus:border-orange-400 focus:shadow-md"
+                              className="h-10 rounded-lg border-border bg-card transition-all focus:border-orange-400 focus:shadow-md"
                             />
                           </div>
                           <div>
-                            <label className="mb-1 block text-xs font-semibold text-gray-600">
+                            <label className="mb-1 block text-xs font-semibold text-muted-foreground">
                               {t("company_tax_id") || "Tax ID"}
                             </label>
                             <Input
                               value={companyTaxId}
                               onChange={(e) => setCompanyTaxId(e.target.value)}
                               placeholder={t("enter_tax_id") || "Tax ID"}
-                              className="h-10 rounded-lg border-gray-200 bg-white transition-all focus:border-orange-400 focus:shadow-md"
+                              className="h-10 rounded-lg border-border bg-card transition-all focus:border-orange-400 focus:shadow-md"
                             />
                           </div>
                         </div>
                         <div>
-                          <label className="mb-1 block text-xs font-semibold text-gray-600">
+                          <label className="mb-1 block text-xs font-semibold text-muted-foreground">
                             {t("company_website") || "Website"}
                           </label>
                           <Input
                             value={companyWebsite}
                             onChange={(e) => setCompanyWebsite(e.target.value)}
                             placeholder="https://..."
-                            className="h-10 rounded-lg border-gray-200 bg-white transition-all focus:border-orange-400 focus:shadow-md"
+                            className="h-10 rounded-lg border-border bg-card transition-all focus:border-orange-400 focus:shadow-md"
                           />
                         </div>
                       </div>
@@ -1079,17 +1079,17 @@ export default function RegisterPage() {
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" />
                             </svg>
                           </div>
-                          <p className="text-sm font-bold text-gray-900">{t("freelancer_details") || "Freelancer Details"}</p>
+                          <p className="text-sm font-bold text-foreground">{t("freelancer_details") || "Freelancer Details"}</p>
                         </div>
                         <div>
-                          <label className="mb-1 block text-xs font-semibold text-gray-600">
+                          <label className="mb-1 block text-xs font-semibold text-muted-foreground">
                             {t("account_name") || "Account Name"} <span className="text-red-500">*</span>
                           </label>
                           <Input
                             value={freelancerName}
                             onChange={(e) => setFreelancerName(e.target.value)}
                             placeholder={t("enter_account_name") || "Enter your freelancer name"}
-                            className="h-10 rounded-lg border-gray-200 bg-white transition-all focus:border-orange-400 focus:shadow-md"
+                            className="h-10 rounded-lg border-border bg-card transition-all focus:border-orange-400 focus:shadow-md"
                           />
                         </div>
                       </div>
@@ -1101,7 +1101,7 @@ export default function RegisterPage() {
                         <Button
                           variant="outline"
                           onClick={() => router.push("/profile?fromRegister=1")}
-                          className="h-11 flex-1 rounded-xl border-2 border-gray-200 text-sm font-semibold text-gray-600 transition-all hover:bg-gray-50 sm:h-12"
+                          className="h-11 flex-1 rounded-xl border-2 border-border text-sm font-semibold text-muted-foreground transition-all hover:bg-muted/50 sm:h-12"
                           dir={langDir}
                           translate="no"
                         >
@@ -1133,7 +1133,7 @@ export default function RegisterPage() {
             </div>
 
             {/* Bottom subtle text */}
-            <p className="mt-4 text-center text-[11px] text-gray-400">
+            <p className="mt-4 text-center text-[11px] text-muted-foreground/60">
               {t("secure_registration") || "Your data is encrypted and secure"}
             </p>
           </div>

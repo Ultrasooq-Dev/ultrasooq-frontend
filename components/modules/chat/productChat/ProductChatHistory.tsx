@@ -154,7 +154,7 @@ const ProductChatHistory: React.FC<ProductChatHistoryProps> = ({
                   </div>
                 ) : (chat?.attachments?.length > 0 || chat?.content) ? (
                   <div className="flex w-full items-start gap-3">
-                    <div className="relative h-10 w-10 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center flex-shrink-0 ring-2 ring-white shadow-md">
+                    <div className="relative h-10 w-10 rounded-full bg-gradient-to-br from-muted to-muted flex items-center justify-center flex-shrink-0 ring-2 ring-white shadow-md">
                       {chat?.user?.profilePicture ? (
                         <Image
                           src={chat.user.profilePicture}

@@ -549,7 +549,7 @@ const queryParams = {
             <CardContent>
               {ordersLoading ? (
                 <div className="text-center py-8">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto"></div>
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-foreground mx-auto"></div>
                   <p className="mt-2 text-muted-foreground">{t("loading")}</p>
                 </div>
               ) : !recentOrders?.data?.orders?.length ? (

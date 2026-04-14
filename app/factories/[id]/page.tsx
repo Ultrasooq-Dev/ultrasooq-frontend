@@ -107,7 +107,7 @@ const ProductDetailsPage = () => {
     <>
       <title dir={langDir} translate="no">{`${t("factories")} | Ultrasooq`}</title>
 
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      <div className="min-h-screen bg-gradient-to-b from-background to-white">
         <div className="bg-card">
           <div className="container mx-auto max-w-7xl px-4 py-8 lg:px-8">
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12">

@@ -154,15 +154,15 @@ export default function ForgetPasswordPage() {
         {/* ═══════════════════════════════════════════════════════
             RIGHT SIDE — Form Panel
             ═══════════════════════════════════════════════════════ */}
-        <div className="relative flex min-h-screen flex-1 items-center justify-center overflow-y-auto bg-gradient-to-b from-gray-50 to-white px-4 py-8 sm:px-6 lg:px-10">
+        <div className="relative flex min-h-screen flex-1 items-center justify-center overflow-y-auto bg-gradient-to-b from-background to-white px-4 py-8 sm:px-6 lg:px-10">
           {/* Mobile-only top gradient bar */}
           <div className="absolute left-0 top-0 h-1.5 w-full bg-gradient-to-r from-orange-500 via-amber-500 to-orange-500 lg:hidden" />
 
           <div className="w-full max-w-[440px]">
             {/* Card */}
-            <div className="overflow-hidden rounded-2xl border border-gray-200/80 bg-white shadow-xl shadow-gray-200/50">
+            <div className="overflow-hidden rounded-2xl border border-border/80 bg-card shadow-xl shadow-gray-200/50">
               {/* Card Header */}
-              <div className="border-b border-gray-100 bg-gradient-to-r from-gray-50 to-orange-50/50 px-6 py-6 sm:px-8">
+              <div className="border-b border-border bg-gradient-to-r from-background to-orange-50/50 px-6 py-6 sm:px-8">
                 {/* Lock icon — mobile only */}
                 <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 shadow-lg shadow-orange-500/25 lg:hidden">
                   <svg className="h-7 w-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -170,10 +170,10 @@ export default function ForgetPasswordPage() {
                   </svg>
                 </div>
                 <div className="text-center">
-                  <h2 className="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl" dir={langDir} translate="no">
+                  <h2 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl" dir={langDir} translate="no">
                     {t("forgot_your_password")}
                   </h2>
-                  <p className="mt-1.5 text-xs text-gray-500 sm:text-sm" dir={langDir} translate="no">
+                  <p className="mt-1.5 text-xs text-muted-foreground sm:text-sm" dir={langDir} translate="no">
                     {t("forgot_password_instruction")}
                   </p>
                 </div>
@@ -214,15 +214,15 @@ export default function ForgetPasswordPage() {
 
                 {/* Divider */}
                 <div className="my-5 flex items-center gap-3">
-                  <div className="h-px flex-1 bg-gray-200" />
-                  <span className="text-xs text-gray-400">{t("or") || "or"}</span>
-                  <div className="h-px flex-1 bg-gray-200" />
+                  <div className="h-px flex-1 bg-muted" />
+                  <span className="text-xs text-muted-foreground/60">{t("or") || "or"}</span>
+                  <div className="h-px flex-1 bg-muted" />
                 </div>
 
                 {/* Back to login link */}
                 <Link
                   href="/login"
-                  className="flex h-11 w-full items-center justify-center gap-2 rounded-xl border-2 border-gray-200 text-sm font-semibold text-gray-600 transition-all duration-300 hover:border-gray-300 hover:bg-gray-50 hover:shadow-md"
+                  className="flex h-11 w-full items-center justify-center gap-2 rounded-xl border-2 border-border text-sm font-semibold text-muted-foreground transition-all duration-300 hover:border-border hover:bg-muted/50 hover:shadow-md"
                   dir={langDir}
                   translate="no"
                 >
@@ -235,7 +235,7 @@ export default function ForgetPasswordPage() {
             </div>
 
             {/* Bottom subtle text */}
-            <p className="mt-4 text-center text-[11px] text-gray-400">
+            <p className="mt-4 text-center text-[11px] text-muted-foreground/60">
               {t("secure_registration") || "Your data is encrypted and secure"}
             </p>
           </div>
