@@ -24,16 +24,16 @@ import {
 
 // ─── Theme ───────────────────────────────────────────────────
 const T = {
-  bg: "bg-[#faf6f1]", card: "bg-white", accent: "#c2703e",
-  accentBg: "bg-[#c2703e]", accentText: "text-[#c2703e]",
-  accentLight: "bg-[#c2703e]/10", text: "text-[#2d2017]",
-  muted: "text-[#8a7560]", border: "border-[#e8dfd4]",
-  success: "text-emerald-600", successBg: "bg-emerald-50",
-  warning: "text-amber-600", warningBg: "bg-amber-50",
-  danger: "text-red-600", dangerBg: "bg-red-50",
-  infoBg: "bg-blue-50", infoText: "text-blue-600",
-  dangerBorder: "border-red-200", warningBorder: "border-amber-200",
-  infoBorder: "border-blue-200", successBorder: "border-emerald-200",
+  bg: "bg-background", card: "bg-card", accent: "hsl(var(--primary))",
+  accentBg: "bg-primary", accentText: "text-primary",
+  accentLight: "bg-primary/10", text: "text-foreground",
+  muted: "text-muted-foreground", border: "border-border",
+  success: "text-emerald-600 dark:text-emerald-400", successBg: "bg-emerald-50 dark:bg-emerald-950/30",
+  warning: "text-amber-600 dark:text-amber-400", warningBg: "bg-amber-50 dark:bg-amber-950/30",
+  danger: "text-red-600 dark:text-red-400", dangerBg: "bg-red-50 dark:bg-red-950/30",
+  infoBg: "bg-blue-50 dark:bg-blue-950/30", infoText: "text-blue-600 dark:text-blue-400",
+  dangerBorder: "border-red-200 dark:border-red-800", warningBorder: "border-amber-200 dark:border-amber-800",
+  infoBorder: "border-blue-200 dark:border-blue-800", successBorder: "border-emerald-200 dark:border-emerald-800",
 };
 
 // ─── Deal Type Config ────────────────────────────────────────
@@ -41,10 +41,10 @@ type DealType = "ALL" | "BUYGROUP" | "DROPSHIP" | "SERVICE" | "RETAIL";
 type DealStatus = "ACTIVE" | "THRESHOLD_MET" | "CONFIRMED" | "EXPIRED" | "CANCELLED" | "COMPLETED" | "PROCESSING" | "SHIPPED";
 
 const DEAL_TYPE_CONFIG: Record<Exclude<DealType, "ALL">, { label: string; labelAr: string; icon: React.ReactNode; color: string; bgColor: string }> = {
-  BUYGROUP: { label: "BuyGroup", labelAr: "شراء جماعي", icon: <Users className="h-4 w-4" />, color: "text-[#c2703e]", bgColor: "bg-[#c2703e]/10" },
-  DROPSHIP: { label: "Dropship", labelAr: "دروبشيبينغ", icon: <Truck className="h-4 w-4" />, color: "text-blue-600", bgColor: "bg-blue-50" },
-  SERVICE: { label: "Service", labelAr: "خدمات", icon: <Wrench className="h-4 w-4" />, color: "text-purple-600", bgColor: "bg-purple-50" },
-  RETAIL: { label: "Retail", labelAr: "تجزئة", icon: <Store className="h-4 w-4" />, color: "text-emerald-600", bgColor: "bg-emerald-50" },
+  BUYGROUP: { label: "BuyGroup", labelAr: "شراء جماعي", icon: <Users className="h-4 w-4" />, color: "text-primary", bgColor: "bg-primary/10" },
+  DROPSHIP: { label: "Dropship", labelAr: "دروبشيبينغ", icon: <Truck className="h-4 w-4" />, color: "text-blue-600 dark:text-blue-400", bgColor: "bg-blue-50 dark:bg-blue-950/30" },
+  SERVICE: { label: "Service", labelAr: "خدمات", icon: <Wrench className="h-4 w-4" />, color: "text-purple-600 dark:text-purple-400", bgColor: "bg-purple-50 dark:bg-purple-950/30" },
+  RETAIL: { label: "Retail", labelAr: "تجزئة", icon: <Store className="h-4 w-4" />, color: "text-emerald-600 dark:text-emerald-400", bgColor: "bg-emerald-50 dark:bg-emerald-950/30" },
 };
 
 // ─── Types ───────────────────────────────────────────────────
@@ -202,16 +202,16 @@ function RatingStars({ rating }: { rating: number }) {
   return (
     <span className="inline-flex items-center gap-0.5">
       {[1, 2, 3, 4, 5].map((i) => (
-        <Star key={i} className={cn("h-3 w-3", i <= rating ? "fill-amber-400 text-amber-400" : "text-gray-200")} />
+        <Star key={i} className={cn("h-3 w-3", i <= rating ? "fill-amber-400 text-amber-400" : "text-muted-foreground/30")} />
       ))}
     </span>
   );
 }
 
-function ProgressBar({ value, max, color = "bg-[#c2703e]" }: { value: number; max: number; color?: string }) {
+function ProgressBar({ value, max, color = "bg-primary" }: { value: number; max: number; color?: string }) {
   const pct = max > 0 ? Math.min((value / max) * 100, 100) : 0;
   return (
-    <div className="w-full bg-gray-100 rounded-full overflow-hidden h-2.5">
+    <div className="w-full bg-muted rounded-full overflow-hidden h-2.5">
       <div className={cn("rounded-full transition-all duration-500 h-2.5", color)} style={{ width: `${pct}%` }} />
     </div>
   );
@@ -221,12 +221,12 @@ function StatusBadge({ status }: { status: string }) {
   const config: Record<string, { bg: string; text: string; label: string }> = {
     ACTIVE: { bg: T.infoBg, text: T.infoText, label: "Active" },
     THRESHOLD_MET: { bg: T.successBg, text: T.success, label: "Threshold Met" },
-    CONFIRMED: { bg: "bg-indigo-50", text: "text-indigo-600", label: "Confirmed" },
-    PROCESSING: { bg: "bg-indigo-50", text: "text-indigo-600", label: "Processing" },
-    SHIPPED: { bg: "bg-purple-50", text: "text-purple-600", label: "Shipped" },
+    CONFIRMED: { bg: "bg-indigo-50 dark:bg-indigo-950/30", text: "text-indigo-600 dark:text-indigo-400", label: "Confirmed" },
+    PROCESSING: { bg: "bg-indigo-50 dark:bg-indigo-950/30", text: "text-indigo-600 dark:text-indigo-400", label: "Processing" },
+    SHIPPED: { bg: "bg-purple-50 dark:bg-purple-950/30", text: "text-purple-600 dark:text-purple-400", label: "Shipped" },
     EXPIRED: { bg: T.warningBg, text: T.warning, label: "Expired" },
     CANCELLED: { bg: T.dangerBg, text: T.danger, label: "Cancelled" },
-    COMPLETED: { bg: T.successBg, text: "text-emerald-700", label: "Completed" },
+    COMPLETED: { bg: T.successBg, text: "text-emerald-700 dark:text-emerald-300", label: "Completed" },
     PLACED: { bg: T.infoBg, text: T.infoText, label: "Placed" },
     DELIVERED: { bg: T.successBg, text: T.success, label: "Delivered" },
     REFUNDED: { bg: T.dangerBg, text: T.danger, label: "Refunded" },
@@ -399,7 +399,7 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
           </div>
           {/* Accept button for threshold-met buygroups */}
           {deal.status === "THRESHOLD_MET" && (
-            <button className={cn("px-4 py-2 rounded-xl text-sm font-medium text-white", T.accentBg, "hover:opacity-90")}>
+            <button className={cn("px-4 py-2 rounded-xl text-sm font-medium text-primary-foreground", T.accentBg, "hover:opacity-90")}>
               <CheckCircle2 className="h-4 w-4 inline-block me-1.5" /> Accept Deal
             </button>
           )}
@@ -413,7 +413,7 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
                 <span className={T.muted}>Customers ({deal.currentCustomers}/{deal.minCustomer} min)</span>
                 <span className={cn("font-semibold", customerPct >= 100 ? T.success : T.accentText)}>{customerPct}%</span>
               </div>
-              <ProgressBar value={deal.currentCustomers} max={deal.minCustomer} color={customerPct >= 100 ? "bg-emerald-500" : "bg-[#c2703e]"} />
+              <ProgressBar value={deal.currentCustomers} max={deal.minCustomer} color={customerPct >= 100 ? "bg-emerald-500" : "bg-primary"} />
             </div>
           )}
           <div>
@@ -440,10 +440,10 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
                     <stop offset="95%" stopColor={T.accent} stopOpacity={0.02} />
                   </linearGradient>
                 </defs>
-                <XAxis dataKey="date" tick={{ fontSize: 9, fill: "#8a7560" }} tickLine={false} axisLine={false} />
+                <XAxis dataKey="date" tick={{ fontSize: 9, fill: "hsl(var(--muted-foreground))" }} tickLine={false} axisLine={false} />
                 <YAxis hide />
                 <Tooltip content={<ChartTooltip />} />
-                <Area type="monotone" dataKey="customers" name="Customers" stroke="#c2703e" strokeWidth={2} fill={`url(#mg-${deal.id})`} dot={{ r: 2, fill: "#c2703e", strokeWidth: 0 }} />
+                <Area type="monotone" dataKey="customers" name="Customers" stroke={T.accent} strokeWidth={2} fill={`url(#mg-${deal.id})`} dot={{ r: 2, fill: T.accent, strokeWidth: 0 }} />
                 {isBuyGroup && <Line type="monotone" dataKey="target" name="Min Target" stroke="#f87171" strokeWidth={1} strokeDasharray="4 3" dot={false} />}
               </AreaChart>
             </ResponsiveContainer>
@@ -453,21 +453,21 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
         {/* Action Buttons */}
         <div className={cn("flex items-center gap-2 mt-3 pt-3 border-t", T.border)}>
           <button onClick={() => { setShowPanel(true); setPanelPage(1); setPanelSearch(""); }}
-            className={cn("flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-medium text-sm border transition-colors", T.border, T.accentText, "hover:bg-[#c2703e]/5")}>
+            className={cn("flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-medium text-sm border transition-colors", T.border, T.accentText, "hover:bg-primary/5")}>
             <Users className="h-4 w-4" /> View {deal.dealType === "DROPSHIP" ? "Resellers" : deal.dealType === "SERVICE" ? "Bookings" : "Buyers"} ({deal.orders.length})
           </button>
           <a href={`/manage-products/deal-analysis?id=${deal.id}`}
-            className={cn("flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-medium text-sm text-white transition-colors", T.accentBg, "hover:opacity-90")}>
+            className={cn("flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-medium text-sm text-primary-foreground transition-colors", T.accentBg, "hover:opacity-90")}>
             <BarChart3 className="h-4 w-4" /> Full Analysis
           </a>
           <button onClick={() => { setShowQuickEdit(!showQuickEdit); if (!showQuickEdit) resetEdit(); }}
             className={cn("flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-medium text-sm border transition-colors",
-              showQuickEdit ? cn(T.accentBg, "text-white border-transparent") : cn(T.border, T.muted, "hover:bg-[#faf6f1]"))}>
+              showQuickEdit ? cn(T.accentBg, "text-primary-foreground border-transparent") : cn(T.border, T.muted, "hover:bg-muted"))}>
             <Pencil className="h-4 w-4" /> {showQuickEdit ? "Close Edit" : "Edit Product"}
           </button>
           {isDealDone && (
             <a href="/orders"
-              className={cn("flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-medium text-sm border transition-colors ms-auto", T.border, T.success, "hover:bg-emerald-50")}>
+              className={cn("flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-medium text-sm border transition-colors ms-auto", T.border, T.success, "hover:bg-emerald-50 dark:hover:bg-emerald-950/30")}>
               <ShoppingBag className="h-4 w-4" /> View in Orders
             </a>
           )}
@@ -476,7 +476,7 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
 
       {/* ── Quick Edit Panel (inline, below card) ── */}
       {showQuickEdit && (
-        <div className={cn("border-t px-6 py-5", T.border, "bg-[#faf6f1]")}>
+        <div className={cn("border-t px-6 py-5", T.border, "bg-muted/50")}>
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
 
             {/* Stock */}
@@ -485,19 +485,19 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
               <div className="flex items-center gap-0">
                 <label className="flex items-center gap-1.5 mb-1.5">
                   <input type="checkbox" checked={editManageStock} onChange={(e) => setEditManageStock(e.target.checked)}
-                    className="w-3.5 h-3.5 rounded border-gray-300 text-[#c2703e] focus:ring-[#c2703e]" />
+                    className="w-3.5 h-3.5 rounded border-border text-primary focus:ring-primary" />
                   <span className="text-[10px] text-muted-foreground">Manage stock</span>
                 </label>
               </div>
               <div className="flex items-center">
                 <button onClick={() => setEditStock(Math.max(0, editStock - 1))}
-                  className={cn("w-8 h-9 flex items-center justify-center border rounded-s-lg text-sm", T.border, "hover:bg-gray-100")}>
+                  className={cn("w-8 h-9 flex items-center justify-center border rounded-s-lg text-sm", T.border, "hover:bg-muted")}>
                   <Minus className="h-3 w-3" />
                 </button>
                 <input type="number" value={editStock} onChange={(e) => setEditStock(Number(e.target.value))}
                   className={cn("w-16 h-9 text-center border-y text-sm font-medium", T.border, "focus:outline-none")} />
                 <button onClick={() => setEditStock(editStock + 1)}
-                  className={cn("w-8 h-9 flex items-center justify-center border rounded-e-lg text-sm", T.border, "hover:bg-gray-100")}>
+                  className={cn("w-8 h-9 flex items-center justify-center border rounded-e-lg text-sm", T.border, "hover:bg-muted")}>
                   <Plus className="h-3 w-3" />
                 </button>
               </div>
@@ -509,19 +509,19 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
               <div className="flex items-center gap-0">
                 <label className="flex items-center gap-1.5 mb-1.5">
                   <input type="checkbox" checked={editManagePrice} onChange={(e) => setEditManagePrice(e.target.checked)}
-                    className="w-3.5 h-3.5 rounded border-gray-300 text-[#c2703e] focus:ring-[#c2703e]" />
+                    className="w-3.5 h-3.5 rounded border-border text-primary focus:ring-primary" />
                   <span className="text-[10px] text-muted-foreground">Manage price</span>
                 </label>
               </div>
               <div className="flex items-center">
                 <button onClick={() => setEditPrice(Math.max(0, editPrice - 1))}
-                  className={cn("w-8 h-9 flex items-center justify-center border rounded-s-lg text-sm", T.border, "hover:bg-gray-100")}>
+                  className={cn("w-8 h-9 flex items-center justify-center border rounded-s-lg text-sm", T.border, "hover:bg-muted")}>
                   <Minus className="h-3 w-3" />
                 </button>
                 <input type="number" value={editPrice} onChange={(e) => setEditPrice(Number(e.target.value))}
                   className={cn("w-16 h-9 text-center border-y text-sm font-medium", T.border, "focus:outline-none")} />
                 <button onClick={() => setEditPrice(editPrice + 1)}
-                  className={cn("w-8 h-9 flex items-center justify-center border rounded-e-lg text-sm", T.border, "hover:bg-gray-100")}>
+                  className={cn("w-8 h-9 flex items-center justify-center border rounded-e-lg text-sm", T.border, "hover:bg-muted")}>
                   <Plus className="h-3 w-3" />
                 </button>
               </div>
@@ -531,7 +531,7 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
             <div>
               <label className={cn("text-xs font-medium mb-1.5 block", T.text)}>Product Condition</label>
               <select value={editCondition} onChange={(e) => setEditCondition(e.target.value)}
-                className={cn("w-full h-9 px-2 rounded-lg border text-sm mt-[22px]", T.border, "focus:outline-none focus:ring-2 focus:ring-[#c2703e]/20")}>
+                className={cn("w-full h-9 px-2 rounded-lg border text-sm mt-[22px]", T.border, "focus:outline-none focus:ring-2 focus:ring-primary/20")}>
                 <option value="New">New</option>
                 <option value="Used">Used</option>
                 <option value="Refurbished">Refurbished</option>
@@ -543,13 +543,13 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
               <label className={cn("text-xs font-medium mb-1.5 block", T.text)}>Deliver After</label>
               <div className="flex items-center mt-[22px]">
                 <button onClick={() => setEditDeliveryAfter(Math.max(0, editDeliveryAfter - 1))}
-                  className={cn("w-8 h-9 flex items-center justify-center border rounded-s-lg text-sm", T.border, "hover:bg-gray-100")}>
+                  className={cn("w-8 h-9 flex items-center justify-center border rounded-s-lg text-sm", T.border, "hover:bg-muted")}>
                   <Minus className="h-3 w-3" />
                 </button>
                 <input type="number" value={editDeliveryAfter} onChange={(e) => setEditDeliveryAfter(Number(e.target.value))}
                   className={cn("w-14 h-9 text-center border-y text-sm font-medium", T.border, "focus:outline-none")} />
                 <button onClick={() => setEditDeliveryAfter(editDeliveryAfter + 1)}
-                  className={cn("w-8 h-9 flex items-center justify-center border rounded-e-lg text-sm", T.border, "hover:bg-gray-100")}>
+                  className={cn("w-8 h-9 flex items-center justify-center border rounded-e-lg text-sm", T.border, "hover:bg-muted")}>
                   <Plus className="h-3 w-3" />
                 </button>
               </div>
@@ -560,13 +560,13 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
               <label className={cn("text-xs font-medium mb-1.5 block", T.text)}>Time Open</label>
               <div className="flex items-center mt-[22px]">
                 <button onClick={() => setEditTimeOpen(Math.max(0, editTimeOpen - 1))}
-                  className={cn("w-8 h-9 flex items-center justify-center border rounded-s-lg text-sm", T.border, "hover:bg-gray-100")}>
+                  className={cn("w-8 h-9 flex items-center justify-center border rounded-s-lg text-sm", T.border, "hover:bg-muted")}>
                   <Minus className="h-3 w-3" />
                 </button>
                 <input type="number" value={editTimeOpen} onChange={(e) => setEditTimeOpen(Number(e.target.value))}
                   className={cn("w-14 h-9 text-center border-y text-sm font-medium", T.border, "focus:outline-none")} />
                 <button onClick={() => setEditTimeOpen(editTimeOpen + 1)}
-                  className={cn("w-8 h-9 flex items-center justify-center border rounded-e-lg text-sm", T.border, "hover:bg-gray-100")}>
+                  className={cn("w-8 h-9 flex items-center justify-center border rounded-e-lg text-sm", T.border, "hover:bg-muted")}>
                   <Plus className="h-3 w-3" />
                 </button>
               </div>
@@ -577,13 +577,13 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
               <label className={cn("text-xs font-medium mb-1.5 block", T.text)}>Time Close</label>
               <div className="flex items-center mt-[22px]">
                 <button onClick={() => setEditTimeClose(Math.max(0, editTimeClose - 1))}
-                  className={cn("w-8 h-9 flex items-center justify-center border rounded-s-lg text-sm", T.border, "hover:bg-gray-100")}>
+                  className={cn("w-8 h-9 flex items-center justify-center border rounded-s-lg text-sm", T.border, "hover:bg-muted")}>
                   <Minus className="h-3 w-3" />
                 </button>
                 <input type="number" value={editTimeClose} onChange={(e) => setEditTimeClose(Number(e.target.value))}
                   className={cn("w-14 h-9 text-center border-y text-sm font-medium", T.border, "focus:outline-none")} />
                 <button onClick={() => setEditTimeClose(editTimeClose + 1)}
-                  className={cn("w-8 h-9 flex items-center justify-center border rounded-e-lg text-sm", T.border, "hover:bg-gray-100")}>
+                  className={cn("w-8 h-9 flex items-center justify-center border rounded-e-lg text-sm", T.border, "hover:bg-muted")}>
                   <Plus className="h-3 w-3" />
                 </button>
               </div>
@@ -595,7 +595,7 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
             <div>
               <label className={cn("text-xs font-medium mb-1.5 block", T.text)}>Consumer Type</label>
               <select value={editConsumerType} onChange={(e) => setEditConsumerType(e.target.value)}
-                className={cn("w-full h-9 px-2 rounded-lg border text-sm", T.border, "focus:outline-none focus:ring-2 focus:ring-[#c2703e]/20")}>
+                className={cn("w-full h-9 px-2 rounded-lg border text-sm", T.border, "focus:outline-none focus:ring-2 focus:ring-primary/20")}>
                 <option value="Consumer">Consumer</option>
                 <option value="Vendor">Vendor</option>
                 <option value="Everyone">Everyone</option>
@@ -604,7 +604,7 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
             <div>
               <label className={cn("text-xs font-medium mb-1.5 block", T.text)}>Sell Type</label>
               <select value={editSellType} onChange={(e) => setEditSellType(e.target.value)}
-                className={cn("w-full h-9 px-2 rounded-lg border text-sm", T.border, "focus:outline-none focus:ring-2 focus:ring-[#c2703e]/20")}>
+                className={cn("w-full h-9 px-2 rounded-lg border text-sm", T.border, "focus:outline-none focus:ring-2 focus:ring-primary/20")}>
                 <option value="Normal Sell">Normal Sell</option>
                 <option value="Buy Group">Buy Group</option>
                 <option value="Wholesale">Wholesale</option>
@@ -614,13 +614,13 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
               <label className={cn("text-xs font-medium mb-1.5 block", T.text)}>Consumer Discount</label>
               <div className="flex items-center">
                 <button onClick={() => setEditConsumerDiscount(Math.max(0, editConsumerDiscount - 1))}
-                  className={cn("w-8 h-9 flex items-center justify-center border rounded-s-lg text-sm", T.border, "hover:bg-gray-100")}>
+                  className={cn("w-8 h-9 flex items-center justify-center border rounded-s-lg text-sm", T.border, "hover:bg-muted")}>
                   <Minus className="h-3 w-3" />
                 </button>
                 <input type="number" value={editConsumerDiscount} onChange={(e) => setEditConsumerDiscount(Number(e.target.value))}
                   className={cn("w-14 h-9 text-center border-y text-sm font-medium", T.border, "focus:outline-none")} />
                 <button onClick={() => setEditConsumerDiscount(editConsumerDiscount + 1)}
-                  className={cn("w-8 h-9 flex items-center justify-center border rounded-e-lg text-sm", T.border, "hover:bg-gray-100")}>
+                  className={cn("w-8 h-9 flex items-center justify-center border rounded-e-lg text-sm", T.border, "hover:bg-muted")}>
                   <Plus className="h-3 w-3" />
                 </button>
               </div>
@@ -628,7 +628,7 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
             <div>
               <label className={cn("text-xs font-medium mb-1.5 block", T.text)}>Discount Type</label>
               <select value={editDiscountType} onChange={(e) => setEditDiscountType(e.target.value)}
-                className={cn("w-full h-9 px-2 rounded-lg border text-sm", T.border, "focus:outline-none focus:ring-2 focus:ring-[#c2703e]/20")}>
+                className={cn("w-full h-9 px-2 rounded-lg border text-sm", T.border, "focus:outline-none focus:ring-2 focus:ring-primary/20")}>
                 <option value="PERCENTAGE">PERCENTAGE</option>
                 <option value="FIXED">FIXED</option>
               </select>
@@ -637,14 +637,14 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
 
           {/* Action buttons */}
           <div className="flex items-center justify-center gap-3 mt-5">
-            <button className="inline-flex items-center gap-1.5 px-5 py-2 rounded-xl text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 transition-colors">
+            <button className="inline-flex items-center gap-1.5 px-5 py-2 rounded-xl text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-700 dark:hover:bg-emerald-600 transition-colors">
               <Pencil className="h-4 w-4" /> Edit
             </button>
-            <button className="inline-flex items-center gap-1.5 px-5 py-2 rounded-xl text-sm font-medium text-white bg-red-500 hover:bg-red-600 transition-colors">
+            <button className="inline-flex items-center gap-1.5 px-5 py-2 rounded-xl text-sm font-medium text-white bg-red-500 hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-600 transition-colors">
               <Save className="h-4 w-4" /> Update
             </button>
             <button onClick={resetEdit}
-              className="inline-flex items-center gap-1.5 px-5 py-2 rounded-xl text-sm font-medium text-white bg-amber-500 hover:bg-amber-600 transition-colors">
+              className="inline-flex items-center gap-1.5 px-5 py-2 rounded-xl text-sm font-medium text-white bg-amber-500 hover:bg-amber-600 dark:bg-amber-700 dark:hover:bg-amber-600 transition-colors">
               <RotateCcw className="h-4 w-4" /> Reset
             </button>
           </div>
@@ -676,27 +676,27 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
                     </span>
                   )}
                 </div>
-                <button onClick={() => setShowPanel(false)} className="p-1.5 rounded-lg hover:bg-gray-100"><X className="h-5 w-5 text-muted-foreground" /></button>
+                <button onClick={() => setShowPanel(false)} className="p-1.5 rounded-lg hover:bg-muted"><X className="h-5 w-5 text-muted-foreground cursor-pointer" /></button>
               </div>
               <div className={cn("px-5 py-3 border-b", T.border)}>
                 <div className="relative">
                   <Search className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <input type="text" placeholder="Search..." value={panelSearch}
                     onChange={(e) => { setPanelSearch(e.target.value); setPanelPage(1); }}
-                    className={cn("w-full ps-9 pe-4 py-2 rounded-xl border text-sm", T.border, "focus:outline-none focus:ring-2 focus:ring-[#c2703e]/20")} />
+                    className={cn("w-full ps-9 pe-4 py-2 rounded-xl border text-sm", T.border, "focus:outline-none focus:ring-2 focus:ring-primary/20")} />
                 </div>
               </div>
               <div className="flex-1 overflow-y-auto">
                 {paged.length === 0 ? (
-                  <div className="p-8 text-center"><Users className="h-10 w-10 mx-auto mb-2 text-gray-200" /><p className={T.muted}>No results</p></div>
+                  <div className="p-8 text-center"><Users className="h-10 w-10 mx-auto mb-2 text-muted-foreground/30" /><p className={T.muted}>No results</p></div>
                 ) : (
-                  <div className="divide-y divide-gray-50">
+                  <div className="divide-y divide-border">
                     {paged.map((order) => (
                       <a key={order.id} href={`/orders/${order.orderId}`}
-                        className={cn("block px-5 py-4 hover:bg-[#faf6f1]/50 transition-colors cursor-pointer", order.status === "CANCELLED" && "opacity-50")}>
+                        className={cn("block px-5 py-4 hover:bg-muted/50 transition-colors cursor-pointer", order.status === "CANCELLED" && "opacity-50")}>
                         <div className="flex items-start justify-between gap-3">
                           <div className="flex items-start gap-3 min-w-0 flex-1">
-                            <div className={cn("w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-semibold text-white", T.accentBg)}>
+                            <div className={cn("w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-semibold text-primary-foreground", T.accentBg)}>
                               {maskName(order.customerName, dealFinished).charAt(0).toUpperCase()}
                             </div>
                             <div className="min-w-0 flex-1">
@@ -714,7 +714,7 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
                               <div className="text-xs text-muted-foreground">x{order.quantity}</div>
                               <div className={cn("text-xs font-medium", T.accentText)}>#{order.orderId}</div>
                             </div>
-                            <div className={cn("flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors", T.accentLight, T.accentText, "hover:bg-[#c2703e]/20")}>
+                            <div className={cn("flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors", T.accentLight, T.accentText, "hover:bg-primary/20")}>
                               <Eye className="h-3.5 w-3.5" />
                               View Order
                             </div>
@@ -729,12 +729,12 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
                 <div className={cn("px-5 py-3 border-t flex items-center justify-between", T.border)}>
                   <span className={cn("text-xs", T.muted)}>{(panelPage - 1) * PAGE_SIZE + 1}–{Math.min(panelPage * PAGE_SIZE, filtered.length)} of {filtered.length}</span>
                   <div className="flex items-center gap-1">
-                    <button disabled={panelPage <= 1} onClick={() => setPanelPage((p) => p - 1)} className="p-1.5 rounded-lg hover:bg-gray-100 disabled:opacity-30"><ChevronLeft className="h-4 w-4" /></button>
+                    <button disabled={panelPage <= 1} onClick={() => setPanelPage((p) => p - 1)} className="p-1.5 rounded-lg hover:bg-muted disabled:opacity-30"><ChevronLeft className="h-4 w-4" /></button>
                     {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
                       <button key={p} onClick={() => setPanelPage(p)}
-                        className={cn("w-7 h-7 rounded-lg text-xs font-medium", panelPage === p ? cn(T.accentBg, "text-white") : "hover:bg-gray-100 text-muted-foreground")}>{p}</button>
+                        className={cn("w-7 h-7 rounded-lg text-xs font-medium", panelPage === p ? cn(T.accentBg, "text-primary-foreground") : "hover:bg-muted text-muted-foreground")}>{p}</button>
                     ))}
-                    <button disabled={panelPage >= totalPages} onClick={() => setPanelPage((p) => p + 1)} className="p-1.5 rounded-lg hover:bg-gray-100 disabled:opacity-30"><ChevronRight className="h-4 w-4" /></button>
+                    <button disabled={panelPage >= totalPages} onClick={() => setPanelPage((p) => p + 1)} className="p-1.5 rounded-lg hover:bg-muted disabled:opacity-30"><ChevronRight className="h-4 w-4" /></button>
                   </div>
                 </div>
               )}
@@ -820,10 +820,10 @@ export function DealOpsTab({ langDir, t }: { langDir: string; t: any }) {
     <div>
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-5 mb-6">
-        <StatCard icon={<Activity className="h-5 w-5 text-[#c2703e]" />} label="Total Deals" value={deals.length} sub={`${activeCount} active`} color={T.accentLight} />
-        <StatCard icon={<Users className="h-5 w-5 text-[#c2703e]" />} label="BuyGroup" value={countByType("BUYGROUP")} color={T.accentLight} />
-        <StatCard icon={<Truck className="h-5 w-5 text-blue-600" />} label="Dropship" value={countByType("DROPSHIP")} sub={`${deals.filter((d) => d.dealType === "DROPSHIP").reduce((s, d) => s + (d.resellers || 0), 0)} resellers`} color={T.infoBg} />
-        <StatCard icon={<DollarSign className="h-5 w-5 text-emerald-600" />} label="Total Revenue" value={`$${totalRevenue.toFixed(0)}`} color={T.successBg} />
+        <StatCard icon={<Activity className="h-5 w-5 text-primary" />} label="Total Deals" value={deals.length} sub={`${activeCount} active`} color={T.accentLight} />
+        <StatCard icon={<Users className="h-5 w-5 text-primary" />} label="BuyGroup" value={countByType("BUYGROUP")} color={T.accentLight} />
+        <StatCard icon={<Truck className="h-5 w-5 text-blue-600 dark:text-blue-400" />} label="Dropship" value={countByType("DROPSHIP")} sub={`${deals.filter((d) => d.dealType === "DROPSHIP").reduce((s, d) => s + (d.resellers || 0), 0)} resellers`} color={T.infoBg} />
+        <StatCard icon={<DollarSign className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />} label="Total Revenue" value={`$${totalRevenue.toFixed(0)}`} color={T.successBg} />
       </div>
 
       {/* ── Top Bar: Type tabs + Filters + Sort ── */}
@@ -840,13 +840,13 @@ export function DealOpsTab({ langDir, t }: { langDir: string; t: any }) {
                 className={cn(
                   "inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium border transition-colors",
                   dealTypeFilter === type
-                    ? cn(T.accentBg, "text-white border-transparent")
-                    : cn(T.border, T.muted, "hover:bg-[#faf6f1]"),
+                    ? cn(T.accentBg, "text-primary-foreground border-transparent")
+                    : cn(T.border, T.muted, "hover:bg-muted"),
                 )}>
                 {isAll ? <BarChart3 className="h-4 w-4" /> : config!.icon}
                 {isAll ? "All" : config!.label}
                 <span className={cn("text-xs px-1.5 py-0.5 rounded-full",
-                  dealTypeFilter === type ? "bg-white/20 text-white" : "bg-gray-100 text-muted-foreground"
+                  dealTypeFilter === type ? "bg-white/20 text-primary-foreground" : "bg-muted text-muted-foreground"
                 )}>{count}</span>
               </button>
             );
@@ -861,15 +861,15 @@ export function DealOpsTab({ langDir, t }: { langDir: string; t: any }) {
             <Search className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <input type="text" placeholder="Search deals..." value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className={cn("w-full ps-9 pe-4 py-2 rounded-xl border text-sm", T.border, "focus:outline-none focus:ring-2 focus:ring-[#c2703e]/20")} />
+              className={cn("w-full ps-9 pe-4 py-2 rounded-xl border text-sm", T.border, "focus:outline-none focus:ring-2 focus:ring-primary/20")} />
           </div>
 
           {/* Status pills */}
-          <div className="flex items-center gap-1 bg-[#faf6f1] rounded-xl p-1">
+          <div className="flex items-center gap-1 bg-muted rounded-xl p-1">
             {(["all", "ACTIVE", "THRESHOLD_MET", "COMPLETED", "EXPIRED", "CANCELLED"] as const).map((s) => (
               <button key={s} onClick={() => setStatusFilter(s)}
                 className={cn("px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors",
-                  statusFilter === s ? cn(T.accentBg, "text-white") : cn(T.muted, "hover:bg-white"))}>
+                  statusFilter === s ? cn(T.accentBg, "text-primary-foreground") : cn(T.muted, "hover:bg-card"))}>
                 {s === "all" ? "All" : s === "THRESHOLD_MET" ? "Ready" : s.charAt(0) + s.slice(1).toLowerCase()}
               </button>
             ))}
@@ -879,7 +879,7 @@ export function DealOpsTab({ langDir, t }: { langDir: string; t: any }) {
           <select
             value={dateRange}
             onChange={(e) => setDateRange(e.target.value as any)}
-            className={cn("px-3 py-2 rounded-xl border text-sm", T.border, dateRange !== "all" && "border-[#c2703e] bg-[#c2703e]/5", "focus:outline-none focus:ring-2 focus:ring-[#c2703e]/20")}
+            className={cn("px-3 py-2 rounded-xl border text-sm", T.border, dateRange !== "all" && "border-primary bg-primary/5", "focus:outline-none focus:ring-2 focus:ring-primary/20")}
           >
             <option value="all">All Time</option>
             <option value="today">Today</option>
@@ -892,7 +892,7 @@ export function DealOpsTab({ langDir, t }: { langDir: string; t: any }) {
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as any)}
-            className={cn("px-3 py-2 rounded-xl border text-sm", T.border, sortBy !== "newest" && "border-[#c2703e] bg-[#c2703e]/5", "focus:outline-none focus:ring-2 focus:ring-[#c2703e]/20")}
+            className={cn("px-3 py-2 rounded-xl border text-sm", T.border, sortBy !== "newest" && "border-primary bg-primary/5", "focus:outline-none focus:ring-2 focus:ring-primary/20")}
           >
             <option value="newest">Newest First</option>
             <option value="oldest">Oldest First</option>
@@ -904,7 +904,7 @@ export function DealOpsTab({ langDir, t }: { langDir: string; t: any }) {
           {/* Clear all */}
           {hasActiveFilters && (
             <button onClick={clearAllFilters}
-              className={cn("inline-flex items-center gap-1 px-3 py-2 rounded-xl text-xs font-medium transition-colors", T.danger, "hover:bg-red-50")}>
+              className={cn("inline-flex items-center gap-1 px-3 py-2 rounded-xl text-xs font-medium transition-colors", T.danger, "hover:bg-red-50 dark:hover:bg-red-950/30")}>
               <XCircle className="h-3.5 w-3.5" />
               Clear
             </button>
@@ -912,14 +912,14 @@ export function DealOpsTab({ langDir, t }: { langDir: string; t: any }) {
         </div>
 
         {/* Row 3: Results count bar */}
-        <div className={cn("px-4 py-2 bg-[#faf6f1] flex items-center justify-between text-xs", T.muted)}>
+        <div className={cn("px-4 py-2 bg-muted/50 flex items-center justify-between text-xs", T.muted)}>
           <span>
             Showing <span className={cn("font-semibold", T.text)}>{filteredDeals.length}</span> of {deals.length} deals
             {dealTypeFilter !== "ALL" && <span> in <span className="font-medium">{DEAL_TYPE_CONFIG[dealTypeFilter]?.label}</span></span>}
           </span>
           {hasActiveFilters && (
             <span className="flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#c2703e]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-primary" />
               Filters active
             </span>
           )}
@@ -930,7 +930,7 @@ export function DealOpsTab({ langDir, t }: { langDir: string; t: any }) {
       <div className="space-y-5">
         {filteredDeals.length === 0 ? (
           <div className={cn(T.card, T.border, "border rounded-2xl p-12 text-center")}>
-            <Package className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+            <Package className="h-12 w-12 mx-auto mb-3 text-muted-foreground/40" />
             <p className={cn("text-lg font-medium", T.muted)}>No deals found</p>
             <p className="text-sm text-muted-foreground mt-1">Try adjusting your filters</p>
           </div>
