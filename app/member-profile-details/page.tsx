@@ -76,7 +76,7 @@ export default function MemberProfileDetailsPage() {
 
                         <div className="mt-12 w-full">
                             <Tabs onValueChange={(e) => setActiveTab(e)} value={activeTab}>
-                                <TabsList className="mb-1 grid min-h-[80px] w-[560px] grid-cols-3 gap-x-6 rounded-none bg-transparent px-0 pt-7">
+                                <TabsList className="mb-1 grid min-h-[80px] w-full max-w-[560px] grid-cols-1 gap-3 rounded-none bg-transparent px-0 pt-7 sm:grid-cols-3 sm:gap-x-6">
                                     <TabsTrigger
                                         value="profile-info"
                                         className="rounded-b-none bg-muted! py-4 text-base font-bold text-muted-foreground! data-[state=active]:bg-dark-orange! data-[state=active]:text-white!"

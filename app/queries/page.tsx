@@ -66,7 +66,7 @@ const QueriesPage = () => {
 
                         <div className="team_members_table w-full">
                             {!helpCenterQueriesQuery?.isLoading && helpCenterQueries.length ? (
-                                <>
+                                <div className="overflow-x-auto">
                                     <table cellPadding={0} cellSpacing={0} border={0}>
                                         <thead>
                                             <tr>
@@ -100,7 +100,7 @@ const QueriesPage = () => {
                                             })}
                                         </tbody>
                                     </table>
-                                </>
+                                </div>
                             ) : null}
 
                             {!helpCenterQueriesQuery?.isLoading && !helpCenterQueries.length ? (

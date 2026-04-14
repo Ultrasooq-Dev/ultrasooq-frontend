@@ -84,13 +84,14 @@ export default function MessagesPage() {
 
   return (
     <div className="h-[calc(100vh-64px)] overflow-hidden border-t border-border flex">
-      {/* P1: Channel tree — 240px ↔ 130px */}
+      {/* P1: Channel tree — 240px ↔ 130px (hidden on mobile when chat is active) */}
       <div
         onMouseEnter={p1Enter}
         onMouseLeave={p1Leave}
         className={cn(
           "shrink-0 h-full transition-[width] duration-200 ease-in-out overflow-hidden",
-          p1.collapsed ? "w-[130px]" : "w-[240px]"
+          p1.collapsed ? "w-[60px] sm:w-[130px]" : "w-[200px] sm:w-[240px]",
+          chatPersonId ? "hidden md:block" : ""
         )}
       >
         <MsgPanel1
@@ -109,7 +110,8 @@ export default function MessagesPage() {
           onMouseLeave={p2Leave}
           className={cn(
             "shrink-0 h-full transition-[width] duration-200 ease-in-out overflow-hidden",
-            p2.collapsed ? "w-[130px]" : "w-[260px]"
+            p2.collapsed ? "w-[60px] sm:w-[130px]" : "w-full sm:w-[260px]",
+            chatPersonId ? "hidden md:block" : ""
           )}
         >
           <MsgPanel2
@@ -134,7 +136,7 @@ export default function MessagesPage() {
             />
           </div>
           {/* P6: Products + Specs */}
-          <div className="w-[420px] shrink-0 h-full">
+          <div className="hidden lg:block w-[420px] shrink-0 h-full">
             <MsgPanel6
               personId={chatPersonId}
               role={isVendor ? "vendor" : "customer"}

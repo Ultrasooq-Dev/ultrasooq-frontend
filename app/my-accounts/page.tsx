@@ -366,7 +366,7 @@ export default function MyAccountsPage() {
 
         {/* Accounts Tabs */}
         <Tabs defaultValue="all" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4">
             <TabsTrigger value="all">
               {t("all_accounts")} ({subAccounts?.length || 0})
             </TabsTrigger>

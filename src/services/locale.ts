@@ -14,9 +14,9 @@ const SUPPORTED_LOCALES = new Set([
 
 export async function getUserLocale() {
   const cookieStore = await cookies();
-  const locale = cookieStore.get(COOKIE_NAME)?.value || 'ar';
+  const locale = cookieStore.get(COOKIE_NAME)?.value || 'en';
   // Validate locale against supported list to prevent import errors
-  return SUPPORTED_LOCALES.has(locale) ? locale : 'ar';
+  return SUPPORTED_LOCALES.has(locale) ? locale : 'en';
 }
 
 export async function setUserLocale(locale: string) {

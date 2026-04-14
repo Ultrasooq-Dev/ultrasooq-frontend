@@ -259,7 +259,7 @@ const ExistingProductsPage = () => {
             ></div>
             <div className="right-products">
               {allProductsQuery.isLoading ? (
-                <div className="grid grid-cols-4 gap-5">
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 sm:gap-5">
                   {Array.from({ length: 8 }).map((_, index) => (
                     <SkeletonProductCardLoader key={index} />
                   ))}

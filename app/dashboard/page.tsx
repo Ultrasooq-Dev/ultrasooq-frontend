@@ -68,7 +68,7 @@ function Donut({ data, size = 130 }: { data: { label: string; value: number; col
   }).join(", ");
 
   return (
-    <div className="flex items-center gap-8">
+    <div className="flex flex-col items-center gap-6 sm:flex-row sm:gap-8">
       <div className="relative shrink-0" style={{ width: size, height: size }}>
         <div className="absolute inset-0 rounded-full" style={{ background: `conic-gradient(${grad || "hsl(var(--border)) 0deg 360deg"})` }} />
         <div className={cn("absolute inset-[22%] rounded-full flex items-center justify-center", T.card, "shadow-inner")}>
@@ -291,31 +291,31 @@ function DashboardPage() {
 
   return (
     <div className={cn("min-h-screen", T.bg)}>
-      <div className="mx-auto max-w-[1140px] px-6 py-8">
+      <div className="mx-auto max-w-[1140px] px-4 py-6 sm:px-6 sm:py-8">
 
         {/* ── Header ─────────────────────────────────── */}
-        <div className="flex items-center justify-between mb-10">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-8 sm:mb-10">
           <div>
             <p className={cn("text-[12px] font-medium", T.muted)}>
               {new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
             </p>
-            <h1 className={cn("mt-1 text-[26px] font-extrabold tracking-tight", T.text)}>
+            <h1 className={cn("mt-1 text-[22px] sm:text-[26px] font-extrabold tracking-tight", T.text)}>
               {emoji} {greeting}, {name}
             </h1>
           </div>
           <div className="flex items-center gap-3">
-            <Link href="/orders" className={cn("flex items-center gap-2 rounded-2xl border px-4 py-2.5 text-[12px] font-semibold transition-all", T.border, T.text, T.hoverBg)}>
+            <Link href="/orders" className={cn("flex items-center gap-2 rounded-2xl border px-3 py-2 sm:px-4 sm:py-2.5 text-[12px] font-semibold transition-all", T.border, T.text, T.hoverBg)}>
               <ShoppingBag className="h-4 w-4" /> Orders
               {pending > 0 && <span className={cn("rounded-full px-1.5 py-0.5 text-[9px] font-bold text-primary-foreground", T.accentBg)}>{pending}</span>}
             </Link>
-            <Link href="/product?productType=P" className={cn("flex items-center gap-2 rounded-2xl px-4 py-2.5 text-[12px] font-bold text-primary-foreground transition-all hover:opacity-90", T.accentBg)}>
+            <Link href="/product?productType=P" className={cn("flex items-center gap-2 rounded-2xl px-3 py-2 sm:px-4 sm:py-2.5 text-[12px] font-bold text-primary-foreground transition-all hover:opacity-90", T.accentBg)}>
               <Zap className="h-4 w-4" /> New Product
             </Link>
           </div>
         </div>
 
         {/* ── Stats ──────────────────────────────────── */}
-        <div className="grid grid-cols-4 gap-5 mb-8">
+        <div className="grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4 mb-8">
           <Stat label="Revenue" value={`${currency.symbol}${Number(s.totalRevenue || 0).toLocaleString()}`}
             icon={DollarSign} color="bg-primary" change={`${currency.symbol}${s.averageOrderValue || 0} avg`} href="/analytics" />
           <Stat label="Orders" value={total}
@@ -334,7 +334,7 @@ function DashboardPage() {
           const totalOrders = cd.reduce((s, d) => s + d.orders, 0);
           const totalRevenue = cd.reduce((s, d) => s + d.revenue, 0);
           return (
-            <div className="grid grid-cols-4 gap-4 mb-6">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 mb-6">
               <MetricCard label="Product Views" value={totalViews.toLocaleString()} data={cd.map(d => d.views)} color="hsl(var(--muted-foreground))" gradId="viewsG" />
               <MetricCard label="Add to Cart" value={totalCarts.toLocaleString()} data={cd.map(d => d.carts)} color="#d4a54a" gradId="cartsG" />
               <MetricCard label="Orders" value={totalOrders.toLocaleString()} data={cd.map(d => d.orders)} color="#5b8a72" gradId="ordersG" />
@@ -358,9 +358,9 @@ function DashboardPage() {
         </div>
 
         {/* ── Middle ─────────────────────────────────── */}
-        <div className="grid grid-cols-5 gap-6 mb-8">
+        <div className="grid grid-cols-1 gap-6 mb-8 lg:grid-cols-5">
           {/* Donut */}
-          <div className={cn("col-span-2 rounded-3xl p-6 shadow-sm", T.card, "border", T.border)}>
+          <div className={cn("lg:col-span-2 rounded-3xl p-5 sm:p-6 shadow-sm", T.card, "border", T.border)}>
             <h3 className={cn("text-[11px] font-bold uppercase tracking-widest mb-6", T.muted)}>Order Breakdown</h3>
             <Donut data={[
               { label: "Pending", value: pending, color: "#d4a54a" },
@@ -371,7 +371,7 @@ function DashboardPage() {
           </div>
 
           {/* Quick Links */}
-          <div className="col-span-3 space-y-3">
+          <div className="lg:col-span-3 space-y-3">
             <h3 className={cn("text-[11px] font-bold uppercase tracking-widest mb-2 px-1", T.muted)}>Quick Access</h3>
             <div className="grid grid-cols-2 gap-3">
               <QuickLink label="Orders" icon={ShoppingBag} href="/orders" badge={pending} />
@@ -417,13 +417,13 @@ function DashboardPage() {
         </div>
 
         {/* ── Store Footer ───────────────────────────── */}
-        <div className={cn("mt-8 flex items-center justify-between rounded-3xl p-5", T.card, "border", T.border, "shadow-sm")}>
+        <div className={cn("mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between rounded-3xl p-5", T.card, "border", T.border, "shadow-sm")}>
           <div className="flex items-center gap-4">
-            <div className={cn("flex h-12 w-12 items-center justify-center rounded-2xl", T.accentLight)}>
+            <div className={cn("flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl", T.accentLight)}>
               <Store className={cn("h-6 w-6", T.accentText)} />
             </div>
-            <div>
-              <p className={cn("text-[14px] font-bold", T.text)}>{me.data?.data?.companyName || `${name}'s Store`}</p>
+            <div className="min-w-0">
+              <p className={cn("text-[14px] font-bold truncate", T.text)}>{me.data?.data?.companyName || `${name}'s Store`}</p>
               <p className={cn("text-[11px]", T.muted)}>
                 {me.data?.data?.tradeRole || "MEMBER"} · Since {me.data?.data?.createdAt ? new Date(me.data.data.createdAt).toLocaleDateString("en-US", { month: "short", year: "numeric" }) : "—"}
               </p>
@@ -431,10 +431,10 @@ function DashboardPage() {
           </div>
           <div className="flex items-center gap-3">
             <Link href="/company-profile" className={cn("rounded-2xl border px-4 py-2 text-[12px] font-semibold transition-all", T.border, T.muted, T.hoverBg)}>
-              <Settings className="h-3.5 w-3.5 inline mr-1.5" /> Edit Store
+              <Settings className="h-3.5 w-3.5 inline me-1.5" /> Edit Store
             </Link>
             <Link href="/analytics" className={cn("rounded-2xl border px-4 py-2 text-[12px] font-semibold transition-all", T.border, T.muted, T.hoverBg)}>
-              <Eye className="h-3.5 w-3.5 inline mr-1.5" /> View Analytics
+              <Eye className="h-3.5 w-3.5 inline me-1.5" /> View Analytics
             </Link>
           </div>
         </div>

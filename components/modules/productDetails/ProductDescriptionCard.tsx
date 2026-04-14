@@ -836,7 +836,7 @@ const ProductDescriptionCard: React.FC<ProductDescriptionCardProps> = ({
                   <h4 className="mb-3 text-sm font-semibold text-warning" translate="no">
                     {t("time_left")}
                   </h4>
-                  <div className="grid grid-cols-4 gap-3">
+                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                     <div className="text-center">
                       <div className="text-2xl font-bold text-warning" translate="no">{timeLeft.split(":")[0]}</div>
                       <div className="text-xs text-warning" translate="no">Days</div>

@@ -60,7 +60,7 @@ const ShareLinksPage = () => {
                     </div>
                     <div className="team_members_table w-full">
                         {!shareLinksQuery?.isLoading && shareLinks.length ? (
-                            <>
+                            <div className="overflow-x-auto">
                                 <table cellPadding={0} cellSpacing={0} border={0}>
                                     <thead>
                                         <tr>
@@ -86,7 +86,7 @@ const ShareLinksPage = () => {
                                         })}
                                     </tbody>
                                 </table>
-                            </>
+                            </div>
                         ) : null}
 
                         {!shareLinksQuery?.isLoading && !shareLinks.length ? (

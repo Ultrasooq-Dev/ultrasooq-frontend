@@ -65,7 +65,7 @@ const SellerRewardDetailPage = () => {
 
                     <div className="team_members_table w-full">
                         {!sharedLinksBySellerRewardQuery?.isLoading && sharedLinks.length ? (
-                            <>
+                            <div className="overflow-x-auto">
                                 <table cellPadding={0} cellSpacing={0} border={0}>
                                     <thead>
                                         <tr>
@@ -89,7 +89,7 @@ const SellerRewardDetailPage = () => {
                                         })}
                                     </tbody>
                                 </table>
-                            </>
+                            </div>
                         ) : null}
 
                         {!sharedLinksBySellerRewardQuery?.isLoading && !sharedLinks.length ? (

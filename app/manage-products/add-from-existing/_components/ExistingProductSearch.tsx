@@ -65,7 +65,7 @@ export const ExistingProductSearch: React.FC<ExistingProductSearchProps> = ({
             placeholder={t("enter_product_name")}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="flex-1 min-w-[600px]"
+            className="flex-1 min-w-0 sm:min-w-[400px] lg:min-w-[600px]"
             dir={langDir}
           />
           <Button onClick={onSearch} disabled={isSearching || !searchTerm.trim()}>
