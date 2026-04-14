@@ -1000,7 +1000,7 @@ const ManageProductsPage = () => {
 
                 <button
                   className="px-4 py-2 bg-primary text-white rounded hover:bg-primary/90 transition-colors flex items-center gap-2"
-                  onClick={() => router.push('/product')}
+                  onClick={() => router.push('/add-product')}
                   dir={langDir}
                 >
                   <IoMdAdd size={20} />
