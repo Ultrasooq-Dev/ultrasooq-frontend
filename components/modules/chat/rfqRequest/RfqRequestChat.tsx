@@ -71,12 +71,14 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
 
         <div className="flex-1 overflow-y-auto">
           <RfqRequestChatHistory
-            selectedChatHistory={c.selectedChatHistory}
-            chatHistoryLoading={c.chatHistoryLoading}
-            selectedRoom={c.selectedRoom}
-            selectedVendor={c.selectedVendor}
-            onRequestPrice={c.handleRequestPrice}
-            updateVendorMessageCount={c.updateVendorMessageCount}
+            {...{
+              selectedChatHistory: c.selectedChatHistory,
+              chatHistoryLoading: c.chatHistoryLoading,
+              selectedRoom: c.selectedRoom,
+              selectedVendor: c.selectedVendor,
+              onRequestPrice: c.handleRequestPrice,
+              updateVendorMessageCount: c.updateVendorMessageCount,
+            } as any}
           />
         </div>
 
@@ -97,12 +99,14 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
 
         {c.showProductSelectionModal && c.selectedProductForModal && (
           <BuyerProductSelectionModal
-            rfqQuoteId={rfqQuoteId}
-            rfqQuoteProductId={c.selectedProductForModal.rfqQuoteProductId}
-            rfqQuotesUserId={c.selectedProductForModal.rfqQuotesUserId}
-            selectedChatHistory={c.selectedChatHistory}
-            onClose={c.handleCloseProductSelectionModal}
-            onConfirm={c.handleProductSelectionFromModal}
+            {...{
+              rfqQuoteId,
+              rfqQuoteProductId: c.selectedProductForModal.rfqQuoteProductId,
+              rfqQuotesUserId: c.selectedProductForModal.rfqQuotesUserId,
+              selectedChatHistory: c.selectedChatHistory,
+              onClose: c.handleCloseProductSelectionModal,
+              onConfirm: c.handleProductSelectionFromModal,
+            } as any}
           />
         )}
       </div>
@@ -146,12 +150,14 @@ const RfqRequestChat: React.FC<RfqRequestChatProps> = ({
 
         <div className="flex-1 overflow-y-auto">
           <RfqRequestChatHistory
-            selectedChatHistory={c.selectedChatHistory}
-            chatHistoryLoading={c.chatHistoryLoading}
-            selectedRoom={c.selectedRoom}
-            selectedVendor={c.selectedVendor}
-            onRequestPrice={c.handleRequestPrice}
-            updateVendorMessageCount={c.updateVendorMessageCount}
+            {...{
+              selectedChatHistory: c.selectedChatHistory,
+              chatHistoryLoading: c.chatHistoryLoading,
+              selectedRoom: c.selectedRoom,
+              selectedVendor: c.selectedVendor,
+              onRequestPrice: c.handleRequestPrice,
+              updateVendorMessageCount: c.updateVendorMessageCount,
+            } as any}
           />
         </div>
 

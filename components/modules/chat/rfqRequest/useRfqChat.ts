@@ -155,7 +155,7 @@ export function useRfqChat(
     const uniqueId = generateUniqueNumber();
     const attach = buildAttachPayload();
     setSelectedChatHistory((prev) => [...prev, { ...buildOptimisticMsg(attach), uniqueId }]);
-    sendMessage({ roomId, content, rfqId: parseInt(rfqQuoteId), rfqQuoteProductId, buyerId, requestedPrice, rfqQuotesUserId: vendors.selectedVendor?.id, userId: vendors.activeSellerId, uniqueId, attachments: attach });
+    sendMessage({ roomId, content, rfqId: parseInt(rfqQuoteId), rfqQuoteProductId, buyerId, requestedPrice, rfqQuotesUserId: vendors.selectedVendor?.id, uniqueId, attachments: attach } as any);
   }
 
   async function handleCreateRoom(content: string, rfqQuoteProductId?: number, buyerId?: number, requestedPrice?: number) {

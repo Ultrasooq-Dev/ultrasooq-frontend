@@ -100,7 +100,7 @@ export default function ProductMainSection({
               consumerType={pp?.consumerType}
               productTags={productDetails?.productTags}
               productShortDescription={productDetails?.product_productShortDescription}
-              productQuantity={globalQuantity || getProductQuantityByUser || getProductQuantityByDevice}
+              productQuantity={(globalQuantity || getProductQuantityByUser || getProductQuantityByDevice) as number}
               onQuantityChange={handleQuantity}
               productReview={productDetails?.productReview}
               onAdd={handleAddToCart}

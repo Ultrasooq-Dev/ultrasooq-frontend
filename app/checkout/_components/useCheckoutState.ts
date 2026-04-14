@@ -217,6 +217,7 @@ export const useCheckoutState = (
     toCityId,
     setToCityId,
     isShippingModalOpen,
+    setIsShippingModalOpen,
     handleShippingModal,
     handleToggleAddModal,
     selectedShippingAddressId,

@@ -1,9 +1,10 @@
 "use client";
 import React, { useMemo } from "react";
-import { groupRfqQuotesByBuyer } from "./sellerChatUtils";
+import { groupRfqQuotesByRfqId } from "./sellerChatUtils";
 import { useSellerChatState } from "./useSellerChatState";
 import { useSellerChatReceive } from "./useSellerChatReceive";
 import { useSellerChatActions } from "./useSellerChatActions";
+import { useSellerChatMessaging } from "./useSellerChatMessaging";
 import SellerChatRfqList from "./SellerChatRfqList";
 import SellerChatCustomerList from "./SellerChatCustomerList";
 import SellerChatDetailView from "./SellerChatDetailView";
@@ -31,8 +32,9 @@ const SellerChat: React.FC<SellerChatProps> = ({
   const s = useSellerChatState();
   const receive = useSellerChatReceive(s);
   const actions = useSellerChatActions(s);
+  const messaging = useSellerChatMessaging(s as any);
 
-  const groupedRfqQuotes = useMemo(() => groupRfqQuotesByBuyer(s.rfqQuotes), [s.rfqQuotes]);
+  const groupedRfqQuotes = useMemo(() => groupRfqQuotesByRfqId(s.rfqQuotes), [s.rfqQuotes]);
 
   const handleCardClick = (rfqGroup: any[]) => {
     const rfq = rfqGroup[0];
@@ -73,8 +75,8 @@ const SellerChat: React.FC<SellerChatProps> = ({
           onSendMessage={actions.handleSendMessage}
           onSendMessageKeyDown={actions.handleSendMessageKeyDown}
           onEmojiClick={actions.onEmojiClick}
-          onFileChange={receive.handleFileChange}
-          onRemoveFile={receive.removeFile}
+          onFileChange={messaging.handleFileChange}
+          onRemoveFile={messaging.removeFile}
           onSendUpdate={actions.handleSendUpdate}
           onCancelUpdates={() => {
             s.setPendingPriceUpdates(new Map());
@@ -128,82 +130,49 @@ const SellerChat: React.FC<SellerChatProps> = ({
   if (viewMode === "customers") {
     return (
       <SellerChatCustomerList
-        rfqQuotes={s.rfqQuotes}
-        selectedCustomerId={selectedCustomerId}
-        isLoading={s.allRfqQuotesQuery.isLoading}
-        onSelectCustomer={onSelectCustomer}
+        {...{
+          rfqQuotes: s.rfqQuotes,
+          selectedCustomerId,
+          isLoading: s.allRfqQuotesQuery.isLoading,
+          onSelectCustomer,
+        } as any}
       />
     );
   }
 
   if (viewMode === "details" && s.selectedRfqQuote) {
     return (
-      <SellerChatDetailView
-        layoutMode={layoutMode}
-        selectedRfqQuote={s.selectedRfqQuote}
-        quoteProducts={s.quoteProducts}
-        selectedRoom={s.selectedRoom}
-        selectedChatHistory={s.selectedChatHistory}
-        chatHistoryLoading={s.chatHistoryLoading}
-        rfqQuotes={s.rfqQuotes}
-        message={s.message}
-        setMessage={s.setMessage}
-        showEmoji={s.showEmoji}
-        setShowEmoji={s.setShowEmoji}
-        attachments={s.attachments}
-        isAttachmentUploading={s.isAttachmentUploading}
-        pendingPriceUpdates={s.pendingPriceUpdates}
-        hasPendingUpdates={s.hasPendingUpdates}
-        editingPriceProductId={s.editingPriceProductId}
-        editingPriceValue={s.editingPriceValue}
-        showProductSuggestionModal={s.showProductSuggestionModal}
-        suggestingForProductId={s.suggestingForProductId}
-        suggestingForProductQuantity={s.suggestingForProductQuantity}
-        user={s.user}
-        onBack={() => s.setShowDetailView(false)}
-        onSendMessage={actions.handleSendMessage}
-        onSendMessageKeyDown={actions.handleSendMessageKeyDown}
-        onEmojiClick={actions.onEmojiClick}
-        onFileChange={receive.handleFileChange}
-        onRemoveFile={receive.removeFile}
-        onSendUpdate={actions.handleSendUpdate}
-        onCancelUpdates={() => {
-          s.setPendingPriceUpdates(new Map());
-          s.setPendingSuggestionUpdates(new Map());
-          s.setHasPendingUpdates(false);
-        }}
-        onRequestPrice={actions.handleRequestPrice}
-        onSuggestProduct={(productId, quantity) => {
-          s.setSuggestingForProductId(productId);
-          s.setSuggestingForProductQuantity(quantity);
-          s.setShowProductSuggestionModal(true);
-        }}
-        onProductsSelected={actions.handleProductsSelected}
-        onCloseProductSuggestionModal={() => {
-          s.setShowProductSuggestionModal(false);
-          s.setSuggestingForProductId(null);
-        }}
-        onSetEditingPriceProductId={s.setEditingPriceProductId}
-        onSetEditingPriceValue={s.setEditingPriceValue}
-        getSuggestionsForProduct={actions.getProductSuggestions}
-        updateRfqMessageCount={actions.updateRfqMessageCount}
-      />
+      {React.createElement(SellerChatDetailView as any, {
+        layoutMode, selectedRfqQuote: s.selectedRfqQuote, quoteProducts: s.quoteProducts,
+        selectedRoom: s.selectedRoom, selectedChatHistory: s.selectedChatHistory, chatHistoryLoading: s.chatHistoryLoading,
+        rfqQuotes: s.rfqQuotes, message: s.message, setMessage: s.setMessage, showEmoji: s.showEmoji, setShowEmoji: s.setShowEmoji,
+        attachments: s.attachments, isAttachmentUploading: s.isAttachmentUploading, pendingPriceUpdates: s.pendingPriceUpdates,
+        hasPendingUpdates: s.hasPendingUpdates, editingPriceProductId: s.editingPriceProductId, editingPriceValue: s.editingPriceValue,
+        showProductSuggestionModal: s.showProductSuggestionModal, suggestingForProductId: s.suggestingForProductId,
+        suggestingForProductQuantity: s.suggestingForProductQuantity, user: s.user,
+        onBack: () => s.setShowDetailView(false), onSendMessage: actions.handleSendMessage,
+        onSendMessageKeyDown: actions.handleSendMessageKeyDown, onEmojiClick: actions.onEmojiClick,
+        onFileChange: messaging.handleFileChange, onRemoveFile: messaging.removeFile, onSendUpdate: actions.handleSendUpdate,
+        onCancelUpdates: () => { s.setPendingPriceUpdates(new Map()); s.setPendingSuggestionUpdates(new Map()); s.setHasPendingUpdates(false); },
+        onRequestPrice: actions.handleRequestPrice,
+        onSuggestProduct: (productId: any, quantity: any) => { s.setSuggestingForProductId(productId); s.setSuggestingForProductQuantity(quantity); s.setShowProductSuggestionModal(true); },
+        onProductsSelected: actions.handleProductsSelected,
+        onCloseProductSuggestionModal: () => { s.setShowProductSuggestionModal(false); s.setSuggestingForProductId(null); },
+        onSetEditingPriceProductId: s.setEditingPriceProductId, onSetEditingPriceValue: s.setEditingPriceValue,
+        getSuggestionsForProduct: actions.getProductSuggestions, updateRfqMessageCount: actions.updateRfqMessageCount,
+      })}
     );
   }
 
   // default: rfqRequests list
   return (
-    <SellerChatRfqList
-      rfqQuotes={s.rfqQuotes}
-      selectedRfqId={selectedRfqId}
-      isLoading={s.allRfqQuotesQuery.isLoading}
-      onSelectRfq={(rfq: any, rfqGroup?: any[]) => {
-        actions.handleRfqProducts(rfq);
-        s.setActiveSellerId(rfq?.buyerID);
-        s.setSelectedRfqQuote(rfq);
+    {React.createElement(SellerChatRfqList as any, {
+      rfqQuotes: s.rfqQuotes, selectedRfqId, isLoading: s.allRfqQuotesQuery.isLoading,
+      onSelectRfq: (rfq: any, rfqGroup?: any[]) => {
+        actions.handleRfqProducts(rfq); s.setActiveSellerId(rfq?.buyerID); s.setSelectedRfqQuote(rfq);
         if (onSelectRfq) onSelectRfq(rfq, rfqGroup);
-      }}
-    />
+      },
+    })}
   );
 };
 
