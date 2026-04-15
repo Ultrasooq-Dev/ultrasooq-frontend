@@ -16,6 +16,8 @@ interface CartItem {
   unitPrice: number;
   seller: string;
   image?: string;
+  budgetFrom?: number;
+  budgetTo?: number;
 }
 
 function ItemCard({ item, onUpdateQty, onDelete, onViewProduct, isUpdating, isAr }: {
@@ -48,10 +50,25 @@ function ItemCard({ item, onUpdateQty, onDelete, onViewProduct, isUpdating, isAr
             className="text-[10px] font-semibold line-clamp-2 text-start hover:text-primary transition-colors w-full leading-tight">
             {item.name}
           </button>
-          <div className="flex items-center gap-1 mt-0.5">
+          <div className="flex items-center gap-1 mt-0.5 flex-wrap">
             <span className="text-[8px] text-muted-foreground">{item.seller}</span>
-            <span className="text-[8px] text-muted-foreground">•</span>
-            <span className="text-[8px] text-muted-foreground">{item.unitPrice} OMR/{isAr ? "قطعة" : "ea"}</span>
+            {(item.budgetFrom || item.budgetTo) ? (
+              <>
+                <span className="text-[8px] text-muted-foreground">•</span>
+                <span className="text-[8px] text-primary/70 font-medium">
+                  {item.budgetFrom && item.budgetTo
+                    ? `${item.budgetFrom}–${item.budgetTo} OMR`
+                    : item.budgetTo
+                      ? `≤${item.budgetTo} OMR`
+                      : `≥${item.budgetFrom} OMR`}
+                </span>
+              </>
+            ) : item.unitPrice > 0 ? (
+              <>
+                <span className="text-[8px] text-muted-foreground">•</span>
+                <span className="text-[8px] text-muted-foreground">{item.unitPrice} OMR/{isAr ? "قطعة" : "ea"}</span>
+              </>
+            ) : null}
           </div>
         </div>
         <button type="button" onClick={() => onDelete(item)}
@@ -77,7 +94,10 @@ function ItemCard({ item, onUpdateQty, onDelete, onViewProduct, isUpdating, isAr
             <Plus className="h-3 w-3" />
           </button>
         </div>
-        <span className="text-xs font-bold text-primary">{unitTotal > 0 ? unitTotal.toLocaleString() : "0"} OMR</span>
+        <span className="text-xs font-bold text-primary">
+          {unitTotal > 0 ? `${unitTotal.toLocaleString()} OMR` :
+            (item.budgetTo ? `≤${(item.budgetTo * item.quantity).toLocaleString()} OMR` : "RFQ")}
+        </span>
       </div>
     </div>
   );
@@ -106,16 +126,33 @@ export default function CartPanel({ locale, collapsed, onToggleCollapse, onViewP
   const updateBuyCart = useUpdateCartWithLogin();
   const deleteBuyItem = useDeleteCartItem();
 
-  // Map RFQ cart
-  const rfq: CartItem[] = (rfqCartQuery.data?.data?.data ?? rfqCartQuery.data?.data ?? []).map((item: any) => ({
-    id: item.rfqProductId ?? item.productId ?? item.id,
-    productId: item.rfqProductId ?? item.productId,
-    rfqCartId: item.id,
-    name: item.rfqProduct?.rfqProductName ?? item.product?.productName ?? item.productName ?? `Product #${item.id}`,
-    quantity: item.quantity ?? 1,
-    unitPrice: Number(item.offerPriceTo ?? item.offerPriceFrom ?? item.offerPrice ?? 0),
-    seller: item.rfqProduct?.admin?.firstName ?? item.seller ?? "Vendor",
-  }));
+  // Map RFQ cart — backend includes rfqCart_productDetails (Product) with productImages
+  const rfq: CartItem[] = (rfqCartQuery.data?.data?.data ?? rfqCartQuery.data?.data ?? []).map((item: any) => {
+    const product = item.rfqCart_productDetails || item.product || {};
+    const rfqProduct = item.rfqProductDetails || item.rfqProduct || {};
+    const firstImage = product.productImages?.[0]?.image
+      || rfqProduct.rfqProductImage?.[0]?.image
+      || null;
+    return {
+      id: item.productId ?? item.rfqProductId ?? item.id,
+      productId: item.productId ?? item.rfqProductId,
+      rfqCartId: item.id,
+      name: product.productName
+        || rfqProduct.rfqProductName
+        || item.productName
+        || item.note
+        || `Product #${item.id}`,
+      quantity: item.quantity ?? 1,
+      unitPrice: Number(item.offerPriceTo ?? item.offerPriceFrom ?? item.offerPrice ?? 0),
+      seller: product.adminDetail?.firstName
+        || rfqProduct.admin?.firstName
+        || item.seller
+        || "Vendor",
+      image: firstImage,
+      budgetFrom: Number(item.offerPriceFrom || 0),
+      budgetTo: Number(item.offerPriceTo || 0),
+    };
+  });
 
   // Map Buy cart — data from cart.service.ts list(): productPriceDetails → productPrice_product
   const buyCartItems: any[] = buyCartQuery.data?.data ?? [];
@@ -241,7 +278,7 @@ export default function CartPanel({ locale, collapsed, onToggleCollapse, onViewP
         </button>
       </div>
 
-      {/* Items */}
+      {/* Items + Summary (all scrollable together) */}
       <div className="flex-1 overflow-y-auto">
         {items.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-8 text-muted-foreground">
@@ -250,6 +287,28 @@ export default function CartPanel({ locale, collapsed, onToggleCollapse, onViewP
           </div>
         ) : (
           <div className="p-1.5 space-y-1">
+            {/* Summary + action — at top, before items */}
+            <div className="px-1 pb-1.5 mb-1 border-b border-border space-y-1.5">
+              <div className="flex items-center justify-between text-[9px] text-muted-foreground">
+                <span>{items.length} {items.length === 1 ? "item" : "items"} • {units} {isAr ? "قطعة" : "pcs"}</span>
+                <span className={cn("text-[11px] font-bold", tab === "rfq" ? "text-primary" : "text-green-600")}>{total > 0 ? `${total.toLocaleString()} OMR` : ""}</span>
+              </div>
+              {tab === "rfq" ? (
+                <button type="button" onClick={handleSubmitRfq}
+                  disabled={submitRfq.isPending || rfq.length === 0}
+                  className="flex w-full items-center justify-center gap-1.5 rounded-md bg-primary py-2 text-primary-foreground text-[10px] font-bold hover:bg-primary/90 disabled:opacity-50">
+                  {submitRfq.isPending ? <Loader2 className="h-3 w-3 animate-spin" /> : <Send className="h-3 w-3" />}
+                  {submitRfq.isPending ? (isAr ? "جاري الإرسال..." : "Submitting...") : (isAr ? "إرسال طلب الأسعار" : "Submit RFQ")}
+                </button>
+              ) : (
+                <button type="button" onClick={() => window.location.href = "/checkout"}
+                  className="flex w-full items-center justify-center gap-1.5 rounded-md bg-green-600 py-2 text-white text-[10px] font-bold hover:bg-green-700">
+                  <CreditCard className="h-3 w-3" /> {isAr ? "الدفع" : "Checkout"}
+                </button>
+              )}
+            </div>
+
+            {/* Product items */}
             {items.map((item) => (
               <ItemCard key={item.rfqCartId ?? item.cartId ?? item.id} item={item}
                 onUpdateQty={handleUpdateQty}
@@ -261,29 +320,6 @@ export default function CartPanel({ locale, collapsed, onToggleCollapse, onViewP
           </div>
         )}
       </div>
-
-      {/* Summary + action */}
-      {items.length > 0 && (
-        <div className="border-t border-border px-2 py-2 shrink-0 space-y-1.5">
-          <div className="flex items-center justify-between text-[9px] text-muted-foreground">
-            <span>{items.length} • {units} {isAr ? "قطعة" : "pcs"}</span>
-            <span className={cn("text-[11px] font-bold", tab === "rfq" ? "text-primary" : "text-green-600")}>{total.toLocaleString()} OMR</span>
-          </div>
-          {tab === "rfq" ? (
-            <button type="button" onClick={handleSubmitRfq}
-              disabled={submitRfq.isPending || rfq.length === 0}
-              className="flex w-full items-center justify-center gap-1.5 rounded-md bg-primary py-2 text-primary-foreground text-[10px] font-bold hover:bg-primary/90 disabled:opacity-50">
-              {submitRfq.isPending ? <Loader2 className="h-3 w-3 animate-spin" /> : <Send className="h-3 w-3" />}
-              {submitRfq.isPending ? (isAr ? "جاري الإرسال..." : "Submitting...") : (isAr ? "إرسال" : "Submit RFQ")}
-            </button>
-          ) : (
-            <button type="button" onClick={() => window.location.href = "/checkout"}
-              className="flex w-full items-center justify-center gap-1.5 rounded-md bg-green-600 py-2 text-white text-[10px] font-bold hover:bg-green-700">
-              <CreditCard className="h-3 w-3" /> {isAr ? "الدفع" : "Checkout"}
-            </button>
-          )}
-        </div>
-      )}
     </div>
   );
 }

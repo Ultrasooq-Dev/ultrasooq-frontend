@@ -267,31 +267,36 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
     }
   };
 
-  // Fetch all subcategories for all main categories (batched to avoid 429)
+  // Fetch all subcategories for filtered main categories (sequential to avoid 429)
   useEffect(() => {
     const fetchAllSubcategories = async () => {
-      if (mainCategories.length === 0) return;
+      const cats = mainCategoriesFiltered.length > 0 ? mainCategoriesFiltered : mainCategories;
+      if (cats.length === 0) return;
 
-      // Batch requests: max 3 concurrent with delay to avoid 429 rate limit
-      const BATCH_SIZE = 3;
-      const BATCH_DELAY = 500; // ms between batches
+      // Sequential with delay — safest approach to avoid 429
+      const DELAY = 800; // ms between each request
       const categoriesData: any[] = [];
 
-      for (let i = 0; i < mainCategories.length; i += BATCH_SIZE) {
-        const batch = mainCategories.slice(i, i + BATCH_SIZE);
-        const batchResults = await Promise.all(
-          batch.map(async (category: any) => {
-            const categoryWithChildren = await fetchCategoryWithChildren(category, 0);
-            return {
-              category: categoryWithChildren,
-              subcategories: categoryWithChildren.children || [],
-            };
-          }),
-        );
-        categoriesData.push(...batchResults);
-        // Wait between batches to stay under rate limit
-        if (i + BATCH_SIZE < mainCategories.length) {
-          await new Promise((r) => setTimeout(r, BATCH_DELAY));
+      for (let i = 0; i < cats.length; i++) {
+        try {
+          const categoryWithChildren = await fetchCategoryWithChildren(cats[i], 0);
+          categoriesData.push({
+            category: categoryWithChildren,
+            subcategories: categoryWithChildren.children || [],
+          });
+        } catch (err: any) {
+          // On 429, wait longer and retry once
+          if (err?.response?.status === 429) {
+            await new Promise((r) => setTimeout(r, 3000));
+            try {
+              const retry = await fetchCategoryWithChildren(cats[i], 0);
+              categoriesData.push({ category: retry, subcategories: retry.children || [] });
+            } catch { /* skip this category */ }
+          }
+        }
+        // Delay between requests
+        if (i < cats.length - 1) {
+          await new Promise((r) => setTimeout(r, DELAY));
         }
       }
 
@@ -334,7 +339,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
     };
 
     fetchAllSubcategories();
-  }, [mainCategories]);
+  }, [mainCategories, mainCategoriesFiltered]);
 
   // Get categories for a specific level
   // Level 0 shows subcategories of main category (selectedLevels[0])

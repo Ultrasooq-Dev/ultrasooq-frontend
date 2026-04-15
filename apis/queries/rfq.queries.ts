@@ -18,6 +18,9 @@ import {
   fetchFactoriesProductsByUserBusinessCategory,
   fetchOneRfqQuotesUsersByBuyerID,
   fetchRfqCartByUserId,
+  fetchRfqAnalytics,
+  saveDraftItems,
+  loadDraftItems,
   fetchRfqProductById,
   fetchRfqProducts,
   hideRfqRequest,
@@ -324,6 +327,47 @@ export const useDeleteFactoriesCartItem = () => {
   });
 };
 
+
+export const useRfqAnalytics = (enabled = true) =>
+  useQuery({
+    queryKey: ["rfq-analytics"],
+    queryFn: async () => {
+      const res = await fetchRfqAnalytics();
+      return res.data;
+    },
+    enabled,
+    staleTime: 60_000, // 1 min — analytics don't need instant refresh
+  });
+
+export const useLoadDraftItems = (sessionId: string | null, enabled = true) =>
+  useQuery({
+    queryKey: ["rfq-draft-items", sessionId],
+    queryFn: async () => {
+      const res = await loadDraftItems(sessionId!);
+      return res.data;
+    },
+    enabled: enabled && !!sessionId,
+    staleTime: 30_000,
+  });
+
+export const useSaveDraftItems = () => {
+  const queryClient = useQueryClient();
+  return useMutation<
+    any,
+    any,
+    { sessionId: string; items: any[] }
+  >({
+    mutationFn: async (payload) => {
+      const res = await saveDraftItems(payload);
+      return res.data;
+    },
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ["rfq-draft-items", variables.sessionId],
+      });
+    },
+  });
+};
 
 export const useAllRfqQuotesByBuyerId = (
   payload: {

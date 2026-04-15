@@ -126,11 +126,6 @@ export default function ProductViewPage() {
     }
   }, [product?.id]);
 
-  // Set quantity to minQty when product loads
-  useEffect(() => {
-    if (minQty > 1 && quantity < minQty) setQuantity(minQty);
-  }, [minQty]);
-
   // ── Images ──
   const images = useMemo(() => {
     const sellerImgs = pp?.productPrice_productSellerImage;
@@ -153,6 +148,11 @@ export default function ProductViewPage() {
   const askForPrice = pp?.askForPrice === "true" || pp?.askForPrice === true;
   const minQty = pp?.minQuantityPerCustomer || pp?.minQuantity || 1;
   const maxQty = pp?.maxQuantityPerCustomer || pp?.maxQuantity || stock || 999;
+
+  // Set quantity to minQty when product loads
+  useEffect(() => {
+    if (minQty > 1 && quantity < minQty) setQuantity(minQty);
+  }, [minQty]);
   const deliveryDays = pp?.deliveryAfter || 0;
   const sellType = pp?.sellType;
   const consumerDiscount = pp?.consumerDiscount || 0;

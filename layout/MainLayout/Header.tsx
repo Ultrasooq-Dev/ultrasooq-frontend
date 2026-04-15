@@ -498,8 +498,8 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
             </li> */}
             <li className="py-1.5 text-sm font-normal capitalize sm:text-base md:text-lg">
               <Link
-                href="/rfq-request"
-                className={getActiveClass("/rfq-request")}
+                href="/messages?channel=c_rfq"
+                className={getActiveClass("/messages")}
                 translate="no"
               >
                 {t("rfq_quotes")}
@@ -821,7 +821,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                       </Link>
 
                       {currentTradeRole === "BUYER" && (
-                        <Link href="/rfq-request">
+                        <Link href="/messages?channel=c_rfq">
                           <DropdownMenuItem translate="no">
                             {t("rfq_quotes")}
                           </DropdownMenuItem>
@@ -889,7 +889,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                                   </Link>
                                 )}
                                 {hideMenu(PERMISSION_RFQ_QUOTES) && (
-                                  <Link href="/rfq-request">
+                                  <Link href="/messages?channel=c_rfq">
                                     <DropdownMenuItem translate="no">
                                       {t("rfq_quotes")}
                                     </DropdownMenuItem>
@@ -1716,7 +1716,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
 
                             {/* RFQ Quotes for Buyers */}
                             {currentTradeRole === "BUYER" && (
-                              <Link href="/rfq-request">
+                              <Link href="/messages?channel=c_rfq">
                                 <DropdownMenuItem
                                   className="cursor-pointer"
                                   dir={langDir}
@@ -1815,7 +1815,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                                     ) : null}
 
                                     {hideMenu(PERMISSION_RFQ_QUOTES) ? (
-                                      <Link href="/rfq-request">
+                                      <Link href="/messages?channel=c_rfq">
                                         <DropdownMenuItem
                                           dir={langDir}
                                           translate="no"

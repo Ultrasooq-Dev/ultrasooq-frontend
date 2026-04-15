@@ -186,9 +186,9 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
           label: t("rfq_requests"),
           translationKey: "rfq_requests",
           shortLabel: getShortLabel("rfq_requests"),
-          path: "/rfq-request",
+          path: "/messages?channel=c_rfq",
           onClick: () => {
-            router.push("/rfq-request");
+            router.push("/messages?channel=c_rfq");
           },
         },
         {

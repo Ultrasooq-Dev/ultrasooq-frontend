@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import {
   Plus, Paperclip, X, Package, ChevronRight, FileText, Trash2, ShoppingCart,
@@ -10,7 +10,10 @@ import http from "@/apis/http";
 import { track } from "@/lib/analytics";
 import { extractTextFromImage, parseSpreadsheet, scanBarcodeFromImage } from "./tools";
 import { useTrackProductSearch } from "@/apis/queries/product.queries";
+import { useLoadDraftItems, useSaveDraftItems } from "@/apis/queries/rfq.queries";
 import { getOrCreateDeviceId } from "@/utils/helper";
+import { getCookie } from "cookies-next";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 
 export interface RequestItem {
   id: string;
@@ -82,25 +85,64 @@ export default function RequestListPanel({ selectedItemId, onSelectItem, onItemR
   const excelInputRef = React.useRef<HTMLInputElement>(null);
   const [items, setItems] = useState<RequestItem[]>([]);
   const itemsLoaded = useRef(false);
+  const isAuthenticated = !!getCookie(ULTRASOOQ_TOKEN_KEY);
 
-  // Load items from localStorage on mount
+  // Backend draft persistence (authenticated users)
+  const draftQuery = useLoadDraftItems(sessionId ?? null, isAuthenticated);
+  const saveDraftMutation = useSaveDraftItems();
+  const saveMutateRef = useRef(saveDraftMutation.mutate);
+  saveMutateRef.current = saveDraftMutation.mutate;
+  const saveTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Debounced save to backend (stable ref to avoid re-trigger loops)
+  const debouncedSave = useCallback((sid: string, newItems: RequestItem[]) => {
+    if (!isAuthenticated) return;
+    if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    saveTimerRef.current = setTimeout(() => {
+      saveMutateRef.current({ sessionId: sid, items: newItems });
+    }, 1000);
+  }, [isAuthenticated]);
+
+  // Load items: from backend (auth) or localStorage (guest)
   useEffect(() => {
     if (itemsLoaded.current || !sessionId) return;
-    itemsLoaded.current = true;
-    try {
-      const stored = localStorage.getItem(`rfq_items_${sessionId}`);
-      if (stored) setItems(JSON.parse(stored));
-    } catch {}
-  }, [sessionId]);
+    if (isAuthenticated && draftQuery.data?.data) {
+      itemsLoaded.current = true;
+      const loaded = draftQuery.data.data;
+      if (Array.isArray(loaded) && loaded.length > 0) setItems(loaded);
+    } else if (isAuthenticated && draftQuery.isLoading) {
+      // Wait for backend response
+      return;
+    } else if (isAuthenticated && draftQuery.isError) {
+      // Backend failed — fall back to localStorage
+      itemsLoaded.current = true;
+      try {
+        const stored = localStorage.getItem(`rfq_items_${sessionId}`);
+        if (stored) setItems(JSON.parse(stored));
+      } catch {}
+    } else if (!isAuthenticated) {
+      itemsLoaded.current = true;
+      try {
+        const stored = localStorage.getItem(`rfq_items_${sessionId}`);
+        if (stored) setItems(JSON.parse(stored));
+      } catch {}
+    }
+  }, [sessionId, isAuthenticated, draftQuery.data, draftQuery.isLoading, draftQuery.isError]);
 
-  // Persist items to localStorage when they change
+  // Persist items when they change
   useEffect(() => {
     if (!sessionId || !itemsLoaded.current) return;
-    try {
-      if (items.length > 0) localStorage.setItem(`rfq_items_${sessionId}`, JSON.stringify(items));
-      else localStorage.removeItem(`rfq_items_${sessionId}`);
-    } catch {}
-  }, [items, sessionId]);
+    if (isAuthenticated) {
+      // Save to backend (debounced)
+      debouncedSave(sessionId, items);
+    } else {
+      // Fallback to localStorage for guests
+      try {
+        if (items.length > 0) localStorage.setItem(`rfq_items_${sessionId}`, JSON.stringify(items));
+        else localStorage.removeItem(`rfq_items_${sessionId}`);
+      } catch {}
+    }
+  }, [items, sessionId, isAuthenticated, debouncedSave]);
 
   const [searchMode, setSearchMode] = useState<"search" | "ai">("search");
   const [toolLoading, setToolLoading] = useState<string | null>(null);
@@ -294,11 +336,9 @@ export default function RequestListPanel({ selectedItemId, onSelectItem, onItemR
       if (autoCreatedRef.current) {
         autoCreatedRef.current = false;
       } else {
-        // Load items for the new session from localStorage
-        try {
-          const stored = sessionId ? localStorage.getItem(`rfq_items_${sessionId}`) : null;
-          setItems(stored ? JSON.parse(stored) : []);
-        } catch { setItems([]); }
+        // Reset loaded flag so the new session loads from backend/localStorage
+        itemsLoaded.current = false;
+        setItems([]);
       }
     }
     prevSessionRef.current = sessionId;

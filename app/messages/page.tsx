@@ -52,13 +52,19 @@ export default function MessagesPage() {
   // ─── Analytics tracking — page views, channel/conversation events ───
   const { trackPanelExpanded, trackPanelCollapsed } = useMessageTracking();
 
-  // Auto-select channel from URL query param (?channel=unread)
+  // Auto-select channel + conversation from URL query params
+  // Usage: /messages?channel=c_rfq or /messages?channel=c_rfq&roomId=123
   useEffect(() => {
     const channel = searchParams?.get("channel");
+    const roomId = searchParams?.get("roomId");
     if (channel && !selectedChannelId) {
       selectChannel(channel);
     }
-  }, [searchParams, selectedChannelId, selectChannel]);
+    if (roomId && !chatPersonId) {
+      // Auto-select the conversation after channel is set
+      setTimeout(() => selectPerson(roomId, roomId), 100);
+    }
+  }, [searchParams, selectedChannelId, chatPersonId, selectChannel, selectPerson]);
 
   // Hover collapse for P1, P2 — with analytics tracking
   const p1 = useHoverCollapse(true, 400);
