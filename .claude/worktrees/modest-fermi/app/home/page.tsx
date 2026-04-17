@@ -14,7 +14,6 @@ import {
   useDeleteFromWishList,
 } from "@/apis/queries/wishlist.queries";
 import HeroBanner from "@/components/modules/home/HeroBanner";
-import TrendingCategories from "@/components/modules/home/TrendingCategories";
 import CategorySidebar from "@/components/modules/trending/CategorySidebar";
 import ProductCard from "@/components/modules/trending/ProductCard";
 import Footer from "@/components/shared/Footer";
@@ -23,10 +22,10 @@ import { useAuth } from "@/context/AuthContext";
 import { useCategoryStore } from "@/lib/categoryStore";
 import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import { getOrCreateDeviceId } from "@/utils/helper";
-import { TrendingProduct } from "@/utils/types/common.types";
+import type { TrendingProduct } from "@/utils/types/common.types";
 import { useQueryClient } from "@tanstack/react-query";
 import { getCookie } from "cookies-next";
-import { ArrowRight, TrendingUp } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -390,7 +389,7 @@ function HomePage() {
       <HeroBanner />
 
       {/* Categories Section */}
-      <section className="bg-muted/50 w-full px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+      {/* <section className="bg-muted/50 w-full px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
         <div className="mx-auto w-full max-w-[1400px]">
           <div className="mb-8 sm:mb-12">
             <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-6">
@@ -426,7 +425,7 @@ function HomePage() {
             <TrendingCategories />
           </div>
         </div>
-      </section>
+      </section> */}
 
       {memoizedBuyGroupProducts?.length > 0 ? (
         <section className="from-warning/5 to-card w-full bg-gradient-to-b px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
