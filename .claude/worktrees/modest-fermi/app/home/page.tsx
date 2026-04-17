@@ -14,7 +14,6 @@ import {
   useDeleteFromWishList,
 } from "@/apis/queries/wishlist.queries";
 import HeroBanner from "@/components/modules/home/HeroBanner";
-import CategorySidebar from "@/components/modules/trending/CategorySidebar";
 import ProductCard from "@/components/modules/trending/ProductCard";
 import Footer from "@/components/shared/Footer";
 import { toast } from "@/components/ui/use-toast";
@@ -376,14 +375,14 @@ function HomePage() {
   return (
     <>
       {/* Category Sidebar */}
-      <CategorySidebar
+      {/* <CategorySidebar
         isOpen={isCategorySidebarOpen}
         onClose={() => setIsCategorySidebarOpen(false)}
         onCategorySelect={(categoryId) => {
           router.push(`/trending?category=${categoryId}`);
           setIsCategorySidebarOpen(false);
         }}
-      />
+      /> */}
 
       {/* Hero Banner Section - Dynamic */}
       <HeroBanner />
@@ -409,7 +408,7 @@ function HomePage() {
               </div>
               <Link
                 href="/trending"
-                className="group border-primary bg-primary inline-flex items-center gap-2 rounded-xl border px-6 py-3.5 text-sm font-semibold text-white hover:bg-primary/90 transition-colors sm:px-8 sm:py-4 sm:text-base"
+                className="group border-primary bg-primary inline-fhover:bg-primary/90 text-whiteion-colors inline-flex items-center gap-2 rounded-xl border px-6 py-3.5 text-sm font-semibold sm:px-8 sm:py-4 sm:text-base"
                 translate="no"
               >
                 <TrendingUp className="h-5 w-5" />
