@@ -6,7 +6,6 @@ import { HomeRecommendations } from "@/components/modules/recommendations/HomeRe
 import CategorySidebar from "@/components/modules/trending/CategorySidebar";
 import Footer from "@/components/shared/Footer";
 import { useHomeData } from "./_components/useHomeData";
-import { HomeCategories } from "./_components/HomeCategories";
 import { HomeDealOfTheDay } from "./_components/HomeDealOfTheDay";
 import { HomeCategorySection } from "./_components/HomeCategorySection";
 import { HomeProductSection } from "./_components/HomeProductSection";
@@ -94,9 +93,6 @@ function HomePage() {
         onWishlist={handleAddToWishlist}
         sectionClass="bg-warning/5"
       />
-
-      {/* Categories section */}
-      <HomeCategories />
 
       {/* Consumer Electronics */}
       <HomeCategorySection
