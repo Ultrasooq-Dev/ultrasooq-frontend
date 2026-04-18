@@ -31,6 +31,12 @@ export const metadata: Metadata = {
     template: "%s | Ultrasooq",
     default: "Ultrasooq",
   },
+  description: "Your trusted marketplace for quality products",
+  manifest: "/manifest.json",
+  icons: {
+    icon: "/icon.png",
+    apple: "/apple-icon.png",
+  },
 };
 
 async function authorizeUser() {
