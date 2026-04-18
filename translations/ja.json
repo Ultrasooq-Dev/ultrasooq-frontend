@@ -2289,5 +2289,10 @@
   "newsletter_description": "Subscribe for exclusive deals, early access to new products, and personalized recommendations delivered to your inbox.",
   "subscribed": "Subscribed!",
   "no_spam_unsubscribe": "No spam. Unsubscribe at any time.",
-  "off": "オフ"
+  "off": "オフ",
+  "get_in_touch": "お問い合わせ",
+  "email_address_value": "support@ultrasooq.com",
+  "phone_value": "+968 1234 5678",
+  "address_value": "マスカット、オマーン",
+  "working_hours_value": "月 — 金: 9 — 18時"
 }

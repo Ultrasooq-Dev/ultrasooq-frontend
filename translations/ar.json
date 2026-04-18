@@ -2309,5 +2309,10 @@
   "newsletter_description": "اشترك للحصول على عروض حصرية، ووصول مبكر للمنتجات الجديدة، وتوصيات مخصصة تصل إلى بريدك الإلكتروني.",
   "subscribed": "تم الاشتراك!",
   "no_spam_unsubscribe": "لا بريد مزعج. يمكنك إلغاء الاشتراك في أي وقت.",
-  "off": "خصم"
+  "off": "خصم",
+  "get_in_touch": "تواصل معنا",
+  "email_address_value": "support@ultrasooq.com",
+  "phone_value": "+968 1234 5678",
+  "address_value": "مسقط، عُمان",
+  "working_hours_value": "الإثنين — الجمعة: 9 ص — 6 م"
 }

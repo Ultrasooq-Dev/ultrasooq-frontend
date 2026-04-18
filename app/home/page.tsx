@@ -7,7 +7,6 @@ import React from "react";
 import { HomeCategorySection } from "./_components/HomeCategorySection";
 import { HomeDealOfTheDay } from "./_components/HomeDealOfTheDay";
 import { HomeFeatures } from "./_components/HomeFeatures";
-import { HomeNewsletter } from "./_components/HomeNewsletter";
 import { HomeProductSection } from "./_components/HomeProductSection";
 import { HomePromo } from "./_components/HomePromo";
 import { HomeStats } from "./_components/HomeStats";
@@ -164,8 +163,6 @@ function HomePage() {
       <HomeTestimonials />
 
       <HomeRecommendations />
-
-      <HomeNewsletter />
 
       <Footer />
     </>

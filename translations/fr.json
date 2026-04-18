@@ -2289,5 +2289,10 @@
   "newsletter_description": "Subscribe for exclusive deals, early access to new products, and personalized recommendations delivered to your inbox.",
   "subscribed": "Subscribed!",
   "no_spam_unsubscribe": "No spam. Unsubscribe at any time.",
-  "off": "de réduction"
+  "off": "de réduction",
+  "get_in_touch": "Contactez-nous",
+  "email_address_value": "support@ultrasooq.com",
+  "phone_value": "+968 1234 5678",
+  "address_value": "Mascate, Oman",
+  "working_hours_value": "Lun — Ven : 9h — 18h"
 }

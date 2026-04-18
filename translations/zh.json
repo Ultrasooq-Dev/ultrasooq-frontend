@@ -2289,5 +2289,10 @@
   "newsletter_description": "Subscribe for exclusive deals, early access to new products, and personalized recommendations delivered to your inbox.",
   "subscribed": "Subscribed!",
   "no_spam_unsubscribe": "No spam. Unsubscribe at any time.",
-  "off": "折扣"
+  "off": "折扣",
+  "get_in_touch": "联系我们",
+  "email_address_value": "support@ultrasooq.com",
+  "phone_value": "+968 1234 5678",
+  "address_value": "马斯喀特, 阿曼",
+  "working_hours_value": "周一 — 周五: 9 — 18"
 }

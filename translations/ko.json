@@ -2289,5 +2289,10 @@
   "newsletter_description": "Subscribe for exclusive deals, early access to new products, and personalized recommendations delivered to your inbox.",
   "subscribed": "Subscribed!",
   "no_spam_unsubscribe": "No spam. Unsubscribe at any time.",
-  "off": "할인"
+  "off": "할인",
+  "get_in_touch": "문의하기",
+  "email_address_value": "support@ultrasooq.com",
+  "phone_value": "+968 1234 5678",
+  "address_value": "무스카트, 오만",
+  "working_hours_value": "월 — 금: 9시 — 18시"
 }

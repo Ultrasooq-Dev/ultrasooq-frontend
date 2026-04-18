@@ -2289,5 +2289,10 @@
   "newsletter_description": "Subscribe for exclusive deals, early access to new products, and personalized recommendations delivered to your inbox.",
   "subscribed": "Subscribed!",
   "no_spam_unsubscribe": "No spam. Unsubscribe at any time.",
-  "off": "de Desconto"
+  "off": "de Desconto",
+  "get_in_touch": "Fale Conosco",
+  "email_address_value": "support@ultrasooq.com",
+  "phone_value": "+968 1234 5678",
+  "address_value": "Mascate, Omã",
+  "working_hours_value": "Seg — Sex: 9 — 18h"
 }
