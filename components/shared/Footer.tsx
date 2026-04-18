@@ -223,7 +223,8 @@ const Footer = () => {
                   </p>
                   <a
                     href={`mailto:${t("email_address_value")}`}
-                    className="hover:text-primary text-sm text-[var(--brand-dark-fg)]/70 transition-colors"
+                    className="hover:text-primary inline-block text-sm text-[var(--brand-dark-fg)]/70 transition-colors"
+                    dir="ltr"
                     translate="no"
                   >
                     {t("email_address_value")}
@@ -243,7 +244,8 @@ const Footer = () => {
                   </p>
                   <a
                     href={`tel:${t("phone_value").replace(/\s/g, "")}`}
-                    className="hover:text-primary text-sm text-[var(--brand-dark-fg)]/70 transition-colors"
+                    className="hover:text-primary inline-block text-sm text-[var(--brand-dark-fg)]/70 transition-colors"
+                    dir="ltr"
                     translate="no"
                   >
                     {t("phone_value")}
