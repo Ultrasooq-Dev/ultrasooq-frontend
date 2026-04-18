@@ -1236,12 +1236,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                   )}
                 >
                   <li
-                    className={cn(
-                      "px-3 text-xs font-normal text-white/90 md:text-sm",
-                      langDir === "rtl"
-                        ? "border-l border-solid border-white/30"
-                        : "border-r border-solid border-white/30",
-                    )}
+                    className="flex h-6 items-center border-r border-solid border-white/30 px-3 text-xs font-normal text-white/90 md:text-sm"
                   >
                     <Link
                       href="/my-orders"
@@ -1253,16 +1248,11 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                     </Link>
                   </li>
                   <li
-                    className={cn(
-                      "px-3 text-xs font-normal text-white/90 md:text-sm",
-                      langDir === "rtl"
-                        ? "border-l border-solid border-white/30"
-                        : "border-r border-solid border-white/30",
-                    )}
+                    className="flex h-6 items-center border-r border-solid border-white/30 px-3 text-xs font-normal text-white/90 md:text-sm"
                   >
                     <select
                       dir={langDir}
-                      className="cursor-pointer rounded border-0 bg-transparent px-1 py-1 text-white/90 transition-colors hover:text-white focus:outline-none"
+                      className="h-full cursor-pointer rounded border-0 bg-transparent px-1 py-0 text-white/90 transition-colors hover:text-white focus:outline-none"
                       value={selectedCurrency}
                       aria-label="Select currency"
                       onChange={(e: any) => {
@@ -1291,13 +1281,13 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                   </li>
                   <li
                     className={cn(
-                      "px-3 text-xs font-normal text-white/90 md:text-sm",
+                      "flex h-6 items-center px-3 text-xs font-normal text-white/90 md:text-sm",
                       langDir === "rtl" ? "pl-0" : "pr-0",
                     )}
                   >
                     <select
                       dir={langDir}
-                      className="cursor-pointer rounded border-0 bg-transparent px-1 py-1 text-xs text-white/90 transition-colors hover:text-white focus:outline-none md:text-sm"
+                      className="h-full cursor-pointer rounded border-0 bg-transparent px-1 py-0 text-xs text-white/90 transition-colors hover:text-white focus:outline-none md:text-sm"
                       value={currentLocale}
                       aria-label="Select language"
                       onChange={async (e) => {
