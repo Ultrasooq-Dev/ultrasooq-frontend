@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import moment from "moment";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import AvatarPlaceholder from "@/public/images/no-user-image.png";
 import { useAuth } from "@/context/AuthContext";
@@ -33,6 +34,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
   isSelected,
   vendor,
 }) => {
+  const t = useTranslations();
   const { currency } = useAuth();
   const hasPrice = offerPrice && offerPrice !== "-" && offerPrice !== "";
   const hasMessage = vendor?.lastUnreadMessage?.createdAt;
@@ -54,7 +56,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
         <div className="relative h-8 w-8 overflow-hidden rounded-full border border-white shadow-sm ring-0.5 ring-gray-100 group-hover:ring-border">
           <Image
             src={profilePicture || AvatarPlaceholder}
-            alt={name || "Vendor"}
+            alt={name || t("vendor")}
             fill
             className="object-cover"
           />
@@ -78,13 +80,13 @@ const VendorCard: React.FC<VendorCardProps> = ({
         {/* Vendor Name */}
         <div className="flex items-center justify-between gap-2">
           <h4 className="truncate text-xs font-semibold text-foreground group-hover:text-dark-orange transition-colors">
-            {name || "Unknown Vendor"}
+            {name || t("unknown_vendor")}
           </h4>
         </div>
 
         {/* Offer Price */}
         <div className="flex items-center gap-1">
-          <span className="text-[9px] font-medium text-muted-foreground whitespace-nowrap">Offer Price:</span>
+          <span className="text-[9px] font-medium text-muted-foreground whitespace-nowrap">{t("offer_price")}:</span>
           {hasPrice ? (
             <span className="inline-flex items-center gap-0.5 rounded bg-success/5 px-1 py-0.5 text-[10px] font-bold text-success ring-0.5 ring-green-200">
               <svg className="h-2 w-2" fill="currentColor" viewBox="0 0 20 20">
@@ -94,7 +96,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
               {currency.symbol}{offerPrice}
             </span>
           ) : (
-            <span className="text-[9px] font-medium text-muted-foreground">Not quoted yet</span>
+            <span className="text-[9px] font-medium text-muted-foreground">{t("not_quoted_yet")}</span>
           )}
         </div>
 
@@ -119,7 +121,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
             <svg className="h-2 w-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
             </svg>
-            <span>Click to start conversation</span>
+            <span>{t("click_to_start_conversation")}</span>
           </div>
         )}
       </div>

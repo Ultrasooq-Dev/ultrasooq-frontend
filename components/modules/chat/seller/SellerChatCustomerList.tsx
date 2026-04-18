@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import moment from "moment";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import PlaceholderImage from "@/public/images/product-placeholder.png";
 import { RfqQuoteType } from "./sellerChatTypes";
@@ -19,12 +20,13 @@ const SellerChatCustomerList: React.FC<SellerChatCustomerListProps> = ({
   selectedCustomerId,
   onSelectCustomer,
 }) => {
+  const t = useTranslations();
   return (
     <div className="flex h-full flex-col">
       <div className="flex-1 overflow-y-auto p-4">
         {rfqCustomers.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16">
-            <p className="text-muted-foreground">No customers found</p>
+            <p className="text-muted-foreground">{t("no_customers_found")}</p>
           </div>
         ) : (
           <div className="space-y-3">

@@ -133,7 +133,7 @@ const BannerCarousel: React.FC<{
       <Image
         src={currentBanner.image}
         className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
-        alt={currentBanner.title || 'Banner'}
+        alt={currentBanner.title || t("banner")}
         fill
         priority
       />
@@ -176,14 +176,14 @@ const BannerCarousel: React.FC<{
           <button
             onClick={handlePrev}
             className="absolute left-4 top-1/2 -translate-y-1/2 bg-card/20 hover:bg-card/30 backdrop-blur-sm rounded-full p-2 transition-all opacity-0 group-hover:opacity-100 z-10"
-            aria-label="Previous banner"
+            aria-label={t("previous_banner")}
           >
             <ChevronLeft className="w-6 h-6 text-white" />
           </button>
           <button
             onClick={handleNext}
             className="absolute right-4 top-1/2 -translate-y-1/2 bg-card/20 hover:bg-card/30 backdrop-blur-sm rounded-full p-2 transition-all opacity-0 group-hover:opacity-100 z-10"
-            aria-label="Next banner"
+            aria-label={t("next_banner")}
           >
             <ChevronRight className="w-6 h-6 text-white" />
           </button>
@@ -200,7 +200,7 @@ const BannerCarousel: React.FC<{
               className={`h-2 rounded-full transition-all ${
                 index === currentIndex ? 'w-8 bg-card' : 'w-2 bg-card/50'
               }`}
-              aria-label={`Go to slide ${index + 1}`}
+              aria-label={t("go_to_slide", { n: index + 1 })}
             />
           ))}
         </div>
@@ -246,7 +246,7 @@ const BannerCard: React.FC<{
       <Image
         src={banner.image}
         className="absolute inset-0 h-full w-full object-cover"
-        alt={banner.title || 'Banner'}
+        alt={banner.title || t("banner")}
         fill
       />
       <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/40" />

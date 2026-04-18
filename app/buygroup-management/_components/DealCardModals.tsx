@@ -3,6 +3,7 @@ import { useState } from "react";
 import {
   CalendarPlus, AlertTriangle, XCircle, Ban, Send,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { T } from "./theme";
 import { BuyGroupDeal, BuyGroupOrder } from "./types";
@@ -21,6 +22,7 @@ interface ExtendModalProps {
 export function ExtendTimeModal({
   deal, extendDays, extendInput, setExtendDays, setExtendInput, onClose,
 }: ExtendModalProps) {
+  const t = useTranslations();
   const openDate = new Date(deal.dateOpen);
   const closeDate = new Date(deal.dateClose);
   const originalDays = Math.max(1, Math.round((closeDate.getTime() - openDate.getTime()) / 86400000));
@@ -40,8 +42,8 @@ export function ExtendTimeModal({
             <CalendarPlus className={cn("h-5 w-5", T.infoText)} />
           </div>
           <div>
-            <h3 className={cn("text-lg font-semibold", T.text)}>Extend Deal Time</h3>
-            <p className={cn("text-xs", T.muted)}>Max extension: <strong>{maxExtendDays} days</strong> (half of {originalDays}-day deal)</p>
+            <h3 className={cn("text-lg font-semibold", T.text)}>{t("extend_deal_time")}</h3>
+            <p className={cn("text-xs", T.muted)}>{t("max_extension")}: <strong>{maxExtendDays} {t("days").toLowerCase()}</strong> ({t("half_of_day_deal", { n: originalDays })})</p>
           </div>
         </div>
 
@@ -49,15 +51,15 @@ export function ExtendTimeModal({
         <div className={cn("p-4 rounded-xl border mb-5", T.border, "bg-muted/50")}>
           <div className="flex items-center justify-between text-xs mb-3">
             <div>
-              <div className={T.muted}>Started</div>
+              <div className={T.muted}>{t("started")}</div>
               <div className={cn("font-medium", T.text)}>{openDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })}</div>
             </div>
             <div className="text-center">
-              <div className={T.muted}>Current deadline</div>
+              <div className={T.muted}>{t("current_deadline")}</div>
               <div className={cn("font-medium", T.text)}>{closeDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })}</div>
             </div>
             <div className="text-end">
-              <div className={cn("font-medium", T.infoText)}>New deadline</div>
+              <div className={cn("font-medium", T.infoText)}>{t("new_deadline")}</div>
               <div className={cn("font-semibold", T.infoText)}>{newDeadline.toLocaleDateString("en-US", { month: "short", day: "numeric" })}</div>
             </div>
           </div>
@@ -66,14 +68,14 @@ export function ExtendTimeModal({
             <div className="absolute inset-y-0 bg-blue-500 rounded-full transition-all duration-300" style={{ left: "66.6%", width: `${(pct / 100) * 33.4}%` }} />
           </div>
           <div className="flex items-center justify-between text-[10px] mt-1 text-muted-foreground">
-            <span>{originalDays} days (original)</span>
-            <span>+{safeDays} days extension</span>
+            <span>{originalDays} {t("days").toLowerCase()} ({t("original").toLowerCase()})</span>
+            <span>+{safeDays} {t("days").toLowerCase()} {t("extension")}</span>
           </div>
         </div>
 
         {quickPicks.length > 0 && (
           <div className="mb-4">
-            <label className={cn("text-xs font-medium mb-2 block", T.muted)}>Quick select</label>
+            <label className={cn("text-xs font-medium mb-2 block", T.muted)}>{t("quick_select")}</label>
             <div className="flex items-center gap-2">
               {quickPicks.map((d) => (
                 <button
@@ -84,7 +86,7 @@ export function ExtendTimeModal({
                     safeDays === d ? cn(T.accentBg, "text-primary-foreground border-transparent") : cn(T.border, T.muted, "hover:bg-muted/50"),
                   )}
                 >
-                  {d} {d === 1 ? "day" : "days"}
+                  {d} {d === 1 ? t("day") : t("days").toLowerCase()}
                 </button>
               ))}
             </div>
@@ -92,7 +94,7 @@ export function ExtendTimeModal({
         )}
 
         <div className="mb-5">
-          <label className={cn("text-xs font-medium mb-2 block", T.muted)}>Or enter custom days</label>
+          <label className={cn("text-xs font-medium mb-2 block", T.muted)}>{t("or_enter_custom_days")}</label>
           <div className="flex items-center gap-3">
             <input
               type="number"
@@ -128,8 +130,8 @@ export function ExtendTimeModal({
                 className="w-full accent-[#c2703e] h-2 rounded-lg cursor-pointer"
               />
               <div className="flex items-center justify-between text-[10px] text-muted-foreground mt-0.5">
-                <span>1 day</span>
-                <span>{maxExtendDays} days (max)</span>
+                <span>1 {t("day")}</span>
+                <span>{maxExtendDays} {t("days").toLowerCase()} ({t("max").toLowerCase()})</span>
               </div>
             </div>
           </div>
@@ -140,8 +142,8 @@ export function ExtendTimeModal({
             <AlertTriangle className={cn("h-4 w-4 flex-shrink-0 mt-0.5", T.warning)} />
             <p className={cn("text-xs", T.warning)}>
               {safeDays === maxExtendDays
-                ? "You are using the maximum allowed extension. No further extensions will be possible."
-                : "Approaching the maximum extension limit."}
+                ? t("using_max_extension_warning")
+                : t("approaching_max_extension_limit")}
             </p>
           </div>
         )}
@@ -150,19 +152,19 @@ export function ExtendTimeModal({
           <div className={cn("p-3 rounded-xl border mb-4 flex items-start gap-2", T.dangerBorder, T.dangerBg)}>
             <XCircle className={cn("h-4 w-4 flex-shrink-0 mt-0.5", T.danger)} />
             <p className={cn("text-xs", T.danger)}>
-              Cannot extend more than {maxExtendDays} days (half of the original {originalDays}-day deal duration).
+              {t("cannot_extend_more_than_days", { max: maxExtendDays, orig: originalDays })}
             </p>
           </div>
         )}
 
         <div className="flex justify-end gap-2">
-          <button onClick={onClose} className={cn("px-4 py-2 rounded-xl text-sm", T.muted)}>Cancel</button>
+          <button onClick={onClose} className={cn("px-4 py-2 rounded-xl text-sm", T.muted)}>{t("cancel")}</button>
           <button
             disabled={safeDays < 1}
             className={cn("px-4 py-2 rounded-xl text-sm font-medium text-primary-foreground transition-colors disabled:opacity-40", T.accentBg, "hover:opacity-90")}
           >
             <CalendarPlus className="h-4 w-4 inline me-1.5" />
-            Extend by {safeDays} {safeDays === 1 ? "day" : "days"}
+            {t("extend_by")} {safeDays} {safeDays === 1 ? t("day") : t("days").toLowerCase()}
           </button>
         </div>
       </div>
@@ -180,25 +182,25 @@ interface CancelModalProps {
 }
 
 export function CancelRefundModal({ activeOrders, revenue, currency, onClose }: CancelModalProps) {
+  const t = useTranslations();
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" onClick={onClose}>
       <div className={cn(T.card, "rounded-2xl p-6 w-full max-w-md shadow-xl")} onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center gap-3 mb-4">
           <div className={cn("p-2 rounded-xl", T.dangerBg)}><AlertTriangle className={cn("h-5 w-5", T.danger)} /></div>
-          <h3 className={cn("text-lg font-semibold", T.text)}>Cancel & Refund All Orders</h3>
+          <h3 className={cn("text-lg font-semibold", T.text)}>{t("cancel_refund_all_orders")}</h3>
         </div>
         <p className={cn("text-sm mb-2", T.muted)}>
-          This will cancel <strong>{activeOrders.length} active orders</strong> and initiate refunds totaling{" "}
-          <strong>{currency}{revenue.toFixed(2)}</strong>.
+          {t("cancel_refund_confirmation", { count: activeOrders.length, total: `${currency}${revenue.toFixed(2)}` })}
         </p>
         <div className={cn("p-3 rounded-xl border mb-4", T.dangerBorder, T.dangerBg)}>
-          <p className={cn("text-xs", T.danger)}>This action cannot be undone. All buyers will be notified automatically.</p>
+          <p className={cn("text-xs", T.danger)}>{t("action_cannot_be_undone_buyers_notified")}</p>
         </div>
         <div className="flex justify-end gap-2">
-          <button onClick={onClose} className={cn("px-4 py-2 rounded-xl text-sm", T.muted)}>Keep Deal</button>
+          <button onClick={onClose} className={cn("px-4 py-2 rounded-xl text-sm", T.muted)}>{t("keep_deal")}</button>
           <button className="px-4 py-2 rounded-xl text-sm font-medium text-primary-foreground bg-red-600 hover:bg-red-700">
             <Ban className="h-4 w-4 inline me-1" />
-            Cancel & Refund All
+            {t("cancel_refund_all")}
           </button>
         </div>
       </div>
@@ -214,25 +216,26 @@ interface NotifyModalProps {
 }
 
 export function NotifyBuyersModal({ activeOrderCount, onClose }: NotifyModalProps) {
+  const t = useTranslations();
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" onClick={onClose}>
       <div className={cn(T.card, "rounded-2xl p-6 w-full max-w-md shadow-xl")} onClick={(e) => e.stopPropagation()}>
-        <h3 className={cn("text-lg font-semibold mb-4", T.text)}>Notify All Buyers</h3>
+        <h3 className={cn("text-lg font-semibold mb-4", T.text)}>{t("notify_all_buyers")}</h3>
         <p className={cn("text-sm mb-3", T.muted)}>
-          Send a message to all <strong>{activeOrderCount}</strong> active buyers in this deal.
+          {t("send_message_to_active_buyers", { count: activeOrderCount })}
         </p>
         <textarea
           className={cn("w-full p-3 rounded-xl border text-sm resize-none h-24", T.border)}
-          placeholder="Type your message to all buyers..."
+          placeholder={t("type_your_message_to_all_buyers")}
         />
         <p className="text-xs text-muted-foreground mt-2 mb-4">
-          Buyers will receive this as a notification and email.
+          {t("buyers_will_receive_notification_email")}
         </p>
         <div className="flex justify-end gap-2">
-          <button onClick={onClose} className={cn("px-4 py-2 rounded-xl text-sm", T.muted)}>Cancel</button>
+          <button onClick={onClose} className={cn("px-4 py-2 rounded-xl text-sm", T.muted)}>{t("cancel")}</button>
           <button className="px-4 py-2 rounded-xl text-sm font-medium text-primary-foreground bg-purple-600 hover:bg-purple-700">
             <Send className="h-4 w-4 inline me-1" />
-            Send to All
+            {t("send_to_all")}
           </button>
         </div>
       </div>

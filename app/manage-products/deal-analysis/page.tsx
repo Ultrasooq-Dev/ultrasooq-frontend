@@ -142,7 +142,7 @@ function ChartTooltip({ active, payload, label }: any) {
           <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: entry.color }} />
           <span className={T.muted}>{entry.name}:</span>
           <span className={cn("font-semibold", T.text)}>
-            {entry.name === "Revenue" ? `$${entry.value}` : entry.value}
+            {entry.dataKey === "revenue" ? `$${entry.value}` : entry.value}
           </span>
         </div>
       ))}
@@ -246,13 +246,13 @@ function DealAnalysisPage() {
 
   return (
     <>
-      <title dir={langDir} translate="no">{`Deal Analysis | Ultrasooq`}</title>
+      <title dir={langDir} translate="no">{`${t("deal_analysis")} | Ultrasooq`}</title>
       <div className={cn("min-h-screen", T.bg)}>
         <div className="w-full px-6 lg:px-12 py-8">
 
           {/* ── Back + Header ── */}
           <button onClick={() => router.back()} className={cn("flex items-center gap-1.5 text-sm mb-4", T.accentText, "hover:underline")}>
-            <ArrowLeft className="h-4 w-4" /> Back to BuyGroup Ops
+            <ArrowLeft className="h-4 w-4" /> {t("back_to_buygroup_ops")}
           </button>
 
           <div className="flex items-start justify-between gap-4 mb-8">
@@ -264,7 +264,7 @@ function DealAnalysisPage() {
                 <h1 className={cn("text-2xl font-bold", T.text)}>{deal.productName}</h1>
                 <div className={cn("flex items-center gap-4 mt-1 text-sm", T.muted)}>
                   <span className="flex items-center gap-1"><CalendarDays className="h-3.5 w-3.5" /> {openDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })} — {closeDate.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
-                  <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" /> Day {elapsedDays} of {totalDealDays}</span>
+                  <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" /> {t("day_of", { current: elapsedDays, total: totalDealDays })}</span>
                   <span className={cn("px-2 py-0.5 rounded-full text-xs font-medium",
                     deal.status === "ACTIVE" ? "bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400" :
                     deal.status === "THRESHOLD_MET" ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400" :
@@ -276,19 +276,19 @@ function DealAnalysisPage() {
             </div>
             <div className="text-end">
               <div className={cn("text-3xl font-bold", T.accentText)}>{deal.currency}{revenue.toFixed(2)}</div>
-              <div className={cn("text-xs", T.muted)}>Total revenue</div>
+              <div className={cn("text-xs", T.muted)}>{t("total_revenue")}</div>
             </div>
           </div>
 
           {/* ── KPI Cards ── */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
             {[
-              { label: "Customers", value: `${deal.currentCustomers}/${deal.minCustomer}`, icon: <Users className="h-4 w-4 text-blue-600 dark:text-blue-400" />, bg: T.infoBg, extra: `${customerPct}% of min` },
-              { label: "Units Ordered", value: deal.orderedQuantity, icon: <ShoppingBag className="h-4 w-4 text-purple-600 dark:text-purple-400" />, bg: "bg-purple-50 dark:bg-purple-950/30", extra: `${deal.stock} stock` },
-              { label: "Avg Order Value", value: `${deal.currency}${avgOrderValue.toFixed(2)}`, icon: <DollarSign className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />, bg: T.successBg },
-              { label: "Avg Rating", value: avgRating.toFixed(1), icon: <Star className="h-4 w-4 text-amber-500" />, bg: "bg-amber-50 dark:bg-amber-950/30", extra: `${activeOrders.length} buyers` },
-              { label: "Cancel Rate", value: `${deal.orders.length > 0 ? Math.round((cancelledOrders.length / deal.orders.length) * 100) : 0}%`, icon: <XCircle className="h-4 w-4 text-red-500 dark:text-red-400" />, bg: T.dangerBg, extra: `${cancelledOrders.length} cancelled` },
-              { label: "Fill Rate", value: `${deal.stock > 0 ? Math.round((deal.orderedQuantity / deal.stock) * 100) : 0}%`, icon: <TrendingUp className={cn("h-4 w-4", T.accentText)} />, bg: T.accentLight },
+              { label: t("customers"), value: `${deal.currentCustomers}/${deal.minCustomer}`, icon: <Users className="h-4 w-4 text-blue-600 dark:text-blue-400" />, bg: T.infoBg, extra: `${customerPct}% ${t("of_min")}` },
+              { label: t("units_ordered"), value: deal.orderedQuantity, icon: <ShoppingBag className="h-4 w-4 text-purple-600 dark:text-purple-400" />, bg: "bg-purple-50 dark:bg-purple-950/30", extra: `${deal.stock} ${t("stock").toLowerCase()}` },
+              { label: t("avg_order_value"), value: `${deal.currency}${avgOrderValue.toFixed(2)}`, icon: <DollarSign className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />, bg: T.successBg },
+              { label: t("avg_rating"), value: avgRating.toFixed(1), icon: <Star className="h-4 w-4 text-amber-500" />, bg: "bg-amber-50 dark:bg-amber-950/30", extra: `${activeOrders.length} ${t("buyers").toLowerCase()}` },
+              { label: t("cancel_rate"), value: `${deal.orders.length > 0 ? Math.round((cancelledOrders.length / deal.orders.length) * 100) : 0}%`, icon: <XCircle className="h-4 w-4 text-red-500 dark:text-red-400" />, bg: T.dangerBg, extra: `${cancelledOrders.length} ${t("cancelled").toLowerCase()}` },
+              { label: t("fill_rate"), value: `${deal.stock > 0 ? Math.round((deal.orderedQuantity / deal.stock) * 100) : 0}%`, icon: <TrendingUp className={cn("h-4 w-4", T.accentText)} />, bg: T.accentLight },
             ].map((kpi) => (
               <div key={kpi.label} className={cn(T.card, T.border, "border rounded-2xl p-4")}>
                 <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center mb-2", kpi.bg)}>{kpi.icon}</div>
@@ -306,8 +306,8 @@ function DealAnalysisPage() {
             <div className={cn(T.card, T.border, "border rounded-2xl p-5 lg:col-span-2")}>
               <div className="flex items-center gap-2 mb-4">
                 <Activity className={cn("h-5 w-5", T.accentText)} />
-                <h3 className={cn("text-sm font-semibold", T.text)}>Order-by-Order Participation</h3>
-                <span className={cn("text-xs ms-auto", T.muted)}>Each point = 1 order joining the deal</span>
+                <h3 className={cn("text-sm font-semibold", T.text)}>{t("order_by_order_participation")}</h3>
+                <span className={cn("text-xs ms-auto", T.muted)}>{t("each_point_one_order_joining")}</span>
               </div>
               <ResponsiveContainer width="100%" height={260}>
                 <ComposedChart data={orderTimeline} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
@@ -321,16 +321,16 @@ function DealAnalysisPage() {
                   <XAxis dataKey="label" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} tickLine={false} axisLine={{ stroke: "#e8dfd4" }} />
                   <YAxis tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} tickLine={false} axisLine={false} width={35} />
                   <Tooltip content={<ChartTooltip />} />
-                  <Area type="monotone" dataKey="customers" name="Customers" stroke={T.accent} strokeWidth={2.5} fill="url(#participationGrad)" dot={{ r: 4, fill: T.accent, strokeWidth: 2, stroke: "hsl(var(--card))" }} activeDot={{ r: 6 }} />
-                  <Line type="monotone" dataKey="target" name="Min Target" stroke="#f87171" strokeWidth={1.5} strokeDasharray="6 4" dot={false} />
-                  <Bar dataKey="orderQty" name="Units" fill="#3b82f6" opacity={0.15} radius={[3, 3, 0, 0]} barSize={16} />
+                  <Area type="monotone" dataKey="customers" name={t("customers")} stroke={T.accent} strokeWidth={2.5} fill="url(#participationGrad)" dot={{ r: 4, fill: T.accent, strokeWidth: 2, stroke: "hsl(var(--card))" }} activeDot={{ r: 6 }} />
+                  <Line type="monotone" dataKey="target" name={t("min_target")} stroke="#f87171" strokeWidth={1.5} strokeDasharray="6 4" dot={false} />
+                  <Bar dataKey="orderQty" name={t("units")} fill="#3b82f6" opacity={0.15} radius={[3, 3, 0, 0]} barSize={16} />
                 </ComposedChart>
               </ResponsiveContainer>
             </div>
 
             {/* Status Distribution Pie (1/3 width) */}
             <div className={cn(T.card, T.border, "border rounded-2xl p-5")}>
-              <h3 className={cn("text-sm font-semibold mb-4", T.text)}>Order Status</h3>
+              <h3 className={cn("text-sm font-semibold mb-4", T.text)}>{t("order_status")}</h3>
               <ResponsiveContainer width="100%" height={180}>
                 <PieChart>
                   <Pie data={statusDist} cx="50%" cy="50%" innerRadius={45} outerRadius={75} paddingAngle={3} dataKey="value">
@@ -355,22 +355,22 @@ function DealAnalysisPage() {
 
             {/* Daily Join Rate */}
             <div className={cn(T.card, T.border, "border rounded-2xl p-5")}>
-              <h3 className={cn("text-sm font-semibold mb-4", T.text)}>Daily Join Rate</h3>
+              <h3 className={cn("text-sm font-semibold mb-4", T.text)}>{t("daily_join_rate")}</h3>
               <ResponsiveContainer width="100%" height={200}>
                 <ComposedChart data={dailyJoinRate} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
                   <XAxis dataKey="date" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} tickLine={false} axisLine={{ stroke: "#e8dfd4" }} />
                   <YAxis tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} tickLine={false} axisLine={false} width={30} />
                   <Tooltip content={<ChartTooltip />} />
-                  <Bar dataKey="joins" name="New Buyers" fill={T.accent} radius={[4, 4, 0, 0]} barSize={24} />
-                  <Line type="monotone" dataKey="quantity" name="Units" stroke="#3b82f6" strokeWidth={2} dot={{ r: 3, fill: "#3b82f6" }} />
+                  <Bar dataKey="joins" name={t("new_buyers")} fill={T.accent} radius={[4, 4, 0, 0]} barSize={24} />
+                  <Line type="monotone" dataKey="quantity" name={t("units")} stroke="#3b82f6" strokeWidth={2} dot={{ r: 3, fill: "#3b82f6" }} />
                 </ComposedChart>
               </ResponsiveContainer>
             </div>
 
             {/* Customer Rating Distribution */}
             <div className={cn(T.card, T.border, "border rounded-2xl p-5")}>
-              <h3 className={cn("text-sm font-semibold mb-4", T.text)}>Buyer Rating Distribution</h3>
+              <h3 className={cn("text-sm font-semibold mb-4", T.text)}>{t("buyer_rating_distribution")}</h3>
               <div className="space-y-3">
                 {ratingDist.map((b) => (
                   <div key={b.range} className="flex items-center gap-3">
@@ -393,7 +393,7 @@ function DealAnalysisPage() {
               </div>
               <div className={cn("mt-4 pt-3 border-t text-center", T.border)}>
                 <span className={cn("text-2xl font-bold", T.text)}>{avgRating.toFixed(1)}</span>
-                <span className={cn("text-sm ms-1", T.muted)}>avg rating</span>
+                <span className={cn("text-sm ms-1", T.muted)}>{t("avg_rating").toLowerCase()}</span>
               </div>
             </div>
           </div>
@@ -401,10 +401,10 @@ function DealAnalysisPage() {
           {/* ── Individual Order Cards (Timeline Feed) ── */}
           <div className={cn(T.card, T.border, "border rounded-2xl overflow-hidden")}>
             <div className={cn("px-6 py-4 border-b flex items-center justify-between", T.border)}>
-              <h3 className={cn("text-sm font-semibold", T.text)}>Order Timeline ({deal.orders.length} orders)</h3>
+              <h3 className={cn("text-sm font-semibold", T.text)}>{t("order_timeline")} ({t("orders_count", { n: deal.orders.length })})</h3>
               {!dealFinished && (
                 <span className={cn("text-xs px-2 py-0.5 rounded-full", T.warningBg, T.warning)}>
-                  <Eye className="h-3 w-3 inline me-1" /> Customer info masked
+                  <Eye className="h-3 w-3 inline me-1" /> {t("customer_info_masked")}
                 </span>
               )}
             </div>
@@ -434,7 +434,7 @@ function DealAnalysisPage() {
                           order.status === "DELIVERED" ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400" :
                           "bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400"
                         )}>{order.status}</span>
-                        <span className={cn("text-xs", T.muted)}>{d.toLocaleDateString("en-US", { month: "short", day: "numeric" })} at {d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}</span>
+                        <span className={cn("text-xs", T.muted)}>{d.toLocaleDateString("en-US", { month: "short", day: "numeric" })} {t("at")} {d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}</span>
                       </div>
                       <div className={cn("text-sm mt-0.5", T.muted)}>
                         {maskName(order.customerName, dealFinished)}
@@ -449,7 +449,7 @@ function DealAnalysisPage() {
                     {/* Quantity + amount */}
                     <div className="text-end flex-shrink-0">
                       <div className={cn("text-sm font-semibold", T.text)}>{deal.currency}{order.total.toFixed(2)}</div>
-                      <div className="text-xs text-muted-foreground">x{order.quantity} units</div>
+                      <div className="text-xs text-muted-foreground">x{order.quantity} {t("units")}</div>
                     </div>
 
                   </div>

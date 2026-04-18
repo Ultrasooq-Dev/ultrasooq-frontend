@@ -26,6 +26,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { X, SlidersHorizontal } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export interface FilterSpec {
   key: string;
@@ -65,6 +66,7 @@ export function FilterSidebar({
   onPriceChange,
   loading = false,
 }: FilterSidebarProps) {
+  const t = useTranslations();
   const activeCount = Object.keys(activeFilters).length + (activePriceRange ? 1 : 0);
 
   const renderFilterContent = (filter: FilterSpec) => {
@@ -141,7 +143,7 @@ export function FilterSidebar({
         return (
           <div className="space-y-1">
             {["true", "false"].map((val) => {
-              const label = val === "true" ? "Yes" : "No";
+              const label = val === "true" ? t("yes") : t("no");
               const count = filter.counts?.[val];
               return (
                 <label
@@ -189,7 +191,7 @@ export function FilterSidebar({
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <SlidersHorizontal className="h-4 w-4" />
-          <h3 className="text-sm font-semibold">Filters</h3>
+          <h3 className="text-sm font-semibold">{t("filters")}</h3>
           {activeCount > 0 && (
             <Badge variant="secondary" className="text-xs px-1.5 py-0">
               {activeCount}
@@ -203,7 +205,7 @@ export function FilterSidebar({
             onClick={onClearAll}
             className="text-xs h-7 px-2"
           >
-            Clear All
+            {t("clear_all")}
           </Button>
         )}
       </div>
@@ -240,7 +242,7 @@ export function FilterSidebar({
       {/* Price Range Filter */}
       {priceRange && onPriceChange && (
         <div className="mb-3 pb-3 border-b">
-          <div className="text-sm font-medium mb-2">Price Range</div>
+          <div className="text-sm font-medium mb-2">{t("price_range")}</div>
           <Slider
             min={priceRange.min}
             max={priceRange.max}

@@ -228,21 +228,21 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
                     </div>
 
                     <div className="text-center mt-4 mb-4">
-                        <p className="text-dark-orange">Do you want to remove this item from cart?</p>
+                        <p className="text-dark-orange">{t("do_you_want_to_remove_this_item_from_cart")}?</p>
                         <div>
                             <Button
                                 type="button"
                                 className="bg-card text-destructive mr-2"
                                 onClick={onCancelRemove}
                             >
-                                Cancel
+                                {t("cancel")}
                             </Button>
                             <Button
                                 type="button"
                                 className="bg-destructive"
                                 onClick={onConfirmRemove}
                             >
-                                Remove
+                                {t("remove")}
                             </Button>
                         </div>
                     </div>

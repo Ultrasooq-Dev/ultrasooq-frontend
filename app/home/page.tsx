@@ -3,6 +3,7 @@ import HeroBanner from "@/components/modules/home/HeroBanner";
 import { HomeRecommendations } from "@/components/modules/recommendations/HomeRecommendations";
 import CategorySidebar from "@/components/modules/trending/CategorySidebar";
 import Footer from "@/components/shared/Footer";
+import { useTranslations } from "next-intl";
 import React from "react";
 import { HomeCategorySection } from "./_components/HomeCategorySection";
 import { HomeDealOfTheDay } from "./_components/HomeDealOfTheDay";
@@ -15,6 +16,7 @@ import { HomeWaysToShop } from "./_components/HomeWaysToShop";
 import { useHomeData } from "./_components/useHomeData";
 
 function HomePage() {
+  const t = useTranslations();
   const [isCategorySidebarOpen, setIsCategorySidebarOpen] =
     React.useState(false);
 
@@ -55,8 +57,8 @@ function HomePage() {
 
       {/* Best Sellers */}
       <HomeProductSection
-        title="Best Sellers"
-        subtitle="Our most popular products"
+        title={t("best_sellers")}
+        subtitle={t("our_most_popular_products")}
         products={memoizedBestSellers}
         cartList={cartList}
         haveAccessToken={haveAccessToken}
@@ -67,8 +69,8 @@ function HomePage() {
 
       {/* New Arrivals */}
       <HomeProductSection
-        title="New Arrivals"
-        subtitle="Latest products added to our store"
+        title={t("new_arrivals")}
+        subtitle={t("latest_products_added_to_store")}
         products={memoizedNewArrivals}
         cartList={cartList}
         haveAccessToken={haveAccessToken}
@@ -78,8 +80,8 @@ function HomePage() {
 
       {/* Top Rated */}
       <HomeProductSection
-        title="Top Rated"
-        subtitle="Highest customer satisfaction"
+        title={t("top_rated")}
+        subtitle={t("highest_customer_satisfaction")}
         products={memoizedTopRatedProducts}
         cartList={cartList}
         haveAccessToken={haveAccessToken}
@@ -89,8 +91,8 @@ function HomePage() {
 
       {/* Hot Deals */}
       <HomeProductSection
-        title="Hot Deals"
-        subtitle="Best discounts available now"
+        title={t("hot_deals")}
+        subtitle={t("best_discounts_available")}
         products={memoizedHotDeals}
         cartList={cartList}
         haveAccessToken={haveAccessToken}
@@ -102,7 +104,7 @@ function HomePage() {
 
       {/* Consumer Electronics */}
       <HomeCategorySection
-        title="Consumer Electronics"
+        title={t("consumer_electronics")}
         products={memoizedConsumerElectronicsProducts}
         cartList={cartList}
         haveAccessToken={haveAccessToken}
@@ -117,7 +119,7 @@ function HomePage() {
 
       {/* Home Decor */}
       <HomeCategorySection
-        title="Home & Decor"
+        title={t("home_and_decor")}
         products={memoizedHomeDecorProducts}
         cartList={cartList}
         haveAccessToken={haveAccessToken}
@@ -132,7 +134,7 @@ function HomePage() {
 
       {/* Fashion & Beauty */}
       <HomeCategorySection
-        title="Fashion & Beauty"
+        title={t("fashion_and_beauty")}
         products={memoizedFashionBeautyProducts}
         cartList={cartList}
         haveAccessToken={haveAccessToken}
@@ -151,8 +153,8 @@ function HomePage() {
 
       {/* Highly Reviewed */}
       <HomeProductSection
-        title="Highly Reviewed"
-        subtitle="Products with most customer reviews"
+        title={t("highly_reviewed")}
+        subtitle={t("products_with_most_reviews")}
         products={memoizedHighlyReviewed}
         cartList={cartList}
         haveAccessToken={haveAccessToken}

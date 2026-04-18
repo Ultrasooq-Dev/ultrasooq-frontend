@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useMemo } from "react";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import {
   Users, Package, Clock, CheckCircle2, XCircle, AlertTriangle,
@@ -218,18 +219,19 @@ function ProgressBar({ value, max, color = "bg-primary" }: { value: number; max:
 }
 
 function StatusBadge({ status }: { status: string }) {
+  const t = useTranslations();
   const config: Record<string, { bg: string; text: string; label: string }> = {
-    ACTIVE: { bg: T.infoBg, text: T.infoText, label: "Active" },
-    THRESHOLD_MET: { bg: T.successBg, text: T.success, label: "Threshold Met" },
-    CONFIRMED: { bg: "bg-indigo-50 dark:bg-indigo-950/30", text: "text-indigo-600 dark:text-indigo-400", label: "Confirmed" },
-    PROCESSING: { bg: "bg-indigo-50 dark:bg-indigo-950/30", text: "text-indigo-600 dark:text-indigo-400", label: "Processing" },
-    SHIPPED: { bg: "bg-purple-50 dark:bg-purple-950/30", text: "text-purple-600 dark:text-purple-400", label: "Shipped" },
-    EXPIRED: { bg: T.warningBg, text: T.warning, label: "Expired" },
-    CANCELLED: { bg: T.dangerBg, text: T.danger, label: "Cancelled" },
-    COMPLETED: { bg: T.successBg, text: "text-emerald-700 dark:text-emerald-300", label: "Completed" },
-    PLACED: { bg: T.infoBg, text: T.infoText, label: "Placed" },
-    DELIVERED: { bg: T.successBg, text: T.success, label: "Delivered" },
-    REFUNDED: { bg: T.dangerBg, text: T.danger, label: "Refunded" },
+    ACTIVE: { bg: T.infoBg, text: T.infoText, label: t("active") },
+    THRESHOLD_MET: { bg: T.successBg, text: T.success, label: t("threshold_met") },
+    CONFIRMED: { bg: "bg-indigo-50 dark:bg-indigo-950/30", text: "text-indigo-600 dark:text-indigo-400", label: t("confirmed") },
+    PROCESSING: { bg: "bg-indigo-50 dark:bg-indigo-950/30", text: "text-indigo-600 dark:text-indigo-400", label: t("processing") },
+    SHIPPED: { bg: "bg-purple-50 dark:bg-purple-950/30", text: "text-purple-600 dark:text-purple-400", label: t("shipped") },
+    EXPIRED: { bg: T.warningBg, text: T.warning, label: t("expired") },
+    CANCELLED: { bg: T.dangerBg, text: T.danger, label: t("cancelled") },
+    COMPLETED: { bg: T.successBg, text: "text-emerald-700 dark:text-emerald-300", label: t("completed") },
+    PLACED: { bg: T.infoBg, text: T.infoText, label: t("placed") },
+    DELIVERED: { bg: T.successBg, text: T.success, label: t("delivered") },
+    REFUNDED: { bg: T.dangerBg, text: T.danger, label: t("refunded") },
   };
   const c = config[status] || config.ACTIVE;
   return <span className={cn("inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium", c.bg, c.text)}>{c.label}</span>;
@@ -291,12 +293,13 @@ function ChartTooltip({ active, payload, label }: any) {
 }
 
 function CountdownTimer({ dateClose, endTime }: { dateClose: string; endTime: string }) {
+  const t = useTranslations();
   const [now, setNow] = React.useState(new Date());
   React.useEffect(() => { const i = setInterval(() => setNow(new Date()), 60000); return () => clearInterval(i); }, []);
   const end = new Date(dateClose);
   if (endTime) { const [h, m] = endTime.split(":").map(Number); end.setHours(h || 23, m || 59); }
   const diff = end.getTime() - now.getTime();
-  if (diff <= 0) return <span className={T.danger}>Expired</span>;
+  if (diff <= 0) return <span className={T.danger}>{t("expired")}</span>;
   const days = Math.floor(diff / 86400000);
   const hours = Math.floor((diff % 86400000) / 3600000);
   if (days > 0) return <span className={cn(days <= 1 ? T.warning : T.muted)}>{days}d {hours}h</span>;
@@ -307,6 +310,7 @@ function CountdownTimer({ dateClose, endTime }: { dateClose: string; endTime: st
 // ─── Deal Card ───────────────────────────────────────────────
 
 function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
+  const t = useTranslations();
   const [showPanel, setShowPanel] = useState(false);
   const [panelSearch, setPanelSearch] = useState("");
   const [panelPage, setPanelPage] = useState(1);
@@ -376,17 +380,17 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
                 </span>
                 <span className="flex items-center gap-1">
                   <Users className="h-3.5 w-3.5" />
-                  {deal.currentCustomers} {isBuyGroup && deal.minCustomer ? `/ ${deal.minCustomer} min` : "customers"}
+                  {deal.currentCustomers} {isBuyGroup && deal.minCustomer ? `/ ${deal.minCustomer} ${t("min").toLowerCase()}` : t("customers").toLowerCase()}
                 </span>
                 <span className="flex items-center gap-1">
                   <Package className="h-3.5 w-3.5" />
-                  {deal.orderedQuantity}/{deal.stock} units
+                  {deal.orderedQuantity}/{deal.stock} {t("units")}
                 </span>
                 {deal.dealType === "DROPSHIP" && deal.commission && (
-                  <span className="flex items-center gap-1"><TrendingUp className="h-3.5 w-3.5" />{deal.commission}% commission</span>
+                  <span className="flex items-center gap-1"><TrendingUp className="h-3.5 w-3.5" />{deal.commission}% {t("commission").toLowerCase()}</span>
                 )}
                 {deal.dealType === "DROPSHIP" && deal.resellers && (
-                  <span className="flex items-center gap-1"><Store className="h-3.5 w-3.5" />{deal.resellers} resellers</span>
+                  <span className="flex items-center gap-1"><Store className="h-3.5 w-3.5" />{deal.resellers} {t("resellers")}</span>
                 )}
                 {deal.dealType === "SERVICE" && deal.serviceType && (
                   <span className="flex items-center gap-1"><Wrench className="h-3.5 w-3.5" />{deal.serviceType}</span>
@@ -400,7 +404,7 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
           {/* Accept button for threshold-met buygroups */}
           {deal.status === "THRESHOLD_MET" && (
             <button className={cn("px-4 py-2 rounded-xl text-sm font-medium text-primary-foreground", T.accentBg, "hover:opacity-90")}>
-              <CheckCircle2 className="h-4 w-4 inline-block me-1.5" /> Accept Deal
+              <CheckCircle2 className="h-4 w-4 inline-block me-1.5" /> {t("accept_deal")}
             </button>
           )}
         </div>
@@ -410,7 +414,7 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
           {isBuyGroup && deal.minCustomer && (
             <div>
               <div className="flex items-center justify-between text-xs mb-1.5">
-                <span className={T.muted}>Customers ({deal.currentCustomers}/{deal.minCustomer} min)</span>
+                <span className={T.muted}>{t("customers")} ({deal.currentCustomers}/{deal.minCustomer} {t("min").toLowerCase()})</span>
                 <span className={cn("font-semibold", customerPct >= 100 ? T.success : T.accentText)}>{customerPct}%</span>
               </div>
               <ProgressBar value={deal.currentCustomers} max={deal.minCustomer} color={customerPct >= 100 ? "bg-emerald-500" : "bg-primary"} />
@@ -418,7 +422,7 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
           )}
           <div>
             <div className="flex items-center justify-between text-xs mb-1.5">
-              <span className={T.muted}>{deal.dealType === "SERVICE" ? "Bookings" : "Quantity"} ({deal.orderedQuantity}/{deal.stock})</span>
+              <span className={T.muted}>{deal.dealType === "SERVICE" ? t("bookings") : t("quantity")} ({deal.orderedQuantity}/{deal.stock})</span>
               <span className={cn("font-semibold", quantityPct >= 100 ? T.success : T.infoText)}>{quantityPct}%</span>
             </div>
             <ProgressBar value={deal.orderedQuantity} max={deal.stock} color={quantityPct >= 100 ? "bg-emerald-500" : "bg-blue-500"} />
@@ -429,8 +433,8 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
         {tl.length > 1 && (
           <div className={cn("mt-4 pt-4 border-t", T.border)}>
             <div className="flex items-center justify-between mb-1">
-              <span className={cn("text-xs font-medium", T.muted)}>Order Timeline</span>
-              <span className={cn("text-xs", T.muted)}>Revenue: <span className={cn("font-semibold", T.text)}>{deal.currency}{revenue.toFixed(2)}</span></span>
+              <span className={cn("text-xs font-medium", T.muted)}>{t("order_timeline")}</span>
+              <span className={cn("text-xs", T.muted)}>{t("revenue")}: <span className={cn("font-semibold", T.text)}>{deal.currency}{revenue.toFixed(2)}</span></span>
             </div>
             <ResponsiveContainer width="100%" height={80}>
               <AreaChart data={tl} margin={{ top: 2, right: 4, left: 0, bottom: 2 }}>
@@ -443,8 +447,8 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
                 <XAxis dataKey="date" tick={{ fontSize: 9, fill: "hsl(var(--muted-foreground))" }} tickLine={false} axisLine={false} />
                 <YAxis hide />
                 <Tooltip content={<ChartTooltip />} />
-                <Area type="monotone" dataKey="customers" name="Customers" stroke={T.accent} strokeWidth={2} fill={`url(#mg-${deal.id})`} dot={{ r: 2, fill: T.accent, strokeWidth: 0 }} />
-                {isBuyGroup && <Line type="monotone" dataKey="target" name="Min Target" stroke="#f87171" strokeWidth={1} strokeDasharray="4 3" dot={false} />}
+                <Area type="monotone" dataKey="customers" name={t("customers")} stroke={T.accent} strokeWidth={2} fill={`url(#mg-${deal.id})`} dot={{ r: 2, fill: T.accent, strokeWidth: 0 }} />
+                {isBuyGroup && <Line type="monotone" dataKey="target" name={t("min_target")} stroke="#f87171" strokeWidth={1} strokeDasharray="4 3" dot={false} />}
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -454,21 +458,21 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
         <div className={cn("flex items-center gap-2 mt-3 pt-3 border-t", T.border)}>
           <button onClick={() => { setShowPanel(true); setPanelPage(1); setPanelSearch(""); }}
             className={cn("flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-medium text-sm border transition-colors", T.border, T.accentText, "hover:bg-primary/5")}>
-            <Users className="h-4 w-4" /> View {deal.dealType === "DROPSHIP" ? "Resellers" : deal.dealType === "SERVICE" ? "Bookings" : "Buyers"} ({deal.orders.length})
+            <Users className="h-4 w-4" /> {t("view")} {deal.dealType === "DROPSHIP" ? t("resellers") : deal.dealType === "SERVICE" ? t("bookings") : t("buyers")} ({deal.orders.length})
           </button>
           <a href={`/manage-products/deal-analysis?id=${deal.id}`}
             className={cn("flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-medium text-sm text-primary-foreground transition-colors", T.accentBg, "hover:opacity-90")}>
-            <BarChart3 className="h-4 w-4" /> Full Analysis
+            <BarChart3 className="h-4 w-4" /> {t("full_analysis")}
           </a>
           <button onClick={() => { setShowQuickEdit(!showQuickEdit); if (!showQuickEdit) resetEdit(); }}
             className={cn("flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-medium text-sm border transition-colors",
               showQuickEdit ? cn(T.accentBg, "text-primary-foreground border-transparent") : cn(T.border, T.muted, "hover:bg-muted"))}>
-            <Pencil className="h-4 w-4" /> {showQuickEdit ? "Close Edit" : "Edit Product"}
+            <Pencil className="h-4 w-4" /> {showQuickEdit ? t("close_edit") : t("edit_product")}
           </button>
           {isDealDone && (
             <a href="/orders"
               className={cn("flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-medium text-sm border transition-colors ms-auto", T.border, T.success, "hover:bg-emerald-50 dark:hover:bg-emerald-950/30")}>
-              <ShoppingBag className="h-4 w-4" /> View in Orders
+              <ShoppingBag className="h-4 w-4" /> {t("view_in_orders")}
             </a>
           )}
         </div>
@@ -481,12 +485,12 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
 
             {/* Stock */}
             <div>
-              <label className={cn("text-xs font-medium mb-1.5 block", T.text)}>Stock</label>
+              <label className={cn("text-xs font-medium mb-1.5 block", T.text)}>{t("stock")}</label>
               <div className="flex items-center gap-0">
                 <label className="flex items-center gap-1.5 mb-1.5">
                   <input type="checkbox" checked={editManageStock} onChange={(e) => setEditManageStock(e.target.checked)}
                     className="w-3.5 h-3.5 rounded border-border text-primary focus:ring-primary" />
-                  <span className="text-[10px] text-muted-foreground">Manage stock</span>
+                  <span className="text-[10px] text-muted-foreground">{t("manage_stock")}</span>
                 </label>
               </div>
               <div className="flex items-center">
@@ -505,12 +509,12 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
 
             {/* Price */}
             <div>
-              <label className={cn("text-xs font-medium mb-1.5 block", T.text)}>Price</label>
+              <label className={cn("text-xs font-medium mb-1.5 block", T.text)}>{t("price")}</label>
               <div className="flex items-center gap-0">
                 <label className="flex items-center gap-1.5 mb-1.5">
                   <input type="checkbox" checked={editManagePrice} onChange={(e) => setEditManagePrice(e.target.checked)}
                     className="w-3.5 h-3.5 rounded border-border text-primary focus:ring-primary" />
-                  <span className="text-[10px] text-muted-foreground">Manage price</span>
+                  <span className="text-[10px] text-muted-foreground">{t("manage_price")}</span>
                 </label>
               </div>
               <div className="flex items-center">
@@ -529,18 +533,18 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
 
             {/* Product Condition */}
             <div>
-              <label className={cn("text-xs font-medium mb-1.5 block", T.text)}>Product Condition</label>
+              <label className={cn("text-xs font-medium mb-1.5 block", T.text)}>{t("product_condition")}</label>
               <select value={editCondition} onChange={(e) => setEditCondition(e.target.value)}
                 className={cn("w-full h-9 px-2 rounded-lg border text-sm mt-[22px]", T.border, "focus:outline-none focus:ring-2 focus:ring-primary/20")}>
-                <option value="New">New</option>
-                <option value="Used">Used</option>
-                <option value="Refurbished">Refurbished</option>
+                <option value="New">{t("new")}</option>
+                <option value="Used">{t("used")}</option>
+                <option value="Refurbished">{t("refurbished")}</option>
               </select>
             </div>
 
             {/* Deliver After */}
             <div>
-              <label className={cn("text-xs font-medium mb-1.5 block", T.text)}>Deliver After</label>
+              <label className={cn("text-xs font-medium mb-1.5 block", T.text)}>{t("deliver_after")}</label>
               <div className="flex items-center mt-[22px]">
                 <button onClick={() => setEditDeliveryAfter(Math.max(0, editDeliveryAfter - 1))}
                   className={cn("w-8 h-9 flex items-center justify-center border rounded-s-lg text-sm", T.border, "hover:bg-muted")}>
@@ -557,7 +561,7 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
 
             {/* Time Open */}
             <div>
-              <label className={cn("text-xs font-medium mb-1.5 block", T.text)}>Time Open</label>
+              <label className={cn("text-xs font-medium mb-1.5 block", T.text)}>{t("time_open")}</label>
               <div className="flex items-center mt-[22px]">
                 <button onClick={() => setEditTimeOpen(Math.max(0, editTimeOpen - 1))}
                   className={cn("w-8 h-9 flex items-center justify-center border rounded-s-lg text-sm", T.border, "hover:bg-muted")}>
@@ -574,7 +578,7 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
 
             {/* Time Close */}
             <div>
-              <label className={cn("text-xs font-medium mb-1.5 block", T.text)}>Time Close</label>
+              <label className={cn("text-xs font-medium mb-1.5 block", T.text)}>{t("time_close")}</label>
               <div className="flex items-center mt-[22px]">
                 <button onClick={() => setEditTimeClose(Math.max(0, editTimeClose - 1))}
                   className={cn("w-8 h-9 flex items-center justify-center border rounded-s-lg text-sm", T.border, "hover:bg-muted")}>
@@ -593,25 +597,25 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
           {/* Row 2: Consumer Type, Sell Type, Discount */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
             <div>
-              <label className={cn("text-xs font-medium mb-1.5 block", T.text)}>Consumer Type</label>
+              <label className={cn("text-xs font-medium mb-1.5 block", T.text)}>{t("consumer_type")}</label>
               <select value={editConsumerType} onChange={(e) => setEditConsumerType(e.target.value)}
                 className={cn("w-full h-9 px-2 rounded-lg border text-sm", T.border, "focus:outline-none focus:ring-2 focus:ring-primary/20")}>
-                <option value="Consumer">Consumer</option>
-                <option value="Vendor">Vendor</option>
-                <option value="Everyone">Everyone</option>
+                <option value="Consumer">{t("consumer")}</option>
+                <option value="Vendor">{t("vendor")}</option>
+                <option value="Everyone">{t("everyone")}</option>
               </select>
             </div>
             <div>
-              <label className={cn("text-xs font-medium mb-1.5 block", T.text)}>Sell Type</label>
+              <label className={cn("text-xs font-medium mb-1.5 block", T.text)}>{t("sell_type")}</label>
               <select value={editSellType} onChange={(e) => setEditSellType(e.target.value)}
                 className={cn("w-full h-9 px-2 rounded-lg border text-sm", T.border, "focus:outline-none focus:ring-2 focus:ring-primary/20")}>
-                <option value="Normal Sell">Normal Sell</option>
-                <option value="Buy Group">Buy Group</option>
-                <option value="Wholesale">Wholesale</option>
+                <option value="Normal Sell">{t("normal_sell")}</option>
+                <option value="Buy Group">{t("buy_group")}</option>
+                <option value="Wholesale">{t("wholesale")}</option>
               </select>
             </div>
             <div>
-              <label className={cn("text-xs font-medium mb-1.5 block", T.text)}>Consumer Discount</label>
+              <label className={cn("text-xs font-medium mb-1.5 block", T.text)}>{t("consumer_discount")}</label>
               <div className="flex items-center">
                 <button onClick={() => setEditConsumerDiscount(Math.max(0, editConsumerDiscount - 1))}
                   className={cn("w-8 h-9 flex items-center justify-center border rounded-s-lg text-sm", T.border, "hover:bg-muted")}>
@@ -626,11 +630,11 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
               </div>
             </div>
             <div>
-              <label className={cn("text-xs font-medium mb-1.5 block", T.text)}>Discount Type</label>
+              <label className={cn("text-xs font-medium mb-1.5 block", T.text)}>{t("discount_type")}</label>
               <select value={editDiscountType} onChange={(e) => setEditDiscountType(e.target.value)}
                 className={cn("w-full h-9 px-2 rounded-lg border text-sm", T.border, "focus:outline-none focus:ring-2 focus:ring-primary/20")}>
-                <option value="PERCENTAGE">PERCENTAGE</option>
-                <option value="FIXED">FIXED</option>
+                <option value="PERCENTAGE">{t("percentage")}</option>
+                <option value="FIXED">{t("fixed")}</option>
               </select>
             </div>
           </div>
@@ -638,14 +642,14 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
           {/* Action buttons */}
           <div className="flex items-center justify-center gap-3 mt-5">
             <button className="inline-flex items-center gap-1.5 px-5 py-2 rounded-xl text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-700 dark:hover:bg-emerald-600 transition-colors">
-              <Pencil className="h-4 w-4" /> Edit
+              <Pencil className="h-4 w-4" /> {t("edit")}
             </button>
             <button className="inline-flex items-center gap-1.5 px-5 py-2 rounded-xl text-sm font-medium text-white bg-red-500 hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-600 transition-colors">
-              <Save className="h-4 w-4" /> Update
+              <Save className="h-4 w-4" /> {t("update")}
             </button>
             <button onClick={resetEdit}
               className="inline-flex items-center gap-1.5 px-5 py-2 rounded-xl text-sm font-medium text-white bg-amber-500 hover:bg-amber-600 dark:bg-amber-700 dark:hover:bg-amber-600 transition-colors">
-              <RotateCcw className="h-4 w-4" /> Reset
+              <RotateCcw className="h-4 w-4" /> {t("reset")}
             </button>
           </div>
         </div>
@@ -668,11 +672,11 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
             <div className={cn(T.card, "relative w-full max-w-lg h-full shadow-2xl flex flex-col animate-in slide-in-from-right duration-200")} onClick={(e) => e.stopPropagation()}>
               <div className={cn("p-5 border-b flex items-start justify-between", T.border)}>
                 <div>
-                  <h3 className={cn("text-lg font-semibold", T.text)}>{deal.dealType === "DROPSHIP" ? "Resellers" : deal.dealType === "SERVICE" ? "Bookings" : "Buyers"}</h3>
+                  <h3 className={cn("text-lg font-semibold", T.text)}>{deal.dealType === "DROPSHIP" ? t("resellers") : deal.dealType === "SERVICE" ? t("bookings") : t("buyers")}</h3>
                   <p className={cn("text-xs mt-0.5", T.muted)}>{deal.productName}</p>
                   {!dealFinished && (
                     <span className={cn("text-xs px-2 py-0.5 rounded-full mt-1 inline-block", T.warningBg, T.warning)}>
-                      <Eye className="h-3 w-3 inline me-1" /> Info masked until finalized
+                      <Eye className="h-3 w-3 inline me-1" /> {t("info_masked_until_finalized")}
                     </span>
                   )}
                 </div>
@@ -681,14 +685,14 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
               <div className={cn("px-5 py-3 border-b", T.border)}>
                 <div className="relative">
                   <Search className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <input type="text" placeholder="Search..." value={panelSearch}
+                  <input type="text" placeholder={t("search") + "..."} value={panelSearch}
                     onChange={(e) => { setPanelSearch(e.target.value); setPanelPage(1); }}
                     className={cn("w-full ps-9 pe-4 py-2 rounded-xl border text-sm", T.border, "focus:outline-none focus:ring-2 focus:ring-primary/20")} />
                 </div>
               </div>
               <div className="flex-1 overflow-y-auto">
                 {paged.length === 0 ? (
-                  <div className="p-8 text-center"><Users className="h-10 w-10 mx-auto mb-2 text-muted-foreground/30" /><p className={T.muted}>No results</p></div>
+                  <div className="p-8 text-center"><Users className="h-10 w-10 mx-auto mb-2 text-muted-foreground/30" /><p className={T.muted}>{t("no_results")}</p></div>
                 ) : (
                   <div className="divide-y divide-border">
                     {paged.map((order) => (
@@ -716,7 +720,7 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
                             </div>
                             <div className={cn("flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors", T.accentLight, T.accentText, "hover:bg-primary/20")}>
                               <Eye className="h-3.5 w-3.5" />
-                              View Order
+                              {t("view_order")}
                             </div>
                           </div>
                         </div>
@@ -727,7 +731,7 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
               </div>
               {totalPages > 1 && (
                 <div className={cn("px-5 py-3 border-t flex items-center justify-between", T.border)}>
-                  <span className={cn("text-xs", T.muted)}>{(panelPage - 1) * PAGE_SIZE + 1}–{Math.min(panelPage * PAGE_SIZE, filtered.length)} of {filtered.length}</span>
+                  <span className={cn("text-xs", T.muted)}>{(panelPage - 1) * PAGE_SIZE + 1}–{Math.min(panelPage * PAGE_SIZE, filtered.length)} {t("of")} {filtered.length}</span>
                   <div className="flex items-center gap-1">
                     <button disabled={panelPage <= 1} onClick={() => setPanelPage((p) => p - 1)} className="p-1.5 rounded-lg hover:bg-muted disabled:opacity-30"><ChevronLeft className="h-4 w-4" /></button>
                     {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
@@ -750,7 +754,8 @@ function DealCard({ deal, langDir }: { deal: Deal; langDir: string }) {
 // EXPORTED TAB COMPONENT
 // ═══════════════════════════════════════════════════════════════
 
-export function DealOpsTab({ langDir, t }: { langDir: string; t: any }) {
+export function DealOpsTab({ langDir, t: _tProp }: { langDir: string; t?: any }) {
+  const t = useTranslations();
   const [dealTypeFilter, setDealTypeFilter] = useState<DealType>("ALL");
   const [statusFilter, setStatusFilter] = useState<"all" | DealStatus>("all");
   const [searchTerm, setSearchTerm] = useState("");
@@ -820,10 +825,10 @@ export function DealOpsTab({ langDir, t }: { langDir: string; t: any }) {
     <div>
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-5 mb-6">
-        <StatCard icon={<Activity className="h-5 w-5 text-primary" />} label="Total Deals" value={deals.length} sub={`${activeCount} active`} color={T.accentLight} />
-        <StatCard icon={<Users className="h-5 w-5 text-primary" />} label="BuyGroup" value={countByType("BUYGROUP")} color={T.accentLight} />
-        <StatCard icon={<Truck className="h-5 w-5 text-blue-600 dark:text-blue-400" />} label="Dropship" value={countByType("DROPSHIP")} sub={`${deals.filter((d) => d.dealType === "DROPSHIP").reduce((s, d) => s + (d.resellers || 0), 0)} resellers`} color={T.infoBg} />
-        <StatCard icon={<DollarSign className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />} label="Total Revenue" value={`$${totalRevenue.toFixed(0)}`} color={T.successBg} />
+        <StatCard icon={<Activity className="h-5 w-5 text-primary" />} label={t("total_deals")} value={deals.length} sub={`${activeCount} ${t("active").toLowerCase()}`} color={T.accentLight} />
+        <StatCard icon={<Users className="h-5 w-5 text-primary" />} label={t("buygroup")} value={countByType("BUYGROUP")} color={T.accentLight} />
+        <StatCard icon={<Truck className="h-5 w-5 text-blue-600 dark:text-blue-400" />} label={t("dropship")} value={countByType("DROPSHIP")} sub={`${deals.filter((d) => d.dealType === "DROPSHIP").reduce((s, d) => s + (d.resellers || 0), 0)} ${t("resellers")}`} color={T.infoBg} />
+        <StatCard icon={<DollarSign className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />} label={t("total_revenue")} value={`$${totalRevenue.toFixed(0)}`} color={T.successBg} />
       </div>
 
       {/* ── Top Bar: Type tabs + Filters + Sort ── */}
@@ -844,7 +849,7 @@ export function DealOpsTab({ langDir, t }: { langDir: string; t: any }) {
                     : cn(T.border, T.muted, "hover:bg-muted"),
                 )}>
                 {isAll ? <BarChart3 className="h-4 w-4" /> : config!.icon}
-                {isAll ? "All" : config!.label}
+                {isAll ? t("all") : t(type.toLowerCase() as any)}
                 <span className={cn("text-xs px-1.5 py-0.5 rounded-full",
                   dealTypeFilter === type ? "bg-white/20 text-primary-foreground" : "bg-muted text-muted-foreground"
                 )}>{count}</span>
@@ -859,20 +864,30 @@ export function DealOpsTab({ langDir, t }: { langDir: string; t: any }) {
           {/* Search */}
           <div className="relative min-w-[200px] flex-1">
             <Search className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <input type="text" placeholder="Search deals..." value={searchTerm}
+            <input type="text" placeholder={t("search_deals")} value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className={cn("w-full ps-9 pe-4 py-2 rounded-xl border text-sm", T.border, "focus:outline-none focus:ring-2 focus:ring-primary/20")} />
           </div>
 
           {/* Status pills */}
           <div className="flex items-center gap-1 bg-muted rounded-xl p-1">
-            {(["all", "ACTIVE", "THRESHOLD_MET", "COMPLETED", "EXPIRED", "CANCELLED"] as const).map((s) => (
-              <button key={s} onClick={() => setStatusFilter(s)}
-                className={cn("px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors",
-                  statusFilter === s ? cn(T.accentBg, "text-primary-foreground") : cn(T.muted, "hover:bg-card"))}>
-                {s === "all" ? "All" : s === "THRESHOLD_MET" ? "Ready" : s.charAt(0) + s.slice(1).toLowerCase()}
-              </button>
-            ))}
+            {(["all", "ACTIVE", "THRESHOLD_MET", "COMPLETED", "EXPIRED", "CANCELLED"] as const).map((s) => {
+              const labelMap: Record<typeof s, string> = {
+                all: t("all"),
+                ACTIVE: t("active"),
+                THRESHOLD_MET: t("ready"),
+                COMPLETED: t("completed"),
+                EXPIRED: t("expired"),
+                CANCELLED: t("cancelled"),
+              };
+              return (
+                <button key={s} onClick={() => setStatusFilter(s)}
+                  className={cn("px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors",
+                    statusFilter === s ? cn(T.accentBg, "text-primary-foreground") : cn(T.muted, "hover:bg-card"))}>
+                  {labelMap[s]}
+                </button>
+              );
+            })}
           </div>
 
           {/* Date range dropdown */}
@@ -881,11 +896,11 @@ export function DealOpsTab({ langDir, t }: { langDir: string; t: any }) {
             onChange={(e) => setDateRange(e.target.value as any)}
             className={cn("px-3 py-2 rounded-xl border text-sm", T.border, dateRange !== "all" && "border-primary bg-primary/5", "focus:outline-none focus:ring-2 focus:ring-primary/20")}
           >
-            <option value="all">All Time</option>
-            <option value="today">Today</option>
-            <option value="week">This Week</option>
-            <option value="month">This Month</option>
-            <option value="quarter">This Quarter</option>
+            <option value="all">{t("all_time")}</option>
+            <option value="today">{t("today")}</option>
+            <option value="week">{t("this_week")}</option>
+            <option value="month">{t("this_month")}</option>
+            <option value="quarter">{t("this_quarter")}</option>
           </select>
 
           {/* Sort dropdown */}
@@ -894,11 +909,11 @@ export function DealOpsTab({ langDir, t }: { langDir: string; t: any }) {
             onChange={(e) => setSortBy(e.target.value as any)}
             className={cn("px-3 py-2 rounded-xl border text-sm", T.border, sortBy !== "newest" && "border-primary bg-primary/5", "focus:outline-none focus:ring-2 focus:ring-primary/20")}
           >
-            <option value="newest">Newest First</option>
-            <option value="oldest">Oldest First</option>
-            <option value="revenue">Highest Revenue</option>
-            <option value="customers">Most Customers</option>
-            <option value="ending-soon">Ending Soon</option>
+            <option value="newest">{t("newest_first")}</option>
+            <option value="oldest">{t("oldest_first")}</option>
+            <option value="revenue">{t("highest_revenue")}</option>
+            <option value="customers">{t("most_customers")}</option>
+            <option value="ending-soon">{t("ending_soon")}</option>
           </select>
 
           {/* Clear all */}
@@ -906,7 +921,7 @@ export function DealOpsTab({ langDir, t }: { langDir: string; t: any }) {
             <button onClick={clearAllFilters}
               className={cn("inline-flex items-center gap-1 px-3 py-2 rounded-xl text-xs font-medium transition-colors", T.danger, "hover:bg-red-50 dark:hover:bg-red-950/30")}>
               <XCircle className="h-3.5 w-3.5" />
-              Clear
+              {t("clear")}
             </button>
           )}
         </div>
@@ -914,13 +929,13 @@ export function DealOpsTab({ langDir, t }: { langDir: string; t: any }) {
         {/* Row 3: Results count bar */}
         <div className={cn("px-4 py-2 bg-muted/50 flex items-center justify-between text-xs", T.muted)}>
           <span>
-            Showing <span className={cn("font-semibold", T.text)}>{filteredDeals.length}</span> of {deals.length} deals
-            {dealTypeFilter !== "ALL" && <span> in <span className="font-medium">{DEAL_TYPE_CONFIG[dealTypeFilter]?.label}</span></span>}
+            {t("showing")} <span className={cn("font-semibold", T.text)}>{filteredDeals.length}</span> {t("of")} {deals.length} {t("deals").toLowerCase()}
+            {dealTypeFilter !== "ALL" && <span> {t("in")} <span className="font-medium">{t(dealTypeFilter.toLowerCase() as any)}</span></span>}
           </span>
           {hasActiveFilters && (
             <span className="flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-              Filters active
+              {t("filters_active")}
             </span>
           )}
         </div>
@@ -931,8 +946,8 @@ export function DealOpsTab({ langDir, t }: { langDir: string; t: any }) {
         {filteredDeals.length === 0 ? (
           <div className={cn(T.card, T.border, "border rounded-2xl p-12 text-center")}>
             <Package className="h-12 w-12 mx-auto mb-3 text-muted-foreground/40" />
-            <p className={cn("text-lg font-medium", T.muted)}>No deals found</p>
-            <p className="text-sm text-muted-foreground mt-1">Try adjusting your filters</p>
+            <p className={cn("text-lg font-medium", T.muted)}>{t("no_deals_found")}</p>
+            <p className="text-sm text-muted-foreground mt-1">{t("try_adjusting_filters")}</p>
           </div>
         ) : (
           filteredDeals.map((deal) => <DealCard key={deal.id} deal={deal} langDir={langDir} />)
