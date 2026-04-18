@@ -2288,5 +2288,6 @@
   "get_10_off_first_order": "Get 10% Off Your First Order",
   "newsletter_description": "Subscribe for exclusive deals, early access to new products, and personalized recommendations delivered to your inbox.",
   "subscribed": "Subscribed!",
-  "no_spam_unsubscribe": "No spam. Unsubscribe at any time."
+  "no_spam_unsubscribe": "No spam. Unsubscribe at any time.",
+  "off": "Descuento"
 }
