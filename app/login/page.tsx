@@ -24,6 +24,14 @@ import { LANGUAGES, ULTRASOOQ_TOKEN_KEY, ULTRASOOQ_REFRESH_TOKEN_KEY } from "@/u
 import { getLoginType, getOrCreateDeviceId } from "@/utils/helper";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { setCookie } from "cookies-next";
+import {
+  ArrowRight,
+  Check,
+  ChevronDown,
+  Globe,
+  ShieldCheck,
+  TrendingUp,
+} from "lucide-react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
@@ -245,36 +253,21 @@ export default function LoginPage() {
         dir={langDir}
       >
         {/* ======================= LEFT PANEL - Company Branding (Desktop Only) ======================= */}
-        <div className="relative hidden overflow-hidden lg:flex lg:w-[48%] xl:w-[50%]">
-          {/* Background gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-warning via-warning to-amber-500" />
+        <div className="bg-primary relative hidden overflow-hidden lg:flex lg:w-[48%] xl:w-[50%]">
+          {/* Decorative gradient blobs */}
+          <div className="bg-primary-foreground/15 absolute -top-32 -start-32 h-96 w-96 rounded-full blur-3xl" />
+          <div className="bg-primary-foreground/10 absolute -end-32 bottom-0 h-[28rem] w-[28rem] rounded-full blur-3xl" />
 
-          {/* Decorative pattern overlay */}
-          <div className="absolute inset-0 opacity-10">
-            <svg className="h-full w-full" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <pattern
-                  id="grid-pattern"
-                  width="40"
-                  height="40"
-                  patternUnits="userSpaceOnUse"
-                >
-                  <path
-                    d="M 40 0 L 0 0 0 40"
-                    fill="none"
-                    stroke="white"
-                    strokeWidth="0.5"
-                  />
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#grid-pattern)" />
-            </svg>
-          </div>
-
-          {/* Decorative circles */}
-          <div className="absolute -top-20 -left-20 h-72 w-72 rounded-full bg-card/10 blur-xl" />
-          <div className="absolute -right-16 bottom-10 h-80 w-80 rounded-full bg-card/5 blur-2xl" />
-          <div className="absolute top-1/2 left-1/4 h-40 w-40 rounded-full bg-card/5 blur-lg" />
+          {/* Subtle dot pattern */}
+          <div
+            className="absolute inset-0 opacity-[0.08]"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle, currentColor 1px, transparent 1px)",
+              backgroundSize: "28px 28px",
+              color: "var(--primary-foreground)",
+            }}
+          />
 
           {/* Content */}
           <div className="relative z-10 flex w-full flex-col justify-between p-10 xl:p-14">
@@ -284,14 +277,16 @@ export default function LoginPage() {
                 href="/home"
                 className="group inline-flex items-center gap-3"
               >
-                <Image
-                  src="/images/logo-v2.png"
-                  alt="Ultrasooq"
-                  width={48}
-                  height={48}
-                  className="rounded-xl shadow-lg transition-transform group-hover:scale-105"
-                />
-                <span className="text-2xl font-bold tracking-tight text-white xl:text-3xl">
+                <div className="bg-primary-foreground/15 border-primary-foreground/20 flex h-12 w-12 items-center justify-center rounded-xl border p-2 backdrop-blur-sm transition-transform group-hover:scale-105">
+                  <Image
+                    src="/images/logoicon.png"
+                    alt="Ultrasooq"
+                    width={36}
+                    height={36}
+                    className="h-full w-full object-contain"
+                  />
+                </div>
+                <span className="text-primary-foreground text-2xl font-bold tracking-tight xl:text-3xl">
                   Ultrasooq
                 </span>
               </Link>
@@ -299,129 +294,85 @@ export default function LoginPage() {
 
             {/* Value Propositions */}
             <div className="flex flex-1 flex-col justify-center py-10">
-              <h1 className="mb-4 text-3xl leading-tight font-bold text-white xl:text-4xl">
-                {s.headline || "Your Global B2B"}
+              <h1 className="text-primary-foreground mb-5 text-3xl leading-[1.1] font-bold xl:text-5xl">
+                {s.headline || t("your_global_b2b")}
                 <br />
-                <span className="text-warning-foreground">
-                  {s.headline_line2 || "Marketplace"}
+                <span className="text-primary-foreground/90">
+                  {s.headline_line2 || t("marketplace_word")}
                 </span>
               </h1>
-              <p className="mb-10 max-w-md text-base leading-relaxed text-warning-foreground xl:text-lg">
-                {s.subtitle ||
-                  "Connect with verified suppliers and buyers worldwide. Trade smarter, grow faster."}
+              <p className="text-primary-foreground/80 mb-10 max-w-md text-base leading-relaxed xl:text-lg">
+                {s.subtitle || t("connect_with_verified_suppliers")}
               </p>
 
               {/* Feature Points */}
               <div className="space-y-5">
-                <div className="flex items-start gap-4">
-                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-card/20 backdrop-blur-sm">
-                    <svg
-                      className="h-5 w-5 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
+                {[
+                  {
+                    Icon: Globe,
+                    title: s.feature_1_title || t("global_trade_network"),
+                    desc:
+                      s.feature_1_description ||
+                      t("global_trade_network_description"),
+                  },
+                  {
+                    Icon: ShieldCheck,
+                    title: s.feature_2_title || t("secure_transactions"),
+                    desc:
+                      s.feature_2_description ||
+                      t("secure_transactions_description"),
+                  },
+                  {
+                    Icon: TrendingUp,
+                    title: s.feature_3_title || t("grow_your_business"),
+                    desc:
+                      s.feature_3_description ||
+                      t("grow_your_business_description"),
+                  },
+                ].map(({ Icon, title, desc }) => (
+                  <div key={title} className="flex items-start gap-4">
+                    <div className="bg-primary-foreground/15 border-primary-foreground/20 flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl border backdrop-blur-sm">
+                      <Icon className="text-primary-foreground h-5 w-5" />
+                    </div>
+                    <div>
+                      <h3 className="text-primary-foreground text-sm font-semibold xl:text-base">
+                        {title}
+                      </h3>
+                      <p className="text-primary-foreground/75 mt-0.5 text-xs xl:text-sm">
+                        {desc}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-sm font-semibold text-white xl:text-base">
-                      {s.feature_1_title || "Global Trade Network"}
-                    </h3>
-                    <p className="mt-0.5 text-xs text-warning-foreground/80 xl:text-sm">
-                      {s.feature_1_description ||
-                        "Access thousands of verified suppliers across 190+ countries"}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-card/20 backdrop-blur-sm">
-                    <svg
-                      className="h-5 w-5 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-semibold text-white xl:text-base">
-                      {s.feature_2_title || "Secure Transactions"}
-                    </h3>
-                    <p className="mt-0.5 text-xs text-warning-foreground/80 xl:text-sm">
-                      {s.feature_2_description ||
-                        "Trade with confidence using our verified payment protection"}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-card/20 backdrop-blur-sm">
-                    <svg
-                      className="h-5 w-5 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-semibold text-white xl:text-base">
-                      {s.feature_3_title || "Grow Your Business"}
-                    </h3>
-                    <p className="mt-0.5 text-xs text-warning-foreground/80 xl:text-sm">
-                      {s.feature_3_description ||
-                        "Expand your reach with powerful sourcing and selling tools"}
-                    </p>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
 
             {/* Bottom Stats */}
-            <div className="flex items-center gap-6 xl:gap-8">
+            <div className="border-primary-foreground/15 bg-primary-foreground/10 flex items-center gap-6 rounded-2xl border p-5 backdrop-blur-sm xl:gap-8">
               <div>
-                <div className="text-2xl font-bold text-white xl:text-3xl">
+                <div className="text-primary-foreground text-2xl font-bold xl:text-3xl">
                   {s.stat_1_value || "10K+"}
                 </div>
-                <div className="text-xs text-warning-foreground/70 xl:text-sm">
-                  {s.stat_1_label || "Active Suppliers"}
+                <div className="text-primary-foreground/70 text-xs xl:text-sm">
+                  {s.stat_1_label || t("active_suppliers")}
                 </div>
               </div>
-              <div className="h-10 w-px bg-card/20" />
+              <div className="bg-primary-foreground/20 h-10 w-px" />
               <div>
-                <div className="text-2xl font-bold text-white xl:text-3xl">
+                <div className="text-primary-foreground text-2xl font-bold xl:text-3xl">
                   {s.stat_2_value || "190+"}
                 </div>
-                <div className="text-xs text-warning-foreground/70 xl:text-sm">
-                  {s.stat_2_label || "Countries"}
+                <div className="text-primary-foreground/70 text-xs xl:text-sm">
+                  {s.stat_2_label || t("countries")}
                 </div>
               </div>
-              <div className="h-10 w-px bg-card/20" />
+              <div className="bg-primary-foreground/20 h-10 w-px" />
               <div>
-                <div className="text-2xl font-bold text-white xl:text-3xl">
+                <div className="text-primary-foreground text-2xl font-bold xl:text-3xl">
                   {s.stat_3_value || "50K+"}
                 </div>
-                <div className="text-xs text-warning-foreground/70 xl:text-sm">
-                  {s.stat_3_label || "Products"}
+                <div className="text-primary-foreground/70 text-xs xl:text-sm">
+                  {s.stat_3_label || t("products")}
                 </div>
               </div>
             </div>
@@ -453,27 +404,17 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => setLangDropdownOpen(!langDropdownOpen)}
-                className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted"
+                className="border-border bg-card text-muted-foreground hover:bg-muted flex items-center gap-2 rounded-lg border px-3 py-2 text-sm font-medium transition-colors"
               >
                 <span className="text-base">{currentLang.flag}</span>
                 <span className="hidden sm:inline">{currentLang.name}</span>
-                <svg
-                  className={`h-4 w-4 text-muted-foreground transition-transform ${langDropdownOpen ? "rotate-180" : ""}`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
+                <ChevronDown
+                  className={`text-muted-foreground h-4 w-4 transition-transform ${langDropdownOpen ? "rotate-180" : ""}`}
+                />
               </button>
 
               {langDropdownOpen && (
-                <div className="absolute right-0 z-50 mt-2 max-h-72 w-56 overflow-y-auto rounded-xl border border-border bg-card shadow-xl">
+                <div className="border-border bg-card absolute end-0 z-50 mt-2 max-h-72 w-56 overflow-y-auto rounded-xl border shadow-xl">
                   <div className="py-1">
                     {LANGUAGES.map((lang) => (
                       <button
@@ -483,28 +424,16 @@ export default function LoginPage() {
                           applyTranslation(lang.locale);
                           setLangDropdownOpen(false);
                         }}
-                        className={`flex w-full items-center gap-3 px-4 py-2.5 text-sm transition-colors hover:bg-warning/5 ${
+                        className={`hover:bg-primary/5 flex w-full items-center gap-3 px-4 py-2.5 text-sm transition-colors ${
                           lang.locale === selectedLocale
-                            ? "bg-warning/5 font-semibold text-warning"
+                            ? "bg-primary/5 text-primary font-semibold"
                             : "text-muted-foreground"
                         }`}
                       >
                         <span className="text-lg">{lang.flag}</span>
                         <span>{lang.name}</span>
                         {lang.locale === selectedLocale && (
-                          <svg
-                            className="ml-auto h-4 w-4 text-warning"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
+                          <Check className="text-primary ms-auto h-4 w-4" />
                         )}
                       </button>
                     ))}
@@ -570,7 +499,7 @@ export default function LoginPage() {
                     <ControlledTextInput
                       label={t("password")}
                       name="password"
-                      placeholder="**********"
+                      placeholder="••••••••"
                       type="password"
                       dir={langDir}
                       translate="no"
@@ -578,15 +507,15 @@ export default function LoginPage() {
 
                     {/* Remember Me & Forgot Password */}
                     <div className="flex items-center justify-between pt-0.5">
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center gap-2">
                         <Checkbox
                           id="remember"
-                          className="data-[state=checked]:bg-dark-orange data-[state=checked]:border-dark-orange h-3.5 w-3.5 rounded border-border transition-all"
+                          className="data-[state=checked]:bg-primary data-[state=checked]:border-primary border-border h-3.5 w-3.5 rounded transition-all"
                           onCheckedChange={(val) => setRememberMe(val)}
                         />
                         <label
                           htmlFor="remember"
-                          className="cursor-pointer text-xs font-medium text-muted-foreground transition-colors select-none hover:text-foreground sm:text-sm"
+                          className="text-muted-foreground hover:text-foreground cursor-pointer text-xs font-medium transition-colors select-none sm:text-sm"
                           dir={langDir}
                           translate="no"
                         >
@@ -594,7 +523,7 @@ export default function LoginPage() {
                         </label>
                       </div>
                       <Link
-                        className="text-dark-orange text-xs font-semibold underline-offset-2 transition-colors duration-200 hover:text-warning hover:underline sm:text-sm"
+                        className="text-primary hover:text-primary/80 text-xs font-semibold underline-offset-2 transition-colors duration-200 hover:underline sm:text-sm"
                         href="/forget-password"
                         dir={langDir}
                         translate="no"
@@ -607,7 +536,7 @@ export default function LoginPage() {
                     <Button
                       disabled={login.isPending}
                       type="submit"
-                      className="from-dark-orange hover:to-primary h-11 w-full transform rounded-lg bg-gradient-to-r to-warning/90 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:from-warning/90 hover:shadow-xl active:scale-[0.98] disabled:transform-none disabled:cursor-not-allowed disabled:opacity-70 sm:h-12 sm:text-base"
+                      className="bg-primary text-primary-foreground hover:bg-primary/90 h-11 w-full rounded-lg text-sm font-semibold shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-[0.98] disabled:transform-none disabled:cursor-not-allowed disabled:opacity-70 sm:h-12 sm:text-base"
                       dir={langDir}
                       translate="no"
                     >
@@ -616,19 +545,7 @@ export default function LoginPage() {
                       ) : (
                         <span className="flex items-center justify-center gap-2">
                           {t("login")}
-                          <svg
-                            className="h-4 w-4 sm:h-5 sm:w-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M13 7l5 5m0 0l-5 5m5-5H6"
-                            />
-                          </svg>
+                          <ArrowRight className="h-4 w-4 rtl:rotate-180 sm:h-5 sm:w-5" />
                         </span>
                       )}
                     </Button>
@@ -654,7 +571,7 @@ export default function LoginPage() {
                 {/* Social Login Buttons */}
                 <Button
                   variant="outline"
-                  className="h-10 w-full rounded-lg border-2 border-border text-xs font-semibold text-muted-foreground shadow-sm transition-all duration-200 hover:border-destructive hover:bg-destructive/5 hover:text-destructive hover:shadow-md sm:h-11 sm:text-sm"
+                  className="border-border text-muted-foreground hover:border-primary hover:bg-primary/5 hover:text-primary h-10 w-full rounded-lg border-2 text-xs font-semibold shadow-sm transition-all duration-200 hover:shadow-md sm:h-11 sm:text-sm"
                   onClick={() => {
                     setIsGoogleLoading(true);
                     localStorage.setItem("loginType", "GOOGLE");
@@ -693,14 +610,14 @@ export default function LoginPage() {
                 {/* Sign Up Link */}
                 <div className="mt-5 text-center">
                   <span
-                    className="text-xs font-medium text-muted-foreground sm:text-sm"
+                    className="text-muted-foreground text-xs font-medium sm:text-sm"
                     dir={langDir}
                     translate="no"
                   >
                     {t("dont_have_an_account")}{" "}
                     <Link
                       href="/register"
-                      className="text-dark-orange font-semibold underline-offset-2 transition-colors duration-200 hover:text-warning hover:underline"
+                      className="text-primary hover:text-primary/80 font-semibold underline-offset-2 transition-colors duration-200 hover:underline"
                       dir={langDir}
                     >
                       {t("signup")}

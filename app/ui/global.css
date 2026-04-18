@@ -215,6 +215,59 @@ html[dir="rtl"] body * {
   /* end: responsive */
 }
 
+/* RTL-friendly phone input wrapper */
+.phone-input-rtl-fix .react-tel-input {
+  direction: ltr;
+}
+.phone-input-rtl-fix .react-tel-input .form-control {
+  border-radius: 0.5rem !important;
+  border: 1px solid var(--border) !important;
+  background-color: var(--card) !important;
+  color: var(--foreground) !important;
+  padding-left: 52px !important;
+  height: 44px !important;
+  font-size: 14px !important;
+  width: 100% !important;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.phone-input-rtl-fix .react-tel-input .form-control:focus {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 15%, transparent) !important;
+}
+.phone-input-rtl-fix .react-tel-input .flag-dropdown {
+  border-top-left-radius: 0.5rem !important;
+  border-bottom-left-radius: 0.5rem !important;
+  border: 1px solid var(--border) !important;
+  border-right: none !important;
+  background-color: var(--muted) !important;
+}
+.phone-input-rtl-fix .react-tel-input .flag-dropdown.open {
+  background-color: var(--muted) !important;
+}
+.phone-input-rtl-fix .react-tel-input .selected-flag:hover,
+.phone-input-rtl-fix .react-tel-input .selected-flag:focus,
+.phone-input-rtl-fix .react-tel-input .selected-flag.open {
+  background-color: color-mix(in oklab, var(--muted) 80%, var(--foreground) 5%) !important;
+}
+.phone-input-rtl-fix .react-tel-input .country-list {
+  background-color: var(--card) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.15) !important;
+}
+.phone-input-rtl-fix .react-tel-input .country-list .country:hover,
+.phone-input-rtl-fix .react-tel-input .country-list .country.highlight {
+  background-color: color-mix(in oklab, var(--primary) 8%, transparent) !important;
+}
+.phone-input-rtl-fix .react-tel-input .country-list .search {
+  background-color: var(--card) !important;
+}
+.phone-input-rtl-fix .react-tel-input .country-list .search-box {
+  background-color: var(--background) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--foreground) !important;
+}
+
 @utility theme-table-s1 {
   /* end: phone-no-with-country-select-s1 */
   /* end: common */
