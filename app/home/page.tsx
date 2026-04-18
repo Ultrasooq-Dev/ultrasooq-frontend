@@ -6,8 +6,13 @@ import Footer from "@/components/shared/Footer";
 import React from "react";
 import { HomeCategorySection } from "./_components/HomeCategorySection";
 import { HomeDealOfTheDay } from "./_components/HomeDealOfTheDay";
+import { HomeFeatures } from "./_components/HomeFeatures";
+import { HomeNewsletter } from "./_components/HomeNewsletter";
 import { HomeProductSection } from "./_components/HomeProductSection";
 import { HomePromo } from "./_components/HomePromo";
+import { HomeStats } from "./_components/HomeStats";
+import { HomeTestimonials } from "./_components/HomeTestimonials";
+import { HomeWaysToShop } from "./_components/HomeWaysToShop";
 import { useHomeData } from "./_components/useHomeData";
 
 function HomePage() {
@@ -39,7 +44,7 @@ function HomePage() {
 
       <HeroBanner />
 
-      {/* <TrendingCategories /> */}
+      <HomeFeatures />
 
       {/* Deal of the Day — BuyGroup products */}
       <HomeDealOfTheDay
@@ -94,8 +99,7 @@ function HomePage() {
         sectionClass="bg-warning/5"
       />
 
-      {/* Categories section */}
-      {/* <HomeCategories /> */}
+      <HomeWaysToShop />
 
       {/* Consumer Electronics */}
       <HomeCategorySection
@@ -144,6 +148,8 @@ function HomePage() {
 
       <HomePromo />
 
+      <HomeStats />
+
       {/* Highly Reviewed */}
       <HomeProductSection
         title="Highly Reviewed"
@@ -155,7 +161,11 @@ function HomePage() {
         sectionClass="bg-info/5"
       />
 
+      <HomeTestimonials />
+
       <HomeRecommendations />
+
+      <HomeNewsletter />
 
       <Footer />
     </>
