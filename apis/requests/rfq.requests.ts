@@ -369,6 +369,55 @@ export const deleteRfqQuote = (payload: { rfqQuotesId: number }) => {
   });
 };
 
+export const saveDraftItems = (payload: {
+  sessionId: string;
+  items: Array<{
+    id: string;
+    name: string;
+    quantity: number;
+    budgetFrom?: number;
+    budgetTo?: number;
+    type: "SAME" | "SIMILAR";
+    attachments: string[];
+    notes?: string;
+  }>;
+}) => {
+  return axios({
+    method: "POST",
+    url: `${getApiUrl()}/product/rfq-draft-items`,
+    data: payload,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
+    },
+  });
+};
+
+export const loadDraftItems = (sessionId: string) => {
+  return axios({
+    method: "GET",
+    url: urlcat(`${getApiUrl()}/product/rfq-draft-items`, { sessionId }),
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
+    },
+  });
+};
+
+export const fetchRfqAnalytics = () => {
+  return axios({
+    method: "GET",
+    url: `${getApiUrl()}/product/rfq-analytics`,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: "Bearer " + getCookie(ULTRASOOQ_TOKEN_KEY),
+    },
+  });
+};
+
 export const hideRfqRequest = (payload: {
   rfqQuotesUserId: number;
   isHidden: boolean;

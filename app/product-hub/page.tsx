@@ -225,14 +225,19 @@ export default function ProductHubPage() {
           }
           trackEvent("product_add_to_cart", { productPriceId, quantity: qty });
         }}
-        onAddToRfqCart={async (productId) => {
+        onAddToRfqCart={async (productId, priceFrom, priceTo) => {
           try {
-            const res = await addToRfqCart.mutateAsync({ productId, quantity: 1 });
+            const res = await addToRfqCart.mutateAsync({
+              productId,
+              quantity: 1,
+              offerPriceFrom: priceFrom,
+              offerPriceTo: priceTo,
+            });
             if (res?.status) toast({ title: "Added to RFQ cart", variant: "success" });
           } catch (err: any) {
             toast({ title: "Failed to add to RFQ cart", description: err?.message || "Please try again", variant: "destructive" });
           }
-          trackEvent("rfq_add_to_cart", { productId });
+          trackEvent("rfq_add_to_cart", { productId, priceFrom, priceTo });
         }}
         locale={locale}
         activeCategories={activeCategories}

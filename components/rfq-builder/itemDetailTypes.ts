@@ -6,7 +6,7 @@ export interface ItemDetailPanelProps {
   selectedItemId: string | null;
   searchTerm?: string;
   onAddToCart: (productPriceId: number, quantity?: number) => void;
-  onAddToRfqCart?: (productId: number) => void;
+  onAddToRfqCart?: (productId: number, priceFrom?: number, priceTo?: number) => void;
   onSelectProduct?: (product: any) => void;
   locale: string;
   activeCategories?: Set<string>;

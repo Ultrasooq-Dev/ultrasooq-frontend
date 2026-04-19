@@ -143,7 +143,7 @@ export default function RfqCartTab() {
       toast({ title: t("rfq_submitted_successfully"), description: t("vendors_will_respond_via_messages"), variant: "success" });
       queryClient.invalidateQueries({ queryKey: ["rfq-cart-by-user"] });
       form.reset();
-      router.push("/rfq-request");
+      router.push("/messages?channel=c_rfq");
     } else {
       toast({ title: t("something_went_wrong"), description: response.message, variant: "danger" });
     }
@@ -271,7 +271,7 @@ export default function RfqCartTab() {
             )}
 
             {/* Deadline */}
-            <ControlledDatePicker label={t("deadline") || "Deadline (optional)"} name="rfqDate" />
+            <ControlledDatePicker label={t("deadline") || "Deadline (optional)"} name="rfqDate" isFuture />
 
             {/* Submit */}
             <Button

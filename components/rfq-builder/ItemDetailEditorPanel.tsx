@@ -13,6 +13,7 @@ interface ItemDetailEditorPanelProps {
   vendorAttachments: string[];
   setVendorAttachments: React.Dispatch<React.SetStateAction<string[]>>;
   vendorFileRef: React.RefObject<HTMLInputElement | null>;
+  editorRef?: React.RefObject<HTMLDivElement | null>;
 }
 
 export function ItemDetailEditorPanel({
@@ -20,6 +21,7 @@ export function ItemDetailEditorPanel({
   vendorAttachments,
   setVendorAttachments,
   vendorFileRef,
+  editorRef,
 }: ItemDetailEditorPanelProps) {
   return (
     <div className="rounded-lg border border-border overflow-hidden">
@@ -116,6 +118,7 @@ export function ItemDetailEditorPanel({
 
       {/* Editor content area */}
       <div
+        ref={editorRef}
         contentEditable
         suppressContentEditableWarning
         className="min-h-[200px] px-3 py-3 text-xs leading-relaxed outline-none focus:ring-0"

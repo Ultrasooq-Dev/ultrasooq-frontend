@@ -240,7 +240,7 @@ export const createRfqQuoteSubmittedNotification = (
     data: {
       rfqId,
     },
-    link: `/rfq-request`,
+    link: `/messages?channel=c_rfq`,
     icon: "📝",
   };
 };
@@ -260,7 +260,7 @@ export const createRfqQuoteAcceptedNotification = (
     data: {
       rfqId,
     },
-    link: `/rfq-request`,
+    link: `/messages?channel=c_rfq`,
     icon: "✅",
   };
 };
@@ -280,7 +280,7 @@ export const createRfqQuoteRejectedNotification = (
     data: {
       rfqId,
     },
-    link: `/rfq-request`,
+    link: `/messages?channel=c_rfq`,
     icon: "❌",
   };
 };

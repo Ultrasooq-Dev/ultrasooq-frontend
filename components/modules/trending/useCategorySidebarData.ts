@@ -55,19 +55,23 @@ export function useCategorySidebarData(
   useEffect(() => {
     const fetchAll = async () => {
       if (mainCategories.length === 0) return;
-      const BATCH_SIZE = 3;
-      const BATCH_DELAY = 500;
+      // Sequential with delay to avoid 429 rate limits
+      const DELAY = 800;
       const categoriesData: CategoryWithSubcategories[] = [];
-      for (let i = 0; i < mainCategories.length; i += BATCH_SIZE) {
-        const batch = mainCategories.slice(i, i + BATCH_SIZE);
-        const results = await Promise.all(
-          batch.map(async (cat: any) => {
-            const c = await fetchCategoryWithChildren(cat, 0);
-            return { category: c, subcategories: c.children || [] };
-          }),
-        );
-        categoriesData.push(...results);
-        if (i + BATCH_SIZE < mainCategories.length) await new Promise((r) => setTimeout(r, BATCH_DELAY));
+      for (let i = 0; i < mainCategories.length; i++) {
+        try {
+          const c = await fetchCategoryWithChildren(mainCategories[i], 0);
+          categoriesData.push({ category: c, subcategories: c.children || [] });
+        } catch (err: any) {
+          if (err?.response?.status === 429) {
+            await new Promise((r) => setTimeout(r, 3000));
+            try {
+              const retry = await fetchCategoryWithChildren(mainCategories[i], 0);
+              categoriesData.push({ category: retry, subcategories: retry.children || [] });
+            } catch { /* skip */ }
+          }
+        }
+        if (i < mainCategories.length - 1) await new Promise((r) => setTimeout(r, DELAY));
       }
       setCategoriesWithSubcategories(categoriesData);
       if (!selectedMainCategory && categoriesData.length > 0) {
