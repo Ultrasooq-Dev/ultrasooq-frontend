@@ -6,11 +6,11 @@ import Image from "next/image";
 const SuggestedProductsListCard = () => {
   return (
     <div className="w-full rounded-lg border border-solid border-border bg-card p-2 shadow-xs">
-      <div className="w-full rounded-lg bg-[#F8F6F6] px-4 py-6">
+      <div className="w-full rounded-lg bg-muted px-4 py-6">
         <h3 className="mb-1 text-lg font-medium text-color-dark">
           Product Found
         </h3>
-        <p className="text-sm font-normal text-[#7F818D]">
+        <p className="text-sm font-normal text-muted-foreground">
           Lorem ipsum dolor sit amet,{" "}
         </p>
       </div>
@@ -25,12 +25,12 @@ const SuggestedProductsListCard = () => {
               />
             </div>
             <div className="w-[calc(100%-4rem)] pl-3">
-              <p className="mb-2.5 text-sm font-normal leading-4 text-[#1D77D1]">
+              <p className="mb-2.5 text-sm font-normal leading-4 text-blue-600 dark:text-blue-400">
                 Lorem Ipsum is simply dummy text..
               </p>
               <a
                 href="#"
-                className="text-xs font-normal text-[#464151] underline underline-offset-1"
+                className="text-xs font-normal text-foreground underline underline-offset-1"
               >
                 Remove
               </a>
@@ -55,12 +55,12 @@ const SuggestedProductsListCard = () => {
               />
             </div>
             <div className="w-[calc(100%-4rem)] pl-3">
-              <p className="mb-2.5 text-sm font-normal leading-4 text-[#1D77D1]">
+              <p className="mb-2.5 text-sm font-normal leading-4 text-blue-600 dark:text-blue-400">
                 Lorem Ipsum is simply dummy text..
               </p>
               <a
                 href="#"
-                className="text-xs font-normal text-[#464151] underline underline-offset-1"
+                className="text-xs font-normal text-foreground underline underline-offset-1"
               >
                 Remove
               </a>
@@ -85,12 +85,12 @@ const SuggestedProductsListCard = () => {
               />
             </div>
             <div className="w-[calc(100%-4rem)] pl-3">
-              <p className="mb-2.5 text-sm font-normal leading-4 text-[#1D77D1]">
+              <p className="mb-2.5 text-sm font-normal leading-4 text-blue-600 dark:text-blue-400">
                 Lorem Ipsum is simply dummy text..
               </p>
               <a
                 href="#"
-                className="text-xs font-normal text-[#464151] underline underline-offset-1"
+                className="text-xs font-normal text-foreground underline underline-offset-1"
               >
                 Remove
               </a>
@@ -115,12 +115,12 @@ const SuggestedProductsListCard = () => {
               />
             </div>
             <div className="w-[calc(100%-4rem)] pl-3">
-              <p className="mb-2.5 text-sm font-normal leading-4 text-[#1D77D1]">
+              <p className="mb-2.5 text-sm font-normal leading-4 text-blue-600 dark:text-blue-400">
                 Lorem Ipsum is simply dummy text..
               </p>
               <a
                 href="#"
-                className="text-xs font-normal text-[#464151] underline underline-offset-1"
+                className="text-xs font-normal text-foreground underline underline-offset-1"
               >
                 Remove
               </a>
@@ -145,12 +145,12 @@ const SuggestedProductsListCard = () => {
               />
             </div>
             <div className="w-[calc(100%-4rem)] pl-3">
-              <p className="mb-2.5 text-sm font-normal leading-4 text-[#1D77D1]">
+              <p className="mb-2.5 text-sm font-normal leading-4 text-blue-600 dark:text-blue-400">
                 Lorem Ipsum is simply dummy text..
               </p>
               <a
                 href="#"
-                className="text-xs font-normal text-[#464151] underline underline-offset-1"
+                className="text-xs font-normal text-foreground underline underline-offset-1"
               >
                 Remove
               </a>

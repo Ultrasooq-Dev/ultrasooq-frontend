@@ -41,28 +41,31 @@ const ControlledPhoneInput: React.FC<ControlledPhoneInputProps> = ({
   };
 
   return (
-    <div className="mt-0 flex w-full flex-col justify-between space-y-3">
-      <Label dir={langDir}>
-        {label}
-      </Label>
-      <Controller
-        control={formContext.control}
-        name={name}
-        render={({ field }) => (
-          <PhoneInput
-            {...props}
-            country={"om"}
-            enableSearch={true}
-            value={field.value}
-            onChange={(phone: string, country: CountryData) => {
-              formContext.setValue(countryName, `+${country.dialCode}`);
-              field.onChange(`+${phone}`);
-            }}
-            inputClass="theme-form-control-s1 w-full!"
-          />
-        )}
-      />
-      <p className="text-[13px] font-medium text-destructive" dir={langDir}>
+    <div className="mt-0 flex w-full flex-col justify-between space-y-2">
+      <Label dir={langDir}>{label}</Label>
+      <div dir="ltr" className="phone-input-rtl-fix">
+        <Controller
+          control={formContext.control}
+          name={name}
+          render={({ field }) => (
+            <PhoneInput
+              {...props}
+              country={"om"}
+              enableSearch={true}
+              value={field.value}
+              onChange={(phone: string, country: CountryData) => {
+                formContext.setValue(countryName, `+${country.dialCode}`);
+                field.onChange(`+${phone}`);
+              }}
+              inputClass="theme-form-control-s1 w-full!"
+            />
+          )}
+        />
+      </div>
+      <p
+        className="text-destructive text-[13px] font-medium"
+        dir={langDir}
+      >
         {getError() as string}
       </p>
     </div>

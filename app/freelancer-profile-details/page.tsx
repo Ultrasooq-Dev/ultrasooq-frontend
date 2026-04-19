@@ -83,7 +83,7 @@ export default function FreelancerProfileDetailsPage() {
                 <TabsList className="flex h-auto min-h-[80px] w-full grid-cols-3 flex-wrap gap-3 rounded-none bg-transparent px-0 pt-7 md:mb-1 md:grid md:w-[560px] md:gap-6">
                   <TabsTrigger
                     value="profile-info"
-                    className="rounded-b-none bg-[#d1d5db]! py-4 text-base font-bold text-[#71717A]! data-[state=active]:bg-dark-orange! data-[state=active]:text-white!"
+                    className="rounded-b-none bg-muted! py-4 text-base font-bold text-muted-foreground! data-[state=active]:bg-dark-orange! data-[state=active]:text-white!"
                     dir={langDir}
                     translate="no"
                   >
@@ -92,7 +92,7 @@ export default function FreelancerProfileDetailsPage() {
 
                   <TabsTrigger
                     value="ratings"
-                    className="rounded-b-none bg-[#d1d5db]! py-4 text-base font-bold text-[#71717A]! data-[state=active]:bg-dark-orange! data-[state=active]:text-white!"
+                    className="rounded-b-none bg-muted! py-4 text-base font-bold text-muted-foreground! data-[state=active]:bg-dark-orange! data-[state=active]:text-white!"
                     dir={langDir}
                     translate="no"
                   >
@@ -101,7 +101,7 @@ export default function FreelancerProfileDetailsPage() {
 
                   <TabsTrigger
                     value="products"
-                    className="rounded-b-none bg-[#d1d5db]! py-4 text-base font-bold text-[#71717A]! data-[state=active]:bg-dark-orange! data-[state=active]:text-white!"
+                    className="rounded-b-none bg-muted! py-4 text-base font-bold text-muted-foreground! data-[state=active]:bg-dark-orange! data-[state=active]:text-white!"
                     dir={langDir}
                     translate="no"
                   >

@@ -432,7 +432,7 @@ const SellerChatHistory: React.FC<SellerChatHistoryProps> = ({
                               )}
                               
                               {/* Price Request Details */}
-                              <div className="bg-gradient-to-br from-gray-50 to-white p-3">
+                              <div className="bg-gradient-to-br from-background to-white p-3">
                                 <div className="mb-2 flex items-center gap-1.5">
                                   <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-primary/10">
                                     <svg

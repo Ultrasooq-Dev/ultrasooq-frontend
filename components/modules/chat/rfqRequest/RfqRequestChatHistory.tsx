@@ -463,7 +463,7 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
                         )}
                       </div>
 
-                      <div className="w-full text-right text-xs font-normal text-[#AEAFB8]">
+                      <div className="w-full text-right text-xs font-normal text-muted-foreground">
                         {chat?.status === "SD" ? (
                           <span translate="no">{t("sending")}</span>
                         ) : (
@@ -477,7 +477,7 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
                         )}
                       </div>
                     </div>
-                    <div className="h-[32px] w-[32px] rounded-full bg-[#F1F2F6]">
+                    <div className="h-[32px] w-[32px] rounded-full bg-muted">
                       <span className="flex h-full w-full items-center justify-center">
                         {`${chat?.user?.firstName?.[0] ?? ""}${chat?.user?.lastName?.[0] ?? ""}`}
                       </span>
@@ -485,7 +485,7 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
                   </div>
                 ) : chat?.attachments?.length > 0 || chat?.content ? (
                   <div className="mt-5 flex w-full flex-wrap items-end">
-                    <div className="h-[32px] w-[32px] rounded-full bg-[#F1F2F6]">
+                    <div className="h-[32px] w-[32px] rounded-full bg-muted">
                       <span className="flex h-full w-full items-center justify-center">
                         {`${chat?.user?.firstName?.[0] ?? ""}${chat?.user?.lastName?.[0] ?? ""}`}
                       </span>
@@ -848,7 +848,7 @@ const RfqRequestChatHistory: React.FC<RfqRequestChatHistoryProps> = ({
                           </div>
                         )}
                       </div>
-                      <div className="w-full text-left text-xs font-normal text-[#AEAFB8]">
+                      <div className="w-full text-left text-xs font-normal text-muted-foreground">
                         {chat?.status === "SD" ? (
                           <span translate="no">{t("sending")}</span>
                         ) : (

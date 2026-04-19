@@ -155,8 +155,8 @@ const BasicInformationSection: React.FC<BasicInformationProps> = ({
 
   return (
     <>
-      <div className="grid w-full grid-cols-4 gap-x-5">
-        <div className="col-span-4 mx-auto mb-3 w-full max-w-[950px] rounded-lg border border-solid border-border bg-card p-6 shadow-xs sm:p-4 lg:p-8">
+      <div className="grid w-full grid-cols-1 gap-x-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="col-span-full mx-auto mb-3 w-full max-w-[950px] rounded-lg border border-solid border-border bg-card p-6 shadow-xs sm:p-4 lg:p-8">
           <div className="flex w-full flex-wrap">
             <div className="w-full">
               <div className="flex flex-wrap">

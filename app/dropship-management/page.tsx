@@ -228,9 +228,9 @@ export default function DropshipManagementPage() {
             <div className="space-y-4">
               {wholesaleProducts.map((product: any) => (
                 <Card key={product.id} className="p-6">
-                  <div className="flex items-start space-x-6">
+                  <div className="flex flex-col items-start gap-4 sm:flex-row sm:gap-6">
                     {/* Product Image */}
-                    <div className="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0 bg-muted">
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden flex-shrink-0 bg-muted">
                       <Image
                         src={
                           product.productImages?.[0]?.image &&
@@ -267,7 +267,7 @@ export default function DropshipManagementPage() {
                       </div>
 
                       {/* Sales Statistics */}
-                      <div className="grid grid-cols-3 gap-4 mb-4">
+                      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4 mb-4">
                         <div className="bg-muted p-3 rounded-lg">
                           <div className="text-xs text-muted-foreground mb-1">
                             {t("resellers_selling")}
@@ -468,7 +468,7 @@ export default function DropshipManagementPage() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-4 gap-4 mb-4">
+                    <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 mb-4">
                       <div className="bg-muted p-3 rounded">
                         <div className="text-xs text-muted-foreground mb-1">{t("orders")}</div>
                         <div className="text-lg font-bold">{sale.totalOrders}</div>

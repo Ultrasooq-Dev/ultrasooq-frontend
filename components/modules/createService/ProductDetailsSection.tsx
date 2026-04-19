@@ -198,8 +198,8 @@ const ProductDetailsSection: React.FC<ProductDetailsSectionProps> = () => {
   };
 
   return (
-    <div className="mx-auto grid  w-full max-w-[950px] grid-cols-4 gap-x-5">
-      <div className="col-span-4 mb-3 w-full rounded-lg border border-solid border-border bg-card p-2 shadow-xs sm:p-3 lg:p-4">
+    <div className="mx-auto grid w-full max-w-[950px] grid-cols-1 gap-x-5 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="col-span-full mb-3 w-full rounded-lg border border-solid border-border bg-card p-2 shadow-xs sm:p-3 lg:p-4">
         <div className="flex w-full flex-wrap">
           <div className="form-groups-common-sec-s1">
             <h3 dir={langDir} translate="no">{t("product_details")}</h3>
@@ -212,7 +212,7 @@ const ProductDetailsSection: React.FC<ProductDetailsSectionProps> = () => {
                     className={cn(
                       "relative my-2 flex w-full items-start px-2",
                       item.size === "small" ? "w-1/2" : "",
-                      customFieldType?.key === item.key ? "bg-[#F9F9F9]" : "",
+                      customFieldType?.key === item.key ? "bg-muted/50" : "",
                     )}
                   >
                     <div className="w-full flex-1 py-2 text-left">

@@ -132,14 +132,17 @@ const SearchPage = (props: SearchPageProps) => {
                         </div>
                         <div className="flex-1">
                             <h1 className="text-xl font-bold text-foreground" dir={langDir}>
-                                {aiMode ? 'AI Search Results' : 'Search Results'}
+                                {aiMode ? t('ai_search_results') : t('search_results')}
                             </h1>
                             <p className="text-muted-foreground text-xs mt-1" dir={langDir}>
                                 {searchParams?.term
-                                    ? aiMode
-                                        ? `${aiTotalCount > 0 ? aiTotalCount : ''} results for "${searchParams.term}"`
-                                        : `${totalServerCount > 0 ? totalServerCount : ''} results for "${searchParams.term}"`
-                                    : 'Searching...'}
+                                    ? t('results_count_for', {
+                                        n: aiMode
+                                            ? (aiTotalCount > 0 ? aiTotalCount : '')
+                                            : (totalServerCount > 0 ? totalServerCount : ''),
+                                        term: searchParams.term,
+                                    })
+                                    : t('searching_dots')}
                             </p>
                         </div>
                         <div className="flex items-center gap-3">
@@ -153,7 +156,7 @@ const SearchPage = (props: SearchPageProps) => {
                                 }`}
                             >
                                 <Sparkles className="h-4 w-4" />
-                                {aiMode ? 'AI On' : 'AI Search'}
+                                {aiMode ? t('ai_on') : t('ai_search')}
                             </button>
 
                             {!aiMode && (
@@ -183,7 +186,7 @@ const SearchPage = (props: SearchPageProps) => {
                         <div className="mt-2 p-3 bg-violet-50 border border-violet-200 rounded-lg">
                             <div className="flex items-center gap-2 mb-2">
                                 <Sparkles className="h-4 w-4 text-info" />
-                                <span className="text-sm font-medium text-violet-800">AI understood your search as:</span>
+                                <span className="text-sm font-medium text-violet-800">{t('ai_understood_your_search')}</span>
                             </div>
                             <div className="flex flex-wrap gap-2">
                                 {parsedQuery.searchTerm && (
@@ -200,17 +203,17 @@ const SearchPage = (props: SearchPageProps) => {
                                 )}
                                 {parsedQuery.priceRange?.min != null && (
                                     <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-success/10 text-success text-xs font-medium rounded-full">
-                                        Min: ${parsedQuery.priceRange.min}
+                                        {t('min_label')}: ${parsedQuery.priceRange.min}
                                     </span>
                                 )}
                                 {parsedQuery.priceRange?.max != null && (
                                     <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-success/10 text-success text-xs font-medium rounded-full">
-                                        Max: ${parsedQuery.priceRange.max}
+                                        {t('max_label')}: ${parsedQuery.priceRange.max}
                                     </span>
                                 )}
                                 {parsedQuery.sortBy && (
                                     <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-warning/10 text-amber-800 text-xs font-medium rounded-full">
-                                        Sort: {parsedQuery.sortBy.replace('_', ' ')}
+                                        {t('sort_label')}: {parsedQuery.sortBy.replace('_', ' ')}
                                     </span>
                                 )}
                                 {parsedQuery.expandedTerms?.length > 0 && (
@@ -234,7 +237,7 @@ const SearchPage = (props: SearchPageProps) => {
                     {aiMode && aiSearchQuery.isLoading && (
                         <div className="mt-3 flex items-center gap-2 text-sm text-info">
                             <Loader2 className="h-4 w-4 animate-spin" />
-                            AI is analyzing your search...
+                            {t('ai_is_analyzing')}
                         </div>
                     )}
 
@@ -242,7 +245,7 @@ const SearchPage = (props: SearchPageProps) => {
                     {!aiMode && autoCorrection && (
                         <div className="mt-2 p-3 bg-primary/5 border border-primary/20 rounded-lg">
                             <p className="text-sm text-primary">
-                                Showing results for{" "}
+                                {t('showing_results_for')}{" "}
                                 <span className="font-semibold text-primary">
                                     &ldquo;{autoCorrection.to}&rdquo;
                                 </span>
@@ -251,7 +254,7 @@ const SearchPage = (props: SearchPageProps) => {
                                     onClick={() => handleDidYouMeanClick(autoCorrection.from)}
                                     className="text-primary underline hover:text-primary"
                                 >
-                                    Search instead for &ldquo;{autoCorrection.from}&rdquo;
+                                    {t('search_instead_for')} &ldquo;{autoCorrection.from}&rdquo;
                                 </button>
                             </p>
                         </div>
@@ -261,7 +264,7 @@ const SearchPage = (props: SearchPageProps) => {
                     {!aiMode && didYouMean && !hasResults && !autoCorrection && (
                         <div className="mt-2 p-3 bg-warning/5 border border-warning/20 rounded-lg">
                             <p className="text-sm text-amber-800">
-                                Did you mean{" "}
+                                {t('did_you_mean')}{" "}
                                 <button
                                     onClick={() => handleDidYouMeanClick(didYouMean)}
                                     className="font-semibold text-amber-900 underline hover:text-amber-700"
@@ -293,16 +296,16 @@ const SearchPage = (props: SearchPageProps) => {
                                     <Sparkles className="h-8 w-8 text-violet-400" />
                                 </div>
                                 <h3 className="text-lg font-semibold text-foreground mb-2" dir={langDir}>
-                                    No AI Results Found
+                                    {t('no_ai_results_found')}
                                 </h3>
                                 <p className="text-muted-foreground text-sm text-center max-w-md mb-4" dir={langDir}>
-                                    The AI couldn&apos;t find matching products. Try rephrasing your query or switch to standard search.
+                                    {t('ai_couldnt_find_matching')}
                                 </p>
                                 <button
                                     onClick={() => setAiMode(false)}
                                     className="text-sm text-info hover:text-violet-800 underline"
                                 >
-                                    Switch to standard search
+                                    {t('switch_to_standard_search')}
                                 </button>
                             </div>
                         ) : null}
@@ -363,17 +366,17 @@ const SearchPage = (props: SearchPageProps) => {
                             <Search className="h-8 w-8 text-muted-foreground" />
                         </div>
                         <h3 className="text-lg font-semibold text-foreground mb-2" dir={langDir}>
-                            No Results Found
+                            {t('no_results_found')}
                         </h3>
                         <p className="text-muted-foreground text-sm text-center max-w-md mb-3" dir={langDir}>
-                            We couldn&apos;t find any results for &ldquo;{searchParams?.term}&rdquo;. Try searching with different keywords.
+                            {t('we_couldnt_find_results_for', { term: searchParams?.term || '' })}
                         </p>
                         <button
                             onClick={() => setAiMode(true)}
                             className="inline-flex items-center gap-2 text-sm text-info hover:text-violet-800 font-medium"
                         >
                             <Sparkles className="h-4 w-4" />
-                            Try AI-powered search
+                            {t('try_ai_powered_search')}
                         </button>
                     </div>
                 )}

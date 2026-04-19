@@ -114,11 +114,11 @@ export default function LocaleProvider({
     if (locale && translationMap[locale] && Object.keys(translationMap[locale]).length > 0) {
       return translationMap[locale];
     }
-    // Finally fallback to Arabic (default language)
-    return translationMap['ar'] || {};
+    // Finally fallback to English (default language)
+    return translationMap['en'] || {};
   }, [messages, locale]);
 
-  const currentLocale = locale || 'ar';
+  const currentLocale = locale || 'en';
 
   // Fallback: when a message key is missing, try English before returning the key
   const getMessageFallback = useMemo(() => {

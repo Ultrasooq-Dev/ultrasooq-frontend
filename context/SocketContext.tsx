@@ -5,6 +5,8 @@ import io, { Socket } from "socket.io-client";
 import { useAuth } from "./AuthContext";
 import { MessageStatus } from "@/utils/types/chat.types";
 import { getApiUrl } from "@/config/api";
+import { getCookie } from "cookies-next";
+import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 
 interface newMessageType {
   id?: number;
@@ -117,8 +119,11 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
       const socketUrl = getApiUrl();
       const fullSocketUrl = `${socketUrl}/ws`;
       
+      const token = getCookie(ULTRASOOQ_TOKEN_KEY);
+
       const socketIo = io(fullSocketUrl, {
         query: { userId: userId },
+        auth: { token: token },
         transports: ['websocket', 'polling'],
         reconnection: true,
         reconnectionDelay: 1000,
@@ -137,6 +142,12 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
       });
 
       socketIo.on("connect_error", (error) => {
+        if (error.message === 'Authentication required' || error.message === 'Invalid or expired token') {
+          const freshToken = getCookie(ULTRASOOQ_TOKEN_KEY);
+          if (freshToken) {
+            socketIo.auth = { token: freshToken };
+          }
+        }
         setConnected(false);
         setErrorMessage(`Connection failed: ${error.message || "Unable to connect to server"}. Please check if the backend is running on port 3000.`);
       });

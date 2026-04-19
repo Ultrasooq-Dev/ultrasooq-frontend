@@ -49,7 +49,7 @@ const TransactionsPage = () => {
 
                         <div className="team_members_table w-full">
                             {!transactionsQuery?.isLoading && transactions.length ? (
-                                <>
+                                <div className="overflow-x-auto">
                                     <table cellPadding={0} cellSpacing={0} border={0}>
                                         <thead>
                                             <tr>
@@ -85,7 +85,7 @@ const TransactionsPage = () => {
                                             })}
                                         </tbody>
                                     </table>
-                                </>
+                                </div>
                             ) : null}
 
                             {!transactionsQuery?.isLoading && !transactions.length ? (

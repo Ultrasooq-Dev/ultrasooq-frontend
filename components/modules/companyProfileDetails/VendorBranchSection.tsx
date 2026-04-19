@@ -25,7 +25,7 @@ const VendorBranchSection: React.FC<VendorBranchSectionProps> = ({ branchDetails
     <div className="mb-5 w-full overflow-hidden rounded-lg border border-solid border-border bg-card">
       {/* Header Section - Clickable */}
       <div 
-        className="flex w-full cursor-pointer items-center justify-between bg-[#FAFAFA] px-3 py-4 transition-colors hover:bg-muted"
+        className="flex w-full cursor-pointer items-center justify-between bg-muted/50 px-3 py-4 transition-colors hover:bg-muted"
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className="flex w-auto items-center text-base font-medium text-color-dark">

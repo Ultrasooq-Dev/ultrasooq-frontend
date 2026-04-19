@@ -57,7 +57,7 @@ const BuyerProfileDetailsPage = () => {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900 mx-auto"></div>
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-foreground mx-auto"></div>
           <p className="mt-4 text-lg">Loading account information...</p>
         </div>
       </div>
@@ -124,10 +124,10 @@ const BuyerProfileDetailsPage = () => {
             <ProfileCard userDetails={currentAccountData || me.data?.data} />
             <div className="mt-12 w-full">
               <Tabs defaultValue="profile-info">
-                <TabsList className="mb-1 grid min-h-[80px] w-[560px] max-w-full grid-cols-3 gap-x-6 rounded-none bg-transparent px-0 pt-7">
+                <TabsList className="mb-1 grid min-h-[80px] w-full max-w-[560px] grid-cols-1 gap-3 rounded-none bg-transparent px-0 pt-7 sm:grid-cols-3 sm:gap-x-6">
                   <TabsTrigger
                     value="profile-info"
-                    className="rounded-b-none bg-[#d1d5db]! py-4 text-base font-bold text-[#71717A]! data-[state=active]:bg-dark-orange! data-[state=active]:text-white!"
+                    className="rounded-b-none bg-muted! py-4 text-base font-bold text-muted-foreground! data-[state=active]:bg-dark-orange! data-[state=active]:text-white!"
                     dir={langDir}
                     translate="no"
                   >

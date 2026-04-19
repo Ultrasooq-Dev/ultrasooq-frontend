@@ -1,0 +1,47 @@
+export type ProductMiniStats = {
+  views: number;
+  orders: number;
+  revenue: number;
+  avgRating: number;
+};
+
+export type ManageProductCardProps = {
+  selectedIds?: number[];
+  onSelectedId?: (args0: boolean | string, args1: number) => void;
+  onSelect?: (data: { [key: string]: any }) => void;
+  id: number;
+  productId: number;
+  miniStats?: ProductMiniStats | null;
+  status: string;
+  askForPrice: string;
+  askForStock: string;
+  productImage: string | null;
+  productName: string;
+  productPrice: string;
+  offerPrice: string;
+  deliveryAfter: number;
+  stock: number;
+  consumerType: string;
+  sellType: string;
+  timeOpen: number | null;
+  timeClose: number | null;
+  vendorDiscount: number | null;
+  vendorDiscountType: string | null;
+  consumerDiscount: number | null;
+  consumerDiscountType: string | null;
+  minQuantity: number | null;
+  maxQuantity: number | null;
+  minCustomer: number | null;
+  maxCustomer: number | null;
+  minQuantityPerCustomer: number | null;
+  maxQuantityPerCustomer: number | null;
+  productCondition: string;
+  onRemove: (id: number) => void;
+  hideCheckbox?: boolean;
+  hideEyeIcon?: boolean;
+  hideCopyButton?: boolean;
+  hideActionButtons?: boolean;
+  disableFields?: boolean;
+  productType?: string;
+  isDropshipped?: boolean;
+};

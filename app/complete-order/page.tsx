@@ -19,8 +19,7 @@ import {
 import { getCookie } from "cookies-next";
 import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import { getOrCreateDeviceId } from "@/utils/helper";
-import PaymentForm from "@/components/modules/orders/PaymentForm";
-import { initialOrderState, useOrderStore } from "@/lib/orderStore";
+import { useOrderStore } from "@/lib/orderStore";
 import { useToast } from "@/components/ui/use-toast";
 import {
   useCreateEMIPayment,
@@ -31,7 +30,6 @@ import {
   useCreateAmwalPayConfig,
 } from "@/apis/queries/orders.queries";
 import { useRouter } from "next/navigation";
-import { loadStripe } from "@stripe/stripe-js";
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/context/AuthContext";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -40,9 +38,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import LoaderWithMessage from "@/components/shared/LoaderWithMessage";
 import { useWalletBalance } from "@/apis/queries/wallet.queries";
-
-// Load Stripe with your public key
-const stripePromise = process.env.NEXT_PUBLIC_STRIPE_KEY ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY) : null;
 
 const CompleteOrderPage = () => {
   const t = useTranslations();
@@ -64,10 +59,6 @@ const CompleteOrderPage = () => {
   const [advanceAmount, setAdvanceAmount] = useState(0);
   const [isRedirectingToPaymob, setIsRedirectingToPaymob] = useState<boolean>(false);
   const [paymentLink, setPaymentLink] = useState<string>();
-  // EMI disabled — backend fixes pending (hardcoded amount, cron disabled)
-  // const [emiPeriod, setEmiPeriod] = useState<number>(6);
-  // const [emiAmount, setEmiAmount] = useState<number>(0);
-
   // Load AmwalPay Smartbox script
   useEffect(() => {
     // Load AmwalPay Smartbox script (UAT environment for testing)
@@ -88,12 +79,6 @@ const CompleteOrderPage = () => {
       }
     };
   }, []);
-
-  // useEffect(() => {
-  //   if (paymentType == "EMI") {
-  //     setEmiAmount(Number((orderStore.total / emiPeriod).toFixed(2)));
-  //   }
-  // }, [paymentType, emiPeriod]);
 
   const referenceOrderId = (orderId: number) => {
     const date = new Date();
@@ -172,7 +157,7 @@ const CompleteOrderPage = () => {
           }
         }
 
-        const data: {[key: string]: any} = { ...orderStore.orders };
+        const data: Record<string, unknown> = { ...orderStore.orders };
         
         // If this is an RFQ order, load RFQ data from sessionStorage
         if (isRfqOrder && rfqQuoteData) {
@@ -262,7 +247,7 @@ const CompleteOrderPage = () => {
     }
 
     // For ADVANCE payment, continue with Paymob
-    const data: { [key: string]: any } = {
+    const data: Record<string, unknown> = {
       amount: advanceAmount * 1000,
       billing_data: {
         first_name: orderStore.orders.firstName,
@@ -458,44 +443,6 @@ const CompleteOrderPage = () => {
     orderStore.setTotal(0);
   };
 
-  // EMI disabled — backend fixes pending (hardcoded amount, cron disabled)
-  // const handleCreateEmiPayment = async (orderId: number) => {
-  //   const data: { [key: string]: any } = {
-  //     amount: emiAmount * 1000,
-  //     billing_data: {
-  //       first_name: orderStore.orders.firstName,
-  //       last_name: orderStore.orders.lastName,
-  //       email: orderStore.orders.email,
-  //       phone_number: orderStore.orders.phone,
-  //       apartment: orderStore.orders.billingAddress,
-  //       building: 'NA',
-  //       street: 'NA',
-  //       floor: 'NA',
-  //       city: orderStore.orders.billingCity,
-  //       state: orderStore.orders.billingProvince,
-  //       country: orderStore.orders.billingCountry,
-  //     },
-  //     extras: {
-  //       orderId: orderId,
-  //       paymentType: paymentType,
-  //     },
-  //     special_reference: referenceOrderId(orderId)
-  //   };
-  //   const response = await createEMIPayment.mutateAsync(data);
-  //   if (response?.status) {
-  //     setIsRedirectingToPaymob(true);
-  //     window.location.assign(
-  //       `${process.env.NEXT_PUBLIC_PAYMOB_PAYMENT_URL}?publicKey=${process.env.NEXT_PUBLIC_PAYMOB_PUBLIC_KEY}&clientSecret=${(response.data as any).client_secret}`,
-  //     );
-  //   } else {
-  //     toast({
-  //       title: t("something_went_wrong"),
-  //       description: response.message,
-  //       variant: "danger",
-  //     });
-  //   }
-  // };
-
   return (
     <div className="min-h-screen bg-muted">
       <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8">
@@ -532,7 +479,7 @@ const CompleteOrderPage = () => {
                     ? "border-primary bg-primary/5 shadow-md" 
                     : "border-border hover:border-border hover:shadow-sm"
                 }`}>
-                  <div className="flex items-center space-x-4">
+                  <div className="flex items-center gap-4">
                     <RadioGroupItem 
                       value="DIRECT" 
                       id="direct-payment"
@@ -561,7 +508,7 @@ const CompleteOrderPage = () => {
                     ? "border-primary bg-primary/5 shadow-md" 
                     : "border-border hover:border-border hover:shadow-sm"
                 }`}>
-                  <div className="flex items-center space-x-4">
+                  <div className="flex items-center gap-4">
                     <RadioGroupItem 
                       value="ADVANCE" 
                       id="advance-payment"
@@ -585,7 +532,7 @@ const CompleteOrderPage = () => {
                   </div>
                   
                   {paymentType == "ADVANCE" && (
-                    <div className="mt-6 pl-8">
+                    <div className="mt-6 ps-8">
                       <div className="bg-muted border border-border rounded-lg p-4">
                         <label className="block text-sm font-medium text-muted-foreground mb-2" dir={langDir} translate="no">
                           {t("advance_amount")}
@@ -611,7 +558,7 @@ const CompleteOrderPage = () => {
                       ? "border-primary bg-primary/5 shadow-md" 
                       : "border-border hover:border-border hover:shadow-sm"
                   }`}>
-                    <div className="flex items-center space-x-4">
+                    <div className="flex items-center gap-4">
                       <RadioGroupItem 
                         value="WALLET" 
                         id="wallet-payment"
@@ -635,7 +582,7 @@ const CompleteOrderPage = () => {
                     </div>
                     
                     {paymentType == "WALLET" && (
-                      <div className="mt-6 pl-8">
+                      <div className="mt-6 ps-8">
                         <div className="bg-muted border border-border rounded-lg p-4 space-y-3">
                           <div className="flex justify-between items-center">
                             <span className="text-sm text-muted-foreground">{t("wallet_balance")}:</span>
@@ -665,7 +612,7 @@ const CompleteOrderPage = () => {
                     ? "border-primary bg-primary/5 shadow-md" 
                     : "border-border hover:border-border hover:shadow-sm"
                 }`}>
-                  <div className="flex items-center space-x-4">
+                  <div className="flex items-center gap-4">
                     <RadioGroupItem 
                       value="PAYMENTLINK" 
                       id="payment-link"
@@ -689,7 +636,7 @@ const CompleteOrderPage = () => {
                   </div>
                   
                   {paymentLink && (
-                    <div className="mt-6 pl-8">
+                    <div className="mt-6 ps-8">
                       <div className="bg-muted border border-border rounded-lg p-4">
                         <div className="space-y-3">
                           <Button 
@@ -799,20 +746,6 @@ const CompleteOrderPage = () => {
                     </div>
                   )}
                   
-                  {/* EMI disabled — backend fixes pending (hardcoded amount, cron disabled)
-                  {paymentType == "EMI" && (
-                    <div className="bg-primary/5 border border-primary/20 rounded-lg p-3">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm font-medium text-primary" dir={langDir} translate="no">
-                          {t("emi_amount")}
-                        </span>
-                        <span className="font-semibold text-primary">
-                          {currency.symbol}{emiAmount}
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                  */}
                 </div>
                 
                 <div className="px-6 pb-6">

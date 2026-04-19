@@ -14,8 +14,6 @@ import {
   useDeleteFromWishList,
 } from "@/apis/queries/wishlist.queries";
 import HeroBanner from "@/components/modules/home/HeroBanner";
-import TrendingCategories from "@/components/modules/home/TrendingCategories";
-import CategorySidebar from "@/components/modules/trending/CategorySidebar";
 import ProductCard from "@/components/modules/trending/ProductCard";
 import Footer from "@/components/shared/Footer";
 import { toast } from "@/components/ui/use-toast";
@@ -23,10 +21,10 @@ import { useAuth } from "@/context/AuthContext";
 import { useCategoryStore } from "@/lib/categoryStore";
 import { ULTRASOOQ_TOKEN_KEY } from "@/utils/constants";
 import { getOrCreateDeviceId } from "@/utils/helper";
-import { TrendingProduct } from "@/utils/types/common.types";
+import type { TrendingProduct } from "@/utils/types/common.types";
 import { useQueryClient } from "@tanstack/react-query";
 import { getCookie } from "cookies-next";
-import { ArrowRight, TrendingUp } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -377,20 +375,20 @@ function HomePage() {
   return (
     <>
       {/* Category Sidebar */}
-      <CategorySidebar
+      {/* <CategorySidebar
         isOpen={isCategorySidebarOpen}
         onClose={() => setIsCategorySidebarOpen(false)}
         onCategorySelect={(categoryId) => {
           router.push(`/trending?category=${categoryId}`);
           setIsCategorySidebarOpen(false);
         }}
-      />
+      /> */}
 
       {/* Hero Banner Section - Dynamic */}
       <HeroBanner />
 
       {/* Categories Section */}
-      <section className="bg-muted/50 w-full px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+      {/* <section className="bg-muted/50 w-full px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
         <div className="mx-auto w-full max-w-[1400px]">
           <div className="mb-8 sm:mb-12">
             <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-6">
@@ -410,7 +408,7 @@ function HomePage() {
               </div>
               <Link
                 href="/trending"
-                className="group border-primary bg-primary inline-flex items-center gap-2 rounded-xl border px-6 py-3.5 text-sm font-semibold text-white hover:bg-primary/90 transition-colors sm:px-8 sm:py-4 sm:text-base"
+                className="group border-primary bg-primary inline-fhover:bg-primary/90 text-whiteion-colors inline-flex items-center gap-2 rounded-xl border px-6 py-3.5 text-sm font-semibold sm:px-8 sm:py-4 sm:text-base"
                 translate="no"
               >
                 <TrendingUp className="h-5 w-5" />
@@ -426,7 +424,7 @@ function HomePage() {
             <TrendingCategories />
           </div>
         </div>
-      </section>
+      </section> */}
 
       {memoizedBuyGroupProducts?.length > 0 ? (
         <section className="from-warning/5 to-card w-full bg-gradient-to-b px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">

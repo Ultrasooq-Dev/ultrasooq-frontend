@@ -228,7 +228,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
           },
         },
         {
-          icon: <HandshakeIcon className="h-5 w-5 text-[#c2703e]" />,
+          icon: <HandshakeIcon className="h-5 w-5 text-primary" />,
           label: t("deal_ops") || "Deal Ops",
           translationKey: "deal_ops",
           shortLabel: getShortLabel("deal_ops"),
@@ -304,7 +304,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
           },
         },
         {
-          icon: <HandshakeIcon className="h-5 w-5 text-[#c2703e]" />,
+          icon: <HandshakeIcon className="h-5 w-5 text-primary" />,
           label: t("deal_ops") || "Deal Ops",
           translationKey: "deal_ops",
           shortLabel: getShortLabel("deal_ops"),
@@ -490,7 +490,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
       {/* Sidebar - Mobile: slide in/out, Desktop: always visible with hover */}
       {accessToken && (
         <aside
-          aria-label="Sidebar navigation"
+          aria-label={t("sidebar_navigation")}
           className={cn(
             "fixed top-0 z-[70] h-full bg-sidebar shadow-xl",
             // Position based on language direction
@@ -557,7 +557,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
                   {/* Logo icon - larger when sidebar is expanded */}
                   <Image
                     src="/images/logoicon.png"
-                    alt="Ultrasooq Logo"
+                    alt={t("ultrasooq_logo")}
                     width={80}
                     height={80}
                     className="h-20 w-20 object-contain"
@@ -570,7 +570,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
                       "absolute flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-sidebar-primary-foreground/20 md:hidden",
                       langDir === "rtl" ? "left-4" : "right-4",
                     )}
-                    aria-label="Close menu"
+                    aria-label={t("close_menu")}
                   >
                     <XIcon className="h-5 w-5 text-sidebar-primary-foreground" />
                   </button>
@@ -580,7 +580,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
                   {/* Logo icon - smaller when sidebar is collapsed */}
                   <Image
                     src="/images/logoicon.png"
-                    alt="Ultrasooq Icon"
+                    alt={t("ultrasooq_icon")}
                     width={40}
                     height={40}
                     className="h-10 w-10 object-contain"

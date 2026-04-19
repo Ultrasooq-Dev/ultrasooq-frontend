@@ -124,7 +124,7 @@ const ProductPreview: React.FC<ProductPreviewProps> = ({
               />
             ) : (
               <div className="flex items-center justify-center h-full">
-                <span className="text-muted-foreground">No Image</span>
+                <span className="text-muted-foreground">{t("no_image")}</span>
               </div>
             )}
             
@@ -172,7 +172,7 @@ const ProductPreview: React.FC<ProductPreviewProps> = ({
             {/* Vendor Info */}
             <div className="flex items-center gap-1 text-xs text-muted-foreground">
               <MapPin className="h-3 w-3" />
-              <span>{originalProduct.vendor?.location || "Location not specified"}</span>
+              <span>{originalProduct.vendor?.location || t("location_not_specified")}</span>
             </div>
 
             {/* Rating (mock) */}

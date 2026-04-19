@@ -180,7 +180,7 @@ describe('HTTP Layer — Production Tests', () => {
 
       await expect(responseErrorInterceptor(error)).rejects.toBeDefined();
 
-      window.location = originalLocation;
+      window.location = originalLocation as unknown as (string & Location);
     });
 
     it('does NOT attempt refresh on 401 from register page', async () => {
@@ -197,7 +197,7 @@ describe('HTTP Layer — Production Tests', () => {
 
       await expect(responseErrorInterceptor(error)).rejects.toBeDefined();
 
-      window.location = originalLocation;
+      window.location = originalLocation as unknown as (string & Location);
     });
   });
 });

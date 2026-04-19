@@ -238,7 +238,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
   const updateURL = debounce((newTerm) => {
     if (typeof window === "undefined") return;
     if (newTerm) {
-      router.replace(`/product-hub?mode=search&q=${encodeURIComponent(newTerm)}`);
+      router.replace(`/search?term=${encodeURIComponent(newTerm)}`);
     } else {
       router.replace(`/trending`);
     }
@@ -639,8 +639,8 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                 <button
                   onClick={openSidebar}
                   className="flex h-8 w-8 items-center justify-center rounded-lg transition-all hover:bg-card/10 active:scale-95"
-                  title="Open Menu"
-                  aria-label="Open navigation menu"
+                  title={t("open_menu")}
+                  aria-label={t("open_navigation_menu")}
                 >
                   <MenuIcon className="h-4 w-4 text-white" />
                 </button>
@@ -648,7 +648,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
               <Link href="/home" className="flex items-center">
                 <Image
                   src={LogoIcon}
-                  alt="Ultrasooq home"
+                  alt={t("ultrasooq_home")}
                   className="h-6 w-auto sm:h-7"
                   priority
                 />
@@ -670,7 +670,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                   dir={langDir}
                   className="h-8 w-8 cursor-pointer appearance-none rounded-lg bg-transparent text-transparent focus:outline-none"
                   value={currentLocale}
-                  aria-label="Select language"
+                  aria-label={t("select_language")}
                   onChange={async (e) => {
                     const newLocale = e.target.value;
                     await applyTranslation(newLocale);
@@ -695,13 +695,13 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
               <Link
                 href="/wishlist"
                 className="relative rounded-lg p-2 transition-all hover:bg-card/10 active:scale-95"
-                aria-label="Wishlist"
+                aria-label={t("wishlist")}
               >
                 <Image
                   src={WishlistIcon}
                   height={24}
                   width={24}
-                  alt="Wishlist"
+                  alt={t("wishlist")}
                   className="h-5 min-h-[20px] w-5 min-w-[20px] object-contain sm:h-6 sm:w-6"
                 />
                 {wishlistCount.data?.data > 0 && (
@@ -722,13 +722,13 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
               <Link
                 href="/cart"
                 className="relative rounded-lg p-2 transition-all hover:bg-card/10 active:scale-95"
-                aria-label="Shopping cart"
+                aria-label={t("shopping_cart")}
               >
                 <Image
                   src={CartIcon}
                   height={24}
                   width={24}
-                  alt="Shopping cart"
+                  alt={t("shopping_cart")}
                   className="h-5 min-h-[20px] w-5 min-w-[20px] object-contain sm:h-6 sm:w-6"
                 />
                 {((hasAccessToken &&
@@ -760,11 +760,11 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
               {isLoggedIn ? (
                 <div className="flex items-center">
                   <DropdownMenu>
-                    <DropdownMenuTrigger className="relative h-9 w-9 rounded-full transition-all hover:ring-2 hover:ring-white/30 active:scale-95 sm:h-10 sm:w-10" aria-label="User menu">
+                    <DropdownMenuTrigger className="relative h-9 w-9 rounded-full transition-all hover:ring-2 hover:ring-white/30 active:scale-95 sm:h-10 sm:w-10" aria-label={t("user_menu")}>
                       {me?.data?.data?.profilePicture ? (
                         <Image
                           src={me?.data?.data?.profilePicture}
-                          alt="Profile picture"
+                          alt={t("profile_picture")}
                           height={40}
                           width={40}
                           className="h-full w-full rounded-full border-2 border-white/20 object-cover"
@@ -807,7 +807,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                     >
                       {userStatus && userStatus !== "ACTIVE" && (
                         <div className="border-b border-border px-2 py-1.5 text-xs text-muted-foreground">
-                          Status:{" "}
+                          {t("status")}:{" "}
                           <span className="font-medium">{userStatus}</span>
                         </div>
                       )}
@@ -1000,7 +1000,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                 onKeyDown={handleKeyDown}
                 onFocus={() => searchTerm.length >= 2 && setShowAutocomplete(true)}
                 translate="no"
-                aria-label="Search products"
+                aria-label={t("search_products")}
               />
               <svg
                 className={`pointer-events-none absolute top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground sm:h-5 sm:w-5 ${
@@ -1032,7 +1032,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                 <button
                   type="button"
                   className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-white shadow-lg transition-all hover:bg-primary/90 active:scale-95 sm:h-10 sm:w-10 md:hidden"
-                  aria-label="Browse categories"
+                  aria-label={t("browse_categories")}
                   onClick={() => {
                     // On mobile, open the category sidebar
                     if (typeof window !== "undefined") {
@@ -1048,7 +1048,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                 <button
                   type="button"
                   className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-white shadow-lg transition-all hover:bg-primary/90 active:scale-95 sm:h-10 sm:w-10"
-                  aria-label="Search"
+                  aria-label={t("search")}
                   onClick={() => updateURL(searchTerm)}
                 >
                   <Search className="h-5 w-5" />
@@ -1060,7 +1060,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                 <button
                   type="button"
                   className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-white shadow-lg transition-all hover:bg-primary/90 active:scale-95 sm:h-10 sm:w-10"
-                  aria-label="Search"
+                  aria-label={t("search")}
                   onClick={() => updateURL(searchTerm)}
                 >
                   <Search className="h-5 w-5" />
@@ -1069,7 +1069,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                 <button
                   type="button"
                   className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-white shadow-lg transition-all hover:bg-primary/90 active:scale-95 sm:h-10 sm:w-10 md:hidden"
-                  aria-label="Browse categories"
+                  aria-label={t("browse_categories")}
                   onClick={() => {
                     // On mobile, open the category sidebar
                     if (typeof window !== "undefined") {
@@ -1086,7 +1086,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
           </div>
 
           {/* Mobile Navigation Menu - Home, Store, Buygroup, etc. */}
-          <nav aria-label="Main navigation" className="scrollbar-hide -mx-3 overflow-x-auto px-3 pb-2 sm:-mx-4 sm:px-4">
+          <nav aria-label={t("main_navigation")} className="scrollbar-hide -mx-3 overflow-x-auto px-3 pb-2 sm:-mx-4 sm:px-4">
             <div className="flex min-w-max items-center gap-1.5 sm:gap-2">
               <Link
                 href="/home"
@@ -1236,12 +1236,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                   )}
                 >
                   <li
-                    className={cn(
-                      "px-3 text-xs font-normal text-white/90 md:text-sm",
-                      langDir === "rtl"
-                        ? "border-l border-solid border-white/30"
-                        : "border-r border-solid border-white/30",
-                    )}
+                    className="flex h-6 items-center border-r border-solid border-white/30 px-3 text-xs font-normal text-white/90 md:text-sm"
                   >
                     <Link
                       href="/my-orders"
@@ -1253,18 +1248,13 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                     </Link>
                   </li>
                   <li
-                    className={cn(
-                      "px-3 text-xs font-normal text-white/90 md:text-sm",
-                      langDir === "rtl"
-                        ? "border-l border-solid border-white/30"
-                        : "border-r border-solid border-white/30",
-                    )}
+                    className="flex h-6 items-center border-r border-solid border-white/30 px-3 text-xs font-normal text-white/90 md:text-sm"
                   >
                     <select
                       dir={langDir}
-                      className="cursor-pointer rounded border-0 bg-transparent px-1 py-1 text-white/90 transition-colors hover:text-white focus:outline-none"
+                      className="h-full cursor-pointer rounded border-0 bg-transparent px-1 py-0 text-white/90 transition-colors hover:text-white focus:outline-none"
                       value={selectedCurrency}
-                      aria-label="Select currency"
+                      aria-label={t("select_currency")}
                       onChange={(e: any) => {
                         setSelectedCurrency(e.target?.value || "OMR");
                         window.localStorage.setItem(
@@ -1291,15 +1281,15 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                   </li>
                   <li
                     className={cn(
-                      "px-3 text-xs font-normal text-white/90 md:text-sm",
+                      "flex h-6 items-center px-3 text-xs font-normal text-white/90 md:text-sm",
                       langDir === "rtl" ? "pl-0" : "pr-0",
                     )}
                   >
                     <select
                       dir={langDir}
-                      className="cursor-pointer rounded border-0 bg-transparent px-1 py-1 text-xs text-white/90 transition-colors hover:text-white focus:outline-none md:text-sm"
+                      className="h-full cursor-pointer rounded border-0 bg-transparent px-1 py-0 text-xs text-white/90 transition-colors hover:text-white focus:outline-none md:text-sm"
                       value={currentLocale}
-                      aria-label="Select language"
+                      aria-label={t("select_language")}
                       onChange={async (e) => {
                         const newLocale = e.target.value;
                         await applyTranslation(newLocale);
@@ -1349,7 +1339,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                   >
                     <Image
                       src={LogoIcon}
-                      alt="Ultrasooq home"
+                      alt={t("ultrasooq_home")}
                       className="h-7 w-auto md:h-8 lg:h-9"
                       priority
                     />
@@ -1394,7 +1384,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                         onFocus={() => searchTerm.length >= 2 && setShowAutocomplete(true)}
                         dir={langDir}
                         translate="no"
-                        aria-label="Search products"
+                        aria-label={t("search_products")}
                       />
                       <svg
                         className={`pointer-events-none absolute top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground ${
@@ -1424,7 +1414,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                       <button
                         type="button"
                         className="group relative hidden cursor-pointer items-center gap-2 rounded-lg bg-primary px-3 transition-all hover:bg-primary/90 active:scale-95 md:flex md:h-10 md:px-4"
-                        aria-label="Browse categories"
+                        aria-label={t("browse_categories")}
                         onClick={() => {
                           const newState = !isCategorySidebarOpen;
                           setIsCategorySidebarOpen(newState);
@@ -1460,7 +1450,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                       <button
                         type="button"
                         className="group relative hidden cursor-pointer items-center gap-2 rounded-lg bg-primary px-3 transition-all hover:bg-primary/90 active:scale-95 md:flex md:h-10 md:px-4"
-                        aria-label="Browse categories"
+                        aria-label={t("browse_categories")}
                         onClick={() => {
                           const newState = !isCategorySidebarOpen;
                           setIsCategorySidebarOpen(newState);
@@ -1505,7 +1495,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                         onFocus={() => searchTerm.length >= 2 && setShowAutocomplete(true)}
                         dir={langDir}
                         translate="no"
-                        aria-label="Search products"
+                        aria-label={t("search_products")}
                       />
                       <svg
                         className={`pointer-events-none absolute top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground ${
@@ -1569,13 +1559,13 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                     <Link
                       href="/wishlist"
                       className="relative flex items-center justify-center rounded-lg p-2 transition-all hover:bg-card/10 active:scale-95"
-                      aria-label="Wishlist"
+                      aria-label={t("wishlist")}
                     >
                       <Image
                         src={WishlistIcon}
                         height={28}
                         width={28}
-                        alt="Wishlist"
+                        alt={t("wishlist")}
                         className="h-6 min-h-[24px] w-6 min-w-[24px] object-contain md:h-7 md:w-7"
                       />
                       {wishlistCount.data?.data > 0 && (
@@ -1596,13 +1586,13 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                     <Link
                       href="/cart"
                       className="relative flex items-center justify-center rounded-lg p-2 transition-all hover:bg-card/10 active:scale-95"
-                      aria-label="Shopping cart"
+                      aria-label={t("shopping_cart")}
                     >
                       <Image
                         src={CartIcon}
                         height={28}
                         width={28}
-                        alt="Shopping cart"
+                        alt={t("shopping_cart")}
                         className="h-6 min-h-[24px] w-6 min-w-[24px] object-contain md:h-7 md:w-7"
                       />
                       {((hasAccessToken &&
@@ -1634,11 +1624,11 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                     {isLoggedIn ? (
                       <div className="flex items-center gap-2">
                         <DropdownMenu>
-                          <DropdownMenuTrigger className="relative h-9 w-9 rounded-full transition-all hover:ring-2 hover:ring-white/30 active:scale-95 md:h-10 md:w-10" aria-label="User menu">
+                          <DropdownMenuTrigger className="relative h-9 w-9 rounded-full transition-all hover:ring-2 hover:ring-white/30 active:scale-95 md:h-10 md:w-10" aria-label={t("user_menu")}>
                             {me?.data?.data?.profilePicture ? (
                               <Image
                                 src={me?.data?.data?.profilePicture}
-                                alt="Profile picture"
+                                alt={t("profile_picture")}
                                 height={40}
                                 width={40}
                                 className="h-full w-full rounded-full border-2 border-white/20 object-cover shadow-lg"
@@ -1970,10 +1960,10 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
             </div>
 
             <nav
-              aria-label="Site navigation"
+              aria-label={t("site_navigation")}
               className={`me menu w-full overflow-hidden px-3 md:flex md:h-auto md:px-0 ${isActive ? "show_menu" : ""}`}
             >
-              <div className="close" onClick={handleClick} role="button" aria-label="Close menu">
+              <div className="close" onClick={handleClick} role="button" aria-label={t("close_menu")}>
                 <IoCloseOutline />
               </div>
               <div

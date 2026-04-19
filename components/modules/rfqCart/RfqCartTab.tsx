@@ -100,11 +100,11 @@ export default function RfqCartTab() {
   }, [selectedState]);
 
   const fetchStates = async (countryId: number) => {
-    try { const res = await fetchStatesByCountry.mutateAsync({ countryId }); setStates(res?.data || []); }
+    try { const res = await fetchStatesByCountry.mutateAsync({ countryId }); setStates((res?.data as any[]) || []); }
     catch { setStates([]); }
   };
   const fetchCities = async (stateId: number) => {
-    try { const res = await fetchCitiesByState.mutateAsync({ stateId }); setCities(res?.data || []); }
+    try { const res = await fetchCitiesByState.mutateAsync({ stateId }); setCities((res?.data as any[]) || []); }
     catch { setCities([]); }
   };
 

@@ -34,7 +34,7 @@ export default function VendorDashboardLoading() {
       <div className="rounded-lg border border-border bg-card shadow-sm">
         {/* Table Header */}
         <div className="border-b border-border px-6 py-4">
-          <div className="grid grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
             {Array.from({ length: 6 }).map((_, i) => (
               <div key={i} className="h-4 w-full rounded bg-muted" />
             ))}
@@ -46,7 +46,7 @@ export default function VendorDashboardLoading() {
             key={i}
             className="border-b border-border px-6 py-4 last:border-0"
           >
-            <div className="grid grid-cols-6 gap-4">
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
               <div className="h-4 w-full rounded bg-muted" />
               <div className="h-4 w-full rounded bg-muted" />
               <div className="h-4 w-3/4 rounded bg-muted" />

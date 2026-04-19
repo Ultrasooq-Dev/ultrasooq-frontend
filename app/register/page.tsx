@@ -41,6 +41,17 @@ import { useTranslations } from "next-intl";
 import { useAuth } from "@/context/AuthContext";
 import { fetchMe, fetchUserPermissions } from "@/apis/requests/user.requests";
 import { useUpdateUserCartByDeviceId } from "@/apis/queries/cart.queries";
+import {
+  ArrowRight,
+  Briefcase,
+  Building2,
+  Check,
+  Clock,
+  Mail,
+  ShieldCheck,
+  User,
+  Zap,
+} from "lucide-react";
 
 // ---------------------------------------------------------------------------
 // Schema
@@ -103,34 +114,15 @@ const STEP_KEYS = [
   { key: 3, labelKey: "step_account_type", icon: "building" },
 ] as const;
 
-function StepIcon({ icon, isActive, isCompleted }: { icon: string; isActive: boolean; isCompleted: boolean }) {
-  if (isCompleted) {
-    return (
-      <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-      </svg>
-    );
-  }
-  const color = isActive ? "currentColor" : "currentColor";
+function StepIcon({ icon, isCompleted }: { icon: string; isActive: boolean; isCompleted: boolean }) {
+  if (isCompleted) return <Check className="h-5 w-5" strokeWidth={2.5} />;
   switch (icon) {
     case "user":
-      return (
-        <svg className="h-5 w-5" fill="none" stroke={color} viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-        </svg>
-      );
+      return <User className="h-5 w-5" />;
     case "shield":
-      return (
-        <svg className="h-5 w-5" fill="none" stroke={color} viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-        </svg>
-      );
+      return <ShieldCheck className="h-5 w-5" />;
     case "building":
-      return (
-        <svg className="h-5 w-5" fill="none" stroke={color} viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-        </svg>
-      );
+      return <Building2 className="h-5 w-5" />;
     default:
       return null;
   }
@@ -154,9 +146,9 @@ function RegistrationStepper({
           <React.Fragment key={step.key}>
             {idx > 0 && (
               <div className="relative mx-2 flex-1 sm:mx-3">
-                <div className="h-[2px] w-full rounded-full bg-gray-200" />
+                <div className="bg-muted h-[2px] w-full rounded-full" />
                 <div
-                  className="absolute left-0 top-0 h-[2px] rounded-full bg-gradient-to-r from-orange-500 to-amber-400 transition-all duration-700 ease-out"
+                  className="bg-primary absolute start-0 top-0 h-[2px] rounded-full transition-all duration-700 ease-out"
                   style={{ width: isCompleted ? "100%" : isActive ? "50%" : "0%" }}
                 />
               </div>
@@ -165,20 +157,20 @@ function RegistrationStepper({
               <div
                 className={`relative flex h-10 w-10 items-center justify-center rounded-full transition-all duration-500 sm:h-11 sm:w-11 ${
                   isActive
-                    ? "bg-gradient-to-br from-orange-500 to-amber-400 text-white shadow-lg shadow-orange-500/30"
+                    ? "bg-primary text-primary-foreground shadow-primary/30 shadow-lg"
                     : isCompleted
-                      ? "bg-gradient-to-br from-emerald-500 to-emerald-400 text-white shadow-lg shadow-emerald-500/20"
-                      : "border-2 border-gray-200 bg-white text-gray-400"
+                      ? "bg-success text-success-foreground shadow-success/20 shadow-lg"
+                      : "border-border bg-card text-muted-foreground/60 border-2"
                 }`}
               >
                 {isActive && (
-                  <div className="absolute inset-0 animate-ping rounded-full bg-orange-400 opacity-20" />
+                  <div className="bg-primary absolute inset-0 animate-ping rounded-full opacity-20" />
                 )}
                 <StepIcon icon={step.icon} isActive={isActive} isCompleted={isCompleted} />
               </div>
               <span
                 className={`text-[11px] font-semibold transition-colors duration-300 sm:text-xs ${
-                  isActive ? "text-orange-600" : isCompleted ? "text-emerald-600" : "text-gray-400"
+                  isActive ? "text-primary" : isCompleted ? "text-success" : "text-muted-foreground/60"
                 }`}
                 dir={langDir}
                 translate="no"
@@ -598,58 +590,97 @@ export default function RegisterPage() {
         {/* ════════════════════════════════════════════════════════════
             LEFT BRANDING PANEL (hidden on mobile, shown lg+)
             ════════════════════════════════════════════════════════════ */}
-        <div className="relative hidden w-[45%] overflow-hidden bg-gradient-to-br from-orange-600 via-orange-500 to-amber-400 lg:block xl:w-[42%]" style={{direction: 'ltr'}}>
-          {/* Floating shapes */}
-          <div className="animate-float-slow absolute left-[8%] top-[10%] h-28 w-28 rounded-full bg-white/10 blur-sm lg:h-36 lg:w-36" />
-          <div className="animate-float-reverse absolute bottom-[15%] left-[12%] h-20 w-20 rounded-full bg-white/10 blur-sm lg:h-32 lg:w-32" />
-          <div className="animate-pulse-glow absolute left-[50%] top-[55%] h-14 w-14 rounded-full bg-white/15 lg:h-20 lg:w-20" />
-          <div className="animate-float-slow absolute right-[15%] top-[25%] h-10 w-10 rounded-xl bg-white/10 rotate-12 lg:h-16 lg:w-16" />
-          <div className="animate-float-reverse absolute bottom-[30%] right-[10%] h-12 w-12 rounded-full bg-white/8" />
-          <div className="animate-float-slow absolute bottom-[8%] right-[25%] h-10 w-10 rounded-2xl bg-white/8 rotate-45" />
+        <div
+          className="bg-primary relative hidden w-[45%] overflow-hidden lg:block xl:w-[42%]"
+          style={{ direction: "ltr" }}
+        >
+          {/* Decorative blobs */}
+          <div className="bg-primary-foreground/15 animate-float-slow absolute left-[8%] top-[10%] h-36 w-36 rounded-full blur-2xl" />
+          <div className="bg-primary-foreground/10 animate-float-reverse absolute bottom-[15%] left-[12%] h-32 w-32 rounded-full blur-2xl" />
+          <div className="bg-primary-foreground/15 animate-pulse-glow absolute left-[50%] top-[55%] h-20 w-20 rounded-full" />
+          <div className="bg-primary-foreground/10 animate-float-slow absolute right-[15%] top-[25%] h-16 w-16 rotate-12 rounded-2xl" />
+          <div className="bg-primary-foreground/10 animate-float-reverse absolute bottom-[30%] right-[10%] h-12 w-12 rounded-full" />
 
-          {/* Grid pattern overlay */}
-          <div className="absolute inset-0 opacity-[0.05]" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-          }} />
+          {/* Dot pattern */}
+          <div
+            className="absolute inset-0 opacity-[0.08]"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle, currentColor 1px, transparent 1px)",
+              backgroundSize: "28px 28px",
+              color: "var(--primary-foreground)",
+            }}
+          />
 
-          {/* Branding content — vertically centered */}
+          {/* Branding content */}
           <div className="relative z-10 flex h-full flex-col items-center justify-center px-10 xl:px-14">
-            {/* Logo icon */}
-            <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-sm">
-              <svg className="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-            </div>
+            {/* Ultrasooq logo */}
+            <Link
+              href="/home"
+              className="border-primary-foreground/20 bg-primary-foreground/15 mb-6 flex h-20 w-20 items-center justify-center rounded-2xl border p-3 backdrop-blur-sm transition-transform hover:scale-105"
+            >
+              <Image
+                src="/images/logoicon.png"
+                alt="Ultrasooq"
+                width={56}
+                height={56}
+                className="h-full w-full object-contain"
+              />
+            </Link>
 
-            <h1 className="mb-3 text-center text-3xl font-bold text-white xl:text-4xl">
-              {t("welcome_to") || "Welcome to"}<br />Ultrasooq
+            <h1 className="text-primary-foreground mb-3 text-center text-3xl font-bold xl:text-4xl">
+              {t("welcome_to")}
+              <br />
+              Ultrasooq
             </h1>
-            <p className="mb-8 max-w-[280px] text-center text-sm leading-relaxed text-white/80">
-              {t("join_marketplace_desc") || "Join the leading B2B & B2C marketplace in the Middle East. Connect, trade and grow your business."}
+            <p className="text-primary-foreground/80 mb-8 max-w-[300px] text-center text-sm leading-relaxed">
+              {t("join_marketplace_desc")}
             </p>
 
             {/* Tags */}
             <div className="mb-10 flex flex-wrap justify-center gap-2">
-              {[t("secure") || "Secure", t("fast") || "Fast", t("trusted") || "Trusted"].map((label) => (
-                <span key={label} className="rounded-full bg-white/20 px-4 py-1.5 text-xs font-semibold text-white backdrop-blur-sm">
+              {[
+                { Icon: ShieldCheck, label: t("secure") },
+                { Icon: Zap, label: t("fast") },
+                { Icon: Check, label: t("trusted") },
+              ].map(({ Icon, label }) => (
+                <span
+                  key={label}
+                  className="bg-primary-foreground/15 text-primary-foreground border-primary-foreground/20 inline-flex items-center gap-1.5 rounded-full border px-4 py-1.5 text-xs font-semibold backdrop-blur-sm"
+                >
+                  <Icon className="h-3.5 w-3.5" />
                   {label}
                 </span>
               ))}
             </div>
 
-            {/* Stats row */}
-            <div className="flex gap-8">
+            {/* Stats card */}
+            <div className="border-primary-foreground/15 bg-primary-foreground/10 flex items-center gap-6 rounded-2xl border p-5 backdrop-blur-sm xl:gap-8">
               <div className="text-center">
-                <p className="text-2xl font-bold text-white xl:text-3xl">10K+</p>
-                <p className="text-xs text-white/60">{t("products") || "Products"}</p>
+                <p className="text-primary-foreground text-2xl font-bold xl:text-3xl">
+                  10K+
+                </p>
+                <p className="text-primary-foreground/70 text-xs">
+                  {t("products")}
+                </p>
               </div>
+              <div className="bg-primary-foreground/20 h-10 w-px" />
               <div className="text-center">
-                <p className="text-2xl font-bold text-white xl:text-3xl">5K+</p>
-                <p className="text-xs text-white/60">{t("sellers") || "Sellers"}</p>
+                <p className="text-primary-foreground text-2xl font-bold xl:text-3xl">
+                  5K+
+                </p>
+                <p className="text-primary-foreground/70 text-xs">
+                  {t("sellers")}
+                </p>
               </div>
+              <div className="bg-primary-foreground/20 h-10 w-px" />
               <div className="text-center">
-                <p className="text-2xl font-bold text-white xl:text-3xl">20+</p>
-                <p className="text-xs text-white/60">{t("countries") || "Countries"}</p>
+                <p className="text-primary-foreground text-2xl font-bold xl:text-3xl">
+                  20+
+                </p>
+                <p className="text-primary-foreground/70 text-xs">
+                  {t("countries")}
+                </p>
               </div>
             </div>
           </div>
@@ -658,23 +689,22 @@ export default function RegisterPage() {
         {/* ════════════════════════════════════════════════════════════
             RIGHT SIDE — Form Panel
             ════════════════════════════════════════════════════════════ */}
-        <div className="relative flex min-h-screen flex-1 items-start justify-center overflow-y-auto bg-gradient-to-b from-gray-50 to-white px-4 py-6 sm:items-center sm:px-6 lg:px-10">
-          {/* Mobile-only top gradient bar */}
-          <div className="absolute left-0 top-0 h-1.5 w-full bg-gradient-to-r from-orange-500 via-amber-500 to-orange-500 lg:hidden" />
+        <div className="bg-background relative flex min-h-screen flex-1 items-start justify-center overflow-y-auto px-4 py-6 sm:items-center sm:px-6 lg:px-10">
+          {/* Mobile-only top accent bar */}
+          <div className="bg-primary absolute start-0 top-0 h-1.5 w-full lg:hidden" />
 
           <div className="w-full max-w-[480px]">
-
             {/* Card */}
-            <div className="animate-slide-up overflow-hidden rounded-2xl border border-gray-200/80 bg-white shadow-xl shadow-gray-200/50">
+            <div className="animate-slide-up border-border bg-card overflow-hidden rounded-2xl border shadow-xl">
               {/* Card Header */}
-              <div className="border-b border-gray-100 bg-gradient-to-r from-gray-50 to-orange-50/50 px-6 py-5 sm:px-8">
+              <div className="border-border bg-muted/30 border-b px-6 py-5 sm:px-8">
                 <div className="mb-4 text-center">
-                  <h2 className="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl" dir={langDir} translate="no">
+                  <h2 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl" dir={langDir} translate="no">
                     {currentStep === 1 && (t("create_your_account") || "Create your account")}
                     {currentStep === 2 && (t("verify_otp") || "Verify your email")}
                     {currentStep === 3 && t("account_type")}
                   </h2>
-                  <p className="mt-1 text-xs text-gray-500 sm:text-sm" dir={langDir} translate="no">
+                  <p className="mt-1 text-xs text-muted-foreground sm:text-sm" dir={langDir} translate="no">
                     {currentStep === 1 && (t("fill_in_your_details") || "Fill in your details to get started")}
                     {currentStep === 2 && (t("enter_otp") || "Enter the code sent to your email")}
                     {currentStep === 3 && t("choose_account_type")}
@@ -694,7 +724,7 @@ export default function RegisterPage() {
                     <div className="mb-5">
                       <Button
                         variant="outline"
-                        className="group h-11 w-full rounded-xl border-2 border-gray-200 text-sm font-semibold text-gray-600 transition-all duration-300 hover:border-gray-300 hover:bg-gray-50 hover:shadow-md sm:h-12"
+                        className="group h-11 w-full rounded-xl border-2 border-border text-sm font-semibold text-muted-foreground transition-all duration-300 hover:border-border hover:bg-muted/50 hover:shadow-md sm:h-12"
                         onClick={() => { setIsGoogleLoading(true); localStorage.setItem("loginType", "GOOGLE"); signIn("google"); }}
                         disabled={socialLogin.isPending || isGoogleLoading}
                         dir={langDir}
@@ -717,10 +747,10 @@ export default function RegisterPage() {
                     {/* Divider */}
                     <div className="relative my-5">
                       <div className="absolute inset-0 flex items-center">
-                        <div className="w-full border-t border-gray-200" />
+                        <div className="w-full border-t border-border" />
                       </div>
                       <div className="relative flex justify-center">
-                        <span className="bg-white px-4 text-xs font-medium text-gray-400" dir={langDir} translate="no">
+                        <span className="bg-card px-4 text-xs font-medium text-muted-foreground/60" dir={langDir} translate="no">
                           {t("or")}
                         </span>
                       </div>
@@ -742,8 +772,8 @@ export default function RegisterPage() {
                           translate="no"
                         />
                         <div className="grid grid-cols-2 gap-3">
-                          <ControlledTextInput label={t("login_password")} name="initialPassword" placeholder="**********" type="password" dir={langDir} translate="no" />
-                          <ControlledTextInput label={t("confirm_password")} name="password" placeholder="**********" type="password" dir={langDir} translate="no" />
+                          <ControlledTextInput label={t("login_password")} name="initialPassword" placeholder="••••••••" type="password" dir={langDir} translate="no" />
+                          <ControlledTextInput label={t("confirm_password")} name="password" placeholder="••••••••" type="password" dir={langDir} translate="no" />
                         </div>
                         <ControlledPhoneInput label={t("phone_number")} name="phoneNumber" countryName="cc" placeholder={t("enter_phone_number")} />
 
@@ -758,17 +788,17 @@ export default function RegisterPage() {
                                   <Checkbox
                                     checked={field.value}
                                     onCheckedChange={field.onChange}
-                                    className="data-[state=checked]:bg-orange-500 data-[state=checked]:border-orange-500 mt-0.5 h-4 w-4 rounded border-gray-300 transition-all"
+                                    className="data-[state=checked]:bg-primary data-[state=checked]:border-primary mt-0.5 h-4 w-4 rounded border-border transition-all"
                                   />
                                 </FormControl>
                                 <div className="flex flex-col leading-none">
-                                  <div className="text-xs text-gray-500 sm:text-sm">
+                                  <div className="text-xs text-muted-foreground sm:text-sm">
                                     <span dir={langDir} translate="no">{t("i_agree")} </span>
-                                    <Button onClick={handleToggleTermsModal} type="button" className="h-auto bg-transparent p-0 text-xs font-semibold text-orange-600 underline-offset-2 shadow-none hover:bg-transparent hover:text-orange-700 hover:underline sm:text-sm" dir={langDir} translate="no">
+                                    <Button onClick={handleToggleTermsModal} type="button" className="h-auto bg-transparent p-0 text-xs font-semibold text-primary underline-offset-2 shadow-none hover:bg-transparent hover:text-primary hover:underline sm:text-sm" dir={langDir} translate="no">
                                       {t("terms_of_use")}
                                     </Button>
                                     <span className="mx-1"> & </span>
-                                    <Button onClick={handleTogglePrivacyModal} type="button" className="h-auto bg-transparent p-0 text-xs font-semibold text-orange-600 underline-offset-2 shadow-none hover:bg-transparent hover:text-orange-700 hover:underline sm:text-sm" dir={langDir} translate="no">
+                                    <Button onClick={handleTogglePrivacyModal} type="button" className="h-auto bg-transparent p-0 text-xs font-semibold text-primary underline-offset-2 shadow-none hover:bg-transparent hover:text-primary hover:underline sm:text-sm" dir={langDir} translate="no">
                                       {t("privacy_policy")}
                                     </Button>
                                   </div>
@@ -783,7 +813,7 @@ export default function RegisterPage() {
                         <Button
                           disabled={register.isPending}
                           type="submit"
-                          className="h-11 w-full rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 text-sm font-bold text-white shadow-lg shadow-orange-500/25 transition-all duration-300 hover:from-orange-600 hover:to-amber-600 hover:shadow-xl hover:shadow-orange-500/30 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:h-12 sm:text-base"
+                          className="h-11 w-full rounded-xl bg-primary text-sm font-bold text-white shadow-lg shadow-primary/25 transition-all duration-300 hover:bg-primary/90 hover:shadow-xl hover:shadow-primary/30 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:h-12 sm:text-base"
                           dir={langDir}
                           translate="no"
                         >
@@ -792,9 +822,7 @@ export default function RegisterPage() {
                           ) : (
                             <span className="flex items-center justify-center gap-2">
                               {t("agree_n_register")}
-                              <svg className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 sm:h-5 sm:w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                              </svg>
+                              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 sm:h-5 sm:w-5" />
                             </span>
                           )}
                         </Button>
@@ -803,9 +831,9 @@ export default function RegisterPage() {
 
                     {/* Sign In Link */}
                     <div className="mt-5 text-center">
-                      <span className="text-xs font-medium text-gray-500 sm:text-sm" dir={langDir} translate="no">
+                      <span className="text-xs font-medium text-muted-foreground sm:text-sm" dir={langDir} translate="no">
                         {t("already_have_an_account")}{" "}
-                        <Link href="/login" className="font-bold text-orange-600 underline-offset-2 transition-colors duration-200 hover:text-orange-700 hover:underline" dir={langDir}>
+                        <Link href="/login" className="font-bold text-primary underline-offset-2 transition-colors duration-200 hover:text-primary hover:underline" dir={langDir}>
                           {t("sign_in")}
                         </Link>
                       </span>
@@ -818,17 +846,13 @@ export default function RegisterPage() {
                   <div className="animate-fade-in space-y-6">
                     {/* Email badge */}
                     <div className="text-center">
-                      <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50 shadow-inner">
-                        <svg className="h-8 w-8 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
+                      <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-success/10 shadow-inner">
+                        <Mail className="h-8 w-8 text-success" />
                       </div>
-                      <p className="text-sm text-gray-500" dir={langDir} translate="no">{t("enter_otp")}</p>
-                      <div className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-orange-50 px-4 py-1.5">
-                        <svg className="h-3.5 w-3.5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
-                        </svg>
-                        <span className="text-xs font-semibold text-orange-700">{registrationEmail}</span>
+                      <p className="text-sm text-muted-foreground" dir={langDir} translate="no">{t("enter_otp")}</p>
+                      <div className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-4 py-1.5">
+                        <Mail className="h-3.5 w-3.5 text-primary" />
+                        <span className="text-xs font-semibold text-primary">{registrationEmail}</span>
                       </div>
                     </div>
 
@@ -843,7 +867,7 @@ export default function RegisterPage() {
                           onChange={(e) => handleOtpChange(e, index)}
                           onClick={() => handleOtpClick(index)}
                           onKeyDown={(e) => handleOtpKeyDown(e, index)}
-                          className="h-14 w-14 rounded-xl border-2 border-gray-200 bg-gray-50 text-center text-2xl font-bold text-gray-900 transition-all duration-200 focus:border-orange-400 focus:bg-white focus:shadow-lg focus:shadow-orange-500/10 focus-visible:ring-0! sm:h-16 sm:w-16"
+                          className="h-14 w-14 rounded-xl border-2 border-border bg-muted/50 text-center text-2xl font-bold text-foreground transition-all duration-200 focus:border-primary focus:bg-card focus:shadow-lg focus:shadow-primary/10 focus-visible:ring-0! sm:h-16 sm:w-16"
                           autoFocus={index === 0}
                         />
                       ))}
@@ -852,12 +876,10 @@ export default function RegisterPage() {
                     {/* Timer */}
                     {otpCount > 0 && (
                       <div className="flex items-center justify-center gap-2">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-50">
-                          <svg className="h-4 w-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                          </svg>
+                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
+                          <Clock className="h-4 w-4 text-primary" />
                         </div>
-                        <span className="text-sm font-semibold text-orange-600" dir={langDir} translate="no">
+                        <span className="text-sm font-semibold text-primary" dir={langDir} translate="no">
                           {t("otp_will_expire_in_min_minutes", { min: formatTime(otpCount) })}
                         </span>
                       </div>
@@ -867,7 +889,7 @@ export default function RegisterPage() {
                     <Button
                       onClick={onSubmitOtp}
                       disabled={verifyOtp.isPending || otp.join("").length !== 4}
-                      className="h-11 w-full rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-sm font-bold text-white shadow-lg shadow-emerald-500/25 transition-all duration-300 hover:from-emerald-600 hover:to-teal-600 hover:shadow-xl active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:h-12 sm:text-base"
+                      className="h-11 w-full rounded-xl bg-success text-sm font-bold text-white shadow-lg shadow-success/25 transition-all duration-300 hover:bg-success/90 hover:shadow-xl active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:h-12 sm:text-base"
                       dir={langDir}
                       translate="no"
                     >
@@ -875,9 +897,7 @@ export default function RegisterPage() {
                         <LoaderWithMessage message={t("please_wait")} />
                       ) : (
                         <span className="flex items-center justify-center gap-2">
-                          <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                          </svg>
+                          <ShieldCheck className="h-5 w-5" />
                           {t("verify")}
                         </span>
                       )}
@@ -885,7 +905,7 @@ export default function RegisterPage() {
 
                     {/* Resend */}
                     <div className="text-center">
-                      <span className="text-sm text-gray-500" dir={langDir} translate="no">
+                      <span className="text-sm text-muted-foreground" dir={langDir} translate="no">
                         {t("didnt_receive_otp")}{" "}
                       </span>
                       <Button
@@ -893,7 +913,7 @@ export default function RegisterPage() {
                         variant="link"
                         disabled={verifyOtp.isPending || resendOtp.isPending || otpCount !== 0}
                         onClick={handleResendOtp}
-                        className="cursor-pointer p-0 font-bold text-orange-600 hover:text-orange-700"
+                        className="cursor-pointer p-0 font-bold text-primary hover:text-primary"
                         dir={langDir}
                         translate="no"
                       >
@@ -914,25 +934,21 @@ export default function RegisterPage() {
                         onClick={() => setSelectedRole("BUYER")}
                         className={`group w-full rounded-xl border-2 p-4 text-left transition-all duration-300 ${
                           selectedRole === "BUYER"
-                            ? "border-orange-400 bg-gradient-to-r from-orange-50 to-amber-50 shadow-lg shadow-orange-500/10"
-                            : "border-gray-200 bg-white hover:border-gray-300 hover:shadow-md"
+                            ? "border-primary bg-primary/10 shadow-lg shadow-primary/10"
+                            : "border-border bg-card hover:border-border hover:shadow-md"
                         }`}
                       >
                         <div className="flex items-center gap-3">
-                          <div className={`flex h-11 w-11 items-center justify-center rounded-xl transition-all duration-300 ${selectedRole === "BUYER" ? "bg-gradient-to-br from-orange-500 to-amber-400 text-white shadow-lg shadow-orange-500/30" : "bg-gray-100 text-gray-400 group-hover:bg-gray-200"}`}>
-                            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
+                          <div className={`flex h-11 w-11 items-center justify-center rounded-xl transition-all duration-300 ${selectedRole === "BUYER" ? "bg-primary text-white shadow-lg shadow-primary/30" : "bg-muted text-muted-foreground/60 group-hover:bg-muted"}`}>
+                            <User className="h-5 w-5" />
                           </div>
                           <div className="flex-1">
-                            <p className="font-bold text-gray-900">{t("personal") || "Personal"}</p>
-                            <p className="text-xs text-gray-500">{t("personal_account_desc") || "Buy products and request quotations"}</p>
+                            <p className="font-bold text-foreground">{t("personal") || "Personal"}</p>
+                            <p className="text-xs text-muted-foreground">{t("personal_account_desc") || "Buy products and request quotations"}</p>
                           </div>
-                          <div className={`flex h-6 w-6 items-center justify-center rounded-full transition-all duration-300 ${selectedRole === "BUYER" ? "bg-orange-500 text-white" : "border-2 border-gray-300"}`}>
+                          <div className={`flex h-6 w-6 items-center justify-center rounded-full transition-all duration-300 ${selectedRole === "BUYER" ? "bg-primary text-white" : "border-2 border-border"}`}>
                             {selectedRole === "BUYER" && (
-                              <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                              </svg>
+                              <Check className="h-3.5 w-3.5" strokeWidth={3} />
                             )}
                           </div>
                         </div>
@@ -944,25 +960,21 @@ export default function RegisterPage() {
                         onClick={() => setSelectedRole("COMPANY")}
                         className={`group w-full rounded-xl border-2 p-4 text-left transition-all duration-300 ${
                           selectedRole === "COMPANY"
-                            ? "border-orange-400 bg-gradient-to-r from-orange-50 to-amber-50 shadow-lg shadow-orange-500/10"
-                            : "border-gray-200 bg-white hover:border-gray-300 hover:shadow-md"
+                            ? "border-primary bg-primary/10 shadow-lg shadow-primary/10"
+                            : "border-border bg-card hover:border-border hover:shadow-md"
                         }`}
                       >
                         <div className="flex items-center gap-3">
-                          <div className={`flex h-11 w-11 items-center justify-center rounded-xl transition-all duration-300 ${selectedRole === "COMPANY" ? "bg-gradient-to-br from-orange-500 to-amber-400 text-white shadow-lg shadow-orange-500/30" : "bg-gray-100 text-gray-400 group-hover:bg-gray-200"}`}>
-                            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                            </svg>
+                          <div className={`flex h-11 w-11 items-center justify-center rounded-xl transition-all duration-300 ${selectedRole === "COMPANY" ? "bg-primary text-white shadow-lg shadow-primary/30" : "bg-muted text-muted-foreground/60 group-hover:bg-muted"}`}>
+                            <Building2 className="h-5 w-5" />
                           </div>
                           <div className="flex-1">
-                            <p className="font-bold text-gray-900">{t("company") || "Company"}</p>
-                            <p className="text-xs text-gray-500">{t("company_account_desc") || "Sell products and manage your business"}</p>
+                            <p className="font-bold text-foreground">{t("company") || "Company"}</p>
+                            <p className="text-xs text-muted-foreground">{t("company_account_desc") || "Sell products and manage your business"}</p>
                           </div>
-                          <div className={`flex h-6 w-6 items-center justify-center rounded-full transition-all duration-300 ${selectedRole === "COMPANY" ? "bg-orange-500 text-white" : "border-2 border-gray-300"}`}>
+                          <div className={`flex h-6 w-6 items-center justify-center rounded-full transition-all duration-300 ${selectedRole === "COMPANY" ? "bg-primary text-white" : "border-2 border-border"}`}>
                             {selectedRole === "COMPANY" && (
-                              <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                              </svg>
+                              <Check className="h-3.5 w-3.5" strokeWidth={3} />
                             )}
                           </div>
                         </div>
@@ -974,25 +986,21 @@ export default function RegisterPage() {
                         onClick={() => setSelectedRole("FREELANCER")}
                         className={`group w-full rounded-xl border-2 p-4 text-left transition-all duration-300 ${
                           selectedRole === "FREELANCER"
-                            ? "border-orange-400 bg-gradient-to-r from-orange-50 to-amber-50 shadow-lg shadow-orange-500/10"
-                            : "border-gray-200 bg-white hover:border-gray-300 hover:shadow-md"
+                            ? "border-primary bg-primary/10 shadow-lg shadow-primary/10"
+                            : "border-border bg-card hover:border-border hover:shadow-md"
                         }`}
                       >
                         <div className="flex items-center gap-3">
-                          <div className={`flex h-11 w-11 items-center justify-center rounded-xl transition-all duration-300 ${selectedRole === "FREELANCER" ? "bg-gradient-to-br from-orange-500 to-amber-400 text-white shadow-lg shadow-orange-500/30" : "bg-gray-100 text-gray-400 group-hover:bg-gray-200"}`}>
-                            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                            </svg>
+                          <div className={`flex h-11 w-11 items-center justify-center rounded-xl transition-all duration-300 ${selectedRole === "FREELANCER" ? "bg-primary text-white shadow-lg shadow-primary/30" : "bg-muted text-muted-foreground/60 group-hover:bg-muted"}`}>
+                            <Briefcase className="h-5 w-5" />
                           </div>
                           <div className="flex-1">
-                            <p className="font-bold text-gray-900">{t("freelancer") || "Freelancer"}</p>
-                            <p className="text-xs text-gray-500">{t("freelancer_account_desc") || "Offer services and find work opportunities"}</p>
+                            <p className="font-bold text-foreground">{t("freelancer") || "Freelancer"}</p>
+                            <p className="text-xs text-muted-foreground">{t("freelancer_account_desc") || "Offer services and find work opportunities"}</p>
                           </div>
-                          <div className={`flex h-6 w-6 items-center justify-center rounded-full transition-all duration-300 ${selectedRole === "FREELANCER" ? "bg-orange-500 text-white" : "border-2 border-gray-300"}`}>
+                          <div className={`flex h-6 w-6 items-center justify-center rounded-full transition-all duration-300 ${selectedRole === "FREELANCER" ? "bg-primary text-white" : "border-2 border-border"}`}>
                             {selectedRole === "FREELANCER" && (
-                              <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                              </svg>
+                              <Check className="h-3.5 w-3.5" strokeWidth={3} />
                             )}
                           </div>
                         </div>
@@ -1001,70 +1009,68 @@ export default function RegisterPage() {
 
                     {/* Company Details (conditional) */}
                     {selectedRole === "COMPANY" && (
-                      <div className="animate-slide-up space-y-3 rounded-xl border border-orange-200 bg-gradient-to-br from-orange-50/80 to-amber-50/50 p-5">
+                      <div className="animate-slide-up space-y-3 rounded-xl border border-primary/30 bg-primary/5 p-5">
                         <div className="flex items-center gap-2">
-                          <div className="flex h-6 w-6 items-center justify-center rounded-md bg-orange-100">
-                            <svg className="h-3.5 w-3.5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16" />
-                            </svg>
+                          <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary/15">
+                            <Building2 className="h-3.5 w-3.5 text-primary" />
                           </div>
-                          <p className="text-sm font-bold text-gray-900">{t("company_details") || "Company Details"}</p>
+                          <p className="text-sm font-bold text-foreground">{t("company_details") || "Company Details"}</p>
                         </div>
                         <div>
-                          <label className="mb-1 block text-xs font-semibold text-gray-600">
-                            {t("company_name") || "Company Name"} <span className="text-red-500">*</span>
+                          <label className="mb-1 block text-xs font-semibold text-muted-foreground">
+                            {t("company_name") || "Company Name"} <span className="text-destructive">*</span>
                           </label>
                           <Input
                             value={companyName}
                             onChange={(e) => setCompanyName(e.target.value)}
                             placeholder={t("enter_company_name") || "Enter company name"}
-                            className="h-10 rounded-lg border-gray-200 bg-white transition-all focus:border-orange-400 focus:shadow-md"
+                            className="h-10 rounded-lg border-border bg-card transition-all focus:border-primary focus:shadow-md"
                           />
                         </div>
                         <div>
-                          <label className="mb-1 block text-xs font-semibold text-gray-600">
+                          <label className="mb-1 block text-xs font-semibold text-muted-foreground">
                             {t("company_address") || "Company Address"}
                           </label>
                           <Input
                             value={companyAddress}
                             onChange={(e) => setCompanyAddress(e.target.value)}
                             placeholder={t("enter_company_address") || "Enter company address"}
-                            className="h-10 rounded-lg border-gray-200 bg-white transition-all focus:border-orange-400 focus:shadow-md"
+                            className="h-10 rounded-lg border-border bg-card transition-all focus:border-primary focus:shadow-md"
                           />
                         </div>
                         <div className="grid grid-cols-2 gap-3">
                           <div>
-                            <label className="mb-1 block text-xs font-semibold text-gray-600">
+                            <label className="mb-1 block text-xs font-semibold text-muted-foreground">
                               {t("company_phone") || "Phone"}
                             </label>
                             <Input
                               value={companyPhone}
                               onChange={(e) => setCompanyPhone(e.target.value)}
                               placeholder={t("enter_phone") || "Phone"}
-                              className="h-10 rounded-lg border-gray-200 bg-white transition-all focus:border-orange-400 focus:shadow-md"
+                              className="h-10 rounded-lg border-border bg-card transition-all focus:border-primary focus:shadow-md"
                             />
                           </div>
                           <div>
-                            <label className="mb-1 block text-xs font-semibold text-gray-600">
+                            <label className="mb-1 block text-xs font-semibold text-muted-foreground">
                               {t("company_tax_id") || "Tax ID"}
                             </label>
                             <Input
                               value={companyTaxId}
                               onChange={(e) => setCompanyTaxId(e.target.value)}
                               placeholder={t("enter_tax_id") || "Tax ID"}
-                              className="h-10 rounded-lg border-gray-200 bg-white transition-all focus:border-orange-400 focus:shadow-md"
+                              className="h-10 rounded-lg border-border bg-card transition-all focus:border-primary focus:shadow-md"
                             />
                           </div>
                         </div>
                         <div>
-                          <label className="mb-1 block text-xs font-semibold text-gray-600">
+                          <label className="mb-1 block text-xs font-semibold text-muted-foreground">
                             {t("company_website") || "Website"}
                           </label>
                           <Input
                             value={companyWebsite}
                             onChange={(e) => setCompanyWebsite(e.target.value)}
                             placeholder="https://..."
-                            className="h-10 rounded-lg border-gray-200 bg-white transition-all focus:border-orange-400 focus:shadow-md"
+                            className="h-10 rounded-lg border-border bg-card transition-all focus:border-primary focus:shadow-md"
                           />
                         </div>
                       </div>
@@ -1072,24 +1078,22 @@ export default function RegisterPage() {
 
                     {/* Freelancer Details (conditional) */}
                     {selectedRole === "FREELANCER" && (
-                      <div className="animate-slide-up space-y-3 rounded-xl border border-orange-200 bg-gradient-to-br from-orange-50/80 to-amber-50/50 p-5">
+                      <div className="animate-slide-up space-y-3 rounded-xl border border-primary/30 bg-primary/5 p-5">
                         <div className="flex items-center gap-2">
-                          <div className="flex h-6 w-6 items-center justify-center rounded-md bg-orange-100">
-                            <svg className="h-3.5 w-3.5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" />
-                            </svg>
+                          <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary/15">
+                            <Briefcase className="h-3.5 w-3.5 text-primary" />
                           </div>
-                          <p className="text-sm font-bold text-gray-900">{t("freelancer_details") || "Freelancer Details"}</p>
+                          <p className="text-sm font-bold text-foreground">{t("freelancer_details") || "Freelancer Details"}</p>
                         </div>
                         <div>
-                          <label className="mb-1 block text-xs font-semibold text-gray-600">
-                            {t("account_name") || "Account Name"} <span className="text-red-500">*</span>
+                          <label className="mb-1 block text-xs font-semibold text-muted-foreground">
+                            {t("account_name") || "Account Name"} <span className="text-destructive">*</span>
                           </label>
                           <Input
                             value={freelancerName}
                             onChange={(e) => setFreelancerName(e.target.value)}
                             placeholder={t("enter_account_name") || "Enter your freelancer name"}
-                            className="h-10 rounded-lg border-gray-200 bg-white transition-all focus:border-orange-400 focus:shadow-md"
+                            className="h-10 rounded-lg border-border bg-card transition-all focus:border-primary focus:shadow-md"
                           />
                         </div>
                       </div>
@@ -1101,7 +1105,7 @@ export default function RegisterPage() {
                         <Button
                           variant="outline"
                           onClick={() => router.push("/profile?fromRegister=1")}
-                          className="h-11 flex-1 rounded-xl border-2 border-gray-200 text-sm font-semibold text-gray-600 transition-all hover:bg-gray-50 sm:h-12"
+                          className="h-11 flex-1 rounded-xl border-2 border-border text-sm font-semibold text-muted-foreground transition-all hover:bg-muted/50 sm:h-12"
                           dir={langDir}
                           translate="no"
                         >
@@ -1111,7 +1115,7 @@ export default function RegisterPage() {
                       <Button
                         onClick={onCompleteStep3}
                         disabled={createAccount.isPending}
-                        className="h-11 flex-1 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 text-sm font-bold text-white shadow-lg shadow-orange-500/25 transition-all duration-300 hover:from-orange-600 hover:to-amber-600 hover:shadow-xl active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:h-12 sm:text-base"
+                        className="h-11 flex-1 rounded-xl bg-primary text-sm font-bold text-white shadow-lg shadow-primary/25 transition-all duration-300 hover:bg-primary/90 hover:shadow-xl active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 sm:h-12 sm:text-base"
                         dir={langDir}
                         translate="no"
                       >
@@ -1120,9 +1124,7 @@ export default function RegisterPage() {
                         ) : (
                           <span className="flex items-center justify-center gap-2">
                             {selectedRole === "BUYER" ? (t("complete") || "Complete") : (t("create_account") || "Create Account")}
-                            <svg className="h-4 w-4 sm:h-5 sm:w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                            </svg>
+                            <ArrowRight className="h-4 w-4 rtl:rotate-180 sm:h-5 sm:w-5" />
                           </span>
                         )}
                       </Button>
@@ -1133,7 +1135,7 @@ export default function RegisterPage() {
             </div>
 
             {/* Bottom subtle text */}
-            <p className="mt-4 text-center text-[11px] text-gray-400">
+            <p className="mt-4 text-center text-[11px] text-muted-foreground/60">
               {t("secure_registration") || "Your data is encrypted and secure"}
             </p>
           </div>

@@ -110,7 +110,7 @@ const TeamMembersPage = () => {
           </div>
           <div className="team_members_table w-full">
             {!membersQuery?.isLoading && memoizedMember.length ? (
-              <>
+              <div className="overflow-x-auto">
                 <table cellPadding={0} cellSpacing={0} border={0}>
                   <thead>
                     <tr>
@@ -148,7 +148,7 @@ const TeamMembersPage = () => {
                     ))}
                   </tbody>
                 </table>
-              </>
+              </div>
             ) : null}
 
             {!membersQuery?.isLoading && !memoizedMember.length ? (

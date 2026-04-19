@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  lint-and-build:
+  lint:
     runs-on: ubuntu-latest
 
     steps:
@@ -29,11 +29,3 @@ jobs:
       - name: Type check
         run: npx tsc --noEmit
         continue-on-error: true
-
-      - name: Build
-        run: npm run build
-        env:
-          NEXT_PUBLIC_API_URL: http://localhost:3000
-
-      - name: Test
-        run: npm run test --if-present

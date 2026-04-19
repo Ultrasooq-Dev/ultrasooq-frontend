@@ -137,7 +137,7 @@ const RoleSettingsPage = () => {
           </div>
           <div className="team_members_table w-full">
             {!userRolesQuery?.isLoading && memoizedUserRole.length ? (
-              <>
+              <div className="overflow-x-auto">
                 <table cellPadding={0} cellSpacing={0} border={0}>
                   <thead>
                     <tr>
@@ -190,7 +190,7 @@ const RoleSettingsPage = () => {
                     ))}
                   </tbody>
                 </table>
-              </>
+              </div>
             ) : null}
 
             {!userRolesQuery?.isLoading && !memoizedUserRole.length ? (

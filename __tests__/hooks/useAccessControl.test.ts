@@ -1,4 +1,3 @@
-// @ts-expect-error - type mismatch
 import { renderHook } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React, { ReactNode } from 'react';

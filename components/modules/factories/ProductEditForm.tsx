@@ -436,13 +436,13 @@ const ProductEditForm: React.FC<EditFormProps> = ({
 
                 {!searchParams?.id ? <ProductDetailsSection /> : null}
 
-                <div className="grid w-full grid-cols-4 gap-x-5">
-                  <div className="col-span-4 mb-3 w-full rounded-lg border border-solid border-border bg-card p-6 shadow-xs sm:p-4 lg:p-8">
+                <div className="grid w-full grid-cols-1 gap-x-5 sm:grid-cols-2 lg:grid-cols-4">
+                  <div className="col-span-full mb-3 w-full rounded-lg border border-solid border-border bg-card p-6 shadow-xs sm:p-4 lg:p-8">
                     <div className="form-groups-common-sec-s1">
                       <DescriptionAndSpecificationSection />
                     </div>
                     <div className="mb-4 mt-4 inline-flex w-full items-center justify-end">
-                      {/* <button className="rounded-sm bg-transparent px-4 py-4 text-lg font-bold leading-6 text-[#7F818D]">
+                      {/* <button className="rounded-sm bg-transparent px-4 py-4 text-lg font-bold leading-6 text-muted-foreground">
                         Save as Draft
                       </button> */}
 

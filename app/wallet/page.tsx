@@ -48,7 +48,7 @@ const WalletPage = () => {
           <h2 className="text-2xl font-semibold text-foreground mb-2">{t("access_denied")}</h2>
           <p className="text-muted-foreground mb-6">{t("please_login_to_access_wallet")}</p>
           <button 
-            className="w-full bg-[#FF9900] hover:bg-[#FF8800] text-white font-medium py-2.5 px-4 rounded-md transition-colors"
+            className="w-full bg-amber-500 hover:bg-amber-600 text-white font-medium py-2.5 px-4 rounded-md transition-colors"
             onClick={() => router.push("/login")}
           >
             {t("login")}
@@ -86,7 +86,7 @@ const WalletPage = () => {
           <h2 className="text-2xl font-semibold text-foreground mb-2">{t("error_loading_wallet")}</h2>
           <p className="text-muted-foreground mb-6">{t("unable_to_load_wallet_data")}</p>
           <button 
-            className="w-full bg-[#FF9900] hover:bg-[#FF8800] text-white font-medium py-2.5 px-4 rounded-md transition-colors"
+            className="w-full bg-amber-500 hover:bg-amber-600 text-white font-medium py-2.5 px-4 rounded-md transition-colors"
             onClick={() => window.location.reload()}
           >
             {t("retry")}
@@ -164,7 +164,7 @@ const WalletPage = () => {
                 onClick={() => setActiveTab("overview")}
                 className={`py-4 px-6 text-sm font-medium border-b-2 transition-colors ${
                   activeTab === "overview"
-                    ? "border-[#FF9900] text-[#FF9900]"
+                    ? "border-amber-500 text-amber-500"
                     : "border-transparent text-muted-foreground hover:text-muted-foreground hover:border-border"
                 }`}
                 dir={langDir}
@@ -176,7 +176,7 @@ const WalletPage = () => {
                 onClick={() => setActiveTab("transactions")}
                 className={`py-4 px-6 text-sm font-medium border-b-2 transition-colors ${
                   activeTab === "transactions"
-                    ? "border-[#FF9900] text-[#FF9900]"
+                    ? "border-amber-500 text-amber-500"
                     : "border-transparent text-muted-foreground hover:text-muted-foreground hover:border-border"
                 }`}
                 dir={langDir}
@@ -188,7 +188,7 @@ const WalletPage = () => {
                 onClick={() => setActiveTab("settings")}
                 className={`py-4 px-6 text-sm font-medium border-b-2 transition-colors ${
                   activeTab === "settings"
-                    ? "border-[#FF9900] text-[#FF9900]"
+                    ? "border-amber-500 text-amber-500"
                     : "border-transparent text-muted-foreground hover:text-muted-foreground hover:border-border"
                 }`}
                 dir={langDir}

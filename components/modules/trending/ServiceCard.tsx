@@ -580,7 +580,7 @@ const ServiceCard: React.FC<any> = ({
                             </button>
                         </Link>
                     ) : (
-                        <h5 className="py-1 text-[#1D77D1]">
+                        <h5 className="py-1 text-blue-600 dark:text-blue-400">
                             {currency.symbol}
                             {calculateDiscountedPrice()}{" "}
                             <span className="text-muted-foreground line-through!">
@@ -663,7 +663,7 @@ const ServiceCard: React.FC<any> = ({
         <div className="cart_button">
           {manageService ? (
             <button
-              className="theme-primary-btn flex w-full items-center justify-evenly gap-x-2 rounded-sm border border-[#E8E8E8] p-[10px] text-[15px] font-bold leading-5 text-[#7F818D]"
+              className="theme-primary-btn flex w-full items-center justify-evenly gap-x-2 rounded-sm border border-border p-[10px] text-[15px] font-bold leading-5 text-muted-foreground"
               onClick={() =>
                 router.push(`/manage-services/create-service?editId=${item.id}`)
               }
@@ -677,7 +677,7 @@ const ServiceCard: React.FC<any> = ({
               {isAddedToCart ? (
                 <button
                   type="button"
-                  className="flex items-center justify-evenly gap-x-2 rounded-sm border border-[#E8E8E8] p-[10px] text-[15px] font-bold leading-5 text-[#7F818D]"
+                  className="flex items-center justify-evenly gap-x-2 rounded-sm border border-border p-[10px] text-[15px] font-bold leading-5 text-muted-foreground"
                   disabled={false}
                   dir={langDir}
                   translate="no"

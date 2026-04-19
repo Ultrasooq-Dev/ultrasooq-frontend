@@ -61,7 +61,7 @@ const SellerRewardsPage = () => {
                     
                     <div className="team_members_table w-full">
                         {!sellerRewardsQuery?.isLoading && sellerRewards.length ? (
-                            <>
+                            <div className="overflow-x-auto">
                                 <table cellPadding={0} cellSpacing={0} border={0}>
                                     <thead>
                                         <tr>
@@ -105,7 +105,7 @@ const SellerRewardsPage = () => {
                                         })}
                                     </tbody>
                                 </table>
-                            </>
+                            </div>
                         ) : null}
 
                         {!sellerRewardsQuery?.isLoading && !sellerRewards.length ? (
