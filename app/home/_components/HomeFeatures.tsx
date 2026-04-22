@@ -24,7 +24,7 @@ export function HomeFeatures() {
     },
     {
       icon: Headphones,
-      title: t("support_24_7"),
+      title: t("home_feature_support_title"),
       description: t("dedicated_customer_care"),
     },
   ];
