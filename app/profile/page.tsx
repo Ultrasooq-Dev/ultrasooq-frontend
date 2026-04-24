@@ -1096,28 +1096,35 @@ export default function ProfilePage() {
                     }
                   />
 
-                  <Button
-                    disabled={updateProfile.isPending || upload.isPending}
-                    type="submit"
-                    className="theme-primary-btn bg-dark-orange h-12 w-full rounded text-center text-lg leading-6 font-bold"
-                    dir={langDir}
-                    translate="no"
-                  >
-                    {updateProfile.isPending || upload.isPending ? (
-                      <>
-                        <Image
-                          src="/images/load.png"
-                          alt="loader-icon"
-                          width={20}
-                          height={20}
-                          className="mr-2 animate-spin"
-                        />
-                        {t("please_wait")}
-                      </>
-                    ) : (
-                      t("update_profile")
-                    )}
-                  </Button>
+                  <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-card/95 px-4 py-3 shadow-[0_-4px_12px_rgba(0,0,0,0.08)] backdrop-blur supports-[backdrop-filter]:bg-card/85">
+                    <div className="mx-auto max-w-3xl">
+                      <Button
+                        disabled={updateProfile.isPending || upload.isPending}
+                        type="submit"
+                        style={{ backgroundColor: "var(--color-dark-orange, #ff6b00)" }}
+                        className="h-12 w-full rounded-lg text-center text-lg font-bold leading-6 text-white shadow-md hover:opacity-90"
+                        dir={langDir}
+                        translate="no"
+                      >
+                        {updateProfile.isPending || upload.isPending ? (
+                          <>
+                            <Image
+                              src="/images/load.png"
+                              alt="loader-icon"
+                              width={20}
+                              height={20}
+                              className="me-2 animate-spin"
+                            />
+                            {t("please_wait")}
+                          </>
+                        ) : (
+                          t("save_changes")
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                  {/* spacer so sticky bar doesn't cover last field */}
+                  <div aria-hidden className="h-20" />
                 </form>
               </Form>
             </div>
