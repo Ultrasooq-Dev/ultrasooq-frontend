@@ -19,9 +19,21 @@ const MySettingsLayout = ({ children }: { children: React.ReactNode }) => {
   const isActivePath = (path: string) => path === pathname;
 
   const me = useMe();
+  const u = me.data?.data;
+  const displayName = useMemo(() => {
+    const fullName = [u?.firstName, u?.lastName].filter(Boolean).join(" ").trim();
+    return (
+      fullName ||
+      u?.userName ||
+      u?.accountName ||
+      u?.companyName ||
+      u?.email?.split("@")[0] ||
+      ""
+    );
+  }, [u?.firstName, u?.lastName, u?.userName, u?.accountName, u?.companyName, u?.email]);
   const memoizedInitials = useMemo(
-    () => getInitials(me.data?.data?.firstName, me.data?.data?.lastName),
-    [me.data?.data?.firstName, me.data?.data?.lastName],
+    () => getInitials(u?.firstName, u?.lastName) || displayName.slice(0, 2).toUpperCase(),
+    [u?.firstName, u?.lastName, displayName],
   );
 
   return (
@@ -64,7 +76,7 @@ const MySettingsLayout = ({ children }: { children: React.ReactNode }) => {
                       {t("hello")}
                     </p>
                     <h3 className="truncate text-lg font-semibold text-foreground">
-                      {me.data?.data?.firstName} {me.data?.data?.lastName}
+                      {displayName || "—"}
                     </h3>
                   </div>
                 </div>
