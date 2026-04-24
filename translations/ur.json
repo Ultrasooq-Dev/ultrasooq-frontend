@@ -2450,5 +2450,6 @@
   "total_reviews": "{count} جائزے",
   "my_rfq_requests": "میری RFQ درخواستیں",
   "seller_requests": "بیچنے والوں کی درخواستیں",
-  "revenue_omr_label": "آمدنی (OMR)"
+  "revenue_omr_label": "آمدنی (OMR)",
+  "member_since": "رکن بننے کی تاریخ"
 }

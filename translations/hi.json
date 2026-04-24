@@ -2450,5 +2450,6 @@
   "total_reviews": "{count} समीक्षाएँ",
   "my_rfq_requests": "मेरी RFQ रिक्वेस्ट",
   "seller_requests": "विक्रेता रिक्वेस्ट",
-  "revenue_omr_label": "राजस्व (OMR)"
+  "revenue_omr_label": "राजस्व (OMR)",
+  "member_since": "सदस्य बने"
 }

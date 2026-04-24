@@ -2450,5 +2450,6 @@
   "total_reviews": "{count} reseñas",
   "my_rfq_requests": "Mis solicitudes de cotización",
   "seller_requests": "Solicitudes de vendedores",
-  "revenue_omr_label": "Ingresos (OMR)"
+  "revenue_omr_label": "Ingresos (OMR)",
+  "member_since": "Miembro desde"
 }

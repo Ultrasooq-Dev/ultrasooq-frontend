@@ -2450,5 +2450,6 @@
   "total_reviews": "{count} отзывов",
   "my_rfq_requests": "Мои запросы цен",
   "seller_requests": "Запросы продавцов",
-  "revenue_omr_label": "Доход (OMR)"
+  "revenue_omr_label": "Доход (OMR)",
+  "member_since": "Участник с"
 }

@@ -2450,5 +2450,6 @@
   "total_reviews": "리뷰 {count}개",
   "my_rfq_requests": "내 RFQ 요청",
   "seller_requests": "판매자 요청",
-  "revenue_omr_label": "매출 (OMR)"
+  "revenue_omr_label": "매출 (OMR)",
+  "member_since": "가입일"
 }

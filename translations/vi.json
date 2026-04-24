@@ -2450,5 +2450,6 @@
   "total_reviews": "{count} đánh giá",
   "my_rfq_requests": "Yêu cầu RFQ của tôi",
   "seller_requests": "Yêu cầu từ người bán",
-  "revenue_omr_label": "Doanh thu (OMR)"
+  "revenue_omr_label": "Doanh thu (OMR)",
+  "member_since": "Thành viên từ"
 }

@@ -2450,5 +2450,6 @@
   "total_reviews": "{count} reviews",
   "my_rfq_requests": "My RFQ Requests",
   "seller_requests": "Seller Requests",
-  "revenue_omr_label": "Revenue (OMR)"
+  "revenue_omr_label": "Revenue (OMR)",
+  "member_since": "Member since"
 }

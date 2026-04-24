@@ -2450,5 +2450,6 @@
   "total_reviews": "{count} 条评价",
   "my_rfq_requests": "我的询价请求",
   "seller_requests": "卖家请求",
-  "revenue_omr_label": "收入 (里亚尔)"
+  "revenue_omr_label": "收入 (里亚尔)",
+  "member_since": "加入时间"
 }

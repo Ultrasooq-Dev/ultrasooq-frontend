@@ -2450,5 +2450,6 @@
   "total_reviews": "{count} مراجعة",
   "my_rfq_requests": "طلبات عروض الأسعار الخاصة بي",
   "seller_requests": "طلبات البائعين",
-  "revenue_omr_label": "الإيرادات (ر.ع)"
+  "revenue_omr_label": "الإيرادات (ر.ع)",
+  "member_since": "عضو منذ"
 }

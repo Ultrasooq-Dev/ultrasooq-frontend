@@ -2450,5 +2450,6 @@
   "total_reviews": "{count} avis",
   "my_rfq_requests": "Mes demandes de devis",
   "seller_requests": "Demandes des vendeurs",
-  "revenue_omr_label": "Revenu (OMR)"
+  "revenue_omr_label": "Revenu (OMR)",
+  "member_since": "Membre depuis"
 }

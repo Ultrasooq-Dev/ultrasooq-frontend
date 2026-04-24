@@ -2450,5 +2450,6 @@
   "total_reviews": "レビュー {count} 件",
   "my_rfq_requests": "マイRFQ依頼",
   "seller_requests": "販売者からの依頼",
-  "revenue_omr_label": "収益 (OMR)"
+  "revenue_omr_label": "収益 (OMR)",
+  "member_since": "登録日"
 }

@@ -2450,5 +2450,6 @@
   "total_reviews": "{count} ulasan",
   "my_rfq_requests": "Permintaan RFQ Saya",
   "seller_requests": "Permintaan Penjual",
-  "revenue_omr_label": "Pendapatan (OMR)"
+  "revenue_omr_label": "Pendapatan (OMR)",
+  "member_since": "Anggota sejak"
 }

@@ -2450,5 +2450,6 @@
   "total_reviews": "{count} beoordelingen",
   "my_rfq_requests": "Mijn RFQ-aanvragen",
   "seller_requests": "Verkopersaanvragen",
-  "revenue_omr_label": "Omzet (OMR)"
+  "revenue_omr_label": "Omzet (OMR)",
+  "member_since": "Lid sinds"
 }

@@ -2450,5 +2450,6 @@
   "total_reviews": "{count} รีวิว",
   "my_rfq_requests": "คำขอ RFQ ของฉัน",
   "seller_requests": "คำขอจากผู้ขาย",
-  "revenue_omr_label": "รายได้ (OMR)"
+  "revenue_omr_label": "รายได้ (OMR)",
+  "member_since": "เป็นสมาชิกตั้งแต่"
 }
