@@ -34,12 +34,14 @@ interface ProductEditorPanelProps {
   productName: string | null;
   selectedTemplate?: any;
   onUpdate: (data: any) => void;
+  onSave?: (data: any) => void;
   locale: string;
 }
 
-export default function ProductEditorPanel({ productName, selectedTemplate, onUpdate, locale }: ProductEditorPanelProps) {
+export default function ProductEditorPanel({ productName, selectedTemplate, onUpdate, onSave, locale }: ProductEditorPanelProps) {
   const isAr = locale === "ar";
   const [activeTemplate, setActiveTemplate] = useState<any>(null);
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
   // ─── Full form state (mirrors /product page) ───
   const [form, setForm] = useState({
@@ -157,6 +159,22 @@ export default function ProductEditorPanel({ productName, selectedTemplate, onUp
   }, [productName, onUpdate]);
 
   const u = (key: string, value: any) => setForm((f) => { const up = { ...f, [key]: value }; onUpdate(up); return up; });
+
+  const handleSave = useCallback(() => {
+    const errors: string[] = [];
+    if (!form.productName.trim()) errors.push(isAr ? "اسم المنتج" : "Product Name");
+    if (!form.brandId.trim()) errors.push(isAr ? "العلامة" : "Brand");
+    if (!form.productPrice || Number(form.productPrice) <= 0) errors.push(isAr ? "السعر" : "Price");
+    if (!form.stock || Number(form.stock) < 0) errors.push(isAr ? "المخزون" : "Stock");
+    setValidationErrors(errors);
+    if (errors.length > 0) return;
+    onSave?.({ ...form, images, specs, variants, customFields, suggestedTags, templateId: activeTemplate?.id });
+  }, [form, images, specs, variants, customFields, suggestedTags, activeTemplate, isAr, onSave]);
+
+  const handleReset = useCallback(() => {
+    setActiveTemplate(null);
+    setValidationErrors([]);
+  }, []);
 
   if (!productName) {
     return (
@@ -425,14 +443,21 @@ export default function ProductEditorPanel({ productName, selectedTemplate, onUp
       </div>
 
       {/* Footer */}
-      <div className="px-4 py-3 border-t border-border shrink-0 flex gap-2">
-        <button type="button" className="flex-1 flex items-center justify-center gap-1.5 h-9 rounded-md bg-green-600 text-white text-sm font-medium hover:bg-green-700">
-          <Check className="h-4 w-4" /> {isAr ? "حفظ المنتج" : "Save Product"}
-        </button>
-        <button type="button" onClick={() => setActiveTemplate(null)}
-          className="flex items-center justify-center gap-1 h-9 px-4 rounded-md border border-border text-sm text-muted-foreground hover:bg-muted">
-          <RotateCcw className="h-3.5 w-3.5" /> {isAr ? "إعادة" : "Reset"}
-        </button>
+      <div className="border-t border-border shrink-0">
+        {validationErrors.length > 0 && (
+          <div className="px-4 py-2 bg-destructive/10 border-b border-destructive/20 text-xs text-destructive">
+            {isAr ? "حقول مطلوبة: " : "Required: "}{validationErrors.join("، ")}
+          </div>
+        )}
+        <div className="px-4 py-3 flex gap-2">
+          <button type="button" onClick={handleSave} className="flex-1 flex items-center justify-center gap-1.5 h-9 rounded-md bg-green-600 text-white text-sm font-medium hover:bg-green-700">
+            <Check className="h-4 w-4" /> {isAr ? "حفظ المنتج" : "Save Product"}
+          </button>
+          <button type="button" onClick={handleReset}
+            className="flex items-center justify-center gap-1 h-9 px-4 rounded-md border border-border text-sm text-muted-foreground hover:bg-muted">
+            <RotateCcw className="h-3.5 w-3.5" /> {isAr ? "إعادة" : "Reset"}
+          </button>
+        </div>
       </div>
     </div>
   );

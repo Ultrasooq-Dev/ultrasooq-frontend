@@ -8,14 +8,20 @@ import ProductEditorPanel from "@/components/add-product/ProductEditorPanel";
 import PartCatalogPanel from "@/components/add-product/PartCatalogPanel";
 import CarDiagramPanel, { type CarZone, ZONES as CAR_ZONES } from "@/components/add-product/CarDiagramPanel";
 import SelectedPartsPanel, { type SelectedPart } from "@/components/add-product/SelectedPartsPanel";
+import { createProduct } from "@/apis/requests/product.request";
+import { useToast } from "@/components/ui/use-toast";
 
 function AddProductPage() {
   const { user, langDir } = useAuth();
   const locale = langDir === "rtl" ? "ar" : "en";
+  const isAr = locale === "ar";
+  const { toast } = useToast();
 
   // P1: product list
   const [items, setItems] = useState<ProductDraft[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [payloads, setPayloads] = useState<Record<string, any>>({});
+  const [submitting, setSubmitting] = useState(false);
 
   // P2 (regular): browse
   const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
@@ -55,6 +61,7 @@ function AddProductPage() {
 
   const handleRemove = useCallback((id: string) => {
     setItems((prev) => prev.filter((i) => i.id !== id));
+    setPayloads((prev) => { const n = { ...prev }; delete n[id]; return n; });
     if (selectedId === id) { setSelectedId(null); setSelectedProductId(null); setSelectedProduct(null); }
   }, [selectedId]);
 
@@ -77,6 +84,53 @@ function AddProductPage() {
   const handleEditorUpdate = useCallback((data: any) => {
     if (selectedId) setItems((prev) => prev.map((i) => i.id === selectedId ? { ...i, status: "editing" } : i));
   }, [selectedId]);
+
+  const handleEditorSave = useCallback((data: any) => {
+    if (!selectedId) return;
+    setPayloads((prev) => ({ ...prev, [selectedId]: data }));
+    setItems((prev) => prev.map((i) => i.id === selectedId ? { ...i, status: "ready" } : i));
+    toast({ title: isAr ? "تم حفظ المنتج" : "Product saved", description: isAr ? "جاهز للإرسال" : "Ready to submit" });
+  }, [selectedId, isAr, toast]);
+
+  const handleSubmitAll = useCallback(async () => {
+    const ready = items.filter((i) => i.status === "ready");
+    if (ready.length === 0) return;
+    setSubmitting(true);
+    const succeeded: string[] = [];
+    const failures: { name: string; reason: string }[] = [];
+    for (const item of ready) {
+      const f = payloads[item.id];
+      if (!f) { failures.push({ name: item.name, reason: "no payload" }); continue; }
+      try {
+        await createProduct({
+          productType: f.productType === "R" ? "R" : "P",
+          productName: f.productName,
+          brandId: Number(f.brandId) || 0,
+          skuNo: f.skuNo || "",
+          placeOfOriginId: Number(f.placeOfOriginId) || 0,
+          productPrice: Number(f.productPrice) || 0,
+          offerPrice: Number(f.offerPrice) || 0,
+          description: f.description || "",
+          specification: JSON.stringify((f.specs || []).map(([k, v]: [string, string]) => ({ key: k, value: v }))),
+          keywords: f.keywords || "",
+          status: "ACTIVE",
+          productImagesList: (f.images || []).map((image: string, idx: number) => ({ imageName: `image-${idx + 1}`, image })),
+        });
+        succeeded.push(item.id);
+      } catch (err: any) {
+        failures.push({ name: item.name, reason: err?.response?.data?.message || err?.message || "unknown" });
+      }
+    }
+    setItems((prev) => prev.filter((i) => !succeeded.includes(i.id)));
+    setPayloads((prev) => { const n = { ...prev }; succeeded.forEach((id) => delete n[id]); return n; });
+    if (succeeded.length > 0) {
+      toast({ title: isAr ? `تم إرسال ${succeeded.length}` : `${succeeded.length} submitted`, description: isAr ? "تمت إضافة المنتجات بنجاح" : "Products created successfully" });
+    }
+    if (failures.length > 0) {
+      toast({ variant: "destructive", title: isAr ? `فشل ${failures.length}` : `${failures.length} failed`, description: failures.map((x) => `${x.name}: ${x.reason}`).join("\n") });
+    }
+    setSubmitting(false);
+  }, [items, payloads, isAr, toast]);
 
   // ─── P4: catalog part select → add to selected parts ───
   const handleSelectPart = useCallback((part: any) => {
@@ -139,9 +193,11 @@ function AddProductPage() {
         <ProductListPanel
           items={items} selectedId={selectedId}
           onSelect={handleSelectItem} onAdd={handleAdd} onRemove={handleRemove}
-          onClearAll={() => { setItems([]); setSelectedId(null); setSelectedProductId(null); setSelectedProduct(null); setSelectedParts([]); setDiagramParts(new Set()); setShowSelectedParts(false); }}
+          onClearAll={() => { setItems([]); setSelectedId(null); setSelectedProductId(null); setSelectedProduct(null); setSelectedParts([]); setDiagramParts(new Set()); setShowSelectedParts(false); setPayloads({}); }}
           onKindChange={(kind) => setActiveKind(kind)}
-          onStatusChange={handleStatusChange} locale={locale}
+          onStatusChange={handleStatusChange}
+          onSubmit={handleSubmitAll} submitting={submitting}
+          locale={locale}
         />
       </div>
 
@@ -190,6 +246,7 @@ function AddProductPage() {
                 productName={selectedParts.find((p) => p.id === selectedPartForEdit)?.name ?? null}
                 selectedTemplate={selectedProduct?.raw ?? selectedProduct}
                 onUpdate={handleEditorUpdate}
+                onSave={handleEditorSave}
                 locale={locale}
               />
             </div>
@@ -260,6 +317,7 @@ function AddProductPage() {
               productName={selectedItem?.name ?? null}
               selectedTemplate={selectedProduct?.raw ?? selectedProduct}
               onUpdate={handleEditorUpdate}
+              onSave={handleEditorSave}
               locale={locale}
             />
           </div>

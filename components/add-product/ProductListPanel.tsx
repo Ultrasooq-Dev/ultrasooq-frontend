@@ -29,11 +29,13 @@ interface ProductListPanelProps {
   onClearAll?: () => void;
   onKindChange?: (kind: ProductKind) => void;
   onStatusChange: (id: string, status: ProductDraft["status"]) => void;
+  onSubmit?: () => void;
+  submitting?: boolean;
   locale: string;
 }
 
 export default function ProductListPanel({
-  items, selectedId, onSelect, onAdd, onRemove, onClearAll, onKindChange, onStatusChange, locale,
+  items, selectedId, onSelect, onAdd, onRemove, onClearAll, onKindChange, onStatusChange, onSubmit, submitting, locale,
 }: ProductListPanelProps) {
   const isAr = locale === "ar";
   const [inputText, setInputText] = useState("");
@@ -311,9 +313,9 @@ export default function ProductListPanel({
           <span className="text-xs text-muted-foreground flex-1 text-end">
             {items.length} {isAr ? "منتج" : "products"}
           </span>
-          <button type="button" disabled={readyCount === 0}
+          <button type="button" disabled={readyCount === 0 || submitting} onClick={() => onSubmit?.()}
             className="flex items-center gap-1 rounded-md bg-green-600 text-white py-1.5 px-3 text-xs font-medium disabled:opacity-50 hover:bg-green-700">
-            <Check className="h-3 w-3" /> {isAr ? "إرسال" : "Submit"} ({readyCount})
+            {submitting ? <Loader2 className="h-3 w-3 animate-spin" /> : <Check className="h-3 w-3" />} {isAr ? "إرسال" : "Submit"} ({readyCount})
           </button>
         </div>
       )}
