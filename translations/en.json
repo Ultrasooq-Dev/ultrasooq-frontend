@@ -2440,5 +2440,15 @@
   "close_menu": "Close menu",
   "sidebar_navigation": "Sidebar navigation",
   "ultrasooq_logo": "Ultrasooq Logo",
-  "ultrasooq_icon": "Ultrasooq Icon"
+  "ultrasooq_icon": "Ultrasooq Icon",
+  "track_your_store_performance": "Track your store performance and sales",
+  "delivered_cancelled_summary": "{delivered} delivered · {cancelled} cancelled",
+  "avg_per_order": "Avg {avg} OMR/order",
+  "no_sales_data": "No sales data yet",
+  "no_funnel_data": "No funnel data yet",
+  "funnel_flow": "Views → Clicks → Cart → Orders → Delivered",
+  "total_reviews": "{count} reviews",
+  "my_rfq_requests": "My RFQ Requests",
+  "seller_requests": "Seller Requests",
+  "revenue_omr_label": "Revenue (OMR)"
 }

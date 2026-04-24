@@ -2440,5 +2440,15 @@
   "since": "自",
   "store_suffix": "的店铺",
   "this_month_orders": "本月",
-  "view_analytics": "查看分析"
+  "view_analytics": "查看分析",
+  "track_your_store_performance": "跟踪您的店铺表现和销售",
+  "delivered_cancelled_summary": "{delivered} 已送达 · {cancelled} 已取消",
+  "avg_per_order": "平均 {avg} 里亚尔/订单",
+  "no_sales_data": "暂无销售数据",
+  "no_funnel_data": "暂无漏斗数据",
+  "funnel_flow": "浏览 → 点击 → 购物车 → 订单 → 已送达",
+  "total_reviews": "{count} 条评价",
+  "my_rfq_requests": "我的询价请求",
+  "seller_requests": "卖家请求",
+  "revenue_omr_label": "收入 (里亚尔)"
 }

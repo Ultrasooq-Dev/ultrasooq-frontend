@@ -2440,5 +2440,15 @@
   "since": "Dal",
   "store_suffix": " - Negozio",
   "this_month_orders": "questo mese",
-  "view_analytics": "Visualizza analisi"
+  "view_analytics": "Visualizza analisi",
+  "track_your_store_performance": "Monitora le prestazioni e le vendite del tuo negozio",
+  "delivered_cancelled_summary": "{delivered} consegnati · {cancelled} annullati",
+  "avg_per_order": "Media {avg} OMR/ordine",
+  "no_sales_data": "Nessun dato di vendita",
+  "no_funnel_data": "Nessun dato del funnel",
+  "funnel_flow": "Visualizzazioni → Clic → Carrello → Ordini → Consegnati",
+  "total_reviews": "{count} recensioni",
+  "my_rfq_requests": "Le mie richieste RFQ",
+  "seller_requests": "Richieste venditori",
+  "revenue_omr_label": "Ricavi (OMR)"
 }

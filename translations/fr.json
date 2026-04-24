@@ -2440,5 +2440,15 @@
   "since": "Depuis",
   "store_suffix": " - Boutique",
   "this_month_orders": "ce mois-ci",
-  "view_analytics": "Voir l'analyse"
+  "view_analytics": "Voir l'analyse",
+  "track_your_store_performance": "Suivez les performances et les ventes de votre boutique",
+  "delivered_cancelled_summary": "{delivered} livrés · {cancelled} annulés",
+  "avg_per_order": "Moy. {avg} OMR/commande",
+  "no_sales_data": "Aucune donnée de vente",
+  "no_funnel_data": "Aucune donnée d'entonnoir",
+  "funnel_flow": "Vues → Clics → Panier → Commandes → Livrés",
+  "total_reviews": "{count} avis",
+  "my_rfq_requests": "Mes demandes de devis",
+  "seller_requests": "Demandes des vendeurs",
+  "revenue_omr_label": "Revenu (OMR)"
 }

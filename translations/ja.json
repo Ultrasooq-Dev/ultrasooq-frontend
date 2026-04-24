@@ -2440,5 +2440,15 @@
   "since": "開始日",
   "store_suffix": "のストア",
   "this_month_orders": "今月",
-  "view_analytics": "分析を表示"
+  "view_analytics": "分析を表示",
+  "track_your_store_performance": "ストアのパフォーマンスと売上を追跡",
+  "delivered_cancelled_summary": "{delivered} 配達済 · {cancelled} キャンセル",
+  "avg_per_order": "平均 {avg} OMR/注文",
+  "no_sales_data": "まだ売上データがありません",
+  "no_funnel_data": "まだファネルデータがありません",
+  "funnel_flow": "閲覧 → クリック → カート → 注文 → 配達済",
+  "total_reviews": "レビュー {count} 件",
+  "my_rfq_requests": "マイRFQ依頼",
+  "seller_requests": "販売者からの依頼",
+  "revenue_omr_label": "収益 (OMR)"
 }

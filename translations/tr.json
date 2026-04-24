@@ -2440,5 +2440,15 @@
   "since": "Başlangıç",
   "store_suffix": " Mağazası",
   "this_month_orders": "bu ay",
-  "view_analytics": "Analizleri Görüntüle"
+  "view_analytics": "Analizleri Görüntüle",
+  "track_your_store_performance": "Mağaza performansınızı ve satışlarınızı takip edin",
+  "delivered_cancelled_summary": "{delivered} teslim · {cancelled} iptal",
+  "avg_per_order": "Ort. {avg} OMR/sipariş",
+  "no_sales_data": "Henüz satış verisi yok",
+  "no_funnel_data": "Henüz huni verisi yok",
+  "funnel_flow": "Görüntüleme → Tıklama → Sepet → Sipariş → Teslim",
+  "total_reviews": "{count} yorum",
+  "my_rfq_requests": "RFQ Taleplerim",
+  "seller_requests": "Satıcı Talepleri",
+  "revenue_omr_label": "Gelir (OMR)"
 }

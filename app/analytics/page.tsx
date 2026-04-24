@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import Link from "next/link";
 import { useTranslations } from "next-intl";
 import {
   useVendorOverview,
@@ -108,11 +107,11 @@ export default function VendorAnalyticsPage() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">
-            {t("analytics") || "Analytics"}
+          <h1 className="text-2xl font-bold tracking-tight" translate="no">
+            {t("analytics")}
           </h1>
-          <p className="text-muted-foreground text-sm">
-            Track your store performance and sales
+          <p className="text-muted-foreground text-sm" translate="no">
+            {t("track_your_store_performance")}
           </p>
         </div>
         <Select
@@ -123,10 +122,10 @@ export default function VendorAnalyticsPage() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="7">Last 7 days</SelectItem>
-            <SelectItem value="14">Last 14 days</SelectItem>
-            <SelectItem value="30">Last 30 days</SelectItem>
-            <SelectItem value="90">Last 90 days</SelectItem>
+            <SelectItem value="7">{t("last_7_days")}</SelectItem>
+            <SelectItem value="14">{t("last_14_days")}</SelectItem>
+            <SelectItem value="30">{t("last_30_days")}</SelectItem>
+            <SelectItem value="90">{t("last_90_days")}</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -134,35 +133,38 @@ export default function VendorAnalyticsPage() {
       {/* KPI Grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
         <KpiCard
-          title="Product Views"
+          title={t("product_views")}
           value={kpis.views ?? 0}
           icon={Eye}
           loading={loadingOverview}
         />
         <KpiCard
-          title="Clicks"
+          title={t("clicks")}
           value={kpis.clicks ?? 0}
           icon={MousePointerClick}
           loading={loadingOverview}
         />
         <KpiCard
-          title="Add to Cart"
+          title={t("add_to_cart")}
           value={kpis.cartAdds ?? 0}
           icon={ShoppingCart}
           loading={loadingOverview}
         />
         <KpiCard
-          title="Orders"
+          title={t("orders")}
           value={kpis.orders ?? 0}
           icon={Package}
-          sub={`${kpis.delivered ?? 0} delivered · ${kpis.cancelled ?? 0} cancelled`}
+          sub={t("delivered_cancelled_summary", {
+            delivered: kpis.delivered ?? 0,
+            cancelled: kpis.cancelled ?? 0,
+          })}
           loading={loadingOverview}
         />
         <KpiCard
-          title="Revenue"
+          title={t("revenue")}
           value={kpis.revenue ? `${kpis.revenue.toLocaleString()} OMR` : "0"}
           icon={DollarSign}
-          sub={`Avg ${kpis.avgOrderValue ?? 0} OMR/order`}
+          sub={t("avg_per_order", { avg: kpis.avgOrderValue ?? 0 })}
           loading={loadingOverview}
         />
       </div>
@@ -170,26 +172,26 @@ export default function VendorAnalyticsPage() {
       {/* Conversion Rate + Products Count */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <KpiCard
-          title="Conversion Rate"
+          title={t("conversion_rate")}
           value={`${kpis.conversionRate ?? 0}%`}
           icon={TrendingUp}
-          sub="views → orders"
+          sub={t("views_to_orders")}
           loading={loadingOverview}
         />
         <KpiCard
-          title="Delivered"
+          title={t("delivered")}
           value={kpis.delivered ?? 0}
           icon={CheckCircle}
           loading={loadingOverview}
         />
         <KpiCard
-          title="Cancelled"
+          title={t("cancelled")}
           value={kpis.cancelled ?? 0}
           icon={XCircle}
           loading={loadingOverview}
         />
         <KpiCard
-          title="Active Products"
+          title={t("active_products")}
           value={kpis.totalProducts ?? 0}
           icon={Package}
           loading={loadingOverview}
@@ -201,15 +203,15 @@ export default function VendorAnalyticsPage() {
         {/* Sales Trend */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-sm font-medium">Sales Trend</CardTitle>
-            <CardDescription>Daily revenue & orders</CardDescription>
+            <CardTitle className="text-sm font-medium" translate="no">{t("sales_trend")}</CardTitle>
+            <CardDescription translate="no">{t("daily_revenue_orders")}</CardDescription>
           </CardHeader>
           <CardContent>
             {loadingOverview ? (
               <div className="h-48 w-full bg-muted animate-pulse rounded" />
             ) : salesTrend.length === 0 ? (
-              <p className="text-sm text-muted-foreground text-center py-12">
-                No sales data yet
+              <p className="text-sm text-muted-foreground text-center py-12" translate="no">
+                {t("no_sales_data")}
               </p>
             ) : (
               <ResponsiveContainer width="100%" height={200}>
@@ -234,7 +236,7 @@ export default function VendorAnalyticsPage() {
                     stroke="hsl(var(--primary))"
                     strokeWidth={2}
                     dot={false}
-                    name="Revenue (OMR)"
+                    name={t("revenue_omr_label")}
                   />
                   <Line
                     yAxisId="right"
@@ -243,7 +245,7 @@ export default function VendorAnalyticsPage() {
                     stroke="hsl(var(--muted-foreground))"
                     strokeWidth={1.5}
                     dot={false}
-                    name="Orders"
+                    name={t("orders")}
                   />
                 </LineChart>
               </ResponsiveContainer>
@@ -254,19 +256,19 @@ export default function VendorAnalyticsPage() {
         {/* Conversion Funnel */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-sm font-medium">
-              Conversion Funnel
+            <CardTitle className="text-sm font-medium" translate="no">
+              {t("conversion_funnel")}
             </CardTitle>
-            <CardDescription>
-              Views → Clicks → Cart → Orders → Delivered
+            <CardDescription translate="no">
+              {t("funnel_flow")}
             </CardDescription>
           </CardHeader>
           <CardContent>
             {loadingFunnel ? (
               <div className="h-48 w-full bg-muted animate-pulse rounded" />
             ) : funnelSteps.length === 0 ? (
-              <p className="text-sm text-muted-foreground text-center py-12">
-                No funnel data yet
+              <p className="text-sm text-muted-foreground text-center py-12" translate="no">
+                {t("no_funnel_data")}
               </p>
             ) : (
               <div className="space-y-3">
@@ -305,11 +307,11 @@ export default function VendorAnalyticsPage() {
       {/* Top Products */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-medium">
-            Product Performance
+          <CardTitle className="text-sm font-medium" translate="no">
+            {t("product_performance")}
           </CardTitle>
-          <CardDescription>
-            Your products ranked by views ({products?.total ?? 0} total)
+          <CardDescription translate="no">
+            {t("products_ranked_by_views", { total: products?.total ?? 0 })}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -317,14 +319,14 @@ export default function VendorAnalyticsPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b text-muted-foreground text-xs uppercase">
-                  <th className="text-start py-2 pe-4">Product</th>
-                  <th className="text-end py-2 px-3">Views</th>
-                  <th className="text-end py-2 px-3">Clicks</th>
-                  <th className="text-end py-2 px-3">Cart</th>
-                  <th className="text-end py-2 px-3">Orders</th>
-                  <th className="text-end py-2 px-3">Revenue</th>
-                  <th className="text-end py-2 px-3">Rating</th>
-                  <th className="text-end py-2 ps-3">Stock</th>
+                  <th className="text-start py-2 pe-4" translate="no">{t("product")}</th>
+                  <th className="text-end py-2 px-3" translate="no">{t("product_views")}</th>
+                  <th className="text-end py-2 px-3" translate="no">{t("clicks")}</th>
+                  <th className="text-end py-2 px-3" translate="no">{t("cart")}</th>
+                  <th className="text-end py-2 px-3" translate="no">{t("orders")}</th>
+                  <th className="text-end py-2 px-3" translate="no">{t("revenue")}</th>
+                  <th className="text-end py-2 px-3" translate="no">{t("rating")}</th>
+                  <th className="text-end py-2 ps-3" translate="no">{t("stock")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -342,8 +344,9 @@ export default function VendorAnalyticsPage() {
                         <td
                           colSpan={8}
                           className="text-center py-8 text-muted-foreground"
+                          translate="no"
                         >
-                          No products yet
+                          {t("no_products_yet")}
                         </td>
                       </tr>
                     )
@@ -417,8 +420,8 @@ export default function VendorAnalyticsPage() {
         {/* Rating Overview */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-sm font-medium">
-              Reviews Summary
+            <CardTitle className="text-sm font-medium" translate="no">
+              {t("reviews_summary")}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -442,8 +445,8 @@ export default function VendorAnalyticsPage() {
                       />
                     ))}
                   </div>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    {reviews?.totalReviews ?? 0} reviews
+                  <p className="text-sm text-muted-foreground mt-1" translate="no">
+                    {t("total_reviews", { count: reviews?.totalReviews ?? 0 })}
                   </p>
                 </div>
                 {/* Distribution bars */}
@@ -487,8 +490,8 @@ export default function VendorAnalyticsPage() {
         {/* Recent Reviews */}
         <Card className="lg:col-span-2">
           <CardHeader>
-            <CardTitle className="text-sm font-medium">
-              Recent Reviews
+            <CardTitle className="text-sm font-medium" translate="no">
+              {t("recent_reviews")}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -502,8 +505,8 @@ export default function VendorAnalyticsPage() {
                   ))
                 : reviewList.length === 0
                   ? (
-                    <p className="text-sm text-muted-foreground text-center py-8">
-                      No reviews yet
+                    <p className="text-sm text-muted-foreground text-center py-8" translate="no">
+                      {t("no_reviews_yet")}
                     </p>
                   )
                   : reviewList.slice(0, 10).map((r: any) => (

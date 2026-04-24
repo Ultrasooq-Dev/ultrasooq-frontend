@@ -2440,5 +2440,15 @@
   "since": "Seit",
   "store_suffix": "s Shop",
   "this_month_orders": "diesen Monat",
-  "view_analytics": "Analyse anzeigen"
+  "view_analytics": "Analyse anzeigen",
+  "track_your_store_performance": "Verfolgen Sie Leistung und Verkäufe Ihres Shops",
+  "delivered_cancelled_summary": "{delivered} geliefert · {cancelled} storniert",
+  "avg_per_order": "Ø {avg} OMR/Bestellung",
+  "no_sales_data": "Noch keine Verkaufsdaten",
+  "no_funnel_data": "Noch keine Funnel-Daten",
+  "funnel_flow": "Aufrufe → Klicks → Warenkorb → Bestellungen → Geliefert",
+  "total_reviews": "{count} Bewertungen",
+  "my_rfq_requests": "Meine Angebotsanfragen",
+  "seller_requests": "Verkäuferanfragen",
+  "revenue_omr_label": "Umsatz (OMR)"
 }

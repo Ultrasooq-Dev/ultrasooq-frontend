@@ -2440,5 +2440,15 @@
   "since": "ตั้งแต่",
   "store_suffix": " - ร้านค้า",
   "this_month_orders": "เดือนนี้",
-  "view_analytics": "ดูการวิเคราะห์"
+  "view_analytics": "ดูการวิเคราะห์",
+  "track_your_store_performance": "ติดตามประสิทธิภาพและยอดขายของร้านคุณ",
+  "delivered_cancelled_summary": "{delivered} จัดส่งแล้ว · {cancelled} ยกเลิก",
+  "avg_per_order": "เฉลี่ย {avg} OMR/คำสั่งซื้อ",
+  "no_sales_data": "ยังไม่มีข้อมูลยอดขาย",
+  "no_funnel_data": "ยังไม่มีข้อมูล funnel",
+  "funnel_flow": "ยอดเข้าชม → คลิก → ตะกร้า → คำสั่งซื้อ → จัดส่งแล้ว",
+  "total_reviews": "{count} รีวิว",
+  "my_rfq_requests": "คำขอ RFQ ของฉัน",
+  "seller_requests": "คำขอจากผู้ขาย",
+  "revenue_omr_label": "รายได้ (OMR)"
 }

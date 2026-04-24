@@ -2440,5 +2440,15 @@
   "since": "Od",
   "store_suffix": " - Sklep",
   "this_month_orders": "w tym miesiącu",
-  "view_analytics": "Wyświetl analizę"
+  "view_analytics": "Wyświetl analizę",
+  "track_your_store_performance": "Śledź wyniki i sprzedaż swojego sklepu",
+  "delivered_cancelled_summary": "{delivered} dostarczone · {cancelled} anulowane",
+  "avg_per_order": "Śr. {avg} OMR/zamówienie",
+  "no_sales_data": "Brak danych sprzedaży",
+  "no_funnel_data": "Brak danych lejka",
+  "funnel_flow": "Wyświetlenia → Kliknięcia → Koszyk → Zamówienia → Dostarczone",
+  "total_reviews": "{count} opinii",
+  "my_rfq_requests": "Moje zapytania RFQ",
+  "seller_requests": "Zapytania sprzedawców",
+  "revenue_omr_label": "Przychód (OMR)"
 }

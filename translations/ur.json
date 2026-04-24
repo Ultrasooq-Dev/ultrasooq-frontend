@@ -2440,5 +2440,15 @@
   "since": "سے",
   "store_suffix": " کا اسٹور",
   "this_month_orders": "اس ماہ",
-  "view_analytics": "تجزیات دیکھیں"
+  "view_analytics": "تجزیات دیکھیں",
+  "track_your_store_performance": "اپنی دکان کی کارکردگی اور فروخت کا جائزہ لیں",
+  "delivered_cancelled_summary": "{delivered} ڈیلیور · {cancelled} منسوخ",
+  "avg_per_order": "اوسط {avg} OMR/آرڈر",
+  "no_sales_data": "ابھی تک کوئی فروخت کا ڈیٹا نہیں",
+  "no_funnel_data": "ابھی تک کوئی فنل ڈیٹا نہیں",
+  "funnel_flow": "دیکھے → کلک → کارٹ → آرڈر → ڈیلیور",
+  "total_reviews": "{count} جائزے",
+  "my_rfq_requests": "میری RFQ درخواستیں",
+  "seller_requests": "بیچنے والوں کی درخواستیں",
+  "revenue_omr_label": "آمدنی (OMR)"
 }

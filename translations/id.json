@@ -2440,5 +2440,15 @@
   "since": "Sejak",
   "store_suffix": " - Toko",
   "this_month_orders": "bulan ini",
-  "view_analytics": "Lihat Analitik"
+  "view_analytics": "Lihat Analitik",
+  "track_your_store_performance": "Pantau performa dan penjualan toko Anda",
+  "delivered_cancelled_summary": "{delivered} terkirim · {cancelled} dibatalkan",
+  "avg_per_order": "Rata-rata {avg} OMR/pesanan",
+  "no_sales_data": "Belum ada data penjualan",
+  "no_funnel_data": "Belum ada data funnel",
+  "funnel_flow": "Tampilan → Klik → Keranjang → Pesanan → Terkirim",
+  "total_reviews": "{count} ulasan",
+  "my_rfq_requests": "Permintaan RFQ Saya",
+  "seller_requests": "Permintaan Penjual",
+  "revenue_omr_label": "Pendapatan (OMR)"
 }

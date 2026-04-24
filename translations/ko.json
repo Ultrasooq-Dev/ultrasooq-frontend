@@ -2440,5 +2440,15 @@
   "since": "가입일",
   "store_suffix": "의 스토어",
   "this_month_orders": "이번 달",
-  "view_analytics": "분석 보기"
+  "view_analytics": "분석 보기",
+  "track_your_store_performance": "스토어 실적과 판매를 추적하세요",
+  "delivered_cancelled_summary": "{delivered} 배송됨 · {cancelled} 취소됨",
+  "avg_per_order": "평균 {avg} OMR/주문",
+  "no_sales_data": "아직 판매 데이터가 없습니다",
+  "no_funnel_data": "아직 퍼널 데이터가 없습니다",
+  "funnel_flow": "조회 → 클릭 → 장바구니 → 주문 → 배송 완료",
+  "total_reviews": "리뷰 {count}개",
+  "my_rfq_requests": "내 RFQ 요청",
+  "seller_requests": "판매자 요청",
+  "revenue_omr_label": "매출 (OMR)"
 }

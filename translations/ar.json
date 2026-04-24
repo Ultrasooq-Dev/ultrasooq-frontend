@@ -2440,5 +2440,15 @@
   "close_menu": "إغلاق القائمة",
   "sidebar_navigation": "التنقل الجانبي",
   "ultrasooq_logo": "شعار أولترا سوق",
-  "ultrasooq_icon": "أيقونة أولترا سوق"
+  "ultrasooq_icon": "أيقونة أولترا سوق",
+  "track_your_store_performance": "تابع أداء متجرك ومبيعاتك",
+  "delivered_cancelled_summary": "{delivered} تم التوصيل · {cancelled} ملغي",
+  "avg_per_order": "متوسط {avg} ر.ع/طلب",
+  "no_sales_data": "لا توجد بيانات مبيعات بعد",
+  "no_funnel_data": "لا توجد بيانات للقمع بعد",
+  "funnel_flow": "المشاهدات ← النقرات ← السلة ← الطلبات ← تم التوصيل",
+  "total_reviews": "{count} مراجعة",
+  "my_rfq_requests": "طلبات عروض الأسعار الخاصة بي",
+  "seller_requests": "طلبات البائعين",
+  "revenue_omr_label": "الإيرادات (ر.ع)"
 }

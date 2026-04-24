@@ -2440,5 +2440,15 @@
   "since": "से",
   "store_suffix": " का स्टोर",
   "this_month_orders": "इस महीने",
-  "view_analytics": "विश्लेषण देखें"
+  "view_analytics": "विश्लेषण देखें",
+  "track_your_store_performance": "अपनी दुकान का प्रदर्शन और बिक्री ट्रैक करें",
+  "delivered_cancelled_summary": "{delivered} डिलीवर · {cancelled} रद्द",
+  "avg_per_order": "औसत {avg} OMR/ऑर्डर",
+  "no_sales_data": "अभी तक कोई बिक्री डेटा नहीं",
+  "no_funnel_data": "अभी तक कोई फ़नल डेटा नहीं",
+  "funnel_flow": "दृश्य → क्लिक → कार्ट → ऑर्डर → डिलीवर",
+  "total_reviews": "{count} समीक्षाएँ",
+  "my_rfq_requests": "मेरी RFQ रिक्वेस्ट",
+  "seller_requests": "विक्रेता रिक्वेस्ट",
+  "revenue_omr_label": "राजस्व (OMR)"
 }

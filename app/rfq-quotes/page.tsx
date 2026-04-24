@@ -143,14 +143,14 @@ const RfqQuotesPage = () => {
                 className={`flex items-center gap-2 px-5 py-3 text-sm font-medium border-b-2 transition-colors ${
                   rfqViewTab === "buyer" ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
                 <FileSearch className="h-4 w-4" />
-                My RFQ Requests
+                <span translate="no">{t("my_rfq_requests")}</span>
               </button>
               {isSeller && (
                 <button onClick={() => setRfqViewTab("seller")}
                   className={`flex items-center gap-2 px-5 py-3 text-sm font-medium border-b-2 transition-colors ${
                     rfqViewTab === "seller" ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"}`}>
                   <Store className="h-4 w-4" />
-                  Seller Requests
+                  <span translate="no">{t("seller_requests")}</span>
                 </button>
               )}
             </div>
