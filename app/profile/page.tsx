@@ -408,7 +408,7 @@ export default function ProfilePage() {
   }, [form]);
 
   useEffect(() => {
-    if (me.data) {
+    if (me.data?.data) {
       const {
         profilePicture,
         identityProof,
@@ -423,9 +423,9 @@ export default function ProfilePage() {
         userPhone,
         userSocialLink,
         userName,
-      } = me.data?.data;
+      } = me.data.data;
 
-      const phoneNumberList = userPhone.length
+      const phoneNumberList = userPhone?.length
         ? userPhone.map((item: any) => ({
             cc: item?.cc,
             phoneNumber: item?.phoneNumber,
@@ -437,7 +437,7 @@ export default function ProfilePage() {
             },
           ];
 
-      const socialLinkList = userSocialLink.length
+      const socialLinkList = userSocialLink?.length
         ? userSocialLink.map((item: any) => ({
             linkType: item?.linkType,
             link: item?.link,

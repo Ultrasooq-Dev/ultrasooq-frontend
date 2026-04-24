@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useCallback, useMemo } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { withActiveUserGuard } from "@/components/shared/withRouteGuard";
 import ProductListPanel, { type ProductDraft, type ProductKind } from "@/components/add-product/ProductListPanel";
 import ProductBrowsePanel from "@/components/add-product/ProductBrowsePanel";
 import ProductEditorPanel from "@/components/add-product/ProductEditorPanel";
@@ -8,7 +9,7 @@ import PartCatalogPanel from "@/components/add-product/PartCatalogPanel";
 import CarDiagramPanel, { type CarZone, ZONES as CAR_ZONES } from "@/components/add-product/CarDiagramPanel";
 import SelectedPartsPanel, { type SelectedPart } from "@/components/add-product/SelectedPartsPanel";
 
-export default function AddProductPage() {
+function AddProductPage() {
   const { user, langDir } = useAuth();
   const locale = langDir === "rtl" ? "ar" : "en";
 
@@ -119,14 +120,6 @@ export default function AddProductPage() {
     }));
     setItems((prev) => [...prev, ...newItems.filter((n) => !prev.some((e) => e.name === n.name))]);
   }, [selectedParts]);
-
-  if (!user) {
-    return (
-      <div className="flex h-[calc(100vh-64px)] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-border border-t-primary" />
-      </div>
-    );
-  }
 
   // ─── Layout: dynamic grid based on mode + state ───
   const getGridCols = () => {
@@ -275,3 +268,5 @@ export default function AddProductPage() {
     </div>
   );
 }
+
+export default withActiveUserGuard(AddProductPage);

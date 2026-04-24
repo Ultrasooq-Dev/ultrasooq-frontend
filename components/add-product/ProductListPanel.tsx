@@ -3,9 +3,12 @@ import React, { useState, useRef } from "react";
 import { cn } from "@/lib/utils";
 import {
   Plus, Trash2, Package, Search, GripVertical, Check, Camera, ScanLine,
-  FileSpreadsheet, ImageIcon, Sparkles, ChevronRight, XCircle, Wrench,
+  FileSpreadsheet, ImageIcon, Sparkles, ChevronRight, XCircle, Wrench, Loader2,
 } from "lucide-react";
 import http from "@/apis/http";
+import { extractTextFromImage, parseSpreadsheet, scanBarcodeFromImage } from "@/components/rfq-builder/tools";
+
+type ToolKind = "ocr" | "scan" | "lens" | "excel";
 
 export type ProductKind = "product" | "sparepart";
 
@@ -38,6 +41,83 @@ export default function ProductListPanel({
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const [toolLoading, setToolLoading] = useState<ToolKind | null>(null);
+  const ocrInputRef = useRef<HTMLInputElement>(null);
+  const scanInputRef = useRef<HTMLInputElement>(null);
+  const lensInputRef = useRef<HTMLInputElement>(null);
+  const excelInputRef = useRef<HTMLInputElement>(null);
+
+  const splitNames = (text: string): string[] =>
+    text.split(/[\n,]+/).map((s) => s.trim()).filter(Boolean);
+
+  const handleOCR = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    setToolLoading("ocr");
+    try {
+      const text = await extractTextFromImage(file);
+      const names = splitNames(text);
+      if (names.length === 0) {
+        alert(isAr ? "لم يتم العثور على نص" : "No text found");
+      } else {
+        onAdd(names, selectedKind);
+      }
+    } catch (err: any) {
+      alert((isAr ? "فشل قراءة النص: " : "OCR failed: ") + (err?.message ?? err));
+    }
+    setToolLoading(null);
+  };
+
+  const handleBarcode = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    setToolLoading("scan");
+    try {
+      const code = await scanBarcodeFromImage(file);
+      if (code) setInputText((prev) => prev ? `${prev}\n${code}` : code);
+      else alert(isAr ? "لم يتم قراءة الباركود" : "No barcode detected");
+    } catch (err: any) {
+      alert((isAr ? "فشل مسح الباركود: " : "Barcode scan failed: ") + (err?.message ?? err));
+    }
+    setToolLoading(null);
+  };
+
+  const handleLens = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    setToolLoading("lens");
+    try {
+      const text = await extractTextFromImage(file);
+      const firstLine = text.split(/\n+/).map((s) => s.trim()).filter(Boolean)[0] ?? "";
+      if (firstLine) setInputText((prev) => prev ? `${prev}\n${firstLine}` : firstLine);
+      else alert(isAr ? "لم يتم العثور على نص في الصورة" : "No readable text in image");
+    } catch (err: any) {
+      alert((isAr ? "فشل البحث البصري: " : "Visual search failed: ") + (err?.message ?? err));
+    }
+    setToolLoading(null);
+  };
+
+  const handleExcel = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    setToolLoading("excel");
+    try {
+      const rows = await parseSpreadsheet(file);
+      const names = rows.map((r) => r.replace(/^\d+\s+/, "").trim()).filter(Boolean);
+      if (names.length === 0) {
+        alert(isAr ? "الملف فارغ" : "No rows found");
+      } else {
+        onAdd(names, selectedKind);
+      }
+    } catch (err: any) {
+      alert((isAr ? "فشل استيراد الملف: " : "Import failed: ") + (err?.message ?? err));
+    }
+    setToolLoading(null);
+  };
 
   // Autocomplete
   const handleInputChange = (value: string) => {
@@ -135,18 +215,35 @@ export default function ProductListPanel({
             <Plus className="h-3 w-3" /> {isAr ? "إضافة" : "Add"}
           </button>
           <div className="flex-1" />
+          {/* Hidden file inputs */}
+          <input ref={ocrInputRef} type="file" accept="image/*,.pdf" className="hidden" onChange={handleOCR} />
+          <input ref={scanInputRef} type="file" accept="image/*" className="hidden" onChange={handleBarcode} />
+          <input ref={lensInputRef} type="file" accept="image/*" className="hidden" onChange={handleLens} />
+          <input ref={excelInputRef} type="file" accept=".csv,.xlsx,.xls,.tsv" className="hidden" onChange={handleExcel} />
           {/* Tools */}
-          {[
-            { icon: Camera, tip: "OCR" },
-            { icon: ScanLine, tip: "Barcode" },
-            { icon: ImageIcon, tip: "Lens" },
-            { icon: FileSpreadsheet, tip: "Excel" },
-          ].map((t) => (
-            <button key={t.tip} type="button" title={t.tip}
-              className="flex h-7 w-7 items-center justify-center rounded-md border border-border/50 text-muted-foreground hover:text-foreground hover:bg-muted/50">
-              <t.icon className="h-3.5 w-3.5" />
-            </button>
-          ))}
+          {([
+            { kind: "ocr" as const, icon: Camera, tip: isAr ? "قراءة نص من صورة/PDF" : "OCR (image/PDF)", ref: ocrInputRef },
+            { kind: "scan" as const, icon: ScanLine, tip: isAr ? "مسح باركود/QR" : "Barcode / QR", ref: scanInputRef },
+            { kind: "lens" as const, icon: ImageIcon, tip: isAr ? "بحث بصري" : "Visual lens", ref: lensInputRef },
+            { kind: "excel" as const, icon: FileSpreadsheet, tip: isAr ? "استيراد Excel/CSV" : "Excel / CSV import", ref: excelInputRef },
+          ]).map((t) => {
+            const busy = toolLoading === t.kind;
+            const disabled = toolLoading !== null && !busy;
+            return (
+              <button key={t.kind} type="button" title={t.tip}
+                disabled={disabled}
+                onClick={() => t.ref.current?.click()}
+                aria-label={t.tip}
+                aria-busy={busy}
+                data-tool={t.kind}
+                className={cn(
+                  "flex h-7 w-7 items-center justify-center rounded-md border border-border/50 text-muted-foreground hover:text-foreground hover:bg-muted/50 disabled:opacity-40 disabled:cursor-not-allowed",
+                  busy && "bg-muted animate-pulse"
+                )}>
+                {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <t.icon className="h-3.5 w-3.5" />}
+              </button>
+            );
+          })}
         </div>
       </div>
 

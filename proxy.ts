@@ -28,6 +28,7 @@ export function proxy(request: NextRequest) {
     "/wishlist",
     "/manage-products",
     "/manage-services",
+    "/add-product",
     "/existing-products",
     "/seller-orders",
     "/seller-rewards",
