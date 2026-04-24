@@ -103,6 +103,25 @@ const MySettingsLayout = ({ children }: { children: React.ReactNode }) => {
                       </div>
                       <div className="bg-muted/50">
                         <Link
+                          href="/my-settings"
+                          className={cn(
+                            "relative block px-4 py-3 pl-12 pr-4 text-sm font-medium transition-all",
+                            langDir === 'rtl' && "pl-4 pr-12",
+                            isActivePath("/my-settings")
+                              ? "bg-primary/5 text-primary"
+                              : "text-muted-foreground hover:bg-card hover:text-foreground"
+                          )}
+                          translate="no"
+                        >
+                          {isActivePath("/my-settings") && (
+                            <span className={cn(
+                              "absolute top-0 h-full w-1 bg-primary",
+                              langDir === 'rtl' ? 'right-0' : 'left-0'
+                            )} />
+                          )}
+                          {t("profile_info")}
+                        </Link>
+                        <Link
                           href="/my-settings/address"
                           className={cn(
                             "relative block px-4 py-3 pl-12 pr-4 text-sm font-medium transition-all",
