@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { cn } from "@/lib/utils";
 import {
   Package, ImagePlus, X, FileText, DollarSign, Truck, Layers,
@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import http from "@/apis/http";
 import dynamic from "next/dynamic";
+import { useUploadMultipleFile } from "@/apis/queries/upload.queries";
 
 const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
 
@@ -77,6 +78,23 @@ export default function ProductEditorPanel({ productName, selectedTemplate, onUp
   const [aiLoading, setAiLoading] = useState(false);
   const [aiSuggested, setAiSuggested] = useState(false);
   const [suggestedTags, setSuggestedTags] = useState<string[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const uploadMultiple = useUploadMultipleFile();
+
+  const handleMediaSelect = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files ?? []);
+    e.target.value = "";
+    if (files.length === 0) return;
+    const fd = new FormData();
+    files.forEach((f) => fd.append("content", f));
+    try {
+      const res = await uploadMultiple.mutateAsync(fd);
+      const urls: string[] = Array.isArray(res?.data) ? res.data : (res?.data ? [res.data as any].flat() : []);
+      if (urls.length > 0) setImages((prev) => [...prev, ...urls]);
+    } catch (err: any) {
+      alert((isAr ? "فشل رفع الملف: " : "Upload failed: ") + (err?.response?.data?.message || err?.message || "unknown"));
+    }
+  }, [uploadMultiple, isAr]);
 
   // ─── AI auto-suggest: specs, keywords, tags when product name changes ───
   useEffect(() => {
@@ -204,20 +222,24 @@ export default function ProductEditorPanel({ productName, selectedTemplate, onUp
 
         {/* ── 1. Basic Info ── */}
         <Sec icon={Package} label={isAr ? "معلومات أساسية" : "Basic Information"}>
-          <Field label={isAr ? "اسم المنتج" : "Product Name"} value={form.productName} onChange={(v) => u("productName", v)} placeholder="e.g. Sony WH-1000XM5" />
+          <Field label={isAr ? "اسم المنتج" : "Product Name"} value={form.productName} onChange={(v) => u("productName", v)} placeholder={isAr ? "مثال: Sony WH-1000XM5" : "e.g. Sony WH-1000XM5"} />
           <Field label={isAr ? "اسم العرض (اللقب)" : "Display Name (Nickname)"} value={form.nickname} onChange={(v) => u("nickname", v)}
-            placeholder={form.productName ? `${form.productName} - Wireless Noise Cancelling Headphones, 30hr Battery, LDAC` : "Product Name + key details (auto-suggested)"} />
+            placeholder={form.productName
+              ? (isAr
+                ? `${form.productName} - سماعات لاسلكية بعازل ضوضاء، بطارية 30 ساعة، LDAC`
+                : `${form.productName} - Wireless Noise Cancelling Headphones, 30hr Battery, LDAC`)
+              : (isAr ? "اسم المنتج + تفاصيل رئيسية (مقترح تلقائيًا)" : "Product Name + key details (auto-suggested)")} />
           {/* Category — auto-assigned by AI, hidden from user */}
           <Row2>
-            <Sel label={isAr ? "نوع" : "Type of Product"} value={form.typeOfProduct} onChange={(v) => u("typeOfProduct", v)} opts={[["BRAND","Brand"],["SPAREPART","Spare Part"],["OWNBRAND","Own Brand"]]} />
-            <Field label={isAr ? "العلامة" : "Brand"} value={form.brandId} onChange={(v) => u("brandId", v)} placeholder="Select brand" />
+            <Sel label={isAr ? "نوع" : "Type of Product"} value={form.typeOfProduct} onChange={(v) => u("typeOfProduct", v)} opts={isAr ? [["BRAND","علامة تجارية"],["SPAREPART","قطعة غيار"],["OWNBRAND","علامة خاصة"]] : [["BRAND","Brand"],["SPAREPART","Spare Part"],["OWNBRAND","Own Brand"]]} />
+            <Field label={isAr ? "العلامة" : "Brand"} value={form.brandId} onChange={(v) => u("brandId", v)} placeholder={isAr ? "اختر العلامة" : "Select brand"} />
           </Row2>
           <Row3>
-            <Sel label={isAr ? "نوع المنتج" : "Product Type"} value={form.productType} onChange={(v) => u("productType", v)} opts={[["P","Normal"],["R","RFQ"],["F","Factory"],["D","Dropship"]]} />
-            <Sel label={isAr ? "الحالة" : "Condition"} value={form.productCondition} onChange={(v) => u("productCondition", v)} opts={[["NEW","New"],["USED","Used"],["REFURBISHED","Refurbished"]]} />
-            <Field label="SKU" value={form.skuNo} onChange={(v) => u("skuNo", v)} mono placeholder="Auto-generated" />
+            <Sel label={isAr ? "نوع المنتج" : "Product Type"} value={form.productType} onChange={(v) => u("productType", v)} opts={isAr ? [["P","عادي"],["R","طلب عرض"],["F","مصنع"],["D","دروب شيبنج"]] : [["P","Normal"],["R","RFQ"],["F","Factory"],["D","Dropship"]]} />
+            <Sel label={isAr ? "الحالة" : "Condition"} value={form.productCondition} onChange={(v) => u("productCondition", v)} opts={isAr ? [["NEW","جديد"],["USED","مستعمل"],["REFURBISHED","مجدّد"]] : [["NEW","New"],["USED","Used"],["REFURBISHED","Refurbished"]]} />
+            <Field label="SKU" value={form.skuNo} onChange={(v) => u("skuNo", v)} mono placeholder={isAr ? "يُولَّد تلقائيًا" : "Auto-generated"} />
           </Row3>
-          <Field label={isAr ? "كلمات مفتاحية" : "Keywords"} value={form.keywords} onChange={(v) => u("keywords", v)} placeholder="comma, separated, keywords" />
+          <Field label={isAr ? "كلمات مفتاحية" : "Keywords"} value={form.keywords} onChange={(v) => u("keywords", v)} placeholder={isAr ? "كلمات، مفصولة، بفواصل" : "comma, separated, keywords"} />
           {/* AI-suggested tags */}
           {suggestedTags.length > 0 && (
             <div>
@@ -238,6 +260,14 @@ export default function ProductEditorPanel({ productName, selectedTemplate, onUp
 
         {/* ── 2. Images ── */}
         <Sec icon={ImagePlus} label={isAr ? "صور ومقاطع فيديو" : "Images & Videos"}>
+          <input
+            ref={fileInputRef}
+            type="file"
+            multiple
+            accept="image/*,video/*"
+            className="hidden"
+            onChange={handleMediaSelect}
+          />
           <div className="flex gap-2 flex-wrap">
             {images.map((img, i) => (
               <div key={i} className="relative h-16 w-16 rounded-md border border-border overflow-hidden group">
@@ -248,8 +278,11 @@ export default function ProductEditorPanel({ productName, selectedTemplate, onUp
                 </button>
               </div>
             ))}
-            <button type="button" className="h-16 w-16 rounded-md border-2 border-dashed border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-primary/30">
-              <ImagePlus className="h-4 w-4" />
+            <button type="button"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploadMultiple.isPending}
+              className="h-16 w-16 rounded-md border-2 border-dashed border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-primary/30 disabled:opacity-50">
+              {uploadMultiple.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <ImagePlus className="h-4 w-4" />}
             </button>
           </div>
           <p className="text-[10px] text-muted-foreground">{isAr ? "يقبل صور وفيديو" : "Accepts images & video files"}</p>
@@ -354,8 +387,8 @@ export default function ProductEditorPanel({ productName, selectedTemplate, onUp
               <Field label={isAr ? "المخزون" : "Stock"} value={form.stock} onChange={(v) => u("stock", v)} type="number" />
             </Row3>
             <Row2>
-              <Sel label={isAr ? "نوع البيع" : "Sell Type"} value={form.sellType} onChange={(v) => u("sellType", v)} opts={[["NORMALSELL","Normal Sell"],["BUYGROUP","Buy Group"],["WHOLESALE_PRODUCT","Wholesale"],["TRIAL_PRODUCT","Trial Product"]]} />
-              <Sel label={isAr ? "نوع المستهلك" : "Consumer Type"} value={form.consumerType} onChange={(v) => u("consumerType", v)} opts={[["EVERYONE","Everyone"],["CONSUMER","Consumer Only"],["VENDORS","Vendors Only"]]} />
+              <Sel label={isAr ? "نوع البيع" : "Sell Type"} value={form.sellType} onChange={(v) => u("sellType", v)} opts={isAr ? [["NORMALSELL","بيع عادي"],["BUYGROUP","شراء جماعي"],["WHOLESALE_PRODUCT","جملة"],["TRIAL_PRODUCT","منتج تجريبي"]] : [["NORMALSELL","Normal Sell"],["BUYGROUP","Buy Group"],["WHOLESALE_PRODUCT","Wholesale"],["TRIAL_PRODUCT","Trial Product"]]} />
+              <Sel label={isAr ? "نوع المستهلك" : "Consumer Type"} value={form.consumerType} onChange={(v) => u("consumerType", v)} opts={isAr ? [["EVERYONE","الجميع"],["CONSUMER","مستهلكون فقط"],["VENDORS","بائعون فقط"]] : [["EVERYONE","Everyone"],["CONSUMER","Consumer Only"],["VENDORS","Vendors Only"]]} />
             </Row2>
 
             {/* Discounts */}
@@ -363,13 +396,13 @@ export default function ProductEditorPanel({ productName, selectedTemplate, onUp
               <div>
                 <Field label={isAr ? "خصم المستهلك" : "Consumer Discount"} value={form.consumerDiscount} onChange={(v) => u("consumerDiscount", v)} type="number" />
                 {Number(form.consumerDiscount) > 0 && (
-                  <Sel label="" value={form.consumerDiscountType} onChange={(v) => u("consumerDiscountType", v)} opts={[["FLAT","Flat"],["PERCENTAGE","%"]]} />
+                  <Sel label="" value={form.consumerDiscountType} onChange={(v) => u("consumerDiscountType", v)} opts={isAr ? [["FLAT","مبلغ ثابت"],["PERCENTAGE","٪"]] : [["FLAT","Flat"],["PERCENTAGE","%"]]} />
                 )}
               </div>
               <div>
                 <Field label={isAr ? "خصم البائع" : "Vendor Discount"} value={form.vendorDiscount} onChange={(v) => u("vendorDiscount", v)} type="number" />
                 {Number(form.vendorDiscount) > 0 && (
-                  <Sel label="" value={form.vendorDiscountType} onChange={(v) => u("vendorDiscountType", v)} opts={[["FLAT","Flat"],["PERCENTAGE","%"]]} />
+                  <Sel label="" value={form.vendorDiscountType} onChange={(v) => u("vendorDiscountType", v)} opts={isAr ? [["FLAT","مبلغ ثابت"],["PERCENTAGE","٪"]] : [["FLAT","Flat"],["PERCENTAGE","%"]]} />
                 )}
               </div>
             </Row2>
@@ -410,7 +443,7 @@ export default function ProductEditorPanel({ productName, selectedTemplate, onUp
 
         {/* ── 7. Location & Shipping ── */}
         <Sec icon={MapPin} label={isAr ? "الموقع والشحن" : "Location & Shipping"}>
-          <Field label={isAr ? "بلد المنشأ" : "Place of Origin"} value={form.placeOfOriginId} onChange={(v) => u("placeOfOriginId", v)} placeholder="Country" />
+          <Field label={isAr ? "بلد المنشأ" : "Place of Origin"} value={form.placeOfOriginId} onChange={(v) => u("placeOfOriginId", v)} placeholder={isAr ? "الدولة" : "Country"} />
           <Row3>
             <Field label={isAr ? "بلد المستودع" : "Warehouse Country"} value={form.productCountryId} onChange={(v) => u("productCountryId", v)} />
             <Field label={isAr ? "المحافظة" : "State"} value={form.productStateId} onChange={(v) => u("productStateId", v)} />
@@ -419,11 +452,11 @@ export default function ProductEditorPanel({ productName, selectedTemplate, onUp
           <Field label={isAr ? "المنطقة" : "Town/Area"} value={form.productTown} onChange={(v) => u("productTown", v)} />
           <div className="border-t border-border pt-2 mt-2">
             <label className="text-[10px] font-bold text-muted-foreground uppercase block mb-1">{isAr ? "مناطق البيع" : "Selling Regions"}</label>
-            <Field label={isAr ? "بلدان البيع" : "Sell to Countries"} value={form.sellCountryIds} onChange={(v) => u("sellCountryIds", v)} placeholder="Multi-select countries" />
+            <Field label={isAr ? "بلدان البيع" : "Sell to Countries"} value={form.sellCountryIds} onChange={(v) => u("sellCountryIds", v)} placeholder={isAr ? "اختر دولًا متعددة" : "Multi-select countries"} />
             <div className="mt-1.5" />
-            <Field label={isAr ? "محافظات البيع" : "Sell to States"} value={form.sellStateIds} onChange={(v) => u("sellStateIds", v)} placeholder="Multi-select states" />
+            <Field label={isAr ? "محافظات البيع" : "Sell to States"} value={form.sellStateIds} onChange={(v) => u("sellStateIds", v)} placeholder={isAr ? "اختر محافظات متعددة" : "Multi-select states"} />
             <div className="mt-1.5" />
-            <Field label={isAr ? "مدن البيع" : "Sell to Cities"} value={form.sellCityIds} onChange={(v) => u("sellCityIds", v)} placeholder="Multi-select cities" />
+            <Field label={isAr ? "مدن البيع" : "Sell to Cities"} value={form.sellCityIds} onChange={(v) => u("sellCityIds", v)} placeholder={isAr ? "اختر مدنًا متعددة" : "Multi-select cities"} />
           </div>
         </Sec>
 
