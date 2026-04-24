@@ -309,7 +309,7 @@ function DashboardPage() {
               <ShoppingBag className="h-4 w-4" /> {t("orders")}
               {pending > 0 && <span className={cn("rounded-full px-1.5 py-0.5 text-[9px] font-bold text-primary-foreground", T.accentBg)}>{pending}</span>}
             </Link>
-            <Link href="/product?productType=P" className={cn("flex items-center gap-2 rounded-2xl px-3 py-2 sm:px-4 sm:py-2.5 text-[12px] font-bold text-primary-foreground transition-all hover:opacity-90", T.accentBg)}>
+            <Link href="/add-product" className={cn("flex items-center gap-2 rounded-2xl px-3 py-2 sm:px-4 sm:py-2.5 text-[12px] font-bold text-primary-foreground transition-all hover:opacity-90", T.accentBg)}>
               <Zap className="h-4 w-4" /> {t("new_product")}
             </Link>
           </div>

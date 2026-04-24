@@ -840,16 +840,6 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                         </>
                       ) : (
                         <>
-                          {accessControl.canAccessDashboard && (
-                            <Link href="/vendor-dashboard">
-                              <DropdownMenuItem
-                                className="cursor-pointer"
-                                translate="no"
-                              >
-                                {t("dashboard")}
-                              </DropdownMenuItem>
-                            </Link>
-                          )}
 
                           {currentTradeRole !== "BUYER" &&
                             accessControl.hasFullAccess && (
@@ -1733,18 +1723,6 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                               </>
                             ) : (
                               <>
-                                {/* Dashboard - Only for ACTIVE users */}
-                                {accessControl.canAccessDashboard && (
-                                  <Link href="/vendor-dashboard">
-                                    <DropdownMenuItem
-                                      className="cursor-pointer"
-                                      dir={langDir}
-                                      translate="no"
-                                    >
-                                      {t("dashboard")}
-                                    </DropdownMenuItem>
-                                  </Link>
-                                )}
 
                                 {/* Company-specific options for active users */}
                                 {currentTradeRole !== "BUYER" &&
