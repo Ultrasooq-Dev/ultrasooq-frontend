@@ -918,7 +918,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                           )} */}
 
                           {accessControl.canAccessSettings && (
-                            <Link href="/my-settings/address">
+                            <Link href="/my-settings">
                               <DropdownMenuItem translate="no">
                                 {t("my_settings")}
                               </DropdownMenuItem>
@@ -1854,7 +1854,7 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
 
                                 {/* My Settings - Available for all authenticated users */}
                                 {accessControl.canAccessSettings && (
-                                  <Link href="/my-settings/address">
+                                  <Link href="/my-settings">
                                     <DropdownMenuItem
                                       dir={langDir}
                                       translate="no"
