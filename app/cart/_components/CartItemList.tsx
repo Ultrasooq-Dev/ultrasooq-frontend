@@ -52,7 +52,7 @@ const CartItemList = ({
           >
             {memoizedCartList.length}{" "}
             {memoizedCartList.length === 1 ? t("item") : t("items")}{" "}
-            added by you
+            {t("added_by_you")}
           </p>
         </div>
         <div className="rounded-full bg-primary/10 px-3 py-1">
