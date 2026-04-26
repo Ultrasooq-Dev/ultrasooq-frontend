@@ -180,7 +180,7 @@ export default function ProductViewPage() {
     if (!bgEnd || saleExpired || saleNotStarted) return;
     const tick = () => {
       const diff = bgEnd - Date.now();
-      if (diff <= 0) { setBgTimeLeft("Ended"); return; }
+      if (diff <= 0) { setBgTimeLeft(t("ended_label")); return; }
       const d = Math.floor(diff / 86400000);
       const h = Math.floor((diff % 86400000) / 3600000);
       const m = Math.floor((diff % 3600000) / 60000);
@@ -190,16 +190,16 @@ export default function ProductViewPage() {
     tick();
     const interval = setInterval(tick, 1000);
     return () => clearInterval(interval);
-  }, [bgEnd, saleExpired, saleNotStarted]);
+  }, [bgEnd, saleExpired, saleNotStarted, t]);
 
   // ── Seller ──
   const seller = pp?.adminDetail;
   const sellerName = seller?.accountName || seller?.userProfile?.companyName ||
-    `${seller?.firstName || ""} ${seller?.lastName || ""}`.trim() || t("seller") || "Seller";
+    `${seller?.firstName || ""} ${seller?.lastName || ""}`.trim() || t("seller");
 
   // ── Cart check ──
   const cartList = haveAccessToken ? cartByUser.data?.data : cartByDevice.data?.data;
-  const cartItem = Array.isArray(cartList) ? cartList.find((i: any) => i.productId === Number(productId)) : null;
+  const cartItem = Array.isArray(cartList) ? cartList.find((i: any) => String(i.productId) === String(productId)) : null;
   const isInCart = !!cartItem;
 
   // ── Handlers ──
@@ -208,10 +208,10 @@ export default function ProductViewPage() {
     try {
       if (haveAccessToken) await updateCartWithLogin.mutateAsync({ productPriceId: pp.id, quantity });
       else await updateCartByDevice.mutateAsync({ productPriceId: pp.id, quantity, deviceId });
-      toast({ title: t("added_to_cart") || "Added to cart!", variant: "success" });
+      toast({ title: t("added_to_cart_toast"), variant: "success" });
       queryClient.invalidateQueries({ queryKey: haveAccessToken ? ["cart-by-user-id"] : ["cart-list-by-device-id"] });
     } catch (e: any) {
-      toast({ title: t("error") || "Error", description: e?.response?.data?.message || "Failed", variant: "destructive" });
+      toast({ title: t("error"), description: e?.response?.data?.message || t("failed_label"), variant: "destructive" });
     }
   };
 
@@ -221,13 +221,13 @@ export default function ProductViewPage() {
   };
 
   const handleWishlist = async () => {
-    if (!haveAccessToken) { toast({ title: t("please_login_first") || "Please login first", variant: "destructive" }); return; }
+    if (!haveAccessToken) { toast({ title: t("please_login_first"), variant: "destructive" }); return; }
     try {
-      if (inWishlist) await deleteFromWishList.mutateAsync({ productId: Number(productId) });
-      else await addToWishList.mutateAsync({ productId: Number(productId) });
+      if (inWishlist) await deleteFromWishList.mutateAsync({ productId: productId as any });
+      else await addToWishList.mutateAsync({ productId: productId as any });
       queryClient.invalidateQueries({ queryKey: ["product-by-id"] });
-      toast({ title: inWishlist ? t("removed_from_wishlist") || "Removed" : t("added_to_wishlist") || "Saved!", variant: "success" });
-    } catch { toast({ title: t("error") || "Error", variant: "destructive" }); }
+      toast({ title: inWishlist ? t("removed_from_wishlist") : t("added_to_wishlist"), variant: "success" });
+    } catch { toast({ title: t("error"), variant: "destructive" }); }
   };
 
   const handleShare = () => {
@@ -235,7 +235,7 @@ export default function ProductViewPage() {
     navigator.clipboard.writeText(url);
     setCopiedLink(true);
     setTimeout(() => setCopiedLink(false), 2000);
-    toast({ title: t("link_copied") || "Link copied!", variant: "success" });
+    toast({ title: t("link_copied"), variant: "success" });
   };
 
   // ── Loading ──
@@ -259,22 +259,22 @@ export default function ProductViewPage() {
     <div className="min-h-screen bg-background flex items-center justify-center">
       <div className="text-center">
         <Package className="h-20 w-20 mx-auto mb-6 text-muted-foreground/50" />
-        <h2 className="text-2xl font-light text-foreground tracking-wide">Product not found</h2>
+        <h2 className="text-2xl font-light text-foreground tracking-wide">{t("product_not_found")}</h2>
         <button onClick={() => router.back()} className="mt-6 text-sm text-primary hover:underline underline-offset-4">
-          <ArrowLeft className="h-4 w-4 inline me-2" />Go back
+          <ArrowLeft className="h-4 w-4 inline me-2" />{t("go_back")}
         </button>
       </div>
     </div>
   );
 
-  const sellTypeLabel = sellType === "BUYGROUP" ? "Group Buy" : sellType === "WHOLESALE_PRODUCT" ? "Wholesale" : sellType === "TRIAL_PRODUCT" ? "Trial" : null;
+  const sellTypeLabel = sellType === "BUYGROUP" ? t("group_buy_label") : sellType === "WHOLESALE_PRODUCT" ? t("wholesale") : sellType === "TRIAL_PRODUCT" ? t("trial_label") : null;
   const reviews = product?.productReview || [];
   const avgRating = reviews.length > 0 ? reviews.reduce((s: number, r: any) => s + (r.rating || 0), 0) / reviews.length : 0;
   const specs = product?.productSpecValues || [];
 
   return (
     <>
-      <title dir={langDir} translate="no">{`${product.productName || "Product"} | Ultrasooq`}</title>
+      <title dir={langDir} translate="no">{`${product.productName || t("product")} | Ultrasooq`}</title>
 
       <div className="min-h-screen bg-background">
 
@@ -284,7 +284,7 @@ export default function ProductViewPage() {
           <nav className="flex items-center gap-2 text-[13px] text-muted-foreground mb-4">
             <button onClick={() => router.back()} className="hover:text-primary transition-colors"><ArrowLeft className="h-4 w-4" /></button>
             <span className="opacity-40">/</span>
-            <a href="/trending" className="hover:text-primary transition-colors">{t("store") || "Store"}</a>
+            <a href="/trending" className="hover:text-primary transition-colors">{t("store")}</a>
             {product.category?.categoryName_en && (<><span className="opacity-40">/</span><span className="hover:text-primary transition-colors cursor-pointer">{product.category.categoryName_en}</span></>)}
           </nav>
         </div>
@@ -300,7 +300,7 @@ export default function ProductViewPage() {
                   <span className="text-xs font-semibold tracking-[0.15em] uppercase text-primary">{product.brand.brandName}</span>
                 )}
                 {product.category?.categoryName_en && (
-                  <span className="text-xs text-muted-foreground">in {product.category.categoryName_en}</span>
+                  <span className="text-xs text-muted-foreground">{t("in")} {product.category.categoryName_en}</span>
                 )}
               </div>
               <h1 className="text-xl sm:text-2xl font-bold leading-tight text-foreground">
@@ -317,7 +317,7 @@ export default function ProductViewPage() {
                   </div>
                 )}
                 {product.sold > 0 && (
-                  <span className="text-sm text-muted-foreground">{product.sold}+ sold</span>
+                  <span className="text-sm text-muted-foreground">{t("sold_count", { count: product.sold })}</span>
                 )}
               </div>
             </div>
@@ -339,9 +339,9 @@ export default function ProductViewPage() {
                       seller?.tradeRole === "FREELANCER" ? "bg-card/20 text-white" :
                       "bg-card/20 text-white"
                     )}>
-                      {seller?.tradeRole === "COMPANY" ? <><ShieldCheck className="h-2.5 w-2.5" /> Company</> :
-                       seller?.tradeRole === "FREELANCER" ? <><Award className="h-2.5 w-2.5" /> Pro</> :
-                       <><Check className="h-2.5 w-2.5" /> Verified</>}
+                      {seller?.tradeRole === "COMPANY" ? <><ShieldCheck className="h-2.5 w-2.5" /> {t("company_label")}</> :
+                       seller?.tradeRole === "FREELANCER" ? <><Award className="h-2.5 w-2.5" /> {t("pro_label")}</> :
+                       <><Check className="h-2.5 w-2.5" /> {t("verified_label")}</>}
                     </span>
                   </div>
                   {/* Bottom: stats */}
@@ -359,7 +359,7 @@ export default function ProductViewPage() {
                       </span>
                     </div>
                     {otherSellers.length > 0 && (
-                      <div className="mt-2 text-center text-[10px] text-primary font-medium">+{otherSellers.length} other sellers</div>
+                      <div className="mt-2 text-center text-[10px] text-primary font-medium">{t("other_sellers_count", { count: otherSellers.length })}</div>
                     )}
                   </div>
                 </div>
@@ -383,7 +383,7 @@ export default function ProductViewPage() {
                     {/* Badges */}
                     <div className="absolute top-4 start-4 flex flex-col gap-2">
                       {discount > 0 && (
-                        <span className="px-3 py-1 rounded-full text-xs font-bold text-white bg-gradient-to-r from-red-500 to-rose-600 shadow-lg shadow-red-500/20">-{discount}% OFF</span>
+                        <span className="px-3 py-1 rounded-full text-xs font-bold text-white bg-gradient-to-r from-red-500 to-rose-600 shadow-lg shadow-red-500/20">{t("percent_off", { discount })}</span>
                       )}
                       {sellTypeLabel && (
                         <span className="px-3 py-1 rounded-full text-xs font-bold text-white bg-gradient-to-r from-primary to-primary/80 shadow-lg shadow-primary/20">{sellTypeLabel}</span>
@@ -421,15 +421,15 @@ export default function ProductViewPage() {
                     className={cn("flex-1 h-10 rounded-xl border text-sm font-medium flex items-center justify-center gap-2 transition-all",
                       inWishlist ? "bg-red-50 border-red-200 text-red-600" : "border-border text-muted-foreground hover:border-primary hover:text-primary")}>
                     <Heart className={cn("h-4 w-4", inWishlist && "fill-red-500")} />
-                    {inWishlist ? t("saved") || "Saved" : t("save") || "Save"}
+                    {inWishlist ? t("saved") : t("save")}
                   </button>
                   <button onClick={handleShare}
                     className="flex-1 h-10 rounded-xl border border-border text-sm font-medium text-muted-foreground flex items-center justify-center gap-2 hover:border-primary hover:text-primary transition-all">
-                    {copiedLink ? <><Check className="h-4 w-4 text-emerald-600" /> Copied!</> : <><Share2 className="h-4 w-4" /> {t("share") || "Share"}</>}
+                    {copiedLink ? <><Check className="h-4 w-4 text-emerald-600" /> {t("copied_label")}</> : <><Share2 className="h-4 w-4" /> {t("share")}</>}
                   </button>
                   <button onClick={() => setIsChatOpen(true)}
                     className="flex-1 h-10 rounded-xl border border-border text-sm font-medium text-muted-foreground flex items-center justify-center gap-2 hover:border-primary hover:text-primary transition-all">
-                    <MessageCircle className="h-4 w-4" /> {t("chat") || "Chat"}
+                    <MessageCircle className="h-4 w-4" /> {t("chat")}
                   </button>
                 </div>
               </div>
@@ -442,7 +442,7 @@ export default function ProductViewPage() {
               {/* Short Description */}
               {product.product_productShortDescription?.length > 0 && (
                 <div className="px-5 pt-5 pb-4 border-b border-border">
-                  <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Product Description</h3>
+                  <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">{t("product_description")}</h3>
                   {product.product_productShortDescription.map((sd: any, i: number) => (
                     <p key={i} className="text-sm leading-relaxed text-muted-foreground" dir={langDir}>{sd.shortDescription}</p>
                   ))}
@@ -453,7 +453,7 @@ export default function ProductViewPage() {
               <div className="px-5 py-5">
                 {askForPrice ? (
                   <div className="text-center py-4">
-                    <span className="text-lg font-semibold text-primary">{t("ask_for_price") || "Ask for Price"}</span>
+                    <span className="text-lg font-semibold text-primary">{t("ask_for_price")}</span>
                   </div>
                 ) : (
                   <>
@@ -464,7 +464,9 @@ export default function ProductViewPage() {
                       )}
                       {consumerDiscount > 0 && (
                         <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full mb-1">
-                          Extra {consumerDiscount}{consumerDiscountType === "PERCENTAGE" ? "%" : "$"} off
+                          {consumerDiscountType === "PERCENTAGE"
+                            ? t("extra_off_percentage", { amount: consumerDiscount })
+                            : t("extra_off_currency", { amount: consumerDiscount, currency: "$" })}
                         </span>
                       )}
                     </div>
@@ -473,9 +475,9 @@ export default function ProductViewPage() {
                     <div className="flex items-center gap-2 mt-3">
                       <span className={cn("w-2 h-2 rounded-full", stock > 10 ? "bg-emerald-500" : stock > 0 ? "bg-amber-500 animate-pulse" : "bg-red-500")} />
                       <span className={cn("text-sm font-medium", stock > 10 ? "text-emerald-600" : stock > 0 ? "text-amber-600" : "text-red-600")}>
-                        {stock > 10 ? t("in_stock") || "In Stock" : stock > 0 ? `${t("only") || "Only"} ${stock} ${t("left") || "left"}` : t("out_of_stock") || "Out of Stock"}
+                        {stock > 10 ? t("in_stock") : stock > 0 ? `${t("only")} ${stock} ${t("left")}` : t("out_of_stock")}
                       </span>
-                      {product.skuNo && <span className="text-xs text-muted-foreground/70 ms-auto">SKU: {product.skuNo}</span>}
+                      {product.skuNo && <span className="text-xs text-muted-foreground/70 ms-auto">{t("sku")}: {product.skuNo}</span>}
                     </div>
                   </>
                 )}
@@ -496,7 +498,7 @@ export default function ProductViewPage() {
                       <div className="bg-gradient-to-r from-primary to-primary/80 px-5 py-3 flex items-center justify-between">
                         <div className="flex items-center gap-2 text-white">
                           <Users className="h-4.5 w-4.5" />
-                          <span className="text-sm font-bold tracking-wide">Group Buy</span>
+                          <span className="text-sm font-bold tracking-wide">{t("group_buy_label")}</span>
                         </div>
                         {!saleExpired && !saleNotStarted && bgTimeLeft && (
                           <div className="flex items-center gap-1.5 text-white/90">
@@ -506,11 +508,11 @@ export default function ProductViewPage() {
                         )}
                         {saleNotStarted && startDate && (
                           <span className="text-xs text-white/80 font-medium">
-                            Starts {startDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                            {t("starts_on", { date: startDate.toLocaleDateString("en-US", { month: "short", day: "numeric" }) })}
                           </span>
                         )}
                         {saleExpired && (
-                          <span className="text-xs text-white/80 font-medium">Sale ended</span>
+                          <span className="text-xs text-white/80 font-medium">{t("sale_ended")}</span>
                         )}
                       </div>
 
@@ -518,22 +520,22 @@ export default function ProductViewPage() {
                       <div className="bg-primary/[0.03] px-5 py-4 space-y-4">
                         {/* How it works */}
                         <p className="text-xs text-muted-foreground leading-relaxed">
-                          Join this group buy! When enough buyers join, the deal activates and everyone gets the discounted price.
+                          {t("buygroup_intro")}
                         </p>
 
                         {/* Min customers progress */}
                         {minCust > 0 && (
                           <div>
                             <div className="flex items-center justify-between text-xs mb-1.5">
-                              <span className="text-muted-foreground font-medium">Buyers needed</span>
-                              <span className="font-bold text-primary">{minCust} minimum</span>
+                              <span className="text-muted-foreground font-medium">{t("buyers_needed")}</span>
+                              <span className="font-bold text-primary">{t("n_minimum", { count: minCust })}</span>
                             </div>
                             <div className="h-2 bg-border rounded-full overflow-hidden">
                               <div className="h-full bg-gradient-to-r from-primary to-primary/70 rounded-full transition-all duration-500" style={{ width: "0%" }} />
                             </div>
                             <div className="flex items-center justify-between text-[10px] text-muted-foreground/70 mt-1">
-                              <span>Join now to be first!</span>
-                              {maxCust > 0 && <span>Max: {maxCust}</span>}
+                              <span>{t("join_to_be_first")}</span>
+                              {maxCust > 0 && <span>{t("max_n", { count: maxCust })}</span>}
                             </div>
                           </div>
                         )}
@@ -541,18 +543,18 @@ export default function ProductViewPage() {
                         {/* Deal details grid */}
                         <div className="grid grid-cols-2 gap-2">
                           <div className="p-2.5 rounded-xl bg-card border border-border">
-                            <div className="text-[10px] text-muted-foreground/70 uppercase tracking-wider">Per Buyer</div>
+                            <div className="text-[10px] text-muted-foreground/70 uppercase tracking-wider">{t("per_buyer")}</div>
                             <div className="text-sm font-bold text-foreground mt-0.5">
-                              {minQtyPer}{maxQtyPer > 0 ? ` — ${maxQtyPer}` : "+"} units
+                              {minQtyPer}{maxQtyPer > 0 ? ` — ${maxQtyPer}` : "+"} {t("units")}
                             </div>
                           </div>
                           <div className="p-2.5 rounded-xl bg-card border border-border">
-                            <div className="text-[10px] text-muted-foreground/70 uppercase tracking-wider">Available</div>
-                            <div className="text-sm font-bold text-foreground mt-0.5">{totalStock} units</div>
+                            <div className="text-[10px] text-muted-foreground/70 uppercase tracking-wider">{t("available_label")}</div>
+                            <div className="text-sm font-bold text-foreground mt-0.5">{totalStock} {t("units")}</div>
                           </div>
                           {startDate && (
                             <div className="p-2.5 rounded-xl bg-card border border-border">
-                              <div className="text-[10px] text-muted-foreground/70 uppercase tracking-wider">Starts</div>
+                              <div className="text-[10px] text-muted-foreground/70 uppercase tracking-wider">{t("starts_short")}</div>
                               <div className="text-xs font-semibold text-foreground mt-0.5">
                                 {startDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })}
                               </div>
@@ -560,7 +562,7 @@ export default function ProductViewPage() {
                           )}
                           {endDate && (
                             <div className="p-2.5 rounded-xl bg-card border border-border">
-                              <div className="text-[10px] text-muted-foreground/70 uppercase tracking-wider">Ends</div>
+                              <div className="text-[10px] text-muted-foreground/70 uppercase tracking-wider">{t("ends_short")}</div>
                               <div className="text-xs font-semibold text-foreground mt-0.5">
                                 {endDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })}
                               </div>
@@ -573,7 +575,7 @@ export default function ProductViewPage() {
                           <div className="flex items-center gap-2 p-3 rounded-xl bg-emerald-50 border border-emerald-100">
                             <Zap className="h-4 w-4 text-emerald-600 flex-shrink-0" />
                             <span className="text-xs font-semibold text-emerald-700">
-                              You save {discount}% compared to ${price.toFixed(2)} regular price
+                              {t("you_save_compared", { discount, price: `$${price.toFixed(2)}` })}
                             </span>
                           </div>
                         )}
@@ -587,14 +589,14 @@ export default function ProductViewPage() {
                   <div className="mt-4 p-3 rounded-xl bg-blue-50 border border-blue-100">
                     <div className="flex items-center gap-2 text-sm text-blue-600 font-medium">
                       <Clock className="h-4 w-4" />
-                      <span>Starts {new Date(bgStart).toLocaleDateString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}</span>
+                      <span>{t("starts_on", { date: new Date(bgStart).toLocaleDateString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }) })}</span>
                     </div>
                   </div>
                 )}
                 {!isBuygroup && saleExpired && (
                   <div className="mt-4 p-3 rounded-xl bg-red-50 border border-red-100">
                     <div className="flex items-center gap-2 text-sm text-red-600 font-medium">
-                      <X className="h-4 w-4" /> Sale ended
+                      <X className="h-4 w-4" /> {t("sale_ended")}
                     </div>
                   </div>
                 )}
@@ -607,8 +609,8 @@ export default function ProductViewPage() {
                       <div className="flex items-center gap-2 p-3 rounded-xl bg-purple-50 border border-purple-100">
                         <FlaskConical className="h-4 w-4 text-purple-600 flex-shrink-0" />
                         <div>
-                          <span className="text-xs font-semibold text-purple-700">Trial / Sample Product</span>
-                          <p className="text-[10px] text-purple-600 mt-0.5">Order a sample to evaluate before bulk purchase</p>
+                          <span className="text-xs font-semibold text-purple-700">{t("trial_sample_product")}</span>
+                          <p className="text-[10px] text-purple-600 mt-0.5">{t("order_sample_evaluate")}</p>
                         </div>
                       </div>
                     )}
@@ -630,7 +632,7 @@ export default function ProductViewPage() {
                             isBuygroup ? "bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20" :
                             "bg-foreground hover:bg-foreground/90")}>
                           {isTrial ? <FlaskConical className="h-4.5 w-4.5" /> : isBuygroup ? <Users className="h-4.5 w-4.5" /> : <ShoppingCart className="h-4.5 w-4.5" />}
-                          {isTrial ? "Order Sample" : isBuygroup ? "Book Your Spot" : isInCart ? t("update_cart") || "Update Cart" : t("add_to_cart") || "Add to Cart"}
+                          {isTrial ? t("order_sample") : isBuygroup ? t("book_your_spot") : isInCart ? t("update_cart") : t("add_to_cart")}
                           {(isBuygroup || isTrial) && ` — $${(offerPrice * quantity).toFixed(2)}`}
                         </button>
                       </div>
@@ -641,7 +643,7 @@ export default function ProductViewPage() {
                       <button onClick={handleBuyNow}
                         className="w-full h-12 rounded-xl bg-primary text-white font-semibold text-sm flex items-center justify-center gap-2 hover:bg-primary/90 transition-all active:scale-[0.98] shadow-lg shadow-primary/20">
                         <Zap className="h-4.5 w-4.5" />
-                        {t("buy_now") || "Buy Now"} — ${(offerPrice * quantity).toFixed(2)}
+                        {t("buy_now")} — ${(offerPrice * quantity).toFixed(2)}
                       </button>
                     )}
 
@@ -649,10 +651,10 @@ export default function ProductViewPage() {
                     <button onClick={() => setShowCustomizeModal(true)}
                       className="w-full h-11 rounded-xl border-2 border-dashed border-primary/40 text-sm font-semibold text-primary flex items-center justify-center gap-2 hover:bg-primary/5 hover:border-primary transition-all">
                       <Pencil className="h-4 w-4" />
-                      Customize This Product
+                      {t("customize_this_product")}
                     </button>
 
-                    {minQty > 1 && <p className="text-xs text-muted-foreground text-center">Min order: {minQty} units</p>}
+                    {minQty > 1 && <p className="text-xs text-muted-foreground text-center">{t("min_order_units", { count: minQty })}</p>}
                   </div>
                 )}
               </div>{/* end price section */}
@@ -665,9 +667,9 @@ export default function ProductViewPage() {
                   </div>
                   <div className="flex-1">
                     <div className="text-sm font-semibold text-foreground">
-                      {deliveryDays > 0 ? `Estimated delivery in ${deliveryDays} days` : "Delivery available"}
+                      {deliveryDays > 0 ? t("estimated_delivery_days", { days: deliveryDays }) : t("delivery_available")}
                     </div>
-                    <div className="text-xs text-muted-foreground">Shipping cost calculated at checkout</div>
+                    <div className="text-xs text-muted-foreground">{t("shipping_cost_at_checkout")}</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
@@ -675,8 +677,8 @@ export default function ProductViewPage() {
                     <ShieldCheck className="h-4.5 w-4.5 text-emerald-600" />
                   </div>
                   <div className="flex-1">
-                    <div className="text-sm font-semibold text-foreground">Buyer Protection</div>
-                    <div className="text-xs text-muted-foreground">Money-back guarantee if not as described</div>
+                    <div className="text-sm font-semibold text-foreground">{t("buyer_protection")}</div>
+                    <div className="text-xs text-muted-foreground">{t("money_back_guarantee")}</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
@@ -687,14 +689,14 @@ export default function ProductViewPage() {
                     <div className="text-sm font-semibold text-foreground">
                       {(() => {
                         const cond = (pp?.productCondition || "new").toLowerCase();
-                        const m: Record<string, string> = { "new": "New", "open box": "Open Box", "refurbished": "Certified Refurbished", "like new": "Like New", "used": "Pre-Owned", "good": "Good", "fair": "Acceptable", "for parts": "For Parts or Not Working" };
-                        return m[cond] || "New";
+                        const m: Record<string, string> = { "new": t("condition_new"), "open box": t("condition_open_box"), "refurbished": t("condition_refurbished"), "like new": t("condition_like_new"), "used": t("condition_used"), "good": t("condition_good"), "fair": t("condition_fair"), "for parts": t("condition_for_parts") };
+                        return m[cond] || t("condition_new");
                       })()}
                     </div>
                     <div className="text-xs text-muted-foreground">
                       {(() => {
                         const cond = (pp?.productCondition || "new").toLowerCase();
-                        const m: Record<string, string> = { "new": "Brand new, unused, unopened, undamaged item in original packaging", "open box": "Original packaging, opened but never used", "refurbished": "Professionally restored to working order", "like new": "Used but in excellent, near-new condition", "used": "Previously used, may show signs of cosmetic wear", "good": "Shows wear from consistent use, fully operational", "fair": "Fairly worn but continues to work properly", "for parts": "Does not function as intended, requires repair" };
+                        const m: Record<string, string> = { "new": t("condition_desc_new"), "open box": t("condition_desc_open_box"), "refurbished": t("condition_desc_refurbished"), "like new": t("condition_desc_like_new"), "used": t("condition_desc_used"), "good": t("condition_desc_good"), "fair": t("condition_desc_fair"), "for parts": t("condition_desc_for_parts") };
                         return m[cond] || m["new"];
                       })()}
                     </div>
@@ -711,12 +713,12 @@ export default function ProductViewPage() {
           <div className="mt-10">
             <div className="flex items-center gap-1 border-b border-border overflow-x-auto">
               {[
-                { id: "description", label: t("description") || "Description" },
-                { id: "specs", label: t("specification") || "Specs" },
-                { id: "reviews", label: `${t("reviews") || "Reviews"} (${reviews.length})` },
-                { id: "qanda", label: t("questions") || "Q&A" },
-                { id: "vendor", label: t("vendor") || "Seller" },
-                { id: "services", label: t("services") || "Services" },
+                { id: "description", label: t("description") },
+                { id: "specs", label: t("specs_short") },
+                { id: "reviews", label: `${t("reviews")} (${reviews.length})` },
+                { id: "qanda", label: t("qanda_short") },
+                { id: "vendor", label: t("seller") },
+                { id: "services", label: t("services") },
               ].map((tab) => (
                 <button key={tab.id} onClick={() => setActiveTab(tab.id)}
                   className={cn("px-6 py-4 text-sm font-semibold whitespace-nowrap transition-all border-b-[3px] -mb-px",
@@ -730,7 +732,7 @@ export default function ProductViewPage() {
               {activeTab === "description" && (() => {
                 const desc = product?.isDropshipped && product?.customMarketingContent?.marketingText
                   ? product.customMarketingContent.marketingText : product?.description;
-                if (!desc) return <p className="text-muted-foreground">No description available.</p>;
+                if (!desc) return <p className="text-muted-foreground">{t("no_description_available")}</p>;
                 if (typeof desc === "object") return <PlateEditor description={desc} readOnly fixedToolbar={false} />;
                 try { return <PlateEditor description={JSON.parse(desc)} readOnly fixedToolbar={false} />; }
                 catch { return <div className="prose prose-gray max-w-none text-muted-foreground leading-relaxed" dir={langDir}>{desc}</div>; }
@@ -746,30 +748,30 @@ export default function ProductViewPage() {
                       </div>
                     ))}
                   </div>
-                ) : <p className="text-muted-foreground">No specifications available.</p>
+                ) : <p className="text-muted-foreground">{t("no_specifications_available")}</p>
               )}
 
-              {activeTab === "reviews" && <ReviewSection {...{ productId: Number(productId), productReview: reviews } as any} />}
-              {activeTab === "qanda" && <QuestionsAnswersSection {...{ productId: Number(productId), sellerId: seller?.id, userId: me.data?.data?.id } as any} />}
+              {activeTab === "reviews" && <ReviewSection {...{ productId: productId, productReview: reviews } as any} />}
+              {activeTab === "qanda" && <QuestionsAnswersSection {...{ productId: productId, sellerId: seller?.id, userId: me.data?.data?.id } as any} />}
               {activeTab === "vendor" && <VendorSection {...{ sellerId: seller?.id, sellerName } as any} />}
               {activeTab === "services" && <RelatedServices {...{ categoryId: product?.categoryId, sellerId: seller?.id } as any} />}
             </div>
           </div>
 
           {/* Related */}
-          <div className="mt-12"><RelatedProductsSection {...{ productId: Number(productId), categoryId: product?.categoryId } as any} /></div>
-          <div className="mt-8"><ProductRecommendations productId={Number(productId)} /></div>
+          <div className="mt-12"><RelatedProductsSection {...{ productId: productId, categoryId: product?.categoryId } as any} /></div>
+          <div className="mt-8"><ProductRecommendations productId={productId as any} /></div>
 
           {/* ── Customers Also Bought (bottom of page, scrollable) ── */}
           {relatedProducts.length > 0 && (
             <div className="mt-10 rounded-2xl bg-card border border-border shadow-sm overflow-hidden">
               <div className="px-6 py-4 border-b border-border flex items-center justify-between">
                 <div>
-                  <h2 className="text-base font-bold text-foreground">Customers Also Bought</h2>
-                  <p className="text-xs text-muted-foreground mt-0.5">Frequently purchased together with this product</p>
+                  <h2 className="text-base font-bold text-foreground">{t("customers_also_bought_title")}</h2>
+                  <p className="text-xs text-muted-foreground mt-0.5">{t("frequently_purchased_together")}</p>
                 </div>
                 {relatedProducts.length > 4 && (
-                  <span className="text-xs text-muted-foreground">Scroll for more →</span>
+                  <span className="text-xs text-muted-foreground">{t("scroll_for_more")}</span>
                 )}
               </div>
               <div className="flex overflow-x-auto pb-2" style={{ scrollbarWidth: "thin" }}>
@@ -814,7 +816,7 @@ export default function ProductViewPage() {
                       ) : (
                         <button onClick={() => setRelatedQtys((q) => ({ ...q, [rpId]: 1 }))}
                           className="h-9 px-5 rounded-xl bg-foreground text-white text-sm font-semibold flex items-center gap-1.5 hover:bg-foreground/90 transition-colors">
-                          <Plus className="h-3.5 w-3.5" /> Add
+                          <Plus className="h-3.5 w-3.5" /> {t("add")}
                         </button>
                       )}
                     </div>
@@ -835,27 +837,27 @@ export default function ProductViewPage() {
             <div className="bg-gradient-to-r from-primary to-primary/80 px-6 py-4 flex items-center justify-between">
               <div className="flex items-center gap-2 text-white">
                 <Users className="h-5 w-5" />
-                <span className="text-base font-bold">How Buygroups Work</span>
+                <span className="text-base font-bold">{t("how_buygroups_work")}</span>
               </div>
               <button onClick={() => setShowBuygroupWarning(false)} className="text-white/70 hover:text-white"><X className="h-5 w-5" /></button>
             </div>
 
             <div className="px-6 py-5 max-h-[60vh] overflow-y-auto">
               {/* What is a Buygroup */}
-              <h3 className="text-sm font-bold text-foreground mb-2">What is a Buygroup?</h3>
+              <h3 className="text-sm font-bold text-foreground mb-2">{t("what_is_a_buygroup")}</h3>
               <p className="text-xs text-muted-foreground leading-relaxed mb-5">
-                A buygroup is a collective purchasing system where multiple customers come together to purchase products at better prices. When you book a product in a buygroup, you are reserving your spot for that item.
+                {t("what_is_a_buygroup_desc")}
               </p>
 
               {/* How It Works */}
-              <h3 className="text-sm font-bold text-foreground mb-3">How It Works:</h3>
+              <h3 className="text-sm font-bold text-foreground mb-3">{t("how_it_works")}</h3>
               <div className="space-y-3 mb-5">
                 {[
-                  "Select the quantity you want to book",
-                  'Click "Book" to reserve your items',
-                  "Wait for the buygroup to reach the required number of participants",
-                  "Once the buygroup is complete, you'll be notified and can proceed with payment",
-                  "Your booking is confirmed only after the buygroup reaches its target",
+                  t("buygroup_step_1"),
+                  t("buygroup_step_2"),
+                  t("buygroup_step_3"),
+                  t("buygroup_step_4"),
+                  t("buygroup_step_5"),
                 ].map((step, i) => (
                   <div key={i} className="flex items-start gap-2.5">
                     <div className="w-5 h-5 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -867,13 +869,13 @@ export default function ProductViewPage() {
               </div>
 
               {/* Important Notes */}
-              <h3 className="text-sm font-bold text-foreground mb-3">Important Notes:</h3>
+              <h3 className="text-sm font-bold text-foreground mb-3">{t("important_notes")}</h3>
               <div className="space-y-3">
                 {[
-                  "Your booking is a reservation, not an immediate purchase",
-                  "You can cancel your booking before the buygroup closes",
-                  "If the buygroup doesn't reach its target, your booking will be automatically cancelled",
-                  "You'll receive notifications about the buygroup status",
+                  t("buygroup_note_1"),
+                  t("buygroup_note_2"),
+                  t("buygroup_note_3"),
+                  t("buygroup_note_4"),
                 ].map((note, i) => (
                   <div key={i} className="flex items-start gap-2.5">
                     <div className="w-5 h-5 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -889,11 +891,11 @@ export default function ProductViewPage() {
             <div className="px-6 py-4 border-t border-border flex items-center gap-3">
               <button onClick={() => setShowBuygroupWarning(false)}
                 className="flex-1 h-11 rounded-xl border border-border text-sm font-medium text-muted-foreground hover:bg-muted/50 transition-colors">
-                Cancel
+                {t("cancel")}
               </button>
               <button onClick={() => { setShowBuygroupWarning(false); handleAddToCart(); }}
                 className="flex-1 h-11 rounded-xl bg-primary text-white text-sm font-semibold flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20">
-                I Understand, Proceed
+                {t("i_understand_proceed")}
               </button>
             </div>
           </div>
@@ -908,7 +910,7 @@ export default function ProductViewPage() {
             <div className="bg-gradient-to-r from-foreground to-foreground/80 px-6 py-4 flex items-center justify-between">
               <div className="flex items-center gap-2 text-white">
                 <Pencil className="h-5 w-5" />
-                <span className="text-base font-bold">Customize Product</span>
+                <span className="text-base font-bold">{t("customize_product")}</span>
               </div>
               <button onClick={() => setShowCustomizeModal(false)} className="text-white/70 hover:text-white"><X className="h-5 w-5" /></button>
             </div>
@@ -918,18 +920,18 @@ export default function ProductViewPage() {
               <Package className="h-8 w-8 text-muted-foreground/50" />
               <div className="min-w-0">
                 <p className="text-sm font-semibold text-foreground truncate">{product?.productName}</p>
-                <p className="text-xs text-muted-foreground">Base price: ${offerPrice.toFixed(2)} · Seller: {sellerName.length <= 3 ? sellerName : sellerName.slice(0, 3) + "***"}</p>
+                <p className="text-xs text-muted-foreground">{t("base_price_label")}: ${offerPrice.toFixed(2)} · {t("seller")}: {sellerName.length <= 3 ? sellerName : sellerName.slice(0, 3) + "***"}</p>
               </div>
             </div>
 
             <div className="px-6 py-5 space-y-4 max-h-[55vh] overflow-y-auto">
               {/* Description */}
               <div>
-                <label className="text-sm font-semibold text-foreground mb-1.5 block">What would you like to customize?</label>
+                <label className="text-sm font-semibold text-foreground mb-1.5 block">{t("what_to_customize")}</label>
                 <textarea
                   value={customizeForm.description}
                   onChange={(e) => setCustomizeForm((f) => ({ ...f, description: e.target.value }))}
-                  placeholder="Describe your customization requirements — colors, sizes, materials, branding, packaging, etc."
+                  placeholder={t("customize_placeholder")}
                   className="w-full p-3 rounded-xl border border-border text-sm resize-none h-28 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                 />
               </div>
@@ -937,7 +939,7 @@ export default function ProductViewPage() {
               {/* Quantity + Budget row */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-sm font-semibold text-foreground mb-1.5 block">Quantity Needed</label>
+                  <label className="text-sm font-semibold text-foreground mb-1.5 block">{t("quantity_needed")}</label>
                   <input
                     type="number"
                     value={customizeForm.quantity}
@@ -948,7 +950,7 @@ export default function ProductViewPage() {
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-semibold text-foreground mb-1.5 block">Target Budget</label>
+                  <label className="text-sm font-semibold text-foreground mb-1.5 block">{t("target_budget")}</label>
                   <input
                     type="text"
                     value={customizeForm.budget}
@@ -961,10 +963,10 @@ export default function ProductViewPage() {
 
               {/* File upload */}
               <div>
-                <label className="text-sm font-semibold text-foreground mb-1.5 block">Attachments (optional)</label>
+                <label className="text-sm font-semibold text-foreground mb-1.5 block">{t("attachments_optional")}</label>
                 <label className="flex items-center justify-center gap-2 p-4 rounded-xl border-2 border-dashed border-border cursor-pointer hover:border-primary hover:bg-muted/50 transition-colors">
                   <Upload className="h-5 w-5 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">Upload reference images, specs, or designs</span>
+                  <span className="text-sm text-muted-foreground">{t("upload_reference")}</span>
                   <input
                     type="file"
                     multiple
@@ -991,7 +993,7 @@ export default function ProductViewPage() {
               {/* Info box */}
               <div className="p-3 rounded-xl bg-blue-50 border border-blue-100">
                 <p className="text-xs text-blue-700 leading-relaxed">
-                  Your customization request will be sent to the seller. They will review your requirements and respond with a quote, typically within 24-48 hours. You can also add the standard product to your cart while waiting.
+                  {t("customization_request_info")}
                 </p>
               </div>
             </div>
@@ -1000,18 +1002,18 @@ export default function ProductViewPage() {
             <div className="px-6 py-4 border-t border-border flex items-center gap-3">
               <button onClick={() => setShowCustomizeModal(false)}
                 className="flex-1 h-11 rounded-xl border border-border text-sm font-medium text-muted-foreground hover:bg-muted/50 transition-colors">
-                Cancel
+                {t("cancel")}
               </button>
               <button
                 onClick={() => {
                   setShowCustomizeModal(false);
-                  toast({ title: "Customization request sent!", description: "The seller will respond within 24-48 hours.", variant: "success" });
+                  toast({ title: t("customization_request_sent"), description: t("seller_responds_24_48"), variant: "success" });
                   setCustomizeForm({ description: "", budget: "", quantity: "1", attachments: [] });
                 }}
                 disabled={!customizeForm.description.trim()}
                 className="flex-1 h-11 rounded-xl bg-primary text-white text-sm font-semibold flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors disabled:opacity-40">
                 <Send className="h-4 w-4" />
-                Send Request
+                {t("send_request")}
               </button>
             </div>
           </div>
@@ -1022,8 +1024,8 @@ export default function ProductViewPage() {
       {product && seller?.id && me.data?.data?.id !== seller?.id && (
         <Drawer open={isChatOpen} onOpenChange={setIsChatOpen}>
           <DrawerContent className="h-[85vh]">
-            <DrawerHeader className="border-b"><DrawerTitle>{t("chat_with_seller") || "Chat with Seller"}</DrawerTitle></DrawerHeader>
-            <div className="flex-1 overflow-auto"><ProductChat productId={Number(productId)} /></div>
+            <DrawerHeader className="border-b"><DrawerTitle>{t("chat_with_seller")}</DrawerTitle></DrawerHeader>
+            <div className="flex-1 overflow-auto"><ProductChat productId={productId as any} /></div>
           </DrawerContent>
         </Drawer>
       )}
@@ -1033,15 +1035,15 @@ export default function ProductViewPage() {
         <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 overflow-y-auto">
           <div className="bg-card rounded-xl max-w-2xl w-full my-auto">
             <AddToCustomizeForm
-              selectedProductId={Number(productId)}
+              selectedProductId={productId as any}
               onClose={() => setShowCustomizeForm(false)}
               onAddToFactory={() => {
                 setShowCustomizeForm(false);
-                toast({ title: t("customization_submitted") || "Customization submitted!", variant: "success" });
+                toast({ title: t("customization_submitted"), variant: "success" });
               }}
               onAddToCart={() => {
                 setShowCustomizeForm(false);
-                toast({ title: t("added_to_cart") || "Added to cart!", variant: "success" });
+                toast({ title: t("added_to_cart_toast"), variant: "success" });
                 queryClient.invalidateQueries({ queryKey: haveAccessToken ? ["cart-by-user-id"] : ["cart-list-by-device-id"] });
               }}
             />
