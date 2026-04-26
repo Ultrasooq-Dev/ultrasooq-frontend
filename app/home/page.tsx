@@ -110,8 +110,8 @@ function HomePage() {
         haveAccessToken={haveAccessToken}
         onWishlist={handleAddToWishlist}
         navConfig={{
-          categoryId: 464,
-          categoryIds: "464,468,472",
+          categoryId: 12,
+          categoryIds: "13,43,74",
           colorClass: "bg-info/5",
         }}
         sectionClass="bg-card"
@@ -125,8 +125,8 @@ function HomePage() {
         haveAccessToken={haveAccessToken}
         onWishlist={handleAddToWishlist}
         navConfig={{
-          categoryId: 496,
-          categoryIds: "496,513",
+          categoryId: 194,
+          categoryIds: "228,214,195",
           colorClass: "bg-success/5",
         }}
         sectionClass="bg-muted/40"
@@ -140,8 +140,8 @@ function HomePage() {
         haveAccessToken={haveAccessToken}
         onWishlist={handleAddToWishlist}
         navConfig={{
-          categoryId: 477,
-          categoryIds: "477,482,488,499",
+          categoryId: 106,
+          categoryIds: "107,143,256,275,290",
           colorClass: "bg-warning/5",
         }}
         sectionClass="bg-card"

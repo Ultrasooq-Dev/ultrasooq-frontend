@@ -67,7 +67,7 @@ export function useHomeProducts() {
     page: 1,
     limit: 4,
     sort: "desc",
-    categoryIds: "496,513",
+    categoryIds: "228,214,195",
   });
 
   const memoizedHomeDecorProducts = useMemo(() => {
@@ -82,7 +82,7 @@ export function useHomeProducts() {
     page: 1,
     limit: 4,
     sort: "desc",
-    categoryIds: "477,482,488,499",
+    categoryIds: "107,143,256,275,290",
   });
 
   const memoizedFashionBeautyProducts = useMemo(() => {
@@ -97,7 +97,7 @@ export function useHomeProducts() {
     page: 1,
     limit: 4,
     sort: "desc",
-    categoryIds: "464,468,472",
+    categoryIds: "13,43,74",
   });
 
   const memoizedConsumerElectronicsProducts = useMemo(() => {
