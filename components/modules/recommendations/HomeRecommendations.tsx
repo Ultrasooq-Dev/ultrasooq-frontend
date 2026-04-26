@@ -1,28 +1,39 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { RecommendationCarousel } from './RecommendationCarousel';
 import { usePersonalRecs, useTrendingRecs } from '@/apis/queries/recommendation.queries';
 
 export function HomeRecommendations() {
+  const t = useTranslations();
   const { data: personal } = usePersonalRecs(20);
   const { data: trending } = useTrendingRecs(undefined, 20);
 
+  const personalItems = personal?.items ?? [];
+  const trendingItems = trending?.items ?? [];
+
+  if (personalItems.length === 0 && trendingItems.length === 0) return null;
+
   return (
-    <div className="space-y-6">
-      {personal?.items && personal.items.length > 0 && (
+    <>
+      {personalItems.length > 0 && (
         <RecommendationCarousel
-          title="Recommended for You"
-          products={personal.items}
+          title={t('recommended_products')}
+          subtitle={t('recommended')}
+          products={personalItems}
           placement="homepage"
+          sectionClass="bg-card"
         />
       )}
-      {trending?.items && trending.items.length > 0 && (
+      {trendingItems.length > 0 && (
         <RecommendationCarousel
-          title="Trending Now"
-          products={trending.items}
+          title={t('trending_now')}
+          subtitle={t('trending_n_high_rate_product')}
+          products={trendingItems}
           placement="homepage"
+          sectionClass="bg-muted/40"
         />
       )}
-    </div>
+    </>
   );
 }

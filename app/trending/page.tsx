@@ -12,7 +12,6 @@ import { useTranslations } from "next-intl";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import Footer from "@/components/shared/Footer";
-import BannerSection from "@/components/modules/trending/BannerSection";
 import TrendingCategories from "@/components/modules/trending/TrendingCategories";
 import VendorsSection from "@/components/modules/trending/VendorsSection";
 import CategorySidebar from "@/components/modules/trending/CategorySidebar";
@@ -114,7 +113,6 @@ const TrendingPage = (props0: TrendingPageProps) => {
           onCategorySelect={(id: number) => setSelectedCategoryIds((prev) => [...prev, id])}
         />
       )}
-      <BannerSection />
       <TrendingCategories />
 
       <section className="min-h-screen bg-muted py-6">
