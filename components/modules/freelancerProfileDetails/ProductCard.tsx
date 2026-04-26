@@ -413,7 +413,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       )}
     >
       <div className="product-list-s1-box relative cursor-pointer ">
-        <Link href={`/trending/${item.id}`}>
+        <Link href={`/product-view/${item.id}`}>
           {(() => {
             const { discount, discountType } = getApplicableDiscount();
             return item?.askForPrice !== "true" && discount > 0 && discountType ? (
@@ -460,7 +460,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             ) : null}
 
             <Link
-              href={`/trending/${item.id}`}
+              href={`/product-view/${item.id}`}
               className="relative flex h-8 w-8 items-center justify-center rounded-full shadow-md!"
             >
               <FiEye size={18} />
@@ -492,7 +492,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           </div>
         ) : null}
 
-        <Link href={`/trending/${item.id}`}>
+        <Link href={`/product-view/${item.id}`}>
           <div className="relative w-full text-sm font-normal capitalize text-color-blue lg:text-base">
             <h4 className="mb-2.5 border-b border-solid border-border pb-2.5 text-xs font-normal uppercase text-color-dark">
               {item.productName}
@@ -521,7 +521,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             </button>
           </Link>
         ) : (
-          <Link href={`/trending/${item.id}`}>
+          <Link href={`/product-view/${item.id}`}>
             <h5 className="py-1 text-blue-600 dark:text-blue-400">
               {currency.symbol}
               {calculateDiscountedPrice()}{" "}

@@ -668,7 +668,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       ) : null}
 
       {/* Product Image Container */}
-      <Link href={`/trending/${item.id}`} className="block sm:w-full w-32 flex-shrink-0">
+      <Link href={`/product-view/${item.id}`} className="block sm:w-full w-32 flex-shrink-0">
         {/* Discount Badge - Only show if user is eligible for discount */}
         {(() => {
           const { discount, discountType } = getApplicableDiscount();
@@ -745,7 +745,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             </Button>
           ) : null}
           <Link
-            href={`/trending/${item.id}`}
+            href={`/product-view/${item.id}`}
             className="h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-card/90 backdrop-blur-xs shadow-lg hover:bg-card hover:scale-110 transition-all duration-200 flex items-center justify-center"
           >
             <FiEye size={14} className="text-muted-foreground sm:w-4 sm:h-4" />
@@ -769,7 +769,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
       {/* Product Information */}
       <div className="p-2 sm:p-4 space-y-1 sm:space-y-3 flex-1 flex flex-col">
-        <Link href={`/trending/${item.id}`} className="block group">
+        <Link href={`/product-view/${item.id}`} className="block group">
           <h3 className="font-semibold text-foreground text-sm sm:text-base leading-tight line-clamp-2 group-hover:text-primary transition-colors duration-200 mb-1 sm:mb-2" dir={langDir}>
             {translate(item.productName)}
           </h3>

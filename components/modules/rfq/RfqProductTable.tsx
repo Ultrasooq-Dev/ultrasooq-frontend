@@ -44,7 +44,7 @@ const RfqProductTable: React.FC<ProducTableProps> = ({ list }) => {
               {list?.map((item: any) => (
                 <TableRow key={item.id}>
                   <TableCell th-name="Product">
-                    {/* <Link href={`/trending/${item.id}`}> */}
+                    {/* <Link href={`/product-view/${item.id}`}> */}
                     <figure className="product-image-with-text">
                       <div className="image-container rounded-lg">
                         <Image

@@ -113,6 +113,28 @@ const TrendingPage = (props0: TrendingPageProps) => {
           onCategorySelect={(id: number) => setSelectedCategoryIds((prev) => [...prev, id])}
         />
       )}
+
+      <section className="relative w-full overflow-hidden bg-gradient-to-br from-primary/10 via-background to-warning/10 px-4 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+        <div className="absolute inset-0 opacity-30" aria-hidden>
+          <div className="absolute top-0 end-0 -me-32 -mt-32 h-64 w-64 rounded-full bg-primary/20 blur-3xl" />
+          <div className="absolute bottom-0 start-0 -ms-24 -mb-24 h-56 w-56 rounded-full bg-warning/20 blur-3xl" />
+        </div>
+        <div className="relative mx-auto w-full max-w-[1400px]">
+          <h1
+            className="text-foreground mb-3 text-3xl font-bold sm:text-4xl lg:text-5xl"
+            translate="no"
+          >
+            {t("view_trending_products")}
+          </h1>
+          <p
+            className="text-muted-foreground max-w-2xl text-sm sm:text-base lg:text-lg"
+            translate="no"
+          >
+            {t("browse_categories_to_find_trending_products")}
+          </p>
+        </div>
+      </section>
+
       <TrendingCategories />
 
       <section className="min-h-screen bg-muted py-6">

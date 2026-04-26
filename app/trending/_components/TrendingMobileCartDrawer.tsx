@@ -91,7 +91,7 @@ export default function TrendingMobileCartDrawer({
                     className="group flex items-center space-x-4 rounded-lg border border-border p-3 transition-colors hover:bg-muted"
                   >
                     <Link
-                      href={`/trending/${cartItem.productId}`}
+                      href={`/product-view/${cartItem.productId}`}
                       className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg bg-muted transition-opacity hover:opacity-80"
                       onClick={() => onOpenChange(false)}
                     >

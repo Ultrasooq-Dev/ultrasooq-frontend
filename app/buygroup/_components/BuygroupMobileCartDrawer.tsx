@@ -95,7 +95,7 @@ const BuygroupMobileCartDrawer: React.FC<BuygroupMobileCartDrawerProps> = ({
                       className="flex items-center space-x-3 rounded-lg p-2 transition-colors hover:bg-muted"
                     >
                       <Link
-                        href={`/trending/${cartItem.productId}`}
+                        href={`/product-view/${cartItem.productId}`}
                         className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg bg-muted transition-opacity hover:opacity-80"
                         onClick={() => onOpenChange(false)}
                       >

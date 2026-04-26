@@ -447,7 +447,7 @@ const ProductChat: React.FC<ProductChatProps> = ({ productId, roomId }) => {
         {productDetails ? (
           <a
             target="_blank"
-            href={`/trending/${productDetails?.id}`}
+            href={`/product-view/${productDetails?.id}`}
             className="flex items-center gap-3 hover:opacity-80 transition-opacity"
           >
             <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg border border-border">

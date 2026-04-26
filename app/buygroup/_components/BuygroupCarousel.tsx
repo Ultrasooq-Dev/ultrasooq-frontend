@@ -45,7 +45,7 @@ const BuygroupCarousel: React.FC<BuygroupCarouselProps> = ({ list }) => {
               key={p.id}
               className="relative h-48 min-w-full sm:h-56 md:h-64 lg:h-72"
             >
-              <a href={`/trending/${p.id}`} className="absolute inset-0">
+              <a href={`/product-view/${p.id}`} className="absolute inset-0">
                 <img
                   src={img || "/images/product-placeholder.png"}
                   alt={p.productName}

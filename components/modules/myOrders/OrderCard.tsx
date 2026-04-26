@@ -154,7 +154,7 @@ const OrderCard: React.FC<OrderCardProps> = ({
 
           {orderStatus === "DELIVERED" ? (
             <Link
-              href={`/trending/${productId}?type=reviews`}
+              href={`/product-view/${productId}?type=reviews`}
               className="ratingLink"
               dir={langDir}
               translate="no"

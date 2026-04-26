@@ -234,7 +234,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
       </Button>
 
       {/* Product Image */}
-      <Link href={`/trending/${wishlistData?.id}`} className="block">
+      <Link href={`/product-view/${wishlistData?.id}`} className="block">
         <div className="relative aspect-square w-full overflow-hidden bg-muted">
           <Image
             src={
@@ -267,7 +267,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({
 
       {/* Product Info */}
       <div className="p-4">
-        <Link href={`/trending/${wishlistData?.id}`}>
+        <Link href={`/product-view/${wishlistData?.id}`}>
           <h3 className="mb-2 line-clamp-2 min-h-[2.5rem] text-sm font-semibold text-foreground transition-colors hover:text-primary">
             {wishlistData?.productName}
           </h3>

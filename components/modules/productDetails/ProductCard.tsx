@@ -193,7 +193,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   return (
     <div className="relative h-full w-full bg-card p-4">
-      <Link href={`/trending/${id}`}>
+      <Link href={`/product-view/${id}`}>
         {(() => {
           const { discount, discountType } = getApplicableDiscount();
           return askForPrice !== "true" && discount > 0 && discountType ? (
@@ -226,7 +226,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
       {/* Product Info */}
       <div className="flex flex-col">
-        <Link href={`/trending/${id}`}>
+        <Link href={`/product-view/${id}`}>
           <div>
             <h4 className="mb-2 line-clamp-2 text-sm text-foreground" title={productName}>
               {translate(productName)}

@@ -92,7 +92,7 @@ export default function TrendingCartSidebar({
                   <div key={cartItem.id} className="space-y-2 text-center">
                     <div className="flex justify-center">
                       <Link
-                        href={`/trending/${cartItem.productId}`}
+                        href={`/product-view/${cartItem.productId}`}
                         className="h-20 w-20 overflow-hidden rounded-lg bg-muted transition-opacity hover:opacity-80"
                       >
                         {productImage ? (

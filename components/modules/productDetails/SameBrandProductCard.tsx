@@ -193,7 +193,7 @@ const SameBrandProductCard: React.FC<SameBrandProductCardProps> = ({
   return (
     <div className="product-list-s1-col">
       <div className="product-list-s1-box">
-        <Link href={`/trending/${id}`}>
+        <Link href={`/product-view/${id}`}>
           <div className="image-container relative mb-4">
             {(() => {
               const { discount, discountType } = getApplicableDiscount();
@@ -232,7 +232,7 @@ const SameBrandProductCard: React.FC<SameBrandProductCardProps> = ({
           ) : null}
 
           <Link
-            href={`/trending/${id}`}
+            href={`/product-view/${id}`}
             className="relative flex h-8 w-8 items-center justify-center rounded-full shadow-md!"
           >
             <FiEye size={18} />
@@ -259,7 +259,7 @@ const SameBrandProductCard: React.FC<SameBrandProductCardProps> = ({
           </Button> */}
         </div>
 
-        <Link href={`/trending/${id}`}>
+        <Link href={`/product-view/${id}`}>
           <div className="text-container">
             <h4>{productName}</h4>
             <p title={shortDescription} className="truncate">

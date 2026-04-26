@@ -254,7 +254,7 @@ const ProductTable: React.FC<ProductTableProps> = ({
                   >
                     {/* Product Column */}
                     <TableCell className="py-4">
-                      <Link href={`/trending/${item.id}`} className="flex items-center gap-4 group/link">
+                      <Link href={`/product-view/${item.id}`} className="flex items-center gap-4 group/link">
                         <div className="relative flex-shrink-0">
                           <div className="relative h-20 w-20 sm:h-24 sm:w-24 rounded-lg overflow-hidden border border-border bg-muted">
                             <Image
@@ -385,7 +385,7 @@ const ProductTable: React.FC<ProductTableProps> = ({
                         )}
 
                         {/* View Button */}
-                        <Link href={`/trending/${item.id}`}>
+                        <Link href={`/product-view/${item.id}`}>
                           <Button
                             variant="outline"
                             size="sm"
