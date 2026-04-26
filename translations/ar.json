@@ -2549,5 +2549,9 @@
   "what_is_a_buygroup": "ما هو الشراء الجماعي؟",
   "what_is_a_buygroup_desc": "يتيح الشراء الجماعي للعديد من المشترين دمج طلباتهم للحصول على سعر أقل معًا.",
   "what_to_customize": "ما المطلوب تخصيصه",
-  "you_save_compared": "وفّرت {discount} مقارنة بـ {price}"
+  "you_save_compared": "وفّرت {discount} مقارنة بـ {price}",
+  "similar_products": "منتجات مشابهة",
+  "complete_your_order": "أكمل طلبك",
+  "verified_seller": "بائع موثّق",
+  "specifications_title": "المواصفات"
 }
