@@ -129,7 +129,7 @@ export function ProductSpecTable({
         <div>
           {Object.keys(grouped).length > 0 && (
             <h4 className="text-sm font-medium text-muted-foreground mb-2 uppercase tracking-wider">
-              Additional Specifications
+              {t("additional_specifications")}
             </h4>
           )}
           <Table>
