@@ -116,7 +116,7 @@ export function BuyTab({
                 <div className={cn("flex items-center justify-between px-3 py-1 text-[9px] font-bold text-white",
                   isExp ? "bg-muted-foreground" : isSoon ? "bg-amber-500" : "bg-destructive")}>
                   <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {isBg ? (isAr ? "مجموعة شراء" : "Buy Group") : ""}</span>
-                  <span>{timer}</span>
+                  <span dir="ltr">{timer}</span>
                 </div>
               )}
 

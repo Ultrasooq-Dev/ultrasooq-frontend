@@ -70,7 +70,7 @@ export function ProductListCard({
           <ShoppingCart className="h-5 w-5 text-muted-foreground/20" />
         )}
         {cardTimer && (
-          <span className={cn(
+          <span dir="ltr" className={cn(
             "absolute top-0 end-0 px-1 py-0.5 text-[7px] font-bold text-white rounded-bl",
             isExpired ? "bg-muted-foreground" : isComingSoon ? "bg-amber-500" : "bg-destructive"
           )}>
@@ -107,7 +107,7 @@ export function ProductListCard({
           <span className="text-[9px] text-muted-foreground">({p.reviews})</span>
           <span className="text-[9px] text-muted-foreground">{"\u2022"} {p.seller}</span>
           {totalStock > 0 && <span className={cn("text-[9px]", p.inStock ? "text-green-600" : "text-destructive")}>{p.inStock ? `${totalStock} ${isAr ? "متوفر" : "in stock"}` : (isAr ? "نفذ" : "Out")}</span>}
-          {cardTimer && <span className={cn("text-[8px] font-bold px-1 py-0.5 rounded text-white", isExpired ? "bg-muted-foreground" : isComingSoon ? "bg-amber-500" : "bg-destructive")}>{cardTimer}</span>}
+          {cardTimer && <span dir="ltr" className={cn("text-[8px] font-bold px-1 py-0.5 rounded text-white", isExpired ? "bg-muted-foreground" : isComingSoon ? "bg-amber-500" : "bg-destructive")}>{cardTimer}</span>}
         </div>
 
         {/* Buygroup progress bar */}

@@ -388,7 +388,8 @@ const ServiceCard: React.FC<any> = ({
       "0",
     );
     const seconds = String(totalSeconds % 60).padStart(2, "0");
-    return `${days} Days; ${hours}:${minutes}:${seconds}`;
+    const dayLabel = langDir === "rtl" ? "أيام" : "Days";
+    return `${days} ${dayLabel}; ${hours}:${minutes}:${seconds}`;
   };
 
   useEffect(() => {
@@ -460,7 +461,7 @@ const ServiceCard: React.FC<any> = ({
           </div>
         ) : null}
         {timeLeft ? (
-          <div className="time_left">
+          <div className="time_left" dir="ltr">
             <span translate="no">{timeLeft}</span>
           </div>
         ) : null}

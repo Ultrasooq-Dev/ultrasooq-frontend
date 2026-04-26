@@ -466,8 +466,8 @@ export const LANGUAGES = [
 export const CURRENCIES = [
   {
     code: "OMR",
-    symbol: "OMR",
-    symbolAr: "ر.ع",
+    symbol: "OMR ",
+    symbolAr: "ر.ع ",
     name: "Omani Rial",
     nameAr: "ريال عماني",
   },
@@ -480,15 +480,15 @@ export const CURRENCIES = [
   },
   {
     code: "SAR",
-    symbol: "﷼",
-    symbolAr: "ر.س",
+    symbol: "﷼ ",
+    symbolAr: "ر.س ",
     name: "Saudi Riyal",
     nameAr: "ريال سعودي",
   },
   {
     code: "AED",
-    symbol: "د.إ",
-    symbolAr: "د.إ",
+    symbol: "د.إ ",
+    symbolAr: "د.إ ",
     name: "UAE Dirham",
     nameAr: "درهم إماراتي",
   },

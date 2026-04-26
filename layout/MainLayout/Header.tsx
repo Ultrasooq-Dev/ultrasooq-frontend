@@ -1262,8 +1262,8 @@ const Header: React.FC<{ locale?: string }> = ({ locale = "ar" }) => {
                             key={item.code}
                           >
                             {langDir === "rtl"
-                              ? `${item.symbolAr} ${item.code}`
-                              : `${item.symbol} ${item.code}`}
+                              ? `${item.symbolAr}${item.code}`
+                              : `${item.symbol}${item.code}`}
                           </option>
                         );
                       })}
