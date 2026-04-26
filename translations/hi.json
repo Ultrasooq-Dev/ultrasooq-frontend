@@ -2547,5 +2547,9 @@
   "send_request": "अनुरोध भेजें",
   "customization_submitted": "कस्टमाइज़ेशन सबमिट किया गया!",
   "ended_label": "समाप्त",
-  "failed_label": "विफल"
+  "failed_label": "विफल",
+  "similar_products": "समान उत्पाद",
+  "complete_your_order": "अपना ऑर्डर पूरा करें",
+  "verified_seller": "सत्यापित विक्रेता",
+  "specifications_title": "विशिष्टताएँ"
 }

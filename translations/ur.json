@@ -2547,5 +2547,9 @@
   "send_request": "درخواست بھیجیں",
   "customization_submitted": "تخصیص جمع کرا دی گئی!",
   "ended_label": "ختم ہو گیا",
-  "failed_label": "ناکام"
+  "failed_label": "ناکام",
+  "similar_products": "ملتی جلتی مصنوعات",
+  "complete_your_order": "اپنا آرڈر مکمل کریں",
+  "verified_seller": "تصدیق شدہ بیچنے والا",
+  "specifications_title": "تفصیلات"
 }

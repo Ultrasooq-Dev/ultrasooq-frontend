@@ -2547,5 +2547,9 @@
   "send_request": "Отправить запрос",
   "customization_submitted": "Настройка отправлена!",
   "ended_label": "Завершено",
-  "failed_label": "Не удалось"
+  "failed_label": "Не удалось",
+  "similar_products": "Похожие товары",
+  "complete_your_order": "Завершите заказ",
+  "verified_seller": "Проверенный продавец",
+  "specifications_title": "Характеристики"
 }

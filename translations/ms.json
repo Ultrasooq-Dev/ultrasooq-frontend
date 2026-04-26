@@ -2547,5 +2547,9 @@
   "send_request": "Hantar Permintaan",
   "customization_submitted": "Penyesuaian dihantar!",
   "ended_label": "Tamat",
-  "failed_label": "Gagal"
+  "failed_label": "Gagal",
+  "similar_products": "Produk Serupa",
+  "complete_your_order": "Lengkapkan Pesanan Anda",
+  "verified_seller": "Penjual Disahkan",
+  "specifications_title": "Spesifikasi"
 }

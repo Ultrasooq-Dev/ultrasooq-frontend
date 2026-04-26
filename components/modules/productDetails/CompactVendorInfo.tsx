@@ -1,4 +1,6 @@
+"use client";
 import React, { useEffect } from "react";
+import { useTranslations } from "next-intl";
 import { useVendorDetails } from "@/apis/queries/product.queries";
 import Link from "next/link";
 import { useQueryClient } from "@tanstack/react-query";
@@ -8,6 +10,7 @@ type CompactVendorInfoProps = {
 };
 
 const CompactVendorInfo: React.FC<CompactVendorInfoProps> = ({ adminId }) => {
+  const t = useTranslations();
   const queryClient = useQueryClient();
 
   // Clear vendor cache when adminId changes to force fresh data
@@ -76,7 +79,7 @@ const CompactVendorInfo: React.FC<CompactVendorInfoProps> = ({ adminId }) => {
         <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        <span>Verified</span>
+        <span>{t("verified_label")}</span>
       </div>
     </div>
   );

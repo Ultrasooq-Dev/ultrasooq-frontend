@@ -10,6 +10,7 @@
  * @uses shadcn/Table, shadcn/Badge
  */
 import React from "react";
+import { useTranslations } from "next-intl";
 import {
   Table,
   TableBody,
@@ -52,6 +53,7 @@ export function ProductSpecTable({
   customSpecs = [],
   showFilterBadge = false,
 }: ProductSpecTableProps) {
+  const t = useTranslations();
   // Group spec values by groupName
   const grouped = React.useMemo(() => {
     const groups: Record<string, SpecValue[]> = {};
@@ -89,7 +91,7 @@ export function ProductSpecTable({
 
   return (
     <div className="space-y-4">
-      <h3 className="text-base font-semibold">Specifications</h3>
+      <h3 className="text-base font-semibold">{t("specifications_title")}</h3>
 
       {/* Template-based specs grouped by groupName */}
       {Object.entries(grouped).map(([groupName, specs]) => (

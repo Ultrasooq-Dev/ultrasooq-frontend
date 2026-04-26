@@ -106,7 +106,7 @@ const VendorSection: React.FC<VendorSectionProps> = ({ adminId }) => {
               <svg className="h-4 w-4 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <span>Verified Seller</span>
+              <span>{t("verified_seller")}</span>
             </div>
             <div className="flex items-center gap-1">
               <svg className="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">

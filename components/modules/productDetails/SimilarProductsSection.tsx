@@ -1,4 +1,6 @@
+"use client";
 import React from "react";
+import { useTranslations } from "next-intl";
 import {
   Carousel,
   CarouselContent,
@@ -8,12 +10,13 @@ import {
 } from "@/components/ui/carousel";
 
 const SimilarProductsSection = () => {
+  const t = useTranslations();
   return (
     <section className="w-full py-8">
       <div className="container m-auto">
         <div className="products-header-filter">
           <div className="le-info">
-            <h3>Similar products</h3>
+            <h3>{t("similar_products")}</h3>
           </div>
         </div>
         {/* <div className="grid w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"> */}

@@ -2547,5 +2547,9 @@
   "send_request": "Gửi yêu cầu",
   "customization_submitted": "Đã gửi tùy chỉnh!",
   "ended_label": "Đã kết thúc",
-  "failed_label": "Thất bại"
+  "failed_label": "Thất bại",
+  "similar_products": "Sản phẩm tương tự",
+  "complete_your_order": "Hoàn tất đơn hàng của bạn",
+  "verified_seller": "Người bán được xác minh",
+  "specifications_title": "Thông số kỹ thuật"
 }

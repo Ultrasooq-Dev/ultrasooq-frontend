@@ -2547,5 +2547,9 @@
   "send_request": "リクエストを送信",
   "customization_submitted": "カスタマイズが送信されました!",
   "ended_label": "終了",
-  "failed_label": "失敗"
+  "failed_label": "失敗",
+  "similar_products": "類似製品",
+  "complete_your_order": "注文を完了する",
+  "verified_seller": "認証済み販売者",
+  "specifications_title": "仕様"
 }

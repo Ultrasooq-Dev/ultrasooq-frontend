@@ -2547,5 +2547,9 @@
   "send_request": "요청 보내기",
   "customization_submitted": "맞춤 설정이 제출되었습니다!",
   "ended_label": "종료됨",
-  "failed_label": "실패"
+  "failed_label": "실패",
+  "similar_products": "유사한 상품",
+  "complete_your_order": "주문 완료하기",
+  "verified_seller": "인증된 판매자",
+  "specifications_title": "사양"
 }

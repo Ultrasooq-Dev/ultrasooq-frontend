@@ -2547,5 +2547,9 @@
   "send_request": "发送请求",
   "customization_submitted": "定制已提交!",
   "ended_label": "已结束",
-  "failed_label": "失败"
+  "failed_label": "失败",
+  "similar_products": "相似产品",
+  "complete_your_order": "完成您的订单",
+  "verified_seller": "认证卖家",
+  "specifications_title": "规格"
 }

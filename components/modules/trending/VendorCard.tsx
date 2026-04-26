@@ -178,7 +178,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
             onClick={() => onViewProducts(vendor.id)}
             className="group/btn flex items-center space-x-1 text-primary border-primary/20 hover:bg-primary/5 hover:border-primary/30"
           >
-            <span>View Products</span>
+            <span>{t("view_products")}</span>
             <ChevronRight className="h-3 w-3 transition-transform group-hover/btn:translate-x-0.5" />
           </Button>
           

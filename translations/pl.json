@@ -2547,5 +2547,9 @@
   "send_request": "Wyślij żądanie",
   "customization_submitted": "Dostosowanie zostało przesłane!",
   "ended_label": "Zakończono",
-  "failed_label": "Niepowodzenie"
+  "failed_label": "Niepowodzenie",
+  "similar_products": "Podobne produkty",
+  "complete_your_order": "Sfinalizuj zamówienie",
+  "verified_seller": "Zweryfikowany sprzedawca",
+  "specifications_title": "Specyfikacje"
 }

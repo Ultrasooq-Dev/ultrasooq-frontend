@@ -2547,5 +2547,9 @@
   "send_request": "Enviar solicitud",
   "customization_submitted": "¡Personalización enviada!",
   "ended_label": "Finalizado",
-  "failed_label": "Fallido"
+  "failed_label": "Fallido",
+  "similar_products": "Productos similares",
+  "complete_your_order": "Completa tu pedido",
+  "verified_seller": "Vendedor verificado",
+  "specifications_title": "Especificaciones"
 }

@@ -2547,5 +2547,9 @@
   "send_request": "Verzoek verzenden",
   "customization_submitted": "Aanpassing ingediend!",
   "ended_label": "Beëindigd",
-  "failed_label": "Mislukt"
+  "failed_label": "Mislukt",
+  "similar_products": "Vergelijkbare producten",
+  "complete_your_order": "Voltooi je bestelling",
+  "verified_seller": "Geverifieerde verkoper",
+  "specifications_title": "Specificaties"
 }

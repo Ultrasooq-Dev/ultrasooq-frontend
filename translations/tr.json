@@ -2547,5 +2547,9 @@
   "send_request": "İstek Gönder",
   "customization_submitted": "Özelleştirme gönderildi!",
   "ended_label": "Sona erdi",
-  "failed_label": "Başarısız"
+  "failed_label": "Başarısız",
+  "similar_products": "Benzer Ürünler",
+  "complete_your_order": "Siparişinizi Tamamlayın",
+  "verified_seller": "Doğrulanmış Satıcı",
+  "specifications_title": "Özellikler"
 }

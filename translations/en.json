@@ -2549,5 +2549,9 @@
   "what_is_a_buygroup": "What is a group buy?",
   "what_is_a_buygroup_desc": "A group buy lets multiple buyers combine orders to unlock a lower price together.",
   "what_to_customize": "What to customize",
-  "you_save_compared": "You save {discount} compared to {price}"
+  "you_save_compared": "You save {discount} compared to {price}",
+  "similar_products": "Similar Products",
+  "complete_your_order": "Complete Your Order",
+  "verified_seller": "Verified Seller",
+  "specifications_title": "Specifications"
 }

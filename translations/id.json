@@ -2547,5 +2547,9 @@
   "send_request": "Kirim Permintaan",
   "customization_submitted": "Kustomisasi dikirim!",
   "ended_label": "Selesai",
-  "failed_label": "Gagal"
+  "failed_label": "Gagal",
+  "similar_products": "Produk Serupa",
+  "complete_your_order": "Selesaikan Pesanan Anda",
+  "verified_seller": "Penjual Terverifikasi",
+  "specifications_title": "Spesifikasi"
 }

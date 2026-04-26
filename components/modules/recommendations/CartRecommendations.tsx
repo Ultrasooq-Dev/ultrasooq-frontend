@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { RecommendationCarousel } from './RecommendationCarousel';
 import { useCartRecs } from '@/apis/queries/recommendation.queries';
 
@@ -8,13 +9,14 @@ interface CartRecommendationsProps {
 }
 
 export function CartRecommendations({ enabled = true }: CartRecommendationsProps) {
+  const t = useTranslations();
   const { data } = useCartRecs(10, enabled);
 
   if (!data?.items || data.items.length === 0) return null;
 
   return (
     <RecommendationCarousel
-      title="Complete Your Order"
+      title={t('complete_your_order')}
       products={data.items}
       placement="cart"
     />
