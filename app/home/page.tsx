@@ -5,11 +5,13 @@ import CategorySidebar from "@/components/modules/trending/CategorySidebar";
 import Footer from "@/components/shared/Footer";
 import { useTranslations } from "next-intl";
 import React from "react";
+import { HomeBrands } from "./_components/HomeBrands";
 import { HomeCategorySection } from "./_components/HomeCategorySection";
 import { HomeDealOfTheDay } from "./_components/HomeDealOfTheDay";
 import { HomeFeatures } from "./_components/HomeFeatures";
 import { HomeProductSection } from "./_components/HomeProductSection";
 import { HomePromo } from "./_components/HomePromo";
+import { HomePromoStrip } from "./_components/HomePromoStrip";
 import { HomeStats } from "./_components/HomeStats";
 import { HomeTestimonials } from "./_components/HomeTestimonials";
 import { HomeWaysToShop } from "./_components/HomeWaysToShop";
@@ -42,6 +44,8 @@ function HomePage() {
         isOpen={isCategorySidebarOpen}
         onClose={() => setIsCategorySidebarOpen(false)}
       />
+
+      <HomePromoStrip />
 
       <HeroBanner />
 
@@ -101,6 +105,8 @@ function HomePage() {
       />
 
       <HomeWaysToShop />
+
+      <HomeBrands />
 
       {/* Consumer Electronics */}
       <HomeCategorySection

@@ -65,7 +65,7 @@ export function useHomeProducts() {
 
   const homeDecorProductsQuery = useAllProducts({
     page: 1,
-    limit: 4,
+    limit: 8,
     sort: "desc",
     categoryIds: "228,214,195",
   });
@@ -80,7 +80,7 @@ export function useHomeProducts() {
 
   const fashionBeautyProductsQuery = useAllProducts({
     page: 1,
-    limit: 4,
+    limit: 8,
     sort: "desc",
     categoryIds: "107,143,256,275,290",
   });
@@ -95,7 +95,7 @@ export function useHomeProducts() {
 
   const consumerElectronicsProductsQuery = useAllProducts({
     page: 1,
-    limit: 4,
+    limit: 8,
     sort: "desc",
     categoryIds: "13,43,74",
   });

@@ -639,7 +639,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   };
 
   return (
-    <div className="group relative bg-card rounded-lg sm:rounded-xl shadow-sm sm:shadow-lg border border-border hover:shadow-xl hover:border-border transition-all duration-300 overflow-hidden h-full flex flex-row sm:flex-col items-stretch">
+    <div className="group relative bg-card rounded-lg sm:rounded-xl shadow-sm sm:shadow-md border border-border hover:shadow-xl hover:border-primary/40 hover:-translate-y-0.5 transition-all duration-300 overflow-hidden h-full flex flex-row sm:flex-col items-stretch">
       {/* Selection Checkbox */}
       {isSelectable ? (
         <div className="absolute left-1.5 sm:left-3 top-1.5 sm:top-3 z-20">

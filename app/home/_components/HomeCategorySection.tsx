@@ -116,7 +116,7 @@ export function HomeCategorySection({
           cartList={cartList}
           haveAccessToken={haveAccessToken}
           onWishlist={onWishlist}
-          limit={4}
+          limit={8}
         />
       </div>
     </section>
