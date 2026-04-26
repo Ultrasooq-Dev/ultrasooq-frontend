@@ -97,7 +97,7 @@ const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({
                 e.preventDefault();
                 const item = allItems[activeIndex];
                 if (item.type === "category" && item.id) {
-                    router.push(`/trending?categoryIds=${item.id}`);
+                    router.push(`/trending?category=${item.id}`);
                 } else {
                     onSelect(item.label);
                 }
@@ -242,7 +242,7 @@ const SearchAutocomplete: React.FC<SearchAutocompleteProps> = ({
                                         : "hover:bg-muted"
                                 }`}
                                 onClick={() => {
-                                    router.push(`/trending?categoryIds=${item.id}`);
+                                    router.push(`/trending?category=${item.id}`);
                                     onClose();
                                 }}
                             >

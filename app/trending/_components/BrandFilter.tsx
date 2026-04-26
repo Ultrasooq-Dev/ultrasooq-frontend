@@ -93,7 +93,8 @@ export default function BrandFilter({
               </div>
             </div>
             <div
-              className={`space-y-2 overflow-y-auto ${isMobile ? "max-h-40" : "max-h-48"}`}
+              className={`space-y-2 overflow-y-auto pe-1 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-border hover:[&::-webkit-scrollbar-thumb]:bg-muted-foreground/40 ${isMobile ? "max-h-40" : "max-h-48"}`}
+              style={{ scrollbarWidth: "thin" }}
             >
               {!memoizedBrands.length ? (
                 <p className="py-4 text-center text-sm text-muted-foreground">

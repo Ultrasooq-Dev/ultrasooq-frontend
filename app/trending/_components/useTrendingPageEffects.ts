@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { useCategoryStore } from "@/lib/categoryStore";
 
 interface UseTrendingPageEffectsProps {
@@ -17,6 +18,7 @@ export function useTrendingPageEffects({
   setSelectedCategoryIds,
 }: UseTrendingPageEffectsProps) {
   const categoryStore = useCategoryStore();
+  const searchParams = useSearchParams();
 
   // Category sidebar listener
   useEffect(() => {
@@ -29,17 +31,20 @@ export function useTrendingPageEffects({
     };
   }, []);
 
-  // URL category param
+  // URL category param — reactive to URL changes so clicking another category
+  // while already on /trending re-applies the filter.
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      const categoryParam = params.get("category");
-      if (categoryParam) {
-        const categoryId = parseInt(categoryParam, 10);
-        if (!isNaN(categoryId)) setSelectedCategoryIds([categoryId]);
+    const categoryParam =
+      searchParams?.get("category") ?? searchParams?.get("categoryIds");
+    if (categoryParam) {
+      const categoryId = parseInt(categoryParam, 10);
+      if (!isNaN(categoryId)) {
+        setSelectedCategoryIds([categoryId]);
+        return;
       }
     }
-  }, []);
+    setSelectedCategoryIds([]);
+  }, [searchParams]);
 
   // Hydration mount flag
   useEffect(() => { setIsMounted(true); }, []);
