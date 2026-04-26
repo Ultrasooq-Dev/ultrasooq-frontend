@@ -10,6 +10,7 @@ import { useTranslations } from "next-intl";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import {
   XIcon,
   UserIcon,
@@ -555,14 +556,16 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
               {isHovered || isOpen ? (
                 <div className="relative z-10 flex w-full items-center justify-center text-sidebar-primary-foreground">
                   {/* Logo icon - larger when sidebar is expanded */}
-                  <Image
-                    src="/images/logoicon.png"
-                    alt={t("ultrasooq_logo")}
-                    width={80}
-                    height={80}
-                    className="h-20 w-20 object-contain"
-                    priority
-                  />
+                  <Link href="/home" aria-label={t("ultrasooq_logo")}>
+                    <Image
+                      src="/images/logoicon.png"
+                      alt={t("ultrasooq_logo")}
+                      width={80}
+                      height={80}
+                      className="h-20 w-20 object-contain"
+                      priority
+                    />
+                  </Link>
                   {/* Close button for mobile - positioned absolutely */}
                   <button
                     onClick={closeSidebar}
@@ -578,14 +581,16 @@ const Sidebar: React.FC<SidebarProps> = ({ notificationCount }) => {
               ) : (
                 <div className="relative z-10 flex w-full items-center justify-center text-sidebar-primary-foreground">
                   {/* Logo icon - smaller when sidebar is collapsed */}
-                  <Image
-                    src="/images/logoicon.png"
-                    alt={t("ultrasooq_icon")}
-                    width={40}
-                    height={40}
-                    className="h-10 w-10 object-contain"
-                    priority
-                  />
+                  <Link href="/home" aria-label={t("ultrasooq_icon")}>
+                    <Image
+                      src="/images/logoicon.png"
+                      alt={t("ultrasooq_icon")}
+                      width={40}
+                      height={40}
+                      className="h-10 w-10 object-contain"
+                      priority
+                    />
+                  </Link>
                 </div>
               )}
             </div>
